@@ -1,0 +1,30 @@
+---
+// The New task modal added in 1.5. Rendered inline (ModalInline + `show`) so a
+// static capture shows the open dialog; litepicker and tom-select back the due
+// date and the assignee/tags selects.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import ModalInline from '@shared/components/modals/ModalInline.astro'
+import NewTaskModalContent from '@shared/components/modals/NewTaskModalContent.astro'
+---
+
+<ScreenshotLayout title="New task modal" columns={2} pageLibs={['litepicker', 'tom-select']}>
+  <ModalInline class="position-relative rounded d-block w-auto h-auto z-0" modalId="new-task" size="lg" show>
+    <NewTaskModalContent />
+  </ModalInline>
+  <!-- An empty form makes a poor screenshot: fill the text fields and the tags
+  in once the modal and its plugins are in the DOM. -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const name = document.getElementById('task-name')
+      const description = document.getElementById('task-description')
+      if (name) name.value = 'Prepare the 1.5 release notes'
+      if (description) description.value = 'Collect the changesets, group them by package and draft the announcement post.'
+
+      // DataSelect drops the demo `value` from selects.json, so the tags field
+      // renders empty — pick two through TomSelect's own API instead. Deferred
+      // by a timeout because Select.astro builds the instance in its own
+      // DOMContentLoaded handler, which runs after this one.
+      setTimeout(() => window.tabler_select?.['select-task-category']?.addItems(['HTML', 'Bootstrap']), 0)
+    })
+  </script>
+</ScreenshotLayout>

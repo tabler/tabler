@@ -6,7 +6,7 @@
 // Run via `pnpm run capture` (builds first) — pass slugs as args to capture
 // only specific pages, e.g. `pnpm run capture button badge`.
 import { chromium, type Page } from 'playwright'
-import { spawn, type ChildProcess } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -33,36 +33,45 @@ function discoverSlugs(): string[] {
     .sort()
 }
 
-// Spawns the `astro` binary directly (not via `pnpm exec astro`) so `child.pid`
-// is the actual server process — killing a `pnpm exec` wrapper doesn't reliably
-// kill the process it launches, which is how earlier runs left zombie preview
-// servers squatting on the port for subsequent runs to collide with.
+// Spawns the `astro` binary directly (not via `pnpm exec astro`) so the CLI's
+// own background handling is the only thing between us and the server.
+// Astro detaches `preview` into a background daemon whenever stdout is not a
+// TTY (which it never is here) and prints a JSON status line instead of the
+// human "Local  http://…" banner, so readiness is polled over HTTP rather than
+// scraped from stdout, and the server is stopped through `astro preview stop`
+// rather than by killing the process we spawned — that one has already exited.
 const astroBin = path.join(root, 'node_modules/.bin/astro')
 
-function startPreviewServer(): Promise<ChildProcess> {
+function runAstro(args: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
-    const child = spawn(astroBin, ['preview', '--port', String(PORT)], {
-      cwd: root,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    })
-
-    const timer = setTimeout(() => reject(new Error(`astro preview didn't come up on port ${PORT} within 20s`)), 20_000)
-
-    const onData = (data: Buffer) => {
-      if (data.toString().includes('Local')) {
-        clearTimeout(timer)
-        child.stdout?.off('data', onData)
-        resolve(child)
-      }
-    }
-    child.stdout?.on('data', onData)
+    const child = spawn(astroBin, args, { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] })
     child.stderr?.on('data', (data) => process.stderr.write(data))
     child.once('error', reject)
     child.once('exit', (code) => {
-      if (code !== null && code !== 0) reject(new Error(`astro preview exited with code ${code}`))
+      if (code === null || code === 0) resolve()
+      else reject(new Error(`astro ${args.join(' ')} exited with code ${code}`))
     })
   })
 }
+
+async function startPreviewServer(): Promise<void> {
+  await runAstro(['preview', '--background', '--port', String(PORT)])
+
+  const deadline = Date.now() + 20_000
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(baseUrl, { method: 'HEAD' })
+      if (response.ok || response.status === 404) return
+    } catch {
+      // not listening yet
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250))
+  }
+
+  throw new Error(`astro preview didn't come up on port ${PORT} within 20s`)
+}
+
+const stopPreviewServer = () => runAstro(['preview', 'stop']).catch(() => {})
 
 function filenameFor(slug: string, theme: 'light' | 'dark', scale: 1 | 2): string {
   const themeSuffix = theme === 'dark' ? '-dark' : ''
@@ -73,6 +82,11 @@ function filenameFor(slug: string, theme: 'light' | 'dark', scale: 1 | 2): strin
 async function captureOne(page: Page, slug: string, theme: 'light' | 'dark', scale: 1 | 2) {
   await page.goto(`${baseUrl}/${slug}?theme=${theme}`, { waitUntil: 'load' })
   await page.waitForFunction(() => document.documentElement.dataset.screenshotReady === 'true', { timeout: 15_000 })
+
+  // Page furniture that exists for the human browsing the pages (the light/dark
+  // toggle). The app frame fills the viewport, so anything left on screen would
+  // sit inside the captured rectangle.
+  await page.addStyleTag({ content: '[data-screenshot-chrome] { display: none !important; }' })
 
   const filename = filenameFor(slug, theme, scale)
   await page.locator('#screenshot').screenshot({ path: path.join(outDir, filename) })
@@ -89,12 +103,11 @@ async function main() {
   mkdirSync(outDir, { recursive: true })
 
   console.log(`Starting preview server on port ${PORT}…`)
-  const server = await startPreviewServer()
+  await startPreviewServer()
   // Interrupting the script (Ctrl+C) must not leave the preview server behind
   // squatting on the port for the next run to collide with.
-  const killServer = () => server.kill()
-  process.once('SIGINT', killServer)
-  process.once('SIGTERM', killServer)
+  process.once('SIGINT', stopPreviewServer)
+  process.once('SIGTERM', stopPreviewServer)
 
   try {
     const browser = await chromium.launch()
@@ -115,7 +128,7 @@ async function main() {
     await browser.close()
     console.log(`\n${slugs.length * 4} screenshots written to ${path.relative(process.cwd(), outDir)}/`)
   } finally {
-    server.kill()
+    await stopPreviewServer()
   }
 }
 

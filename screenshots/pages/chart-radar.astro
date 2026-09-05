@@ -1,0 +1,63 @@
+---
+// `radar` is one of the chart types added in 1.5 (charts.json `type: "radar"`),
+// rendered through the same demo/Chart.astro wrapper as every other chart.
+// Composition: the plot on the left, a legend column on the right that also
+// carries each plan's average — so the card stays short. Each legend entry is
+// a three-step stack: series name, the figure large and semibold with tabular
+// numerals so the two averages align digit for digit, a muted uppercase label. `radar-large` extends
+// the docs radar with an explicit `radar-size` (ApexCharts would leave wide
+// margins otherwise) and without the built-in bottom legend.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardBody from '@ui/CardBody.astro'
+import Legend from '@ui/Legend.astro'
+import Subheader from '@ui/Subheader.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// Series order and colors follow the `radar` entry in charts.json; the
+// averages are computed from its data.
+const plans = [
+  { name: 'Pro', color: 'primary', average: 69 },
+  { name: 'Enterprise', color: 'green', average: 83 },
+]
+---
+
+<ScreenshotLayout title="Radar chart" columns={2} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader>
+      <div>
+        <CardTitle>Plan comparison</CardTitle>
+        <CardSubtitle>Feature scores, 0–100, Pro against Enterprise</CardSubtitle>
+      </div>
+    </CardHeader>
+    <CardBody>
+      <div class="row g-4 align-items-center">
+        <div class="col">
+          <Chart chartId="radar-large" height={18} label="Pro and Enterprise plans compared across support, security, speed, storage, integrations and price" />
+        </div>
+        <div class="col-4">
+          <div class="space-y-4">
+            {
+              plans.map((plan) => (
+                <div>
+                  <Legend color={plan.color} class="mb-1">
+                    {plan.name}
+                  </Legend>
+                  <div class="h1 mb-0 lh-1" style="font-variant-numeric: tabular-nums">
+                    {plan.average}
+                  </div>
+                  <Subheader as="div" class="mt-1">
+                    Average score
+                  </Subheader>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

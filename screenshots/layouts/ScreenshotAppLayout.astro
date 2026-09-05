@@ -1,0 +1,186 @@
+---
+// Chrome-full counterpart to ScreenshotLayout: a whole app screen (sidebar,
+// navbar, page header and body) inside one capture frame, for the features
+// that only exist at layout level — the folded sidebar, the theme settings
+// panel, the navbar dropdowns.
+//
+// The frame is 1280x800 — the capture viewport itself, not the 1024x768 card
+// frame of ScreenshotLayout — because media queries resolve against the
+// viewport: a narrower frame would lay the grid out for a width the picture
+// does not show.
+//
+// It also carries `transform: translateZ(0)` on purpose: `.navbar-vertical`
+// and the offcanvas panels are `position: fixed`, and a transformed ancestor
+// becomes their containing block, so they anchor to the frame.
+import Navbar from '@shared/components/navbar/Navbar.astro'
+import Sidebar from '@shared/components/navbar/Sidebar.astro'
+import PageHeader from '@shared/components/layout/PageHeader.astro'
+import PageScripts from '@shared/components/PageScripts.astro'
+import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
+import { themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
+import libs from '@tabler/core/libs.json'
+
+interface Props {
+  title: string
+  /** page header title; defaults to `title` */
+  pageHeader?: string
+  /** text below the page title */
+  description?: string
+  /** active menu entry, e.g. "dashboards.crm" */
+  pageMenu?: string
+  /** icon-only sidebar rail: folded, or folded until hovered */
+  sidebarMode?: 'folded' | 'folded-hover'
+  /** where the main menu lives */
+  navbarPosition?: 'horizontal' | 'vertical'
+  /** renders the theme settings offcanvas (needed for a capture of the panel) */
+  themeSettings?: boolean
+  /**
+   * Theme switcher values rendered as data-bs-* on <html> — `theme-primary`,
+   * `theme-font`, `theme-base`, `theme-radius` (see themeDefaults). Pulls in
+   * tabler-themes.css, which holds the variants.
+   */
+  theme?: Partial<Record<ThemeKey, string>>
+  /** third-party libs from libs.json the page needs, e.g. ['apexcharts'] */
+  pageLibs?: string[]
+  /** core CSS plugins (site.cssPlugins), e.g. ['payments'] */
+  cssPlugins?: string[]
+}
+
+const { title, pageHeader, description, pageMenu, sidebarMode, navbarPosition = 'vertical', themeSettings = false, theme = {}, pageLibs = [], cssPlugins = [] } = Astro.props
+
+// tabler-vendors.css carries the third-party styling (the ApexCharts tokens
+// among them, which is what themes a chart's labels, grid and legend for the
+// color mode), so a page that pulls a lib in gets it without asking.
+const stylePlugins = [...new Set([...(pageLibs.length > 0 ? ['vendors'] : []), ...(Object.keys(theme).length > 0 ? ['themes'] : []), ...cssPlugins])]
+
+const headerTitle = pageHeader ?? title
+
+// Same as BaseLayout: the page states its own layout as data-bs-* on <html>.
+const themeAttributes = themeDataAttributes({ ...theme, 'navbar-position': navbarPosition, 'sidebar': sidebarMode } as Partial<Record<ThemeKey, string | undefined>>)
+
+// core/dist only has .min. files after a full `pnpm build`; `astro dev` serves
+// whatever core's own watcher last emitted, which is unminified.
+const min = import.meta.env.DEV ? '' : '.min'
+
+type Lib = { npm?: string; js?: string[]; css?: string[] }
+const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
+const libHref = (lib: Lib, file: string) => `/dist/libs/${lib.npm}/${file}`
+const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((file) => libHref(lib, file)))
+const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
+---
+
+<!doctype html>
+<html lang="en" {...themeAttributes}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>{title} - Tabler screenshots</title>
+
+    <link rel="icon" href="./favicon-dev.ico" type="image/x-icon" />
+
+    <link href={`./dist/css/tabler${min}.css`} rel="stylesheet" />
+
+    {stylePlugins.map((plugin) => <link href={`./dist/css/tabler-${plugin}${min}.css`} rel="stylesheet" />)}
+
+    {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
+
+    <!-- Inter for the captures: Tabler ships system font stacks (no web font),
+    and the body's cv03/cv04/cv11 feature settings were tuned for Inter, so the
+    pictures show the face the design was drawn in — the same on every machine
+    that runs the capture. The serif and monospace theme variants keep their own
+    stacks; only the sans token is replaced. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style is:inline>
+      :root {
+        --tblr-font-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret. */
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+        caret-color: transparent !important;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: var(--tblr-bg-surface-tertiary);
+      }
+
+      .screenshot {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+        /* containing block for the layout's position: fixed elements — see the
+           frontmatter note */
+        transform: translateZ(0);
+      }
+
+      /* The frame is its own viewport, so the page inside scrolls within it. */
+      .screenshot .page {
+        height: 100%;
+        overflow: hidden;
+			zoom: .75;
+      }
+    </style>
+
+    <!-- loaded early, before paint, so ?theme=dark applies before first render -->
+    <script is:inline src={`/dist/js/tabler-theme${min}.js`}></script>
+  </head>
+  <body>
+    <div class="screenshot" id="screenshot">
+      <div class="page">
+        <Sidebar breakpoint="lg" folded={sidebarMode === 'folded'} foldedHover={sidebarMode === 'folded-hover'} pageMenu={pageMenu} />
+
+        <Navbar hideSearch pageMenu={pageMenu} />
+
+        <div class="page-wrapper">
+          <PageHeader title={headerTitle} description={description} />
+
+          <main id="content" class="page-body">
+            <div class="container-xl">
+              <slot />
+            </div>
+          </main>
+        </div>
+      </div>
+
+      {themeSettings && <ThemeSettings />}
+    </div>
+
+    <!-- The frame fills the viewport, so this toggle overlaps it; the capture
+    hides everything marked data-screenshot-chrome before taking the picture. -->
+    <nav class="nav-segmented position-fixed bottom-0 mb-4" data-screenshot-chrome>
+      <a href="?theme=light" class="nav-link hide-theme-light">Light</a>
+      <a href="?theme=light" class="nav-link active hide-theme-dark">Light</a>
+      <a href="?theme=dark" class="nav-link hide-theme-dark">Dark</a>
+      <a href="?theme=dark" class="nav-link active hide-theme-light">Dark</a>
+    </nav>
+
+    {libJsFiles.map((src) => <script is:inline src={src} defer />)}
+    <script is:inline src={`/dist/js/tabler${min}.js`} defer></script>
+
+    <PageScripts />
+
+    <script>
+      // Signals to the screenshot tool that fonts and JS-driven component init
+      // are settled — same contract as ScreenshotLayout.
+      const domReady = new Promise((resolve) => {
+        if (document.readyState !== 'loading') resolve(undefined)
+        else document.addEventListener('DOMContentLoaded', () => resolve(undefined), { once: true })
+      })
+      Promise.all([document.fonts.ready, domReady]).then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => (document.documentElement.dataset.screenshotReady = 'true')))
+      })
+    </script>
+  </body>
+</html>
