@@ -1,0 +1,109 @@
+# @tabler/preview
+
+## 1.5.0 - 2026-09-05
+
+### Minor Changes
+
+- 09d419a: Added a `charts-advanced` page and docs for two y-axes, chart annotations, a zoom brush and synced chart groups.
+- 5e119d4: Added Pay page with dedicated layout, navigation link, and card/PayPal payment form.
+- d8956a0: Updated the `preview` and `docs` packages to build with Astro instead of Eleventy.
+- 100a37b: Added background pattern utilities and documentation, including updated preview demos.
+- ec94693: Added new `card-gradients` page showcasing various gradient card styles and components.
+- b0fa655: Added Change Password modal with a strength indicator, confirm validation and show/hide toggles.
+- ad22d04: Added a color palette to the signature pad component for selecting the pen color.
+- b0fa655: Added Confirm Delete modal with a warning icon and a checkbox that enables the delete button.
+- 62178f8: Added new `dashboard-crm` page with reusable CRM cards.
+- 4ce08ca: Added new Crypto Dashboard page with cryptocurrency portfolio overview, market data, and order history.
+- 118ca4b: Updated the demo pages to show their title and description in the page header, with `pageHeader` falling back to `title`.
+- b0fa655: Added Edit Profile modal with avatar upload, personal information fields, social links, and date of birth.
+- 4f6e99b: Added a folded sidebar (`navbar-folded`, `navbar-folded-hover`) with flyout submenus, a pin toggle and a light `16rem` sidebar by default.
+- 8d8727f: Added language selector dropdown to navbar with flag indicators for multilingual support.
+- 70f996b: Added layout options to the theme settings panel and removed the dead demo script and the `layout-combo` page.
+- 4ce08ca: Updated the page-menu structure for dashboards and reorganized the navigation menu.
+- 4ce08ca: Updated the navbar-side component and reorganized its apps, language, notifications and user sections.
+- 09d419a: Added radar, polar area, treemap, timeline, box plot, bubble and funnel chart types to the charts preview and docs.
+- b0fa655: Added New Task modal with fields for task name, description, assigned user, priority, due date, and category tags.
+- 9c5d729: Added new onboarding page with progress indicator and navigation layout.
+- 118ca4b: Removed the `actions` preset prop from `DefaultLayout`; pages now fill a `page-header-actions` slot instead.
+- cc298a6: Added a `PageTitle` component and used it with `CardSubtitle` in place of raw `.page-title` and `.card-subtitle` markup.
+- 9c5d729: Added Progress Background component with text labels and value display.
+- 9c5d729: Added Progress Steps component for step-by-step navigation indicators.
+- 5363668: Added the missing Prose demo page, linked from the menu but not previously built.
+- 4f6e99b: Added `nav-section-title` group labels to the vertical sidebar, shown as short separators in the folded state.
+- 4f6e99b: Added a `navbar-footer` sidebar zone with a user block; the sidebar nav scrolls between the pinned brand and footer.
+- 83ec6f8: Added Tour demo page using Driver.js for product tours and onboarding guides.
+- d7cbe87: Added `color` and `vertical` props to the `Steps` component and used it on the steps preview page.
+- 09d419a: Added a straight `line` chart demo and set `stroke-curve` to straight on the line and area demos, so the spline ones differ.
+- 99b9ea4: Added a Task List page with tasks grouped by status and a modal for adding new tasks.
+- 7556ae2: Added an `auto` color mode to theme settings with system `prefers-color-scheme` support.
+- e3d86c5: Updated `apexcharts` from `3.54.1` to `7.0.0` and added `--chart-{id}-color-{index}` variables.
+
+### Patch Changes
+
+- 1effe22: Fixed keyboard access by turning JavaScript-only `<a href="#">` controls into real `<button>` elements.
+- 1effe22: Added missing ARIA roles and states to `Pagination`, `NavSegmented`, `Accordion`, `Steps`, tabs, `Modal`, `Offcanvas` and `CarouselCard`.
+- 1effe22: Added `aria-label` to the `Datepicker` navigation buttons and made the `Dropzone` upload area keyboard-operable.
+- 1effe22: Added `<fieldset>` and `<legend>` around radio and checkbox groups so screen readers announce the group purpose.
+- 1effe22: Fixed form accessibility with matching `for`/`id` labels, `aria-invalid`, `aria-describedby` and `autocomplete` tokens.
+- 1effe22: Fixed the skip link to appear on focus and added missing `<main>` and labelled `<nav>` landmarks.
+- 1effe22: Added a `label` prop to `Flag`, `Payment`, `StatusDot`, `Trending` and `Avatar` status badges for screen readers.
+- 0fd35c3: Updated the `active-users-2` card chart to use `chart-id="active-users-2"` with `height="11"` for a more compact layout.
+- 1adb710: Added `action` and `link` examples to the important alerts in the alerts preview and docs pages.
+- ffe3489: Updated `.badges-list` to `.badge-list` and `.tags-list` to `.tag-list`, keeping the old names as deprecated aliases.
+- 8704725: Fixed root-absolute `Button` hrefs in demos, so error-page links work in the downloadable package.
+- da11f08: Added a short description and a docs link to each card on the Buttons demo page, grouped into Styles and Colors.
+- 118ca4b: Fixed heading order by making `CardTitle` and `CardHeader` render `h2`, so cards no longer skip a level under the page `h1`.
+- 632b69f: Updated the changelog page to redirect to tabler.io/changelog instead of rendering `CHANGELOG.md`.
+- 09d419a: Added a `--tblr-chart-1` … `--tblr-chart-5` palette and wired ApexCharts theme tokens, so every chart follows the color mode.
+- 09d419a: Removed dead chart options (`groups`, `spline`, `fill`, `debug`, `remove-padding`, `show-labels`) from `charts.json`.
+- 4ce08ca: Added `crypto-markets.json` and `crypto-orders.json` data files for the crypto dashboard.
+- 70f996b: Unified the Customize entry: the navbar and the sidebar use the same `.navbar-side` button with the `brush` icon.
+- b3e873a: Fixed the `value` key in `selects.json` not preselecting options in the demo selects on the modals and form elements pages.
+- 8704725: Updated preview and docs examples to the unified demo component props: `variant`, `color`, `size`, `ariaLabel`.
+- 0f8dcb0: Updated preview and docs to use the shared `date-format`, `string-format` and `pseudo-random` helpers.
+- 09d419a: Fixed the combination chart demo so it mixes columns and lines instead of drawing plain bars.
+- 09d419a: Fixed chart colors in dark mode: axis lines and ticks, marker and treemap outlines, and the tooltip title.
+- 3cca8bf: Fixed task cards not showing their due date and removed dead props and classes such as `fluidSearch` and `text-*-lt-fg`.
+- 3f1ad9d: Fixed the navbar not highlighting the active page for nested, RTL and settings pages.
+- f2004da: Fixed payment icons on the all-elements page by rendering separate light and dark variants.
+- 9dd26fd: Removed the non-existent `mt` class from the placeholder card.
+- 1da70a7: Fixed the marketing footer layout, timeline social icons, missing `alt` and `aria-label` attributes and invalid nesting in demos.
+- f2004da: Fixed the ribbon example background on the all-elements page to use `var(--tblr-bg-surface-secondary)`.
+- 1adb710: Fixed the sign-in cover page in dark mode by replacing `bg-white` with `bg-surface`.
+- c7e895b: Updated the footer to show the version link everywhere and the `Generated` timestamp only on preview builds.
+- ac87b76: Updated preview templates to replace deprecated `font-weight-*` classes with Bootstrap-compatible `fw-*` utility classes.
+- 8704725: Fixed icon-only demo buttons rendering a generic `aria-label="Button"` instead of a real label.
+- 25f466b: Updated the icon count on the icons pages to read from `icons-info.json`, so it follows the installed version.
+- 8f86f1f: Restored the `import-icons` and `import-illustrations` scripts.
+- 5baf073: Added 74 new payment provider icons imported from `tabler-payments` and removed 12 outdated providers like `dotpay` and `solo`.
+- 5363668: Made Interface demo pages consistent with the Buttons page: card subtitles, one docs link, responsive grids.
+- 5e119d4: Added `bg-blur` utility and increased `container-tight` width for layout flexibility.
+- 8704725: Updated the marketing CTA `Learn more` button to the `.btn-ghost` style.
+- 70f996b: Removed `aria-current="page"` from menu groups, so only the link to the current page carries it.
+- 7cadbb8: Updated `New` badges in `menu.json` to mark only pages added since 1.4, and dropped them from older pages.
+- 8947d7c: Updated the activity feed messages in `activity.json` and the activity preview page.
+- 863884e: Added `DocsLink` to the header of 20 more demo pages, including Cards, Charts, Tables and Typography.
+- b90554b: Moved the `import:icons` and `import:illustrations` scripts to the repository root, next to `import:payments`.
+- f11ece4: Added `--tblr-pattern-opacity-factor` and `.bg-pattern-opacity-*` utilities for background patterns.
+- f35aab3: Added a Tabler Payments docs section with `@tabler/payments-*` package pages for React, Vue, Preact and Astro.
+- 38df58d: Added the `500` illustration to the preview 500 error page.
+- d2c1271: Removed classes that no stylesheet defines from demo markup and added the onboarding and settings plan pages to the menu.
+- 118ca4b: Added a `meta` description tag, filled from the page `description` prop.
+- 7305d84: Fixed Vercel deployment to serve `error-404.html` as the custom 404 page.
+- 43eee38: Added `Progress Step` component documentation and cleaned up the progress steps preview markup for cleaner rendered output.
+- 1489b13: Added `.prose` alias for markdown content and updated preview/docs references and redirects.
+- 09d419a: Replaced the placeholder chart data on the charts page and in the chart docs with realistic series, and titled every demo card.
+- bea97f8: Removed `@hotwired/turbo` integration, including `.turbo-progress-bar` styles and the Turbo loader preview demo.
+- da11f08: Replaced lorem ipsum with unique placeholder text on the Scroll spy demo page and fixed its menu highlight.
+- 70f996b: Added a Customize entry to the sidebar footer that opens the theme settings panel.
+- 70f996b: The sidebar now always renders the user block, so the vertical layout keeps the profile menu on every page.
+- 552cf1f: Removed the `<lastmod>` element from `sitemap.xml`, which carried the build time instead of a content date.
+- da11f08: Reorganized the Star Ratings demo page into Basic/Icons/Sizes and Colors cards with short descriptions.
+- ff24af9: Updated the default `$font-family-sans-serif` and `$font-family-monospace` to the system font stacks. Tabler no longer bundles a web font, so no font files are downloaded.
+- 70f996b: Redesigned the theme settings panel with an illustrated intro, color scheme presets and thumbnail tiles for most settings.
+- 9c5d729: Updated trending component to use `arrow-up`/`arrow-down` instead of `trending-up`/`trending-down`.
+- bd35fd3: Fixed responsive layouts on the Form Elements page.
+- 53f5244: Updated the `Illustration` and `Empty` components to accept only the bundled illustration names, checked at build time.
+- ee4c88f: Updated `@tabler/icons` to v3.46.0.
+- 369322a: Updated Tabler Illustrations to v1.17.0 with 25 new illustrations.
+- c707018: Added an All Elements page showing every UI component and Bootstrap element.
