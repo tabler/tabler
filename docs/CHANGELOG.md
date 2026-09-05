@@ -1,0 +1,110 @@
+# @tabler/docs
+
+## 1.5.0 - 2026-09-05
+
+### Minor Changes
+
+- 4a97921: Added `Accordion` documentation page with usage variants and Bootstrap `collapse` behavior examples.
+- f5f75d4: Added a Printing docs page covering `d-print-*` utilities and the `media-print` mixin.
+- 09d419a: Added a `charts-advanced` page and docs for two y-axes, chart annotations, a zoom brush and synced chart groups.
+- 3277fa0: Added `Astro` icons library documentation page for the new `@tabler/icons-astro` package.
+- d8956a0: Updated the `preview` and `docs` packages to build with Astro instead of Eleventy.
+- 73f7c2a: Added `Accept: text/markdown` content negotiation for docs pages, with q-value parsing and `406` responses.
+- 9dd26fd: Added an Accessibility section to every UI documentation page.
+- d2c1271: Added a Background blur page, gray utilities on the colors page and a language selector section on the navbars page.
+- 135f38d: Added `Info`, `Tip`, `Warning`, `Danger` and `Note` callouts, usable in any MDX page, with a reference page under Resources.
+- 9dd26fd: Added installation and usage sections to the chart and countup pages, covering the `.chart-*` size classes and sparklines.
+- 9dd26fd: Added a class reference table to every component page, from the new `classnames` front matter.
+- 6e6084a: Added docs pages for the Datepicker and Tom Select form plugins, `form-datepicker` and `form-select-tomselect`.
+- 9dd26fd: Updated the docs layout: elevated article panel, rounded sidebar navigation, "On this page" rail and restyled prev/next links.
+- 9dd26fd: Listed every component class in `llms.txt`, from the `classnames` front matter.
+- 73f7c2a: Added a `llms-full.txt` page with all docs in one file, `Content-Signal` in robots.txt and markdown `Link` alternate headers.
+- 9dd26fd: Added a source link and a copy-as-markdown button, and moved the class reference to the end of the page.
+- 9dd26fd: Added `classnames` to the social icons and flags pages.
+- 9dd26fd: Rewrote the autosize, range slider, WYSIWYG and dropzone plugin pages with installation, usage and accessibility sections.
+- 9dd26fd: Expanded the social icons, payments, vector map, inline player, PDF, EPS, illustrations preview and references pages.
+- 9dd26fd: Documented `avatar-square`, `mention`, `offcanvas-narrow`, `btn-floating`, `card-cover`, `td-truncate` and other variants.
+- 4f6e99b: Added a folded sidebar (`navbar-folded`, `navbar-folded-hover`) with flyout submenus, a pin toggle and a light `16rem` sidebar by default.
+- 416ca63: Added framework integration guides for Laravel, React, Next.js, Vue, Angular, Nuxt, Symfony, Django, Rails, SvelteKit, and Astro.
+- 1adeb68: Added a Docs for LLMs page explaining `llms.txt` and the `.md` page mirrors, with a sidebar link.
+- 09d419a: Added radar, polar area, treemap, timeline, box plot, bubble and funnel chart types to the charts preview and docs.
+- f35aab3: Added a Tabler Payments docs section with `@tabler/payments-*` package pages for React, Vue, Preact and Astro.
+- 9dd26fd: Removed the EPS icons page, since `@tabler/icons-eps` is no longer maintained.
+- fb3d7dc: Added an RTL support docs page covering the `dir="rtl"` attribute, the published `*.rtl.css` builds, how rtlcss generates them, and which utility classes are direction-aware.
+- 4f6e99b: Added `nav-section-title` group labels to the vertical sidebar, shown as short separators in the folded state.
+- 4f6e99b: Added a `navbar-footer` sidebar zone with a user block; the sidebar nav scrolls between the pinned brand and footer.
+- bd4e381: Added `Star Rating` documentation page with static and interactive rating examples based on existing classes.
+- 8af57f9: Added `Tag` documentation page with examples for icon, media, badge, checkbox, and list usage.
+- 7b64726: Added a Theme base colors page documenting the five `data-bs-theme-base` gray palettes in `tabler-themes.css`.
+- f4c514a: Added an `Upgrade to 1.5` page with the breaking changes, renamed classes and Sass updates from 1.4.
+
+### Patch Changes
+
+- 1effe22: Fixed the skip link to appear on focus and added missing `<main>` and labelled `<nav>` landmarks.
+- 2a06640: Added `added-in` badges to Card gradient, Progress steps and new getting-started guides; fixed background patterns' version.
+- 1adb710: Added `action` and `link` examples to the important alerts in the alerts preview and docs pages.
+- 09d419a: Documented the ApexCharts dual license, which applies to the copy shipped in `dist/libs`, in the readme and chart docs.
+- 100a37b: Added background pattern utilities and documentation, including updated preview demos.
+- 46da1f7: Updated background patterns documentation with missing pattern variants, transparent utility usage, and size coverage.
+- ffe3489: Updated `.badges-list` to `.badge-list` and `.tags-list` to `.tag-list`, keeping the old names as deprecated aliases.
+- e1ecd39: Updated the supported browser baseline to what the CSS needs: Chrome 123, Firefox 128, Safari 17.5.
+- 09d419a: Added a `--tblr-chart-1` … `--tblr-chart-5` palette and wired ApexCharts theme tokens, so every chart follows the color mode.
+- 1ec82d0: Updated the contributing guide, README and Docker setup for the Astro-based development toolchain.
+- 8704725: Updated preview and docs examples to the unified demo component props: `variant`, `color`, `size`, `ariaLabel`.
+- 38df58d: Added the `not-found` illustration and a search button to the docs 404 page.
+- 9dd26fd: Documented card status, progress, actions, subtitle, surfaces, scrollable body, tables, links and overlays.
+- 9dd26fd: Fixed highlighted code blocks using hardcoded colors instead of the Tabler surface tokens.
+- 9dd26fd: Fixed the copy button in docs examples to be a `button` with an accessible name.
+- 684f40e: Updated the documentation to explain font sizing and system color CSS variables.
+- 9dd26fd: Fixed docs example code blocks gluing inline elements like `<label>` and `<input>` onto one line.
+- 9dd26fd: Added a `dark` background option to the docs `<Example>` component.
+- 9dd26fd: Updated docs examples to use the `<Icon />` component and consistent Prettier formatting.
+- d2c1271: Fixed duplicate ids and missing targets in the modal, offcanvas, page headers and page layouts examples.
+- 9dd26fd: Fixed keyboard access in docs examples for carousel controls, disabled links, `btn-loading` and progress bars.
+- 9dd26fd: Fixed install snippets pointing at urls that do not resolve on the vector map, inline player and icon pages.
+- 9dd26fd: Fixed docs examples using classes that do not exist, such as `alert-facebook`, `btn-close-white`, `bg-gray`, `btn-xs`, `alert-title` and `hr-text-center`.
+- 9dd26fd: Added tooltips and accessible names to the footer icon links.
+- 9dd26fd: Stacked form docs examples in a column and tightened the sidebar nested menu indent.
+- 9dd26fd: Moved the form pages backed by a third-party library into the Plugins section.
+- 9dd26fd: Renamed form docs pages without the `form-` prefix and flattened the Illustrations and Emails sections.
+- a0d84f6: Updated the How to Contribute guide with starter issues, Codespaces setup, commands and PR conventions.
+- f35aab3: Added Introduction pages with quick starts and cover images to the Icons, Illustrations, Emails and Payments docs sections.
+- 1ec82d0: Fixed documentation formatting issues: heading hierarchy, missing image alt texts and broken list structure across docs pages.
+- 9dd26fd: Split the getting started menu group into Getting started and Resources.
+- 9dd26fd: Updated the docs navbar to use `container-lg`.
+- 4afc2ea: Updated the prose on 75 docs pages to plain English, shortened the page summaries and merged duplicate sections on the button and card pages.
+- 9dd26fd: Moved components that need a third-party library into the Plugins section.
+- 9dd26fd: Moved the Website, Preview and Support links from the docs sidebar to the top navbar.
+- 9dd26fd: Restyled the related and prev/next cards, and moved prev/next below the article panel.
+- 9dd26fd: Restored the `docs.scss` source for the docs styles, compiled with Sass instead of a checked-in `docs.css`.
+- 9dd26fd: Fixed the search modal using the Algolia palette instead of Tabler colors, including an unreadable selected result.
+- 9dd26fd: Darkened the docs sidebar links, kept rows to one line and added a visible focus ring.
+- c430cfe: Updated UI component docs to singular file names and frontmatter, with redirects from plural routes.
+- 826a073: Added `sitemap.xml` and `robots.txt` endpoints for the docs site and fixed docs layout title rendering outside production.
+- 2f8f495: Fixed the docs header not staying sticky, and the table of contents sliding under it.
+- 9dd26fd: Documented sortable headers, selectable rows, stacked mobile tables, and outline, dot and icon-only badges.
+- 9dd26fd: Rewrote the timeline and datagrid pages with markup, variants and accessibility notes.
+- 9dd26fd: Fixed plugin demos showing their stock styles, because library CSS loaded after `tabler-vendors.css`.
+- ee4c88f: Updated `@docsearch/js` and `@docsearch/css` to v5 and kept the docs search on the keyword-only entry point.
+- 1adeb68: Fixed html comments in docs code examples running into the closing tag of the element before them.
+- 0f8dcb0: Updated preview and docs to use the shared `date-format`, `string-format` and `pseudo-random` helpers.
+- 09d419a: Fixed chart colors in dark mode: axis lines and ticks, marker and treemap outlines, and the tooltip title.
+- 09d419a: Fixed the small chart example on the chart docs page, which shared an element id with the line chart example and stayed empty.
+- c547329: Fixed the `Plugins` card on the docs homepage linking to a 404 `/plugins` route instead of `/ui/plugins`.
+- 1da70a7: Fixed the docs logo link name, dead example links in the navbar and offcanvas pages, and the vector map error on its plugin page.
+- 9c78cf6: Fixed `.bg-gradient` conflicts that broke `from`/`via`/`to` rendering and updated the gradient docs.
+- ee4c88f: Fixed docs pages with callouts falling back to their MDX source in `llms.txt` instead of the rendered examples.
+- c71a321: Fixed the Sass import in the framework guides to use `@use` instead of the deprecated `@import`.
+- 25f466b: Updated the icon count on the icons pages to read from `icons-info.json`, so it follows the installed version.
+- 5baf073: Added 74 new payment provider icons imported from `tabler-payments` and removed 12 outdated providers like `dotpay` and `solo`.
+- 70f996b: Documented the layout theme settings on the color modes and page layouts pages.
+- 1adeb68: Fixed the `.md` docs mirrors showing component tags like `<Icon />` instead of the rendered html.
+- f11ece4: Added `--tblr-pattern-opacity-factor` and `.bg-pattern-opacity-*` utilities for background patterns.
+- 43eee38: Added `Progress Step` component documentation and cleaned up the progress steps preview markup for cleaner rendered output.
+- 08cad98: Updated the `Progress Bar` documentation with new variants and full-width stacked previews.
+- 1489b13: Added `.prose` alias for markdown content and updated preview/docs references and redirects.
+- 09d419a: Replaced the placeholder chart data on the charts page and in the chart docs with realistic series, and titled every demo card.
+- 4d04c10: Removed the unused `bootstrapLink` front matter field from `DocsLayout`, `DocsMdxLayout`, and all docs pages.
+- ff24af9: Updated the default `$font-family-sans-serif` and `$font-family-monospace` to the system font stacks. Tabler no longer bundles a web font, so no font files are downloaded.
+- 53f5244: Updated the `Illustration` and `Empty` components to accept only the bundled illustration names, checked at build time.
+- 369322a: Updated Tabler Illustrations to v1.17.0 with 25 new illustrations.
