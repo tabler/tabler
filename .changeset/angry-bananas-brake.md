@@ -1,5 +1,4 @@
 ---
-"@tabler/core": minor
 "@tabler/preview": minor
 ---
 
