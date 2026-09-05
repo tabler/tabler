@@ -54,6 +54,8 @@ export type ChartData = {
   'radial-hollow-margin'?: number
   'radial-hollow-size'?: string
   'radial-labels-show'?: boolean
+  /** radar radius in px; ApexCharts picks one from the box when absent, leaving wide margins in a tall box */
+  'radar-size'?: number
   'radial-name-show'?: boolean
   'radial-name-offset-y'?: number
   'radial-name-font-size'?: string
@@ -269,6 +271,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
   if (type === 'radar') {
     config.plotOptions = {
       radar: {
+        size: data['radar-size'],
         polygons: {
           // The rings are the one piece of chrome the --apx-grid token does not reach.
           strokeColors: 'var(--apx-grid)',

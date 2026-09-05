@@ -3,10 +3,17 @@
 // and dark (?theme=dark) PNG — at 1x and @2x — of every page's #screenshot
 // canvas (the full 1024x768 frame — logo, gradient backdrop and fake cursor
 // included, not just the cropped component card).
+// Only the @2x picture is rasterized by the browser; the 1x file is that
+// picture downscaled with a Lanczos filter. Chromium renders a 1x surface with
+// plain grayscale antialiasing, and hairlines (chart grids, borders) snap to
+// whole pixels there; a supersampled 1x keeps their weight and gives text a
+// smoother edge. Playwright's own `scale: 'css'` does not do this — it simply
+// rasterizes at 1x.
 // Run via `pnpm run capture` (builds first) — pass slugs as args to capture
 // only specific pages, e.g. `pnpm run capture button badge`.
 import { chromium, type Page } from 'playwright'
-import { spawn, type ChildProcess } from 'node:child_process'
+import sharp from 'sharp'
+import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -33,36 +40,45 @@ function discoverSlugs(): string[] {
     .sort()
 }
 
-// Spawns the `astro` binary directly (not via `pnpm exec astro`) so `child.pid`
-// is the actual server process — killing a `pnpm exec` wrapper doesn't reliably
-// kill the process it launches, which is how earlier runs left zombie preview
-// servers squatting on the port for subsequent runs to collide with.
+// Spawns the `astro` binary directly (not via `pnpm exec astro`) so the CLI's
+// own background handling is the only thing between us and the server.
+// Astro detaches `preview` into a background daemon whenever stdout is not a
+// TTY (which it never is here) and prints a JSON status line instead of the
+// human "Local  http://…" banner, so readiness is polled over HTTP rather than
+// scraped from stdout, and the server is stopped through `astro preview stop`
+// rather than by killing the process we spawned — that one has already exited.
 const astroBin = path.join(root, 'node_modules/.bin/astro')
 
-function startPreviewServer(): Promise<ChildProcess> {
+function runAstro(args: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
-    const child = spawn(astroBin, ['preview', '--port', String(PORT)], {
-      cwd: root,
-      stdio: ['ignore', 'pipe', 'pipe'],
-    })
-
-    const timer = setTimeout(() => reject(new Error(`astro preview didn't come up on port ${PORT} within 20s`)), 20_000)
-
-    const onData = (data: Buffer) => {
-      if (data.toString().includes('Local')) {
-        clearTimeout(timer)
-        child.stdout?.off('data', onData)
-        resolve(child)
-      }
-    }
-    child.stdout?.on('data', onData)
+    const child = spawn(astroBin, args, { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] })
     child.stderr?.on('data', (data) => process.stderr.write(data))
     child.once('error', reject)
     child.once('exit', (code) => {
-      if (code !== null && code !== 0) reject(new Error(`astro preview exited with code ${code}`))
+      if (code === null || code === 0) resolve()
+      else reject(new Error(`astro ${args.join(' ')} exited with code ${code}`))
     })
   })
 }
+
+async function startPreviewServer(): Promise<void> {
+  await runAstro(['preview', '--background', '--port', String(PORT)])
+
+  const deadline = Date.now() + 20_000
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(baseUrl, { method: 'HEAD' })
+      if (response.ok || response.status === 404) return
+    } catch {
+      // not listening yet
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250))
+  }
+
+  throw new Error(`astro preview didn't come up on port ${PORT} within 20s`)
+}
+
+const stopPreviewServer = () => runAstro(['preview', 'stop']).catch(() => {})
 
 function filenameFor(slug: string, theme: 'light' | 'dark', scale: 1 | 2): string {
   const themeSuffix = theme === 'dark' ? '-dark' : ''
@@ -70,13 +86,39 @@ function filenameFor(slug: string, theme: 'light' | 'dark', scale: 1 | 2): strin
   return `${slug}${themeSuffix}${scaleSuffix}.png`
 }
 
-async function captureOne(page: Page, slug: string, theme: 'light' | 'dark', scale: 1 | 2) {
+async function captureOne(page: Page, slug: string, theme: 'light' | 'dark') {
   await page.goto(`${baseUrl}/${slug}?theme=${theme}`, { waitUntil: 'load' })
   await page.waitForFunction(() => document.documentElement.dataset.screenshotReady === 'true', { timeout: 15_000 })
 
-  const filename = filenameFor(slug, theme, scale)
-  await page.locator('#screenshot').screenshot({ path: path.join(outDir, filename) })
-  console.log(`  ✓ ${filename}`)
+  // Page furniture that exists for the human browsing the pages (the light/dark
+  // toggle). The app frame fills the viewport, so anything left on screen would
+  // sit inside the captured rectangle.
+  await page.addStyleTag({ content: '[data-screenshot-chrome] { display: none !important; }' })
+
+  const frame = page.locator('#screenshot')
+  // The picture is always the frame's CSS size, times the device scale for @2x.
+  // A layout may render its frame larger than the picture it wants so the page
+  // shows more (data-screenshot-width, see ScreenshotAppLayout); the raster is
+  // then reduced to that width, keeping the frame's aspect ratio.
+  const [cssWidth, cssHeight, targetWidth] = await frame.evaluate((el) => {
+    const { width, height } = el.getBoundingClientRect()
+    const wanted = Number((el as HTMLElement).dataset.screenshotWidth ?? width)
+    return [width, height, wanted]
+  })
+  const width1x = Math.round(targetWidth)
+  const height1x = Math.round((targetWidth * cssHeight) / cssWidth)
+
+  const raster = await frame.screenshot()
+  const write = async (filename: string, factor: 1 | 2) => {
+    await sharp(raster)
+      .resize(width1x * factor, height1x * factor, { kernel: 'lanczos3' })
+      .png()
+      .toFile(path.join(outDir, filename))
+    console.log(`  ✓ ${filename}`)
+  }
+
+  await write(filenameFor(slug, theme, 2), 2)
+  await write(filenameFor(slug, theme, 1), 1)
 }
 
 async function main() {
@@ -89,33 +131,28 @@ async function main() {
   mkdirSync(outDir, { recursive: true })
 
   console.log(`Starting preview server on port ${PORT}…`)
-  const server = await startPreviewServer()
+  await startPreviewServer()
   // Interrupting the script (Ctrl+C) must not leave the preview server behind
   // squatting on the port for the next run to collide with.
-  const killServer = () => server.kill()
-  process.once('SIGINT', killServer)
-  process.once('SIGTERM', killServer)
+  process.once('SIGINT', stopPreviewServer)
+  process.once('SIGTERM', stopPreviewServer)
 
   try {
     const browser = await chromium.launch()
-    const viewport = { width: 1280, height: 800 }
-    // Two pages, not one reused with setViewportSize — deviceScaleFactor is
-    // fixed at context/page creation and can't be changed on an existing page.
-    const page1x = await browser.newPage({ viewport, deviceScaleFactor: 1 })
-    const page2x = await browser.newPage({ viewport, deviceScaleFactor: 2 })
+    // Wide enough for the app frame (1708x1068, see ScreenshotAppLayout); the
+    // 1024x768 card frame sits centered in it on whole pixels.
+    const page = await browser.newPage({ viewport: { width: 1708, height: 1068 }, deviceScaleFactor: 2 })
 
     for (const slug of slugs) {
       console.log(slug)
-      await captureOne(page1x, slug, 'light', 1)
-      await captureOne(page1x, slug, 'dark', 1)
-      await captureOne(page2x, slug, 'light', 2)
-      await captureOne(page2x, slug, 'dark', 2)
+      await captureOne(page, slug, 'light')
+      await captureOne(page, slug, 'dark')
     }
 
     await browser.close()
     console.log(`\n${slugs.length * 4} screenshots written to ${path.relative(process.cwd(), outDir)}/`)
   } finally {
-    server.kill()
+    await stopPreviewServer()
   }
 }
 

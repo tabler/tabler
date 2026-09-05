@@ -1,0 +1,52 @@
+---
+// `.bg-blur` (backdrop-filter) added in 1.5, in its most common home: a
+// translucent caption bar over a photo. The image shows through the bar
+// softened, and the bar's own text and controls stay sharp.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import AvatarList from '@ui/AvatarList.astro'
+import Subheader from '@ui/Subheader.astro'
+
+const projects = [
+  {
+    photo: 'home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg',
+    title: 'Studio redesign',
+    meta: '24 photos · Updated 2 days ago',
+    people: ['avatars/000m.jpg', 'avatars/002m.jpg', 'avatars/003f.jpg'],
+  },
+  {
+    photo: 'elegant-home-office-with-golden-accessories.jpg',
+    title: 'Autumn lookbook',
+    meta: '61 photos · Updated today',
+    people: ['avatars/004m.jpg', 'avatars/006f.jpg'],
+  },
+]
+---
+
+<ScreenshotLayout title="Background blur" columns={2} zoom={1.3}>
+  <div class="row row-cards">
+    {
+      projects.map((project) => (
+        <div class="col-6">
+          <div class="card overflow-hidden">
+            <div class="img-responsive img-responsive-4x3 card-img-top" style={`background-image: url(/static/photos/${project.photo})`} />
+            <div class="card-body position-absolute bottom-0 start-0 end-0 bg-blur" style="background-color: color-mix(in srgb, var(--tblr-bg-surface) 72%, transparent)">
+              <div class="d-flex align-items-center">
+                <div class="me-auto">
+                  <Subheader>Album</Subheader>
+                  <div class="fw-semibold">{project.title}</div>
+                  <div class="text-secondary small">{project.meta}</div>
+                </div>
+                <AvatarList stacked>
+                  {project.people.map((photo) => (
+                    <Avatar src={`static/${photo}`} size="sm" />
+                  ))}
+                </AvatarList>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

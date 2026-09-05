@@ -1,0 +1,51 @@
+---
+// The theme settings panel, which gained the layout section in 1.5: navbar
+// position, container width, sidebar mode and the navbar theme, next to the
+// appearance presets and the new `auto` color mode.
+import ScreenshotAppLayout from '../layouts/ScreenshotAppLayout.astro'
+import CrmStats from '@shared/components/cards/CrmStats.astro'
+import TopDeals from '@shared/components/cards/TopDeals.astro'
+---
+
+<ScreenshotAppLayout title="Theme settings" pageHeader="CRM Dashboard" description="Welcome back — here's your CRM overview for today." pageMenu="dashboards.crm" themeSettings>
+  <div class="row row-cards">
+    <div class="col-6 col-lg-3">
+      <CrmStats color="primary" icon="currency-dollar" lt title="MRR" description="$92.4K" changeValue="+9.5" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="azure" icon="filter" lt title="Pipeline" description="$2.4M" changeValue="+14" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="green" icon="circle-check" lt title="Deals won" description="74" changeValue="+8" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="purple" icon="percentage" lt title="Win rate" description="38%" changeValue="+0.4" />
+    </div>
+    <div class="col-12">
+      <TopDeals />
+    </div>
+  </div>
+
+  <!-- The panel is the subject of this capture, so it is opened here rather
+  than left to a click the capture tool cannot make. -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const panel = document.getElementById('offcanvas-settings')
+      if (!panel || !window.tabler?.Offcanvas) return
+
+      window.tabler.Offcanvas.getOrCreateInstance(panel, { backdrop: false, scroll: true }).show()
+
+      // Its own backdrop, not the framework's: Bootstrap appends that one to
+      // <body>, outside the transformed capture frame, where it would cover the
+      // panel too. Rendered as a sibling of the panel it dims the page behind
+      // it and stays under it, the way an opened panel really looks.
+      const backdrop = document.createElement('div')
+      backdrop.className = 'offcanvas-backdrop show'
+      panel.parentElement?.insertBefore(backdrop, panel)
+
+      // The layout settings are the 1.5 addition and they sit below the fold of
+      // the panel — scroll their section to the top of the panel.
+      panel.querySelector('[data-theme-setting="navbar-position"]')?.closest('section')?.scrollIntoView({ block: 'start' })
+    })
+  </script>
+</ScreenshotAppLayout>

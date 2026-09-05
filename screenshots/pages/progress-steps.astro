@@ -1,0 +1,65 @@
+---
+// The progress pieces added in 1.5 — `.progress-steps`, the `.progress-lg`
+// size and `.progressbg` — shown as one product card rather
+// than a row of labelled samples: an onboarding tracker, then two reporting
+// sections under it, each split off by the card body divider. Everything
+// stays on the primary color in its light tints, so nothing shouts.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import Subheader from '@ui/Subheader.astro'
+import ProgressSteps from '@ui/ProgressSteps.astro'
+import ProgressBg from '@ui/ProgressBg.astro'
+import ProgressDescription from '@ui/ProgressDescription.astro'
+
+const steps = ['Create workspace', 'Invite team', 'Connect data source', 'Set up billing', 'Go live']
+const active = 3
+
+const regions = [
+  { name: 'Poland', value: 85 },
+  { name: 'Germany', value: 65 },
+  { name: 'United States', value: 45 },
+]
+---
+
+<ScreenshotLayout title="Progress steps" columns={2}>
+  <Card>
+    <CardHeader>
+      <div>
+        <CardTitle>Workspace setup</CardTitle>
+        <CardSubtitle>Finish these steps to open the workspace to your team</CardSubtitle>
+      </div>
+      <CardActions class="text-end">
+        <Subheader>Completed</Subheader>
+        <div class="fw-semibold">{active} of {steps.length}</div>
+      </CardActions>
+    </CardHeader>
+
+    <CardBody>
+      <ProgressSteps labels={steps} active={active} ariaLabel="Setup progress" />
+      <div class="d-flex justify-content-between mt-2 text-secondary">
+        <span>
+          Step {active} · {steps[active - 1]}
+        </span>
+        <span>Next: {steps[active]}</span>
+      </div>
+    </CardBody>
+
+    <CardBody>
+      <Subheader class="mb-3">Adoption by region</Subheader>
+      <div class="space-y-2">{regions.map((region) => <ProgressBg value={region.value} text={region.name} showValue />)}</div>
+    </CardBody>
+
+    <CardBody>
+      <Subheader class="mb-3">Capacity</Subheader>
+      <div class="space-y-3">
+        <ProgressDescription label="Seats" description="48 of 60 used" value={80} color="primary" size="lg" />
+        <ProgressDescription label="Storage" description="1.2 TB of 2 TB" value={60} color="primary" size="lg" />
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

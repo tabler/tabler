@@ -1,0 +1,45 @@
+---
+// The language selector added to the navbar in 1.5, shown open next to the
+// other navbar side items.
+import ScreenshotAppLayout from '../layouts/ScreenshotAppLayout.astro'
+import CrmStats from '@shared/components/cards/CrmStats.astro'
+import TopDeals from '@shared/components/cards/TopDeals.astro'
+---
+
+<ScreenshotAppLayout title="Language selector" pageHeader="CRM Dashboard" pageMenu="dashboards.crm" navbarPosition="horizontal">
+  <div class="row row-cards">
+    <div class="col-6 col-lg-3">
+      <CrmStats color="primary" icon="currency-dollar" lt title="MRR" description="$92.4K" changeValue="+9.5" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="azure" icon="filter" lt title="Pipeline" description="$2.4M" changeValue="+14" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="green" icon="circle-check" lt title="Deals won" description="74" changeValue="+8" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="purple" icon="percentage" lt title="Win rate" description="38%" changeValue="+0.4" />
+    </div>
+    <div class="col-12">
+      <TopDeals />
+    </div>
+  </div>
+
+  <!-- The full language list is taller than the frame; cap it so the open menu
+  ends inside the picture. -->
+  <style is:inline>
+    .dropdown-menu:has([data-lang]) {
+      max-height: 28rem;
+      overflow-y: auto;
+    }
+  </style>
+
+  <!-- The open dropdown is the subject of this capture, so it is opened here
+  rather than left to a click the capture tool cannot make. -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('[aria-label="Select language"]')
+      if (toggle && window.tabler?.Dropdown) window.tabler.Dropdown.getOrCreateInstance(toggle).show()
+    })
+  </script>
+</ScreenshotAppLayout>

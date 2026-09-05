@@ -1,0 +1,68 @@
+---
+// The CRM dashboard body, shared by dashboard-crm.astro and the theme variants
+// (dashboard-theme-*.astro) so every one of them shows exactly the same screen
+// and only the theme differs.
+import CrmStats from '@shared/components/cards/CrmStats.astro'
+import PipelineFunnel from '@shared/components/cards/charts/PipelineFunnel.astro'
+import TopDeals from '@shared/components/cards/TopDeals.astro'
+import Chart from '@components/demo/Chart.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import Subheader from '@ui/Subheader.astro'
+
+// `revenue-vs-orders-plain` extends the docs chart without its rotated axis
+// titles: the header and the legend already name both series here.
+// Year totals of the two series in charts.json, so the header agrees with the plot.
+const figures = [
+  { label: 'Revenue', value: '$229.4K' },
+  { label: 'Orders', value: '3,234' },
+]
+---
+
+<div class="row row-cards">
+  <div class="col-6 col-lg-3">
+    <CrmStats color="primary" icon="currency-dollar" lt title="MRR" description="$92.4K" changeValue="+9.5" />
+  </div>
+  <div class="col-6 col-lg-3">
+    <CrmStats color="azure" icon="filter" lt title="Pipeline" description="$2.4M" changeValue="+14" />
+  </div>
+  <div class="col-6 col-lg-3">
+    <CrmStats color="green" icon="circle-check" lt title="Deals won" description="74" changeValue="+8" />
+  </div>
+  <div class="col-6 col-lg-3">
+    <CrmStats color="purple" icon="percentage" lt title="Win rate" description="38%" changeValue="+0.4" />
+  </div>
+  <div class="col-lg-7">
+    <Card>
+      <CardHeader>
+        <div>
+          <CardTitle>Revenue vs orders</CardTitle>
+          <CardSubtitle>Monthly revenue against order volume, last 12 months</CardSubtitle>
+        </div>
+        <CardActions class="d-flex gap-4 text-end">
+          {
+            figures.map((figure) => (
+              <div>
+                <Subheader>{figure.label}</Subheader>
+                <div class="fw-semibold">{figure.value}</div>
+              </div>
+            ))
+          }
+        </CardActions>
+      </CardHeader>
+      <CardBody>
+        <Chart chartId="revenue-vs-orders-plain" height={14} label="Monthly revenue in dollars against the order count" />
+      </CardBody>
+    </Card>
+  </div>
+  <div class="col-lg-5">
+    <PipelineFunnel />
+  </div>
+  <div class="col-12">
+    <TopDeals />
+  </div>
+</div>
