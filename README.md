@@ -52,12 +52,12 @@ Tabler is a set of ready-made layouts, components and demo pages for admin panel
 </a>
 </p>
 
-- **Built on Bootstrap 5.** Bootstrap ships inside the package, so you only need one CSS and one JS file.
-- **120+ demo pages.** Dashboards, forms, tables, auth screens, error pages, marketing layouts and more, all in the [live demo](https://preview.tabler.io).
-- **Dark mode and RTL.** Every component has a dark color scheme, and every stylesheet ships in an RTL version.
-- **Over 6,000 icons.** [Tabler Icons](https://tabler.io/icons) are drawn on a 24×24 grid and match the UI kit.
-- **20+ plugins included.** Charts, date pickers, selects, sliders, editors, drag and drop and other libraries are bundled in `dist/libs`.
-- **Sass sources and TypeScript types.** Customize the theme with `@use … with ()` and use typed JavaScript components.
+- Bootstrap 5 ships inside the package, so you only need one CSS file and one JS file.
+- There are more than 120 demo pages in the [live demo](https://preview.tabler.io): dashboards, forms, tables, auth screens, error pages, marketing layouts and more.
+- Every component has a dark color scheme, and every stylesheet ships in an RTL version.
+- [Tabler Icons](https://tabler.io/icons) gives you over 6,000 icons, drawn on a 24×24 grid to match the UI kit.
+- More than 20 plugins are bundled in `dist/libs`: charts, date pickers, selects, sliders, editors, drag and drop and other libraries.
+- The Sass sources and TypeScript types are included, so you can customize the theme with `@use … with ()` and use typed JavaScript components.
 
 ## 🚀 Quick start
 
@@ -93,8 +93,7 @@ import '@tabler/core/dist/css/tabler.min.css'
 import '@tabler/core/dist/js/tabler.min.js'
 ```
 
-You can also [download the latest release](https://github.com/tabler/tabler/releases) as a ZIP archive, or try Tabler without installing anything: open the [tabler-starter](https://github.com/tabler/tabler-starter) template on [StackBlitz](https://stackblitz.com/github/tabler/tabler-starter),
-[CodeSandbox](https://codesandbox.io/s/github/tabler/tabler-starter) or [GitHub Codespaces](https://codespaces.new/tabler/tabler-starter).
+You can also [download the latest release](https://github.com/tabler/tabler/releases) as a ZIP archive. If you'd rather try Tabler without installing anything, open the [tabler-starter](https://github.com/tabler/tabler-starter) template on [StackBlitz](https://stackblitz.com/github/tabler/tabler-starter), [CodeSandbox](https://codesandbox.io/s/github/tabler/tabler-starter) or [GitHub Codespaces](https://codespaces.new/tabler/tabler-starter).
 
 See the [installation guide](https://docs.tabler.io/ui/getting-started/installation/) for more options.
 
@@ -116,7 +115,7 @@ The `@tabler/core` package contains compiled and minified CSS and JavaScript, th
 └── js/            TypeScript sources
 ```
 
-The stylesheets are split so that you load only what you use. `tabler.css` is enough for most projects; the other files add country flags, payment provider logos, social icons, marketing layouts or alternative gray palettes.
+The stylesheets are split so that you load only what you use. `tabler.css` is enough for most projects. The other files add country flags, payment provider logos, social icons, marketing layouts or alternative gray palettes.
 
 ## 🧩 Frameworks
 
@@ -128,7 +127,7 @@ Tabler is plain HTML and CSS, so it works with any framework. The documentation 
 
 ## 🌍 Ecosystem
 
-Tabler is more than the UI kit. These projects share the same design language:
+Tabler isn't only the UI kit. A few other projects share the same look and feel:
 
 | Project                                                                | What it is                                                                               |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -143,16 +142,15 @@ Tabler is more than the UI kit. These projects share the same design language:
 
 ## 📖 Documentation
 
-The full documentation is available at [docs.tabler.io](https://docs.tabler.io/). It covers installation, customization, color modes, RTL, every component and plugin, and the [frequently asked questions](https://docs.tabler.io/ui/getting-started/faq/).
+The full documentation is at [docs.tabler.io](https://docs.tabler.io/). It covers installation, customization, color modes, RTL, every component and plugin, and the [frequently asked questions](https://docs.tabler.io/ui/getting-started/faq/).
 
-To see what changed in each release, check the [changelog](core/CHANGELOG.md) and [GitHub releases](https://github.com/tabler/tabler/releases). Updating from an older version? Read the [upgrade guide](https://docs.tabler.io/ui/getting-started/upgrade/) first, it lists every breaking change with a before-and-after
-example.
+To see what changed in each release, check the [changelog](core/CHANGELOG.md) and the [GitHub releases](https://github.com/tabler/tabler/releases). Updating from an older version? Read the [upgrade guide](https://docs.tabler.io/ui/getting-started/upgrade/) first. It lists every breaking change with a before-and-after example.
 
-Tabler follows [Semantic Versioning](https://semver.org/). Breaking changes only land in major releases, and every release ships a changeset-based changelog.
+Tabler follows [Semantic Versioning](https://semver.org/). Breaking changes only land in major releases, and every release comes with a changelog generated from changesets.
 
 ## 🌐 Browser support
 
-Tabler runs in every current browser. The minimum versions below come from the CSS features it relies on without a fallback: `light-dark()`, `color-mix()`, `:has()` and `@property`.
+Tabler works in any current browser. The minimum versions below come from the CSS features it uses without a fallback: `light-dark()`, `color-mix()`, `:has()` and `@property`.
 
 | Browser          | Minimum version |
 | ---------------- | --------------- |
@@ -167,8 +165,7 @@ See the [browser support page](https://docs.tabler.io/ui/getting-started/browser
 
 ## 🤝 Contributing
 
-We welcome contributions of all kinds. The [contributing guide](CONTRIBUTING.md) explains how to run the project locally (with Node.js and pnpm, Docker, or [GitHub Codespaces](https://codespaces.new/tabler/tabler)), where things live in the repository, and what a pull request needs. By participating, you agree to
-follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+We welcome contributions of all kinds. The [contributing guide](CONTRIBUTING.md) explains how to run the project locally (with Node.js and pnpm, Docker, or [GitHub Codespaces](https://codespaces.new/tabler/tabler)), where things live in the repository, and what a pull request needs. By participating, you agree to follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
 
 The short version:
 
@@ -181,9 +178,9 @@ pnpm run dev
 
 This starts the preview at [http://localhost:3000](http://localhost:3000) and the documentation at [http://localhost:3010](http://localhost:3010), both with live reload.
 
-- **Found a bug?** [Open a bug report](https://github.com/tabler/tabler/issues/new?template=bug_report.yml).
-- **Have an idea?** [Open a feature request](https://github.com/tabler/tabler/issues/new?template=feature_request.yml) or start a [discussion](https://github.com/tabler/tabler/discussions).
-- **Found a security issue?** Please report it privately, see our [security policy](SECURITY.md).
+- Found a bug? [Open a bug report](https://github.com/tabler/tabler/issues/new?template=bug_report.yml).
+- Have an idea? [Open a feature request](https://github.com/tabler/tabler/issues/new?template=feature_request.yml) or start a [discussion](https://github.com/tabler/tabler/discussions).
+- Found a security issue? Please report it privately, see our [security policy](SECURITY.md).
 
 ## 💛 Sponsors
 
@@ -197,9 +194,9 @@ Tabler is free to use, and its development is funded by sponsors. If it saves yo
 
 ## 🤓 Creators
 
-- **Paweł Kuna** · [@codecalm](https://github.com/codecalm) · [codecalm.net](https://codecalm.net)
-- **Bartłomiej Gawęda** · [@BG-Software-BG](https://github.com/BG-Software-BG)
-- **Bartosz Dobija** · [@Bartosz-Do](https://github.com/Bartosz-Do)
+- Paweł Kuna · [@codecalm](https://github.com/codecalm) · [codecalm.net](https://codecalm.net)
+- Bartłomiej Gawęda · [@BG-Software-BG](https://github.com/BG-Software-BG)
+- Bartosz Dobija · [@Bartosz-Do](https://github.com/Bartosz-Do)
 
 Follow Tabler on [X](https://x.com/tabler_io) and [Facebook](https://www.facebook.com/tabler.io) for updates.
 
@@ -215,5 +212,4 @@ This project exists thanks to all the people who contribute.
 
 Tabler is licensed under the [MIT License](LICENSE).
 
-Third-party libraries shipped in `dist/libs` keep their own licenses. One of them needs attention: **ApexCharts is not MIT from version 5 on**. It is dual-licensed, free under its Community license for organizations under $2M in annual revenue and paid above that threshold, with a separate OEM license for
-redistribution. Check the [ApexCharts license options](https://apexcharts.com/license/) before you ship charts in a commercial product.
+Third-party libraries shipped in `dist/libs` keep their own licenses. One of them deserves a closer look. ApexCharts hasn't been MIT since version 5. It's dual-licensed now. Organizations under $2M in annual revenue can use it for free under the Community license, and anyone above that threshold pays. Redistribution needs a separate OEM license. Check the [ApexCharts license options](https://apexcharts.com/license/) before you ship charts in a commercial product.

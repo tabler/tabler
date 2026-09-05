@@ -27,7 +27,7 @@ Pages live at the package root (`srcDir: '.'`), not in `src/`:
 
 Shared components, layouts and data come from `../shared` (aliases `@shared`, `@ui`, `@data`).
 
-The sidebar tree is not generated from the filesystem — it is defined in `../shared/data/docs.json`. A new page needs an entry there to be reachable (see `components/DocsMenu.astro`).
+The sidebar tree isn't generated from the filesystem. It's defined in `../shared/data/docs.json`, and a new page needs an entry there to be reachable (see `components/DocsMenu.astro`).
 
 ## Build
 

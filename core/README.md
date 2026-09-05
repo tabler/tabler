@@ -16,7 +16,7 @@ Free and open source HTML dashboard UI kit built on Bootstrap 5.
 <a href="https://preview.tabler.io">Live demo</a> · <a href="https://docs.tabler.io">Documentation</a> · <a href="https://github.com/tabler/tabler">GitHub</a> · <a href="https://github.com/tabler/tabler/blob/dev/core/CHANGELOG.md">Changelog</a>
 </p>
 
-`@tabler/core` is the CSS and JavaScript framework behind [Tabler](https://tabler.io): layouts, components and utilities for admin panels, dashboards and web apps. Bootstrap 5 ships inside the package, every component works in light and dark mode, and every stylesheet has an RTL version.
+`@tabler/core` is the CSS and JavaScript framework behind [Tabler](https://tabler.io). It has the layouts, components and utilities you need for admin panels, dashboards and web apps. Bootstrap 5 ships inside the package. Every component works in light and dark mode, and every stylesheet has an RTL version.
 
 ## Installation
 
@@ -46,7 +46,7 @@ import '@tabler/core/dist/css/tabler.min.css'
 import '@tabler/core/dist/js/tabler.min.js'
 ```
 
-The package also has an ES module build with named exports, useful when you create components from code:
+There's also an ES module build with named exports, which is handy when you create components from code:
 
 ```js
 import { Tooltip } from '@tabler/core'
@@ -87,8 +87,7 @@ The sources write custom properties without a prefix. Add [postcss-prefix-custom
 
 ### Plugins
 
-The third-party libraries used by the demo pages (ApexCharts, Tom Select, Litepicker, FullCalendar, Dropzone and others) are bundled in `dist/libs`. The list of shipped files is in [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json), and each plugin has its own page in the
-[plugins documentation](https://docs.tabler.io/ui/plugins/).
+The third-party libraries used by the demo pages (ApexCharts, Tom Select, Litepicker, FullCalendar, Dropzone and others) are bundled in `dist/libs`. The list of shipped files is in [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json), and each plugin has its own page in the [plugins documentation](https://docs.tabler.io/ui/plugins/).
 
 ## What's included
 
@@ -112,17 +111,15 @@ Updating from an older version? Read the [upgrade guide](https://docs.tabler.io/
 
 ## Browser support
 
-Tabler runs in every current browser. The CSS relies on `light-dark()`, `color-mix()`, `:has()` and `@property` without a fallback, which sets the floor at Chrome and Edge 123, Firefox 128, Safari 17.5, Opera 109, iOS 17.5 and Samsung Internet 27. See the
-[browser support page](https://docs.tabler.io/ui/getting-started/browser-support/) for details.
+Tabler works in any current browser. The CSS uses `light-dark()`, `color-mix()`, `:has()` and `@property` without a fallback. That sets the floor at Chrome and Edge 123, Firefox 128, Safari 17.5, Opera 109, iOS 17.5 and Samsung Internet 27. See the [browser support page](https://docs.tabler.io/ui/getting-started/browser-support/) for details.
 
 ## Documentation
 
-The full documentation is available at [docs.tabler.io](https://docs.tabler.io/): installation, [framework guides](https://docs.tabler.io/ui/getting-started/frameworks/), customization, color modes, RTL, and every component and plugin. Demo pages are at [preview.tabler.io](https://preview.tabler.io).
+The full documentation is at [docs.tabler.io](https://docs.tabler.io/). It covers installation, the [framework guides](https://docs.tabler.io/ui/getting-started/frameworks/), customization, color modes, RTL, and every component and plugin. The demo pages are at [preview.tabler.io](https://preview.tabler.io).
 
 ## Contributing
 
-We welcome contributions of all kinds. See the [contributing guide](https://github.com/tabler/tabler/blob/dev/CONTRIBUTING.md) to get started, [open an issue](https://github.com/tabler/tabler/issues/new/choose) to report a bug or request a feature, or join the
-[discussions](https://github.com/tabler/tabler/discussions).
+We welcome contributions of all kinds. See the [contributing guide](https://github.com/tabler/tabler/blob/dev/CONTRIBUTING.md) to get started, [open an issue](https://github.com/tabler/tabler/issues/new/choose) to report a bug or request a feature, or join the [discussions](https://github.com/tabler/tabler/discussions).
 
 ## Sponsors
 
@@ -138,5 +135,4 @@ Tabler is free to use, and its development is funded by sponsors. If it saves yo
 
 Tabler is licensed under the [MIT License](https://github.com/tabler/tabler/blob/dev/LICENSE).
 
-Third-party libraries shipped in `dist/libs` keep their own licenses. One of them needs attention: **ApexCharts is not MIT from version 5 on**. It is dual-licensed, free under its Community license for organizations under $2M in annual revenue and paid above that threshold, with a separate OEM license for
-redistribution. Check the [ApexCharts license options](https://apexcharts.com/license/) before you ship charts in a commercial product.
+Third-party libraries shipped in `dist/libs` keep their own licenses. One of them deserves a closer look. ApexCharts hasn't been MIT since version 5. It's dual-licensed now. Organizations under $2M in annual revenue can use it for free under the Community license, and anyone above that threshold pays. Redistribution needs a separate OEM license. Check the [ApexCharts license options](https://apexcharts.com/license/) before you ship charts in a commercial product.
