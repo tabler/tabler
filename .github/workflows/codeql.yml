@@ -1,0 +1,45 @@
+name: CodeQL
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - dev
+      - main
+  schedule:
+    - cron: '0 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze JavaScript and TypeScript
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          build-mode: none
+          config: |
+            paths-ignore:
+              - '**/dist/**'
+              - '**/libs/**'
+              - 'packages-zip/**'
+              - 'core/js/tests/**'
+              - 'core/scss/tests/**'
+              - 'screenshots/**'
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: '/language:javascript-typescript'
