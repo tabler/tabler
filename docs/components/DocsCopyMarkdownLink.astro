@@ -1,0 +1,53 @@
+---
+// Fetches this page's Markdown mirror (its url with ".md" appended) and copies
+// its content to the clipboard, so the page can be pasted into an LLM directly.
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  /** Url of the page's `.md` mirror, fetched on click. */
+  url: string
+  class?: string
+}
+
+const { url, class: className } = Astro.props
+---
+
+<button type="button" class:list={['btn btn-sm', className]} data-docs-copy-markdown-link={url}>
+  <Icon name="clipboard" />
+  <Icon name="check" class="d-none" />
+  <span data-docs-copy-markdown-link-label>Copy to LLM</span>
+</button>
+
+<script>
+  // Several buttons can share this markup on one page (header, sidebar, …),
+  // so wire all of them and derive each one's url from its own attribute.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-docs-copy-markdown-link]')
+
+  buttons.forEach((button) => {
+    const label = button.querySelector<HTMLElement>('[data-docs-copy-markdown-link-label]')
+    const [clipboardIcon, checkIcon] = button.querySelectorAll<HTMLElement>('svg')
+
+    button.addEventListener('click', async () => {
+      const url = button.dataset.docsCopyMarkdownLink
+      if (!url || !label) return
+
+      try {
+        const response = await fetch(url)
+        await navigator.clipboard.writeText(await response.text())
+
+        const original = label.textContent
+        label.textContent = 'Copied'
+        clipboardIcon?.classList.add('d-none')
+        checkIcon?.classList.remove('d-none')
+
+        setTimeout(() => {
+          label.textContent = original
+          clipboardIcon?.classList.remove('d-none')
+          checkIcon?.classList.add('d-none')
+        }, 2000)
+      } catch {
+        // clipboard permission refused — leave the label alone
+      }
+    })
+  })
+</script>

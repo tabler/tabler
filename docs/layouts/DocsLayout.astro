@@ -13,6 +13,7 @@ import DocsSearch from '@components/DocsSearch.astro';
 import DocsClassnames from '@components/DocsClassnames.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
+import DocsCopyMarkdownLink from '@components/DocsCopyMarkdownLink.astro';
 import DocsPagination from '@components/DocsPagination.astro';
 import DocsCard from '@components/DocsCard.astro';
 import { getDocsPage } from '@lib/docs-pages';
@@ -371,18 +372,27 @@ const relatedPages = await Promise.all(
 									data-bs-smooth-scroll={toc.length > 0 ? 'true' : undefined}
 									tabindex="0"
 								>
-									<div class="d-flex">
+									<div class="d-flex flex-column flex-sm-row align-items-sm-center">
 										<h1 class="docs-page-title">
 											{title}
 										</h1>
 
-										{
-											addedIn && (
-												<div class="ms-auto">
-													<span class="badge bg-primary-lt">Added in {addedIn}</span>
-												</div>
-											)
-										}
+										<div class="d-flex flex-wrap gap-2 ms-sm-auto mb-3 mb-sm-0">
+											{
+												addedIn && (
+													<div class="d-flex align-items-center">
+														<span class="badge bg-primary-lt">Added in {addedIn}</span>
+													</div>
+												)
+											}
+											{
+												markdownUrl && (
+													<div class="d-flex align-items-center">
+														<DocsCopyMarkdownLink url={markdownUrl} />
+													</div>
+												)
+											}
+										</div>
 									</div>
 
 									<p class="docs-page-lead text-secondary fs-3 lh-lg">{summary}</p>
