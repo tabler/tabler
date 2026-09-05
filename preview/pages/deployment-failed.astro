@@ -1,0 +1,269 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Breadcrumb from '@shared/components/ui/Breadcrumb.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Badge from '@shared/components/ui/Badge.astro';
+import Button from '@shared/components/Button.astro';
+import Alert from '@shared/components/Alert.astro';
+import Icon from '@shared/components/Icon.astro';
+import StatusDot from '@shared/components/ui/StatusDot.astro';
+
+const navItems = [
+	{ label: 'Overview' },
+	{ label: 'Deployments', href: './deployment-failed.html', active: true },
+	{ label: 'Analytics' },
+	{ label: 'Logs' },
+	{ label: 'Settings', href: './project-settings.html' },
+];
+
+const buildSteps = [
+	{
+		status: 'success',
+		icon: 'check',
+		name: 'Clone',
+		time: '2s',
+		detail: 'Fetched <code>feat/redis-limiter</code> at <code>2e77b09</code>',
+	},
+	{
+		status: 'success',
+		icon: 'check',
+		name: 'Install',
+		time: '38s',
+		detail: 'pnpm install — 412 packages',
+	},
+	{
+		status: 'success',
+		icon: 'check',
+		name: 'Build',
+		time: '24s',
+		detail: 'pnpm build completed',
+	},
+	{
+		status: 'danger',
+		icon: 'x',
+		name: 'Compile',
+		time: '8s',
+		detail: 'TypeScript exited with code 2',
+		error: `src/lib/rate-limit.ts:47:12 — error TS2345:
+Argument of type 'RedisClient' is not assignable to
+parameter of type 'RateLimiterStore'.
+  Property 'incr' is missing in type 'RedisClient'.
+
+src/lib/rate-limit.ts:61:5 — error TS2322:
+Type 'Promise<number | null>' is not assignable to
+type 'Promise<number>'.
+
+Found 2 errors in 1 file.`,
+	},
+	{
+		status: 'secondary',
+		name: 'Deploy',
+		time: '—',
+		detail: 'Skipped',
+		muted: true,
+	},
+];
+
+const failureSummary = [
+	{ label: 'Exit code', value: '<code>2</code>' },
+	{ label: 'Failed step', value: 'Compile' },
+	{ label: 'Errors', value: '2 TypeScript errors' },
+	{ label: 'File', value: '<code>src/lib/rate-limit.ts</code>' },
+	{ label: 'Duration', value: '1m 12s' },
+	{ label: 'Region', value: '<code>fra1</code>' },
+];
+
+const nextSteps = [
+	{
+		title: 'Fix type errors in <code>rate-limit.ts</code>',
+		sub: 'Align <code>RedisClient</code> with <code>RateLimiterStore</code>',
+	},
+	{
+		title: 'Push to <a href="#">feat/redis-limiter</a>',
+		sub: 'A new preview deploy starts automatically',
+	},
+	{
+		title: 'Or retry this deployment',
+		sub: 'Re-runs the same commit without a new push',
+	},
+];
+---
+
+<DefaultLayout>
+	<Breadcrumb pages="Projects,pulse-api,Deployments" />
+
+	<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mt-3 gap-3">
+		<div class="d-flex align-items-center gap-2 overflow-hidden">
+			<Avatar placeholder="N" shape="square" />
+			<h1 class="m-0 text-truncate">pulse-api</h1>
+			<Badge text="Failed" color="danger" light class="badge-pill flex-shrink-0" />
+		</div>
+		<div class="btn-list flex-column flex-sm-row">
+			<Button text="View full logs" />
+			<Button text="Retry Deployment" color="dark" icon="refresh" />
+		</div>
+	</div>
+
+	<div class="overflow-x-auto my-3">
+		<ul class="nav nav-bordered flex-nowrap" aria-label="Project sections">
+			{
+				navItems.map((item) => (
+					<li class="nav-item">
+						<a
+							class:list={['nav-link', 'text-nowrap', { active: item.active }]}
+							href={item.href ?? '#'}
+							aria-current={item.active ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<Alert
+		type="danger"
+		title="Build failed at Compile"
+		description="Preview deployment stopped after 1m 12s. Production on <a href='#'>api.pulsehq.dev</a> is unchanged."
+		class="mb-3"
+	/>
+
+	<div class="card">
+		<div class="card-header flex-column flex-sm-row align-items-sm-center justify-content-between gap-1">
+			<h2 class="card-title mb-0">Deployment</h2>
+			<span class="text-secondary text-break">pulse-api-2e77b09.relay.app · 1d ago</span>
+		</div>
+		<div class="card-body">
+			<dl class="row mb-0">
+				<dt class="col-12 col-sm-3 text-secondary mb-1 mb-sm-3">Status</dt>
+				<dd class="col-12 col-sm-9 mb-3">
+					<div class="d-flex flex-wrap align-items-center column-gap-2 row-gap-1">
+						<span class="d-inline-flex align-items-center gap-2">
+							<StatusDot color="danger" />
+							Error
+						</span>
+						<span class="text-secondary">failed at Compile · 1m 12s</span>
+					</div>
+				</dd>
+
+				<dt class="col-12 col-sm-3 text-secondary mb-1 mb-sm-3">Source</dt>
+				<dd class="col-12 col-sm-9 mb-3">
+					<div class="d-flex flex-wrap align-items-center gap-2">
+						<a href="#" class="badge badge-outline text-secondary badge-pill">
+							<Icon name="git-branch" class="icon-sm" />
+							feat/redis-limiter
+						</a>
+						<a href="#" class="text-reset text-break">
+							<code>2e77b09</code>
+							<span class="ms-1">Migrate rate limiter to Redis</span>
+						</a>
+					</div>
+				</dd>
+
+				<dt class="col-12 col-sm-3 text-secondary mb-1 mb-sm-3">Created</dt>
+				<dd class="col-12 col-sm-9 mb-3">
+					Jul 28, 2026 at 09:41
+					<span class="text-secondary">by k.adamski</span>
+				</dd>
+
+				<dt class="col-12 col-sm-3 text-secondary mb-1 mb-sm-0">Environment</dt>
+				<dd class="col-12 col-sm-9 mb-0">
+					<Badge text="Preview" class="badge-outline text-secondary badge-pill" />
+				</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="grid mt-3">
+		<div class="g-col-12 g-col-md-7">
+			<div class="card">
+				<div class="card-header flex-column flex-sm-row align-items-sm-center justify-content-between gap-1">
+					<h2 class="card-title mb-0">Build steps</h2>
+					<span class="text-secondary">3 of 5 completed</span>
+				</div>
+				<div class="card-body overflow-hidden">
+					<ul class="timeline mb-0">
+						{
+							buildSteps.map((step) => (
+								<li class="timeline-event">
+									<div class={`timeline-event-icon bg-${step.status}-lt text-${step.status}`}>
+										{step.icon && <Icon name={step.icon} />}
+									</div>
+									<div class:list={['timeline-event-card', 'overflow-hidden', { 'text-secondary': step.muted }]}>
+										<div class="d-flex justify-content-between gap-2">
+											<strong class:list={{ 'text-danger': step.status === 'danger' }}>{step.name}</strong>
+											<span class="text-secondary flex-shrink-0">{step.time}</span>
+										</div>
+										<div class:list={['text-secondary', 'text-break', { 'mb-2': step.error }]} set:html={step.detail} />
+										{step.error && (
+											<>
+												<pre class="mb-2 overflow-x-auto"><code set:text={step.error} /></pre>
+												<a href="#">View full logs →</a>
+											</>
+										)}
+									</div>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="g-col-12 g-col-md-5 space-y">
+			<div class="card">
+				<div class="card-header">
+					<h2 class="card-title">Failure summary</h2>
+				</div>
+				<div class="card-body">
+					<dl class="row mb-0">
+						{
+							failureSummary.map((row, i) => {
+								const last = i === failureSummary.length - 1;
+								return (
+									<>
+										<dt class:list={['col-12 col-sm-5 text-secondary mb-1', { 'mb-sm-3': !last, 'mb-sm-0': last }]}>
+											{row.label}
+										</dt>
+										<dd
+											class:list={['col-12 col-sm-7 text-break', { 'mb-3': !last, 'mb-0': last }]}
+											set:html={row.value}
+										/>
+									</>
+								);
+							})
+						}
+					</dl>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h2 class="card-title">Next steps</h2>
+				</div>
+				<div class="card-body">
+					<ul class="list-unstyled mb-0 space-y">
+						{
+							nextSteps.map((step, i) => (
+								<li class="d-flex gap-3">
+									<Avatar placeholder={String(i + 1)} size="sm" class="flex-shrink-0" />
+									<div class="overflow-hidden text-break">
+										<div set:html={step.title} />
+										<div class="text-secondary" set:html={step.sub} />
+									</div>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<div class="card-footer">
+					<div class="btn-list flex-column">
+						<Button text="Retry deployment" color="dark" block icon="refresh" />
+						<Button text="View full logs" block />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>
