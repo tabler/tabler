@@ -3,9 +3,16 @@
 // and dark (?theme=dark) PNG — at 1x and @2x — of every page's #screenshot
 // canvas (the full 1024x768 frame — logo, gradient backdrop and fake cursor
 // included, not just the cropped component card).
+// Only the @2x picture is rasterized by the browser; the 1x file is that
+// picture downscaled with a Lanczos filter. Chromium renders a 1x surface with
+// plain grayscale antialiasing, and hairlines (chart grids, borders) snap to
+// whole pixels there; a supersampled 1x keeps their weight and gives text a
+// smoother edge. Playwright's own `scale: 'css'` does not do this — it simply
+// rasterizes at 1x.
 // Run via `pnpm run capture` (builds first) — pass slugs as args to capture
 // only specific pages, e.g. `pnpm run capture button badge`.
 import { chromium, type Page } from 'playwright'
+import sharp from 'sharp'
 import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync } from 'node:fs'
 import path from 'node:path'
@@ -79,7 +86,7 @@ function filenameFor(slug: string, theme: 'light' | 'dark', scale: 1 | 2): strin
   return `${slug}${themeSuffix}${scaleSuffix}.png`
 }
 
-async function captureOne(page: Page, slug: string, theme: 'light' | 'dark', scale: 1 | 2) {
+async function captureOne(page: Page, slug: string, theme: 'light' | 'dark') {
   await page.goto(`${baseUrl}/${slug}?theme=${theme}`, { waitUntil: 'load' })
   await page.waitForFunction(() => document.documentElement.dataset.screenshotReady === 'true', { timeout: 15_000 })
 
@@ -88,9 +95,30 @@ async function captureOne(page: Page, slug: string, theme: 'light' | 'dark', sca
   // sit inside the captured rectangle.
   await page.addStyleTag({ content: '[data-screenshot-chrome] { display: none !important; }' })
 
-  const filename = filenameFor(slug, theme, scale)
-  await page.locator('#screenshot').screenshot({ path: path.join(outDir, filename) })
-  console.log(`  ✓ ${filename}`)
+  const frame = page.locator('#screenshot')
+  // The picture is always the frame's CSS size, times the device scale for @2x.
+  // A layout may render its frame larger than the picture it wants so the page
+  // shows more (data-screenshot-width, see ScreenshotAppLayout); the raster is
+  // then reduced to that width, keeping the frame's aspect ratio.
+  const [cssWidth, cssHeight, targetWidth] = await frame.evaluate((el) => {
+    const { width, height } = el.getBoundingClientRect()
+    const wanted = Number((el as HTMLElement).dataset.screenshotWidth ?? width)
+    return [width, height, wanted]
+  })
+  const width1x = Math.round(targetWidth)
+  const height1x = Math.round((targetWidth * cssHeight) / cssWidth)
+
+  const raster = await frame.screenshot()
+  const write = async (filename: string, factor: 1 | 2) => {
+    await sharp(raster)
+      .resize(width1x * factor, height1x * factor, { kernel: 'lanczos3' })
+      .png()
+      .toFile(path.join(outDir, filename))
+    console.log(`  ✓ ${filename}`)
+  }
+
+  await write(filenameFor(slug, theme, 2), 2)
+  await write(filenameFor(slug, theme, 1), 1)
 }
 
 async function main() {
@@ -111,18 +139,14 @@ async function main() {
 
   try {
     const browser = await chromium.launch()
-    const viewport = { width: 1280, height: 800 }
-    // Two pages, not one reused with setViewportSize — deviceScaleFactor is
-    // fixed at context/page creation and can't be changed on an existing page.
-    const page1x = await browser.newPage({ viewport, deviceScaleFactor: 1 })
-    const page2x = await browser.newPage({ viewport, deviceScaleFactor: 2 })
+    // Wide enough for the app frame (1708x1068, see ScreenshotAppLayout); the
+    // 1024x768 card frame sits centered in it on whole pixels.
+    const page = await browser.newPage({ viewport: { width: 1708, height: 1068 }, deviceScaleFactor: 2 })
 
     for (const slug of slugs) {
       console.log(slug)
-      await captureOne(page1x, slug, 'light', 1)
-      await captureOne(page1x, slug, 'dark', 1)
-      await captureOne(page2x, slug, 'light', 2)
-      await captureOne(page2x, slug, 'dark', 2)
+      await captureOne(page, slug, 'light')
+      await captureOne(page, slug, 'dark')
     }
 
     await browser.close()

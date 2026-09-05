@@ -4,8 +4,17 @@
 // that only exist at layout level — the folded sidebar, the theme settings
 // panel, the navbar dropdowns.
 //
-// The frame is 1280x800 — the capture viewport itself, not the 1024x768 card
-// frame of ScreenshotLayout — because media queries resolve against the
+// The frame is 1708x1068 CSS px — the capture viewport itself, not the
+// 1024x768 card frame of ScreenshotLayout — and the capture scales it down to
+// the 1280 px wide picture it asks for (data-screenshot-width), i.e. by 0.75.
+// That is how the screen fits more of the page than a 1280 px window would:
+// the browser lays out and rasterizes a real 1708 px screen, so charts measure
+// their axes right and the grid uses the full width, and only the finished
+// raster is reduced. (Even numbers on purpose: the card frame centers in the
+// same viewport and must land on whole pixels.) A CSS
+// `zoom` on the page would show the same amount but clips ApexCharts axis
+// labels and leaves the container short of the frame's edge.
+// The frame matches the viewport because media queries resolve against the
 // viewport: a narrower frame would lay the grid out for a width the picture
 // does not show.
 //
@@ -32,6 +41,8 @@ interface Props {
   sidebarMode?: 'folded' | 'folded-hover'
   /** where the main menu lives */
   navbarPosition?: 'horizontal' | 'vertical'
+  /** container width; fluid by default so the page fills the wide frame instead of centering a capped column */
+  layout?: 'default' | 'fluid' | 'boxed'
   /** renders the theme settings offcanvas (needed for a capture of the panel) */
   themeSettings?: boolean
   /**
@@ -46,7 +57,7 @@ interface Props {
   cssPlugins?: string[]
 }
 
-const { title, pageHeader, description, pageMenu, sidebarMode, navbarPosition = 'vertical', themeSettings = false, theme = {}, pageLibs = [], cssPlugins = [] } = Astro.props
+const { title, pageHeader, description, pageMenu, sidebarMode, navbarPosition = 'vertical', layout = 'fluid', themeSettings = false, theme = {}, pageLibs = [], cssPlugins = [] } = Astro.props
 
 // tabler-vendors.css carries the third-party styling (the ApexCharts tokens
 // among them, which is what themes a chart's labels, grid and legend for the
@@ -56,7 +67,7 @@ const stylePlugins = [...new Set([...(pageLibs.length > 0 ? ['vendors'] : []), .
 const headerTitle = pageHeader ?? title
 
 // Same as BaseLayout: the page states its own layout as data-bs-* on <html>.
-const themeAttributes = themeDataAttributes({ ...theme, 'navbar-position': navbarPosition, 'sidebar': sidebarMode } as Partial<Record<ThemeKey, string | undefined>>)
+const themeAttributes = themeDataAttributes({ ...theme, 'navbar-position': navbarPosition, 'layout': layout, 'sidebar': sidebarMode } as Partial<Record<ThemeKey, string | undefined>>)
 
 // core/dist only has .min. files after a full `pnpm build`; `astro dev` serves
 // whatever core's own watcher last emitted, which is unminified.
@@ -117,8 +128,8 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       }
 
       .screenshot {
-        width: 1280px;
-        height: 800px;
+        width: 1708px;
+        height: 1068px;
         overflow: hidden;
         /* containing block for the layout's position: fixed elements — see the
            frontmatter note */
@@ -129,7 +140,6 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       .screenshot .page {
         height: 100%;
         overflow: hidden;
-			zoom: .75;
       }
     </style>
 
@@ -137,7 +147,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
     <script is:inline src={`/dist/js/tabler-theme${min}.js`}></script>
   </head>
   <body>
-    <div class="screenshot" id="screenshot">
+    <div class="screenshot" id="screenshot" data-screenshot-width="1280">
       <div class="page">
         <Sidebar breakpoint="lg" folded={sidebarMode === 'folded'} foldedHover={sidebarMode === 'folded-hover'} pageMenu={pageMenu} />
 
