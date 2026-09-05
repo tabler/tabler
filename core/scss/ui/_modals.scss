@@ -16,6 +16,7 @@
 
 .modal-body {
   @include scrollbar();
+  overscroll-behavior: contain;
 
   .modal-title {
     margin-bottom: var(--modal-body-title-margin-bottom);
@@ -74,7 +75,25 @@
   --modal-body-title-margin-bottom: #{$modal-body-title-margin-bottom};
   --modal-footer-padding-y: #{$modal-footer-padding-y};
 
+  overscroll-behavior: contain;
+
   @include media-print() {
     display: none !important;
   }
+}
+
+//
+// Native dialog
+//
+// Make the backdrop of a native `<dialog>` opened with `showModal()` match the
+// backdrop used by modals and offcanvases.
+//
+// The alpha is part of the color instead of `opacity`, so that `backdrop-filter`
+// blurs the page instead of blending a blurred copy over the sharp one.
+dialog::backdrop {
+  background: color-mix(in sRGB, var(--backdrop-bg) calc(var(--backdrop-opacity) * 100%), transparent);
+}
+
+dialog.modal-blur::backdrop {
+  backdrop-filter: var(--backdrop-filter);
 }

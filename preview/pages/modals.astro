@@ -2,6 +2,8 @@
 // Every modal is rendered inline via ModalInline (in place, unlike Modal.astro
 // which drains to <body>).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import ModalInline from '@shared/components/modals/ModalInline.astro'
@@ -52,6 +54,7 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
             <a href="#modal-confirm-delete" class="nav-link">Confirm delete modal</a>
             <a href="#modal-change-password" class="nav-link">Change password modal</a>
             <a href="#modal-add-task" class="nav-link">Add task modal</a>
+            <a href="#modal-native" class="nav-link">Native dialog</a>
           </div>
         </div>
         <div class="col">
@@ -158,9 +161,51 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
                 <AddTaskModalContent />
               </ModalInline>
             </div>
+            <div id="modal-native">
+              <h3>Native dialog</h3>
+              <p class="text-secondary">
+                A native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>. The browser paints the backdrop and Tabler styles it to match the one used by modals, with
+                <code>.modal-blur</code> blurring the page behind it. Buttons inside <code>&lt;form method="dialog"&gt;</code> close the dialog without any script. The panel uses the card classes on a child element, because the modal classes read CSS variables set on <code>.modal</code>, and a <code>display</code> value
+                on the dialog itself would keep it visible when closed.
+              </p>
+              <ButtonList>
+                <Button element="button" color="primary" id="native-dialog-open" text="Open native dialog" />
+                <Button element="button" id="native-dialog-open-blur" text="Open with blur" />
+              </ButtonList>
+              <dialog id="native-dialog" class="p-0 border-0 bg-transparent" style="width: 28rem; max-width: calc(100% - 2rem)">
+                <form method="dialog" class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Native dialog</h3>
+                    <div class="card-actions">
+                      <button type="submit" class="btn-close" aria-label="Close"></button>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p>The browser keeps the page behind this dialog inert, traps focus inside it and closes it on Esc.</p>
+                  </div>
+                  <div class="card-footer text-end">
+                    <Button element="button" type="submit" color="primary" text="Close" />
+                  </div>
+                </form>
+              </dialog>
+            </div>
           </div>
         </div>
       </div>
     </CardBody>
   </Card>
+
+  <script is:inline>
+    // Only opening a native <dialog> needs a script. Closing is handled by the
+    // <form method="dialog"> buttons inside it and by the Esc key.
+    const nativeDialog = document.getElementById('native-dialog')
+
+    const openNativeDialog = (blur) => {
+      nativeDialog.classList.toggle('modal-blur', blur)
+      nativeDialog.showModal()
+    }
+
+    document.getElementById('native-dialog-open').addEventListener('click', () => openNativeDialog(false))
+    document.getElementById('native-dialog-open-blur').addEventListener('click', () => openNativeDialog(true))
+  </script>
 </DefaultLayout>
