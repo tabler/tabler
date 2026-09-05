@@ -36,6 +36,12 @@ const data = (selects as Record<string, any>)[key] ?? {};
 
 const isMultiple = Boolean(data.multiple);
 
+// `value` in selects.json marks the preselected option(s): a string/number or an array of them.
+const preselected = new Set<string>(
+	(Array.isArray(data.value) ? data.value : data.value === undefined ? [] : [data.value]).map(String),
+);
+const isSelected = (value: string) => preselected.has(value);
+
 // Build the option list.
 let options: SelectOption[] = [];
 let optgroups: SelectOptgroup[] = [];
@@ -50,22 +56,23 @@ if (values) {
 				? `<span class="avatar avatar-xs" style="background-image: url(./${person.photo})"></span>`
 				: `<span class="avatar avatar-xs">${firstLetters(person.full_name ?? '')}</span>`;
 		}
-		return { value: String(person.id), text: person.full_name ?? '', custom };
+		const value = String(person.id);
+		return { value, text: person.full_name ?? '', custom, selected: isSelected(value) };
 	});
 } else if (data.data === 'optgroup') {
 	optgroups = (data.options as { title: string; options: string[] }[]).map((group) => ({
 		label: group.title,
-		options: group.options.map((option) => ({ value: option, text: option })),
+		options: group.options.map((option) => ({ value: option, text: option, selected: isSelected(option) })),
 	}));
 } else if (Array.isArray(data.options)) {
-	options = (data.options as string[]).map((option) => ({ value: option, text: option }));
+	options = (data.options as string[]).map((option) => ({ value: option, text: option, selected: isSelected(option) }));
 } else if (data.options) {
 	// object of { key: { name, flag?, label?, selected? } } — with optional indicator
 	options = Object.entries(data.options as Record<string, any>).map(([optKey, v]) => {
 		let custom: string | undefined;
 		if (indicator === 'flag') custom = `<span class="flag flag-xs flag-country-${v.flag}"></span>`;
 		else if (indicator === 'label') custom = `<span class="badge bg-primary-lt">${v.label}</span>`;
-		return { value: optKey, text: v.name, custom, selected: Boolean(v.selected) };
+		return { value: optKey, text: v.name, custom, selected: Boolean(v.selected) || isSelected(optKey) };
 	});
 }
 ---
