@@ -1,0 +1,51 @@
+---
+description: Tabler 2.0 policy — target branch, what stays from Bootstrap v5, what is adopted from v6, proof required per phase
+globs:
+alwaysApply: true
+---
+
+# Tabler 2.0 — branch and compatibility policy
+
+Applies to every change on `v2-dev`. The plan, phases and open questions live in
+`BOOTSTRAP-V6-MIGRATION.md` at the repo root — read sections 2 and 3 before starting 2.0 work.
+
+## Branches
+
+- All 2.0 work targets **`v2-dev`**. Cut feature branches from it and open PRs back into it.
+- `dev` is frozen for 1.x maintenance. Never merge 2.0 work into `dev`.
+- Every 2.0 PR names the phase it belongs to and carries that phase's proof (below).
+
+## Kept from Bootstrap v5 — the public contract
+
+- Class names: `.modal`, `.offcanvas`, `.dropdown-menu`, `.btn-primary`, `.col-md-6`, `.d-md-none`, `.text-*`, `.fs-1`…`.fs-6`, `.rounded-*`, and every class documented for 1.x.
+- `data-bs-*` attributes and their values (`data-bs-toggle="modal"`), with the `data-tblr-*` alias still working.
+- Event names (`shown.bs.modal`), JavaScript plugin names and methods (`Modal.getInstance`, `show`, `hide`, `dispose`).
+- The **values** behind existing utilities: `$spacers`, `.rounded-N`, `.fs-N`, breakpoints and container widths do not change silently.
+
+## Not adopted from v6 (decided 2026-09-06)
+
+- The `md:` / `hover:` prefix syntax — infix names (`.col-md-6`) stay. Revisit no earlier than 3.0.
+- Renames: `.dialog`, `.drawer`, `.menu`, `.fg-*`, `.bg-1`…`.bg-4`, `.fs-xs`…`.fs-6xl`, `.max-w-*`, `.underline-*`, `data-bs-toggle="dialog|drawer|menu"`, `*.bs.dialog|drawer|menu` events, `Dialog`/`Drawer`/`Menu` exports.
+- The v6 remaps of `$spacers` (0–9) and `.rounded-*`.
+
+## Adopted from v6 — the architecture
+
+- Token files `_config` / `_colors` / `_theme` / `_root` with the `defaults()` + `tokens()` pattern; cascade `@layer`; custom properties prefixed by PostCSS, never by a Sass `$prefix`.
+- `oklch()` colours, `color-mix()` scales, `.theme-*` tokens — **emitted by the v5 classes**, not replacing them in markup (`.btn-primary` sets the theme tokens; markup never needs `.btn-solid .theme-primary`).
+- Logical properties in spacing and border utilities (class names unchanged).
+- Native `<dialog>` for modal/offcanvas, `<details>` for accordion, CSS scroll snap for carousel — under the v5 names, events and data attributes.
+- Floating UI instead of Popper; one `focus-ring()` mixin; the numeric `$radii` scale mapped so `.rounded-N` keeps its v5 values.
+- The internal Sass API (variable names, maps, mixins, file layout) is **not** promised and may change, as long as compiled output stays as intended.
+
+## Proof per phase
+
+- Output-neutral phases (1 Sass split, 3 token scales, 4 logical properties): byte-identical `core/dist/css/tabler.css` and a zero `html-diff` run — see the `html-diff` skill.
+- Phase 2 (colours): contrast gate passed, dark mode reviewed by screenshot.
+- Phase 6 (native components): the a11y checklist — focus trap, Escape, backdrop click, focus returns to the trigger, `aria-*` unchanged — and a note that `html-diff` differs by design.
+- Every phase: a changeset (`generate-changeset` skill), updated `classnames` front matter when a class moved (`class-reference` skill).
+
+## Agents
+
+- Before opening a PR into `v2-dev`, run the `v2-policy-reviewer` agent on the diff and fix its blockers.
+- To learn how Bootstrap v6 implements something, ask the `bootstrap-v6-reference` agent; it reads the upstream source and reports mechanism, not names.
+- The open questions in section 5 of the plan are decided by the maintainer and recorded in the plan — never implied by code.
