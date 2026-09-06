@@ -23,11 +23,12 @@ Applies to every change on `v2-dev`. The plan, phases and open questions live in
 - Event names (`shown.bs.modal`), JavaScript plugin names and methods (`Modal.getInstance`, `show`, `hide`, `dispose`).
 - The **values** behind existing utilities: `$spacers`, `.rounded-N`, `.fs-N`, breakpoints and container widths do not change silently.
 
-## Not adopted from v6 (decided 2026-09-06)
+## Not adopted from v6
 
 - The `md:` / `hover:` prefix syntax — infix names (`.col-md-6`) stay. Revisit no earlier than 3.0.
 - Renames: `.dialog`, `.drawer`, `.menu`, `.fg-*`, `.bg-1`…`.bg-4`, `.fs-xs`…`.fs-6xl`, `.max-w-*`, `.underline-*`, `data-bs-toggle="dialog|drawer|menu"`, `*.bs.dialog|drawer|menu` events, `Dialog`/`Drawer`/`Menu` exports.
 - The v6 remaps of `$spacers` (0–9) and `.rounded-*`.
+- Removing `.form-select` — it stays untouched in 2.0.
 
 ## Adopted from v6 — the architecture
 
@@ -36,6 +37,8 @@ Applies to every change on `v2-dev`. The plan, phases and open questions live in
 - Logical properties in spacing and border utilities (class names unchanged).
 - Native `<dialog>` for modal/offcanvas, `<details>` for accordion, CSS scroll snap for carousel — under the v5 names, events and data attributes.
 - Floating UI instead of Popper; one `focus-ring()` mixin; the numeric `$radii` scale mapped so `.rounded-N` keeps its v5 values.
+- ESM-only JavaScript: no UMD bundle, no `window.tabler` global in 2.0.
+- Component parity with v6 for `.avatar`, `.chip`, `.stepper`, `.progress`, `.status`: Tabler's versions are reworked to match the v6 class names, modifiers and tokens; a Tabler-only name such as `.steps` stays as an alias for one major. This is the one agreed exception to "every 1.x class stays" — see phase 9 of the plan.
 - The internal Sass API (variable names, maps, mixins, file layout) is **not** promised and may change, as long as compiled output stays as intended.
 
 ## Proof per phase
