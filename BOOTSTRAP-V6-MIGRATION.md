@@ -422,33 +422,38 @@ proof the PR must carry per `.agents/rules/v2.mdc`. Order inside a group is the 
 
 ### 6.1 Ready now — no open question involved
 
-**Start with the light ones:** T2, T5, T10, T4, T7, T6, then T9 and T8
-with their docs parts left out. Documentation (T11, T18 and the docs halves of T8 / T9) is deliberately
-last; the heavy phases (T3, T12, T13, T14–T16) wait until the light ones are in. T1 is parked.
+**Start with the light ones, in this order:** #2969, #2977, #2970, #2971, #2972, #2973, #2974, then
+#2975 and #2976 with their docs parts left out. Documentation (the upgrade guide, the docs pass and the
+docs halves of #2975 / #2976) is deliberately last; the heavy phases (Sass split, oklch, component
+parity, native components) wait until the light ones are in and get their issues then. The Floating UI
+PR #2966 is parked.
 
-| # | Phase | Task | Files | Gate | Size |
+| Issue | Phase | Task | Files | Gate | Size |
 | --- | --- | --- | --- | --- | --- |
-| T1 | 5 | Finish Floating UI (#2966): apply the parked `boundary: viewport/document` fix (stash on the branch, tests green), reworded changeset, merge | `core/js/src/bootstrap/util/floating-ui.ts`, `dropdown.ts`, `tooltip.ts` | vitest, tsc | S |
-| T2 (#2969) | 1 | `_index.scss` per directory (`ui/`, `forms/`, `mixins/`, `layout/`, `utils/`) and route `tabler.scss` through them | `core/scss/**/_index.scss`, `tabler.scss` | byte-identical `tabler.css` | S |
-| T3 | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
-| T4 (#2972) | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
-| T5 (#2970) | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
-| T6 (#2974) | 4 | Logical properties in spacing and border utilities, class names unchanged; reconcile with `--tblr-dir` and the `/*rtl:ignore*/` workaround | `core/scss/_utilities.scss`, `core/scss/utils/**` | RTL build comparison, zero `html-diff` | M |
-| T7 (#2973) | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
-| T8 (#2976) | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
-| T9 (#2975) | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
-| T10 (#2971) | 6 | Close button, navbar toggler and breadcrumb divider drawn with `mask-image` + `currentcolor`; `.btn-close-white` kept as an empty alias | `core/scss/ui/_close.scss`, `_navbar.scss`, `_breadcrumb.scss` | visual review light/dark | S |
-| T11 | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |
-| T12 | 2 | Colours on `oklch()` + `color-mix(in lab)`, `--theme-bg/fg/border/contrast` and `.theme-*`, remove the 52 `--tblr-*-rgb` sites; `.btn-primary` etc. keep emitting via the theme tokens | `_colors.scss`, `_theme.scss`, `_props.scss`, `core/scss/ui/**` | contrast gate, dark mode screenshots, hand-reviewed `html-diff` | L |
-| T13 | 9 | Component parity table for `.avatar`, `.chip`, `.steps`→`.stepper`, `.progress`, `.status` against v6 (via the `bootstrap-v6-reference` agent); then one rework PR per component with the old names aliased | planning notes, then `core/scss/ui/_avatars.scss`, `_chips.scss`, `_steps.scss`, `_progress.scss`, `_status.scss` | `check-markup-classes`, `classnames`, changeset | S + 5×M |
-| T14 | 6 | Modal on native `<dialog>` under the v5 names, events and data attributes; keep Tabler's modal variants and the preview modal architecture working | `core/scss/bootstrap/_modal.scss`, `core/scss/ui/_modals.scss`, `core/js/src/bootstrap/modal.ts`, `shared/ui/**` | a11y checklist (focus trap, Escape, backdrop, focus return), by-design `html-diff` | L |
-| T15 | 6 | Offcanvas on the same `DialogBase` | `core/scss/bootstrap/_offcanvas.scss`, `core/js/src/bootstrap/offcanvas.ts` | same as T14 | M |
-| T16 | 6 | Carousel on CSS scroll snap; `autoplay` and `ends` options; removed classes handled per question 8 | `core/scss/bootstrap/_carousel.scss`, `core/js/src/bootstrap/carousel.ts` | preview smoke, keyboard pass | M |
-| T17 | 5 | Delete `util/backdrop.ts`, `util/focustrap.ts`, `util/scrollbar.ts` once T14 and T15 are merged | `core/js/src/bootstrap/util/**` | vitest | S |
-| T18 | 10 | 2.0 upgrade guide with before/after per breaking change, `classnames` updates, extended `check-markup-classes` baselines, changesets per phase | `UPGRADE.md`, `docs/content/**` | docs build, link gate | M, grows with each task |
+| #2966 (PR) | 5 | Finish Floating UI: apply the parked `boundary: viewport/document` fix (stash on the branch, tests green), reworded changeset, merge | `core/js/src/bootstrap/util/floating-ui.ts`, `dropdown.ts`, `tooltip.ts` | vitest, tsc | S |
+| #2969 | 1 | `_index.scss` per directory (`ui/`, `forms/`, `mixins/`, `layout/`, `utils/`) and route `tabler.scss` through them | `core/scss/**/_index.scss`, `tabler.scss` | byte-identical `tabler.css` | S |
+| #2977 | 1 | `defaults()` and `tokens()` mixins; card, badge and avatar converted to per-component token maps (`$card-tokens` rendered on `.card`) as the reference pattern; further components as small follow-up PRs | `core/scss/mixins/**`, `core/scss/ui/_cards.scss`, `_badges.scss`, `_avatars.scss`, `_variables.scss` | byte-identical `tabler.css`, SCSS unit tests | S |
+| — | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
+| #2972 | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
+| #2970 | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
+| #2974 | 4 | Logical properties in spacing and border utilities, class names unchanged; reconcile with `--tblr-dir` and the `/*rtl:ignore*/` workaround | `core/scss/_utilities.scss`, `core/scss/utils/**` | RTL build comparison, zero `html-diff` | M |
+| #2973 | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
+| #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
+| #2975 | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
+| #2971 | 6 | Close button, navbar toggler and breadcrumb divider drawn with `mask-image` + `currentcolor`; `.btn-close-white` kept as an empty alias | `core/scss/ui/_close.scss`, `_navbar.scss`, `_breadcrumb.scss` | visual review light/dark | S |
+| — | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |
+| — | 2 | Colours on `oklch()` + `color-mix(in lab)`, `--theme-bg/fg/border/contrast` and `.theme-*`, remove the 52 `--tblr-*-rgb` sites; `.btn-primary` etc. keep emitting via the theme tokens | `_colors.scss`, `_theme.scss`, `_props.scss`, `core/scss/ui/**` | contrast gate, dark mode screenshots, hand-reviewed `html-diff` | L |
+| — | 9 | Component parity table for `.avatar`, `.chip`, `.steps`→`.stepper`, `.progress`, `.status` against v6 (via the `bootstrap-v6-reference` agent); then one rework PR per component with the old names aliased | planning notes, then `core/scss/ui/_avatars.scss`, `_chips.scss`, `_steps.scss`, `_progress.scss`, `_status.scss` | `check-markup-classes`, `classnames`, changeset | S + 5×M |
+| — | 6 | Modal on native `<dialog>` under the v5 names, events and data attributes; keep Tabler's modal variants and the preview modal architecture working | `core/scss/bootstrap/_modal.scss`, `core/scss/ui/_modals.scss`, `core/js/src/bootstrap/modal.ts`, `shared/ui/**` | a11y checklist (focus trap, Escape, backdrop, focus return), by-design `html-diff` | L |
+| — | 6 | Offcanvas on the same `DialogBase` | `core/scss/bootstrap/_offcanvas.scss`, `core/js/src/bootstrap/offcanvas.ts` | same as the modal | M |
+| — | 6 | Carousel on CSS scroll snap; `autoplay` and `ends` options; removed classes handled per question 8 | `core/scss/bootstrap/_carousel.scss`, `core/js/src/bootstrap/carousel.ts` | preview smoke, keyboard pass | M |
+| — | 5 | Delete `util/backdrop.ts`, `util/focustrap.ts`, `util/scrollbar.ts` once the modal and offcanvas rebuilds are merged | `core/js/src/bootstrap/util/**` | vitest | S |
+| — | 10 | 2.0 upgrade guide with before/after per breaking change, `classnames` updates, extended `check-markup-classes` baselines, changesets per phase | `UPGRADE.md`, `docs/content/**` | docs build, link gate | M, grows with each task |
 
-Dependencies: T3 after T2. T4 and T5 can land before T3 (in `_variables.scss`, moved by T3 later). T12 after T3.
-T13 reworks after T12 (they use theme tokens). T14 → T15 → T17. T18 runs alongside everything.
+Dependencies: #2977 after #2969; the Sass split after #2977. #2972 and #2970 can land before the
+Sass split (in `_variables.scss`, moved later). oklch after the Sass split; the component parity
+reworks after oklch (they use theme tokens). Modal → offcanvas → deleting the `util/*` helpers. The
+upgrade guide runs alongside everything.
 
 ### 6.2 Waiting on a decision (section 5)
 
@@ -456,8 +461,8 @@ T13 reworks after T12 (they use theme tokens). T14 → T15 → T17. T18 runs alo
 | --- | --- |
 | 4 `$spacers` | either nothing, or a remap PR plus a codemod for every template |
 | 6 navbar as drawer | prototype against the folded sidebar, then decide |
-| 8 classes removed by native components | accordion on `<details>` (T19, phase 6, M) is blocked on this: it decides what happens to `.accordion-button` / `.accordion-collapse` (195 occurrences in 12 files) |
-| 9 cascade `@layer` | one PR after T3, byte-diff plus specificity review |
+| 8 classes removed by native components | accordion on `<details>` (phase 6, M, no issue yet) is blocked on this: it decides what happens to `.accordion-button` / `.accordion-collapse` (195 occurrences in 12 files) |
+| 9 cascade `@layer` | one PR after the Sass split, byte-diff plus specificity review |
 | 10 breakpoint values | either nothing, or a reflow PR with screenshots of every preview page |
 | 11 forms validation and `_form-check` split | phase 7 PRs |
 | 12 datepicker library | new component or nothing |
