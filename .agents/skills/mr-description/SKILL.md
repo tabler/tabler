@@ -124,3 +124,5 @@ Write the **title** and **full MR body** in **simple English**, even if the user
 ## 6. After output
 
 Offer to open/create the MR if the user uses **GitLab** (project MCP or UI) or **GitHub** (`gh pr create`), without running destructive git commands unless they ask.
+
+When the base branch is **`v2-dev`** (Tabler 2.0 work), create the PR with `--milestone "2.0"` — every 2.0 PR belongs to that GitHub milestone. If the PR already exists, add it with `gh pr edit <n> --milestone "2.0"`.
