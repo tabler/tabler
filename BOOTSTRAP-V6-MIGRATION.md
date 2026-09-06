@@ -1,6 +1,6 @@
 # Bootstrap v5 → v6: analysis and a phased plan for Tabler 2.0
 
-**Status:** analysis only, nothing implemented. Written 2026-09-06.
+**Status:** analysis, decisions and task board. Nothing implemented yet beyond the Floating UI branch.
 
 **Source of truth:** local Bootstrap checkout at `~/htdocs/bootstrap`, branch `v6-dev`
 (`6.0.0-alpha1`, 495 commits ahead of `main`/5.3.8, work from 2025-08-26 to 2026-07-22).
@@ -198,10 +198,10 @@ class emission must go through `check-markup-classes`.
 
 No code. Settle the things that later phases cannot proceed without.
 
-- Browser baseline: are `oklch()` and `color-mix()` in? This gates phases 2 and 3.
-- ESM-only distribution: does 2.0 drop the UMD `tabler.js` bundle? This gates phase 5.
+- Browser baseline: `oklch()` and `color-mix()` are in. Phases 2 and 3 can start.
+- Distribution: ESM only, the UMD `tabler.js` bundle is dropped. Phase 5 can start.
 - Class-name policy: confirm v5 names stay, and write down the exceptions we are willing to make.
-- Component namespace policy for `.avatar` / `.chip` / `.stepper` (see phase 9).
+- Component namespace policy for `.avatar` / `.chip` / `.stepper`: unify with upstream (see phase 9).
 - Read `~/htdocs/bootstrap/skills/bootstrap-v5-v6-migration/SKILL.md` and lift anything reusable
   into our own migration notes.
 
@@ -228,7 +228,8 @@ config bites, per the existing SCSS module notes.
 
 ### Phase 2 — Colour system on oklch and theme tokens
 
-The point of no return for browser support.
+The point of no return for browser support, and we take it. The 2.0 browser baseline is whatever
+supports `oklch()` and `color-mix()`; write that baseline into the upgrade guide.
 
 - Convert colour variables to `oklch()`; generate tint/shade with `color-mix(in lab, …)`.
 - Introduce `--theme-bg` / `--theme-fg` / `--theme-border` / `--theme-contrast` and a `.theme-*`
@@ -272,9 +273,11 @@ which validates the direction.
 
 ### Phase 5 — JavaScript runtime
 
-- Decide ESM-only, then drop the UMD build from `core/package.json` (`js:build:standalone`,
-  `js:min:*`) or keep a compatibility bundle for one more major.
-- Finish the Floating UI migration and rename `popperConfig` → `floatingConfig` in our API.
+- ESM only. Drop the UMD build from `core/package.json` (`js:build:standalone`, `js:min:*`); no
+  compatibility bundle. `<script type="module">` becomes
+  the documented way to load `tabler.js`, and the `window.tabler` global goes with the bundle.
+- Finish the Floating UI migration (#2966). The option is `positionConfig`, not v6's
+  `floatingConfig`; `popperConfig` stays as a deprecated alias for one major.
 - Take the ScrollSpy rewrite (`IntersectionObserver` + activation line) into
   `core/js/src/bootstrap/scrollspy.ts`.
 - Prepare to delete `util/backdrop.ts`, `util/focustrap.ts`, `util/scrollbar.ts` — but only after
@@ -308,8 +311,8 @@ The phase with the best effort-to-value ratio: less code, better accessibility, 
 
 ### Phase 7 — Forms
 
-- Decide on `.form-select`: dropping it means touching ~650 occurrences across the repo. Options are
-  to keep it as an alias over `.form-control` or to defer entirely.
+- `.form-select` stays as it is in 2.0; nothing in markup, docs or SCSS changes for it. Revisit
+  after 2.0.
 - Split `_form-check.scss` into checkbox / radio / switch, with `.check` directly on the input.
 - Move validation to `data-bs-validate` + `:user-invalid`; drop the built-in validation icons.
 - Make `.form-range` a wrapper with a JavaScript-driven filled track.
@@ -325,7 +328,7 @@ Kept last because it is the most disruptive and the most optional.
 
 - Container-query utilities (`.contains-inline`, `.contains-size`) and grid utilities
   (`.grid-cols-*`, `.place-items`, `.justify-items`) are pure additions — take them.
-- The `md:` prefix syntax is **not adopted in 2.0** (decided 2026-09-06). Adopting it would mean
+- The `md:` prefix syntax is **not adopted in 2.0**. Adopting it would mean
   rewriting roughly 1 800 class occurrences across ~200 files in `preview/`, `docs/` and `shared/`,
   and breaking every third-party Tabler template. v5 infix names (`.col-md-6`, `.d-md-none`) stay.
 - Revisit for 3.0 at the earliest; if ever adopted, ship both spellings for one major and add a codemod.
@@ -336,15 +339,21 @@ Kept last because it is the most disruptive and the most optional.
 
 ### Phase 9 — Component namespace collisions
 
-For each of `.avatar`, `.chip`, `.stepper` (Tabler's `.steps`), `.progress` and `.status`, decide
-whether Tabler keeps its own definition, adopts upstream's, or renames. Then decide whether to
+`.avatar`, `.chip`, `.stepper` (Tabler's `.steps`), `.progress` and `.status` are unified with
+upstream. Tabler's definition is reworked so that the class names,
+modifiers and tokens are compatible with Bootstrap v6's component of the same name; Tabler-only
+extras stay as additive modifiers on top. Where Tabler's current name differs (`.steps` vs
+`.stepper`) the v6 name is adopted and the old class stays as an alias for one major, listed in the
+upgrade guide. This is the one deliberate exception to "v5 names stay", because these components
+have no v5 name to keep. Still to decide, per component, is whether to
 implement v6's genuinely new components ourselves: **otp-input**, **combobox**, **datepicker**,
 **password strength**, **prose**, **form-adorn**, **nav-overflow**, **form-field**.
 
 Note that our datepicker plans and upstream's choice of Vanilla Calendar Pro may or may not agree —
 worth checking before committing to a library.
 
-**Deliverable:** a component ownership table in the 2.0 planning notes.
+**Deliverable:** a per-component table (Tabler class, v6 class, what changes, what is aliased) in
+the 2.0 planning notes, produced with the `bootstrap-v6-reference` agent before any SCSS moves.
 
 ### Phase 10 — Documentation and gates
 
@@ -379,11 +388,78 @@ Phase 9  component ownership
 Phase 10 docs and gates
 ```
 
-## 5. Open questions
+## 5. Decisions and open questions
 
-1. Browser baseline for `oklch()` and `color-mix()` — the gate on phases 2 and 3.
-2. ESM-only, or one more major with a UMD bundle?
-3. `.form-select`: alias, removal, or defer?
+Decided:
+
+1. Browser baseline: 2.0 requires `oklch()` and `color-mix()`.
+2. ESM only. The UMD bundle is dropped in 2.0.
+3. `.form-select` is untouched in 2.0.
+5. `.avatar` / `.chip` / `.stepper` / `.progress` / `.status` are unified with Bootstrap v6's
+   components; old names aliased for one major (phase 9).
+7. The option that replaces `popperConfig` is `positionConfig` (#2966); `popperConfig` is kept as a
+   deprecated alias. v6's `floatingConfig` is not adopted.
+
+Open:
+
 4. `$spacers`: keep the v5 scale, or accept the silent reflow of every template?
-5. Who owns `.avatar` / `.chip` / `.stepper` when upstream ships them too?
 6. Does the v6 navbar-as-drawer pattern survive contact with the folded sidebar from 1.5?
+8. Classes that native components remove (`.accordion-button`, `.accordion-collapse`,
+   `.carousel-caption`, `.carousel-control-*`, `.btn-close-white`): keep on the new element, keep as
+   an empty alias, or drop with an upgrade-guide entry? The policy rule promises every 1.x class.
+9. When cascade `@layer` lands — it is adopted by the policy but has no phase and a withdrawn prototype.
+10. Breakpoint values (`lg` 1024, `xl` 1280, `2xl` 1536): separate from the naming, undecided.
+11. Forms validation (`data-bs-validate`, `:user-invalid`, no `.was-validated`) and the
+    `_form-check` split — visible to every template user, not yet decided.
+12. Datepicker library: upstream picked Vanilla Calendar Pro; do we follow?
+13. `data-bs-*` → `data-tblr-*`: does 2.0 switch docs and markup and drop `data-bs-*`, or only keep
+    the alias?
+
+## 6. Task board
+
+One PR per task unless noted. Size: S under a day, M a few days, L a week or more. "Gate" is the
+proof the PR must carry per `.agents/rules/v2.mdc`. Order inside a group is the suggested order.
+
+### 6.1 Ready now — no open question involved
+
+**Start with the light ones:** T2, T5, T10, T4, T7, T6, then T9 and T8
+with their docs parts left out. Documentation (T11, T18 and the docs halves of T8 / T9) is deliberately
+last; the heavy phases (T3, T12, T13, T14–T16) wait until the light ones are in. T1 is parked.
+
+| # | Phase | Task | Files | Gate | Size |
+| --- | --- | --- | --- | --- | --- |
+| T1 | 5 | Finish Floating UI (#2966): apply the parked `boundary: viewport/document` fix (stash on the branch, tests green), reworded changeset, merge | `core/js/src/bootstrap/util/floating-ui.ts`, `dropdown.ts`, `tooltip.ts` | vitest, tsc | S |
+| T2 (#2969) | 1 | `_index.scss` per directory (`ui/`, `forms/`, `mixins/`, `layout/`, `utils/`) and route `tabler.scss` through them | `core/scss/**/_index.scss`, `tabler.scss` | byte-identical `tabler.css` | S |
+| T3 | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
+| T4 (#2972) | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
+| T5 (#2970) | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
+| T6 (#2974) | 4 | Logical properties in spacing and border utilities, class names unchanged; reconcile with `--tblr-dir` and the `/*rtl:ignore*/` workaround | `core/scss/_utilities.scss`, `core/scss/utils/**` | RTL build comparison, zero `html-diff` | M |
+| T7 (#2973) | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
+| T8 (#2976) | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
+| T9 (#2975) | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
+| T10 (#2971) | 6 | Close button, navbar toggler and breadcrumb divider drawn with `mask-image` + `currentcolor`; `.btn-close-white` kept as an empty alias | `core/scss/ui/_close.scss`, `_navbar.scss`, `_breadcrumb.scss` | visual review light/dark | S |
+| T11 | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |
+| T12 | 2 | Colours on `oklch()` + `color-mix(in lab)`, `--theme-bg/fg/border/contrast` and `.theme-*`, remove the 52 `--tblr-*-rgb` sites; `.btn-primary` etc. keep emitting via the theme tokens | `_colors.scss`, `_theme.scss`, `_props.scss`, `core/scss/ui/**` | contrast gate, dark mode screenshots, hand-reviewed `html-diff` | L |
+| T13 | 9 | Component parity table for `.avatar`, `.chip`, `.steps`→`.stepper`, `.progress`, `.status` against v6 (via the `bootstrap-v6-reference` agent); then one rework PR per component with the old names aliased | planning notes, then `core/scss/ui/_avatars.scss`, `_chips.scss`, `_steps.scss`, `_progress.scss`, `_status.scss` | `check-markup-classes`, `classnames`, changeset | S + 5×M |
+| T14 | 6 | Modal on native `<dialog>` under the v5 names, events and data attributes; keep Tabler's modal variants and the preview modal architecture working | `core/scss/bootstrap/_modal.scss`, `core/scss/ui/_modals.scss`, `core/js/src/bootstrap/modal.ts`, `shared/ui/**` | a11y checklist (focus trap, Escape, backdrop, focus return), by-design `html-diff` | L |
+| T15 | 6 | Offcanvas on the same `DialogBase` | `core/scss/bootstrap/_offcanvas.scss`, `core/js/src/bootstrap/offcanvas.ts` | same as T14 | M |
+| T16 | 6 | Carousel on CSS scroll snap; `autoplay` and `ends` options; removed classes handled per question 8 | `core/scss/bootstrap/_carousel.scss`, `core/js/src/bootstrap/carousel.ts` | preview smoke, keyboard pass | M |
+| T17 | 5 | Delete `util/backdrop.ts`, `util/focustrap.ts`, `util/scrollbar.ts` once T14 and T15 are merged | `core/js/src/bootstrap/util/**` | vitest | S |
+| T18 | 10 | 2.0 upgrade guide with before/after per breaking change, `classnames` updates, extended `check-markup-classes` baselines, changesets per phase | `UPGRADE.md`, `docs/content/**` | docs build, link gate | M, grows with each task |
+
+Dependencies: T3 after T2. T4 and T5 can land before T3 (in `_variables.scss`, moved by T3 later). T12 after T3.
+T13 reworks after T12 (they use theme tokens). T14 → T15 → T17. T18 runs alongside everything.
+
+### 6.2 Waiting on a decision (section 5)
+
+| Open question | Task once answered |
+| --- | --- |
+| 4 `$spacers` | either nothing, or a remap PR plus a codemod for every template |
+| 6 navbar as drawer | prototype against the folded sidebar, then decide |
+| 8 classes removed by native components | accordion on `<details>` (T19, phase 6, M) is blocked on this: it decides what happens to `.accordion-button` / `.accordion-collapse` (195 occurrences in 12 files) |
+| 9 cascade `@layer` | one PR after T3, byte-diff plus specificity review |
+| 10 breakpoint values | either nothing, or a reflow PR with screenshots of every preview page |
+| 11 forms validation and `_form-check` split | phase 7 PRs |
+| 12 datepicker library | new component or nothing |
+| 13 `data-tblr-*` switch | docs and markup sweep, or nothing |
+
