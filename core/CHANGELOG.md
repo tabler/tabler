@@ -2,8 +2,6 @@
 
 ## 1.5.0
 
-_2026-09-05_
-
 ### Minor Changes
 
 - 9ea657b: Added `.text-gray-50` through `.text-gray-950` utility classes alongside the existing `.bg-gray-*` utilities.
@@ -122,8 +120,6 @@ _2026-09-05_
 
 ## 1.4.0
 
-_2025-07-13_
-
 ### Minor Changes
 
 - 9951fe9: Enhance button and hover animations
@@ -143,23 +139,17 @@ _2025-07-13_
 
 ## 1.3.2
 
-_2025-05-19_
-
 ### Patch Changes
 
 - 446c34e: Fix README file in core package
 
 ## 1.3.1
 
-_2025-05-19_
-
 ### Patch Changes
 
 - a7f73d7: Fix README file in core package
 
 ## 1.3.0
-
-_2025-05-19_
 
 ### Minor Changes
 
@@ -190,8 +180,6 @@ _2025-05-19_
 - 9007e73: Fix FAQ accordion structure
 
 ## 1.2.0
-
-_2025-04-16_
 
 ### Minor Changes
 
@@ -228,15 +216,11 @@ _2025-04-16_
 
 ## 1.1.1
 
-_2025-03-01_
-
 ### Patch Changes
 
 - f29c911: Fix Documentation structure
 
 ## 1.1.0
-
-_2025-03-01_
 
 ### Minor Changes
 
@@ -268,8 +252,6 @@ _2025-03-01_
 - ca4ba14: Fixes navbar styles with new hover effects and color variables
 
 ## 1.0.0
-
-_2025-01-28_
 
 ### Minor Changes
 
@@ -393,16 +375,12 @@ _2025-01-28_
 
 ## 1.0.0-beta24
 
-_2025-01-11_
-
 - Enhanced documentation.
 - Updated illustrations and improved SVG handling in HTML.
 - Updated copyright year in LICENSE file to 2025.
 - Added marketing pages plugin.
 
 ## 1.0.0-beta23
-
-_2025-01-07_
 
 - Documentation improvements.
 - Added countup functionality and updated documentation example.
@@ -441,8 +419,6 @@ _2025-01-07_
 
 ## 1.0.0-beta22
 
-_2025-01-02_
-
 - Fixed `@charset` CSS declaration in bundle.
 - Fixed cells with inline icons.
 - Fixed padding in code blocks.
@@ -465,8 +441,6 @@ _2025-01-02_
 - Initialized VS Code configuration.
 
 ## 1.0.0-beta21
-
-_2024-09-08_
 
 - Updated dependencies.
 - Updated Tabler Icons to v3.14.0 and the import script.
@@ -505,8 +479,6 @@ _2024-09-08_
 
 ## 1.0.0-beta20
 
-_2023-08-24_
-
 - Update `bootstrap` to v5.3.1
 - Add new `Chat` component
 - Add new `Tag` component
@@ -533,8 +505,6 @@ _2023-08-24_
 
 ## 1.0.0-beta19
 
-_2023-05-15_
-
 - Add customizable Star Ratings component using `star-rating.js` library (#1571)
 - Add new "Filled" section to Icons page (#1574)
 - Fix form controls bugs in dark mode (#1573)
@@ -542,8 +512,6 @@ _2023-05-15_
 - Changelog update
 
 ## 1.0.0-beta18
-
-_2023-05-14_
 
 - new page: Cookie banner
 - Unify dark mode with latest Bootstrap API and improve dark mode elements (#1561)
@@ -568,8 +536,6 @@ _2023-05-14_
 
 ## 1.0.0-beta17
 
-_2023-01-28_
-
 - update `bootstrap` to v5.3.0
 - update icons to v2.1.2
 - add 72 new brands, browsers logos update
@@ -592,8 +558,6 @@ _2023-01-28_
 
 ## 1.0.0-beta16
 
-_2022-11-12_
-
 - new `Photogrid` page
 - `Steps` component improvements
 - fix #1348: Make job listing responsive for smaller devices
@@ -607,8 +571,6 @@ _2022-11-12_
 - fix #1262 - `.bg-opacity-xx` class is not functioning properly
 
 ## 1.0.0-beta15
-
-_2022-11-01_
 
 - new `badges` page
 - `<kbd>` styling
@@ -627,14 +589,10 @@ _2022-11-01_
 
 ## 1.0.0-beta14
 
-_2022-10-21_
-
 - fix active items in dark mode
 - update Jekyll to newest version
 
 ## 1.0.0-beta13
-
-_2022-10-18_
 
 - update Bootstrap to 5.2.1, update dependencies
 - new `tracking` component
@@ -666,8 +624,6 @@ _2022-10-18_
 
 ## 1.0.0-beta12
 
-_2022-09-19_
-
 - new "Job listing" page
 - new "Sign in with cover" page
 - new "Logs" page
@@ -693,8 +649,6 @@ _2022-09-19_
 
 ## 1.0.0-beta11
 
-_2022-08-05_
-
 - new `Dropzone` component
 - new `Lightbox` component
 - new `TinyMCS` component
@@ -710,8 +664,6 @@ _2022-08-05_
 
 ## 1.0.0-beta10
 
-_2022-04-29_
-
 - new `datatable` component
 - update Tabler Icons to v1.67
 - fix: #1024 - fix Tom-select in dark mode
@@ -720,8 +672,6 @@ _2022-04-29_
 - new `FAQ` page
 
 ## 1.0.0-beta9
-
-_2022-02-26_
 
 - fix: #1061 - list group item colors in light and dark modes
 - new `tasks` dashboard
@@ -736,8 +686,6 @@ _2022-02-26_
 
 ## 1.0.0-beta8
 
-_2022-02-05_
-
 - update dependencies
 - new vector maps demos
 - fixes update map on resize
@@ -746,8 +694,6 @@ _2022-02-05_
 - map tooltip fixes
 
 ## 1.0.0-beta7
-
-_2022-02-05_
 
 - fix: #1019 - project-overview.html link not working
 - fix: #1010 - card with bottom tabs has incorrect border radius
@@ -762,8 +708,6 @@ _2022-02-05_
 
 ## 1.0.0-beta6
 
-_2022-01-18_
-
 - pricing cards fix
 - fix bug `fw-...`, `.fs-...` is missed (#987)
 - avatar class fix
@@ -776,8 +720,6 @@ _2022-01-18_
 - update package dependencies to newest version
 
 ## 1.0.0-beta5
-
-_2021-12-07_
 
 **Tabler has finally lived to see dark mode! 🌝🌚**
 
@@ -796,8 +738,6 @@ _2021-12-07_
 
 ## 1.0.0-beta4
 
-_2021-10-24_
-
 - upgrade required node.js version to 14
 - upgrade Bootstrap to 5.1
 - upgrade dependencies
@@ -806,16 +746,12 @@ _2021-10-24_
 
 ## 1.0.0-beta3
 
-_2021-05-08_
-
 - upgrade Bootstrap to 5.0
 - upgrade dependencies
 - change `$border-radius-pill` variable
 - badge vertical align fix
 
 ## 1.0.0-beta2
-
-_2021-03-29_
 
 - update dependencies
 - `li` marker fix
@@ -829,8 +765,6 @@ _2021-03-29_
 - charts docs
 
 ## 1.0.0-beta
-
-_2021-02-17_
 
 **Initial beta release of Tabler v1.0! Lots more coming soon though 😁**
 
