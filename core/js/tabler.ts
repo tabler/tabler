@@ -31,3 +31,6 @@ export { default as Sortable } from './src/sortable'
 export { default as Sparkline } from './src/sparkline'
 export { default as Strength } from './src/strength'
 export { default as SwitchIcon } from './src/switch-icon'
+
+// Tabler's own helpers as named exports (prefix, hexToRgba, getColor)
+export * from './src/tabler'
