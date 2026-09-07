@@ -1,5 +1,13 @@
 ---
+import MarkdownSource from './MarkdownSource.astro'
+import { markdownTable } from '@shared/lib/markdown-source'
 import flags from '@data/flags.json'
+
+// Same list as a table for the page's .md mirror
+const markdown = markdownTable(
+  ['Country', 'Code', 'CSS class'],
+  flags.map((flag) => [flag.name, `\`${flag.flag}\``, `\`.flag-country-${flag.flag}\``]),
+)
 ---
 
 <table class="table table-vcenter">
@@ -30,3 +38,4 @@ import flags from '@data/flags.json'
     }
   </tbody>
 </table>
+<MarkdownSource name="Flags" markdown={markdown} />
