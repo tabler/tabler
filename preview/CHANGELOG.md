@@ -2,8 +2,6 @@
 
 ## 1.5.0
 
-_2026-09-05_
-
 ### Minor Changes
 
 - 09d419a: Added a `charts-advanced` page and docs for two y-axes, chart annotations, a zoom brush and synced chart groups.

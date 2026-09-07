@@ -2,8 +2,6 @@
 
 ## 1.5.0
 
-_2026-09-05_
-
 ### Minor Changes
 
 - 4a97921: Added `Accordion` documentation page with usage variants and Bootstrap `collapse` behavior examples.
