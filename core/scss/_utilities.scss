@@ -90,8 +90,12 @@ $utilities: map.merge(
       class: shadow,
       values: (
         null: var(--box-shadow),
+        xs: var(--shadow-xs),
         sm: var(--box-shadow-sm),
+        md: var(--shadow-md),
         lg: var(--box-shadow-lg),
+        xl: var(--shadow-xl),
+        '2xl': var(--shadow-2xl),
         none: none,
       ),
     ),
@@ -897,6 +901,62 @@ $utilities: map.merge(
       property: z-index,
       class: z,
       values: $zindex-levels,
+    ),
+    // Container query containment — turns an element into a query container so
+    // container-query components (`.card-group`, `.list-group-horizontal`) resolve.
+    'container': (
+        property: container-type,
+        class: contains,
+        values: (
+          inline: inline-size,
+          size: size,
+        ),
+      ),
+    // Grid column counts, responsive like `justify-content`.
+    'grid-column-counts': (
+        responsive: true,
+        property: grid-template-columns,
+        class: grid-cols,
+        values: (
+          1: repeat(1, minmax(0, 1fr)),
+          2: repeat(2, minmax(0, 1fr)),
+          3: repeat(3, minmax(0, 1fr)),
+          4: repeat(4, minmax(0, 1fr)),
+          6: repeat(6, minmax(0, 1fr)),
+          subgrid: subgrid,
+        ),
+      ),
+    // `.grid-cols-fill` — span every column of the parent grid.
+    'grid-columns': (
+        property: grid-column,
+        class: grid-cols,
+        values: (
+          fill: #{'1 / -1'},
+        ),
+      ),
+    'grid-auto-flow': (
+      property: grid-auto-flow,
+      class: grid-auto-flow,
+      values: row column dense,
+    ),
+    'justify-items': (
+      property: justify-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        stretch: stretch,
+      ),
+    ),
+    'place-items': (
+      responsive: true,
+      property: place-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        stretch: stretch,
+      ),
     ),
   ),
   $utilities
