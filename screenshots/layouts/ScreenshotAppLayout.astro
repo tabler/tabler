@@ -177,7 +177,11 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
     </nav>
 
     {libJsFiles.map((src) => <script is:inline src={src} defer />)}
-    <script is:inline src={`/dist/js/tabler${min}.js`} defer></script>
+    <!-- ESM-only build: load as a module and re-expose the namespace as a local
+    shim so the capture pages' window.tabler.Dropdown/Offcanvas calls keep working.
+    A static import (not import()) so window.tabler is set before DOMContentLoaded,
+    the way the old classic script guaranteed. -->
+    <script is:inline type="module" set:html={`import * as tabler from '/dist/js/tabler${min}.js';\nwindow.tabler = tabler;`} />
 
     <PageScripts />
 
