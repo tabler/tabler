@@ -2,20 +2,33 @@
 
 @use '../config' as *;
 
-.breadcrumb {
-  --breadcrumb-padding-x: #{$breadcrumb-padding-x};
-  --breadcrumb-padding-y: #{$breadcrumb-padding-y};
-  --breadcrumb-margin-bottom: #{$breadcrumb-margin-bottom};
-  --breadcrumb-font-size: #{$breadcrumb-font-size};
-  --breadcrumb-bg: #{$breadcrumb-bg};
-  --breadcrumb-border-radius: #{$breadcrumb-border-radius};
-  --breadcrumb-divider-color: #{$breadcrumb-divider-color};
-  --breadcrumb-item-padding-x: #{$breadcrumb-item-padding-x};
-  --breadcrumb-item-active-color: #{$breadcrumb-active-color};
-  --breadcrumb-item-active-font-weight: #{$breadcrumb-active-font-weight};
-  --breadcrumb-item-disabled-color: #{$breadcrumb-disabled-color};
-  --breadcrumb-link-color: #{$breadcrumb-link-color};
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
+// scss-docs-start breadcrumb-css-vars
+$breadcrumb-tokens: () !default;
+$breadcrumb-tokens: defaults(
+  (
+    --breadcrumb-padding-x: $breadcrumb-padding-x,
+    --breadcrumb-padding-y: $breadcrumb-padding-y,
+    --breadcrumb-margin-bottom: $breadcrumb-margin-bottom,
+    --breadcrumb-font-size: $breadcrumb-font-size,
+    --breadcrumb-bg: $breadcrumb-bg,
+    --breadcrumb-border-radius: $breadcrumb-border-radius,
+    --breadcrumb-divider-color: $breadcrumb-divider-color,
+    --breadcrumb-item-padding-x: $breadcrumb-item-padding-x,
+    --breadcrumb-item-active-color: $breadcrumb-active-color,
+    --breadcrumb-item-active-font-weight: $breadcrumb-active-font-weight,
+    --breadcrumb-item-disabled-color: $breadcrumb-disabled-color,
+    --breadcrumb-link-color: $breadcrumb-link-color,
+  ),
+  $breadcrumb-tokens
+);
+// scss-docs-end breadcrumb-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
+.breadcrumb {
+  @include tokens($breadcrumb-tokens);
   display: flex;
   flex-wrap: wrap;
   padding: 0;

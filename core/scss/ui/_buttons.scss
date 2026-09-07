@@ -6,17 +6,31 @@
 //
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start btn-css-vars
+$btn-tokens: () !default;
+$btn-tokens: defaults(
+  (
+    --btn-icon-size: $input-btn-icon-size,
+    --btn-icon-color: inherit,
+    --btn-bg: var(--bg-surface),
+    --btn-color: var(--body-color),
+    --btn-border-color: $btn-border-color,
+    --btn-hover-bg: var(--btn-bg),
+    --btn-hover-border-color: var(--border-active-color),
+    --btn-active-color: $active-color,
+    --btn-active-bg: $active-bg,
+    --btn-active-border-color: $active-border-color,
+  ),
+  $btn-tokens
+);
+// scss-docs-end btn-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .btn {
-  --btn-icon-size: #{$input-btn-icon-size};
-  --btn-icon-color: inherit;
-  --btn-bg: var(--bg-surface);
-  --btn-color: var(--body-color);
-  --btn-border-color: #{$btn-border-color};
-  --btn-hover-bg: var(--btn-bg);
-  --btn-hover-border-color: var(--border-active-color);
-  --btn-active-color: #{$active-color};
-  --btn-active-bg: #{$active-bg};
-  --btn-active-border-color: #{$active-border-color};
+  @include tokens($btn-tokens);
   position: relative;
 
   display: inline-flex;
