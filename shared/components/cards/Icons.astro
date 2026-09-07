@@ -10,8 +10,9 @@ interface Props {
 
 const { title, type = 'outline' } = Astro.props
 
-// Dev preview limits icons to 20 (see BaseLayout).
-const limit = 20
+// The dev server renders only the first 20 icons so the page stays fast;
+// `astro build` (the zip package and production site) renders all of them.
+const limit = import.meta.env.DEV ? 20 : Infinity
 
 const entries = Object.entries(icons as Record<string, { svg?: Record<string, string | null> }>)
   .filter(([, icon]) => icon.svg?.[type])
