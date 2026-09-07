@@ -1,9 +1,23 @@
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start calendar-css-vars
+$calendar-tokens: () !default;
+$calendar-tokens: defaults(
+  (
+    --calendar-padding-y: $calendar-padding-y,
+    --calendar-date-padding: $calendar-date-padding,
+    --calendar-date-size: $calendar-date-size,
+  ),
+  $calendar-tokens
+);
+// scss-docs-end calendar-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .calendar {
-  --calendar-padding-y: #{$calendar-padding-y};
-  --calendar-date-padding: #{$calendar-date-padding};
-  --calendar-date-size: #{$calendar-date-size};
+  @include tokens($calendar-tokens);
   display: block;
   font-size: $font-size-sm;
   border: var(--border-width) var(--border-style) var(--border-color);
