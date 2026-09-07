@@ -1,9 +1,23 @@
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start signature-css-vars
+$signature-tokens: () !default;
+$signature-tokens: defaults(
+  (
+    --signature-padding: var(--spacer-1),
+    --signature-border-radius: var(--border-radius),
+    --signature-canvas-height: 12.5rem,
+  ),
+  $signature-tokens
+);
+// scss-docs-end signature-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .signature {
-  --signature-padding: var(--spacer-1);
-  --signature-border-radius: var(--border-radius);
-  --signature-canvas-height: 12.5rem;
+  @include tokens($signature-tokens);
   padding: var(--signature-padding);
   border: var(--border-width) solid var(--border-color);
   @include border-radius(var(--border-radius));

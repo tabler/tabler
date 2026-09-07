@@ -1,22 +1,35 @@
 @use '../config' as *;
 
-.alert {
-  --alert-variant-color: var(--body-color);
-  --alert-color: var(--alert-variant-color);
-  --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))};
-  --alert-padding-x: #{$alert-padding-x};
-  --alert-padding-y: #{$alert-padding-y};
-  --alert-margin-bottom: #{$alert-margin-bottom};
-  --alert-border-color: #{color-transparent(var(--alert-variant-color), 0.2, var(--bg-surface))};
-  --alert-border: var(--border-width) solid var(--alert-border-color);
-  --alert-border-radius: var(--border-radius);
-  --alert-link-color: inherit;
-  --alert-heading-font-weight: var(--font-weight-medium);
-  --alert-heading-margin-bottom: #{$alert-heading-margin-bottom};
-  --alert-icon-size: #{$alert-icon-size};
-  --alert-padding-inline-end: #{$alert-padding-inline-end};
-  --alert-gap: #{$alert-gap};
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
+// scss-docs-start alert-css-vars
+$alert-tokens: () !default;
+$alert-tokens: defaults(
+  (
+    --alert-variant-color: var(--body-color),
+    --alert-color: var(--alert-variant-color),
+    --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))},
+    --alert-padding-x: $alert-padding-x,
+    --alert-padding-y: $alert-padding-y,
+    --alert-margin-bottom: $alert-margin-bottom,
+    --alert-border-color: #{color-transparent(var(--alert-variant-color), 0.2, var(--bg-surface))},
+    --alert-border: var(--border-width) solid var(--alert-border-color),
+    --alert-border-radius: var(--border-radius),
+    --alert-link-color: inherit,
+    --alert-heading-font-weight: var(--font-weight-medium),
+    --alert-heading-margin-bottom: $alert-heading-margin-bottom,
+    --alert-icon-size: $alert-icon-size,
+    --alert-padding-inline-end: $alert-padding-inline-end,
+    --alert-gap: $alert-gap,
+  ),
+  $alert-tokens
+);
+// scss-docs-end alert-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
+.alert {
+  @include tokens($alert-tokens);
   position: relative;
   display: flex;
   flex-direction: row;

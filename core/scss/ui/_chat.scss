@@ -1,9 +1,23 @@
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start chat-css-vars
+$chat-tokens: () !default;
+$chat-tokens: defaults(
+  (
+    --chat-bubbles-gap: $chat-bubbles-gap,
+    --chat-bubble-padding: $chat-bubble-padding,
+    --chat-bubble-title-margin-bottom: $chat-bubble-title-margin-bottom,
+  ),
+  $chat-tokens
+);
+// scss-docs-end chat-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .chat {
-  --chat-bubbles-gap: #{$chat-bubbles-gap};
-  --chat-bubble-padding: #{$chat-bubble-padding};
-  --chat-bubble-title-margin-bottom: #{$chat-bubble-title-margin-bottom};
+  @include tokens($chat-tokens);
 }
 
 .chat-bubbles {
