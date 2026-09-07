@@ -3,6 +3,7 @@
   "version": "1.5.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
+  "type": "module",
   "scripts": {
     "dev": "pnpm run watch",
     "dev:prepare": "pnpm run clean && pnpm run copy && concurrently \"pnpm run css:dev\" \"pnpm run js:build\"",
@@ -21,8 +22,8 @@
     "js:build:theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
     "js:build:standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
     "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\"",
-    "js:min:standalone": "concurrently \"terser dist/js/tabler.js --compress --mangle --source-map \\\"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\\\" -o dist/js/tabler.min.js\" \"terser dist/js/tabler.esm.js --module --compress --mangle --source-map \\\"content=dist/js/tabler.esm.js.map,filename=dist/js/tabler.esm.min.js.map,url=tabler.esm.min.js.map\\\" -o dist/js/tabler.esm.min.js\"",
-    "js:min:theme": "concurrently \"terser dist/js/tabler-theme.js --compress --mangle --source-map \\\"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\\\" -o dist/js/tabler-theme.min.js\" \"terser dist/js/tabler-theme.esm.js --module --compress --mangle --source-map \\\"content=dist/js/tabler-theme.esm.js.map,filename=dist/js/tabler-theme.esm.min.js.map,url=tabler-theme.esm.min.js.map\\\" -o dist/js/tabler-theme.esm.min.js\"",
+    "js:min:standalone": "terser dist/js/tabler.js --module --compress --mangle --source-map \"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\" -o dist/js/tabler.min.js",
+    "js:min:theme": "terser dist/js/tabler-theme.js --module --compress --mangle --source-map \"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\" -o dist/js/tabler-theme.min.js",
     "copy": "concurrently \"pnpm run copy:img\" \"pnpm run copy:libs\"",
     "copy:img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
     "copy:libs": "tsx .build/copy-libs.ts",
@@ -73,11 +74,29 @@
   ],
   "style": "dist/css/tabler.css",
   "sass": "scss/tabler.scss",
-  "unpkg": "dist/js/tabler.min.js",
-  "umd:main": "dist/js/tabler.min.js",
-  "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
+  "module": "dist/js/tabler.js",
   "types": "dist/types/tabler.d.ts",
+  "unpkg": "dist/js/tabler.min.js",
+  "jsdelivr": "dist/js/tabler.min.js",
+  "sideEffects": [
+    "./js/**",
+    "./dist/js/tabler.js",
+    "./dist/js/tabler-theme.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/tabler.d.ts",
+      "import": "./dist/js/tabler.js"
+    },
+    "./theme": "./dist/js/tabler-theme.js",
+    "./package.json": "./package.json",
+    "./libs.json": "./libs.json",
+    "./scss/*": "./scss/*",
+    "./js/*.ts": "./js/*.ts",
+    "./js/*": "./js/*.ts",
+    "./dist/*": "./dist/*"
+  },
   "bundlewatch": {
     "files": [
       {
@@ -217,27 +236,11 @@
         "maxSize": "48 kB"
       },
       {
-        "path": "./dist/js/tabler.esm.js",
-        "maxSize": "64 kB"
-      },
-      {
-        "path": "./dist/js/tabler.esm.min.js",
-        "maxSize": "48 kB"
-      },
-      {
         "path": "./dist/js/tabler-theme.js",
         "maxSize": "1.3 kB"
       },
       {
-        "path": "./dist/js/tabler-theme.esm.js",
-        "maxSize": "1.3 kB"
-      },
-      {
         "path": "./dist/js/tabler-theme.min.js",
-        "maxSize": "800 B"
-      },
-      {
-        "path": "./dist/js/tabler-theme.esm.min.js",
         "maxSize": "800 B"
       }
     ]
