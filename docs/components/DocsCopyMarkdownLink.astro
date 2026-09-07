@@ -12,11 +12,20 @@ interface Props {
 const { url, class: className } = Astro.props
 ---
 
-<button type="button" class:list={['btn btn-sm', className]} data-docs-copy-markdown-link={url}>
-  <Icon name="clipboard" />
-  <Icon name="check" class="d-none" />
-  <span data-docs-copy-markdown-link-label>Copy to LLM</span>
-</button>
+<div class="btn-group">
+  <button type="button" class:list={['btn btn-sm', className]} data-docs-copy-markdown-link={url}>
+    <Icon name="clipboard" />
+    <Icon name="check" class="d-none" />
+    <span data-docs-copy-markdown-link-label>Copy to LLM</span>
+  </button>
+  <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="visually-hidden">Toggle dropdown</span>
+  </button>
+  <div class="dropdown-menu dropdown-menu-end">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+  </div>
+</div>
 
 <script>
   // Several buttons can share this markup on one page (header, sidebar, …),
