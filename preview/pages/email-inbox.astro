@@ -26,17 +26,17 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
         <Offcanvas responsive="xxl" direction="start" class="h-100" tabindex="-1" id="emailSidebaroffcanvas">
           <div class="card-body h-100">
             <div>
-              <Button icon="pencil" text="Compose" color="primary" class="d-none d-sm-block" modalId="new-email" />
+              <Button icon="pencil" text="Compose" color="primary" block class="d-none d-sm-block" modalId="new-email" />
             </div>
 
-            <div class="mt-3 nav nav-vertical">
-              <a href="#" class="nav-link text-danger fw-bold">
+            <div class="mt-3 nav nav-vertical nav-pills">
+              <a href="#" class="nav-link active">
                 <Icon name="inbox" class="me-2" />
-                Inbox<span class="badge bg-danger ms-auto">{mails.length}</span>
+                Inbox<span class="badge bg-primary-lt ms-auto">{mails.length}</span>
               </a>
               <a href="#" class="nav-link"><Icon name="star" class="me-2" />Starred</a>
               <a href="#" class="nav-link"><Icon name="clock" class="me-2" />Snoozed</a>
-              <a href="#" class="nav-link"><Icon name="file" class="me-2" />Draft<span class="badge bg-info ms-auto">32</span></a>
+              <a href="#" class="nav-link"><Icon name="file" class="me-2" />Draft<span class="badge bg-info-lt ms-auto">32</span></a>
               <a href="#" class="nav-link"><Icon name="mail-up" class="me-2" />Sent Mail</a>
               <a href="#" class="nav-link"><Icon name="trash" class="me-2" />Trash</a>
               <a href="#" class="nav-link"><Icon name="tag" class="me-2" />Important</a>
@@ -45,7 +45,7 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
 
             <div class="mt-4">
               <Subheader as="h6">Labels</Subheader>
-              <div class="mt-2 nav nav-vertical">
+              <div class="mt-2 nav nav-vertical nav-pills">
                 {
                   Object.entries(labelColors).map(([label, color]) => (
                     <a href="#" class="nav-link">
@@ -107,12 +107,11 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
               </div>
             </ButtonGroup>
 
-            <ButtonGroup>
+            <ButtonGroup class="ms-auto">
               <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 <Icon name="dots" /> More
               </button>
-              <div class="dropdown-menu">
-                <span class="dropdown-header">More Options :</span>
+              <div class="dropdown-menu dropdown-menu-end">
                 <a class="dropdown-item" href="#">Mark as Unread</a>
                 <a class="dropdown-item" href="#">Add to Tasks</a>
                 <a class="dropdown-item" href="#">Add Star</a>
@@ -120,12 +119,14 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
               </div>
             </ButtonGroup>
           </div>
+		</div>
+		<div class="card-body p-0">
 
-          <ListGroup flush hoverable class="mt-3 border-top">
+          <ListGroup flush hoverable>
             {
               mails.length > 0 ? (
                 mails.map((mail) => (
-                  <ListGroupItem class="px-0">
+                  <ListGroupItem>
                     <div class="row align-items-center g-2">
                       <div class="col-auto">
                         <input type="checkbox" class="form-check-input m-0" aria-label={`Select "${mail.subject}"`} />
@@ -176,8 +177,10 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
               )
             }
           </ListGroup>
+		</div>
+		<div class="card-body">
 
-          <div class="row">
+          <div class="row align-items-center">
             <div class="col-7 mt-1">
               Showing 1 - {mails.length} of {mails.length}
             </div>
