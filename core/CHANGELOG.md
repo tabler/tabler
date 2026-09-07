@@ -1,5 +1,22 @@
 # @tabler/core
 
+## 2.0.0 - 2026-09-07
+
+### Major Changes
+
+- a3f8569: Removed the UMD bundle and `window.tabler` global; `@tabler/core` ships ESM only, loaded with `<script type="module">`.
+
+### Minor Changes
+
+- d0c0672: Added container-query (`.contains-*`), grid (`.grid-cols-*`, `.place-items-*`), extended shadow and `.border-keyline` utilities.
+- ce76a13: Added per-component token maps (`$accordion-tokens`, `$alert-tokens`, `$btn-tokens`, `$tag-tokens` …) to 19 more `ui/` components.
+- fe4ed18: Added `defaults()` and `tokens()` Sass helpers and per-component `$card-tokens`, `$badge-tokens`, `$avatar-tokens` override maps.
+- 5e30e9f: Updated dropdowns, tooltips and popovers to use Floating UI instead of Popper, with `positionConfig` replacing `popperConfig`.
+
+### Patch Changes
+
+- d7c231d: Updated spacing and border utilities to emit block-axis logical properties like `margin-block-start` and `border-block-end`.
+
 ## 1.5.0 - 2026-09-05
 
 ### Minor Changes

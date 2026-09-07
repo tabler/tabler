@@ -1,5 +1,12 @@
 # @tabler/preview
 
+## 2.0.0 - 2026-09-07
+
+### Patch Changes
+
+- ac001f8: Updated `astro` to 7.3.1 and `@astrojs/vercel` to 11.0.10, and stopped installing optional peers such as `next`.
+- a3f8569: Removed the UMD bundle and `window.tabler` global; `@tabler/core` ships ESM only, loaded with `<script type="module">`.
+
 ## 1.5.0 - 2026-09-05
 
 ### Minor Changes
