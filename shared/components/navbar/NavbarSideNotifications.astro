@@ -102,7 +102,9 @@ import CaptureScript from '../CaptureScript.astro'
     for (const close of document.querySelectorAll('[data-navbar-notifications-close]')) {
       close.addEventListener('click', () => {
         const toggle = close.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]')
-        window.tabler.bootstrap.Dropdown.getOrCreateInstance(toggle).hide()
+        // ESM-only build: no window.tabler global. Close via Bootstrap's own
+        // data-API — clicking an open toggle dismisses the dropdown.
+        if (toggle && toggle.getAttribute('aria-expanded') === 'true') toggle.click()
       })
     }
   </script>
