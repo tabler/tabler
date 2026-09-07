@@ -6,10 +6,15 @@ import Icon from '@ui/Icon.astro'
 interface Props {
   /** Url of the page's `.md` mirror, fetched on click. */
   url: string
+  /** Absolute url of the same `.md` mirror, for links ChatGPT must resolve on its own. */
+  absoluteUrl?: string | undefined
   class?: string
 }
 
-const { url, class: className } = Astro.props
+const { url, absoluteUrl, class: className } = Astro.props
+
+// ChatGPT opens with this text already in the composer; the reader still has to press send.
+const askChatGptUrl = absoluteUrl && `https://chatgpt.com/?q=${encodeURIComponent(`Read ${absoluteUrl} so I can ask questions about it.`)}`
 ---
 
 <div class="btn-group">
@@ -22,8 +27,18 @@ const { url, class: className } = Astro.props
     <span class="visually-hidden">Toggle dropdown</span>
   </button>
   <div class="dropdown-menu dropdown-menu-end">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href={url} target="_blank">
+      <Icon name="external-link" />
+      <span>View as markdown</span>
+    </a>
+    {
+      askChatGptUrl && (
+        <a class="dropdown-item" href={askChatGptUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="brand-openai" />
+          <span>Ask ChatGPT</span>
+        </a>
+      )
+    }
   </div>
 </div>
 

@@ -115,6 +115,9 @@ const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
 const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
 const ogImageUrl = new URL('/static/og.png', Astro.site ?? site.docsUrl).href;
+// Absolute .md url: fetch() uses the relative markdownUrl (same-origin), but the
+// "Ask ChatGPT" link needs a url ChatGPT can actually resolve on its own.
+const canonicalMarkdownUrl = markdownUrl ? new URL(markdownUrl, Astro.site ?? site.docsUrl).href : undefined;
 
 // Relative asset base: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
@@ -388,7 +391,7 @@ const relatedPages = await Promise.all(
 											{
 												markdownUrl && (
 													<div class="d-flex align-items-center">
-														<DocsCopyMarkdownLink url={markdownUrl} />
+														<DocsCopyMarkdownLink url={markdownUrl} absoluteUrl={canonicalMarkdownUrl} />
 													</div>
 												)
 											}
