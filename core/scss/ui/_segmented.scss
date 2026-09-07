@@ -1,19 +1,32 @@
 @use '../config' as *;
 
-.nav-segmented {
-  --nav-bg: var(--bg-surface-tertiary);
-  --nav-padding: #{$nav-segmented-padding};
-  --nav-height: #{$nav-segmented-height};
-  --nav-gap: #{$nav-segmented-gap};
-  --nav-active-bg: var(--bg-surface);
-  --nav-font-size: inherit;
-  --nav-radius: #{$nav-segmented-radius};
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
-  --nav-link-disabled-color: var(--disabled-color);
-  --nav-link-gap: #{$nav-segmented-link-gap};
-  --nav-link-padding-x: #{$nav-segmented-link-padding-x};
-  --nav-link-icon-size: #{$nav-segmented-link-icon-size};
-  --nav-link-icon-margin: #{$nav-segmented-icon-margin};
+// scss-docs-start nav-segmented-css-vars
+$nav-segmented-tokens: () !default;
+$nav-segmented-tokens: defaults(
+  (
+    --nav-bg: var(--bg-surface-tertiary),
+    --nav-padding: $nav-segmented-padding,
+    --nav-height: $nav-segmented-height,
+    --nav-gap: $nav-segmented-gap,
+    --nav-active-bg: var(--bg-surface),
+    --nav-font-size: inherit,
+    --nav-radius: $nav-segmented-radius,
+    --nav-link-disabled-color: var(--disabled-color),
+    --nav-link-gap: $nav-segmented-link-gap,
+    --nav-link-padding-x: $nav-segmented-link-padding-x,
+    --nav-link-icon-size: $nav-segmented-link-icon-size,
+    --nav-link-icon-margin: $nav-segmented-icon-margin,
+  ),
+  $nav-segmented-tokens
+);
+// scss-docs-end nav-segmented-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
+.nav-segmented {
+  @include tokens($nav-segmented-tokens);
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--nav-gap);

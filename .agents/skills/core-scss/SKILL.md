@@ -81,8 +81,11 @@ $badge-tokens: defaults(
   block stays byte-identical. Converting a component is output-neutral: prove it with a
   rebuild diff (`html-diff` only covers markup).
 - Sass variables go to `_variables.scss` with `!default`, dark-mode counterparts to `_variables-dark.scss`.
-- Components not yet converted still declare the custom properties inline at the top of the
-  root rule (`--badge-padding-x: #{$badge-padding-x};`); follow the map pattern for new work.
+- Most `ui/` components now use this pattern (`$<component>-tokens`). A few small ones still
+  declare one or two custom properties inline at the top of the root rule
+  (`--icon-size: #{$icon-size};`) — that is fine; reach for a map once there is a cluster.
+- Keep the map value bare (`--card-bg: $card-bg`); only wrap it in `#{…}` when it is a
+  function call or an interpolated expression (`--alert-bg: #{color-transparent(…)}`).
 
 ## 3. Custom properties are authored bare
 
