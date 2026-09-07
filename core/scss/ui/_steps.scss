@@ -3,11 +3,25 @@
 //
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start steps-css-vars
+$steps-tokens: () !default;
+$steps-tokens: defaults(
+  (
+    --steps-color: $steps-color,
+    --steps-inactive-color: $steps-inactive-color,
+    --steps-dot-size: $steps-dot-size,
+    --steps-border-width: $steps-border-width,
+  ),
+  $steps-tokens
+);
+// scss-docs-end steps-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .steps {
-  --steps-color: #{$steps-color};
-  --steps-inactive-color: #{$steps-inactive-color};
-  --steps-dot-size: #{$steps-dot-size};
-  --steps-border-width: #{$steps-border-width};
+  @include tokens($steps-tokens);
   display: flex;
   flex-wrap: nowrap;
   width: 100%;

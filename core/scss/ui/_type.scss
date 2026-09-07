@@ -341,10 +341,24 @@ $text-variants: (
   }
 }
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start callout-css-vars
+$callout-tokens: () !default;
+$callout-tokens: defaults(
+  (
+    --callout-margin-bottom: $callout-margin-bottom,
+    --callout-padding-y: $callout-padding-y,
+    --callout-padding-x: $callout-padding-x,
+  ),
+  $callout-tokens
+);
+// scss-docs-end callout-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .callout {
-  --callout-margin-bottom: #{$callout-margin-bottom};
-  --callout-padding-y: #{$callout-padding-y};
-  --callout-padding-x: #{$callout-padding-x};
+  @include tokens($callout-tokens);
   padding: var(--callout-padding-y) var(--callout-padding-x);
   margin-bottom: var(--callout-margin-bottom);
   background: var(--primary-lt);

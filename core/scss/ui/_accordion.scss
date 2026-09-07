@@ -1,25 +1,38 @@
 @use '../config' as *;
 
-.accordion {
-  --accordion-color: var(--body-color);
-  --accordion-border-color: var(--border-color);
-  --accordion-border-radius: #{$accordion-border-radius};
-  --accordion-inner-border-radius: #{$accordion-inner-border-radius};
-  --accordion-padding-x: #{$accordion-body-padding-x};
-  --accordion-gap: 0;
-  --accordion-active-color: #{$accordion-button-active-color};
-  --accordion-btn-color: var(--accordion-color);
-  --accordion-btn-bg: #{$accordion-button-bg};
-  --accordion-btn-toggle-width: #{$accordion-btn-toggle-width};
-  --accordion-btn-padding-x: var(--accordion-padding-x);
-  --accordion-btn-padding-y: #{$accordion-button-padding-y};
-  --accordion-btn-font-weight: var(--font-weight-medium);
-  --accordion-body-padding-x: var(--accordion-padding-x);
-  --accordion-body-padding-y: #{$accordion-body-padding-y};
-  --accordion-btn-gap: #{$accordion-btn-gap};
-  --accordion-header-gap: #{$accordion-header-gap};
-  --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
+// scss-docs-start accordion-css-vars
+$accordion-tokens: () !default;
+$accordion-tokens: defaults(
+  (
+    --accordion-color: var(--body-color),
+    --accordion-border-color: var(--border-color),
+    --accordion-border-radius: $accordion-border-radius,
+    --accordion-inner-border-radius: $accordion-inner-border-radius,
+    --accordion-padding-x: $accordion-body-padding-x,
+    --accordion-gap: 0,
+    --accordion-active-color: $accordion-button-active-color,
+    --accordion-btn-color: var(--accordion-color),
+    --accordion-btn-bg: $accordion-button-bg,
+    --accordion-btn-toggle-width: $accordion-btn-toggle-width,
+    --accordion-btn-padding-x: var(--accordion-padding-x),
+    --accordion-btn-padding-y: $accordion-button-padding-y,
+    --accordion-btn-font-weight: var(--font-weight-medium),
+    --accordion-body-padding-x: var(--accordion-padding-x),
+    --accordion-body-padding-y: $accordion-body-padding-y,
+    --accordion-btn-gap: $accordion-btn-gap,
+    --accordion-header-gap: $accordion-header-gap,
+    --accordion-btn-focus-box-shadow: $accordion-btn-focus-box-shadow,
+  ),
+  $accordion-tokens
+);
+// scss-docs-end accordion-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
+.accordion {
+  @include tokens($accordion-tokens);
   display: flex;
   flex-direction: column;
   gap: var(--accordion-gap);
