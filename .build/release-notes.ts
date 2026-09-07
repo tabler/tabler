@@ -28,14 +28,12 @@ interface PackageJson {
 
 const { version } = JSON.parse(readFileSync(join(repoRoot, 'core', 'package.json'), 'utf8')) as PackageJson
 
-// The `## <version>` block of a changelog, without its heading.
+// The `## <version>` block of a changelog, without its heading. The date line
+// `stamp-changelog-dates` puts under the heading is not a bullet, so `bullets()`
+// drops it.
 const versionBlock = (changelog: string): string => {
   const lines = changelog.split('\n')
-  // `## 1.5.0`, or `## 1.5.0 - 2026-09-05` once the date has been stamped on it.
-  const start = lines.findIndex((line) => {
-    const heading = line.trim()
-    return heading === `## ${version}` || heading.startsWith(`## ${version} - `)
-  })
+  const start = lines.findIndex((line) => line.trim() === `## ${version}`)
   if (start === -1) return ''
 
   const rest = lines.slice(start + 1)
