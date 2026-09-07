@@ -1,4 +1,8 @@
-export * as Popper from '@popperjs/core'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
+
+// The middleware the components use, so a `positionConfig` can be built without
+// pulling in Floating UI separately.
+export const FloatingUI = { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift }
 
 export { default as Alert } from './bootstrap/alert'
 export { default as Button } from './bootstrap/button'
