@@ -3,14 +3,6 @@ import Popover from '../../src/bootstrap/popover'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearFixture, getFixture } from '../helpers/fixture'
 
-vi.mock('@popperjs/core', () => ({
-  createPopper: vi.fn(() => ({
-    destroy: vi.fn(),
-    update: vi.fn(),
-    setOptions: vi.fn(),
-  })),
-}))
-
 describe('Popover', () => {
   let fixtureEl: HTMLElement
 
