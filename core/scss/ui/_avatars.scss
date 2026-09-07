@@ -2,16 +2,30 @@
 
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start avatar-css-vars
+$avatar-tokens: () !default;
+$avatar-tokens: defaults(
+  (
+    --avatar-size: var(--avatar-list-size, #{$avatar-size}),
+    --avatar-status-size: $avatar-status-size,
+    --avatar-bg: $avatar-bg,
+    --avatar-box-shadow-color: var(--border-color-translucent),
+    --avatar-box-shadow: inset 0 0 0 1px var(--avatar-box-shadow-color),
+    --avatar-font-size: $avatar-font-size,
+    --avatar-icon-size: $avatar-icon-size,
+    --avatar-brand-size: $avatar-brand-size,
+    --avatar-border-radius: $avatar-border-radius,
+  ),
+  $avatar-tokens
+);
+// scss-docs-end avatar-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .avatar {
-  --avatar-size: var(--avatar-list-size, #{$avatar-size});
-  --avatar-status-size: #{$avatar-status-size};
-  --avatar-bg: #{$avatar-bg};
-  --avatar-box-shadow-color: var(--border-color-translucent);
-  --avatar-box-shadow: inset 0 0 0 1px var(--avatar-box-shadow-color);
-  --avatar-font-size: #{$avatar-font-size};
-  --avatar-icon-size: #{$avatar-icon-size};
-  --avatar-brand-size: #{$avatar-brand-size};
-  --avatar-border-radius: #{$avatar-border-radius};
+  @include tokens($avatar-tokens);
   position: relative;
   display: inline-flex;
   align-items: center;

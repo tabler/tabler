@@ -2,6 +2,38 @@
 
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start card-css-vars
+$card-tokens: () !default;
+$card-tokens: defaults(
+  (
+    --card-spacer-y: $card-spacer-y,
+    --card-spacer-x: $card-spacer-x,
+    --card-title-spacer-y: $card-title-spacer-y,
+    --card-title-color: $card-title-color,
+    --card-subtitle-color: $card-subtitle-color,
+    --card-border-width: $card-border-width,
+    --card-border-color: $card-border-color,
+    --card-border-radius: $card-border-radius,
+    --card-box-shadow: $card-box-shadow,
+    --card-inner-border-radius: $card-inner-border-radius,
+    --card-cap-padding-y: $card-cap-padding-y,
+    --card-cap-padding-x: $card-cap-padding-x,
+    --card-cap-bg: $card-cap-bg,
+    --card-cap-color: $card-cap-color,
+    --card-height: $card-height,
+    --card-color: $card-color,
+    --card-bg: $card-bg,
+    --card-img-overlay-padding: $card-img-overlay-padding,
+    --card-group-margin: $card-group-margin,
+  ),
+  $card-tokens
+);
+// scss-docs-end card-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 @property --card-gradient-direction {
   syntax: '<angle>';
   inherits: true;
@@ -19,6 +51,7 @@
 }
 
 .card {
+  @include tokens($card-tokens);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @include media-print() {
