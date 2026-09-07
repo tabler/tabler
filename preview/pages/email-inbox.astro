@@ -10,14 +10,20 @@ import Progress from '@ui/Progress.astro'
 import Modal from '@shared/components/modals/Modal.astro'
 import CaptureModal from '@shared/components/CaptureModal.astro'
 import NewEmailModalContent from '@shared/components/modals/NewEmailModalContent.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import { formatShortDate } from '@shared/lib/date-format'
 import mails from '@data/mails.json'
+
+// Label colors shared by the folder sidebar and the dots in the message list.
+const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning', Family: 'success', Social: 'primary', Important: 'danger', Promotions: 'purple' }
 ---
 
 <DefaultLayout title="Email inbox" pageHeader="Inbox" pageMenu="extra.email-inbox" pageLibs={['hugerte']}>
   <Card>
     <div class="row g-0">
-      <div class="col-xxl-3 email-border border-end">
-        <Offcanvas responsive="xxl" direction="start" class="h-100 file-offcanvas" tabindex="-1" id="emailSidebaroffcanvas">
+      <div class="col-xxl-3 border-end">
+        <Offcanvas responsive="xxl" direction="start" class="h-100" tabindex="-1" id="emailSidebaroffcanvas">
           <div class="card-body h-100">
             <div>
               <Button icon="pencil" text="Compose" color="primary" class="d-none d-sm-block" modalId="new-email" />
@@ -40,24 +46,13 @@ import mails from '@data/mails.json'
             <div class="mt-4">
               <Subheader as="h6">Labels</Subheader>
               <div class="mt-2 nav nav-vertical">
-                <a href="#" class="nav-link">
-                  <div class="badge bg-info me-2"></div> Updates
-                </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-warning me-2"></div> Friends
-                </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-success me-2"></div> Family
-                </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-primary me-2"></div> Social
-                </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-danger me-2"></div> Important
-                </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-purple me-2"></div> Promotions
-                </a>
+                {
+                  Object.entries(labelColors).map(([label, color]) => (
+                    <a href="#" class="nav-link">
+                      <span class={`badge bg-${color} me-2`} /> {label}
+                    </a>
+                  ))
+                }
               </div>
             </div>
 
@@ -126,67 +121,61 @@ import mails from '@data/mails.json'
             </ButtonGroup>
           </div>
 
-          <div class="mt-3">
-            <ul class="email-list">
-              {
-                mails && mails.length > 0 ? (
-                  mails.map((mail) => (
-                    <li>
-                      <div class="email-sender-info">
-                        <div class="checkbox-wrapper-mail">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id={`mail-${mail.id}`} />
-                            <label class="form-check-label" for={`mail-${mail.id}`} />
-                          </div>
-                        </div>
-                        <span class="star-toggle">
-                          <Icon name="star" />
-                        </span>
-                        <a href="#" class="email-title">
+          <ListGroup flush hoverable class="mt-3 border-top">
+            {
+              mails.length > 0 ? (
+                mails.map((mail) => (
+                  <ListGroupItem class="px-0">
+                    <div class="row align-items-center g-2">
+                      <div class="col-auto">
+                        <input type="checkbox" class="form-check-input m-0" aria-label={`Select "${mail.subject}"`} />
+                      </div>
+                      <div class="col-auto">
+                        <a href="#" class:list={['list-group-item-actions', mail.starred && 'show']} aria-label={mail.starred ? 'Remove star' : 'Add star'}>
+                          <Icon name="star" color={mail.starred ? 'yellow' : 'muted'} />
+                        </a>
+                      </div>
+                      <div class="col-3 col-lg-2 text-truncate">
+                        <a href="#" class="text-body">
                           {mail.sender}
                         </a>
                       </div>
-
-                      <div class="email-content">
-                        <a href="#" class="email-subject">
-                          {mail.subject} &nbsp;–&nbsp;
-                          <span>{mail.preview}</span>
+                      <div class="col text-truncate">
+                        <a href="#" class="text-body">
+                          {mail.subject}
                         </a>
-                        <div class="email-date">{mail.date}</div>
+                        <span class="text-secondary"> – {mail.preview}</span>
                       </div>
-
-                      <div class="email-action-icons">
-                        <ul class="list-inline">
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Archive">
-                              <Icon name="archive" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Delete">
-                              <Icon name="trash" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Mark as read">
-                              <Icon name="mail-opened" class="email-action-icons-item" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Snooze">
-                              <Icon name="clock" />
-                            </a>
-                          </li>
-                        </ul>
+                      <div class="col-auto d-none d-lg-block">
+                        {mail.labels.map((label) => (
+                          <span class={`badge bg-${labelColors[label] ?? 'secondary'}`} title={label} aria-label={label} />
+                        ))}
                       </div>
-                    </li>
-                  ))
-                ) : (
-                  <li class="text-muted">No emails</li>
-                )
-              }
-            </ul>
-          </div>
+                      <div class="col-auto d-none d-md-block">
+                        <div class="list-group-item-actions d-flex gap-2">
+                          <a href="#" class="text-secondary" aria-label="Archive">
+                            <Icon name="archive" />
+                          </a>
+                          <a href="#" class="text-secondary" aria-label="Delete">
+                            <Icon name="trash" />
+                          </a>
+                          <a href="#" class="text-secondary" aria-label="Mark as read">
+                            <Icon name="mail-opened" />
+                          </a>
+                          <a href="#" class="text-secondary" aria-label="Snooze">
+                            <Icon name="clock" />
+                          </a>
+                        </div>
+                      </div>
+                      <div class="col-auto text-secondary text-end">{formatShortDate(new Date(mail.date))}</div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              ) : (
+                <ListGroupItem class="text-secondary">No emails</ListGroupItem>
+              )
+            }
+          </ListGroup>
 
           <div class="row">
             <div class="col-7 mt-1">
