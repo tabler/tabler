@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - v2-dev
 
 permissions:
   contents: read
@@ -33,12 +34,15 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # Both branches get their own "chore: update versions" PR. Only `dev` publishes:
+      # `v2-dev` carries a major changeset, and an empty publish-script keeps the action
+      # from shipping 2.0.0 to npm as `latest` once that PR is merged.
       - name: Create release Pull Request or publish to NPM
         id: changesets
         uses: changesets/action@v2
         with:
           version-script: pnpm run version
-          publish-script: pnpm run publish
+          publish-script: ${{ github.ref_name == 'dev' && 'pnpm run publish' || '' }}
           commit-message: "chore: update versions"
           pr-title: "chore: update versions"
         env:
