@@ -271,6 +271,39 @@ which validates the direction.
 
 **Gate:** RTL build comparison; `html-diff` zero diff.
 
+**Status:** #2974 landed the block axis of the spacing and border utilities (`mt` / `mb` / `my`,
+`pt` / `pb` / `py`, `.border-top` / `.border-bottom` / `.border-y`, negative `mt` / `mb` / `my`) plus
+the non-geometry physical leftovers (`_extends.scss` markdown-table padding, `_spinners.scss` border).
+The inline axis was already logical. `tabler.css` changed by property rename only; `tabler.rtl.css`
+changed by the same renames plus the three inline-axis sweep lines, which rtlcss no longer flips
+because the logical property now resolves the direction itself — rendered output is unchanged.
+
+**Why rtlcss and `--dir` stay.** Logical properties cover box-model sides (margin, padding, border,
+inset, size) but there is no logical form for `transform`, so a physical `translateX(-50%)` cannot be
+mirrored by the browser. Tabler bridges that with `--tblr-dir` (`1` in LTR, `-1` in RTL, set in
+`_props.scss`) multiplied into the `calc()` of every direction-sensitive translate — `.translate-middle`
+in `_utilities.scss`, `$form-floating-label-transform` in `_variables.scss` — each carrying a
+`/*rtl:ignore*/` so rtlcss (which would otherwise negate the `calc()` a second time) leaves it alone.
+rtlcss is still run in `.build/build-css.ts` for everything `--dir` does not reach.
+
+**What would let us drop rtlcss.** Every remaining `rtl:` marker under `core/scss` has to be gone
+first — `grep -rn 'rtl:' core/scss --include='*.scss'` is the live checklist. They fall into:
+
+- *Transforms* — `.translate-middle`, `$form-floating-label-transform`, and the `translateX` /
+  `rotate` uses in `ui/_steps.scss`, `ui/_switch-icon.scss`, `ui/_buttons.scss`, `ui/_badges.scss`,
+  `ui/_loaders.scss`, `ui/_dropdowns.scss`, `layout/_navbar.scss`, `bootstrap/_carousel.scss`,
+  `bootstrap/_offcanvas.scss`, `bootstrap/_spinners.scss`. These need the `--dir` multiplier applied
+  the same way, or a future CSS logical transform.
+- *Popover / tooltip arrow geometry* (`bootstrap/_popover.scss`, `_tooltip.scss`) — physical
+  `border-*` triangles on absolutely positioned arrows; the Floating UI work (phase 5) is expected to
+  replace this with placement-driven values.
+- *`rtl:raw` blocks* in `bootstrap/_reboot.scss` and `ui/_breadcrumbs.scss`, and the
+  `rtl:begin:remove` block in `mixins/bootstrap/_utilities.scss` — hand-written RTL overrides that
+  would need a logical-property equivalent.
+
+Once the checklist is empty, `rtlcss` and the `tabler.rtl.css` build come out and one stylesheet
+serves both directions, matching Bootstrap v6.
+
 ### Phase 5 — JavaScript runtime
 
 - ESM only. Drop the UMD build from `core/package.json` (`js:build:standalone`, `js:min:*`); no
