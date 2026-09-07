@@ -5,6 +5,18 @@
 @use 'bootstrap/transition' as *;
 @use 'bootstrap/border-radius' as *;
 
+// Emit a token map as CSS custom properties on the current selector.
+// Ported from Bootstrap v6 `scss/mixins/_tokens.scss`. Pair it with
+// `defaults()` so one map feeds both `@use … with ()` and runtime overrides.
+//
+// scss-docs-start tokens-mixin
+@mixin tokens($map) {
+  @each $prop, $value in $map {
+    #{$prop}: #{$value};
+  }
+}
+// scss-docs-end tokens-mixin
+
 @mixin subheader($include-color: true, $include-line-height: true) {
   font-size: $h5-font-size;
   font-weight: var(--font-weight-medium);
