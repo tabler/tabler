@@ -13,8 +13,11 @@ interface Props {
 
 const { url, absoluteUrl, class: className } = Astro.props
 
-// ChatGPT opens with this text already in the composer; the reader still has to press send.
-const askChatGptUrl = absoluteUrl && `https://chatgpt.com/?q=${encodeURIComponent(`Read ${absoluteUrl} so I can ask questions about it.`)}`
+// Both ChatGPT and Claude open with this text already in the composer; the
+// reader still has to press send.
+const prompt = absoluteUrl && `Read ${absoluteUrl} so I can ask questions about it.`
+const askChatGptUrl = prompt && `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`
+const askClaudeUrl = prompt && `https://claude.ai/new?q=${encodeURIComponent(prompt)}`
 ---
 
 <div class="btn-group">
@@ -36,6 +39,14 @@ const askChatGptUrl = absoluteUrl && `https://chatgpt.com/?q=${encodeURIComponen
         <a class="dropdown-item" href={askChatGptUrl} target="_blank" rel="noopener noreferrer">
           <Icon name="brand-openai" />
           <span>Ask ChatGPT</span>
+        </a>
+      )
+    }
+    {
+      askClaudeUrl && (
+        <a class="dropdown-item" href={askClaudeUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="sparkles" />
+          <span>Ask Claude</span>
         </a>
       )
     }
