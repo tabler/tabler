@@ -350,23 +350,30 @@ const relatedPages = await Promise.all(
 					<div class="col d-flex flex-column">
 						<div class="docs-article flex-fill">
 							<div class="p-4 py-6 p-lg-6">
-								{breadcrumbs && (
-									<nav aria-label="Breadcrumb">
-										<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
-											{breadcrumbs.map((item, index) =>
-												index < breadcrumbs.length - 1 ? (
-													<li class="breadcrumb-item">
-														<a href={item.path}>{item.name}</a>
-													</li>
-												) : (
-													<li class="breadcrumb-item active" aria-current="page">
-														{item.name}
-													</li>
-												),
+								{
+									(breadcrumbs || markdownUrl) && (
+										<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+											{breadcrumbs && (
+												<nav aria-label="Breadcrumb">
+													<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-0">
+														{breadcrumbs.map((item, index) =>
+															index < breadcrumbs.length - 1 ? (
+																<li class="breadcrumb-item">
+																	<a href={item.path}>{item.name}</a>
+																</li>
+															) : (
+																<li class="breadcrumb-item active" aria-current="page">
+																	{item.name}
+																</li>
+															),
+														)}
+													</ol>
+												</nav>
 											)}
-										</ol>
-									</nav>
-								)}
+											{markdownUrl && <DocsCopyMarkdownLink url={markdownUrl} absoluteUrl={canonicalMarkdownUrl} />}
+										</div>
+									)
+								}
 
 								<Prose
 									data-bs-spy={toc.length > 0 ? 'scroll' : undefined}
@@ -375,27 +382,18 @@ const relatedPages = await Promise.all(
 									data-bs-smooth-scroll={toc.length > 0 ? 'true' : undefined}
 									tabindex="0"
 								>
-									<div class="d-flex flex-column flex-sm-row align-items-sm-center">
-										<h1 class="docs-page-title">
+									<div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+										<h1 class="docs-page-title mb-0">
 											{title}
 										</h1>
 
-										<div class="d-flex flex-wrap gap-2 ms-sm-auto mb-3 mb-sm-0 justify-content-between">
-											{
-												addedIn && (
-													<div class="d-flex align-items-center">
-														<span class="badge bg-primary-lt">Added in {addedIn}</span>
-													</div>
-												)
-											}
-											{
-												markdownUrl && (
-													<div class="d-flex align-items-center">
-														<DocsCopyMarkdownLink url={markdownUrl} absoluteUrl={canonicalMarkdownUrl} />
-													</div>
-												)
-											}
-										</div>
+										{
+											addedIn && (
+												<div class="ms-sm-auto">
+													<span class="badge bg-primary-lt">Added in {addedIn}</span>
+												</div>
+											)
+										}
 									</div>
 
 									<p class="docs-page-lead text-secondary fs-3 lh-lg">{summary}</p>
