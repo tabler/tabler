@@ -954,30 +954,41 @@ $aspect-ratios: (
 ) !default;
 
 // Shadows
-$box-shadow-xs: 0 1px 2px 0 rgba(18, 18, 23, 0.05) !default;
+// Neutral drop-shadow tint. Emitted once as the global `--shadow-color` custom
+// property (see `_props.scss`); every shadow below only varies its opacity via
+// `color-transparent()`, never its colour.
+//
+// The light branch is already 60% transparent, so `color-transparent()` scales
+// each shadow down from the percentages below to the intended light-mode value
+// (e.g. `0.125 * 0.4 = 0.05`). The dark branch is fully opaque black, so the
+// same percentage lands 2.5x darker — otherwise a near-black shadow is
+// invisible against the dark surfaces. Keep the two in sync when tuning.
+$box-shadow-color: light-dark(rgba(18, 18, 23, 0.4), #000) !default;
+
+$box-shadow-xs: 0 1px 2px 0 color-transparent(var(--shadow-color), 0.125) !default;
 $box-shadow-sm:
-  0 1px 3px 0 rgba(18, 18, 23, 0.1),
-  0 1px 2px 0 rgba(18, 18, 23, 0.06) !default;
+  0 1px 3px 0 color-transparent(var(--shadow-color), 0.25),
+  0 1px 2px 0 color-transparent(var(--shadow-color), 0.15) !default;
 $box-shadow-md:
-  0px 2px 4px -1px rgba(18, 18, 23, 0.06),
-  0px 4px 6px -1px rgba(18, 18, 23, 0.08) !default;
+  0px 2px 4px -1px color-transparent(var(--shadow-color), 0.15),
+  0px 4px 6px -1px color-transparent(var(--shadow-color), 0.2) !default;
 $box-shadow-lg:
-  0px 4px 6px -2px rgba(18, 18, 23, 0.05),
-  0px 10px 15px -3px rgba(18, 18, 23, 0.08) !default;
+  0px 4px 6px -2px color-transparent(var(--shadow-color), 0.125),
+  0px 10px 15px -3px color-transparent(var(--shadow-color), 0.2) !default;
 $box-shadow-xl:
-  0px 10px 10px -5px rgba(18, 18, 23, 0.04),
-  0px 20px 25px -5px rgba(18, 18, 23, 0.1) !default;
-$box-shadow-2xl: 0px 25px 50px -12px rgba(18, 18, 23, 0.25) !default;
+  0px 10px 10px -5px color-transparent(var(--shadow-color), 0.1),
+  0px 20px 25px -5px color-transparent(var(--shadow-color), 0.25) !default;
+$box-shadow-2xl: 0px 25px 50px -12px color-transparent(var(--shadow-color), 0.625) !default;
 $box-shadow-overlay:
-  0px 2px 4px 0px rgba(18, 18, 23, 0.04),
-  0px 5px 8px 0px rgba(18, 18, 23, 0.04),
-  0px 10px 18px 0px rgba(18, 18, 23, 0.03),
-  0px 24px 48px 0px rgba(18, 18, 23, 0.03),
-  0px 0px 0px 1px rgba(18, 18, 23, 0.1) !default;
+  0px 2px 4px 0px color-transparent(var(--shadow-color), 0.1),
+  0px 5px 8px 0px color-transparent(var(--shadow-color), 0.1),
+  0px 10px 18px 0px color-transparent(var(--shadow-color), 0.075),
+  0px 24px 48px 0px color-transparent(var(--shadow-color), 0.075),
+  0px 0px 0px 1px color-transparent(var(--shadow-color), 0.25) !default;
 
 $box-shadow: $box-shadow-md !default;
 $box-shadow-transparent: 0 0 0 0 transparent !default;
-$box-shadow-border: 0px 0px 0px 1px rgba(18, 18, 23, 0.1) !default;
+$box-shadow-border: 0px 0px 0px 1px color-transparent(var(--shadow-color), 0.25) !default;
 $box-shadow-input: $box-shadow-xs !default;
 $box-shadow-card: $box-shadow-xs !default;
 $box-shadow-card-hover: $box-shadow-lg !default;
@@ -1000,7 +1011,7 @@ $box-shadows: (
   dropdown: $box-shadow-dropdown,
 ) !default;
 
-$box-shadow-inset: inset 0 1px 2px rgba($black, 0.075) !default;
+$box-shadow-inset: inset 0 1px 2px color-transparent(var(--shadow-color), 0.1875) !default;
 
 // Component active
 $component-active-color: $white !default;
