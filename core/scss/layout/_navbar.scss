@@ -622,6 +622,16 @@ Navbar vertical
   // a bare :where()/[…] selector would lose to it and never take effect.
   html[data-bs-sidebar^='folded'] {
     --sidebar-width: var(--sidebar-folded-width);
+
+    // The sidebar is rendered for the expanded state, so the active submenu can
+    // arrive open (.show). Folded, it would paint as a flyout until sidebar.ts
+    // closes it on DOMContentLoaded — a flicker on every reload. Menus opened by
+    // the Dropdown plugin carry a popper data attribute (data-tblr-popper from
+    // tabler.js, data-bs-popper from Bootstrap's own js), so only the
+    // server-rendered ones hide.
+    .navbar-vertical .dropdown-menu.show:not([data-bs-popper]):not([data-tblr-popper]) {
+      display: none;
+    }
   }
 
   .navbar-vertical:is(.navbar-folded, .navbar-folded-hover) {

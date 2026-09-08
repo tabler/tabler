@@ -19,11 +19,9 @@ interface Props {
   editUrl?: string | undefined
   /** URL of the file implementing the component, from the page's `source` front matter */
   sourceUrl?: string | undefined
-  /** url of this page's markdown mirror, offered as a copy button */
-  markdownUrl?: string | undefined
 }
 
-const { toc = [], editUrl, sourceUrl, markdownUrl } = Astro.props
+const { toc = [], editUrl, sourceUrl } = Astro.props
 
 const illustrationsCount = illustrations.length
 ---
@@ -54,15 +52,8 @@ const illustrationsCount = illustrations.length
 </a>
 
 {
-  (markdownUrl || sourceUrl || editUrl) && (
+  (sourceUrl || editUrl) && (
     <nav class="docs-page-links mt-6" aria-label="Page tools">
-      {markdownUrl && (
-        <button type="button" class="docs-page-link" data-docs-copy-markdown={markdownUrl}>
-          <Icon name="clipboard" />
-          <span data-docs-copy-label>Copy page as Markdown</span>
-        </button>
-      )}
-
       {sourceUrl && (
         <a href={sourceUrl} class="docs-page-link" target="_blank" rel="noopener noreferrer">
           <Icon name="code" />
@@ -80,30 +71,3 @@ const illustrationsCount = illustrations.length
   )
 }
 <!-- END DOCS TOC -->
-
-<script>
-  // Fetches the .md mirror of the page and puts it on the clipboard, so the
-  // whole page can be pasted into an assistant without hunting for the url.
-  const button = document.querySelector<HTMLButtonElement>('[data-docs-copy-markdown]')
-
-  if (button) {
-    const label = button.querySelector<HTMLElement>('[data-docs-copy-label]')
-
-    button.addEventListener('click', async () => {
-      if (!label) return
-      const url = button.dataset.docsCopyMarkdown
-      if (!url) return
-      try {
-        const response = await fetch(url)
-        await navigator.clipboard.writeText(await response.text())
-        const original = label.textContent
-        label.textContent = 'Copied'
-        setTimeout(() => {
-          label.textContent = original
-        }, 2000)
-      } catch {
-        // clipboard or network refused — leave the label alone
-      }
-    })
-  }
-</script>

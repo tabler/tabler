@@ -100,11 +100,12 @@ $dropdown-tokens: defaults(
     display: block;
     width: 14px;
     height: 14px;
-    clip: rect(0, 9px, 9px, 0);
+    clip-path: inset(0 5px 5px 0);
     content: '';
     background: inherit;
-    border: 1px solid;
-    border-color: inherit;
+    // The menu draws its edge with the 1px ring in --dropdown-box-shadow and has
+    // no border, so `inherit` would give the arrow the text color.
+    border: 1px solid var(--dropdown-border-color);
 
     /* rtl:ignore */
     transform: rotate(45deg);

@@ -1,0 +1,17 @@
+---
+// Ships a markdown version of a component's output for the page's .md mirror.
+// Render it next to the html; `name` is the tag the MDX uses for the component.
+// Only the mirror render (docs/lib/llms.ts, which sets the `markdownMirror`
+// local) gets the comment — a browser page never carries it.
+// See shared/lib/markdown-source.ts.
+import { markdownSource } from '@shared/lib/markdown-source'
+
+interface Props {
+  name: string
+  markdown: string
+}
+
+const { name, markdown } = Astro.props
+---
+
+{Astro.locals.markdownMirror && <Fragment set:html={markdownSource(name, markdown)} />}

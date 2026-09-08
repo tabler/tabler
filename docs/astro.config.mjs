@@ -26,11 +26,7 @@ export default defineConfig({
   },
   // Static output + the Vercel adapter: turns `redirects` below into real HTTP
   // redirects at Vercel's routing layer (no adapter = meta-refresh HTML pages).
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+  adapter: vercel(),
   // renamed/moved pages, shared with middleware.ts
   redirects,
   // pages live at the package root (./pages) — content-first layout; all
