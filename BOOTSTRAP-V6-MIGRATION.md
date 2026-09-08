@@ -510,7 +510,7 @@ PR #2966 is parked.
 | — | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
 | #2972 | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
 | #2970 | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
-| — | 3b | Cascade `@layer` with the flat v6 layer order, per-partial wrapping, `input-group`/`validation` hoisted to `components`, vendors and `@property` unlayered, utilities without `!important`; docs and upgrade-guide entry | `core/scss/_root.scss`, `bootstrap/**`, `ui/**`, `layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`, docs customisation page | zero `html-diff`, screenshots, `getComputedStyle` comparison, utility-beats-component control test | M |
+| #3016 | 3b | Cascade `@layer` with the flat v6 layer order, per-partial wrapping, `input-group`/`validation` hoisted to `components`, vendors and `@property` unlayered, utilities without `!important`; docs and upgrade-guide entry | `core/scss/_root.scss`, `bootstrap/**`, `ui/**`, `layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`, docs customisation page | zero `html-diff`, screenshots, `getComputedStyle` comparison, utility-beats-component control test | M |
 | #2974 | 4 | Logical properties on the block axis of spacing and border utilities (inline axis is already logical), class names unchanged; keep rtlcss and `--dir` for transforms | `core/scss/_utilities.scss`, `_extends.scss`, `bootstrap/_spinners.scss` | diff limited to renamed properties in `tabler.css` and `tabler.rtl.css`, zero `html-diff` | S–M |
 | #2973 | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
 | #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
@@ -526,7 +526,7 @@ PR #2966 is parked.
 | — | 10 | 2.0 upgrade guide with before/after per breaking change, `classnames` updates, extended `check-markup-classes` baselines, changesets per phase | `UPGRADE.md`, `docs/content/**` | docs build, link gate | M, grows with each task |
 
 Dependencies: #2977 after #2969; the Sass split after #2977. #2972 and #2970 can land before the
-Sass split (in `_variables.scss`, moved later). oklch after the Sass split; `@layer` (3b) after oklch and before #2974; the component parity
+Sass split (in `_variables.scss`, moved later). oklch after the Sass split; #3016 (`@layer`, 3b) after oklch and before #2974; the component parity
 reworks after oklch (they use theme tokens). Modal → offcanvas → deleting the `util/*` helpers. The
 upgrade guide runs alongside everything.
 
