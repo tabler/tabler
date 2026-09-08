@@ -16,7 +16,8 @@
 /**
 Progress
  */
-.progress {
+@layer components {
+  .progress {
   position: relative;
   width: 100%;
   line-height: $progress-height;
@@ -38,29 +39,29 @@ Progress
     background-color: var(--theme-bg, var(--primary));
     border: none;
   }
-}
+  }
 
-.progress-sm {
+  .progress-sm {
   --progress-height: #{$progress-height-sm};
-}
+  }
 
-.progress-lg {
+  .progress-lg {
   --progress-height: #{$progress-height-lg};
-}
+  }
 
-.progress-xl {
+  .progress-xl {
   --progress-height: #{$progress-height-xl};
-}
+  }
 
-/**
+  /**
 Progress bar
  */
-.progress-bar {
+  .progress-bar {
   height: 100%;
   @include transition(width $transition-time, background $transition-time);
-}
+  }
 
-.progress-bar-indeterminate {
+  .progress-bar-indeterminate {
   &::after,
   &::before {
     position: absolute;
@@ -76,36 +77,36 @@ Progress bar
   &::after {
     animation-delay: 0.75s;
   }
-}
+  }
 
-.progress-separated {
+  .progress-separated {
   --progress-separated-ring-width: #{$progress-separated-ring-width};
 
   .progress-bar {
     box-shadow: 0 0 0 var(--progress-separated-ring-width) var(--card-bg, var(--bg-surface));
   }
-}
+  }
 
-/**
+  /**
 Progressbg
  */
-.progressbg {
+  .progressbg {
   --progressbg-padding-y: #{$progressbg-padding-y};
   --progressbg-padding-x: #{$progressbg-padding-x};
   position: relative;
   display: flex;
   padding: var(--progressbg-padding-y) var(--progressbg-padding-x);
-}
+  }
 
-.progressbg-text {
+  .progressbg-text {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   @include text-truncate();
-}
+  }
 
-.progressbg-progress {
+  .progressbg-progress {
   position: absolute;
   inset-inline-start: 0;
   inset-inline-end: 0;
@@ -115,19 +116,19 @@ Progressbg
   height: 100%;
   pointer-events: none;
   background: transparent;
-}
+  }
 
-.progressbg-value {
+  .progressbg-value {
   --progressbg-value-padding-start: #{$progressbg-value-padding-start};
   padding-inline-start: var(--progressbg-value-padding-start);
   margin-inline-start: auto;
   font-weight: var(--font-weight-medium);
-}
+  }
 
-/**
+  /**
 Progress steps
  */
-.progress-steps {
+  .progress-steps {
   --progress-steps-gap: #{$progress-steps-gap};
   display: flex;
   flex-wrap: nowrap;
@@ -136,9 +137,9 @@ Progress steps
   padding: 0;
   margin: 0;
   list-style: none;
-}
+  }
 
-.progress-steps-item {
+  .progress-steps-item {
   --progress-steps-item-height: #{$progress-steps-item-height};
   flex: 1 1 0;
   min-height: var(--progress-steps-item-height);
@@ -151,5 +152,6 @@ Progress steps
 
   @at-root a#{&} {
     cursor: pointer;
+  }
   }
 }

@@ -1,6 +1,7 @@
 @use '../config' as *;
 
-.loader {
+@layer components {
+  .loader {
   position: relative;
   display: block;
   width: $loader-size;
@@ -24,12 +25,12 @@
 
     @include border-radius(var(--border-radius-pill));
   }
-}
+  }
 
-/**
-Dimmer
-*/
-.dimmer {
+  /**
+  Dimmer
+  */
+  .dimmer {
   position: relative;
 
   .loader {
@@ -52,6 +53,7 @@ Dimmer
       opacity: 0.1;
     }
   }
+  }
 }
 
 @keyframes animated-dots {
@@ -61,7 +63,8 @@ Dimmer
   }
 }
 
-.animated-dots {
+@layer components {
+  .animated-dots {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
@@ -70,5 +73,6 @@ Dimmer
     display: inline-block;
     content: '...';
     animation: animated-dots 1.2s steps(4, jump-none) infinite;
+  }
   }
 }

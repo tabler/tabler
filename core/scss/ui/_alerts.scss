@@ -28,7 +28,8 @@ $alert-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.alert {
+@layer components {
+  .alert {
   @include tokens($alert-tokens);
   position: relative;
   display: flex;
@@ -40,38 +41,38 @@ $alert-tokens: defaults(
   background-color: color-mix(in oklab, var(--alert-bg), var(--bg-surface));
   border: var(--border-width) var(--border-style) var(--alert-border-color);
   @include border-radius(var(--alert-border-radius));
-}
+  }
 
-.alert-heading {
+  .alert-heading {
   margin-bottom: var(--alert-heading-margin-bottom);
   font-weight: var(--alert-heading-font-weight);
   color: inherit;
-}
+  }
 
-.alert-description {
+  .alert-description {
   color: var(--secondary);
-}
+  }
 
-.alert-icon {
+  .alert-icon {
   width: var(--alert-icon-size) !important;
   height: var(--alert-icon-size) !important;
   color: var(--alert-color);
-}
+  }
 
-.alert-action {
+  .alert-action {
   color: var(--alert-color);
   text-decoration: underline;
 
   &:hover {
     text-decoration: none;
   }
-}
+  }
 
-.alert-list {
+  .alert-list {
   margin: 0;
-}
+  }
 
-.alert-link {
+  .alert-link {
   font-weight: $alert-link-font-weight;
   color: var(--alert-link-color);
 
@@ -80,7 +81,7 @@ $alert-tokens: defaults(
   }
 }
 
-.alert-dismissible {
+  .alert-dismissible {
   padding-inline-end: var(--alert-padding-inline-end);
 
   .btn-close {
@@ -90,9 +91,9 @@ $alert-tokens: defaults(
     z-index: 1;
     padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
   }
-}
+  }
 
-.alert-important {
+  .alert-important {
   // Set the shared color token so every child that reads it - text, icon,
   // `.alert-action`, `.alert-link` - flips to white instead of the variant
   // color, which is the background here.
@@ -102,12 +103,13 @@ $alert-tokens: defaults(
   .alert-description {
     color: inherit;
   }
-}
+  }
 
-.alert-minor {
+  .alert-minor {
   background: transparent;
   border-color: var(--border-color);
-}
+  }
 
 // `.alert-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
 // its header comment: @extend only reaches modules this file loads).
+}

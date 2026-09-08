@@ -59,7 +59,8 @@ $status-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.status {
+@layer components {
+  .status {
   @include tokens($status-tokens);
   display: inline-flex;
   gap: var(--status-gap);
@@ -83,13 +84,13 @@ $status-tokens: defaults(
   .icon {
     font-size: $status-icon-size;
   }
-}
+  }
 
-.status-lite {
+  .status-lite {
   color: var(--body-color) !important;
   background: transparent !important;
   border: var(--border-width) var(--border-style) var(--border-color) !important;
-}
+  }
 
 // `.status-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
 // its header comment: @extend only reaches modules this file loads).
@@ -106,9 +107,9 @@ $status-tokens: defaults(
   height: var(--status-size);
   background: var(--status-dot-color);
   @include border-radius(var(--border-radius-pill));
-}
+  }
 
-.status-dot-animated {
+  .status-dot-animated {
   &::before {
     position: absolute;
     inset: 0;
@@ -119,21 +120,21 @@ $status-tokens: defaults(
     opacity: 0.6;
     animation: 1s linear 2s backwards infinite status-pulsate-tertiary;
   }
-}
+  }
 
-//
-// Status indicator
-//
-.status-indicator {
+  //
+  // Status indicator
+  //
+  .status-indicator {
   --status-indicator-size: #{$status-indicator-size};
   --status-indicator-color: var(--status-color, var(--theme-bg, #{$text-secondary}));
   position: relative;
   display: block;
   width: var(--status-indicator-size);
   height: var(--status-indicator-size);
-}
+  }
 
-.status-indicator-circle {
+  .status-indicator-circle {
   --status-circle-size: #{$status-circle-size};
   position: absolute;
   inset-inline-start: 50%;
@@ -157,9 +158,9 @@ $status-tokens: defaults(
     z-index: 1;
     opacity: 0.3;
   }
-}
+  }
 
-.status-indicator-animated {
+  .status-indicator-animated {
   .status-indicator-circle {
     &:nth-child(1) {
       animation: 2s linear 1s infinite backwards status-pulsate-main;
@@ -172,5 +173,6 @@ $status-tokens: defaults(
     &:nth-child(3) {
       animation: 2s linear 1s infinite backwards status-pulsate-tertiary;
     }
+  }
   }
 }

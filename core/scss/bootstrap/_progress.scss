@@ -12,8 +12,9 @@
 }
 // scss-docs-end progress-keyframes
 
-.progress,
-.progress-stacked {
+@layer components {
+  .progress,
+  .progress-stacked {
   // scss-docs-start progress-css-vars
   --progress-height: #{$progress-height};
   @include rfs($progress-font-size, --progress-font-size);
@@ -32,9 +33,9 @@
   background-color: var(--progress-bg);
   @include border-radius(var(--progress-border-radius));
   @include box-shadow(var(--progress-box-shadow));
-}
+  }
 
-.progress-bar {
+  .progress-bar {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,22 +50,22 @@
   white-space: nowrap;
   background-color: var(--theme-bg, var(--progress-bar-bg));
   @include transition(var(--progress-bar-transition));
-}
+  }
 
-.progress-bar-striped {
+  .progress-bar-striped {
   @include gradient-striped();
   background-size: var(--progress-height) var(--progress-height);
-}
+  }
 
-.progress-stacked > .progress {
+  .progress-stacked > .progress {
   overflow: visible;
-}
+  }
 
-.progress-stacked > .progress > .progress-bar {
+  .progress-stacked > .progress > .progress-bar {
   width: 100%;
-}
+  }
 
-@if $enable-transitions {
+  @if $enable-transitions {
   .progress-bar-animated {
     animation: $progress-bar-animation-timing progress-bar-stripes;
 
@@ -73,5 +74,6 @@
         animation: none;
       }
     }
+  }
   }
 }

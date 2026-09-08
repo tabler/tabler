@@ -3,6 +3,7 @@ Image check
  */
 @use '../../config' as *;
 
+@layer forms {
 .form-imagecheck {
   --form-imagecheck-radius: var(--border-radius);
   --form-imagecheck-check-offset: #{$form-imagecheck-check-offset};
@@ -93,10 +94,6 @@ Image check
   .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
     opacity: 1;
   }
-
-  .avatar {
-    border-radius: inherit;
-  }
 }
 
 .form-imagecheck-caption {
@@ -110,5 +107,14 @@ Image check
   .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
   .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
     color: var(--body-color);
+  }
+}
+}
+
+// Overrides `.avatar`, which lives in `components`; from `forms` it would lose
+// to the avatar's own border-radius regardless of specificity.
+@layer components {
+  .form-imagecheck-image .avatar {
+    border-radius: inherit;
   }
 }

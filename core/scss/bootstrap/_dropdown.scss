@@ -3,24 +3,25 @@
 // The dropdown wrapper (`<div>`)
 @use '../config' as *;
 
-.dropup,
-.dropend,
-.dropdown,
-.dropstart,
-.dropup-center,
-.dropdown-center {
+@layer components {
+  .dropup,
+  .dropend,
+  .dropdown,
+  .dropstart,
+  .dropup-center,
+  .dropdown-center {
   position: relative;
-}
+  }
 
-.dropdown-toggle {
+  .dropdown-toggle {
   white-space: nowrap;
 
   // Generate the caret automatically
   @include caret();
-}
+  }
 
-// The dropdown menu
-.dropdown-menu {
+  // The dropdown menu
+  .dropdown-menu {
   // scss-docs-start dropdown-css-vars
   --dropdown-zindex: #{$zindex-dropdown};
   --dropdown-min-width: #{$dropdown-min-width};
@@ -82,13 +83,13 @@
       @include border-bottom-radius(var(--dropdown-inner-border-radius));
     }
   }
-}
+  }
 
-// scss-docs-start responsive-breakpoints
-// We deliberately hardcode the `bs-` prefix because we check
-// this custom property in JS to determine Popper's positioning
+  // scss-docs-start responsive-breakpoints
+  // We deliberately hardcode the `bs-` prefix because we check
+  // this custom property in JS to determine Popper's positioning
 
-@each $breakpoint in map.keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
@@ -112,12 +113,13 @@
       }
     }
   }
-}
-// scss-docs-end responsive-breakpoints
+  }
 
-// Allow for dropdowns to go bottom up (aka, dropup-menu)
-// Just add .dropup after the standard .dropdown class and you're set.
-.dropup {
+  // scss-docs-end responsive-breakpoints
+
+  // Allow for dropdowns to go bottom up (aka, dropup-menu)
+  // Just add .dropup after the standard .dropdown class and you're set.
+  .dropup {
   .dropdown-menu[data-bs-popper],
   .dropdown-menu[data-tblr-popper] {
     top: auto;
@@ -129,9 +131,9 @@
   .dropdown-toggle {
     @include caret(up);
   }
-}
+  }
 
-.dropend {
+  .dropend {
   .dropdown-menu[data-bs-popper],
   .dropdown-menu[data-tblr-popper] {
     top: 0;
@@ -147,9 +149,9 @@
       vertical-align: 0;
     }
   }
-}
+  }
 
-.dropstart {
+  .dropstart {
   .dropdown-menu[data-bs-popper],
   .dropdown-menu[data-tblr-popper] {
     top: 0;
@@ -165,21 +167,21 @@
       vertical-align: 0;
     }
   }
-}
+  }
 
-// Dividers (basically an `<hr>`) within the dropdown
-.dropdown-divider {
+  // Dividers (basically an `<hr>`) within the dropdown
+  .dropdown-divider {
   height: 0;
   margin: var(--dropdown-divider-margin-y) 0;
   overflow: hidden;
   border-top: 1px solid var(--dropdown-divider-bg);
   opacity: 1; // Revisit in v6 to de-dupe styles that conflict with <hr> element
-}
+  }
 
-// Links, buttons, and more within the dropdown menu
-//
-// `<button>`-specific styles are denoted with `// For <button>s`
-.dropdown-item {
+  // Links, buttons, and more within the dropdown menu
+  //
+  // `<button>`-specific styles are denoted with `// For <button>s`
+  .dropdown-item {
   display: block;
   width: 100%; // For `<button>`s
   padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
@@ -215,31 +217,31 @@
     // Remove CSS gradients if they're enabled
     background-image: if(sass($enable-gradients): none; else: null);
   }
-}
+  }
 
-.dropdown-menu.show {
+  .dropdown-menu.show {
   display: block;
-}
+  }
 
-// Dropdown section headers
-.dropdown-header {
+  // Dropdown section headers
+  .dropdown-header {
   display: block;
   padding: var(--dropdown-header-padding-y) var(--dropdown-header-padding-x);
   margin-bottom: 0; // for use with heading elements
   @include font-size($font-size-sm);
   color: var(--dropdown-header-color);
   white-space: nowrap; // as with > li > a
-}
+  }
 
-// Dropdown text
-.dropdown-item-text {
+  // Dropdown text
+  .dropdown-item-text {
   display: block;
   padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
   color: var(--dropdown-link-color);
-}
+  }
 
-// Dark dropdowns
-.dropdown-menu-dark {
+  // Dark dropdowns
+  .dropdown-menu-dark {
   // scss-docs-start dropdown-dark-css-vars
   --dropdown-color: #{$dropdown-dark-color};
   --dropdown-bg: #{$dropdown-dark-bg};
@@ -254,4 +256,5 @@
   --dropdown-link-disabled-color: #{$dropdown-dark-link-disabled-color};
   --dropdown-header-color: #{$dropdown-dark-header-color};
   // scss-docs-end dropdown-dark-css-vars
+  }
 }

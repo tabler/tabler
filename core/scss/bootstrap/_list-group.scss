@@ -6,7 +6,8 @@
 
 @use '../config' as *;
 
-.list-group {
+@layer components {
+  .list-group {
   // scss-docs-start list-group-css-vars
   // Theme fallback lives on .list-group-item below, not here: --list-group-*
   // set on this container would only ever resolve against *this element's*
@@ -39,9 +40,9 @@
   padding-inline-start: 0; // reset padding because ul and ol
   margin-bottom: 0;
   @include border-radius(var(--list-group-border-radius));
-}
+  }
 
-.list-group-numbered {
+  .list-group-numbered {
   list-style-type: none;
   counter-reset: section;
 
@@ -50,13 +51,13 @@
     content: counters(section, '.') '. ';
     counter-increment: section;
   }
-}
+  }
 
-// Individual list items
-//
-// Use on `li`s or `div`s within the `.list-group` parent.
+  // Individual list items
+  //
+  // Use on `li`s or `div`s within the `.list-group` parent.
 
-.list-group-item {
+  .list-group-item {
   position: relative;
   display: block;
   padding: var(--list-group-item-padding-y) var(--list-group-item-padding-x);
@@ -100,14 +101,14 @@
       border-top-width: var(--list-group-border-width);
     }
   }
-}
+  }
 
-// Interactive list items
-//
-// Use anchor or button elements instead of `li`s or `div`s to create interactive
-// list items. Includes an extra `.active` modifier class for selected items.
+  // Interactive list items
+  //
+  // Use anchor or button elements instead of `li`s or `div`s to create interactive
+  // list items. Includes an extra `.active` modifier class for selected items.
 
-.list-group-item-action {
+  .list-group-item-action {
   width: 100%; // For `<button>`s (anchors become 100% by default though)
   color: var(--theme-bg, var(--list-group-action-color));
   text-align: inherit; // For `<button>`s (anchors inherit)
@@ -127,13 +128,13 @@
       background-color: var(--theme-bg, var(--list-group-action-active-bg));
     }
   }
-}
+  }
 
-// Horizontal
-//
-// Change the layout of list group items from vertical (default) to horizontal.
+  // Horizontal
+  //
+  // Change the layout of list group items from vertical (default) to horizontal.
 
-@each $breakpoint in map.keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
@@ -167,14 +168,14 @@
       }
     }
   }
-}
+  }
 
-// Flush list items
-//
-// Remove borders and border-radius to keep list group items edge-to-edge. Most
-// useful within other components (e.g., cards).
+  // Flush list items
+  //
+  // Remove borders and border-radius to keep list group items edge-to-edge. Most
+  // useful within other components (e.g., cards).
 
-.list-group-flush {
+  .list-group-flush {
   @include border-radius(0);
 
   > .list-group-item {
@@ -184,13 +185,13 @@
       border-bottom-width: 0;
     }
   }
-}
+  }
 
-// scss-docs-start list-group-modifiers
-// List group contextual variants
-//
-// Add modifier classes to change text and background color on individual items.
-// Organizationally, this must come after the `:hover` states.
+  // scss-docs-start list-group-modifiers
+  // List group contextual variants
+  //
+  // Add modifier classes to change text and background color on individual items.
+  // Organizationally, this must come after the `:hover` states.
 
 // Built from the palette tokens every color has - `--{color}`, `--{color}-lt`
 // and `--{color}-fg` - rather than bootstrap's subtle/emphasis pairs. Tabler's
@@ -200,4 +201,6 @@
 // The tint also matches the `bg-{color}-lt` utilities used elsewhere.
 // `.list-group-item-{color}` (extend + its own border/hover tints) lives in
 // _extends.scss — @extend only reaches modules this file loads.
+}
+
 // scss-docs-end list-group-modifiers

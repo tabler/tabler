@@ -21,7 +21,8 @@ $steps-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.steps {
+@layer components {
+  .steps {
   @include tokens($steps-tokens);
   display: flex;
   flex-wrap: nowrap;
@@ -35,16 +36,16 @@ $steps-tokens: defaults(
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
   }
-}
+  }
 
 // `.steps-{color}` (@extend .theme-{color}) and `.steps-{color}-lt` (same,
 // plus its own --steps-color/--steps-fg swap) live in _extends.scss —
 // @extend only reaches modules this file loads.
 
-//
-// Step item
-//
-.step-item {
+  //
+  // Step item
+  //
+  .step-item {
   --step-item-min-height: #{$step-item-min-height};
   position: relative;
   flex: 1 1 0;
@@ -120,12 +121,12 @@ $steps-tokens: defaults(
       }
     }
   }
-}
+  }
 
-//
-// Steps counter
-//
-.steps-counter {
+  //
+  // Steps counter
+  //
+  .steps-counter {
   --steps-dot-size: #{$steps-counter-dot-size};
   counter-reset: steps;
 
@@ -136,12 +137,12 @@ $steps-tokens: defaults(
       content: counter(steps);
     }
   }
-}
+  }
 
-//
-// Steps vertical
-//
-.steps-vertical {
+  //
+  // Steps vertical
+  //
+  .steps-vertical {
   --steps-dot-offset: #{$steps-dot-offset};
   --steps-vertical-padding-start: #{$steps-vertical-padding-start};
   --steps-vertical-item-gap: #{$steps-vertical-item-gap};
@@ -177,5 +178,6 @@ $steps-tokens: defaults(
         transform: translateX(calc(var(--dir) * -50%));
       }
     }
+  }
   }
 }

@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use '../config' as *;
 
+@layer forms {
 textarea {
   &[cols] {
     height: auto;
@@ -159,7 +160,11 @@ Form help
     background: var(--active-bg);
   }
 }
+}
 
+// Input groups cross-style `.btn`, so they sit in `components`, after the
+// button's own rules — the same hoist as `bootstrap/forms/_input-group.scss`.
+@layer components {
 /**
 Input group
  */
@@ -244,7 +249,9 @@ Input group
     }
   }
 }
+}
 
+@layer forms {
 /**
 Upload files
  */
@@ -263,4 +270,5 @@ Forms on mobile devices
   @include media-breakpoint-down(sm) {
     font-size: var(--form-control-mobile-font-size);
   }
+}
 }

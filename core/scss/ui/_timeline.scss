@@ -3,61 +3,63 @@
 //
 @use '../config' as *;
 
-.timeline {
-  --timeline-icon-size: #{$avatar-size};
-  position: relative;
-  padding: 0;
-  list-style: none;
-}
+@layer components {
+  .timeline {
+    --timeline-icon-size: #{$avatar-size};
+    position: relative;
+    padding: 0;
+    list-style: none;
+  }
 
-//
-// Timeline event
-//
-.timeline-event {
-  position: relative;
+  //
+  // Timeline event
+  //
+  .timeline-event {
+    position: relative;
 
-  &:not(:last-child) {
-    margin-bottom: var(--page-padding);
+    &:not(:last-child) {
+      margin-bottom: var(--page-padding);
 
-    &::before {
-      position: absolute;
-      inset-inline-start: calc(var(--timeline-icon-size) / 2);
-      top: var(--timeline-icon-size);
-      bottom: calc(-1 * var(--page-padding));
-      width: var(--border-width);
-      content: '';
-      background-color: var(--border-color);
-      @include border-radius(var(--border-radius));
+      &::before {
+        position: absolute;
+        inset-inline-start: calc(var(--timeline-icon-size) / 2);
+        top: var(--timeline-icon-size);
+        bottom: calc(-1 * var(--page-padding));
+        width: var(--border-width);
+        content: '';
+        background-color: var(--border-color);
+        @include border-radius(var(--border-radius));
+      }
     }
   }
-}
 
-.timeline-event-icon {
-  position: absolute;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--timeline-icon-size, $avatar-size);
-  height: var(--timeline-icon-size, $avatar-size);
-  color: var(--secondary);
-  background: var(--bg-surface-secondary);
-  @include border-radius(var(--border-radius));
-}
-
-.timeline-event-card {
-  margin-inline-start: calc(var(--timeline-icon-size, $avatar-size) + var(--page-padding));
-}
-
-//
-// Simple timeline
-//
-.timeline-simple {
   .timeline-event-icon {
-    display: none;
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--timeline-icon-size, $avatar-size);
+    height: var(--timeline-icon-size, $avatar-size);
+    color: var(--secondary);
+    background: var(--bg-surface-secondary);
+    @include border-radius(var(--border-radius));
   }
 
   .timeline-event-card {
-    margin-inline-start: 0;
+    margin-inline-start: calc(var(--timeline-icon-size, $avatar-size) + var(--page-padding));
+  }
+
+  //
+  // Simple timeline
+  //
+  .timeline-simple {
+    .timeline-event-icon {
+      display: none;
+    }
+
+    .timeline-event-card {
+      margin-inline-start: 0;
+    }
   }
 }

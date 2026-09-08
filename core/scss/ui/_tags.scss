@@ -27,7 +27,8 @@ $tag-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.tag {
+@layer components {
+  .tag {
   @include tokens($tag-tokens);
   display: inline-flex;
   gap: var(--tag-gap);
@@ -48,9 +49,9 @@ $tag-tokens: defaults(
     margin-inline-end: var(--tag-close-margin-end);
     font-size: var(--tag-close-font-size);
   }
-}
+  }
 
-.tag-badge {
+  .tag-badge {
   --tag-badge-padding-y: #{$tag-badge-padding-y};
   --tag-badge-padding-x: #{$tag-badge-padding-x};
   --tag-badge-margin-end: #{$tag-badge-margin-end};
@@ -59,34 +60,35 @@ $tag-tokens: defaults(
   --badge-padding-x: var(--tag-badge-padding-x);
   --badge-padding-y: var(--tag-badge-padding-y);
   margin-inline-end: var(--tag-badge-margin-end);
-}
+  }
 
-.tag-avatar,
-.tag-flag,
-.tag-payment,
-.tag-icon,
-.tag-check {
+  .tag-avatar,
+  .tag-flag,
+  .tag-payment,
+  .tag-icon,
+  .tag-check {
   margin-inline-start: var(--tag-addon-margin-start);
-}
+  }
 
-.tag-icon {
+  .tag-icon {
   width: var(--tag-icon-size);
   height: var(--tag-icon-size);
   margin-inline-end: var(--tag-icon-margin-end);
   color: var(--secondary);
-}
+  }
 
-.tag-check {
+  .tag-check {
   width: var(--tag-check-size);
   height: var(--tag-check-size);
   background-size: var(--tag-check-size);
-}
+  }
 
-//
-// Tag list
-//
-.tag-list,
-.tags-list {
+  //
+  // Tag list
+  //
+  .tag-list,
+  .tags-list {
   // `.tags-list` is deprecated, use `.tag-list` instead
   @include elements-list();
+  }
 }

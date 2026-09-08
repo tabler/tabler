@@ -4,8 +4,9 @@
 
 @use '../config' as *;
 
-.spinner-grow,
-.spinner-border {
+@layer components {
+  .spinner-grow,
+  .spinner-border {
   display: inline-block;
   flex-shrink: 0;
   width: var(--spinner-width);
@@ -19,6 +20,7 @@
   // color instead of standing out as a loading indicator, like .loader does.
   color: var(--theme-bg, var(--primary));
 }
+}
 
 // scss-docs-start spinner-border-keyframes
 @keyframes spinner-border {
@@ -28,7 +30,8 @@
 }
 // scss-docs-end spinner-border-keyframes
 
-.spinner-border {
+@layer components {
+  .spinner-border {
   // scss-docs-start spinner-border-css-vars
   --spinner-width: #{$spinner-width};
   --spinner-height: #{$spinner-height};
@@ -40,14 +43,15 @@
 
   border: var(--spinner-border-width) solid currentColor;
   border-inline-end-color: transparent;
-}
+  }
 
-.spinner-border-sm {
+  .spinner-border-sm {
   // scss-docs-start spinner-border-sm-css-vars
   --spinner-width: #{$spinner-width-sm};
   --spinner-height: #{$spinner-height-sm};
   --spinner-border-width: #{$spinner-border-width-sm};
   // scss-docs-end spinner-border-sm-css-vars
+  }
 }
 
 //
@@ -66,7 +70,8 @@
 }
 // scss-docs-end spinner-grow-keyframes
 
-.spinner-grow {
+@layer components {
+  .spinner-grow {
   // scss-docs-start spinner-grow-css-vars
   --spinner-width: #{$spinner-width};
   --spinner-height: #{$spinner-height};
@@ -77,18 +82,19 @@
 
   background-color: currentColor;
   opacity: 0;
-}
+  }
 
-.spinner-grow-sm {
+  .spinner-grow-sm {
   --spinner-width: #{$spinner-width-sm};
   --spinner-height: #{$spinner-height-sm};
-}
+  }
 
-@if $enable-reduced-motion {
+  @if $enable-reduced-motion {
   @media (prefers-reduced-motion: reduce) {
     .spinner-border,
     .spinner-grow {
       --spinner-animation-speed: #{$spinner-animation-speed * 2};
     }
+  }
   }
 }

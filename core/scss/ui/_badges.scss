@@ -23,7 +23,8 @@ $badge-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.badge {
+@layer components {
+  .badge {
   @include tokens($badge-tokens);
   display: inline-flex;
   gap: var(--badge-gap);
@@ -53,10 +54,10 @@ $badge-tokens: defaults(
     height: 1em;
     font-size: var(--badge-icon-size);
   }
-}
+  }
 
-.badge:empty,
-.badge-dot {
+  .badge:empty,
+  .badge-dot {
   display: inline-block;
   width: $badge-empty-size;
   min-width: 0;
@@ -65,9 +66,9 @@ $badge-tokens: defaults(
   padding: 0;
   vertical-align: baseline;
   @include border-radius(var(--border-radius-pill));
-}
+  }
 
-// `.badge-outline` was removed in 2.0 — use a soft `.badge.bg-{color}-lt` badge instead.
+  // `.badge-outline` was removed in 2.0 — use a soft `.badge.bg-{color}-lt` badge instead.
 
 //
 // Light badge
@@ -86,21 +87,21 @@ $badge-tokens: defaults(
 //
 .badge-pill {
   @include border-radius(var(--border-radius-pill));
-}
+  }
 
-//
-// Badge list
-//
-.badge-list,
-.badges-list {
+  //
+  // Badge list
+  //
+  .badge-list,
+  .badges-list {
   // `.badges-list` is deprecated, use `.badge-list` instead
   @include elements-list();
-}
+  }
 
-//
-// Notification badge
-//
-.badge-notification {
+  //
+  // Notification badge
+  //
+  .badge-notification {
   position: absolute !important;
   inset-inline-end: 0 !important;
   top: 0 !important;
@@ -108,32 +109,33 @@ $badge-tokens: defaults(
 
   /* rtl:ignore */
   transform: translate(calc(var(--dir) * 50%), -50%);
-}
+  }
 
-.badge-blink {
+  .badge-blink {
   animation: blink 2s infinite;
-}
+  }
 
-//
-// Badge sizes
-//
-.badge-sm {
+  //
+  // Badge sizes
+  //
+  .badge-sm {
   --badge-font-size: #{$badge-font-size-sm};
   --badge-icon-size: 1em;
   --badge-padding-y: #{$badge-padding-y-sm};
   --badge-padding-x: #{$badge-padding-x-sm};
-}
+  }
 
-.badge-lg {
+  .badge-lg {
   --badge-font-size: #{$badge-font-size-lg};
   --badge-icon-size: 1em;
   --badge-padding-y: #{$badge-padding-y-lg};
   --badge-padding-x: #{$badge-padding-x-lg};
-}
+  }
 
-//
-// Badge with only icon
-//
-.badge-icononly {
+  //
+  // Badge with only icon
+  //
+  .badge-icononly {
   --badge-padding-x: 0;
+  }
 }
