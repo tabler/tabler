@@ -1,4 +1,5 @@
 ---
+import Empty from '@ui/Empty.astro'
 import Subheader from '@ui/Subheader.astro'
 import ButtonGroup from '@ui/ButtonGroup.astro'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
@@ -16,7 +17,7 @@ import { formatShortDate } from '@shared/lib/date-format'
 import mails from '@data/mails.json'
 
 // Label colors shared by the folder sidebar and the dots in the message list.
-const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning', Family: 'success', Social: 'primary', Important: 'danger', Promotions: 'purple' }
+const labelColors: Record<string, string> = { Updates: 'azure', Friends: 'orange', Family: 'teal', Social: 'indigo', Important: 'pink', Promotions: 'purple' }
 ---
 
 <DefaultLayout title="Email inbox" pageHeader="Inbox" pageMenu="extra.email-inbox" pageLibs={['hugerte']}>
@@ -37,7 +38,7 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
               <a href="#" class="nav-link"><Icon name="star" class="me-2" />Starred</a>
               <a href="#" class="nav-link"><Icon name="clock" class="me-2" />Snoozed</a>
               <a href="#" class="nav-link"><Icon name="file" class="me-2" />Draft<span class="badge bg-info-lt ms-auto">32</span></a>
-              <a href="#" class="nav-link"><Icon name="mail-up" class="me-2" />Sent Mail</a>
+              <a href="#" class="nav-link"><Icon name="mail-up" class="me-2" />Sent mail</a>
               <a href="#" class="nav-link"><Icon name="trash" class="me-2" />Trash</a>
               <a href="#" class="nav-link"><Icon name="tag" class="me-2" />Important</a>
               <a href="#" class="nav-link"><Icon name="alert-octagon" class="me-2" />Spam</a>
@@ -99,7 +100,7 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
                 <Icon name="tag" />
               </button>
               <div class="dropdown-menu">
-                <span class="dropdown-header">Label as:</span>
+                <span class="dropdown-header">Label as</span>
                 <a class="dropdown-item" href="#">Updates</a>
                 <a class="dropdown-item" href="#">Social</a>
                 <a class="dropdown-item" href="#">Promotions</a>
@@ -112,72 +113,72 @@ const labelColors: Record<string, string> = { Updates: 'info', Friends: 'warning
                 <Icon name="dots" /> More
               </button>
               <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item" href="#">Mark as Unread</a>
-                <a class="dropdown-item" href="#">Add to Tasks</a>
-                <a class="dropdown-item" href="#">Add Star</a>
+                <a class="dropdown-item" href="#">Mark as unread</a>
+                <a class="dropdown-item" href="#">Add to tasks</a>
+                <a class="dropdown-item" href="#">Add star</a>
                 <a class="dropdown-item" href="#">Mute</a>
               </div>
             </ButtonGroup>
           </div>
         </div>
-        <div class="card-body p-0">
-          <ListGroup flush hoverable>
-            {
-              mails.length > 0 ? (
-                mails.map((mail) => (
-                  <ListGroupItem>
-                    <div class="row align-items-center g-2">
-                      <div class="col-auto">
-                        <input type="checkbox" class="form-check-input m-0" aria-label={`Select "${mail.subject}"`} />
-                      </div>
-                      <div class="col-auto">
-                        <a href="#" class:list={['list-group-item-actions', mail.starred && 'show']} aria-label={mail.starred ? 'Remove star' : 'Add star'}>
-                          <Icon name="star" color={mail.starred ? 'yellow' : 'muted'} />
-                        </a>
-                      </div>
-                      <div class="col-3 col-lg-2 text-truncate">
-                        <a href="#" class="text-body">
-                          {mail.sender}
-                        </a>
-                      </div>
-                      <div class="col text-truncate">
-                        <a href="#" class="text-body">
-                          {mail.subject}
-                        </a>
-                        <span class="text-secondary"> – {mail.preview}</span>
-                      </div>
-                      <div class="col-auto d-none d-lg-block">
-                        {mail.labels.map((label) => (
-                          <span class={`badge bg-${labelColors[label] ?? 'secondary'}`} title={label} aria-label={label} />
-                        ))}
-                      </div>
-                      <div class="col-auto d-none d-md-block">
-                        <div class="list-group-item-actions d-flex gap-2">
-                          <a href="#" class="text-secondary" aria-label="Archive">
-                            <Icon name="archive" />
-                          </a>
-                          <a href="#" class="text-secondary" aria-label="Delete">
-                            <Icon name="trash" />
-                          </a>
-                          <a href="#" class="text-secondary" aria-label="Mark as read">
-                            <Icon name="mail-opened" />
-                          </a>
-                          <a href="#" class="text-secondary" aria-label="Snooze">
-                            <Icon name="clock" />
-                          </a>
-                        </div>
-                      </div>
-                      <div class="col-auto text-secondary text-end">{formatShortDate(new Date(mail.date))}</div>
+        <ListGroup flush hoverable class="card-list-group">
+          {
+            mails.length > 0 ? (
+              mails.map((mail) => (
+                <ListGroupItem>
+                  <div class="row align-items-center g-2">
+                    <div class="col-auto">
+                      <input type="checkbox" class="form-check-input m-0" aria-label={`Select "${mail.subject}"`} />
                     </div>
-                  </ListGroupItem>
-                ))
-              ) : (
-                <ListGroupItem class="text-secondary">No emails</ListGroupItem>
-              )
-            }
-          </ListGroup>
-        </div>
-        <div class="card-body">
+                    <div class="col-auto">
+                      <a href="#" class:list={['list-group-item-actions', mail.starred && 'show']} aria-label={mail.starred ? 'Remove star' : 'Add star'}>
+                        <Icon name="star" color={mail.starred ? 'yellow' : 'secondary'} />
+                      </a>
+                    </div>
+                    <div class="col-3 col-lg-2 text-truncate">
+                      <a href="#" class="text-body">
+                        {mail.sender}
+                      </a>
+                    </div>
+                    <div class="col text-truncate">
+                      <a href="#" class="text-body">
+                        {mail.subject}
+                      </a>
+                      <span class="text-secondary"> – {mail.preview}</span>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                      {mail.labels.map((label) => (
+                        <span class={`badge bg-${labelColors[label] ?? 'secondary'}`} title={label} aria-label={label} />
+                      ))}
+                    </div>
+                    <div class="col-auto d-none d-md-block">
+                      <div class="list-group-item-actions d-flex gap-2">
+                        <a href="#" class="text-secondary" aria-label="Archive">
+                          <Icon name="archive" />
+                        </a>
+                        <a href="#" class="text-secondary" aria-label="Delete">
+                          <Icon name="trash" />
+                        </a>
+                        <a href="#" class="text-secondary" aria-label="Mark as read">
+                          <Icon name="mail-opened" />
+                        </a>
+                        <a href="#" class="text-secondary" aria-label="Snooze">
+                          <Icon name="clock" />
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-auto text-secondary text-end">{formatShortDate(new Date(mail.date))}</div>
+                  </div>
+                </ListGroupItem>
+              ))
+            ) : (
+              <ListGroupItem>
+                <Empty title="No emails" />
+              </ListGroupItem>
+            )
+          }
+        </ListGroup>
+        <div class="card-footer">
           <div class="row align-items-center">
             <div class="col-7 mt-1">
               Showing 1 - {mails.length} of {mails.length}

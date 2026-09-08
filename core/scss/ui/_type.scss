@@ -87,7 +87,7 @@ blockquote {
   --blockquote-padding: #{$blockquote-padding};
   --blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
   padding: var(--blockquote-padding) var(--blockquote-padding) var(--blockquote-padding);
-  border-inline-start: 2px var(--border-style) var(--border-color);
+  border-inline-start: $border-width-wide var(--border-style) var(--border-color);
 
   p {
     margin-bottom: var(--blockquote-paragraph-margin-bottom);
@@ -210,7 +210,7 @@ a:hover:has(.icon) {
   &:hover {
     color: var(--primary);
     text-decoration: none;
-    background: color-transparent(var(--secondary), 0.04);
+    background: $hover-bg;
   }
 }
 
@@ -241,7 +241,7 @@ Mentions
     &:hover,
     &.hover {
       text-decoration: underline;
-      background: var(--bg-surface-secondary);
+      background: $hover-bg;
     }
   }
 }
@@ -282,7 +282,6 @@ $text-variants: (
     text-decoration-thickness: 1px;
     text-decoration-color: $color;
     background: color-transparent($color, 0.04);
-    background: color-transparent($color, 4%);
   }
 }
 
@@ -308,7 +307,7 @@ $text-variants: (
   margin-bottom: var(--steps-margin-bottom);
   overflow: visible;
   counter-reset: step;
-  border-inline-start: 1px solid var(--border-color);
+  border-inline-start: var(--border-width) solid var(--border-color);
 
   h3 {
     counter-increment: step;
@@ -323,15 +322,15 @@ $text-variants: (
       width: var(--steps-item-size);
       height: var(--steps-item-size);
       margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
-      margin-top: 1px;
+      margin-top: var(--border-width);
       font-size: var(--font-size-h4);
       font-weight: var(--font-weight-semibold);
-      line-height: calc(var(--steps-item-size) - 2px);
+      line-height: calc(var(--steps-item-size) - 2 * var(--border-width));
       color: var(--body-color);
       text-align: center;
       content: counter(step);
       background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+      border: var(--border-width) solid var(--border-color);
       @include border-radius(var(--border-radius));
     }
   }
@@ -362,7 +361,7 @@ $callout-tokens: defaults(
   padding: var(--callout-padding-y) var(--callout-padding-x);
   margin-bottom: var(--callout-margin-bottom);
   background: var(--primary-lt);
-  border: 1px solid var(--primary-200);
+  border: var(--border-width) solid var(--primary-200);
   @include border-radius(var(--border-radius));
 
   > :last-child {

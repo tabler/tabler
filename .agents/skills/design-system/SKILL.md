@@ -117,7 +117,7 @@ migration plan removes it together with every `rgba(var(--X-rgb))` site, so buil
 | Body size / line | `0.875rem` (14px) / `1.25rem` (20px) |
 | Small / large body | `0.765625rem` (12.25px; `0.75rem` in 2.0, decision #4) / `1.09375rem` (17.5px) |
 | Weights | 400 body · 500 medium · 600 semibold · 300 display |
-| Letter spacing | 0 |
+| Letter spacing | 0, except `0.04em`: the `subheader()` mixin (`.subheader`, table heads, `.table-mobile` cell labels, `.dropdown-header`, `.datagrid-title`, `.page-pretitle`, `.hr-text`) and the sidebar section title, which writes the same value by hand |
 | Root font size | not set; `rem` follows the user's browser setting (WCAG 1.4.4) |
 
 ### Heading scale (size / line, both on the 4px grid)
@@ -137,7 +137,9 @@ Heading margin-bottom is `--spacer` (8px). Headings and `strong` share the semib
 ### Where each weight is used
 
 - **400** body text, lead (lead is body-size in the secondary colour, not larger).
-- **500** buttons, form labels, badges, `kbd`, card titles.
+- **500** buttons, form labels, badges, `kbd`, card titles, modal and offcanvas titles, ribbons,
+  the chat bubble author, and the active item of a vertical nav, list or step (the active colour
+  already carries the state).
 - **600** headings, `strong`, navbar brand, alert links.
 
 ### Component text sizes
@@ -146,12 +148,15 @@ Heading margin-bottom is `--spacer` (8px). Headings and `strong` share the semib
 | --- | --- | --- | --- |
 | Card title | h3 (16px) | 500 | heading colour |
 | Card subtitle | h4 (14px) when inline | 400 | secondary |
+| Modal / offcanvas title | h3 (16px) | 500 | heading colour |
 | Page title | h2 (20px / 28px) | headings weight | |
 | Form label | h4 (14px), margin-bottom 8px | 500 | body |
+| Fieldset legend as a label (`legend.form-label`) | inherits 14px (the reboot's bare `legend` is 24px) | 500 | body |
+| Markdown prose (`.markdown`) | h3 (16px), blockquote 16px — long-form reading text is the one exception to the 14px content rule | 400 | body |
 | Form hint / feedback | `0.875em`, margin-top 4px | 400 | secondary |
 | Tooltip / popover body | small (12.25px) | | |
 | Badge | `0.857em` of parent (sm `0.714em`, lg `1em`) | 500 | |
-| Sidebar section title | 12px | | |
+| Sidebar section title | 12px, uppercase, tracked `0.04em` | 500 | navbar colour at 70% |
 | Code | `0.857em`, `gray-600` on `gray-100` (dark: `gray-400` on `gray-900`) | | |
 
 ---
@@ -248,7 +253,7 @@ Rule of thumb: **controls 6px, containers 8px, small controls 4px.** A global
 
 ### Borders
 
-- Width 1px; `wide` 2px (nav-bordered active, steps, modal status, progress ring).
+- Width 1px; `wide` 2px (nav-bordered active, steps, modal status, progress ring, card status bar, blockquote rule). Components write `var(--border-width)`, not `1px`.
 - Colour: `--border-color-translucent` for cards, tables, dropdowns, alerts (blends on any
   background); `--border-color` for navbars, modals headers, list groups, tabs, popovers.
 - Hover on a control raises the border to `--border-active-color`.
@@ -287,7 +292,11 @@ Every interactive component expresses the same five states with the same tokens:
 - Coloured buttons: filled `btn-X`, `btn-outline-X` (transparent, coloured border, fills on
   hover), `btn-ghost-X` (no border, tints on hover).
 - Nav variants: `pills` (active = `--active-bg` + primary text), `bordered` (2px primary
-  underline), `tabs` (surface bg + border), `underline` (2px, emphasis colour).
+  underline), `tabs` (surface bg + border), `underline` (2px, emphasis colour), `segmented`
+  (tertiary track with an inset 1px translucent ring; active = surface bg + `--border-color`;
+  sizes 32 / 40 / 48px, link gap 8px, lg 12px).
+- Hover on a list, nav, pagination, action button or select-group item is `$hover-bg`; the
+  open state of a `form-help` popover and the checked select-group item are `--active-bg`.
 - Pagination active is the one place where a filled primary background is used for a
   selected item.
 
@@ -302,8 +311,9 @@ Every interactive component expresses the same five states with the same tokens:
 | Collapse | `height 0.35s ease` |
 | Modal | `transform 0.3s ease-out`, slides down 16px; static backdrop scales 1.02 |
 | Progress bar | `width 0.6s ease` |
-| Reveal on hover (`$transition-time`) | `0.3s` — list-group item actions, card options; an opacity fade, not a colour change |
-| Icon animations | pulse 2s, tada 3s, rotate 3s |
+| Reveal on hover (`$transition-time`) | `0.3s` — list-group item actions, card options, switch-icon fade/scale/flip; an opacity fade, not a colour change |
+| Icon animations | pulse 2s, tada 3s, rotate 3s (`.icon-*`); `.btn-animate-icon-*` pulse/shake/tada 0.9s once on hover |
+| Everything else | `$transition-time` 0.3s or `0.15s`; no other durations in `core/scss/ui` |
 
 `prefers-reduced-motion`: decorative loops (blink, pulse, tada, rotate, animated gradient,
 waves) are removed; loaders and indeterminate progress keep animating but at 3s so state is
@@ -320,6 +330,8 @@ still visible.
   negative outer margin of a quarter.
 - Nav-link icons are the link colour at 50%, 80% on hover.
 - Filled variant only via `.icon-filled`.
+- A toggle's two faces are `.switch-icon-a` (rest, inherits or `--secondary`) and `.switch-icon-b`
+  (on, a state colour — `SwitchIcon` takes it as `activeColor`).
 
 ---
 
@@ -333,12 +345,17 @@ Places where the code contradicts its own rules, found on 2026-09-08 and decided
 | 2 | Sass `$spacer` = 16px but CSS `--spacer` = 8px. Headings use the 8px one, `card-img-overlay` and popover header use the 16px one. | `_variables.scss:341`, `layout/_root.scss` | **Fix in 2.0.** `--spacer` becomes 16px, equal to `$spacer`; headings get an explicit `--spacer-2`. Remap of the shipped `--tblr-spacer`: section 5 entry + upgrade guide. | planned 2.0 |
 | 3 | Small-element heights do not share a ladder: `btn-sm` 28 · `avatar-sm` 32 · tag/status 24. | buttons, inputs, avatars | **Fix in 2.0.** `btn-sm` (and with it `form-control-sm`, `form-select-sm`) goes to 32px: `$input-btn-padding-y-sm` 5px → 7px. The ladder becomes 24 / 32 / 40 / 48 / 56. Section 5 entry + upgrade guide. | planned 2.0 |
 | 4 | `$font-size-sm` is 12.25px, off the pixel grid; `h5` is 12px. | `_variables.scss:403` | **Fix in 2.0.** `$font-size-sm: 0.75rem`. Tooltips and popovers drop a quarter pixel. Short section 5 entry. | planned 2.0 |
-| 5 | Two focus indicators: the ring everywhere, but `outline: 2px solid var(--primary)` in `_buttons.scss:294` and `_calendars.scss:73`. | buttons, calendars | **Fix.** Both go through `@include focus-ring()`; added to the scope of issue #2972. | tracked, #2972 |
+| 5 | Two focus indicators: the ring everywhere, but `outline: 2px solid var(--primary)` on `.btn-action:focus-visible` (`_buttons.scss`), `.date-item:focus-visible` (`_calendars.scss`) and `.switch-icon:focus-visible` (`_switch-icon.scss`). | buttons, calendars, switch-icon | **Fix.** All three go through `@include focus-ring()`; added to the scope of issue #2972. | tracked, #2972 |
 | 6 | Hex literals outside the variable files: `--card-gradient-*`, `.card-cover` `#666`, `.card-note` `#fff7dd/#fff1c9`, calendar `#66758c` and `#fefeff`. | `ui/_cards.scss`, `ui/_calendars.scss` | **Fix, with one exception.** `.card-note`, `.card-cover` and the calendar get `light-dark()` tokens. The gradients stay literal: they are artwork, nobody rethemes them. | planned, no remap |
 | 7 | `$dropdown-header-color: $gray-600` and the `$dropdown-dark-*` family are not `light-dark()` pairs. | `_variables.scss` | **Fix in 2.0.** Header colour → `--secondary`. The `$dropdown-dark-*` Sass variables go; `.dropdown-menu-dark` keeps emitting through the dropdown tokens (v5 class, section 5 question 8). | planned 2.0 |
 | 8 | Tooltip 200px, popover 276px, modals 380/540/720/1140px and toast 350px are the only pixel widths. | `_variables.scss` | **Fix in 2.0.** Move to `rem` (12.5 · 17.25 · 23.75/33.75/45/71.25 · 21.875rem) so overlays scale with the user's font size. Section 5 entry. | planned 2.0 |
 | 9 | `icon-md` 40px and `icon-lg` 56px drop the stroke to 1; `icon-sm` keeps 1.5. | `ui/_icons.scss` | **Intended.** Rule: stroke 1.5 up to 24px, stroke 1 from 40px. Recorded in section 8. | closed, exception |
 | 10 | Table hover uses `--emphasis-color` at 7.5% while every other hover uses `$hover-bg` (`--secondary` at 8%). | `_variables.scss` table block | **Fix in 2.0.** `$table-hover-bg: $hover-bg`. Short section 5 entry. | planned 2.0 |
+| 13 | Demo pages nest example cards inside a section card (`SectionCard` > `SectionCardBody` > `Card`), and `cards.astro` documents "Cards inside card"; rule 12 forbids a card in a card body. | `preview/pages/cards.astro` and every `SectionCard` page | **Intended.** The demo section wrapper is exempt from rule 12: it frames the examples, it is not product markup. The "cards inside card" demo stays. | closed, exception |
+| 14 | `badge-outline` is forbidden by `.agents/rules/main.mdc` but shipped by `core/scss/ui/_badges.scss` and shown as the "Outline" demo on `badges.astro`. | `_badges.scss`, `badges.astro`, `job-listing.astro` | **Fix in 2.0.** The class is removed: it duplicates the soft `-lt` variant. Deprecate, section 5 entry, upgrade-guide line. | tracked, #3011 |
+| 15 | Brand colour as UI chrome: the sponsor heart is `text-pink` inside `.btn` (`NavbarSide.astro`, `Sponsor.astro`), the marketing footer uses filled `btn-facebook` / `btn-x` / `btn-instagram` / `btn-linkedin`, and `SmallStats color="facebook"` fills a stat avatar. | `shared/components/**`, `shared/layouts/MarketingLayout.astro` | **Intended, for the brand only.** The sponsor heart and the social follow buttons keep their brand colour; everything else obeys rule 21. The one real violation was a decorative icon at rest, the favourite star in `ProfileContact`, which now inherits. A toggle's on-state (`.switch-icon-b`) is a separate, allowed pattern: it carries a state colour, not decoration. | closed, exception |
+| 16 | Scroll containers carry an inline height: `ActivityCard` `height: 28rem`, `UsersListHeaders` `max-height: 35rem`, `NavbarSideApps` `max-height: 50vh`. | `shared/components/cards/ActivityCard.astro`, `UsersListHeaders.astro`, `navbar/NavbarSideApps.astro` | **Intended.** A scroll container's height is a per-instance layout choice, not a scale value, so it stays inline. Rule 18 records the exception. | closed, exception |
+
 ---
 
 ## 10. What a review checks (summary)
