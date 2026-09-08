@@ -17,9 +17,9 @@ The visual language of Tabler, extracted from `core/scss` (last synced with `v2-
 Use it in two ways:
 
 - **Building** (a new component, variant, page or docs example): pick colours, sizes, radii, shadows and spacing from the tables below. Do not invent a value. If the scale has no fitting step, that is a design decision for the user, not a new literal.
-- **Reviewing** (the `design-reviewer` agent, or a PR review): check the change against sections 2–8, then against [rules-of-thumb.md](rules-of-thumb.md), then check whether it touches a known deviation from section 9.
+- **Reviewing** (the `design-reviewer` agent, or a PR review): check the change against sections 2–8, then against [rules-of-thumb.md](rules-of-thumb.md), then check whether it touches a known deviation from section 9 (and whether it moves toward the recorded decision).
 
-Section 9 lists where the code contradicts its own rules; those are open decisions, not fresh findings. [rules-of-thumb.md](rules-of-thumb.md) holds 24 short do/don't rules with markup examples.
+Section 9 lists where the code contradicts its own rules and what the maintainer decided for each; they are known deviations, not fresh findings. [rules-of-thumb.md](rules-of-thumb.md) holds 24 short do/don't rules with markup examples.
 
 Sources: `core/scss/_variables.scss`, `_variables-dark.scss`, `_settings.scss`, `_props.scss`,
 `layout/_root.scss`, `layout/_dark.scss`, `layout/_accessibility.scss`,
@@ -96,7 +96,7 @@ migration plan removes it together with every `rgba(var(--X-rgb))` site, so buil
 
 - Components read `--body-color`, `--secondary`, `--bg-surface-*`, `--border-*`. They never
   read a gray directly, except in the token definitions themselves.
-- No new hex literal outside `_variables.scss` / `_variables-dark.scss`.
+- No new hex literal outside `_variables.scss` / `_variables-dark.scss`. The `--card-gradient-*` palettes are the one exception (decision #6).
 - Colour carries meaning. A coloured badge, dot or text says success/warning/danger; colour is
   not used to decorate. Categorical colour (mail labels, calendar categories, tags) is the one
   exception: every item in the set gets a colour, as a dot or a soft `-lt` badge, never solid,
@@ -115,7 +115,7 @@ migration plan removes it together with every `rgba(var(--X-rgb))` site, so buil
 | Font family | system stack (`system-ui, -apple-system, Segoe UI, Roboto, …`); no web font |
 | Monospace | `ui-monospace, SFMono-Regular, Menlo, …` |
 | Body size / line | `0.875rem` (14px) / `1.25rem` (20px) |
-| Small / large body | `0.765625rem` (12.25px) / `1.09375rem` (17.5px) |
+| Small / large body | `0.765625rem` (12.25px; `0.75rem` in 2.0, decision #4) / `1.09375rem` (17.5px) |
 | Weights | 400 body · 500 medium · 600 semibold · 300 display |
 | Letter spacing | 0 |
 | Root font size | not set; `rem` follows the user's browser setting (WCAG 1.4.4) |
@@ -169,7 +169,7 @@ Note the scale skips 12px: the only 12px values in the framework are component p
 (`0.75rem`), not utilities.
 
 Two "default spacer" tokens exist and disagree: Sass `$spacer` is `1rem` (16px), CSS
-`--spacer` is `var(--spacer-2)` (8px). See section 9.
+`--spacer` is `var(--spacer-2)` (8px). Decision #2: `--spacer` becomes 16px in 2.0; write `--spacer-2` when you mean 8px.
 
 ### Control heights (button = input = select)
 
@@ -177,7 +177,7 @@ Height is line-height + 2 × padding-y + 2px border.
 
 | Size | Padding y / x | Line | Font | Icon | Height | Radius |
 | --- | --- | --- | --- | --- | --- | --- |
-| sm | 5px / 8px | 16px | h5 12px | 16px | **28px** | 4px |
+| sm | 5px / 8px | 16px | h5 12px | 16px | **28px** (32px in 2.0, decision #3) | 4px |
 | default | 9px / 16px | 20px | 14px | 20px | **40px** | 6px |
 | lg | 11px / 24px | 24px | h3 16px | 24px | **48px** | 8px |
 | xl | 11px / 28px | 32px | h1 24px | 32px | **56px** | |
@@ -225,7 +225,7 @@ Height is line-height + 2 × padding-y + 2px border.
 | Grid gutter | 16px; card grid gap = page padding |
 | Navbar height | 56px |
 | Sidebar | 256px, folded 64px, inset 8px, nav padding 12px, icon 24×20 |
-| Modal widths | sm 380 · md 540 · lg 720 · xl 1140 |
+| Modal widths | sm 380 · md 540 · lg 720 · xl 1140 (px today, `rem` in 2.0, decision #8) |
 | Datagrid item | 240px |
 
 ---
@@ -276,7 +276,7 @@ Every interactive component expresses the same five states with the same tokens:
 
 | State | Recipe |
 | --- | --- |
-| Hover (list, dropdown, table row) | `$hover-bg` (Sass only, no CSS token yet): secondary at 8% |
+| Hover (list, dropdown, table row) | `$hover-bg` (Sass only, no CSS token yet): secondary at 8%; tables still use their own 7.5% recipe until decision #10 lands |
 | Hover (button, input) | background unchanged, border to `--border-active-color`; coloured buttons use `--X-darken` |
 | Active / selected | `--active-bg`: primary at 4% (dark: `$dark` +2%), text `--primary`, border `--primary` |
 | Focus | ring `0 0 0 2px primary` plus `0 0 0 4px primary @ 25%` — `@include focus-ring()` from `mixins/_mixins.scss`; forced-colors: 2px `Highlight` outline |
@@ -313,7 +313,7 @@ still visible.
 
 ## 8. Icons
 
-- Tabler Icons, outline, `stroke-width: 1.5` at 20px and 16px; `1` at 40px and 56px.
+- Tabler Icons, outline. Stroke follows size: `1.5` up to 24px (`icon-sm`, default, inline), `1` from 40px (`icon-md`, `icon-lg`). Intended, decision #9.
 - Default colour `gray-400` (`--icon-color`); inside a button the icon inherits text colour.
 - Inline icon: 16px, `vertical-align: -0.2rem`.
 - In a button the icon is `--btn-icon-size` with a gap of half the horizontal padding and a
@@ -323,23 +323,22 @@ still visible.
 
 ---
 
-## 9. Known deviations (open decisions)
+## 9. Known deviations and their decisions
 
-Places where the code contradicts its own rules. Each needs a decision from the maintainer: **keep as exception**, **fix**, or **drop the rule**. A review that touches one of these reports it as "known deviation #n", not as a new finding. When one is decided, move it out of this table into the rule it belongs to. A fix that changes the value behind an existing class (#2, #3, #4) is a value remap under the 2.0 policy: it needs an entry in `BOOTSTRAP-V6-MIGRATION.md` section 5 and an upgrade-guide line, not just a PR. Breakpoints, the spacing scale and the avatar/steps/progress sizes above are the 1.x values; migration questions 4 and 10 and phase 9 may change them, and then this file follows the code.
+Places where the code contradicts its own rules, found on 2026-09-08 and decided by the maintainer the same day. Until a row's fix has landed, a review that touches it reports "known deviation #n (decision: …)", not a new finding, and says whether the change moves toward or away from the decision. When a fix lands, delete the row and update the value in the section it belongs to. Every "fix in 2.0" that changes the value behind an existing class is a value remap under the 2.0 policy: it needs an entry in `BOOTSTRAP-V6-MIGRATION.md` section 5 and an upgrade-guide line. Breakpoints, the spacing scale and the avatar/steps/progress sizes above are the 1.x values; migration questions 4 and 10 and phase 9 may change them, and then this file follows the code.
 
-| # | Finding | Where | Suggested call |
-| --- | --- | --- | --- |
-| 1 | `$min-contrast-ratio: 2` picks the auto foreground (`--X-fg`); white on `yellow`, `lime`, `azure` fails WCAG 4.5:1. | `_settings.scss` | Decide with PR #2895 (high-contrast theme). Document as known until then. |
-| 2 | Sass `$spacer` = 16px but CSS `--spacer` = 8px. Headings use the 8px one, `card-img-overlay` and popover header use the 16px one. | `_variables.scss:341`, `layout/_root.scss` | Pick one; probably rename the CSS token or alias both. |
-| 3 | Small-element heights do not share a ladder: `btn-sm` 28 · `avatar-sm` 32 · tag/status 24 · `avatar-xs` 20. A `btn-sm` next to an `avatar-sm` is 4px shorter. | buttons, avatars, tags | Confirm the intended ladder (24 / 28 / 32 / 40 / 48) or align `btn-sm` to 32. |
-| 4 | `$font-size-sm` is 12.25px, off the pixel grid; `h5` is 12px. Tooltips and popovers use the 12.25px one. | `_variables.scss:403` | Set `$font-size-sm: 0.75rem`. |
-| 5 | Two focus indicators: the ring (`box-shadow`) everywhere, but `outline: 2px solid var(--primary)` in `_buttons.scss:294` and `_calendars.scss:73`. | buttons, calendars | Use the ring, or document `outline` as the rule for non-box elements. |
-| 6 | Hex literals outside the variable files: decorative `--card-gradient-*` palettes, `.card-cover` fallback `#666`, `.card-note` `#fff7dd/#fff1c9`, calendar `#66758c` and `#fefeff`. | `ui/_cards.scss`, `ui/_calendars.scss` | Gradients: exception (brand art). `.card-note`, `.card-cover` and calendar: move to tokens with dark pairs. |
-| 7 | `$dropdown-header-color: $gray-600` and the whole `dropdown-dark-*` family are not `light-dark()` pairs. | `_variables.scss` | Move to `--secondary` / tokens; drop the `$dropdown-dark-*` Sass variables in 2.0 but keep `.dropdown-menu-dark` emitting (v5 class, migration plan section 5 question 8). |
-| 8 | Tooltip max 200px, popover max 276px, modal widths and toast 350px are the only pixel-defined widths; everything else is `rem`. | `_variables.scss` | Keep (Bootstrap heritage), note as exception. |
-| 9 | Icon sizes `md` 40px and `lg` 56px reuse the avatar/control ladder but drop stroke to 1; `icon-sm` keeps 1.5. No `icon-xl`. | `ui/_icons.scss` | Confirm as intended. |
-| 10 | Table `hover-bg` uses `--emphasis-color` at 7.5% while every other hover uses `--secondary` at 8%. | `_variables.scss` table block | Align to `--hover-bg`. |
-
+| # | Finding | Where | Decision | Status |
+| --- | --- | --- | --- | --- |
+| 1 | `$min-contrast-ratio: 2` picks the auto foreground (`--X-fg`); white on `yellow`, `lime`, `azure` fails WCAG 4.5:1. | `_settings.scss` | **Keep for now.** Decided together with the high-contrast theme, PR #2895. | open, waits for #2895 |
+| 2 | Sass `$spacer` = 16px but CSS `--spacer` = 8px. Headings use the 8px one, `card-img-overlay` and popover header use the 16px one. | `_variables.scss:341`, `layout/_root.scss` | **Fix in 2.0.** `--spacer` becomes 16px, equal to `$spacer`; headings get an explicit `--spacer-2`. Remap of the shipped `--tblr-spacer`: section 5 entry + upgrade guide. | planned 2.0 |
+| 3 | Small-element heights do not share a ladder: `btn-sm` 28 · `avatar-sm` 32 · tag/status 24. | buttons, inputs, avatars | **Fix in 2.0.** `btn-sm` (and with it `form-control-sm`, `form-select-sm`) goes to 32px: `$input-btn-padding-y-sm` 5px → 7px. The ladder becomes 24 / 32 / 40 / 48 / 56. Section 5 entry + upgrade guide. | planned 2.0 |
+| 4 | `$font-size-sm` is 12.25px, off the pixel grid; `h5` is 12px. | `_variables.scss:403` | **Fix in 2.0.** `$font-size-sm: 0.75rem`. Tooltips and popovers drop a quarter pixel. Short section 5 entry. | planned 2.0 |
+| 5 | Two focus indicators: the ring everywhere, but `outline: 2px solid var(--primary)` in `_buttons.scss:294` and `_calendars.scss:73`. | buttons, calendars | **Fix.** Both go through `@include focus-ring()`; added to the scope of issue #2972. | tracked, #2972 |
+| 6 | Hex literals outside the variable files: `--card-gradient-*`, `.card-cover` `#666`, `.card-note` `#fff7dd/#fff1c9`, calendar `#66758c` and `#fefeff`. | `ui/_cards.scss`, `ui/_calendars.scss` | **Fix, with one exception.** `.card-note`, `.card-cover` and the calendar get `light-dark()` tokens. The gradients stay literal: they are artwork, nobody rethemes them. | planned, no remap |
+| 7 | `$dropdown-header-color: $gray-600` and the `$dropdown-dark-*` family are not `light-dark()` pairs. | `_variables.scss` | **Fix in 2.0.** Header colour → `--secondary`. The `$dropdown-dark-*` Sass variables go; `.dropdown-menu-dark` keeps emitting through the dropdown tokens (v5 class, section 5 question 8). | planned 2.0 |
+| 8 | Tooltip 200px, popover 276px, modals 380/540/720/1140px and toast 350px are the only pixel widths. | `_variables.scss` | **Fix in 2.0.** Move to `rem` (12.5 · 17.25 · 23.75/33.75/45/71.25 · 21.875rem) so overlays scale with the user's font size. Section 5 entry. | planned 2.0 |
+| 9 | `icon-md` 40px and `icon-lg` 56px drop the stroke to 1; `icon-sm` keeps 1.5. | `ui/_icons.scss` | **Intended.** Rule: stroke 1.5 up to 24px, stroke 1 from 40px. Recorded in section 8. | closed, exception |
+| 10 | Table hover uses `--emphasis-color` at 7.5% while every other hover uses `$hover-bg` (`--secondary` at 8%). | `_variables.scss` table block | **Fix in 2.0.** `$table-hover-bg: $hover-bg`. Short section 5 entry. | planned 2.0 |
 ---
 
 ## 10. What a review checks (summary)

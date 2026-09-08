@@ -52,7 +52,7 @@ Then check by reading, because grep cannot:
 - **Surfaces.** Flat surface: 1px translucent border + `xs` shadow. Floating surface: `overlay` (dropdown) or `lg` / `md`. Radius: control 6px, container 8px, small control 4px.
 - **Type.** Content text 14px; weights only 400 / 500 / 600; sentence case; no `letter-spacing`.
 - **Markup.** `btn-list` / `badge-list` / `avatar-list` wrappers, `text-secondary`, `.empty` for empty states, no card inside a card body, a list in a card is `card-list-group` and a table is `card-table`, `mb-3` rhythm inside a card.
-- **Section 9.** If the change touches a known deviation, report it under its number as "known deviation", and say whether the change makes it better or worse. Do not count it as a new finding.
+- **Section 9.** If the change touches a known deviation, report it under its number with its recorded decision ("known deviation #3, decision: `btn-sm` → 32px in 2.0"), and say whether the change moves toward or away from that decision. Do not count it as a new finding. A change that implements a decision must also carry the section 5 entry the table asks for.
 
 ## 3. Visual check (when a page changed)
 
