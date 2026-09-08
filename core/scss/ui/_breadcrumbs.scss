@@ -27,73 +27,75 @@ $breadcrumb-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.breadcrumb {
-  @include tokens($breadcrumb-tokens);
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  background: transparent;
-  background-color: var(--breadcrumb-bg);
-  @include font-size(var(--breadcrumb-font-size));
-  @include border-radius(var(--breadcrumb-border-radius));
-
-  a {
-    color: var(--breadcrumb-link-color);
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.breadcrumb-muted {
-  --breadcrumb-link-color: var(--secondary);
-}
-
-.breadcrumb-item {
-  &.active {
-    font-weight: var(--breadcrumb-item-active-font-weight);
-    color: var(--breadcrumb-item-active-color);
+@layer components {
+  .breadcrumb {
+    @include tokens($breadcrumb-tokens);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: transparent;
+    background-color: var(--breadcrumb-bg);
+    @include font-size(var(--breadcrumb-font-size));
+    @include border-radius(var(--breadcrumb-border-radius));
 
     a {
-      color: inherit;
-      pointer-events: none;
+      color: var(--breadcrumb-link-color);
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
-  &.disabled {
-    color: var(--breadcrumb-item-disabled-color);
+  .breadcrumb-muted {
+    --breadcrumb-link-color: var(--secondary);
+  }
 
-    &::before {
-      color: inherit;
+  .breadcrumb-item {
+    &.active {
+      font-weight: var(--breadcrumb-item-active-font-weight);
+      color: var(--breadcrumb-item-active-color);
+
+      a {
+        color: inherit;
+        pointer-events: none;
+      }
     }
 
-    a {
-      color: inherit;
-      pointer-events: none;
+    &.disabled {
+      color: var(--breadcrumb-item-disabled-color);
+
+      &::before {
+        color: inherit;
+      }
+
+      a {
+        color: inherit;
+        pointer-events: none;
+      }
+    }
+
+    & + & {
+      padding-inline-start: var(--breadcrumb-item-padding-x);
+
+      &::before {
+        float: inline-start;
+        padding-inline-end: var(--breadcrumb-item-padding-x);
+        color: var(--breadcrumb-divider-color);
+        content: var(--breadcrumb-divider, escape-svg($breadcrumb-divider));
+
+        /* rtl:raw:
+        transform: scaleX(-1);
+        */
+      }
     }
   }
 
-  & + & {
-    padding-inline-start: var(--breadcrumb-item-padding-x);
-
-    &::before {
-      float: inline-start;
-      padding-inline-end: var(--breadcrumb-item-padding-x);
-      color: var(--breadcrumb-divider-color);
-      content: var(--breadcrumb-divider, escape-svg($breadcrumb-divider));
-
-      /* rtl:raw:
-      transform: scaleX(-1);
-      */
+  @each $name, $symbol in $breadcrumb-variants {
+    .breadcrumb-#{$name} {
+      --breadcrumb-divider: '#{string.quote($symbol)}';
     }
-  }
-}
-
-@each $name, $symbol in $breadcrumb-variants {
-  .breadcrumb-#{$name} {
-    --breadcrumb-divider: '#{string.quote($symbol)}';
   }
 }

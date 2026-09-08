@@ -2,89 +2,91 @@
 
 @use '../config' as *;
 
-html {
-  scrollbar-gutter: stable;
+@layer components {
+  html {
+    scrollbar-gutter: stable;
 
-  @supports not (scrollbar-gutter: stable) {
-    overflow-y: scroll;
-  }
-}
-
-// stylelint-disable property-no-vendor-prefix
-body {
-  position: relative;
-  height: 100%;
-  min-height: 100%;
-  padding: 0;
-  font-feature-settings:
-    'liga' 0,
-    'cv03',
-    'cv04',
-    'cv11';
-  letter-spacing: $body-letter-spacing;
-  touch-action: manipulation;
-  text-rendering: optimizeLegibility;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @include media-print() {
-    background: transparent;
-  }
-}
-
-@include scrollbar();
-
-//
-// Fluid container
-//
-// Two routes to the same state, like the folded sidebar: a class on the body
-// (static markup) or data-bs-layout on <html>, set pre-render from localStorage
-// by tabler-theme.js.
-.layout-fluid,
-html[data-bs-layout='fluid'] {
-  .container,
-  [class^='container-'],
-  [class*=' container-'] {
-    max-width: 100%;
-  }
-}
-
-//
-// Boxed container
-//
-.layout-boxed,
-html[data-bs-layout='boxed'] body {
-  --theme-boxed-border-radius: 0;
-  --theme-boxed-width: #{map.get($container-max-widths, xxl)};
-
-  @include media-breakpoint-up(md) {
-    padding: 1rem;
-    background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
-    --theme-boxed-border-radius: #{$border-radius};
+    @supports not (scrollbar-gutter: stable) {
+      overflow-y: scroll;
+    }
   }
 
-  .page {
-    // Makes the frame the containing block of the fixed vertical navbar, so a
-    // sidebar stays inside the boxed page instead of pinning to the viewport.
-    contain: layout;
-    max-width: var(--theme-boxed-width);
-    margin: 0 auto;
-    color: var(--body-color);
-    @include border-radius(var(--theme-boxed-border-radius));
+  // stylelint-disable property-no-vendor-prefix
+  body {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+    padding: 0;
+    font-feature-settings:
+      'liga' 0,
+      'cv03',
+      'cv04',
+      'cv11';
+    letter-spacing: $body-letter-spacing;
+    touch-action: manipulation;
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @include media-print() {
+      background: transparent;
+    }
+  }
+
+  @include scrollbar();
+
+  //
+  // Fluid container
+  //
+  // Two routes to the same state, like the folded sidebar: a class on the body
+  // (static markup) or data-bs-layout on <html>, set pre-render from localStorage
+  // by tabler-theme.js.
+  .layout-fluid,
+  html[data-bs-layout='fluid'] {
+    .container,
+    [class^='container-'],
+    [class*=' container-'] {
+      max-width: 100%;
+    }
+  }
+
+  //
+  // Boxed container
+  //
+  .layout-boxed,
+  html[data-bs-layout='boxed'] body {
+    --theme-boxed-border-radius: 0;
+    --theme-boxed-width: #{map.get($container-max-widths, xxl)};
 
     @include media-breakpoint-up(md) {
-      background: var(--body-bg);
-      border: var(--border-width) var(--border-style) var(--border-color);
+      padding: 1rem;
+      background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
+      --theme-boxed-border-radius: #{$border-radius};
     }
 
-    // Whichever navbar opens the frame: the first child on a page that has one
-    // navbar, or the horizontal navbar on a page that renders the vertical
-    // sidebar before it.
-    > .navbar:first-child,
-    > .navbar:not(.navbar-vertical):first-of-type {
-      border-start-start-radius: var(--theme-boxed-border-radius);
-      border-start-end-radius: var(--theme-boxed-border-radius);
+    .page {
+      // Makes the frame the containing block of the fixed vertical navbar, so a
+      // sidebar stays inside the boxed page instead of pinning to the viewport.
+      contain: layout;
+      max-width: var(--theme-boxed-width);
+      margin: 0 auto;
+      color: var(--body-color);
+      @include border-radius(var(--theme-boxed-border-radius));
+
+      @include media-breakpoint-up(md) {
+        background: var(--body-bg);
+        border: var(--border-width) var(--border-style) var(--border-color);
+      }
+
+      // Whichever navbar opens the frame: the first child on a page that has one
+      // navbar, or the horizontal navbar on a page that renders the vertical
+      // sidebar before it.
+      > .navbar:first-child,
+      > .navbar:not(.navbar-vertical):first-of-type {
+        border-start-start-radius: var(--theme-boxed-border-radius);
+        border-start-end-radius: var(--theme-boxed-border-radius);
+      }
     }
   }
 }

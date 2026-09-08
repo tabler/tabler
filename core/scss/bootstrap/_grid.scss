@@ -4,37 +4,39 @@
 
 @use '../config' as *;
 
-:root {
-  @each $name, $value in $grid-breakpoints {
-    --breakpoint-#{$name}: #{$value};
-  }
-}
-
-@if $enable-grid-classes {
-  .row {
-    @include make-row();
-
-    > * {
-      @include make-col-ready();
+@layer layout {
+  :root {
+    @each $name, $value in $grid-breakpoints {
+      --breakpoint-#{$name}: #{$value};
     }
   }
-}
 
-@if $enable-cssgrid {
-  .grid {
-    display: grid;
-    grid-template-rows: repeat(var(--rows, 1), 1fr);
-    grid-template-columns: repeat(var(--columns, #{$grid-columns}), 1fr);
-    gap: var(--gap, #{$grid-gutter-width});
+  @if $enable-grid-classes {
+    .row {
+      @include make-row();
 
-    @include make-cssgrid();
+      > * {
+        @include make-col-ready();
+      }
+    }
   }
-}
 
-// Columns
-//
-// Common styles for small and large grid columns
+  @if $enable-cssgrid {
+    .grid {
+      display: grid;
+      grid-template-rows: repeat(var(--rows, 1), 1fr);
+      grid-template-columns: repeat(var(--columns, #{$grid-columns}), 1fr);
+      gap: var(--gap, #{$grid-gutter-width});
 
-@if $enable-grid-classes {
-  @include make-grid-columns();
+      @include make-cssgrid();
+    }
+  }
+
+  // Columns
+  //
+  // Common styles for small and large grid columns
+
+  @if $enable-grid-classes {
+    @include make-grid-columns();
+  }
 }

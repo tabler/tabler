@@ -1,120 +1,122 @@
 @use '../config' as *;
 
-.list-group {
-  --list-group-header-padding-y: #{$list-group-header-padding-y};
+@layer components {
+  .list-group {
+    --list-group-header-padding-y: #{$list-group-header-padding-y};
 
-  margin-inline-start: 0;
-  margin-inline-end: 0;
-}
-
-.list-group-header {
-  padding: var(--list-group-header-padding-y) $list-group-item-padding-x;
-  font-size: $h5-font-size;
-  font-weight: var(--font-weight-medium);
-  line-height: 1;
-  color: $list-group-header-color;
-  text-transform: uppercase;
-  background: $list-group-header-bg;
-  border-bottom: var(--border-width) var(--border-style) var(--border-color);
-
-  .list-group-flush > & {
-    &:last-child {
-      border-bottom-width: 0;
-    }
-  }
-}
-
-.list-group-item {
-  // No `background-color: inherit` here: `$list-group-bg` already defaults the
-  // token to `inherit`, and hard-coding the property overrode every
-  // `.list-group-item-{color}` tint.
-  &.disabled,
-  &:disabled {
-    color: var(--disabled-color);
-    background-color: var(--bg-surface-secondary);
-  }
-}
-
-.list-group-item.active {
-  background-color: var(--active-bg);
-  border-inline-start-color: var(--primary);
-  border-inline-start-width: $border-width-wide;
-}
-
-.list-bordered {
-  .list-item {
-    margin-top: -1px;
-    border-top: var(--border-width) var(--border-style) var(--border-color);
-
-    &:first-child {
-      border-top: none;
-    }
-  }
-}
-
-.list-group-hoverable {
-  .list-group-item {
-    &:active,
-    &:focus,
-    &:hover {
-      background-color: $dropdown-link-hover-bg;
-    }
+    margin-inline-start: 0;
+    margin-inline-end: 0;
   }
 
-  .list-group-item-actions {
-    opacity: 0;
-    @include transition(opacity $transition-time);
-  }
+  .list-group-header {
+    padding: var(--list-group-header-padding-y) $list-group-item-padding-x;
+    font-size: $h5-font-size;
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    color: $list-group-header-color;
+    text-transform: uppercase;
+    background: $list-group-header-bg;
+    border-bottom: var(--border-width) var(--border-style) var(--border-color);
 
-  .list-group-item:hover .list-group-item-actions,
-  .list-group-item-actions.show {
-    opacity: 1;
-  }
-}
-
-.list-group-transparent {
-  --list-group-border-radius: 0;
-  margin: 0 (-$list-group-item-padding-x);
-
-  .list-group-item {
-    background: none;
-    border: 0;
-
-    .icon {
-      color: var(--secondary);
-    }
-
-    &.active {
-      font-weight: var(--font-weight-medium);
-      color: inherit;
-      background: $list-group-active-bg;
-
-      .icon {
-        color: inherit;
+    .list-group-flush > & {
+      &:last-child {
+        border-bottom-width: 0;
       }
     }
   }
-}
 
-/**
-Seprated list
-*/
-.list-separated {
-  display: flex;
-  flex-direction: column;
-  gap: $spacer;
-}
+  .list-group-item {
+    // No `background-color: inherit` here: `$list-group-bg` already defaults the
+    // token to `inherit`, and hard-coding the property overrode every
+    // `.list-group-item-{color}` tint.
+    &.disabled,
+    &:disabled {
+      color: var(--disabled-color);
+      background-color: var(--bg-surface-secondary);
+    }
+  }
 
-/**
-Inline list
- */
-.list-inline {
-  margin: 0;
-}
+  .list-group-item.active {
+    background-color: var(--active-bg);
+    border-inline-start-color: var(--primary);
+    border-inline-start-width: $border-width-wide;
+  }
 
-.list-inline-dots {
-  .list-inline-item + .list-inline-item::before {
-    margin-inline-end: $list-inline-padding;
-    content: ' · ';
+  .list-bordered {
+    .list-item {
+      margin-top: -1px;
+      border-top: var(--border-width) var(--border-style) var(--border-color);
+
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+
+  .list-group-hoverable {
+    .list-group-item {
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: $dropdown-link-hover-bg;
+      }
+    }
+
+    .list-group-item-actions {
+      opacity: 0;
+      @include transition(opacity $transition-time);
+    }
+
+    .list-group-item:hover .list-group-item-actions,
+    .list-group-item-actions.show {
+      opacity: 1;
+    }
+  }
+
+  .list-group-transparent {
+    --list-group-border-radius: 0;
+    margin: 0 (-$list-group-item-padding-x);
+
+    .list-group-item {
+      background: none;
+      border: 0;
+
+      .icon {
+        color: var(--secondary);
+      }
+
+      &.active {
+        font-weight: var(--font-weight-medium);
+        color: inherit;
+        background: $list-group-active-bg;
+
+        .icon {
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  /**
+  Seprated list
+  */
+  .list-separated {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer;
+  }
+
+  /**
+  Inline list
+   */
+  .list-inline {
+    margin: 0;
+  }
+
+  .list-inline-dots {
+    .list-inline-item + .list-inline-item::before {
+      margin-inline-end: $list-inline-padding;
+      content: ' · ';
+    }
   }
 }

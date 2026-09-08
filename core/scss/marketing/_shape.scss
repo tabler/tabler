@@ -2,35 +2,37 @@
 
 @use '../config' as *;
 
-.shape {
-  --shape-size: #{$avatar-size};
-  --shape-icon-size: #{$avatar-icon-size};
-  --shape-border-radius: 35%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--shape-size);
-  height: var(--shape-size);
-  color: var(--primary);
-  background-color: var(--primary-lt);
-  @include border-radius(var(--shape-border-radius));
+@layer components {
+  .shape {
+    --shape-size: #{$avatar-size};
+    --shape-icon-size: #{$avatar-icon-size};
+    --shape-border-radius: 35%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--shape-size);
+    height: var(--shape-size);
+    color: var(--primary);
+    background-color: var(--primary-lt);
+    @include border-radius(var(--shape-border-radius));
 
-  .icon {
-    width: var(--shape-icon-size);
-    height: var(--shape-icon-size);
+    .icon {
+      width: var(--shape-icon-size);
+      height: var(--shape-icon-size);
+    }
   }
-}
 
-@each $avatar-size, $size in $avatar-sizes {
-  .shape-#{$avatar-size} {
-    --shape-size: #{map.get($size, size)};
-    --shape-icon-size: #{map.get($size, icon-size)};
+  @each $avatar-size, $size in $avatar-sizes {
+    .shape-#{$avatar-size} {
+      --shape-size: #{map.get($size, size)};
+      --shape-icon-size: #{map.get($size, icon-size)};
+    }
   }
-}
 
-@each $name, $color in $colors {
-  .shape-#{$name} {
-    color: var(--#{$name});
-    background: var(--#{$name}-lt);
+  @each $name, $color in $colors {
+    .shape-#{$name} {
+      color: var(--#{$name});
+      background: var(--#{$name}-lt);
+    }
   }
 }

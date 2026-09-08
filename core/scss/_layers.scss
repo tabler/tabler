@@ -1,0 +1,11 @@
+// Cascade layer order.
+//
+// Declared once, before any partial emits CSS, so the order does not depend
+// on which partial happens to load first. Every bundle entry that emits
+// layered rules forwards this file for the same reason: a standalone bundle
+// loaded before `tabler.css` would otherwise create its layers in load order.
+// (`tabler-props`, `tabler-themes` and `tabler-vendors` emit no layered rules.)
+//
+// The names match Bootstrap v6. `custom` is an empty slot between the
+// components and the helpers, reserved for user overrides.
+@layer colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities;

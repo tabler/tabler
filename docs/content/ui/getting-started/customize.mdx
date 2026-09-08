@@ -117,3 +117,37 @@ You can override the full gray palette (`--tblr-gray-50` … `--tblr-gray-950`) 
   }
 </style>
 ```
+
+## Cascade layers
+
+Tabler's CSS is split into [cascade layers](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer). The order is declared once, at the top of `tabler.css`, and matches Bootstrap:
+
+```css
+@layer colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities;
+```
+
+Later layers win over earlier ones, no matter how specific the selector is. Utilities beat components, and components beat the reboot. Utility classes such as `.d-none` or `.mt-3` no longer need `!important` to win.
+
+Your own CSS wins over all of Tabler's layers when it is not in a layer. A plain rule is enough to restyle a component:
+
+```html
+<style>
+  .btn {
+    border-radius: var(--tblr-border-radius-lg);
+  }
+</style>
+```
+
+If you write your CSS in layers, put it in the `custom` layer or declare your layer after Tabler's. Styles in `custom` win over components but still lose to helpers and utilities:
+
+```html
+<style>
+  @layer custom {
+    .card {
+      border-radius: var(--tblr-border-radius-lg);
+    }
+  }
+</style>
+```
+
+Note that `!important` reverses the layer order. A declaration marked `!important` in an early layer beats one in a later layer, and Tabler's `!important` declarations beat `!important` declarations outside any layer. Reach for a plain rule first.

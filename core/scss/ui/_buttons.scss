@@ -28,369 +28,371 @@ $btn-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.btn {
-  @include tokens($btn-tokens);
-  position: relative;
+@layer components {
+  .btn {
+    @include tokens($btn-tokens);
+    position: relative;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
-  min-height: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
-  white-space: nowrap;
-  box-shadow: var(--btn-box-shadow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+    min-height: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+    white-space: nowrap;
+    box-shadow: var(--btn-box-shadow);
 
-  @include border-radius(var(--btn-border-radius));
+    @include border-radius(var(--btn-border-radius));
 
-  .icon {
-    width: var(--btn-icon-size);
-    min-width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
-    margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
-    font-size: var(--btn-icon-size);
-    color: var(--btn-icon-color);
-    vertical-align: bottom;
-  }
-
-  .avatar {
-    width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
-    margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
-  }
-
-  .icon-right,
-  .icon-end {
-    margin: 0 calc(var(--btn-padding-x) / -4) 0 calc(var(--btn-padding-x) / 2);
-  }
-
-  .badge {
-    top: auto;
-  }
-
-  .btn-check + &:hover {
-    color: var(--btn-hover-color);
-    background-color: var(--btn-hover-bg);
-    border-color: var(--btn-hover-border-color);
-  }
-}
-
-.btn-link {
-  // Tokens, not just the plain properties below: the disabled state reads
-  // `--btn-bg` and `--btn-border-color`, so setting only `background-color`
-  // here would leave a disabled link button with the default surface and border.
-  --btn-bg: transparent;
-  --btn-border-color: transparent;
-  color: var(--link-color);
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: none;
-
-  .icon {
-    color: inherit;
-  }
-
-  &:hover {
-    color: var(--link-hover-color);
-    border-color: transparent;
-  }
-}
-
-//
-// Button color variations
-//
-.btn-ghost {
-  --btn-bg: transparent;
-  --btn-border-color: transparent;
-  --btn-box-shadow: none;
-  --btn-hover-bg: var(--bg-surface-secondary);
-  --btn-hover-border-color: transparent;
-  --btn-hover-color: var(--body-color);
-}
-
-@each $color, $value in map.merge($theme-colors, $social-colors) {
-  .btn-#{$color} {
-    @if $color == 'dark' {
-      --btn-border-color: var(--dark-mode-border-color);
-      --btn-hover-border-color: var(--dark-mode-border-active-color);
-      --btn-active-border-color: var(--dark-mode-border-active-color);
-    } @else {
-      --btn-border-color: transparent;
-      --btn-hover-border-color: transparent;
-      --btn-active-border-color: transparent;
+    .icon {
+      width: var(--btn-icon-size);
+      min-width: var(--btn-icon-size);
+      height: var(--btn-icon-size);
+      margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
+      font-size: var(--btn-icon-size);
+      color: var(--btn-icon-color);
+      vertical-align: bottom;
     }
 
-    --btn-color: var(--#{$color}-fg);
-    --btn-bg: var(--#{$color});
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-bg: var(--#{$color}-darken);
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color}-darken);
-    --btn-disabled-bg: var(--#{$color});
-    --btn-disabled-color: var(--#{$color}-fg);
-    --btn-box-shadow: var(--shadow-input);
+    .avatar {
+      width: var(--btn-icon-size);
+      height: var(--btn-icon-size);
+      margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
+    }
+
+    .icon-right,
+    .icon-end {
+      margin: 0 calc(var(--btn-padding-x) / -4) 0 calc(var(--btn-padding-x) / 2);
+    }
+
+    .badge {
+      top: auto;
+    }
+
+    .btn-check + &:hover {
+      color: var(--btn-hover-color);
+      background-color: var(--btn-hover-bg);
+      border-color: var(--btn-hover-border-color);
+    }
   }
 
-  .btn-outline-#{$color},
-  .btn-outline.btn-#{$color} {
-    --btn-color: var(--#{$color});
-    --btn-bg: transparent;
-    --btn-border-color: var(--#{$color});
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-border-color: transparent;
-    --btn-hover-bg: var(--#{$color});
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color});
-    --btn-active-border-color: var(--#{$color});
-    --btn-disabled-color: var(--#{$color});
-    --btn-disabled-border-color: var(--#{$color});
-  }
-
-  .btn-ghost-#{$color},
-  .btn-ghost.btn-#{$color} {
-    --btn-color: var(--#{$color});
+  .btn-link {
+    // Tokens, not just the plain properties below: the disabled state reads
+    // `--btn-bg` and `--btn-border-color`, so setting only `background-color`
+    // here would leave a disabled link button with the default surface and border.
     --btn-bg: transparent;
     --btn-border-color: transparent;
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-bg: var(--#{$color});
-    --btn-hover-border-color: var(--#{$color});
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color});
-    --btn-active-border-color: transparent;
-    --btn-active-shadow: #{$btn-active-box-shadow};
-    --btn-disabled-color: var(--#{$color});
-    --btn-disabled-bg: transparent;
-    --btn-disabled-border-color: transparent;
-    --gradient: none;
-    --btn-box-shadow: none;
-  }
-}
-
-//
-// Button sizes
-//
-.btn-sm,
-.btn-group-sm > .btn {
-  --btn-line-height: #{$input-btn-line-height-sm};
-  --btn-icon-size: #{$input-btn-icon-size-sm};
-}
-
-.btn-lg,
-.btn-group-lg > .btn {
-  --btn-line-height: #{$input-btn-line-height-lg};
-  --btn-icon-size: #{$input-btn-icon-size-lg};
-}
-
-.btn-xl,
-.btn-group-xl > .btn {
-  --btn-line-height: #{$input-btn-line-height-xl};
-  --btn-icon-size: #{$input-btn-icon-size-xl};
-  --btn-padding-y: #{$input-btn-padding-y-xl};
-  --btn-padding-x: #{$input-btn-padding-x-xl};
-  --btn-font-size: #{$input-btn-font-size-xl};
-}
-
-//
-// Button shapes
-//
-.btn-pill {
-  padding-inline-start: 1.5em;
-  padding-inline-end: 1.5em;
-  @include border-radius(var(--border-radius-pill));
-
-  &[class*='btn-icon'] {
-    --btn-pill-icon-padding-y: #{$btn-pill-icon-padding-y};
-    --btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
-    padding: var(--btn-pill-icon-padding-y) var(--btn-pill-icon-padding-x);
-  }
-}
-
-.btn-square {
-  border-radius: 0;
-}
-
-//
-// Icon button
-//
-.btn-icon,
-.btn-action {
-  //[BUG] btn-sm and btn-xl with an icon looks broken
-  //issue #2470 fixed
-  min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
-  padding-inline-start: 0;
-  padding-inline-end: 0;
-
-  .icon {
-    margin: calc(-1 * var(--btn-padding-x));
-  }
-}
-
-//
-// Button list
-//
-.btn-list {
-  @include elements-list();
-}
-
-.btn-list-center {
-  justify-content: center;
-}
-
-//
-// Button floating
-//
-.btn-floating {
-  --btn-floating-offset: #{$btn-floating-offset};
-  position: fixed;
-  // End side, Material-FAB style — the start side belongs to the sidebar.
-  inset-inline-end: var(--btn-floating-offset);
-  bottom: var(--btn-floating-offset);
-  z-index: $zindex-fixed;
-  box-shadow: var(--shadow-dropdown);
-
-  @include media-print() {
-    display: none;
-  }
-}
-
-//
-// Button loading
-//
-.btn-loading {
-  position: relative;
-  color: transparent !important;
-  text-shadow: none !important;
-  pointer-events: none;
-
-  > * {
-    opacity: 0;
-  }
-
-  &::after {
-    position: absolute;
-    inset-inline-start: calc(50% - var(--btn-icon-size) / 2);
-    top: calc(50% - var(--btn-icon-size) / 2);
-    display: inline-block;
-    width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
-    color: var(--btn-color);
-    vertical-align: text-bottom;
-    content: '';
-    border: $spinner-border-width var(--border-style) currentColor;
-    border-inline-end-color: transparent;
-    animation: spinner-border 0.75s linear infinite;
-    @include border-radius(var(--border-radius-pill));
-  }
-}
-
-//
-// Action button
-//
-.btn-action {
-  --btn-border-color: transparent;
-  --btn-bg: transparent;
-  --btn-disabled-color: var(--secondary);
-  color: var(--secondary);
-  @include border-radius(var(--border-radius));
-  background: transparent;
-  box-shadow: none;
-
-  &::after {
-    content: none;
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-    box-shadow: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: -2px;
-    box-shadow: none;
-  }
-
-  &:hover,
-  &.show {
-    color: var(--body-color);
-    background: $hover-bg;
+    color: var(--link-color);
+    background-color: transparent;
     border-color: transparent;
-  }
+    box-shadow: none;
 
-  &.show {
-    color: var(--primary);
-  }
-
-  @include media-print() {
-    display: none;
-  }
-}
-
-.btn-actions {
-  display: flex;
-
-  @include media-print() {
-    display: none;
-  }
-}
-
-.btn-animate-icon {
-  .icon {
-    transition: transform $transition-time ease;
-  }
-
-  &:hover,
-  &:focus-visible {
     .icon {
-      /* rtl:ignore */
-      transform: translateX(calc(var(--dir) * 4px));
+      color: inherit;
+    }
+
+    &:hover {
+      color: var(--link-hover-color);
+      border-color: transparent;
     }
   }
 
-  &.btn-animate-icon-rotate {
-    &:hover,
-    &:focus-visible {
-      .icon {
-        transform: rotate(90deg);
+  //
+  // Button color variations
+  //
+  .btn-ghost {
+    --btn-bg: transparent;
+    --btn-border-color: transparent;
+    --btn-box-shadow: none;
+    --btn-hover-bg: var(--bg-surface-secondary);
+    --btn-hover-border-color: transparent;
+    --btn-hover-color: var(--body-color);
+  }
+
+  @each $color, $value in map.merge($theme-colors, $social-colors) {
+    .btn-#{$color} {
+      @if $color == 'dark' {
+        --btn-border-color: var(--dark-mode-border-color);
+        --btn-hover-border-color: var(--dark-mode-border-active-color);
+        --btn-active-border-color: var(--dark-mode-border-active-color);
+      } @else {
+        --btn-border-color: transparent;
+        --btn-hover-border-color: transparent;
+        --btn-active-border-color: transparent;
       }
+
+      --btn-color: var(--#{$color}-fg);
+      --btn-bg: var(--#{$color});
+      --btn-hover-color: var(--#{$color}-fg);
+      --btn-hover-bg: var(--#{$color}-darken);
+      --btn-active-color: var(--#{$color}-fg);
+      --btn-active-bg: var(--#{$color}-darken);
+      --btn-disabled-bg: var(--#{$color});
+      --btn-disabled-color: var(--#{$color}-fg);
+      --btn-box-shadow: var(--shadow-input);
+    }
+
+    .btn-outline-#{$color},
+    .btn-outline.btn-#{$color} {
+      --btn-color: var(--#{$color});
+      --btn-bg: transparent;
+      --btn-border-color: var(--#{$color});
+      --btn-hover-color: var(--#{$color}-fg);
+      --btn-hover-border-color: transparent;
+      --btn-hover-bg: var(--#{$color});
+      --btn-active-color: var(--#{$color}-fg);
+      --btn-active-bg: var(--#{$color});
+      --btn-active-border-color: var(--#{$color});
+      --btn-disabled-color: var(--#{$color});
+      --btn-disabled-border-color: var(--#{$color});
+    }
+
+    .btn-ghost-#{$color},
+    .btn-ghost.btn-#{$color} {
+      --btn-color: var(--#{$color});
+      --btn-bg: transparent;
+      --btn-border-color: transparent;
+      --btn-hover-color: var(--#{$color}-fg);
+      --btn-hover-bg: var(--#{$color});
+      --btn-hover-border-color: var(--#{$color});
+      --btn-active-color: var(--#{$color}-fg);
+      --btn-active-bg: var(--#{$color});
+      --btn-active-border-color: transparent;
+      --btn-active-shadow: #{$btn-active-box-shadow};
+      --btn-disabled-color: var(--#{$color});
+      --btn-disabled-bg: transparent;
+      --btn-disabled-border-color: transparent;
+      --gradient: none;
+      --btn-box-shadow: none;
     }
   }
 
-  &.btn-animate-icon-move-start {
+  //
+  // Button sizes
+  //
+  .btn-sm,
+  .btn-group-sm > .btn {
+    --btn-line-height: #{$input-btn-line-height-sm};
+    --btn-icon-size: #{$input-btn-icon-size-sm};
+  }
+
+  .btn-lg,
+  .btn-group-lg > .btn {
+    --btn-line-height: #{$input-btn-line-height-lg};
+    --btn-icon-size: #{$input-btn-icon-size-lg};
+  }
+
+  .btn-xl,
+  .btn-group-xl > .btn {
+    --btn-line-height: #{$input-btn-line-height-xl};
+    --btn-icon-size: #{$input-btn-icon-size-xl};
+    --btn-padding-y: #{$input-btn-padding-y-xl};
+    --btn-padding-x: #{$input-btn-padding-x-xl};
+    --btn-font-size: #{$input-btn-font-size-xl};
+  }
+
+  //
+  // Button shapes
+  //
+  .btn-pill {
+    padding-inline-start: 1.5em;
+    padding-inline-end: 1.5em;
+    @include border-radius(var(--border-radius-pill));
+
+    &[class*='btn-icon'] {
+      --btn-pill-icon-padding-y: #{$btn-pill-icon-padding-y};
+      --btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
+      padding: var(--btn-pill-icon-padding-y) var(--btn-pill-icon-padding-x);
+    }
+  }
+
+  .btn-square {
+    border-radius: 0;
+  }
+
+  //
+  // Icon button
+  //
+  .btn-icon,
+  .btn-action {
+    //[BUG] btn-sm and btn-xl with an icon looks broken
+    //issue #2470 fixed
+    min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+
+    .icon {
+      margin: calc(-1 * var(--btn-padding-x));
+    }
+  }
+
+  //
+  // Button list
+  //
+  .btn-list {
+    @include elements-list();
+  }
+
+  .btn-list-center {
+    justify-content: center;
+  }
+
+  //
+  // Button floating
+  //
+  .btn-floating {
+    --btn-floating-offset: #{$btn-floating-offset};
+    position: fixed;
+    // End side, Material-FAB style — the start side belongs to the sidebar.
+    inset-inline-end: var(--btn-floating-offset);
+    bottom: var(--btn-floating-offset);
+    z-index: $zindex-fixed;
+    box-shadow: var(--shadow-dropdown);
+
+    @include media-print() {
+      display: none;
+    }
+  }
+
+  //
+  // Button loading
+  //
+  .btn-loading {
+    position: relative;
+    color: transparent !important;
+    text-shadow: none !important;
+    pointer-events: none;
+
+    > * {
+      opacity: 0;
+    }
+
+    &::after {
+      position: absolute;
+      inset-inline-start: calc(50% - var(--btn-icon-size) / 2);
+      top: calc(50% - var(--btn-icon-size) / 2);
+      display: inline-block;
+      width: var(--btn-icon-size);
+      height: var(--btn-icon-size);
+      color: var(--btn-color);
+      vertical-align: text-bottom;
+      content: '';
+      border: $spinner-border-width var(--border-style) currentColor;
+      border-inline-end-color: transparent;
+      animation: spinner-border 0.75s linear infinite;
+      @include border-radius(var(--border-radius-pill));
+    }
+  }
+
+  //
+  // Action button
+  //
+  .btn-action {
+    --btn-border-color: transparent;
+    --btn-bg: transparent;
+    --btn-disabled-color: var(--secondary);
+    color: var(--secondary);
+    @include border-radius(var(--border-radius));
+    background: transparent;
+    box-shadow: none;
+
+    &::after {
+      content: none;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+      box-shadow: none;
+    }
+
+    &:hover,
+    &.show {
+      color: var(--body-color);
+      background: $hover-bg;
+      border-color: transparent;
+    }
+
+    &.show {
+      color: var(--primary);
+    }
+
+    @include media-print() {
+      display: none;
+    }
+  }
+
+  .btn-actions {
+    display: flex;
+
+    @include media-print() {
+      display: none;
+    }
+  }
+
+  .btn-animate-icon {
+    .icon {
+      transition: transform $transition-time ease;
+    }
+
     &:hover,
     &:focus-visible {
       .icon {
         /* rtl:ignore */
-        transform: translateX(calc(var(--dir) * -4px));
+        transform: translateX(calc(var(--dir) * 4px));
       }
     }
-  }
 
-  &.btn-animate-icon-pulse {
-    &:hover,
-    &:focus-visible {
-      .icon {
-        transform: none;
-        animation: pulse 0.9s;
+    &.btn-animate-icon-rotate {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          transform: rotate(90deg);
+        }
       }
     }
-  }
 
-  &.btn-animate-icon-shake {
-    &:hover,
-    &:focus-visible {
-      .icon {
-        transform: none;
-        animation: shake 0.9s;
+    &.btn-animate-icon-move-start {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          /* rtl:ignore */
+          transform: translateX(calc(var(--dir) * -4px));
+        }
       }
     }
-  }
 
-  &.btn-animate-icon-tada {
-    &:hover,
-    &:focus-visible {
-      .icon {
-        transform: none;
-        animation: tada 0.9s;
+    &.btn-animate-icon-pulse {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          transform: none;
+          animation: pulse 0.9s;
+        }
+      }
+    }
+
+    &.btn-animate-icon-shake {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          transform: none;
+          animation: shake 0.9s;
+        }
+      }
+    }
+
+    &.btn-animate-icon-tada {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          transform: none;
+          animation: tada 0.9s;
+        }
       }
     }
   }

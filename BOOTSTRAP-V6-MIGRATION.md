@@ -264,32 +264,43 @@ of `color-scheme`, the token-dump verification harness) but not its code.
 One PR, decided 2026-09-08 (section 5, item 9). Placed after phase 3 because it is the first phase
 whose CSS output changes by design, so it must not sit under the byte-diff-gated phases.
 
-- Declare the layer order once, with Bootstrap v6's flat names, in the root partial:
+- Declare the layer order once, with Bootstrap v6's flat names, in `core/scss/_layers.scss`,
+  forwarded by every entry that emits layered rules:
   `colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities`.
   No `tabler.*` nesting; the Tailwind v4 name overlap is accepted, as upstream accepts it.
 - Wrap per partial with `@layer x { … }` (Sass forbids `@use`/`@forward` inside a block; the
   `meta.load-css` variant from PR #2396 is not used). The module graph from PR #2689 stays as is.
-- Mapping: `root` = `bootstrap/root`, `props`, `layout/root`, `tabler-themes` (the `:root` tokens go
-  into the layer, as upstream); `reboot`; `layout` = containers, grid, `layout/page`, `layout/core`;
-  `content` = type, images, tables, `ui/typo`; `forms` = `bootstrap/forms` + `ui/forms`;
-  `components` = buttons, every other `bootstrap/*` and `ui/*`, `layout/navbar`, `layout/dark`;
-  `custom` = empty, documented slot for user overrides; `helpers`; `utilities` = `utilities/api` +
-  `utils/*`.
+- Mapping: the `:root` token partials (`bootstrap/root`, `props`, `layout/root`, `tabler-themes`)
+  and `layout/dark` stay unlayered, exactly as upstream (v6 declares `colors, config, root` but never
+  wraps its `:root` rules; a layered `color-scheme: dark` switch would lose to the unlayered light
+  default); `reboot`; `layout` = containers, grid; `content` = type, images, tables, `ui/typo`;
+  `forms` = `bootstrap/forms` + `ui/forms`; `components` = buttons, every other `bootstrap/*` and
+  `ui/*`, `layout/page`, `layout/core`, `layout/navbar` (page and core hold `.page-title` and
+  friends, which lose to `h1` in `content` from the `layout` layer); `custom` = empty, documented
+  slot for user overrides; `helpers`; `utilities` = `utilities/api` + `utils/*`.
 - Hoist `bootstrap/forms/_input-group.scss` and `_validation.scss` into `components` — they
   cross-style `.btn` and z-index, and break grouped-button radii from the `forms` layer (the July
   prototype hit this; upstream does the same).
-- Unlayered on purpose: `@property`, `@font-face`, `@keyframes`, and the whole `tabler-vendors.scss`
-  — third-party CSS is unlayered, so a layered override would lose to it.
+- Unlayered on purpose: `@property`, `@font-face`, `@keyframes`, and `tabler-vendors.scss` —
+  third-party CSS is unlayered and the preview loads it before `tabler.css`, so a layered override
+  would lose to it. The exception is a Tabler-only default the library never sets (the nouislider
+  thumb colour): that one is layered, otherwise the `.text-*` utility a slider is coloured with
+  loses to it.
 - Drop `!important` from utilities and remove `$enable-important-utilities`, as upstream did (v6 dist
   carries 150 `!important`, Tabler 1.5 carries 2647). Layer order now guarantees utilities beat
   components; unlayered project CSS beats utilities, which is the documented model.
 - Review `_extends.scss`: Sass places an extending selector in the layer of the rule it extends
   (`.h1 { @extend h1 }` lands in `content`), so cross-layer extends move selectors silently.
+  Outcome: `.h1`–`.h6` and `.hr` land in `reboot` and `content` next to their element targets,
+  as intended; the file's own declarations (`.prose > table`, `.markdown > table`) are the only
+  class-level rules besides `layout/_dark.scss` that stay unlayered.
 - Docs: a "Cascade layers" section in the customisation guide and an upgrade-guide entry — unlayered
   project CSS now wins on every property, and project `!important` no longer beats Tabler's.
 
-**Files:** `core/scss/_root.scss` (order), every partial under `core/scss/bootstrap/**`, `ui/**`,
-`layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`.
+**Files:** `core/scss/_layers.scss` (order), every partial under `core/scss/bootstrap/**`, `ui/**`,
+`layout/**`, `marketing/**`, `helpers/**`, `utils/**`, `mixins/bootstrap/_utilities.scss`,
+`_variables.scss`, the bundle entries, `.build/build-css.ts` (keeps the order statement ahead of
+the minified output).
 **Gate:** by-design CSS diff, so no byte-diff; instead zero `html-diff`, the screenshots package over
 every preview page, a `getComputedStyle` per-page comparison before/after, and a control test that a
 utility beats a component without `!important`.
@@ -472,7 +483,7 @@ Decided:
 7. The option that replaces `popperConfig` is `positionConfig` (#2966); `popperConfig` is kept as a
    deprecated alias. v6's `floatingConfig` is not adopted.
 9. Cascade `@layer` lands as phase 3b, one PR after the token scales: flat Bootstrap v6 layer
-   names (no `tabler.*` nesting), `:root` tokens inside the `root` layer, utilities without
+   names (no `tabler.*` nesting), `:root` tokens unlayered as upstream really does, utilities without
    `!important` and `$enable-important-utilities` removed (decided 2026-09-08).
 
 Open:
@@ -510,7 +521,7 @@ PR #2966 is parked.
 | — | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
 | #2972 | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
 | #2970 | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
-| #3016 | 3b | Cascade `@layer` with the flat v6 layer order, per-partial wrapping, `input-group`/`validation` hoisted to `components`, vendors and `@property` unlayered, utilities without `!important`; docs and upgrade-guide entry | `core/scss/_root.scss`, `bootstrap/**`, `ui/**`, `layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`, docs customisation page | zero `html-diff`, screenshots, `getComputedStyle` comparison, utility-beats-component control test | M |
+| #3016 | 3b | Cascade `@layer` with the flat v6 layer order, per-partial wrapping, `input-group`/`validation` hoisted to `components`, vendors and `@property` unlayered, utilities without `!important`; docs and upgrade-guide entry | `core/scss/_layers.scss`, `bootstrap/**`, `ui/**`, `layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`, docs customisation page | zero `html-diff`, screenshots, `getComputedStyle` comparison, utility-beats-component control test | M |
 | #2974 | 4 | Logical properties on the block axis of spacing and border utilities (inline axis is already logical), class names unchanged; keep rtlcss and `--dir` for transforms | `core/scss/_utilities.scss`, `_extends.scss`, `bootstrap/_spinners.scss` | diff limited to renamed properties in `tabler.css` and `tabler.rtl.css`, zero `html-diff` | S–M |
 | #2973 | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
 | #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |

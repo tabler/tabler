@@ -13,7 +13,8 @@ function compileCardRule(overrides) {
   const src = `@use 'ui/cards' with ($card-tokens: (${overrides}));`
   const { css } = compileString(src, { loadPaths: [scssDir, 'node_modules'], style: 'expanded' })
   // The base `.card { … }` rule that ui/_cards.scss renders `$card-tokens` on.
-  return css.match(/\n\.card \{\n[\s\S]*?\n\}/)[0]
+  // It sits inside `@layer components { … }`, hence the indentation capture.
+  return css.match(/\n( *)\.card \{\n[\s\S]*?\n\1\}/)[0]
 }
 
 describe('$card-tokens compile-time override', () => {
@@ -41,7 +42,7 @@ describe('other components render from their token map', () => {
   it('renders $alert-tokens on .alert and takes an override', () => {
     const src = `@use 'ui/alerts' with ($alert-tokens: (--alert-padding-x: 2rem));`
     const { css } = compileString(src, { loadPaths: [scssDir, 'node_modules'], style: 'expanded' })
-    const rule = css.match(/\n\.alert \{\n[\s\S]*?\n\}/)[0]
+    const rule = css.match(/\n( *)\.alert \{\n[\s\S]*?\n\1\}/)[0]
     expect(rule).toContain('--alert-padding-x: 2rem;')
     expect(rule).toMatch(/--alert-bg: color-mix\(/)
   })

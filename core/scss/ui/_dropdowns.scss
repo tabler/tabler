@@ -23,124 +23,126 @@ $dropdown-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.dropdown-menu {
-  @include tokens($dropdown-tokens);
-  user-select: none;
-  background-clip: border-box;
+@layer components {
+  .dropdown-menu {
+    @include tokens($dropdown-tokens);
+    user-select: none;
+    background-clip: border-box;
 
-  &.card {
-    display: none;
-    min-width: $dropdown-max-width;
-    padding: 0;
+    &.card {
+      display: none;
+      min-width: $dropdown-max-width;
+      padding: 0;
 
-    &.show {
-      display: flex;
+      &.show {
+        display: flex;
+      }
+    }
+
+    @include media-print() {
+      display: none;
     }
   }
-
-  @include media-print() {
-    display: none;
-  }
-}
-
-.dropdown-item {
-  display: flex;
-  gap: var(--dropdown-item-gap, #{$dropdown-item-gap});
-  align-items: center;
-  min-width: $dropdown-min-width;
-  margin: 0;
-  line-height: $line-height-base;
-}
-
-.dropdown-item-icon {
-  width: var(--dropdown-item-icon-size) !important;
-  height: var(--dropdown-item-icon-size) !important;
-  color: var(--dropdown-item-icon-color);
-  text-align: center;
-}
-
-.dropdown-item-indicator {
-  display: inline-flex;
-  align-items: center;
-  height: var(--dropdown-item-icon-size);
-  line-height: 1;
-  vertical-align: bottom;
-}
-
-.dropdown-header {
-  @include subheader();
-  padding-bottom: var(--dropdown-header-padding-bottom);
-  pointer-events: none;
-}
-
-.dropdown-menu-scrollable {
-  height: auto;
-  max-height: $dropdown-scrollable-height;
-  overflow-x: hidden;
-}
-
-.dropdown-menu-column {
-  min-width: $dropdown-min-width;
 
   .dropdown-item {
-    min-width: 0;
-  }
-}
-
-.dropdown-menu-columns {
-  display: flex;
-  flex: 0 var(--dropdown-menu-columns-gap);
-}
-
-.dropdown-menu-arrow {
-  &::before {
-    position: absolute;
-    inset-inline-start: var(--dropdown-arrow-inset);
-    top: calc(-1 * var(--dropdown-arrow-offset));
-    z-index: -1;
-    display: block;
-    width: var(--dropdown-arrow-size);
-    height: var(--dropdown-arrow-size);
-    clip-path: inset(0 calc(var(--dropdown-arrow-size) / 3) calc(var(--dropdown-arrow-size) / 3) 0);
-    content: '';
-    background: inherit;
-    // The menu draws its edge with the 1px ring in --dropdown-box-shadow and has
-    // no border, so `inherit` would give the arrow the text color.
-    border: var(--border-width) solid var(--dropdown-border-color);
-
-    /* rtl:ignore */
-    transform: rotate(45deg);
-    transform-origin: center;
-  }
-
-  &.dropdown-menu-end {
-    &::before {
-      inset-inline-start: auto;
-      inset-inline-end: var(--dropdown-arrow-inset);
-    }
-  }
-}
-
-.dropend {
-  > .dropdown-menu {
-    margin-inline-start: calc(-1 * var(--dropdown-dropend-offset));
-    margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
-  }
-
-  .dropdown-toggle {
-    &::after {
-      margin-inline-start: auto;
-    }
-  }
-}
-
-.dropdown-menu-card {
-  min-width: var(--dropdown-menu-card-min-width);
-  padding: 0;
-
-  > .card {
+    display: flex;
+    gap: var(--dropdown-item-gap, #{$dropdown-item-gap});
+    align-items: center;
+    min-width: $dropdown-min-width;
     margin: 0;
-    border: 0;
-    box-shadow: none;
+    line-height: $line-height-base;
+  }
+
+  .dropdown-item-icon {
+    width: var(--dropdown-item-icon-size) !important;
+    height: var(--dropdown-item-icon-size) !important;
+    color: var(--dropdown-item-icon-color);
+    text-align: center;
+  }
+
+  .dropdown-item-indicator {
+    display: inline-flex;
+    align-items: center;
+    height: var(--dropdown-item-icon-size);
+    line-height: 1;
+    vertical-align: bottom;
+  }
+
+  .dropdown-header {
+    @include subheader();
+    padding-bottom: var(--dropdown-header-padding-bottom);
+    pointer-events: none;
+  }
+
+  .dropdown-menu-scrollable {
+    height: auto;
+    max-height: $dropdown-scrollable-height;
+    overflow-x: hidden;
+  }
+
+  .dropdown-menu-column {
+    min-width: $dropdown-min-width;
+
+    .dropdown-item {
+      min-width: 0;
+    }
+  }
+
+  .dropdown-menu-columns {
+    display: flex;
+    flex: 0 var(--dropdown-menu-columns-gap);
+  }
+
+  .dropdown-menu-arrow {
+    &::before {
+      position: absolute;
+      inset-inline-start: var(--dropdown-arrow-inset);
+      top: calc(-1 * var(--dropdown-arrow-offset));
+      z-index: -1;
+      display: block;
+      width: var(--dropdown-arrow-size);
+      height: var(--dropdown-arrow-size);
+      clip-path: inset(0 calc(var(--dropdown-arrow-size) / 3) calc(var(--dropdown-arrow-size) / 3) 0);
+      content: '';
+      background: inherit;
+      // The menu draws its edge with the 1px ring in --dropdown-box-shadow and has
+      // no border, so `inherit` would give the arrow the text color.
+      border: var(--border-width) solid var(--dropdown-border-color);
+
+      /* rtl:ignore */
+      transform: rotate(45deg);
+      transform-origin: center;
+    }
+
+    &.dropdown-menu-end {
+      &::before {
+        inset-inline-start: auto;
+        inset-inline-end: var(--dropdown-arrow-inset);
+      }
+    }
+  }
+
+  .dropend {
+    > .dropdown-menu {
+      margin-inline-start: calc(-1 * var(--dropdown-dropend-offset));
+      margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
+    }
+
+    .dropdown-toggle {
+      &::after {
+        margin-inline-start: auto;
+      }
+    }
+  }
+
+  .dropdown-menu-card {
+    min-width: var(--dropdown-menu-card-min-width);
+    padding: 0;
+
+    > .card {
+      margin: 0;
+      border: 0;
+      box-shadow: none;
+    }
   }
 }

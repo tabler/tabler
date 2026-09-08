@@ -1,7 +1,16 @@
 @use '../config' as *;
 
+// Vendor overrides stay unlayered because the library's own stylesheet is
+// unlayered and may load before this file. The thumb colour is Tabler's own
+// default, not something nouislider sets, so it can sit in `components` — an
+// unlayered rule here would beat the `.text-*` utility a slider is coloured with.
+@layer components {
+  .noUi-target {
+    color: $form-range-thumb-bg;
+  }
+}
+
 .noUi-target {
-  color: $form-range-thumb-bg;
   background: none;
   border: 0;
   box-shadow: none;

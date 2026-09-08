@@ -17,80 +17,82 @@ $pagination-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.pagination {
-  @include tokens($pagination-tokens);
-  gap: var(--pagination-gap);
-  margin: 0;
-  line-height: var(--body-line-height);
-  user-select: none;
+@layer components {
+  .pagination {
+    @include tokens($pagination-tokens);
+    gap: var(--pagination-gap);
+    margin: 0;
+    line-height: var(--body-line-height);
+    user-select: none;
 
-  @include media-print() {
-    display: none;
-  }
-}
-
-.page-link {
-  min-width: var(--pagination-link-min-width);
-  @include border-radius(var(--pagination-border-radius));
-}
-
-.page-item:not(.active) .page-link:hover {
-  background: var(--pagination-hover-bg);
-}
-
-.page-text {
-  padding-inline-start: var(--page-text-padding-x);
-  padding-inline-end: var(--page-text-padding-x);
-}
-
-.page-item {
-  text-align: center;
-
-  &.page-prev,
-  &.page-next {
-    flex: 0 0 50%;
-    text-align: start;
+    @include media-print() {
+      display: none;
+    }
   }
 
-  &.page-next {
-    margin-inline-start: auto;
-    text-align: end;
-  }
-}
-
-.page-item-subtitle {
-  --page-item-subtitle-margin-bottom: #{$page-item-subtitle-margin-bottom};
-  --page-item-subtitle-font-size: #{$page-item-subtitle-font-size};
-  margin-bottom: var(--page-item-subtitle-margin-bottom);
-  font-size: var(--page-item-subtitle-font-size);
-  color: var(--secondary);
-  text-transform: uppercase;
-
-  .page-item.disabled & {
-    color: $pagination-disabled-color;
-  }
-}
-
-.page-item-title {
-  font-size: $h3-font-size;
-  font-weight: var(--font-weight-normal);
-  color: var(--body-color);
-
-  .page-link:hover & {
-    color: var(--link-color);
+  .page-link {
+    min-width: var(--pagination-link-min-width);
+    @include border-radius(var(--pagination-border-radius));
   }
 
-  .page-item.disabled & {
-    color: $pagination-disabled-color;
+  .page-item:not(.active) .page-link:hover {
+    background: var(--pagination-hover-bg);
   }
-}
 
-.pagination-outline {
-  --pagination-border-color: var(--border-color);
-  --pagination-disabled-border-color: var(--border-color);
-  --pagination-border-width: var(--border-width);
-}
+  .page-text {
+    padding-inline-start: var(--page-text-padding-x);
+    padding-inline-end: var(--page-text-padding-x);
+  }
 
-.pagination-circle {
-  --pagination-border-radius: var(--border-radius-pill);
+  .page-item {
+    text-align: center;
+
+    &.page-prev,
+    &.page-next {
+      flex: 0 0 50%;
+      text-align: start;
+    }
+
+    &.page-next {
+      margin-inline-start: auto;
+      text-align: end;
+    }
+  }
+
+  .page-item-subtitle {
+    --page-item-subtitle-margin-bottom: #{$page-item-subtitle-margin-bottom};
+    --page-item-subtitle-font-size: #{$page-item-subtitle-font-size};
+    margin-bottom: var(--page-item-subtitle-margin-bottom);
+    font-size: var(--page-item-subtitle-font-size);
+    color: var(--secondary);
+    text-transform: uppercase;
+
+    .page-item.disabled & {
+      color: $pagination-disabled-color;
+    }
+  }
+
+  .page-item-title {
+    font-size: $h3-font-size;
+    font-weight: var(--font-weight-normal);
+    color: var(--body-color);
+
+    .page-link:hover & {
+      color: var(--link-color);
+    }
+
+    .page-item.disabled & {
+      color: $pagination-disabled-color;
+    }
+  }
+
+  .pagination-outline {
+    --pagination-border-color: var(--border-color);
+    --pagination-disabled-border-color: var(--border-color);
+    --pagination-border-width: var(--border-width);
+  }
+
+  .pagination-circle {
+    --pagination-border-radius: var(--border-radius-pill);
+  }
 }
