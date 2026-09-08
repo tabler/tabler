@@ -20,7 +20,7 @@ $btn-tokens: defaults(
     --btn-hover-bg: var(--btn-bg),
     --btn-hover-border-color: var(--border-active-color),
     --btn-active-color: $active-color,
-    --btn-active-bg: $active-bg,
+    --btn-active-bg: var(--active-bg),
     --btn-active-border-color: $active-border-color,
   ),
   $btn-tokens
@@ -81,7 +81,7 @@ $btn-tokens: defaults(
   // here would leave a disabled link button with the default surface and border.
   --btn-bg: transparent;
   --btn-border-color: transparent;
-  color: #{adjust-lightness-css(var(--primary), 5%)};
+  color: var(--link-color);
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -91,7 +91,7 @@ $btn-tokens: defaults(
   }
 
   &:hover {
-    color: #{$btn-link-hover-color};
+    color: var(--link-hover-color);
     border-color: transparent;
   }
 }
@@ -311,7 +311,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 // Action button
 //
 .btn-action {
-  --border-color: transparent;
+  --btn-border-color: transparent;
   --btn-bg: transparent;
   --btn-disabled-color: var(--secondary);
   color: var(--secondary);
@@ -337,7 +337,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   &:hover,
   &.show {
     color: var(--body-color);
-    background: var(--active-bg);
+    background: $hover-bg;
     border-color: transparent;
   }
 
@@ -360,7 +360,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 
 .btn-animate-icon {
   .icon {
-    transition: transform 0.3s ease;
+    transition: transform $transition-time ease;
   }
 
   &:hover,
