@@ -330,6 +330,8 @@ still visible.
   negative outer margin of a quarter.
 - Nav-link icons are the link colour at 50%, 80% on hover.
 - Filled variant only via `.icon-filled`.
+- A toggle's two faces are `.switch-icon-a` (rest, inherits or `--secondary`) and `.switch-icon-b`
+  (on, a state colour — `SwitchIcon` takes it as `activeColor`).
 
 ---
 
@@ -351,7 +353,7 @@ Places where the code contradicts its own rules, found on 2026-09-08 and decided
 | 10 | Table hover uses `--emphasis-color` at 7.5% while every other hover uses `$hover-bg` (`--secondary` at 8%). | `_variables.scss` table block | **Fix in 2.0.** `$table-hover-bg: $hover-bg`. Short section 5 entry. | planned 2.0 |
 | 13 | Demo pages nest example cards inside a section card (`SectionCard` > `SectionCardBody` > `Card`), and `cards.astro` documents "Cards inside card"; rule 12 forbids a card in a card body. | `preview/pages/cards.astro` and every `SectionCard` page | **Intended.** The demo section wrapper is exempt from rule 12: it frames the examples, it is not product markup. The "cards inside card" demo stays. | closed, exception |
 | 14 | `badge-outline` is forbidden by `.agents/rules/main.mdc` but shipped by `core/scss/ui/_badges.scss` and shown as the "Outline" demo on `badges.astro`. | `_badges.scss`, `badges.astro`, `job-listing.astro` | **Fix in 2.0.** The class is removed: it duplicates the soft `-lt` variant. Deprecate, section 5 entry, upgrade-guide line. | tracked, #3011 |
-| 15 | Brand colour as UI chrome: the sponsor heart is `text-pink` inside `.btn` (`NavbarSide.astro`, `Sponsor.astro`), the marketing footer uses filled `btn-facebook` / `btn-x` / `btn-instagram` / `btn-linkedin`, and `SmallStats color="facebook"` fills a stat avatar. | `shared/components/**`, `shared/layouts/MarketingLayout.astro` | **Intended, for the brand only.** The sponsor heart and the social follow buttons keep their brand colour; everything else obeys rule 21. The favourite star in `ProfileContact` was the one real violation and now inherits. | closed, exception |
+| 15 | Brand colour as UI chrome: the sponsor heart is `text-pink` inside `.btn` (`NavbarSide.astro`, `Sponsor.astro`), the marketing footer uses filled `btn-facebook` / `btn-x` / `btn-instagram` / `btn-linkedin`, and `SmallStats color="facebook"` fills a stat avatar. | `shared/components/**`, `shared/layouts/MarketingLayout.astro` | **Intended, for the brand only.** The sponsor heart and the social follow buttons keep their brand colour; everything else obeys rule 21. The one real violation was a decorative icon at rest, the favourite star in `ProfileContact`, which now inherits. A toggle's on-state (`.switch-icon-b`) is a separate, allowed pattern: it carries a state colour, not decoration. | closed, exception |
 | 16 | Scroll containers carry an inline height: `ActivityCard` `height: 28rem`, `UsersListHeaders` `max-height: 35rem`, `NavbarSideApps` `max-height: 50vh`. | `shared/components/cards/ActivityCard.astro`, `UsersListHeaders.astro`, `navbar/NavbarSideApps.astro` | **Intended.** A scroll container's height is a per-instance layout choice, not a scale value, so it stays inline. Rule 18 records the exception. | closed, exception |
 
 ---

@@ -361,13 +361,19 @@ and the state colours are not reused for categories.
 ### 21. Icons inherit colour inside controls, `gray-400` elsewhere
 
 A button's icon is the button's text colour. A stand-alone icon is `--icon-color`.
-Colouring an icon separately makes it read as a second control. The sponsor heart is the one
-recorded exception (deviation #15); it carries the brand, not a state.
+Colouring an icon separately makes it read as a second control. Two exceptions: the on-state of
+a toggle carries a state colour on purpose (rule 20) — that is what `.switch-icon-b` is for, and
+`SwitchIcon` takes it as `activeColor` — and the sponsor heart, which carries the brand
+(deviation #15).
 
 ```html
 <!-- Recommended -->
 <a href="#" class="btn btn-primary"><Icon name="plus" /> Create</a>
 <Icon name="search" class="text-secondary" />
+<button class="switch-icon" data-bs-toggle="switch-icon">
+  <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
+  <span class="switch-icon-b text-red"><Icon name="heart" class="icon-filled" /></span>
+</button>
 
 <!-- Avoid -->
 <a href="#" class="btn"><Icon name="plus" class="text-primary" /> Create</a>
