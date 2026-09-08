@@ -1,5 +1,7 @@
 ---
 import Empty from '@ui/Empty.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
 import Subheader from '@ui/Subheader.astro'
 import ButtonGroup from '@ui/ButtonGroup.astro'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
@@ -126,71 +128,66 @@ import mails from '@data/mails.json'
               </div>
             </ButtonGroup>
           </div>
+        </div>
 
-          <div class="mt-3">
-            <ul class="email-list">
-              {
-                mails && mails.length > 0 ? (
-                  mails.map((mail) => (
-                    <li>
-                      <div class="email-sender-info">
-                        <div class="checkbox-wrapper-mail">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id={`mail-${mail.id}`} />
-                            <label class="form-check-label" for={`mail-${mail.id}`} />
-                          </div>
-                        </div>
-                        <span class="star-toggle">
+        <ListGroup flush hoverable class="card-list-group">
+          {
+            mails && mails.length > 0 ? (
+              mails.map((mail) => (
+                <ListGroupItem>
+                  <div class="row align-items-center flex-nowrap g-3">
+                    <div class="col-auto">
+                      <input type="checkbox" class="form-check-input m-0" id={`mail-${mail.id}`} aria-label={`Select ${mail.subject}`} />
+                    </div>
+                    <div class="col-auto">
+                      <button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-label="Star">
+                        <span class="switch-icon-a text-secondary">
                           <Icon name="star" />
                         </span>
-                        <a href="#" class="email-title">
-                          {mail.sender}
-                        </a>
+                        <span class="switch-icon-b text-yellow">
+                          <Icon name="star" class="icon-filled" />
+                        </span>
+                      </button>
+                    </div>
+                    <div class="col-3 col-md-2 text-truncate">
+                      <a href="#" class="fw-medium text-reset">
+                        {mail.sender}
+                      </a>
+                    </div>
+                    <div class="col text-truncate">
+                      <a href="#" class="text-reset">
+                        {mail.subject} <span class="text-secondary">&nbsp;–&nbsp;{mail.preview}</span>
+                      </a>
+                    </div>
+                    <div class="col-auto text-secondary d-none d-md-block">{mail.date}</div>
+                    <div class="col-auto list-group-item-actions">
+                      <div class="btn-list flex-nowrap">
+                        <button type="button" class="btn btn-action" aria-label="Archive">
+                          <Icon name="archive" />
+                        </button>
+                        <button type="button" class="btn btn-action" aria-label="Delete">
+                          <Icon name="trash" />
+                        </button>
+                        <button type="button" class="btn btn-action" aria-label="Mark as read">
+                          <Icon name="mail-opened" />
+                        </button>
+                        <button type="button" class="btn btn-action" aria-label="Snooze">
+                          <Icon name="clock" />
+                        </button>
                       </div>
+                    </div>
+                  </div>
+                </ListGroupItem>
+              ))
+            ) : (
+              <ListGroupItem>
+                <Empty title="No emails" />
+              </ListGroupItem>
+            )
+          }
+        </ListGroup>
 
-                      <div class="email-content">
-                        <a href="#" class="email-subject">
-                          {mail.subject} &nbsp;–&nbsp;
-                          <span>{mail.preview}</span>
-                        </a>
-                        <div class="email-date">{mail.date}</div>
-                      </div>
-
-                      <div class="email-action-icons">
-                        <ul class="list-inline">
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Archive">
-                              <Icon name="archive" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Delete">
-                              <Icon name="trash" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Mark as read">
-                              <Icon name="mail-opened" class="email-action-icons-item" />
-                            </a>
-                          </li>
-                          <li class="list-inline-item">
-                            <a href="#" aria-label="Snooze">
-                              <Icon name="clock" />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <li class="list-unstyled">
-                    <Empty title="No emails" />
-                  </li>
-                )
-              }
-            </ul>
-          </div>
-
+        <div class="card-body">
           <div class="row">
             <div class="col-7 mt-1">
               Showing 1 - {mails.length} of {mails.length}

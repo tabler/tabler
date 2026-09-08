@@ -117,7 +117,7 @@ migration plan removes it together with every `rgba(var(--X-rgb))` site, so buil
 | Body size / line | `0.875rem` (14px) / `1.25rem` (20px) |
 | Small / large body | `0.765625rem` (12.25px; `0.75rem` in 2.0, decision #4) / `1.09375rem` (17.5px) |
 | Weights | 400 body · 500 medium · 600 semibold · 300 display |
-| Letter spacing | 0, except `0.04em` from the `subheader()` mixin (`.subheader`, table heads, `.table-mobile` cell labels, `.dropdown-header`, `.datagrid-title`, `.page-pretitle`, `.hr-text`) and on `.badge` (open, deviation #11) |
+| Letter spacing | 0, except `0.04em` from the `subheader()` mixin (`.subheader`, table heads, `.table-mobile` cell labels, `.dropdown-header`, `.datagrid-title`, `.page-pretitle`, `.hr-text`) |
 | Root font size | not set; `rem` follows the user's browser setting (WCAG 1.4.4) |
 
 ### Heading scale (size / line, both on the 4px grid)
@@ -152,7 +152,7 @@ Heading margin-bottom is `--spacer` (8px). Headings and `strong` share the semib
 | Page title | h2 (20px / 28px) | headings weight | |
 | Form label | h4 (14px), margin-bottom 8px | 500 | body |
 | Fieldset legend as a label (`legend.form-label`) | inherits 14px (the reboot's bare `legend` is 24px) | 500 | body |
-| Markdown prose (`.markdown`) | h3 (16px), blockquote 16px; content rule says 14px (open, deviation #12) | 400 | body |
+| Markdown prose (`.markdown`) | h3 (16px), blockquote 16px — long-form reading text is the one exception to the 14px content rule | 400 | body |
 | Form hint / feedback | `0.875em`, margin-top 4px | 400 | secondary |
 | Tooltip / popover body | small (12.25px) | | |
 | Badge | `0.857em` of parent (sm `0.714em`, lg `1em`) | 500 | |
@@ -349,12 +349,10 @@ Places where the code contradicts its own rules, found on 2026-09-08 and decided
 | 8 | Tooltip 200px, popover 276px, modals 380/540/720/1140px and toast 350px are the only pixel widths. | `_variables.scss` | **Fix in 2.0.** Move to `rem` (12.5 · 17.25 · 23.75/33.75/45/71.25 · 21.875rem) so overlays scale with the user's font size. Section 5 entry. | planned 2.0 |
 | 9 | `icon-md` 40px and `icon-lg` 56px drop the stroke to 1; `icon-sm` keeps 1.5. | `ui/_icons.scss` | **Intended.** Rule: stroke 1.5 up to 24px, stroke 1 from 40px. Recorded in section 8. | closed, exception |
 | 10 | Table hover uses `--emphasis-color` at 7.5% while every other hover uses `$hover-bg` (`--secondary` at 8%). | `_variables.scss` table block | **Fix in 2.0.** `$table-hover-bg: $hover-bg`. Short section 5 entry. | planned 2.0 |
-| 11 | `.badge` tracks `letter-spacing: 0.04em`; rule 4 allows tracking only through the `subheader()` mixin. | `ui/_badges.scss` | **Open.** Either the badge loses its tracking or rule 4 lists the badge as the second tracked element. | needs decision |
-| 12 | `.markdown` prose is 16px (`$markdown-font-size: var(--font-size-h3)`); rule 1 says content text is 14px. | `ui/_markdown.scss` | **Open.** Either prose drops to `--body-font-size` or section 3 records long-form prose as the exception. | needs decision |
-| 13 | Demo pages nest example cards inside a section card (`SectionCard` > `SectionCardBody` > `Card`), and `cards.astro` documents "Cards inside card"; rule 12 forbids a card in a card body. | `preview/pages/cards.astro` and every `SectionCard` page | **Open.** Either rule 12 exempts the demo section wrapper (and the "cards inside card" demo goes), or the section pages switch to headings without a wrapping card. | needs decision |
-| 14 | `badge-outline` is forbidden by `.agents/rules/main.mdc` but shipped by `core/scss/ui/_badges.scss` and shown as the "Outline" demo on `badges.astro`. | `_badges.scss`, `badges.astro`, `job-listing.astro` | **Open.** Either the class is removed in 2.0 (deprecate, section 5 entry) or the rule in `main.mdc` goes. | needs decision |
-| 15 | Brand colour as UI chrome: the sponsor heart is `text-pink` inside `.btn` (`NavbarSide.astro`, `Sponsor.astro`), the favourite star is `text-yellow` inside `.btn-action` (`ProfileContact.astro`), the marketing footer uses filled `btn-facebook` / `btn-x` / `btn-instagram` / `btn-linkedin`, and `SmallStats color="facebook"` fills a stat avatar. Rule 21 and section 2 forbid both. | `shared/components/**`, `shared/layouts/MarketingLayout.astro` | **Open.** Either these become recorded brand exceptions (sponsor heart, social follow buttons) or the icons inherit and the footer uses plain `btn btn-icon`. | needs decision |
-| 16 | Scroll containers carry an inline height: `ActivityCard` `height: 28rem`, `UsersListHeaders` `max-height: 35rem`, `NavbarSideApps` `max-height: 50vh`. Rule 18 forbids inline sizes, but nothing in `core/scss` names a scroll-container height; dropping the height on `ActivityCard` makes the homepage column run about 2000px past its neighbour. | `shared/components/cards/ActivityCard.astro`, `UsersListHeaders.astro`, `navbar/NavbarSideApps.astro` | **Open.** Needs a class or a `--card-body-scrollable-height` token on `.card-body-scrollable` in core; until then the three inline heights stay. | needs decision |
+| 13 | Demo pages nest example cards inside a section card (`SectionCard` > `SectionCardBody` > `Card`), and `cards.astro` documents "Cards inside card"; rule 12 forbids a card in a card body. | `preview/pages/cards.astro` and every `SectionCard` page | **Intended.** The demo section wrapper is exempt from rule 12: it frames the examples, it is not product markup. The "cards inside card" demo stays. | closed, exception |
+| 14 | `badge-outline` is forbidden by `.agents/rules/main.mdc` but shipped by `core/scss/ui/_badges.scss` and shown as the "Outline" demo on `badges.astro`. | `_badges.scss`, `badges.astro`, `job-listing.astro` | **Fix in 2.0.** The class is removed: it duplicates the soft `-lt` variant. Deprecate, section 5 entry, upgrade-guide line. | tracked, #3011 |
+| 15 | Brand colour as UI chrome: the sponsor heart is `text-pink` inside `.btn` (`NavbarSide.astro`, `Sponsor.astro`), the marketing footer uses filled `btn-facebook` / `btn-x` / `btn-instagram` / `btn-linkedin`, and `SmallStats color="facebook"` fills a stat avatar. | `shared/components/**`, `shared/layouts/MarketingLayout.astro` | **Intended, for the brand only.** The sponsor heart and the social follow buttons keep their brand colour; everything else obeys rule 21. The favourite star in `ProfileContact` was the one real violation and now inherits. | closed, exception |
+| 16 | Scroll containers carry an inline height: `ActivityCard` `height: 28rem`, `UsersListHeaders` `max-height: 35rem`, `NavbarSideApps` `max-height: 50vh`. | `shared/components/cards/ActivityCard.astro`, `UsersListHeaders.astro`, `navbar/NavbarSideApps.astro` | **Intended.** A scroll container's height is a per-instance layout choice, not a scale value, so it stays inline. Rule 18 records the exception. | closed, exception |
 
 ---
 

@@ -60,8 +60,8 @@ weight scale. Today: 0 × `fw-bold`, 23 × `fw-medium`, 7 × `fw-semibold`.
 
 `letter-spacing` is 0 everywhere. The only tracked text comes from the `subheader()` mixin,
 which the framework applies itself: `.subheader`, table heads, `.table-mobile` cell labels,
-`.dropdown-header`, `.datagrid-title`, `.page-pretitle` and `.hr-text`. `.badge` also tracks
-0.04em today (deviation #11, open). Markup never adds tracking.
+`.dropdown-header`, `.datagrid-title`, `.page-pretitle` and `.hr-text`. Markup never adds
+tracking.
 
 ```html
 <!-- Recommended -->
@@ -193,8 +193,8 @@ stronger belongs to floating surfaces.
 Two borders and two paddings in a row look like a mistake. Kumo's rule is "never stack";
 Tabler has `.card-stacked` for the deliberate stack, so the rule is about nesting. A list in a
 card is `card-list-group`, a table is `card-table`; both keep the card's edge and padding.
-The demo pages' `SectionCard` wrapper nests example cards on purpose; whether that stays is
-deviation #13 (open), not a finding.
+The demo pages' `SectionCard` wrapper is exempt: it frames the examples on a preview page, it
+is not product markup (deviation #13, closed).
 
 ```html
 <!-- Recommended -->
@@ -283,8 +283,9 @@ in RTL. Today: 0 × `me-2` on a button, badge or avatar; 49 × `<ButtonList>`, 1
 ### 17. Use `text-secondary`, never `text-muted`
 
 One class for secondary text. `text-muted` is a Bootstrap alias kept for compatibility.
-Today: 260 × `text-secondary`, 0 × `text-muted` in markup. `<Icon color="muted">` (6 uses) still
-emits `text-muted` and is documented that way; it is not a finding until the prop is remapped.
+Today: 0 × `text-muted` anywhere in `preview/pages`, `shared/` and `docs/content`, including
+`<Icon color="muted">`, which is gone; `text-secondary` is the only secondary-text class. The
+`.text-muted` utility itself stays as a Bootstrap alias until 2.0 drops the aliases.
 
 ```html
 <!-- Recommended -->
@@ -299,7 +300,8 @@ emits `text-muted` and is documented that way; it is not a finding until the pro
 Sizes come from utilities or a component token, so they follow the scale and the theme.
 Today: 0 inline sizes in `preview/pages`; demo-only sizes live as classes in
 `preview/scss/demo.scss` (`demo-photo-placeholder`, `demo-dropdown-menu-wide`,
-`modal-demo-scrollable`). In `shared/` three scroll-container heights remain (deviation #16).
+`modal-demo-scrollable`). In `shared/` three scroll-container heights stay inline on purpose (deviation #16): a scroll
+height is a per-instance layout choice, not a scale value.
 The exceptions are data, not layout: SVG illustration fills, `background-image` URLs and
 progress-bar widths that carry the value.
 
@@ -358,8 +360,8 @@ and the state colours are not reused for categories.
 ### 21. Icons inherit colour inside controls, `gray-400` elsewhere
 
 A button's icon is the button's text colour. A stand-alone icon is `--icon-color`.
-Colouring an icon separately makes it read as a second control. The sponsor heart and the
-favourite star are deviation #15 (open), not findings.
+Colouring an icon separately makes it read as a second control. The sponsor heart is the one
+recorded exception (deviation #15); it carries the brand, not a state.
 
 ```html
 <!-- Recommended -->
