@@ -135,9 +135,9 @@ import mails from '@data/mails.json'
             mails && mails.length > 0 ? (
               mails.map((mail) => (
                 <ListGroupItem>
-                  <div class="row align-items-center flex-nowrap g-3">
+                  <div class="row align-items-center flex-nowrap">
                     <div class="col-auto">
-                      <input type="checkbox" class="form-check-input m-0" id={`mail-${mail.id}`} aria-label={`Select ${mail.subject}`} />
+                      <input type="checkbox" class="form-check-input" id={`mail-${mail.id}`} aria-label={`Select ${mail.subject}`} />
                     </div>
                     <div class="col-auto">
                       <button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-label="Star">
@@ -187,13 +187,11 @@ import mails from '@data/mails.json'
           }
         </ListGroup>
 
-        <div class="card-body">
-          <div class="row">
-            <div class="col-7 mt-1">
-              Showing 1 - {mails.length} of {mails.length}
-            </div>
-            <div class="col-5">
-              <ButtonGroup class="float-end">
+        <div class="card-footer">
+          <div class="row g-2 align-items-center justify-content-between">
+            <div class="col-auto text-secondary">Showing 1 - {mails.length} of {mails.length}</div>
+            <div class="col-auto">
+              <ButtonGroup>
                 <button type="button" class="btn btn-icon" aria-label="Previous page"><Icon name="chevron-left" /></button>
                 <button type="button" class="btn btn-icon" aria-label="Next page"><Icon name="chevron-right" /></button>
               </ButtonGroup>

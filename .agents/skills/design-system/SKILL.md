@@ -117,7 +117,7 @@ migration plan removes it together with every `rgba(var(--X-rgb))` site, so buil
 | Body size / line | `0.875rem` (14px) / `1.25rem` (20px) |
 | Small / large body | `0.765625rem` (12.25px; `0.75rem` in 2.0, decision #4) / `1.09375rem` (17.5px) |
 | Weights | 400 body · 500 medium · 600 semibold · 300 display |
-| Letter spacing | 0, except `0.04em` from the `subheader()` mixin (`.subheader`, table heads, `.table-mobile` cell labels, `.dropdown-header`, `.datagrid-title`, `.page-pretitle`, `.hr-text`) |
+| Letter spacing | 0, except `0.04em`: the `subheader()` mixin (`.subheader`, table heads, `.table-mobile` cell labels, `.dropdown-header`, `.datagrid-title`, `.page-pretitle`, `.hr-text`) and the sidebar section title, which writes the same value by hand |
 | Root font size | not set; `rem` follows the user's browser setting (WCAG 1.4.4) |
 
 ### Heading scale (size / line, both on the 4px grid)
@@ -156,7 +156,7 @@ Heading margin-bottom is `--spacer` (8px). Headings and `strong` share the semib
 | Form hint / feedback | `0.875em`, margin-top 4px | 400 | secondary |
 | Tooltip / popover body | small (12.25px) | | |
 | Badge | `0.857em` of parent (sm `0.714em`, lg `1em`) | 500 | |
-| Sidebar section title | 12px | | |
+| Sidebar section title | 12px, uppercase, tracked `0.04em` | 500 | navbar colour at 70% |
 | Code | `0.857em`, `gray-600` on `gray-100` (dark: `gray-400` on `gray-900`) | | |
 
 ---

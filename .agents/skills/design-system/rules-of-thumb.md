@@ -12,6 +12,7 @@ A review cites a rule by number: "rule 16 — buttons go in `btn-list`".
 ### 1. Use 14px for content text
 
 Body copy, buttons, table cells and form values are 14px. 16px and above belong to headings.
+Long-form prose inside `.markdown` is the one exception, at 16px (SKILL section 3).
 
 ```html
 <!-- Recommended -->
@@ -60,8 +61,8 @@ weight scale. Today: 0 × `fw-bold`, 23 × `fw-medium`, 7 × `fw-semibold`.
 
 `letter-spacing` is 0 everywhere. The only tracked text comes from the `subheader()` mixin,
 which the framework applies itself: `.subheader`, table heads, `.table-mobile` cell labels,
-`.dropdown-header`, `.datagrid-title`, `.page-pretitle` and `.hr-text`. Markup never adds
-tracking.
+`.dropdown-header`, `.datagrid-title`, `.page-pretitle` and `.hr-text`, plus the sidebar
+section title, which writes the same `0.04em` by hand. Markup never adds tracking.
 
 ```html
 <!-- Recommended -->
