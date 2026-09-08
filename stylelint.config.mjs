@@ -26,7 +26,10 @@ export default {
     'scss/at-function-named-arguments': null,
     'import-notation': null,
     'value-keyword-case': ['lower', { ignoreProperties: ['/^\\$font-family/', '/^--.*font/'], camelCaseSvgKeywords: true }],
-    'declaration-no-important': null,
+    // On, as upstream Bootstrap has it. Cascade layers order the cascade now, so a new
+    // `!important` is a smell: inside a layer it beats every later layer and every
+    // unlayered project `!important`. Each remaining site carries a disable comment.
+    'declaration-no-important': true,
   },
   overrides: [
     {
