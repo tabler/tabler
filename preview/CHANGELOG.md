@@ -1,6 +1,6 @@
 # @tabler/preview
 
-## 1.5.0 - 2026-09-05
+## 1.5.0
 
 ### Minor Changes
 

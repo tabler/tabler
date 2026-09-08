@@ -369,9 +369,9 @@ header > .navbar {
   }
 }
 
-// Page tools under the table of contents: copy, source, edit. One shape for all
-// three, so the button does not read as a different kind of control than the
-// links next to it.
+// Page tools under the table of contents: source, edit. One shape for both
+// links (copying the page as markdown moved to the "Copy to LLM" button above
+// the title, see DocsCopyMarkdownLink).
 .docs-page-links {
   display: flex;
   flex-direction: column;
@@ -606,6 +606,10 @@ html {
 }
 
 // The table of contents sticks too, so it has to clear the header (#2421).
+// A long list must not run past the viewport either: the rail is capped at the
+// space below the header and scrolls on its own (#2965).
 .docs-toc-sticky {
   top: var(--docs-header-height);
+  max-height: calc(100vh - var(--docs-header-height));
+  overflow-y: auto;
 }
