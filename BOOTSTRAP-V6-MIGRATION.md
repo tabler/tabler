@@ -218,7 +218,7 @@ Restructure without changing a single byte of compiled CSS.
   `tabler.scss` through them.
 - Introduce the `defaults()` + `tokens()` pattern so compile-time and runtime overrides are one
   mechanism.
-- Keep `@layer` out of this phase — it is a separate, previously withdrawn prototype.
+- Keep `@layer` out of this phase — it lands in phase 3b, after the byte-diff-gated phases.
 
 **Files:** `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_config.scss`,
 `_props.scss`, `_settings.scss`, `_core.scss`, `tabler.scss`.
@@ -258,6 +258,43 @@ of `color-scheme`, the token-dump verification harness) but not its code.
 
 **Files:** `core/scss/_config.scss`, `_props.scss`, `core/scss/mixins/**`, `core/scss/_utilities.scss`.
 **Gate:** `html-diff` zero diff for the radius and focus-ring work.
+
+### Phase 3b — Cascade layers
+
+One PR, decided 2026-09-08 (section 5, item 9). Placed after phase 3 because it is the first phase
+whose CSS output changes by design, so it must not sit under the byte-diff-gated phases.
+
+- Declare the layer order once, with Bootstrap v6's flat names, in the root partial:
+  `colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities`.
+  No `tabler.*` nesting; the Tailwind v4 name overlap is accepted, as upstream accepts it.
+- Wrap per partial with `@layer x { … }` (Sass forbids `@use`/`@forward` inside a block; the
+  `meta.load-css` variant from PR #2396 is not used). The module graph from PR #2689 stays as is.
+- Mapping: `root` = `bootstrap/root`, `props`, `layout/root`, `tabler-themes` (the `:root` tokens go
+  into the layer, as upstream); `reboot`; `layout` = containers, grid, `layout/page`, `layout/core`;
+  `content` = type, images, tables, `ui/typo`; `forms` = `bootstrap/forms` + `ui/forms`;
+  `components` = buttons, every other `bootstrap/*` and `ui/*`, `layout/navbar`, `layout/dark`;
+  `custom` = empty, documented slot for user overrides; `helpers`; `utilities` = `utilities/api` +
+  `utils/*`.
+- Hoist `bootstrap/forms/_input-group.scss` and `_validation.scss` into `components` — they
+  cross-style `.btn` and z-index, and break grouped-button radii from the `forms` layer (the July
+  prototype hit this; upstream does the same).
+- Unlayered on purpose: `@property`, `@font-face`, `@keyframes`, and the whole `tabler-vendors.scss`
+  — third-party CSS is unlayered, so a layered override would lose to it.
+- Drop `!important` from utilities and remove `$enable-important-utilities`, as upstream did (v6 dist
+  carries 150 `!important`, Tabler 1.5 carries 2647). Layer order now guarantees utilities beat
+  components; unlayered project CSS beats utilities, which is the documented model.
+- Review `_extends.scss`: Sass places an extending selector in the layer of the rule it extends
+  (`.h1 { @extend h1 }` lands in `content`), so cross-layer extends move selectors silently.
+- Docs: a "Cascade layers" section in the customisation guide and an upgrade-guide entry — unlayered
+  project CSS now wins on every property, and project `!important` no longer beats Tabler's.
+
+**Files:** `core/scss/_root.scss` (order), every partial under `core/scss/bootstrap/**`, `ui/**`,
+`layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`.
+**Gate:** by-design CSS diff, so no byte-diff; instead zero `html-diff`, the screenshots package over
+every preview page, a `getComputedStyle` per-page comparison before/after, and a control test that a
+utility beats a component without `!important`.
+**Risk:** medium. The specificity model changes for every user; the `!important` inversion inside
+layers is the part that bites, so the review has to list every remaining `!important` and its layer.
 
 ### Phase 4 — Logical properties
 
@@ -408,6 +445,8 @@ Phase 2  oklch + theme tokens            │ (Phase 5 JS can run in parallel
    ↓                                     │  from the start, except for the
 Phase 3  token scales                    │  util/* deletions, which wait
    ↓                                     │  on Phase 6)
+Phase 3b cascade @layer                  │
+   ↓                                     │
 Phase 4  logical properties ─────────────┘
    ↓
 Phase 6  native components (per component, independently shippable)
@@ -432,6 +471,9 @@ Decided:
    components; old names aliased for one major (phase 9).
 7. The option that replaces `popperConfig` is `positionConfig` (#2966); `popperConfig` is kept as a
    deprecated alias. v6's `floatingConfig` is not adopted.
+9. Cascade `@layer` lands as phase 3b, one PR after the token scales: flat Bootstrap v6 layer
+   names (no `tabler.*` nesting), `:root` tokens inside the `root` layer, utilities without
+   `!important` and `$enable-important-utilities` removed (decided 2026-09-08).
 
 Open:
 
@@ -440,7 +482,6 @@ Open:
 8. Classes that native components remove (`.accordion-button`, `.accordion-collapse`,
    `.carousel-caption`, `.carousel-control-*`, `.btn-close-white`): keep on the new element, keep as
    an empty alias, or drop with an upgrade-guide entry? The policy rule promises every 1.x class.
-9. When cascade `@layer` lands — it is adopted by the policy but has no phase and a withdrawn prototype.
 10. Breakpoint values (`lg` 1024, `xl` 1280, `2xl` 1536): separate from the naming, undecided.
 11. Forms validation (`data-bs-validate`, `:user-invalid`, no `.was-validated`) and the
     `_form-check` split — visible to every template user, not yet decided.
@@ -469,6 +510,7 @@ PR #2966 is parked.
 | — | 1 | Split `_variables` / `_variables-dark` / `_maps` into `_config` / `_colors` / `_theme` / `_root`, introduce `defaults()` + `tokens()` | `core/scss/_variables.scss`, `_variables-dark.scss`, `_maps.scss`, `_props.scss`, `_settings.scss`, `_core.scss` | byte-identical `tabler.css`, zero `html-diff` | L |
 | #2972 | 3 | One `focus-ring()` mixin over `--focus-ring*` tokens, replacing 46 `*-focus-box-shadow` sites; same values for now | `core/scss/mixins/**`, `core/scss/ui/**`, `_config.scss` | byte-identical `tabler.css` | M |
 | #2970 | 3 | Numeric `$radii` map and `--radius-0…9`, with `$border-radius-*` and `.rounded-*` mapped to today's values | `_config.scss`, `_props.scss`, `_utilities.scss` | byte-identical `tabler.css` | S |
+| #3016 | 3b | Cascade `@layer` with the flat v6 layer order, per-partial wrapping, `input-group`/`validation` hoisted to `components`, vendors and `@property` unlayered, utilities without `!important`; docs and upgrade-guide entry | `core/scss/_root.scss`, `bootstrap/**`, `ui/**`, `layout/**`, `helpers/**`, `utils/**`, `_utilities.scss`, `_extends.scss`, `_config.scss`, docs customisation page | zero `html-diff`, screenshots, `getComputedStyle` comparison, utility-beats-component control test | M |
 | #2974 | 4 | Logical properties on the block axis of spacing and border utilities (inline axis is already logical), class names unchanged; keep rtlcss and `--dir` for transforms | `core/scss/_utilities.scss`, `_extends.scss`, `bootstrap/_spinners.scss` | diff limited to renamed properties in `tabler.css` and `tabler.rtl.css`, zero `html-diff` | S–M |
 | #2973 | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
 | #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
@@ -484,7 +526,7 @@ PR #2966 is parked.
 | — | 10 | 2.0 upgrade guide with before/after per breaking change, `classnames` updates, extended `check-markup-classes` baselines, changesets per phase | `UPGRADE.md`, `docs/content/**` | docs build, link gate | M, grows with each task |
 
 Dependencies: #2977 after #2969; the Sass split after #2977. #2972 and #2970 can land before the
-Sass split (in `_variables.scss`, moved later). oklch after the Sass split; the component parity
+Sass split (in `_variables.scss`, moved later). oklch after the Sass split; #3016 (`@layer`, 3b) after oklch and before #2974; the component parity
 reworks after oklch (they use theme tokens). Modal → offcanvas → deleting the `util/*` helpers. The
 upgrade guide runs alongside everything.
 
@@ -495,7 +537,6 @@ upgrade guide runs alongside everything.
 | 4 `$spacers` | either nothing, or a remap PR plus a codemod for every template |
 | 6 navbar as drawer | prototype against the folded sidebar, then decide |
 | 8 classes removed by native components | accordion on `<details>` (phase 6, M, no issue yet) is blocked on this: it decides what happens to `.accordion-button` / `.accordion-collapse` (195 occurrences in 12 files) |
-| 9 cascade `@layer` | one PR after the Sass split, byte-diff plus specificity review |
 | 10 breakpoint values | either nothing, or a reflow PR with screenshots of every preview page |
 | 11 forms validation and `_form-check` split | phase 7 PRs |
 | 12 datepicker library | new component or nothing |
