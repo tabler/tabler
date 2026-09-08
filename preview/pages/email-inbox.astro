@@ -1,4 +1,5 @@
 ---
+import Empty from '@ui/Empty.astro'
 import Subheader from '@ui/Subheader.astro'
 import ButtonGroup from '@ui/ButtonGroup.astro'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
@@ -23,15 +24,15 @@ import mails from '@data/mails.json'
               <Button icon="pencil" text="Compose" color="primary" class="d-none d-sm-block" modalId="new-email" />
             </div>
 
-            <div class="mt-3 nav nav-vertical">
-              <a href="#" class="nav-link text-danger fw-bold">
+            <div class="mt-4 nav nav-vertical">
+              <a href="#" class="nav-link active">
                 <Icon name="inbox" class="me-2" />
-                Inbox<span class="badge bg-danger ms-auto">{mails.length}</span>
+                Inbox<span class="badge ms-auto">{mails.length}</span>
               </a>
               <a href="#" class="nav-link"><Icon name="star" class="me-2" />Starred</a>
               <a href="#" class="nav-link"><Icon name="clock" class="me-2" />Snoozed</a>
-              <a href="#" class="nav-link"><Icon name="file" class="me-2" />Draft<span class="badge bg-info ms-auto">32</span></a>
-              <a href="#" class="nav-link"><Icon name="mail-up" class="me-2" />Sent Mail</a>
+              <a href="#" class="nav-link"><Icon name="file" class="me-2" />Draft<span class="badge ms-auto">32</span></a>
+              <a href="#" class="nav-link"><Icon name="mail-up" class="me-2" />Sent mail</a>
               <a href="#" class="nav-link"><Icon name="trash" class="me-2" />Trash</a>
               <a href="#" class="nav-link"><Icon name="tag" class="me-2" />Important</a>
               <a href="#" class="nav-link"><Icon name="alert-octagon" class="me-2" />Spam</a>
@@ -40,32 +41,32 @@ import mails from '@data/mails.json'
             <div class="mt-4">
               <Subheader as="h6">Labels</Subheader>
               <div class="mt-2 nav nav-vertical">
-                <a href="#" class="nav-link">
-                  <div class="badge bg-info me-2"></div> Updates
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-azure"></div> Updates
                 </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-warning me-2"></div> Friends
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-orange"></div> Friends
                 </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-success me-2"></div> Family
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-teal"></div> Family
                 </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-primary me-2"></div> Social
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-indigo"></div> Social
                 </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-danger me-2"></div> Important
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-pink"></div> Important
                 </a>
-                <a href="#" class="nav-link">
-                  <div class="badge bg-purple me-2"></div> Promotions
+                <a href="#" class="nav-link gap-2">
+                  <div class="badge bg-purple"></div> Promotions
                 </a>
               </div>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-4">
               <Subheader as="h6">Storage</Subheader>
               <Progress value={46} class="my-2" />
 
-              <p class="text-muted mb-0">7.02 GB (46%) of 15 GB used</p>
+              <p class="text-secondary mb-0">7.02 GB (46%) of 15 GB used</p>
             </div>
           </div>
         </Offcanvas>
@@ -120,7 +121,7 @@ import mails from '@data/mails.json'
                 <span class="dropdown-header">More Options :</span>
                 <a class="dropdown-item" href="#">Mark as Unread</a>
                 <a class="dropdown-item" href="#">Add to Tasks</a>
-                <a class="dropdown-item" href="#">Add Star</a>
+                <a class="dropdown-item" href="#">Add star</a>
                 <a class="dropdown-item" href="#">Mute</a>
               </div>
             </ButtonGroup>
@@ -182,7 +183,9 @@ import mails from '@data/mails.json'
                     </li>
                   ))
                 ) : (
-                  <li class="text-muted">No emails</li>
+                  <li class="list-unstyled">
+                    <Empty title="No emails" />
+                  </li>
                 )
               }
             </ul>

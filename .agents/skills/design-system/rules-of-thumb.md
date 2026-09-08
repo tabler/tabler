@@ -28,7 +28,8 @@ Body copy, buttons, table cells and form values are 14px. 16px and above belong 
 Only the first word and product names take a capital. Title Case reads as marketing, not UI.
 This covers all UI text: headings, card and page titles, subheaders, buttons, menu items and
 table headers.
-Today: "Top Pages", "Payment Method", "Edit Profile" and about ten more card titles in preview.
+Today: 0 in `preview/pages` and `shared/` after the sentence-case pass of 2026-09-08; what is left
+capitalised is a product or proper name ("Tabler Icons", "Front-End Learning", "United States").
 
 ```html
 <!-- Recommended -->
@@ -43,7 +44,7 @@ Today: "Top Pages", "Payment Method", "Edit Profile" and about ten more card tit
 ### 3. Never use `fw-bold`
 
 Headings are semibold (600) and emphasised inline text is medium (500). 700 is not on the
-weight scale. Today: 12 × `fw-bold` against 25 × `fw-medium` and 8 × `fw-semibold`.
+weight scale. Today: 0 × `fw-bold`, 23 × `fw-medium`, 7 × `fw-semibold`.
 
 ```html
 <!-- Recommended -->
@@ -57,8 +58,10 @@ weight scale. Today: 12 × `fw-bold` against 25 × `fw-medium` and 8 × `fw-semi
 
 ### 4. Never change letter spacing
 
-`letter-spacing` is 0 everywhere. The only tracked text is `.subheader`, which the framework
-styles itself.
+`letter-spacing` is 0 everywhere. The only tracked text comes from the `subheader()` mixin,
+which the framework applies itself: `.subheader`, table heads, `.table-mobile` cell labels,
+`.dropdown-header`, `.datagrid-title`, `.page-pretitle` and `.hr-text`. `.badge` also tracks
+0.04em today (deviation #11, open). Markup never adds tracking.
 
 ```html
 <!-- Recommended -->
@@ -134,16 +137,16 @@ hand-written nesting must too.
   <div class="bg-secondary-lt rounded-1 p-3">…</div>
 </div>
 
-<!-- Avoid: inner radius equal to the outer one -->
+<!-- Avoid: inner radius equal to the outer one (rounded-3 is the card's 8px) -->
 <div class="card p-1">
-  <div class="bg-secondary-lt rounded-2 p-3">…</div>
+  <div class="bg-secondary-lt rounded-3 p-3">…</div>
 </div>
 ```
 
 ### 9. Use a border to separate sticky elements
 
 A sticky table head or toolbar gets a 1px border on the edge that meets the content. A
-shadow there reads as a floating surface, which it is not. Today: 6 × `sticky-top` in preview.
+shadow there reads as a floating surface, which it is not. Today: 4 × `sticky-top` in preview.
 
 ```html
 <!-- Recommended -->
@@ -190,6 +193,8 @@ stronger belongs to floating surfaces.
 Two borders and two paddings in a row look like a mistake. Kumo's rule is "never stack";
 Tabler has `.card-stacked` for the deliberate stack, so the rule is about nesting. A list in a
 card is `card-list-group`, a table is `card-table`; both keep the card's edge and padding.
+The demo pages' `SectionCard` wrapper nests example cards on purpose; whether that stays is
+deviation #13 (open), not a finding.
 
 ```html
 <!-- Recommended -->
@@ -260,7 +265,8 @@ finds the primary without reading.
 ### 16. Buttons go in `btn-list`, badges in `badge-list`, avatars in `avatar-list`
 
 The wrappers own the gap and the wrapping. Hand-written `me-2` breaks at the last item and
-in RTL. Today: 57 × `me-2` against 5 × `btn-list`.
+in RTL. Today: 0 × `me-2` on a button, badge or avatar; 49 × `<ButtonList>`, 10 × `<BadgeList>`,
+13 × `<AvatarList>`, 9 × `<TagList>`. The remaining 53 × `me-2` sit on inline icons and text.
 
 ```html
 <!-- Recommended -->
@@ -277,8 +283,8 @@ in RTL. Today: 57 × `me-2` against 5 × `btn-list`.
 ### 17. Use `text-secondary`, never `text-muted`
 
 One class for secondary text. `text-muted` is a Bootstrap alias kept for compatibility.
-Today: 254 × `text-secondary`, 18 × `text-muted`. `<Icon color="muted">` still emits
-`text-muted` and is documented that way; it is not a finding until the prop is remapped.
+Today: 260 × `text-secondary`, 0 × `text-muted` in markup. `<Icon color="muted">` (6 uses) still
+emits `text-muted` and is documented that way; it is not a finding until the prop is remapped.
 
 ```html
 <!-- Recommended -->
@@ -291,8 +297,11 @@ Today: 254 × `text-secondary`, 18 × `text-muted`. `<Icon color="muted">` still
 ### 18. No inline `style` for sizes
 
 Sizes come from utilities or a component token, so they follow the scale and the theme.
-Today: 75 inline `style` attributes in preview, among them 8 × `height: 8rem` and
-`width: 350px`. The exception is SVG illustration fills, which are data, not layout.
+Today: 0 inline sizes in `preview/pages`; demo-only sizes live as classes in
+`preview/scss/demo.scss` (`demo-photo-placeholder`, `demo-dropdown-menu-wide`,
+`modal-demo-scrollable`). In `shared/` three scroll-container heights remain (deviation #16).
+The exceptions are data, not layout: SVG illustration fills, `background-image` URLs and
+progress-bar widths that carry the value.
 
 ```html
 <!-- Recommended -->
@@ -307,7 +316,8 @@ Today: 75 inline `style` attributes in preview, among them 8 × `height: 8rem` a
 ### 19. Vertical rhythm is `mb-3` inside a card and `row-cards` between cards
 
 One spacing step per level. Mixing `mb-3`, `mb-4` and `mt-3` in the same block gives uneven
-gaps nobody chose. Today: 142 × `mb-3`, 76 × `mb-4`, 31 × `mt-3`, 31 × `mt-4`.
+gaps nobody chose. Today: 148 × `mb-3`, 46 × `mb-4`, 33 × `mt-3`, 27 × `mt-4`; the `mb-4`
+left is mostly the auth and marketing cards, which use a wider rhythm on purpose.
 
 ```html
 <!-- Recommended -->
@@ -348,7 +358,8 @@ and the state colours are not reused for categories.
 ### 21. Icons inherit colour inside controls, `gray-400` elsewhere
 
 A button's icon is the button's text colour. A stand-alone icon is `--icon-color`.
-Colouring an icon separately makes it read as a second control.
+Colouring an icon separately makes it read as a second control. The sponsor heart and the
+favourite star are deviation #15 (open), not findings.
 
 ```html
 <!-- Recommended -->
@@ -361,8 +372,10 @@ Colouring an icon separately makes it read as a second control.
 
 ### 22. Uppercase only in `.subheader` and list-group headers
 
-The framework uppercases `.subheader`, `.list-group-header`, avatar initials, ribbons and the
-pagination "page" label. Nothing else. Today: 9 × `text-uppercase` in preview to review.
+The framework uppercases `.subheader`, `.list-group-header`, avatar initials, ribbons, the
+pagination "page" label and, through the `subheader()` mixin, table heads, `.dropdown-header`,
+`.datagrid-title`, `.page-pretitle` and `.hr-text`. Nothing else, so `<th class="text-uppercase">`
+is redundant. Today: 0 × `text-uppercase` in `preview/pages` and `shared/`.
 
 ```html
 <!-- Recommended -->

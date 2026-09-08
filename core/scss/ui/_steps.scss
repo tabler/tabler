@@ -10,6 +10,7 @@ $steps-tokens: () !default;
 $steps-tokens: defaults(
   (
     --steps-color: $steps-color,
+    --steps-fg: var(--primary-fg),
     --steps-inactive-color: $steps-inactive-color,
     --steps-dot-size: $steps-dot-size,
     --steps-border-width: $steps-border-width,
@@ -39,9 +40,11 @@ $steps-tokens: defaults(
 @each $name, $color in $extra-colors {
   .steps-#{$name} {
     --steps-color: var(--#{$name});
+    --steps-fg: var(--#{$name}-fg);
 
     &-lt {
       --steps-color: var(--#{$name}-lt);
+      --steps-fg: var(--#{$name});
     }
   }
 }
@@ -97,7 +100,7 @@ $steps-tokens: defaults(
     justify-content: center;
     width: var(--steps-dot-size);
     height: var(--steps-dot-size);
-    color: var(--white);
+    color: var(--steps-fg);
     content: '';
 
     /* rtl:ignore */
@@ -106,7 +109,7 @@ $steps-tokens: defaults(
   }
 
   &.active {
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
 
     &::after {
       background: var(--steps-inactive-color);
@@ -148,10 +151,6 @@ $steps-tokens: defaults(
   --steps-vertical-item-gap: #{$steps-vertical-item-gap};
   --steps-vertical-connector-gap: #{$steps-vertical-connector-gap};
   flex-direction: column;
-
-  &.steps-counter {
-    --steps-dot-offset: #{$steps-dot-offset-counter};
-  }
 
   .step-item {
     min-height: auto;
