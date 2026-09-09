@@ -41,7 +41,7 @@ sits in an exempt file.
 | Drawer classes | `\.drawer(-[a-z-]+)?\b` | `.offcanvas`, `.offcanvas-start/end/top/bottom`, `.offcanvas-header/body/title` |
 | Menu classes | `\.menu(-item|-header|-divider)?\b`, `\.submenu\b` | `.dropdown-menu`, `.dropdown-item`, `.dropdown-header`, `.dropdown-divider` |
 | Button composition | `\.btn-(solid|subtle|text|styled)\b` (`.btn-outline` alone is an existing Tabler class — not a hit) | `.btn-primary`, `.btn-outline-primary`, `.btn-ghost-*` (Tabler) |
-| Badge composition | `\.badge-subtle\b` (`.badge-outline` is an existing Tabler class — not a hit) | `.badge.bg-*`, Tabler badge variants |
+| Badge composition | `\.badge-subtle\b` | `.badge.bg-*`, Tabler badge variants |
 | Data attributes | `data-bs-toggle="(dialog|drawer|menu|toggler)"`, `data-bs-dismiss="(dialog|drawer)"`, `data-bs-(autoplay|ends|validate|bubble)\b`, `data-bs-modal=` | `modal`, `offcanvas`, `dropdown`; `data-bs-ride`, `data-bs-wrap`, `.needs-validation` |
 | Events | `\.bs\.(dialog|drawer|menu|chips|otpInput|strength|range|datepicker)\b` | `.bs.modal`, `.bs.offcanvas`, `.bs.dropdown` |
 | JS exports | `\b(Dialog|Drawer|Menu|DialogBase)\b` as a class or import in `core/js/` | `Modal`, `Offcanvas`, `Dropdown` |
