@@ -26,7 +26,9 @@ description: >-
 | `vendor/` | overrides for third-party plugin CSS |
 | `tests/` | sass-true unit tests (see section 7) |
 
-Entry points: `tabler.scss` (which forwards `_core.scss`, then `_extends.scss` last), plus the standalone bundles `tabler-flags`, `tabler-marketing`, `tabler-payments`, `tabler-props`, `tabler-socials`, `tabler-themes`, `tabler-vendors`. A new partial is not compiled until it is `@forward`ed from `_core.scss` (or the bundle it belongs to).
+Entry points: `tabler.scss` (which forwards `_core.scss`, then `_extends.scss` last), plus the standalone bundles `tabler-flags`, `tabler-marketing`, `tabler-payments`, `tabler-props`, `tabler-socials`, `tabler-themes`, `tabler-vendors`.
+
+Each directory has a forward-only `_index.scss` barrel (`bootstrap/`, `layout/`, `ui/`, `utils/`, `helpers/`, `marketing/`, `vendor/`). `_core.scss` forwards the barrels, not individual partials. A new partial is not compiled until it is `@forward`ed from its directory's `_index.scss` (or, for a barrel-less path like `fonts/webfonts`, directly from `_core.scss` or the bundle it belongs to). Add the `@forward` in the position the load order requires — ordering constraints between partials are noted as comments in the barrels (`bootstrap/root` before `props`, `layout/dark` after `layout/root`, `ui/steps` before `ui/type`, `extends` last). `helpers/`'s rules live in `helpers/_helpers.scss`; its `_index.scss` only forwards that.
 
 The module graph uses `@use` / `@forward`: a partial starts with `@use '../config' as *`, which is the hub forwarding `settings`, `variables`, `variables-dark`, `maps`, `mixins` and `utilities`. Cross-module `@extend` rules must stay in `_extends.scss`, which loads last.
 
@@ -147,7 +149,7 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 
 ## 9. Checklist
 
-- [ ] Partial in the right directory and `@forward`ed from `_core.scss` or its bundle
+- [ ] Partial in the right directory and `@forward`ed from that directory's `_index.scss` barrel (or `_core.scss` / its bundle for a barrel-less path)
 - [ ] Themeable values as custom properties at the top of the root rule, seeded from `!default` Sass variables
 - [ ] Custom properties written bare; new foreign names added to `cssVarIgnore`
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`
