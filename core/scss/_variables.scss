@@ -1017,11 +1017,12 @@ $focus-ring-width: 0.25rem !default;
 $focus-ring-opacity: 0.25 !default;
 $focus-ring-color: color-mix(in srgb, var(--primary) #{math.percentage($focus-ring-opacity)}, transparent) !default;
 $focus-ring-blur: 0 !default;
-// Inner 2px solid ring keeps the indicator above the 3:1 non-text contrast minimum;
-// the translucent halo preserves the soft look
-$focus-ring-box-shadow:
-  0 0 0 2px var(--primary),
-  0 0 $focus-ring-blur $focus-ring-width $focus-ring-color !default;
+$focus-ring-inner-width: 2px !default;
+// The literal, emitted once as `--focus-ring-box-shadow` (`bootstrap/_root.scss`).
+$focus-ring-box-shadow-value:
+  0 0 0 var(--focus-ring-inner-width) var(--primary),
+  0 0 $focus-ring-blur var(--focus-ring-width) var(--focus-ring-color) !default;
+$focus-ring-box-shadow: var(--focus-ring-box-shadow) !default;
 
 // Transitions
 $transition-base: all 0.2s ease-in-out !default;
