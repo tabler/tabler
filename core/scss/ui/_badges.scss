@@ -94,10 +94,13 @@ $badge-tokens: defaults(
   //
   // Notification badge
   //
-  .badge-notification {
-    position: absolute !important; // stylelint-disable-line declaration-no-important
-    inset-inline-end: 0 !important; // stylelint-disable-line declaration-no-important
-    top: 0 !important; // stylelint-disable-line declaration-no-important
+  // `.btn .badge { top: auto }` comes later in the bundle, so the button
+  // variant needs one class more to win.
+  .badge-notification,
+  .btn .badge.badge-notification {
+    position: absolute;
+    inset-inline-end: 0;
+    top: 0;
     z-index: 1;
 
     /* rtl:ignore */

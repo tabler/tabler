@@ -256,10 +256,20 @@ $btn-tokens: defaults(
   //
   // Button loading
   //
-  .btn-loading {
+  // The state selectors match the specificity of `.btn:focus-visible`,
+  // `.btn.active` and `.btn:disabled`, which would otherwise restore the label
+  // colour. Hover and active cannot happen behind `pointer-events: none`.
+  .btn-loading,
+  .btn-loading:focus-visible,
+  .btn-loading.active,
+  .btn-loading.show,
+  .btn-loading:disabled,
+  .btn-loading.disabled,
+  .btn-check:checked + .btn-loading,
+  .btn-check:focus-visible + .btn-loading {
     position: relative;
-    color: transparent !important; // stylelint-disable-line declaration-no-important
-    text-shadow: none !important; // stylelint-disable-line declaration-no-important
+    color: transparent;
+    text-shadow: none;
     pointer-events: none;
 
     > * {

@@ -82,7 +82,12 @@
       gap: $size;
     }
   }
+}
 
+// `.divide-*` behave like utilities: they restyle the children's borders and
+// paddings regardless of the component, so they sit in the `utilities` layer
+// and no longer need to force their declarations.
+@layer utilities {
   @each $name,
     $size
       in map.merge(
@@ -96,33 +101,35 @@
 
     .divide-y#{$name-prefixed} {
       > :not(template) ~ :not(template) {
-        border-top: var(--border-width) var(--border-style) var(--border-color-translucent) !important; // stylelint-disable-line declaration-no-important
+        border-top: var(--border-width) var(--border-style) var(--border-color-translucent);
       }
 
       > :not(template):not(:first-child) {
-        padding-top: $size !important; // stylelint-disable-line declaration-no-important
+        padding-top: $size;
       }
 
       > :not(template):not(:last-child) {
-        padding-bottom: $size !important; // stylelint-disable-line declaration-no-important
+        padding-bottom: $size;
       }
     }
 
     .divide-x#{$name-prefixed} {
       > :not(template) ~ :not(template) {
-        border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent) !important; // stylelint-disable-line declaration-no-important
+        border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent);
       }
 
       > :not(template):not(:first-child) {
-        padding-inline-start: $size !important; // stylelint-disable-line declaration-no-important
+        padding-inline-start: $size;
       }
 
       > :not(template):not(:last-child) {
-        padding-inline-end: $size !important; // stylelint-disable-line declaration-no-important
+        padding-inline-end: $size;
       }
     }
   }
+}
 
+@layer layout {
   .divide-y-fill {
     display: flex;
     flex-direction: column;

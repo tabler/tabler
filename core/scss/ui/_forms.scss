@@ -123,13 +123,16 @@
     @include border-radius(var(--border-radius-pill));
   }
 
-  .form-control-flush {
+  // `&:focus` matches the specificity of `.form-control:focus`, which
+  // otherwise restores the background, border and shadow on focus.
+  .form-control-flush,
+  .form-control-flush:focus {
     padding: 0;
     line-height: inherit;
     resize: none;
-    background: none !important; // stylelint-disable-line declaration-no-important
-    border-color: transparent !important; // stylelint-disable-line declaration-no-important
-    box-shadow: none !important; // stylelint-disable-line declaration-no-important
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
   }
 
   .form-footer {
@@ -217,7 +220,7 @@
 
       .form-control,
       .input-group-text {
-        border-color: $input-focus-border-color !important; // stylelint-disable-line declaration-no-important
+        border-color: $input-focus-border-color;
       }
     }
 
