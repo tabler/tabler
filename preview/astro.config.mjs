@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
 import beautify from 'js-beautify'
-import { globSync, statSync } from 'node:fs'
+import { globSync, rmSync, statSync } from 'node:fs'
 import { availableParallelism } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { Worker } from 'node:worker_threads'
@@ -66,6 +66,27 @@ function prettifyHtml() {
           ),
         )
         logger.info(`HTML formatted with prettier (${files.length} pages, ${workerCount} workers)`)
+      },
+    },
+  }
+}
+
+/**
+ * Playground pages (playground.astro, playground-*.astro) are local scratch
+ * pages — gitignored, and dropped from the build so a local `astro build` or a
+ * stray tracked copy never ships them. Runs before prettify-html (integration
+ * order), so the pages are not formatted just to be deleted.
+ * @returns {import('astro').AstroIntegration}
+ */
+function dropPlaygrounds() {
+  return {
+    name: 'drop-playgrounds',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const outDir = fileURLToPath(dir)
+        const files = globSync([`${outDir}playground.html`, `${outDir}playground-*.html`])
+        for (const file of files) rmSync(file)
+        if (files.length > 0) logger.info(`Dropped ${files.length} playground page(s) from the build`)
       },
     },
   }
@@ -142,6 +163,7 @@ export default defineConfig({
       reloadDirs: [path('./public/preview')],
     }),
     mdx(),
+    dropPlaygrounds(),
     prettifyHtml(),
   ],
   markdown: {
