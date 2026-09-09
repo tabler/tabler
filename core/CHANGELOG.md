@@ -1,5 +1,16 @@
 # @tabler/core
 
+## 1.5.1
+
+### Patch Changes
+
+- f311287: Fixed `.card-code` so the code block follows the card corners instead of drawing its own `border-radius`.
+- 718fdd7: Fixed invisible box-shadows in dark mode with a new global `--tblr-shadow-color` `light-dark()` token.
+- 6f64f33: Fixed the `.dropdown-menu-arrow` border color and replaced the deprecated `clip` with `clip-path`.
+- b8e61db: Fixed the folded sidebar flashing the active submenu as a flyout on reload before `tabler.js` closed it.
+- 692a3a2: Fixed the invisible `.form-switch` knob in light mode by restoring a gray `$form-switch-color`.
+- d4c5be6: Fixed unreadable counter digit on not-yet-reached steps by giving `.step-item` `::before` the `--tblr-disabled-color`.
+
 ## 1.5.0
 
 ### Minor Changes
