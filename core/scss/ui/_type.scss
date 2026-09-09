@@ -2,273 +2,275 @@
 
 @forward 'typo/hr';
 
-.lead {
-  font-size: inherit;
-  color: var(--secondary);
-}
-
-a {
-  text-decoration-skip-ink: auto;
-  color: color-mix(in sRGB, transparent, var(--link-color) calc(var(--link-opacity, 1) * 100%));
-
-  &:hover {
-    color: color-mix(in sRGB, transparent, var(--link-hover-color) calc(var(--link-opacity, 1) * 100%));
+@layer content {
+  .lead {
+    font-size: inherit;
+    color: var(--secondary);
   }
-}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
   a {
-    color: inherit;
+    text-decoration-skip-ink: auto;
+    color: color-mix(in sRGB, transparent, var(--link-color) calc(var(--link-opacity, 1) * 100%));
 
     &:hover {
+      color: color-mix(in sRGB, transparent, var(--link-hover-color) calc(var(--link-opacity, 1) * 100%));
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    a {
       color: inherit;
-    }
-  }
-}
 
-h1,
-.h1 {
-  font-size: var(--font-size-h1);
-  line-height: var(--line-height-h1);
-}
-
-h2,
-.h2 {
-  font-size: var(--font-size-h2);
-  line-height: var(--line-height-h2);
-}
-
-h3,
-.h3 {
-  font-size: var(--font-size-h3);
-  line-height: var(--line-height-h3);
-}
-
-h4,
-.h4 {
-  font-size: var(--font-size-h4);
-  line-height: var(--line-height-h4);
-}
-
-h5,
-.h5 {
-  font-size: var(--font-size-h5);
-  line-height: var(--line-height-h5);
-}
-
-h6,
-.h6 {
-  font-size: var(--font-size-h6);
-  line-height: var(--line-height-h6);
-}
-
-.fs-base {
-  font-size: var(--body-font-size);
-}
-
-strong,
-.strong,
-b {
-  font-weight: $headings-font-weight;
-}
-
-blockquote {
-  --blockquote-padding: #{$blockquote-padding};
-  --blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
-  padding: var(--blockquote-padding) var(--blockquote-padding) var(--blockquote-padding);
-  border-inline-start: $border-width-wide var(--border-style) var(--border-color);
-
-  p {
-    margin-bottom: var(--blockquote-paragraph-margin-bottom);
-
-    &:last-child {
-      margin-bottom: 0;
+      &:hover {
+        color: inherit;
+      }
     }
   }
 
-  cite {
-    display: block;
-    text-align: end;
+  h1,
+  .h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
+  }
 
-    &::before {
-      content: '— ';
+  h2,
+  .h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
+  }
+
+  h4,
+  .h4 {
+    font-size: var(--font-size-h4);
+    line-height: var(--line-height-h4);
+  }
+
+  h5,
+  .h5 {
+    font-size: var(--font-size-h5);
+    line-height: var(--line-height-h5);
+  }
+
+  h6,
+  .h6 {
+    font-size: var(--font-size-h6);
+    line-height: var(--line-height-h6);
+  }
+
+  .fs-base {
+    font-size: var(--body-font-size);
+  }
+
+  strong,
+  .strong,
+  b {
+    font-weight: $headings-font-weight;
+  }
+
+  blockquote {
+    --blockquote-padding: #{$blockquote-padding};
+    --blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
+    padding: var(--blockquote-padding) var(--blockquote-padding) var(--blockquote-padding);
+    border-inline-start: $border-width-wide var(--border-style) var(--border-color);
+
+    p {
+      margin-bottom: var(--blockquote-paragraph-margin-bottom);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    cite {
+      display: block;
+      text-align: end;
+
+      &::before {
+        content: '— ';
+      }
     }
   }
-}
 
-ul,
-ol {
-  --list-padding-start: #{$list-padding-start};
-  padding-inline-start: var(--list-padding-start);
-}
+  ul,
+  ol {
+    --list-padding-start: #{$list-padding-start};
+    padding-inline-start: var(--list-padding-start);
+  }
 
-hr {
-  --hr-margin-y: #{$hr-margin-y};
-  margin: var(--hr-margin-y) 0;
-}
+  hr {
+    --hr-margin-y: #{$hr-margin-y};
+    margin: var(--hr-margin-y) 0;
+  }
 
-dl {
-  dd {
-    &:last-child {
-      margin-bottom: 0;
+  dl {
+    dd {
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
-}
 
-pre {
-  --scrollbar-color: #{$pre-color};
-  padding: $pre-padding;
-  line-height: $line-height-base;
-  color: $pre-color;
-  background: $pre-bg;
-  @include border-radius(var(--border-radius));
+  pre {
+    --scrollbar-color: #{$pre-color};
+    padding: $pre-padding;
+    line-height: $line-height-base;
+    color: $pre-color;
+    background: $pre-bg;
+    @include border-radius(var(--border-radius));
 
-  @include scrollbar();
+    @include scrollbar();
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
+  }
 
   code {
-    padding: 0;
-    background: transparent;
+    padding: 2px 4px;
+    background: var(--code-bg);
+    @include border-radius(var(--border-radius));
   }
-}
 
-code {
-  padding: 2px 4px;
-  background: var(--code-bg);
-  @include border-radius(var(--border-radius));
-}
-
-abbr {
-  text-decoration: underline dotted;
-  cursor: help;
-  text-decoration-skip-ink: none;
-}
-
-kbd,
-.kbd {
-  box-sizing: border-box;
-  display: inline-block;
-  max-width: 100%;
-  font-size: $kbd-font-size;
-  font-weight: $kbd-font-weight;
-  line-height: 1;
-  vertical-align: baseline;
-  border: $kbd-border;
-  @include border-radius($kbd-border-radius);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.list-unstyled {
-  margin-inline-start: 0;
-}
-
-/**
-Selection
- */
-::selection,
-.text-selected {
-  background-color: $selection-bg;
-}
-
-.text-selected {
-  display: inline-block;
-}
-
-/**
-Links
- */
-[class^='link-'],
-[class*=' link-'] {
-  &.disabled {
-    color: $nav-link-disabled-color !important;
-    pointer-events: none;
+  abbr {
+    text-decoration: underline dotted;
+    cursor: help;
+    text-decoration-skip-ink: none;
   }
-}
 
-a:hover:has(.icon) {
-  text-decoration: none;
-}
+  kbd,
+  .kbd {
+    box-sizing: border-box;
+    display: inline-block;
+    max-width: 100%;
+    font-size: $kbd-font-size;
+    font-weight: $kbd-font-weight;
+    line-height: 1;
+    vertical-align: baseline;
+    border: $kbd-border;
+    @include border-radius($kbd-border-radius);
+  }
 
-.link-hoverable {
-  @include border-radius(var(--border-radius));
-  transition: background-color 0.15s ease-in-out;
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 
-  &:hover {
-    color: var(--primary);
+  .list-unstyled {
+    margin-inline-start: 0;
+  }
+
+  /**
+  Selection
+   */
+  ::selection,
+  .text-selected {
+    background-color: $selection-bg;
+  }
+
+  .text-selected {
+    display: inline-block;
+  }
+
+  /**
+  Links
+   */
+  [class^='link-'],
+  [class*=' link-'] {
+    &.disabled {
+      color: $nav-link-disabled-color !important; // stylelint-disable-line declaration-no-important
+      pointer-events: none;
+    }
+  }
+
+  a:hover:has(.icon) {
     text-decoration: none;
-    background: $hover-bg;
   }
-}
 
-/**
-Subheader
- */
-.subheader {
-  @include subheader();
-}
+  .link-hoverable {
+    @include border-radius(var(--border-radius));
+    transition: background-color 0.15s ease-in-out;
 
-/**
-Mentions
- */
-.mention {
-  display: inline-block;
-  padding: calc(2em / 12) calc(8em / 12);
-  font-size: calc(12em / 14);
-  font-weight: var(--font-weight-medium);
-  line-height: calc(16em / 12);
-  color: var(--body-color);
-  background: var(--bg-surface-tertiary);
-  box-shadow: var(--shadow-border);
-  @include border-radius(var(--border-radius-pill));
-
-  @at-root a#{&} {
-    cursor: pointer;
-
-    &:hover,
-    &.hover {
-      text-decoration: underline;
+    &:hover {
+      color: var(--primary);
+      text-decoration: none;
       background: $hover-bg;
     }
   }
-}
 
-.mention-avatar,
-.mention-app,
-.mention-color {
-  display: inline-flex;
-  width: calc(14em / 12);
-  height: calc(14em / 12);
-  margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
-  text-align: center;
-  vertical-align: middle;
-  background: no-repeat center center/cover;
-  box-shadow: var(--shadow-border);
-  @include border-radius(var(--border-radius-pill));
-}
+  /**
+  Subheader
+   */
+  .subheader {
+    @include subheader();
+  }
 
-.mention-app {
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-}
+  /**
+  Mentions
+   */
+  .mention {
+    display: inline-block;
+    padding: calc(2em / 12) calc(8em / 12);
+    font-size: calc(12em / 14);
+    font-weight: var(--font-weight-medium);
+    line-height: calc(16em / 12);
+    color: var(--body-color);
+    background: var(--bg-surface-tertiary);
+    box-shadow: var(--shadow-border);
+    @include border-radius(var(--border-radius-pill));
 
-.mention-count {
-  margin-inline-start: calc(8em / 12);
-  color: var(--secondary);
+    @at-root a#{&} {
+      cursor: pointer;
+
+      &:hover,
+      &.hover {
+        text-decoration: underline;
+        background: $hover-bg;
+      }
+    }
+  }
+
+  .mention-avatar,
+  .mention-app,
+  .mention-color {
+    display: inline-flex;
+    width: calc(14em / 12);
+    height: calc(14em / 12);
+    margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
+    text-align: center;
+    vertical-align: middle;
+    background: no-repeat center center/cover;
+    box-shadow: var(--shadow-border);
+    @include border-radius(var(--border-radius-pill));
+  }
+
+  .mention-app {
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .mention-count {
+    margin-inline-start: calc(8em / 12);
+    color: var(--secondary);
+  }
 }
 
 $text-variants: (
@@ -276,67 +278,73 @@ $text-variants: (
   correct: var(--green),
 );
 
-@each $variant, $color in $text-variants {
-  .text-#{$variant} {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: $color;
-    background: color-transparent($color, 0.04);
+@layer content {
+  @each $variant, $color in $text-variants {
+    .text-#{$variant} {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: $color;
+      background: color-transparent($color, 0.04);
+    }
   }
 }
 
-// Numbered walkthrough for long-form content: every `h3` inside becomes a
-// numbered step on a vertical guideline.
-//
-// This shares the `.steps` name with the progress-tracker component in
-// `ui/_steps.scss`, and this file is loaded after it — so the selector excludes
-// anything holding `.step-item` children, which is what makes an element that
-// component. Everything else keeps matching, exactly as before. The component's
-// unqualified `.steps` rule still applies here though, so the layout it sets up
-// (flex row, full width, scrollable below `sm`) has to be undone.
-.steps:not(:has(> .step-item)) {
-  --steps-padding: #{$steps-padding};
-  --steps-item-size: #{$steps-item-size};
-  --steps-margin-start: #{$steps-margin-start};
-  --steps-margin-bottom: #{$steps-margin-bottom};
-  --steps-heading-margin-top: #{$steps-heading-margin-top};
-  display: block;
-  width: auto;
-  padding-inline-start: var(--steps-padding);
-  margin-inline-start: var(--steps-margin-start);
-  margin-bottom: var(--steps-margin-bottom);
-  overflow: visible;
-  counter-reset: step;
-  border-inline-start: var(--border-width) solid var(--border-color);
+// Undoes the `.steps` component layout, so it must share its `components`
+// layer — from `content` the component's unqualified rule would win.
+@layer components {
+  // Numbered walkthrough for long-form content: every `h3` inside becomes a
+  // numbered step on a vertical guideline.
+  //
+  // This shares the `.steps` name with the progress-tracker component in
+  // `ui/_steps.scss`, and this file is loaded after it — so the selector excludes
+  // anything holding `.step-item` children, which is what makes an element that
+  // component. Everything else keeps matching, exactly as before. The component's
+  // unqualified `.steps` rule still applies here though, so the layout it sets up
+  // (flex row, full width, scrollable below `sm`) has to be undone.
+  .steps:not(:has(> .step-item)) {
+    --steps-padding: #{$steps-padding};
+    --steps-item-size: #{$steps-item-size};
+    --steps-margin-start: #{$steps-margin-start};
+    --steps-margin-bottom: #{$steps-margin-bottom};
+    --steps-heading-margin-top: #{$steps-heading-margin-top};
+    display: block;
+    width: auto;
+    padding-inline-start: var(--steps-padding);
+    margin-inline-start: var(--steps-margin-start);
+    margin-bottom: var(--steps-margin-bottom);
+    overflow: visible;
+    counter-reset: step;
+    border-inline-start: var(--border-width) solid var(--border-color);
 
-  h3 {
-    counter-increment: step;
+    h3 {
+      counter-increment: step;
 
-    &:not(:first-child) {
-      margin-top: var(--steps-heading-margin-top) !important;
+      &:not(:first-child) {
+        margin-top: var(--steps-heading-margin-top);
+      }
+
+      &::before {
+        position: absolute;
+        display: inline-block;
+        width: var(--steps-item-size);
+        height: var(--steps-item-size);
+        margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
+        margin-top: var(--border-width);
+        font-size: var(--font-size-h4);
+        font-weight: var(--font-weight-semibold);
+        line-height: calc(var(--steps-item-size) - 2 * var(--border-width));
+        color: var(--body-color);
+        text-align: center;
+        content: counter(step);
+        background: var(--bg-surface);
+        border: var(--border-width) solid var(--border-color);
+        @include border-radius(var(--border-radius));
+      }
     }
 
-    &::before {
-      position: absolute;
-      display: inline-block;
-      width: var(--steps-item-size);
-      height: var(--steps-item-size);
-      margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
-      margin-top: var(--border-width);
-      font-size: var(--font-size-h4);
-      font-weight: var(--font-weight-semibold);
-      line-height: calc(var(--steps-item-size) - 2 * var(--border-width));
-      color: var(--body-color);
-      text-align: center;
-      content: counter(step);
-      background: var(--bg-surface);
-      border: var(--border-width) solid var(--border-color);
-      @include border-radius(var(--border-radius));
+    > :last-child {
+      margin-bottom: 0;
     }
-  }
-
-  > :last-child {
-    margin-bottom: 0;
   }
 }
 
@@ -356,15 +364,17 @@ $callout-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.callout {
-  @include tokens($callout-tokens);
-  padding: var(--callout-padding-y) var(--callout-padding-x);
-  margin-bottom: var(--callout-margin-bottom);
-  background: var(--primary-lt);
-  border: var(--border-width) solid var(--primary-200);
-  @include border-radius(var(--border-radius));
+@layer content {
+  .callout {
+    @include tokens($callout-tokens);
+    padding: var(--callout-padding-y) var(--callout-padding-x);
+    margin-bottom: var(--callout-margin-bottom);
+    background: var(--primary-lt);
+    border: var(--border-width) solid var(--primary-200);
+    @include border-radius(var(--border-radius));
 
-  > :last-child {
-    margin-bottom: 0;
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 }

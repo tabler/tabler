@@ -22,111 +22,116 @@ $badge-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.badge {
-  @include tokens($badge-tokens);
-  display: inline-flex;
-  gap: var(--badge-gap);
-  align-items: center;
-  justify-content: center;
-  min-width: calc(1em + var(--badge-padding-y) * 2 + 2px);
-  padding: var(--badge-padding-y) var(--badge-padding-x);
-  overflow: hidden;
-  font-size: var(--badge-font-size);
-  font-weight: var(--badge-font-weight);
-  line-height: var(--badge-line-height);
-  color: var(--badge-color);
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: bottom;
-  user-select: none;
-  background: $badge-bg-color;
-  border: var(--border-width) var(--border-style) transparent;
-  @include border-radius(var(--badge-border-radius));
+@layer components {
+  .badge {
+    @include tokens($badge-tokens);
+    display: inline-flex;
+    gap: var(--badge-gap);
+    align-items: center;
+    justify-content: center;
+    min-width: calc(1em + var(--badge-padding-y) * 2 + 2px);
+    padding: var(--badge-padding-y) var(--badge-padding-x);
+    overflow: hidden;
+    font-size: var(--badge-font-size);
+    font-weight: var(--badge-font-weight);
+    line-height: var(--badge-line-height);
+    color: var(--badge-color);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: bottom;
+    user-select: none;
+    background: $badge-bg-color;
+    border: var(--border-width) var(--border-style) transparent;
+    @include border-radius(var(--badge-border-radius));
 
-  @at-root a#{&} {
-    background: var(--bg-surface-secondary);
+    @at-root a#{&} {
+      background: var(--bg-surface-secondary);
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      font-size: var(--badge-icon-size);
+    }
   }
 
-  .icon {
-    width: 1em;
-    height: 1em;
-    font-size: var(--badge-icon-size);
+  .badge:empty,
+  .badge-dot {
+    display: inline-block;
+    width: $badge-empty-size;
+    min-width: 0;
+    height: $badge-empty-size;
+    min-height: auto;
+    padding: 0;
+    vertical-align: baseline;
+    @include border-radius(var(--border-radius-pill));
   }
-}
 
-.badge:empty,
-.badge-dot {
-  display: inline-block;
-  width: $badge-empty-size;
-  min-width: 0;
-  height: $badge-empty-size;
-  min-height: auto;
-  padding: 0;
-  vertical-align: baseline;
-  @include border-radius(var(--border-radius-pill));
-}
+  //
+  // Outline badge
+  //
+  .badge-outline {
+    background-color: transparent;
+    border: var(--border-width) var(--border-style) currentColor;
+  }
 
-//
-// Outline badge
-//
-.badge-outline {
-  background-color: transparent;
-  border: var(--border-width) var(--border-style) currentColor;
-}
+  //
+  // Pill badge
+  //
+  .badge-pill {
+    @include border-radius(var(--border-radius-pill));
+  }
 
-//
-// Pill badge
-//
-.badge-pill {
-  @include border-radius(var(--border-radius-pill));
-}
+  //
+  // Badge list
+  //
+  .badge-list,
+  .badges-list {
+    // `.badges-list` is deprecated, use `.badge-list` instead
+    @include elements-list();
+  }
 
-//
-// Badge list
-//
-.badge-list,
-.badges-list {
-  // `.badges-list` is deprecated, use `.badge-list` instead
-  @include elements-list();
-}
+  //
+  // Notification badge
+  //
+  // `.btn .badge { top: auto }` comes later in the bundle, so the button
+  // variant needs one class more to win.
+  .badge-notification,
+  .btn .badge.badge-notification {
+    position: absolute;
+    inset-inline-end: 0;
+    top: 0;
+    z-index: 1;
 
-//
-// Notification badge
-//
-.badge-notification {
-  position: absolute !important;
-  inset-inline-end: 0 !important;
-  top: 0 !important;
-  z-index: 1;
+    /* rtl:ignore */
+    transform: translate(calc(var(--dir) * 50%), -50%);
+  }
 
-  /* rtl:ignore */
-  transform: translate(calc(var(--dir) * 50%), -50%);
-}
+  .badge-blink {
+    animation: blink 2s infinite;
+  }
 
-.badge-blink {
-  animation: blink 2s infinite;
-}
+  //
+  // Badge sizes
+  //
+  .badge-sm {
+    --badge-font-size: #{$badge-font-size-sm};
+    --badge-icon-size: 1em;
+    --badge-padding-y: #{$badge-padding-y-sm};
+    --badge-padding-x: #{$badge-padding-x-sm};
+  }
 
-//
-// Badge sizes
-//
-.badge-sm {
-  --badge-font-size: #{$badge-font-size-sm};
-  --badge-icon-size: 1em;
-  --badge-padding-y: #{$badge-padding-y-sm};
-  --badge-padding-x: #{$badge-padding-x-sm};
-}
+  .badge-lg {
+    --badge-font-size: #{$badge-font-size-lg};
+    --badge-icon-size: 1em;
+    --badge-padding-y: #{$badge-padding-y-lg};
+    --badge-padding-x: #{$badge-padding-x-lg};
+  }
 
-.badge-lg {
-  --badge-font-size: #{$badge-font-size-lg};
-  --badge-icon-size: 1em;
-  --badge-padding-y: #{$badge-padding-y-lg};
-  --badge-padding-x: #{$badge-padding-x-lg};
-}
-
-//
-// Badge with only icon
-//
-.badge-icononly {
-  --badge-padding-x: 0;
+  //
+  // Badge with only icon
+  //
+  .badge-icononly {
+    --badge-padding-x: 0;
+  }
 }

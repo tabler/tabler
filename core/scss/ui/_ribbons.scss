@@ -1,5 +1,3 @@
-// stylelint-disable declaration-no-important
-
 @use '../config' as *;
 
 // stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
@@ -27,156 +25,158 @@ $ribbon-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.ribbon {
-  @include tokens($ribbon-tokens);
-  position: absolute;
-  inset-inline-end: calc(-1 * var(--ribbon-margin));
-  top: var(--ribbon-offset);
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--ribbon-min-size);
-  min-height: var(--ribbon-min-size);
-  padding: var(--ribbon-padding-y) var(--ribbon-padding-x);
-  font-size: var(--ribbon-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1;
-  color: var(--primary-fg);
-  text-align: center;
-  text-transform: uppercase;
-  background: var(--primary);
-  border-color: var(--primary);
-  @include border-radius(var(--ribbon-border-radius) 0 var(--ribbon-border-radius) var(--ribbon-border-radius));
-
-  &::before {
+@layer components {
+  .ribbon {
+    @include tokens($ribbon-tokens);
     position: absolute;
-    inset-inline-end: 0;
-    bottom: 100%;
-    width: 0;
-    height: 0;
-    content: '';
-    filter: brightness(70%);
-    border: calc(var(--ribbon-margin) * 0.5) var(--border-style);
-    border-color: inherit;
-    border-inline-end-color: transparent;
-    border-top-color: transparent;
-  }
-
-  @if $enable-extra-colors {
-    @each $color, $value in $extra-colors {
-      &.bg-#{$color} {
-        border-color: var(--#{$color});
-      }
-
-      &.bg-#{$color}-lt {
-        border-color: color-transparent(var(--#{$color}), 0.1) !important;
-      }
-    }
-  }
-
-  .icon {
-    width: var(--ribbon-icon-size);
-    height: var(--ribbon-icon-size);
-    font-size: var(--ribbon-icon-size);
-  }
-}
-
-.ribbon-top {
-  inset-inline-end: var(--ribbon-offset);
-  top: calc(-1 * var(--ribbon-margin));
-  width: var(--ribbon-top-width);
-  padding: var(--ribbon-top-padding-y) 0;
-  @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
-
-  &::before {
-    inset-inline-end: 100%;
-    top: 0;
-    bottom: auto;
-    border-color: inherit;
-    border-inline-start-color: transparent;
-    border-top-color: transparent;
-  }
-
-  &.ribbon-start {
-    inset-inline-start: var(--ribbon-offset);
-    inset-inline-end: auto;
+    inset-inline-end: calc(-1 * var(--ribbon-margin));
+    top: var(--ribbon-offset);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ribbon-min-size);
+    min-height: var(--ribbon-min-size);
+    padding: var(--ribbon-padding-y) var(--ribbon-padding-x);
+    font-size: var(--ribbon-font-size);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    color: var(--primary-fg);
+    text-align: center;
+    text-transform: uppercase;
+    background: var(--primary);
+    border-color: var(--primary);
+    @include border-radius(var(--ribbon-border-radius) 0 var(--ribbon-border-radius) var(--ribbon-border-radius));
 
     &::before {
-      inset-inline-start: auto;
+      position: absolute;
+      inset-inline-end: 0;
+      bottom: 100%;
+      width: 0;
+      height: 0;
+      content: '';
+      filter: brightness(70%);
+      border: calc(var(--ribbon-margin) * 0.5) var(--border-style);
+      border-color: inherit;
+      border-inline-end-color: transparent;
+      border-top-color: transparent;
+    }
+
+    @if $enable-extra-colors {
+      @each $color, $value in $extra-colors {
+        &.bg-#{$color} {
+          border-color: var(--#{$color});
+        }
+
+        &.bg-#{$color}-lt {
+          border-color: color-transparent(var(--#{$color}), 0.1);
+        }
+      }
+    }
+
+    .icon {
+      width: var(--ribbon-icon-size);
+      height: var(--ribbon-icon-size);
+      font-size: var(--ribbon-icon-size);
+    }
+  }
+
+  .ribbon-top {
+    inset-inline-end: var(--ribbon-offset);
+    top: calc(-1 * var(--ribbon-margin));
+    width: var(--ribbon-top-width);
+    padding: var(--ribbon-top-padding-y) 0;
+    @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
+
+    &::before {
       inset-inline-end: 100%;
       top: 0;
-    }
-  }
-}
-
-.ribbon-start {
-  inset-inline-start: calc(-1 * var(--ribbon-margin));
-  inset-inline-end: auto;
-  @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
-
-  &::before {
-    inset-inline-start: 0;
-    top: auto;
-    bottom: 100%;
-    border-color: inherit;
-    border-inline-start-color: transparent;
-    border-top-color: transparent;
-  }
-}
-
-.ribbon-bottom {
-  top: auto;
-  bottom: var(--ribbon-offset);
-}
-
-.ribbon-bookmark {
-  padding-inline-start: var(--ribbon-padding-y);
-  @include border-radius(0 0 var(--ribbon-border-radius) 0);
-
-  &::after {
-    position: absolute;
-    inset-inline-end: 100%;
-    top: 0;
-    display: block;
-    width: 0;
-    height: 0;
-    content: '';
-    border: var(--ribbon-bookmark-border-size) var(--border-style);
-    border-color: inherit;
-    border-inline-start-color: transparent;
-    border-inline-start-width: var(--ribbon-bookmark-notch-width);
-    border-inline-end-width: 0;
-  }
-
-  &.ribbon-start {
-    padding-inline-end: var(--ribbon-bookmark-notch-width);
-
-    &::after {
-      inset-inline-start: 100%;
-      inset-inline-end: auto;
-      border-inline-start-width: 0;
-      border-inline-end-color: transparent;
-
-      border-inline-end-width: var(--ribbon-bookmark-notch-width);
-    }
-  }
-
-  &.ribbon-top {
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    padding-bottom: var(--ribbon-padding-y);
-    @include border-radius(0 var(--ribbon-border-radius) 0 0);
-
-    &::after {
-      inset-inline-start: 0;
-      inset-inline-end: 0;
-      top: 100%;
+      bottom: auto;
       border-color: inherit;
-      border-width: var(--ribbon-bookmark-border-size);
-      border-top-width: 0;
-      border-bottom-color: transparent;
-      border-bottom-width: var(--ribbon-bookmark-notch-width);
+      border-inline-start-color: transparent;
+      border-top-color: transparent;
+    }
+
+    &.ribbon-start {
+      inset-inline-start: var(--ribbon-offset);
+      inset-inline-end: auto;
+
+      &::before {
+        inset-inline-start: auto;
+        inset-inline-end: 100%;
+        top: 0;
+      }
+    }
+  }
+
+  .ribbon-start {
+    inset-inline-start: calc(-1 * var(--ribbon-margin));
+    inset-inline-end: auto;
+    @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
+
+    &::before {
+      inset-inline-start: 0;
+      top: auto;
+      bottom: 100%;
+      border-color: inherit;
+      border-inline-start-color: transparent;
+      border-top-color: transparent;
+    }
+  }
+
+  .ribbon-bottom {
+    top: auto;
+    bottom: var(--ribbon-offset);
+  }
+
+  .ribbon-bookmark {
+    padding-inline-start: var(--ribbon-padding-y);
+    @include border-radius(0 0 var(--ribbon-border-radius) 0);
+
+    &::after {
+      position: absolute;
+      inset-inline-end: 100%;
+      top: 0;
+      display: block;
+      width: 0;
+      height: 0;
+      content: '';
+      border: var(--ribbon-bookmark-border-size) var(--border-style);
+      border-color: inherit;
+      border-inline-start-color: transparent;
+      border-inline-start-width: var(--ribbon-bookmark-notch-width);
+      border-inline-end-width: 0;
+    }
+
+    &.ribbon-start {
+      padding-inline-end: var(--ribbon-bookmark-notch-width);
+
+      &::after {
+        inset-inline-start: 100%;
+        inset-inline-end: auto;
+        border-inline-start-width: 0;
+        border-inline-end-color: transparent;
+
+        border-inline-end-width: var(--ribbon-bookmark-notch-width);
+      }
+    }
+
+    &.ribbon-top {
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+      padding-bottom: var(--ribbon-padding-y);
+      @include border-radius(0 var(--ribbon-border-radius) 0 0);
+
+      &::after {
+        inset-inline-start: 0;
+        inset-inline-end: 0;
+        top: 100%;
+        border-color: inherit;
+        border-width: var(--ribbon-bookmark-border-size);
+        border-top-width: 0;
+        border-bottom-color: transparent;
+        border-bottom-width: var(--ribbon-bookmark-notch-width);
+      }
     }
   }
 }

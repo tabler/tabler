@@ -3,55 +3,57 @@ Color Input
  */
 @use '../../config' as *;
 
-.form-colorinput {
-  --form-colorinput-size: #{$form-colorinput-size};
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  line-height: 1;
-  cursor: pointer;
-}
+@layer forms {
+  .form-colorinput {
+    --form-colorinput-size: #{$form-colorinput-size};
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    line-height: 1;
+    cursor: pointer;
+  }
 
-.form-colorinput-input {
-  position: absolute;
-  z-index: -1;
-  opacity: 0;
-}
-
-.form-colorinput-color {
-  display: block;
-  width: var(--form-colorinput-size);
-  height: var(--form-colorinput-size);
-  color: var(--white);
-  border: var(--border-width) var(--border-style) $input-border-color-translucent;
-  @include border-radius(var(--border-radius));
-  box-shadow: var(--shadow-input);
-
-  &::before {
+  .form-colorinput-input {
     position: absolute;
-    inset-inline-start: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    content: '';
-    background: no-repeat center center/$form-check-input-checked-bg-size;
-    background-image: escape-svg($form-check-input-checked-bg-image);
+    z-index: -1;
     opacity: 0;
-    @include transition(opacity $transition-time);
-
-    .form-colorinput-input:checked ~ & {
-      opacity: 1;
-    }
   }
 
-  .form-colorinput-input:focus ~ & {
-    border-color: var(--primary);
-    @include focus-ring($shadow: $input-btn-focus-box-shadow, $outline: null);
-  }
+  .form-colorinput-color {
+    display: block;
+    width: var(--form-colorinput-size);
+    height: var(--form-colorinput-size);
+    color: var(--white);
+    border: var(--border-width) var(--border-style) $input-border-color-translucent;
+    @include border-radius(var(--border-radius));
+    box-shadow: var(--shadow-input);
 
-  @at-root .form-colorinput-light & {
     &::before {
-      background-image: escape-svg($form-check-input-checked-bg-image-dark);
+      position: absolute;
+      inset-inline-start: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      content: '';
+      background: no-repeat center center/$form-check-input-checked-bg-size;
+      background-image: escape-svg($form-check-input-checked-bg-image);
+      opacity: 0;
+      @include transition(opacity $transition-time);
+
+      .form-colorinput-input:checked ~ & {
+        opacity: 1;
+      }
+    }
+
+    .form-colorinput-input:focus ~ & {
+      border-color: var(--primary);
+      @include focus-ring($shadow: $input-btn-focus-box-shadow, $outline: null);
+    }
+
+    @at-root .form-colorinput-light & {
+      &::before {
+        background-image: escape-svg($form-check-input-checked-bg-image-dark);
+      }
     }
   }
 }

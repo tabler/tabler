@@ -16,113 +16,115 @@ $calendar-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.calendar {
-  @include tokens($calendar-tokens);
-  display: block;
-  font-size: $font-size-sm;
-  border: var(--border-width) var(--border-style) var(--border-color);
-  @include border-radius(var(--border-radius));
-}
-
-.calendar-nav {
-  display: flex;
-  align-items: center;
-}
-
-.calendar-title {
-  flex: 1;
-  text-align: center;
-}
-
-.calendar-body,
-.calendar-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  padding: var(--calendar-padding-y) 0;
-}
-
-.calendar-header {
-  color: var(--secondary);
-}
-
-.calendar-date {
-  flex: 0 0 calc(100% / 7);
-  max-width: calc(100% / 7);
-  padding: var(--calendar-date-padding);
-  text-align: center;
-  border: 0;
-
-  &.prev-month,
-  &.next-month {
-    opacity: 0.25;
+@layer components {
+  .calendar {
+    @include tokens($calendar-tokens);
+    display: block;
+    font-size: $font-size-sm;
+    border: var(--border-width) var(--border-style) var(--border-color);
+    @include border-radius(var(--border-radius));
   }
 
-  .date-item {
-    position: relative;
-    display: inline-block;
-    width: var(--calendar-date-size);
-    height: var(--calendar-date-size);
-    line-height: var(--calendar-date-size);
-    color: #66758c;
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .calendar-title {
+    flex: 1;
     text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background: 0 0;
-    border: var(--border-width) var(--border-style) transparent;
-    @include border-radius(var(--border-radius-pill));
-    outline: 0;
-    @include transition(background $transition-time, border $transition-time, box-shadow $transition-time, color $transition-time);
+  }
 
-    &:hover {
-      color: var(--primary);
-      text-decoration: none;
-      background: #fefeff;
-      border-color: var(--border-active-color);
+  .calendar-body,
+  .calendar-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    padding: var(--calendar-padding-y) 0;
+  }
+
+  .calendar-header {
+    color: var(--secondary);
+  }
+
+  .calendar-date {
+    flex: 0 0 calc(100% / 7);
+    max-width: calc(100% / 7);
+    padding: var(--calendar-date-padding);
+    text-align: center;
+    border: 0;
+
+    &.prev-month,
+    &.next-month {
+      opacity: 0.25;
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
-    }
-  }
-
-  .date-today {
-    color: var(--primary);
-    border-color: var(--border-color);
-  }
-}
-
-.calendar-range {
-  position: relative;
-
-  &::before {
-    position: absolute;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    top: 50%;
-    height: var(--calendar-date-size);
-    content: '';
-    background: var(--active-bg);
-    transform: translateY(-50%);
-  }
-
-  &.range-start,
-  &.range-end {
     .date-item {
-      color: var(--primary-fg);
-      background: var(--primary);
-      border-color: var(--primary);
+      position: relative;
+      display: inline-block;
+      width: var(--calendar-date-size);
+      height: var(--calendar-date-size);
+      line-height: var(--calendar-date-size);
+      color: #66758c;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background: 0 0;
+      border: var(--border-width) var(--border-style) transparent;
+      @include border-radius(var(--border-radius-pill));
+      outline: 0;
+      @include transition(background $transition-time, border $transition-time, box-shadow $transition-time, color $transition-time);
+
+      &:hover {
+        color: var(--primary);
+        text-decoration: none;
+        background: #fefeff;
+        border-color: var(--border-active-color);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+    }
+
+    .date-today {
+      color: var(--primary);
+      border-color: var(--border-color);
     }
   }
 
-  &.range-start::before {
-    inset-inline-start: 50%;
-  }
+  .calendar-range {
+    position: relative;
 
-  &.range-end::before {
-    inset-inline-end: 50%;
+    &::before {
+      position: absolute;
+      inset-inline-start: 0;
+      inset-inline-end: 0;
+      top: 50%;
+      height: var(--calendar-date-size);
+      content: '';
+      background: var(--active-bg);
+      transform: translateY(-50%);
+    }
+
+    &.range-start,
+    &.range-end {
+      .date-item {
+        color: var(--primary-fg);
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+    }
+
+    &.range-start::before {
+      inset-inline-start: 50%;
+    }
+
+    &.range-end::before {
+      inset-inline-end: 50%;
+    }
   }
 }

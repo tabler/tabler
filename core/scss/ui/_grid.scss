@@ -2,135 +2,144 @@
 
 @use '../config' as *;
 
-.row > * {
-  min-width: 0;
-}
+@layer layout {
+  .row > * {
+    min-width: 0;
+  }
 
-.col-separator {
-  border-inline-start: var(--border-width) var(--border-style) var(--border-color);
-}
+  .col-separator {
+    border-inline-start: var(--border-width) var(--border-style) var(--border-color);
+  }
 
-.container {
-  @each $variation, $size in $container-variations {
-    &-#{$variation} {
-      @include make-container();
-      max-width: $size;
+  .container {
+    @each $variation, $size in $container-variations {
+      &-#{$variation} {
+        @include make-container();
+        max-width: $size;
+      }
     }
   }
-}
 
-@each $name, $value in (0: 0, sm: $grid-row-gutter-sm, md: $grid-row-gutter-md, lg: $grid-row-gutter-lg) {
-  .row-#{$name} {
-    --grid-row-gutter: #{$value};
-    margin-inline-start: calc(-1 * var(--grid-row-gutter));
-    margin-inline-end: calc(-1 * var(--grid-row-gutter));
+  @each $name, $value in (0: 0, sm: $grid-row-gutter-sm, md: $grid-row-gutter-md, lg: $grid-row-gutter-lg) {
+    .row-#{$name} {
+      --grid-row-gutter: #{$value};
+      margin-inline-start: calc(-1 * var(--grid-row-gutter));
+      margin-inline-end: calc(-1 * var(--grid-row-gutter));
 
+      > .col,
+      > [class*='col-'] {
+        padding-inline-start: var(--grid-row-gutter);
+        padding-inline-end: var(--grid-row-gutter);
+      }
+
+      .card {
+        margin-bottom: calc(2 * var(--grid-row-gutter));
+      }
+    }
+  }
+
+  .row-deck {
     > .col,
     > [class*='col-'] {
-      padding-inline-start: var(--grid-row-gutter);
-      padding-inline-end: var(--grid-row-gutter);
-    }
+      display: flex;
+      align-items: stretch;
 
-    .card {
-      margin-bottom: calc(2 * var(--grid-row-gutter));
-    }
-  }
-}
-
-.row-deck {
-  > .col,
-  > [class*='col-'] {
-    display: flex;
-    align-items: stretch;
-
-    .card {
-      flex: 1 1 auto;
+      .card {
+        flex: 1 1 auto;
+      }
     }
   }
-}
-
-.row-cards {
-  --gutter-x: #{$cards-grid-gap};
-  --gutter-y: #{$cards-grid-gap};
-  min-width: 0;
 
   .row-cards {
-    flex: 1;
+    --gutter-x: #{$cards-grid-gap};
+    --gutter-y: #{$cards-grid-gap};
+    min-width: 0;
+
+    .row-cards {
+      flex: 1;
+    }
+  }
+
+  @each $name,
+    $size
+      in map.merge(
+        (
+          null: $spacer,
+        ),
+        $spacers
+      )
+  {
+    $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
+
+    .space-y#{$name-prefixed} {
+      display: flex;
+      flex-direction: column;
+      gap: $size;
+    }
+
+    .space-x#{$name-prefixed} {
+      display: flex;
+      gap: $size;
+    }
   }
 }
 
-@each $name,
-  $size
-    in map.merge(
-      (
-        null: $spacer,
-      ),
-      $spacers
-    )
-{
-  $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
+// `.divide-*` behave like utilities: they restyle the children's borders and
+// paddings regardless of the component, so they sit in the `utilities` layer
+// and no longer need to force their declarations.
+@layer utilities {
+  @each $name,
+    $size
+      in map.merge(
+        (
+          null: $spacer,
+        ),
+        $spacers
+      )
+  {
+    $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
 
-  .space-y#{$name-prefixed} {
+    .divide-y#{$name-prefixed} {
+      > :not(template) ~ :not(template) {
+        border-top: var(--border-width) var(--border-style) var(--border-color-translucent);
+      }
+
+      > :not(template):not(:first-child) {
+        padding-top: $size;
+      }
+
+      > :not(template):not(:last-child) {
+        padding-bottom: $size;
+      }
+    }
+
+    .divide-x#{$name-prefixed} {
+      > :not(template) ~ :not(template) {
+        border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent);
+      }
+
+      > :not(template):not(:first-child) {
+        padding-inline-start: $size;
+      }
+
+      > :not(template):not(:last-child) {
+        padding-inline-end: $size;
+      }
+    }
+  }
+}
+
+@layer layout {
+  .divide-y-fill {
     display: flex;
     flex-direction: column;
-    gap: $size;
-  }
+    height: 100%;
 
-  .space-x#{$name-prefixed} {
-    display: flex;
-    gap: $size;
-  }
-}
-
-@each $name,
-  $size
-    in map.merge(
-      (
-        null: $spacer,
-      ),
-      $spacers
-    )
-{
-  $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
-
-  .divide-y#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      border-top: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
+    > :not(template) {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
     }
-
-    > :not(template):not(:first-child) {
-      padding-top: $size !important;
-    }
-
-    > :not(template):not(:last-child) {
-      padding-bottom: $size !important;
-    }
-  }
-
-  .divide-x#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
-    }
-
-    > :not(template):not(:first-child) {
-      padding-inline-start: $size !important;
-    }
-
-    > :not(template):not(:last-child) {
-      padding-inline-end: $size !important;
-    }
-  }
-}
-
-.divide-y-fill {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  > :not(template) {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
   }
 }

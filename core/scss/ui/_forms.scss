@@ -1,280 +1,291 @@
 @use '../config' as *;
 
-textarea {
-  &[cols] {
-    height: auto;
-  }
-}
-
-/**
-Form label
- */
-.col-form-label,
-.form-label {
-  --form-label-required-gap: #{$form-label-required-gap};
-
-  display: block;
-  font-weight: var(--font-weight-medium);
-
-  &.required {
-    &::after {
-      margin-inline-start: var(--form-label-required-gap);
-      color: var(--danger);
-      content: '*';
-    }
-  }
-}
-
-// A fieldset legend used as a label keeps the label size, not the reboot's 1.5rem.
-legend.form-label {
-  font-size: inherit;
-}
-
-.form-label-description {
-  float: inline-end;
-  font-weight: var(--font-weight-normal);
-  color: $form-secondary-color;
-}
-
-/**
-Form hint
- */
-.form-hint {
-  --form-hint-margin-top: #{$form-hint-margin-top};
-  --form-hint-label-offset: #{$form-hint-label-offset};
-  --form-hint-control-margin-top: #{$form-hint-control-margin-top};
-
-  display: block;
-  color: $form-secondary-color;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  + .form-control {
-    margin-top: var(--form-hint-margin-top);
-  }
-
-  .form-label + & {
-    margin-top: var(--form-hint-label-offset);
-  }
-
-  .input-group + &,
-  .form-control + &,
-  .form-select + & {
-    margin-top: var(--form-hint-control-margin-top);
-    color: $form-secondary-color;
-  }
-}
-
-/**
-Form select
- */
-.form-select {
-  &:-moz-focusring {
-    color: var(--body-color);
-  }
-}
-
-/**
-Form control
- */
-.form-control {
-  &:-webkit-autofill {
-    color: var(--body-color);
-    box-shadow: 0 0 0 1000px var(--bg-surface-secondary) inset;
-    -webkit-text-fill-color: var(--body-color);
-  }
-
-  &:disabled,
-  &.disabled {
-    color: $form-secondary-color;
-    user-select: none;
-  }
-
-  &[size] {
-    width: auto;
-  }
-}
-
-.form-control-light {
-  background-color: var(--bg-surface-secondary);
-  border-color: transparent;
-}
-
-.form-control-dark {
-  color: var(--white);
-  background-color: color-transparent(var(--black), 0.1);
-  border-color: transparent;
-
-  &:focus {
-    background-color: color-transparent(var(--black), 0.1);
-    border-color: color-transparent(var(--white), 0.24);
-    box-shadow: none;
-  }
-
-  &::placeholder {
-    color: color-transparent(var(--white), 0.6);
-  }
-}
-
-.form-control-rounded {
-  @include border-radius(var(--border-radius-pill));
-}
-
-.form-control-flush {
-  padding: 0;
-  line-height: inherit;
-  resize: none;
-  background: none !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-
-.form-footer {
-  --form-footer-margin-top: #{$form-footer-margin-top};
-
-  margin-top: var(--form-footer-margin-top);
-}
-
-.form-fieldset {
-  --form-fieldset-padding: #{$form-fieldset-padding};
-  --form-fieldset-margin-bottom: #{$form-fieldset-margin-bottom};
-
-  padding: var(--form-fieldset-padding);
-  margin-bottom: var(--form-fieldset-margin-bottom);
-  background: var(--bg-surface-secondary);
-  border: var(--border-width) var(--border-style) var(--border-color);
-  @include border-radius(var(--border-radius));
-}
-
-fieldset:empty {
-  display: none;
-}
-
-/**
-Form help
- */
-.form-help {
-  --form-help-size: #{$form-help-size};
-  --form-help-font-size: #{$form-help-font-size};
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--form-help-size);
-  height: var(--form-help-size);
-  font-size: var(--form-help-font-size);
-  font-weight: var(--font-weight-semibold);
-  color: $form-secondary-color;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  background: var(--bg-surface-secondary);
-  @include border-radius(var(--border-radius-pill));
-  @include transition(background-color $transition-time, color $transition-time);
-
-  &:hover {
-    color: var(--body-color);
-    background: $hover-bg;
-  }
-
-  // Popover open
-  &[aria-describedby] {
-    color: var(--primary);
-    background: var(--active-bg);
-  }
-}
-
-/**
-Input group
- */
-.input-group {
-  box-shadow: $input-box-shadow;
-  @include border-radius($input-border-radius);
-
-  .form-control,
-  .form-select,
-  .btn {
-    box-shadow: none;
-  }
-}
-
-.input-group-link {
-  font-size: $h5-font-size;
-}
-
-.input-group-flat {
-  &:focus-within {
-    @include focus-ring($shadow: $input-focus-box-shadow, $outline: null);
-    @include border-radius($input-border-radius);
-
-    .form-control,
-    .input-group-text {
-      border-color: $input-focus-border-color !important;
+@layer forms {
+  textarea {
+    &[cols] {
+      height: auto;
     }
   }
 
+  /**
+  Form label
+   */
+  .col-form-label,
+  .form-label {
+    --form-label-required-gap: #{$form-label-required-gap};
+
+    display: block;
+    font-weight: var(--font-weight-medium);
+
+    &.required {
+      &::after {
+        margin-inline-start: var(--form-label-required-gap);
+        color: var(--danger);
+        content: '*';
+      }
+    }
+  }
+
+  // A fieldset legend used as a label keeps the label size, not the reboot's 1.5rem.
+  legend.form-label {
+    font-size: inherit;
+  }
+
+  .form-label-description {
+    float: inline-end;
+    font-weight: var(--font-weight-normal);
+    color: $form-secondary-color;
+  }
+
+  /**
+  Form hint
+   */
+  .form-hint {
+    --form-hint-margin-top: #{$form-hint-margin-top};
+    --form-hint-label-offset: #{$form-hint-label-offset};
+    --form-hint-control-margin-top: #{$form-hint-control-margin-top};
+
+    display: block;
+    color: $form-secondary-color;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    + .form-control {
+      margin-top: var(--form-hint-margin-top);
+    }
+
+    .form-label + & {
+      margin-top: var(--form-hint-label-offset);
+    }
+
+    .input-group + &,
+    .form-control + &,
+    .form-select + & {
+      margin-top: var(--form-hint-control-margin-top);
+      color: $form-secondary-color;
+    }
+  }
+
+  /**
+  Form select
+   */
+  .form-select {
+    &:-moz-focusring {
+      color: var(--body-color);
+    }
+  }
+
+  /**
+  Form control
+   */
   .form-control {
+    &:-webkit-autofill {
+      color: var(--body-color);
+      box-shadow: 0 0 0 1000px var(--bg-surface-secondary) inset;
+      -webkit-text-fill-color: var(--body-color);
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $form-secondary-color;
+      user-select: none;
+    }
+
+    &[size] {
+      width: auto;
+    }
+  }
+
+  .form-control-light {
+    background-color: var(--bg-surface-secondary);
+    border-color: transparent;
+  }
+
+  .form-control-dark {
+    color: var(--white);
+    background-color: color-transparent(var(--black), 0.1);
+    border-color: transparent;
+
     &:focus {
-      border-color: $input-border-color;
+      background-color: color-transparent(var(--black), 0.1);
+      border-color: color-transparent(var(--white), 0.24);
       box-shadow: none;
     }
 
-    &:not(:last-child) {
-      border-inline-end: 0;
-    }
-
-    &:not(:first-child) {
-      border-inline-start: 0;
+    &::placeholder {
+      color: color-transparent(var(--white), 0.6);
     }
   }
 
-  .input-group-text {
-    z-index: 10;
-    background: $form-check-input-bg;
-    @include transition($input-transition);
+  .form-control-rounded {
+    @include border-radius(var(--border-radius-pill));
+  }
 
-    &:first-child {
-      padding-inline-end: 0;
-      border-inline-end: 0;
+  // `&:focus` matches the specificity of `.form-control:focus`, which
+  // otherwise restores the background, border and shadow on focus.
+  .form-control-flush,
+  .form-control-flush:focus {
+    padding: 0;
+    line-height: inherit;
+    resize: none;
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .form-footer {
+    --form-footer-margin-top: #{$form-footer-margin-top};
+
+    margin-top: var(--form-footer-margin-top);
+  }
+
+  .form-fieldset {
+    --form-fieldset-padding: #{$form-fieldset-padding};
+    --form-fieldset-margin-bottom: #{$form-fieldset-margin-bottom};
+
+    padding: var(--form-fieldset-padding);
+    margin-bottom: var(--form-fieldset-margin-bottom);
+    background: var(--bg-surface-secondary);
+    border: var(--border-width) var(--border-style) var(--border-color);
+    @include border-radius(var(--border-radius));
+  }
+
+  fieldset:empty {
+    display: none;
+  }
+
+  /**
+  Form help
+   */
+  .form-help {
+    --form-help-size: #{$form-help-size};
+    --form-help-font-size: #{$form-help-font-size};
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--form-help-size);
+    height: var(--form-help-size);
+    font-size: var(--form-help-font-size);
+    font-weight: var(--font-weight-semibold);
+    color: $form-secondary-color;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    background: var(--bg-surface-secondary);
+    @include border-radius(var(--border-radius-pill));
+    @include transition(background-color $transition-time, color $transition-time);
+
+    &:hover {
+      color: var(--body-color);
+      background: $hover-bg;
     }
 
-    &:last-child {
-      padding-inline-start: 0;
-      border-inline-start: 0;
+    // Popover open
+    &[aria-describedby] {
+      color: var(--primary);
+      background: var(--active-bg);
     }
   }
 }
 
-/**
-Upload files
- */
-.form-file-button {
-  margin-inline-start: 0;
-  border-inline-start: 0;
+// Input groups cross-style `.btn`, so they sit in `components`, after the
+// button's own rules — the same hoist as `bootstrap/forms/_input-group.scss`.
+@layer components {
+  /**
+  Input group
+   */
+  .input-group {
+    box-shadow: $input-box-shadow;
+    @include border-radius($input-border-radius);
+
+    .form-control,
+    .form-select,
+    .btn {
+      box-shadow: none;
+    }
+  }
+
+  .input-group-link {
+    font-size: $h5-font-size;
+  }
+
+  .input-group-flat {
+    &:focus-within {
+      @include focus-ring($shadow: $input-focus-box-shadow, $outline: null);
+      @include border-radius($input-border-radius);
+
+      .form-control,
+      .input-group-text {
+        border-color: $input-focus-border-color;
+      }
+    }
+
+    .form-control {
+      &:focus {
+        border-color: $input-border-color;
+        box-shadow: none;
+      }
+
+      &:not(:last-child) {
+        border-inline-end: 0;
+      }
+
+      &:not(:first-child) {
+        border-inline-start: 0;
+      }
+    }
+
+    .input-group-text {
+      z-index: 10;
+      background: $form-check-input-bg;
+      @include transition($input-transition);
+
+      &:first-child {
+        padding-inline-end: 0;
+        border-inline-end: 0;
+      }
+
+      &:last-child {
+        padding-inline-start: 0;
+        border-inline-start: 0;
+      }
+    }
+  }
 }
 
-/**
-Floating inputs
- */
-// Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
-label[for='floating-input'] {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+@layer forms {
+  /**
+  Upload files
+   */
+  .form-file-button {
+    margin-inline-start: 0;
+    border-inline-start: 0;
+  }
 
-/**
-Forms on mobile devices 
-  */
-.form-control,
-.form-select {
-  --form-control-mobile-font-size: #{$form-control-mobile-font-size};
+  /**
+  Floating inputs
+   */
+  // Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
+  label[for='floating-input'] {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-  @include media-breakpoint-down(sm) {
-    font-size: var(--form-control-mobile-font-size);
+  /**
+  Forms on mobile devices 
+    */
+  .form-control,
+  .form-select {
+    --form-control-mobile-font-size: #{$form-control-mobile-font-size};
+
+    @include media-breakpoint-down(sm) {
+      font-size: var(--form-control-mobile-font-size);
+    }
   }
 }

@@ -24,10 +24,7 @@ const scssDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 // The same two passes build-css.ts runs before autoprefixer.
 async function buildCustomPropertyNames(entry) {
   const { css } = compileSass(path.join(scssDir, entry), { loadPaths: ['node_modules'], style: 'expanded' })
-  const result = await postcss([
-    inlineValueComments,
-    prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore }),
-  ]).process(css, { from: undefined })
+  const result = await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(css, { from: undefined })
 
   const names = new Set()
   result.root.walkDecls((decl) => {
@@ -53,8 +50,7 @@ describe('css custom-property prefixing', () => {
     const all = [...new Set(perEntry.flat())]
 
     for (const pattern of cssVarIgnore) {
-      const matches =
-        pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
+      const matches = pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
       expect(matches, `unused cssVarIgnore entry: ${pattern}`).toBe(true)
     }
   })

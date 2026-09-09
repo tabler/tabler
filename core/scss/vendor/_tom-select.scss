@@ -45,12 +45,26 @@ $input-border-width: 1px;
   // `.form-select` custom properties so a validated select shows the same
   // icons as a validated `.form-control`. `:not(.single)` matches the
   // specificity of the vendor rule for multi selects.
+  //
+  // The border colour and icon positions are repeated here because the
+  // vendor stylesheet is unlayered: Tabler's own `.form-select.is-invalid`
+  // rule lives in the `components` layer and loses to it on every property
+  // the vendor sets (with an undefined `--bs-*` colour, at that).
   &.form-select.is-invalid,
   &.form-select.is-valid {
     &,
     &:not(.single) {
       background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
+      background-position: $form-select-bg-position, $form-select-feedback-icon-position;
     }
+  }
+
+  &.form-select.is-invalid {
+    border-color: var(--form-invalid-border-color);
+  }
+
+  &.form-select.is-valid {
+    border-color: var(--form-valid-border-color);
   }
 }
 

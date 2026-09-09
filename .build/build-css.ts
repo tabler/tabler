@@ -30,6 +30,7 @@ import rtlcss from 'rtlcss'
 import CleanCSS from 'clean-css'
 import { addBanner } from '../shared/banner/index.mjs'
 import { cssVarIgnore, cssVarPrefix, inlineValueComments } from './css-var-prefix'
+import { extractLayerOrder, prependLayerOrder } from './css-layer-order'
 
 const args = process.argv.slice(2)
 const flags = args.filter((arg) => arg.startsWith('--'))
@@ -117,6 +118,18 @@ function flushWrites(): void {
 // mapping on that line comes out `'*/'.length` columns short. Ending the line
 // after the comment puts the css at column 0 — exactly where the map says.
 async function minify(files: string[]): Promise<void> {
+  // Cascade-layer order statements are taken out before clean-css sees them
+  // and put back afterwards — see css-layer-order.ts for why.
+  // Keyed by absolute path (clean-css rebases relative to the key). The
+  // input map is handed over explicitly and its annotation comment removed,
+  // as clean-css would otherwise look the map up relative to the cwd.
+  const sources: Record<string, { styles: string; sourceMap: string }> = {}
+  const layerOrders: Record<string, string[]> = {}
+  for (const file of files) {
+    const { css, statements } = extractLayerOrder(readFileSync(file, 'utf8'))
+    sources[resolve(file)] = { styles: css.replace(/\/\*# sourceMappingURL=[^*]*\*\/\s*$/, ''), sourceMap: readFileSync(`${file}.map`, 'utf8') }
+    layerOrders[file] = statements
+  }
   const minified = await new CleanCSS({
     batch: true,
     // zeroUnits (default true) strips the unit off zero values, e.g. `0%` -> `0`.
@@ -135,14 +148,15 @@ async function minify(files: string[]): Promise<void> {
     returnPromise: true,
     sourceMap: true,
     sourceMapInlineSources: true,
-  }).minify(files)
+  }).minify(sources)
   for (const inputFile of files) {
-    const fileResult = minified[inputFile]
+    const fileResult = minified[resolve(inputFile)]
     if (!fileResult) throw new Error(`build-css: no minify result for ${inputFile}`)
     if (fileResult.errors.length > 0) throw new Error(fileResult.errors.join('\n'))
     for (const warning of fileResult.warnings) console.warn(`build-css: ${warning}`)
     const minFile = inputFile.replace(/\.css$/, '.min.css')
-    writeFileSync(minFile, `${fileResult.styles}${EOL}/*# sourceMappingURL=${basename(minFile)}.map */`)
+    const styles = prependLayerOrder(fileResult.styles, layerOrders[inputFile])
+    writeFileSync(minFile, `${styles}${EOL}/*# sourceMappingURL=${basename(minFile)}.map */`)
     writeFileSync(`${minFile}.map`, fileResult.sourceMap.toString())
     console.log(`build-css: ${minFile}`)
   }

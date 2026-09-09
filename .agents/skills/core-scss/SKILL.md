@@ -30,6 +30,8 @@ Entry points: `tabler.scss` (which forwards `_core.scss`, then `_extends.scss` l
 
 The module graph uses `@use` / `@forward`: a partial starts with `@use '../config' as *`, which is the hub forwarding `settings`, `variables`, `variables-dark`, `maps`, `mixins` and `utilities`. Cross-module `@extend` rules must stay in `_extends.scss`, which loads last.
 
+**Cascade layers.** `_layers.scss` declares the order once (`colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities`, the Bootstrap v6 names) and every CSS-emitting partial wraps its rules in one `@layer x { … }` block: `ui/*`, `bootstrap/_buttons` … `_toasts`, `layout/_navbar`, `_page`, `_core` → `components`; `bootstrap/forms/*` and `ui/forms/*` → `forms` (except `_input-group` and `_validation`, which restyle `.btn` and sit in `components`); `type`, `images`, `tables`, `ui/typo` → `content`; `containers`, `grid`, `ui/_grid` → `layout`; `helpers` → `helpers`; `utils/*` and `utilities/_api` → `utilities`. Keep outside the block: `@use`, `$variables` (a `$x-tokens` map inside a block is local to it), `@mixin`/`@function`, `@property`, `@keyframes`, `@font-face`. The `:root` token files (`bootstrap/_root`, `_props`, `layout/_root`, `tabler-themes`), `layout/_dark.scss` (its `color-scheme: dark` switch must beat the unlayered `color-scheme: light`) and `vendor/*` stay unlayered. Utilities carry no `!important` — the `utilities` layer wins by order — so do not add one. A partial with no block is still compiled, just unlayered, so a forgotten wrapper shows up as a rule that beats every utility.
+
 ## 2. The component pattern
 
 Every themeable value is a **custom property on the component's root class**, seeded
