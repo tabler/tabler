@@ -1,0 +1,59 @@
+// Output tests for the mask-icon mixin in scss/mixins/bootstrap/_mask-icon.scss.
+// The mixin paints an SVG through a CSS mask so the icon follows the element's
+// `background-color`. `$icon: null` must still emit the other longhands so a
+// state/direction rule can supply `mask-image` on its own; a null `$size` or
+// `$position` must drop that longhand entirely.
+
+@use '../mixins/bootstrap/mask-icon' as *;
+
+@include describe('mask-icon mixin') {
+  @include it('emits every mask longhand with the defaults') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include mask-icon(url('tick.svg'));
+        }
+      }
+      @include expect() {
+        .t {
+          mask-image: url('tick.svg');
+          mask-repeat: no-repeat;
+          mask-position: center;
+          mask-size: contain;
+        }
+      }
+    }
+  }
+
+  @include it('passes custom size and position through') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include mask-icon($size: 100% 100%, $position: 50%);
+        }
+      }
+      @include expect() {
+        .t {
+          mask-repeat: no-repeat;
+          mask-position: 50%;
+          mask-size: 100% 100%;
+        }
+      }
+    }
+  }
+
+  @include it('omits mask-image when $icon is null but keeps mask-repeat') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include mask-icon($icon: null, $size: null, $position: null);
+        }
+      }
+      @include expect() {
+        .t {
+          mask-repeat: no-repeat;
+        }
+      }
+    }
+  }
+}
