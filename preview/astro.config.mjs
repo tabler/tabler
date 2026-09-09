@@ -115,7 +115,11 @@ export default defineConfig({
         },
         {
           // demo css built by this package's sass pipeline, from tmp-assets/
-          // (not dist/, which is Astro's own build output — see copy-assets.ts).
+          // (the `css` and `watch:css` scripts both write there). Not dist/,
+          // which is Astro's own build output — see copy-assets.ts — and not
+          // public/, which copy-assets wipes on every restart: anything a
+          // watcher writes straight into public/ is lost, or worse, racing
+          // with the wipe (#3006).
           from: path('./tmp-assets'),
           to: path('./public/preview'),
           label: '@tabler/preview',
@@ -135,11 +139,9 @@ export default defineConfig({
       // reads from — same directory.
       syncDirs: [
         { from: path('../core/dist'), to: path('./public/dist') },
+        { from: path('./tmp-assets'), to: path('./public/preview') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
-      // watch:css writes straight into public/preview — the file is already
-      // in place, but Astro does not reload the browser on public/ changes.
-      reloadDirs: [path('./public/preview')],
     }),
     mdx(),
     prettifyHtml(),

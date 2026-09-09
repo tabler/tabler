@@ -21,7 +21,7 @@
 /// <reference path="./modules.d.ts" />
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { EOL } from 'node:os'
-import { basename, dirname, join, resolve } from 'node:path'
+import { basename, join, resolve } from 'node:path'
 import { compile as compileSass } from 'sass'
 import postcss, { type Result } from 'postcss'
 import autoprefixer from 'autoprefixer'
@@ -103,14 +103,6 @@ async function rtl(entry: string, outFile: string, base: Result): Promise<void> 
 // spread across the whole build (which would need a long reload debounce).
 function flushWrites(): void {
   for (const { file, content } of pendingWrites) {
-    // outDir was created once at the top of main(), but the compile pipeline
-    // above is async and can take long enough for another process to delete
-    // it out from under us - e.g. @tabler/preview and @tabler/docs's
-    // copy-assets integration wipes and rebuilds the whole public/ dir on
-    // every `astro dev` startup, and doesn't know about this outDir since
-    // it's written here, not by copy-assets' own manifest. Recreate it
-    // immediately before each write so a mid-run deletion doesn't ENOENT us.
-    mkdirSync(dirname(file), { recursive: true })
     writeFileSync(file, content)
     console.log(`build-css: ${file}`)
   }

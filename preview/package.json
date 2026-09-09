@@ -9,7 +9,7 @@
   "scripts": {
     "assets": "shx rm -rf tmp-assets && pnpm run css",
     "css": "tsx ../.build/build-css.ts scss tmp-assets/css --minify",
-    "watch:css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss public/preview/css\"",
+    "watch:css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss tmp-assets/css\"",
     "watch": "pnpm run watch:css",
     "dev": "concurrently -n astro,css -c blue,magenta \"astro dev\" \"pnpm run watch:css\"",
     "dev:prepare": "pnpm run assets",
