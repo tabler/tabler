@@ -483,6 +483,10 @@ Decided:
 9. Cascade `@layer` lands as phase 3b, one PR after the token scales: flat Bootstrap v6 layer
    names (no `tabler.*` nesting), `:root` tokens inside the `root` layer, utilities without
    `!important` and `$enable-important-utilities` removed (decided 2026-09-08).
+14. `.badge-outline` is removed in 2.0, not aliased (#3011, decided 2026-09-08). It duplicated the
+    soft `.badge.bg-{color}-lt` variant without a role of its own, and `.agents/rules/main.mdc`
+    already forbade it. This is a deliberate exception to "every 1.x class stays": upgrade-guide
+    line, no replacement class — markup moves to `.badge.bg-{color}-lt`.
 
 Open:
 
