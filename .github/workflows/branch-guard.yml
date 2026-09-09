@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - dev
-      - main
 
 permissions:
   contents: read
@@ -13,7 +12,9 @@ jobs:
   guard:
     name: Reject branches forked from v2-dev
     # v2-dev itself is the tracking PR for the whole 2.0 delta, so it is exempt.
-    if: github.head_ref != 'v2-dev'
+    if: >-
+      github.head_ref != 'v2-dev'
+      || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
