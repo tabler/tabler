@@ -1,19 +1,20 @@
 ---
 // Feature names are a fixed list; the `features` string is split per-character into a 1/0 availability mask.
 import Icon from '@ui/Icon.astro'
+import Subheader from '@ui/Subheader.astro'
 
 interface Props {
   price?: string
   users?: string | number
   category?: string
   features?: string
-  /** ribbon + button color, e.g. "green" */
+  /** ribbon color of the featured plan, e.g. "green"; the button is always primary */
   featuredColor?: string
 }
 
 const { price = '79', users = 10, category = 'Enterprise', features = '1000', featuredColor } = Astro.props
 
-const featureNames = ['Sharing Tools', 'Design Tools', 'Private Messages', 'Twitter API']
+const featureNames = ['Sharing tools', 'Design tools', 'Private messages', 'Twitter API']
 const availableFeatures = features.split('')
 ---
 
@@ -27,9 +28,9 @@ const availableFeatures = features.split('')
   }
 
   <div class="card-body text-center">
-    <div class="text-uppercase text-secondary fw-medium">{category}</div>
+    <Subheader>{category}</Subheader>
 
-    <div class="display-5 fw-bold my-3">${price}</div>
+    <div class="display-5 my-3">${price}</div>
 
     <ul class="list-unstyled lh-lg">
       <li><strong>{users}</strong> Users</li>
@@ -44,7 +45,7 @@ const availableFeatures = features.split('')
     </ul>
 
     <div class="text-center mt-4">
-      <a href="#" class={`btn${featuredColor ? ` btn-${featuredColor}` : ''} w-100`}>Choose plan</a>
+      <a href="#" class={`btn${featuredColor ? ' btn-primary' : ''} w-100`}>Choose plan</a>
     </div>
   </div>
 </div>

@@ -13,7 +13,7 @@ import Progress from '@ui/Progress.astro'
 
         <div class="row g-5 mt-auto">
           <div class="col-auto">
-            <Subheader>Today's Sales</Subheader>
+            <Subheader>Today's sales</Subheader>
             <div class="d-flex align-items-baseline">
               <div class="h3 me-2">6,782</div>
               <div class="me-auto">
@@ -24,7 +24,7 @@ import Progress from '@ui/Progress.astro'
           </div>
 
           <div class="col-auto">
-            <Subheader>Growth Rate</Subheader>
+            <Subheader>Growth rate</Subheader>
             <div class="d-flex align-items-baseline">
               <div class="h3 me-2">78,4%</div>
               <div class="me-auto">
@@ -39,32 +39,19 @@ import Progress from '@ui/Progress.astro'
         <a href="./illustrations.html">
           <svg xmlns="http://www.w3.org/2000/svg" height="200" fill="none" viewBox="0 0 800 600">
             <style is:inline>
-              :where(.theme-dark, [data-theme='dark']) .tblr-illustrations-good-info-a {
-                fill: black;
+              /* Dark-mode artwork fills. The page resolves the color mode into
+                 data-bs-theme (see BaseLayout), so no prefers-color-scheme block. */
+              :where(.theme-dark, [data-bs-theme='dark'], [data-theme='dark']) .tblr-illustrations-good-info-a {
+                fill: var(--tblr-black);
                 opacity: 0.07;
               }
 
-              :where(.theme-dark, [data-theme='dark']) .tblr-illustrations-good-info-b {
+              :where(.theme-dark, [data-bs-theme='dark'], [data-theme='dark']) .tblr-illustrations-good-info-b {
                 fill: #1d2535;
               }
 
-              :where(.theme-dark, [data-theme='dark']) .tblr-illustrations-good-info-c {
+              :where(.theme-dark, [data-bs-theme='dark'], [data-theme='dark']) .tblr-illustrations-good-info-c {
                 fill: #454c5e;
-              }
-
-              @media (prefers-color-scheme: dark) {
-                .tblr-illustrations-good-info-a {
-                  fill: black;
-                  opacity: 0.07;
-                }
-
-                .tblr-illustrations-good-info-b {
-                  fill: #1d2535;
-                }
-
-                .tblr-illustrations-good-info-c {
-                  fill: #454c5e;
-                }
               }
             </style>
             <path

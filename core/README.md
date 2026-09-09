@@ -30,7 +30,7 @@ All files in the package are also available over a CDN:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 ```
 
 If you don't use a package manager, [download the latest release](https://github.com/tabler/tabler/releases) as a ZIP archive.
@@ -46,7 +46,8 @@ import '@tabler/core/dist/css/tabler.min.css'
 import '@tabler/core/dist/js/tabler.min.js'
 ```
 
-There's also an ES module build with named exports, which is handy when you create components from code:
+The bundle is ESM only — in a plain HTML page load it with `<script type="module">`. It also has
+named exports, which is handy when you create components from code:
 
 ```js
 import { Tooltip } from '@tabler/core'
@@ -95,7 +96,7 @@ The third-party libraries used by the demo pages (ApexCharts, Tom Select, Litepi
 @tabler/core/
 ├── dist/
 │   ├── css/       tabler.css and the optional stylesheets, each with .min and .rtl versions
-│   ├── js/        tabler.js and tabler.esm.js, plus the standalone tabler-theme.js
+│   ├── js/        tabler.js (ESM, load with <script type="module">), plus the standalone tabler-theme.js
 │   ├── libs/      bundled third-party plugins
 │   ├── types/     TypeScript declarations
 │   ├── fonts/

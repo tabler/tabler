@@ -23,6 +23,8 @@ Never ask the user to check a page manually. Start the server, look at the page,
 
 `preview_start` returns a `tabId` — pass it to every later `navigate` / `read_page` / `computer` call so they act on that tab and not on whatever is fronted. The same entries exist in `.claude/launch.json` (`preview`, `docs`, `screenshots`) — start them with `preview_start` so the browser pane opens on the right port, and use `preview-attach` when a server is already running. `pnpm dev` at the repo root starts everything through turbo; only do that when the change spans packages, because the persistent tasks make the output hard to read.
 
+**Port 3000 belongs to the main checkout.** In a git worktree the ports above are taken, and the worktree has no built assets yet. Prepare once with `pnpm turbo run dev:prepare --filter @tabler/preview` (builds `core` and copies the assets into the worktree's `public/`), then start `pnpm --dir preview exec astro dev --port 3001` — the `preview-alt` entry in `.claude/launch.json`. An `html-diff` baseline must be captured from the same server as the comparison, because the toolbar embeds the server path in the HTML.
+
 A `shared/` change shows up in both preview and docs. Verify in the package the user asked about, and open the other one too when the component is used there.
 
 ## 2. Full dev vs. astro-only
