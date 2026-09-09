@@ -60,39 +60,39 @@
 
 @mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
   @each $breakpoint in map.keys($breakpoints) {
-    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    $prefix: breakpoint-prefix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {
-      .col#{$infix} {
+      .#{$prefix}col {
         flex: 1 0 0;
       }
 
-      .row-cols#{$infix}-auto > * {
+      .#{$prefix}row-cols-auto > * {
         @include make-col-auto();
       }
 
       @if $grid-row-columns > 0 {
         @for $i from 1 through $grid-row-columns {
-          .row-cols#{$infix}-#{$i} {
+          .#{$prefix}row-cols-#{$i} {
             @include row-cols($i);
           }
         }
       }
 
-      .col#{$infix}-auto {
+      .#{$prefix}col-auto {
         @include make-col-auto();
       }
 
       @if $columns > 0 {
         @for $i from 1 through $columns {
-          .col#{$infix}-#{$i} {
+          .#{$prefix}col-#{$i} {
             @include make-col($i, $columns);
           }
         }
 
         @for $i from 0 through ($columns - 1) {
-          @if not($infix == '' and $i == 0) {
-            .offset#{$infix}-#{$i} {
+          @if not($prefix == '' and $i == 0) {
+            .#{$prefix}offset-#{$i} {
               @include make-col-offset($i, $columns);
             }
           }
@@ -100,13 +100,13 @@
       }
 
       @each $key, $value in $gutters {
-        .g#{$infix}-#{$key},
-        .gx#{$infix}-#{$key} {
+        .#{$prefix}g-#{$key},
+        .#{$prefix}gx-#{$key} {
           --gutter-x: #{$value};
         }
 
-        .g#{$infix}-#{$key},
-        .gy#{$infix}-#{$key} {
+        .#{$prefix}g-#{$key},
+        .#{$prefix}gy-#{$key} {
           --gutter-y: #{$value};
         }
       }
@@ -116,18 +116,18 @@
 
 @mixin make-cssgrid($columns: $grid-columns, $breakpoints: $grid-breakpoints) {
   @each $breakpoint in map.keys($breakpoints) {
-    $infix: breakpoint-infix($breakpoint, $breakpoints);
+    $prefix: breakpoint-prefix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {
       @if $columns > 0 {
         @for $i from 1 through $columns {
-          .g-col#{$infix}-#{$i} {
+          .#{$prefix}g-col-#{$i} {
             grid-column: auto / span $i;
           }
         }
 
         @for $i from 1 through ($columns - 1) {
-          .g-start#{$infix}-#{$i} {
+          .#{$prefix}g-start-#{$i} {
             grid-column-start: $i;
           }
         }
