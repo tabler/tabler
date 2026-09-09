@@ -86,13 +86,17 @@
 
   /** Border radiuses */
   --border-radius-scale: 1;
+  @each $name, $value in $radii {
+    --radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+  }
   @each $name, $value in $border-radiuses {
     @if $name {
-      --border-radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+      --border-radius-#{$name}: #{$value};
     } @else {
       --border-radius: #{$value};
     }
   }
+  --border-radius-2xl: var(--border-radius-xxl); // Deprecated in v5.3.0 for consistency
 
   /** Backdrops */
   --backdrop-opacity: #{$backdrop-opacity};
