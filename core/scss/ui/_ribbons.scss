@@ -1,5 +1,3 @@
-// stylelint-disable declaration-no-important
-
 @use 'sass:map';
 
 @use '../config' as *;
@@ -30,7 +28,7 @@ $ribbon-tokens: defaults(
 // stylelint-enable custom-property-no-missing-var-function
 
 @layer components {
-.ribbon {
+  .ribbon {
   @include tokens($ribbon-tokens);
   position: absolute;
   inset-inline-end: calc(-1 * var(--ribbon-margin));
@@ -73,7 +71,7 @@ $ribbon-tokens: defaults(
       }
 
       &.bg-#{$color}-lt {
-        border-color: color-transparent(var(--#{$color}), 0.1) !important;
+          border-color: color-transparent(var(--#{$color}), 0.1);
       }
     }
   }
@@ -83,9 +81,9 @@ $ribbon-tokens: defaults(
     height: var(--ribbon-icon-size);
     font-size: var(--ribbon-icon-size);
   }
-}
+  }
 
-.ribbon-top {
+  .ribbon-top {
   inset-inline-end: var(--ribbon-offset);
   top: calc(-1 * var(--ribbon-margin));
   width: var(--ribbon-top-width);
@@ -111,9 +109,9 @@ $ribbon-tokens: defaults(
       top: 0;
     }
   }
-}
+  }
 
-.ribbon-start {
+  .ribbon-start {
   inset-inline-start: calc(-1 * var(--ribbon-margin));
   inset-inline-end: auto;
   @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
@@ -126,14 +124,14 @@ $ribbon-tokens: defaults(
     border-inline-start-color: transparent;
     border-top-color: transparent;
   }
-}
+  }
 
-.ribbon-bottom {
+  .ribbon-bottom {
   top: auto;
   bottom: var(--ribbon-offset);
-}
+  }
 
-.ribbon-bookmark {
+  .ribbon-bookmark {
   padding-inline-start: var(--ribbon-padding-y);
   @include border-radius(0 0 var(--ribbon-border-radius) 0);
 
@@ -182,5 +180,5 @@ $ribbon-tokens: defaults(
       border-bottom-width: var(--ribbon-bookmark-notch-width);
     }
   }
-}
+  }
 }
