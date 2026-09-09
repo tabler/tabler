@@ -253,12 +253,15 @@ of `color-scheme`, the token-dump verification harness) but not its code.
 - Decide on `$spacers`: adopting the v6 0–9 scale silently changes every `.p-3` / `.m-4` in every
   Tabler template. Recommendation: keep the v5 scale, add finer steps at new keys.
 - Replace all `$*-focus-box-shadow` with one `focus-ring()` mixin over `--focus-ring*` tokens.
-  Step 1 done (#2972): `focus-ring()` reads `$focus-ring-box-shadow` and every focus consumer calls
-  it; the `$*-focus-box-shadow` variables stay as `!default` aliases; CSS byte-identical. Tabler
-  keeps the two-layer `box-shadow` look, not v6's `outline`, and the `forced-colors` fallback in
-  `layout/_accessibility.scss` stays. `.form-select` is still a single-layer exception. Step 2
-  (emit `--focus-ring-box-shadow` on `:root`, fix the `.focus-ring` helper, decide the
-  `.form-select` ring) is a follow-up.
+  Done (#2972). Step 1: `focus-ring()` is the one implementation and every focus consumer calls it;
+  the `$*-focus-box-shadow` variables stay as `!default` aliases; CSS byte-identical. Step 2: `:root`
+  emits `--focus-ring-inner-width` and `--focus-ring-box-shadow`, the mixin reads the token so the
+  ring retunes at runtime and per theme, and the `.focus-ring` helper stops referencing the phantom
+  `--focus-ring-x/-y/-blur`; the Step 2 CSS diff is limited to focus declarations and the `:root`
+  tokens. Tabler keeps the two-layer `box-shadow` look, not v6's `outline`, and the `forced-colors`
+  fallback in `layout/_accessibility.scss` stays. `.form-select` stays a single-layer exception, and
+  the three `outline: 2px solid` rules (`.btn-action`, `.date-item`, `.switch-icon`) are not
+  converted — both are follow-ups.
 - Consider the layered shadow scale (`.shadow-xs`…`.shadow-xl`) and `.border-keyline`.
 - Skip the `.fs-*` renaming — it inverts the scale direction and breaks every page.
 
