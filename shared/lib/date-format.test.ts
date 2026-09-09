@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatCommitDate, formatLongDate, formatUtcTimestamp, toUnixSeconds } from './date-format'
+import { formatCommitDate, formatShortDate, formatLongDate, formatUtcTimestamp, toUnixSeconds } from './date-format'
 
 describe('formatCommitDate', () => {
   it('reformats a full timestamp to "D Mon YYYY"', () => {
@@ -34,5 +34,12 @@ describe('formatUtcTimestamp', () => {
   it('formats a date as "YYYY-MM-DD HH:MM +0000"', () => {
     const date = new Date(Date.UTC(2025, 10, 28, 8, 5))
     expect(formatUtcTimestamp(date)).toBe('2025-11-28 08:05 +0000')
+  })
+})
+
+describe('formatShortDate', () => {
+  it('formats the UTC day and short month', () => {
+    expect(formatShortDate(new Date('2025-08-27T11:49:00Z'))).toBe('27 Aug')
+    expect(formatShortDate(new Date('2025-01-01T00:30:00Z'))).toBe('1 Jan')
   })
 })

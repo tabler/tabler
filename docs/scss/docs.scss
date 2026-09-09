@@ -606,6 +606,10 @@ html {
 }
 
 // The table of contents sticks too, so it has to clear the header (#2421).
+// A long list must not run past the viewport either: the rail is capped at the
+// space below the header and scrolls on its own (#2965).
 .docs-toc-sticky {
   top: var(--docs-header-height);
+  max-height: calc(100vh - var(--docs-header-height));
+  overflow-y: auto;
 }

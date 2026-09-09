@@ -1,6 +1,7 @@
 // Demo data date formatting quirks:
 // - unix seconds are shifted by local timezone offset (not the true epoch)
 // - long-date format uses UTC wall-clock components
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 /** Unix seconds shifted by the local timezone offset (not the true epoch). */
@@ -11,6 +12,11 @@ export function toUnixSeconds(date: Date): number {
 /** Formats a date as "Month DD, YYYY" using its UTC components. */
 export function formatLongDate(date: Date): string {
   return `${MONTHS[date.getUTCMonth()]} ${String(date.getUTCDate()).padStart(2, '0')}, ${date.getUTCFullYear()}`
+}
+
+/** Formats a date as "D Mon" using its UTC components, e.g. "27 Aug". */
+export function formatShortDate(date: Date): string {
+  return `${date.getUTCDate()} ${SHORT_MONTHS[date.getUTCMonth()]}`
 }
 
 /** Reformats a commit-style timestamp ("Thu Nov 28 08:48:33 2025 +0100") to "28 Nov 2025". */
