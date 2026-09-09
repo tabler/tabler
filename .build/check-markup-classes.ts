@@ -6,6 +6,10 @@
 // attributes of every page from a site's sitemap and looks each class up in
 // the css of the given directories.
 //
+// Class selectors can carry css escapes — `.md\:d-none`, `.\32 xl\:d-none` — while the
+// markup spells the same class plainly (`class="md:d-none"`). Selectors are decoded
+// back to that plain form so both sides compare as the same name.
+//
 // Classes that exist only as JavaScript or demo hooks are listed in
 // markup-classes-baseline.txt. Anything not on that list fails the check; so
 // does a name on the list that no longer appears, which keeps the file from
@@ -17,6 +21,16 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from '
 import { join, resolve } from 'node:path'
 
 const BASELINE = resolve(__dirname, 'markup-classes-baseline.txt')
+
+// A class selector: a dot, then an identifier whose characters may be escaped as
+// `\<char>` or `\<up to six hex digits><optional space>`. The first character must not
+// be a bare digit, which keeps lengths like `.5rem` from reading as class names.
+const ESCAPE = String.raw`\\[0-9a-fA-F]{1,6}[ \t\r\n\f]?|\\[^\n0-9a-fA-F]`
+const CLASS_SELECTOR = new RegExp(String.raw`\.(-?(?:${ESCAPE}|[_a-zA-Z\u00a0-\uffff])(?:${ESCAPE}|[-\w\u00a0-\uffff])*)`, 'g')
+
+const decodeIdent = (ident: string): string => ident.replace(/\\([0-9a-fA-F]{1,6})[ \t\r\n\f]?|\\(.)/g, (_, hex: string | undefined, char: string | undefined) => (hex === undefined ? char! : String.fromCodePoint(parseInt(hex, 16))))
+
+const classNamesIn = (css: string): string[] => [...css.matchAll(CLASS_SELECTOR)].map((m) => decodeIdent(m[1]!))
 
 const args = process.argv.slice(2)
 const htmlTargets: string[] = []
@@ -41,7 +55,7 @@ const walk = (dir: string, ext: string): string[] =>
 const defined = new Set<string>()
 for (const dir of cssDirs) {
   for (const file of walk(resolve(dir), '.css')) {
-    for (const m of readFileSync(file, 'utf8').matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) defined.add(m[1]!)
+    for (const cls of classNamesIn(readFileSync(file, 'utf8'))) defined.add(cls)
   }
 }
 
@@ -70,7 +84,7 @@ const main = async () => {
       pageCount++
       // Page-level <style> blocks define classes too (demo pages style their own markup).
       const inline = new Set<string>()
-      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const m of block[1]!.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) inline.add(m[1]!)
+      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const cls of classNamesIn(block[1]!)) inline.add(cls)
       for (const m of html.matchAll(/class="([^"]*)"/g)) {
         for (const cls of m[1]!.split(/\s+/).filter(Boolean)) {
           if (defined.has(cls) || inline.has(cls)) continue
