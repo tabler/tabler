@@ -140,6 +140,21 @@
       }
     }
   }
+
+  @include it('passes $shadow through and skips the outline reset with $outline: null') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include focus-ring($shadow: 0 0 0 1px red, $outline: null);
+        }
+      }
+      @include expect() {
+        .t {
+          box-shadow: 0 0 0 1px red;
+        }
+      }
+    }
+  }
 }
 
 @include describe('media-print mixin') {
