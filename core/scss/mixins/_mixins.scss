@@ -77,14 +77,15 @@
   gap: var(--list-gap);
 }
 
-@mixin focus-ring($show-border: false) {
-  outline: 0;
-  box-shadow:
-    0 0 0 2px var(--primary),
-    0 0 $focus-ring-blur $focus-ring-width color-transparent(var(--primary), 0.25);
+@mixin focus-ring($shadow: $focus-ring-box-shadow, $show-border: false, $outline: 0) {
+  @if $outline != null {
+    outline: $outline;
+  }
 
-  @if ($show-border) {
-    border-color: color-transparent(var(--primary), 0.25);
+  box-shadow: $shadow;
+
+  @if $show-border {
+    border-color: var(--focus-ring-color);
   }
 }
 
