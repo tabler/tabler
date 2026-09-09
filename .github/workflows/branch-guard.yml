@@ -12,6 +12,8 @@ permissions:
 jobs:
   guard:
     name: Reject branches forked from v2-dev
+    # v2-dev itself is the tracking PR for the whole 2.0 delta, so it is exempt.
+    if: github.head_ref != 'v2-dev'
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
