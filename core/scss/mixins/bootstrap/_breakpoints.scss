@@ -33,9 +33,15 @@
   @return if(sass($max and $max > 0): $max - .02; else: null);
 }
 
-// Returns a blank string if smallest breakpoint, otherwise returns the name with a dash in front.
-@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
-  @return if(sass(breakpoint-min($name, $breakpoints) == null): ''; else: '-#{$name}');
+// Returns a blank string if smallest breakpoint, otherwise the name followed by
+// an escaped colon, for use as a prefix on responsive class names.
+//
+//    >> breakpoint-prefix(xs, $grid-breakpoints)
+//    ''  (Returns a blank string)
+//    >> breakpoint-prefix(md, $grid-breakpoints)
+//    'md\\:'
+@function breakpoint-prefix($name, $breakpoints: $grid-breakpoints) {
+  @return if(sass(breakpoint-min($name, $breakpoints) == null): ''; else: '#{$name}\\:');
 }
 
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.

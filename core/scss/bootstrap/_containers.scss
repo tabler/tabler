@@ -14,7 +14,7 @@
 
   // Responsive containers that are 100% wide until a breakpoint
   @each $breakpoint, $container-max-width in $container-max-widths {
-    .container#{breakpoint-infix($breakpoint, $grid-breakpoints)} {
+    .#{breakpoint-prefix($breakpoint, $grid-breakpoints)}container {
       @extend .container-fluid;
     }
 
@@ -28,7 +28,7 @@
 
       @each $name, $width in $grid-breakpoints {
         @if ($extend-breakpoint) {
-          .container#{breakpoint-infix($name, $grid-breakpoints)} {
+          .#{breakpoint-prefix($name, $grid-breakpoints)}container {
             @extend %responsive-container-#{$breakpoint};
           }
 

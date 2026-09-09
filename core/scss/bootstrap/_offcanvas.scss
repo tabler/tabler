@@ -23,18 +23,18 @@
 
 @each $breakpoint in map.keys($grid-breakpoints) {
   $next: breakpoint-next($breakpoint, $grid-breakpoints);
-  $infix: breakpoint-infix($next, $grid-breakpoints);
+  $prefix: breakpoint-prefix($next, $grid-breakpoints);
 
-  .offcanvas#{$infix} {
+  .#{$prefix}offcanvas {
     @extend %offcanvas-css-vars;
   }
 }
 
 @each $breakpoint in map.keys($grid-breakpoints) {
   $next: breakpoint-next($breakpoint, $grid-breakpoints);
-  $infix: breakpoint-infix($next, $grid-breakpoints);
+  $prefix: breakpoint-prefix($next, $grid-breakpoints);
 
-  .offcanvas#{$infix} {
+  .#{$prefix}offcanvas {
     @include media-breakpoint-down($next) {
       position: fixed;
       bottom: 0;
@@ -99,7 +99,7 @@
       }
     }
 
-    @if not($infix == '') {
+    @if not($prefix == '') {
       @include media-breakpoint-up($next) {
         --offcanvas-height: auto;
         --offcanvas-border-width: 0;

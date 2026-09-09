@@ -356,104 +356,102 @@ Navbar
   }
 }
 
-.navbar-expand {
-  @each $breakpoint in map.keys($grid-breakpoints) {
-    $next: breakpoint-next($breakpoint, $grid-breakpoints);
-    $infix: breakpoint-infix($next, $grid-breakpoints);
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint, $grid-breakpoints);
+  $prefix: breakpoint-prefix($next, $grid-breakpoints);
 
-    &#{$infix} {
-      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-        @include navbar-vertical-nav();
+  .#{$prefix}navbar-expand {
+    @include media-breakpoint-down(breakpoint-next($breakpoint)) {
+      @include navbar-vertical-nav();
 
-        // Below the breakpoint the vertical navbar is a top bar row: toggler,
-        // brand, and whatever trails them (a user block, or nothing). Auto
-        // margins keep the brand centered either way — space-between alone
-        // would push it to the far edge when nothing follows it.
-        &.navbar-vertical .navbar-brand {
-          margin-inline: auto;
+      // Below the breakpoint the vertical navbar is a top bar row: toggler,
+      // brand, and whatever trails them (a user block, or nothing). Auto
+      // margins keep the brand centered either way — space-between alone
+      // would push it to the far edge when nothing follows it.
+      &.navbar-vertical .navbar-brand {
+        margin-inline: auto;
+      }
+
+      // In the stacked mobile menu nothing pins the trailing group to the
+      // bottom, so a small gap marks it as a separate part of the menu.
+      &.navbar-vertical .navbar-side {
+        margin-top: $sidebar-inset;
+      }
+
+      // Below the breakpoint the navbar-footer sits in the top bar row:
+      // the avatar alone, with its menu dropping down instead of up.
+      .navbar-footer {
+        .nav-link-title {
+          display: none;
         }
 
-        // In the stacked mobile menu nothing pins the trailing group to the
-        // bottom, so a small gap marks it as a separate part of the menu.
-        &.navbar-vertical .navbar-side {
-          margin-top: $sidebar-inset;
+        .dropup .dropdown-menu {
+          inset-inline-start: auto;
+          inset-inline-end: 0;
+          top: 100%;
+          bottom: auto;
+        }
+      }
+    }
+
+    @include media-breakpoint-up($next) {
+      .navbar-collapse {
+        flex: 1 1 auto;
+        width: auto;
+      }
+
+      .nav-item.active {
+        position: relative;
+
+        .nav-link {
+          color: var(--navbar-active-color);
         }
 
-        // Below the breakpoint the navbar-footer sits in the top bar row:
-        // the avatar alone, with its menu dropping down instead of up.
-        .navbar-footer {
-          .nav-link-title {
-            display: none;
-          }
-
-          .dropup .dropdown-menu {
-            inset-inline-start: auto;
-            inset-inline-end: 0;
-            top: 100%;
-            bottom: auto;
-          }
+        &::after {
+          position: absolute;
+          inset-inline-start: 0;
+          inset-inline-end: 0;
+          bottom: -0.25rem;
+          content: '';
+          border: 0 var(--border-style) var(--navbar-active-border-color);
+          border-bottom-width: 2px;
         }
       }
 
-      @include media-breakpoint-up($next) {
-        .navbar-collapse {
-          flex: 1 1 auto;
-          width: auto;
-        }
+      &.navbar-vertical {
+        box-shadow: inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color);
 
-        .nav-item.active {
-          position: relative;
-
-          .nav-link {
-            color: var(--navbar-active-color);
-          }
-
-          &::after {
-            position: absolute;
-            inset-inline-start: 0;
-            inset-inline-end: 0;
-            bottom: -0.25rem;
-            content: '';
-            border: 0 var(--border-style) var(--navbar-active-border-color);
-            border-bottom-width: 2px;
-          }
-        }
-
-        &.navbar-vertical {
-          box-shadow: inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color);
-
-          &.navbar-right,
-          &.navbar-end {
-            box-shadow: inset calc(1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color);
-          }
-        }
-
-        &.navbar-vertical {
-          ~ .navbar,
-          ~ .page-wrapper {
-            margin-inline-start: var(--sidebar-width);
-          }
-        }
-
-        &.navbar-vertical.navbar-right,
-        &.navbar-vertical.navbar-end {
-          ~ .navbar,
-          ~ .page-wrapper {
-            margin-inline-start: 0;
-            margin-inline-end: var(--sidebar-width);
-          }
+        &.navbar-right,
+        &.navbar-end {
+          box-shadow: inset calc(1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color);
         }
       }
 
-      // In the first, tightest segment after a horizontal navbar expands there
-      // is no room for icons — hide them there, derived from the navbar's own
-      // navbar-expand-* breakpoint, so the markup needs no display utilities.
-      // The vertical navbar always shows its icons.
-      @if $next and breakpoint-next($next, $grid-breakpoints) {
-        @include media-breakpoint-only($next) {
-          &:not(.navbar-vertical) .navbar-nav .nav-link-icon {
-            display: none;
-          }
+      &.navbar-vertical {
+        ~ .navbar,
+        ~ .page-wrapper {
+          margin-inline-start: var(--sidebar-width);
+        }
+      }
+
+      &.navbar-vertical.navbar-right,
+      &.navbar-vertical.navbar-end {
+        ~ .navbar,
+        ~ .page-wrapper {
+          margin-inline-start: 0;
+          margin-inline-end: var(--sidebar-width);
+        }
+      }
+    }
+
+    // In the first, tightest segment after a horizontal navbar expands there
+    // is no room for icons — hide them there, derived from the navbar's own
+    // navbar-expand-* breakpoint, so the markup needs no display utilities.
+    // The vertical navbar always shows its icons.
+    @if $next and breakpoint-next($next, $grid-breakpoints) {
+      @include media-breakpoint-only($next) {
+        &:not(.navbar-vertical) .navbar-nav .nav-link-icon {
+          display: none;
         }
       }
     }
@@ -674,152 +672,150 @@ Navbar vertical
   }
 
   .navbar-vertical {
-    &.navbar-expand {
-      @each $breakpoint in map.keys($grid-breakpoints) {
-        $next: breakpoint-next($breakpoint, $grid-breakpoints);
-        $infix: breakpoint-infix($next, $grid-breakpoints);
+    @each $breakpoint in map.keys($grid-breakpoints) {
+      $next: breakpoint-next($breakpoint, $grid-breakpoints);
+      $prefix: breakpoint-prefix($next, $grid-breakpoints);
 
-        &#{$infix} {
-          @include media-breakpoint-up($next) {
-            position: fixed;
-            inset-inline-start: 0;
-            top: 0;
-            bottom: 0;
-            z-index: $zindex-fixed;
-            align-items: start;
-            width: var(--sidebar-width);
+      &.#{$prefix}navbar-expand {
+        @include media-breakpoint-up($next) {
+          position: fixed;
+          inset-inline-start: 0;
+          top: 0;
+          bottom: 0;
+          z-index: $zindex-fixed;
+          align-items: start;
+          width: var(--sidebar-width);
+          padding: 0;
+          @include transition(transform $transition-time);
+
+          &.navbar-right,
+          &.navbar-end {
+            inset-inline-start: auto;
+            inset-inline-end: 0;
+          }
+
+          // Logo on the start side, room for an action (e.g. the pin
+          // toggle) on the end side. The inline padding centers the logo
+          // mark in the folded rail and is identical in both states, so the
+          // logo mark and the nav icons share one center axis and nothing
+          // moves when the sidebar folds.
+          .navbar-brand {
+            --sidebar-brand-padding-x: #{$sidebar-brand-padding-x};
+            justify-content: space-between;
+            padding: (($navbar-height - $navbar-brand-image-height) * 0.5) var(--sidebar-brand-padding-x);
+            margin-inline-end: 0;
+          }
+
+          // The fold toggle keeps its layout slot (no jumping) but only
+          // becomes visible while the sidebar is hovered or focused.
+          [data-bs-toggle='sidebar-folded'] {
+            opacity: 0;
+            @include transition(opacity $transition-time);
+          }
+
+          &:hover [data-bs-toggle='sidebar-folded'],
+          &:has(:focus-visible) [data-bs-toggle='sidebar-folded'] {
+            opacity: 1;
+          }
+
+          // The nav is the sidebar's scroll area — the brand above and the
+          // footer below stay pinned.
+          .navbar-collapse {
+            align-items: stretch;
+            min-height: 0;
+            overflow-y: auto;
+          }
+
+          .navbar-nav {
+            flex-grow: 1;
+            flex-direction: column;
+            min-height: auto;
+
+            .nav-link {
+              padding-top: 0.5rem;
+              padding-bottom: 0.5rem;
+            }
+          }
+
+          // Bottom-pinned footer area, e.g. a user block. Sits after the
+          // growing nav, separated with the navbar border.
+          .navbar-footer {
+            // In the markup the footer sits before the collapse (so it
+            // stays in the mobile top bar row); order moves it to the
+            // bottom of the desktop column.
+            order: 1;
+            padding-block: $sidebar-inset;
+            margin-top: auto;
+            border-top: var(--navbar-border-width) var(--border-style) var(--navbar-border-color);
+
+            // Tighter link padding than the menu — the avatar brings its
+            // own bulk. Overrides the variables the nav-link padding reads,
+            // so it wins regardless of rule order.
+            .navbar-nav {
+              --sidebar-nav-padding-y: 0.5rem;
+              --sidebar-nav-padding-x: 0.5rem;
+              flex-grow: 0;
+            }
+
+            .nav-link .avatar {
+              // Never squeezed by the appearing title during the hover
+              // unfold animation.
+              flex-shrink: 0;
+              margin-inline-end: var(--nav-link-icon-margin-end);
+            }
+          }
+
+          > [class^='container'] {
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: start;
+            height: 100%;
             padding: 0;
-            @include transition(transform $transition-time);
+          }
 
-            &.navbar-right,
-            &.navbar-end {
-              inset-inline-start: auto;
-              inset-inline-end: 0;
+          ~ .page {
+            padding-inline-start: var(--sidebar-width);
+
+            [class^='container'] {
+              padding-inline-start: 1.5rem;
+              padding-inline-end: 1.5rem;
             }
+          }
 
-            // Logo on the start side, room for an action (e.g. the pin
-            // toggle) on the end side. The inline padding centers the logo
-            // mark in the folded rail and is identical in both states, so the
-            // logo mark and the nav icons share one center axis and nothing
-            // moves when the sidebar folds.
-            .navbar-brand {
-              --sidebar-brand-padding-x: #{$sidebar-brand-padding-x};
-              justify-content: space-between;
-              padding: (($navbar-height - $navbar-brand-image-height) * 0.5) var(--sidebar-brand-padding-x);
-              margin-inline-end: 0;
-            }
+          &.navbar-right ~ .page,
+          &.navbar-end ~ .page {
+            padding-inline-start: 0;
+            padding-inline-end: var(--sidebar-width);
+          }
 
-            // The fold toggle keeps its layout slot (no jumping) but only
-            // becomes visible while the sidebar is hovered or focused.
-            [data-bs-toggle='sidebar-folded'] {
-              opacity: 0;
+          @include navbar-vertical-nav();
+
+          // Folded state, both routes; the hover variant folds only while
+          // not hovered and not holding visible keyboard focus. Plain
+          // :focus-within would keep the sidebar stuck open after a mouse
+          // click, because the clicked link keeps focus.
+          &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible))),
+          :where([data-bs-sidebar='folded']) &,
+          :where([data-bs-sidebar='folded-hover']) &:not(:hover):not(:has(:focus-visible)) {
+            @include navbar-vertical-folded();
+          }
+
+          &.navbar-folded-hover,
+          :where([data-bs-sidebar='folded-hover']) & {
+            @include transition(transform $transition-time, width $transition-time);
+
+            .nav-link-title {
               @include transition(opacity $transition-time);
             }
 
-            &:hover [data-bs-toggle='sidebar-folded'],
-            &:has(:focus-visible) [data-bs-toggle='sidebar-folded'] {
-              opacity: 1;
-            }
-
-            // The nav is the sidebar's scroll area — the brand above and the
-            // footer below stay pinned.
-            .navbar-collapse {
-              align-items: stretch;
-              min-height: 0;
-              overflow-y: auto;
-            }
-
-            .navbar-nav {
-              flex-grow: 1;
-              flex-direction: column;
-              min-height: auto;
-
-              .nav-link {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-              }
-            }
-
-            // Bottom-pinned footer area, e.g. a user block. Sits after the
-            // growing nav, separated with the navbar border.
-            .navbar-footer {
-              // In the markup the footer sits before the collapse (so it
-              // stays in the mobile top bar row); order moves it to the
-              // bottom of the desktop column.
-              order: 1;
-              padding-block: $sidebar-inset;
-              margin-top: auto;
-              border-top: var(--navbar-border-width) var(--border-style) var(--navbar-border-color);
-
-              // Tighter link padding than the menu — the avatar brings its
-              // own bulk. Overrides the variables the nav-link padding reads,
-              // so it wins regardless of rule order.
-              .navbar-nav {
-                --sidebar-nav-padding-y: 0.5rem;
-                --sidebar-nav-padding-x: 0.5rem;
-                flex-grow: 0;
-              }
-
-              .nav-link .avatar {
-                // Never squeezed by the appearing title during the hover
-                // unfold animation.
-                flex-shrink: 0;
-                margin-inline-end: var(--nav-link-icon-margin-end);
-              }
-            }
-
-            > [class^='container'] {
-              flex-direction: column;
-              align-items: stretch;
-              justify-content: start;
-              height: 100%;
-              padding: 0;
-            }
-
-            ~ .page {
-              padding-inline-start: var(--sidebar-width);
-
-              [class^='container'] {
-                padding-inline-start: 1.5rem;
-                padding-inline-end: 1.5rem;
-              }
-            }
-
-            &.navbar-right ~ .page,
-            &.navbar-end ~ .page {
-              padding-inline-start: 0;
-              padding-inline-end: var(--sidebar-width);
-            }
-
-            @include navbar-vertical-nav();
-
-            // Folded state, both routes; the hover variant folds only while
-            // not hovered and not holding visible keyboard focus. Plain
-            // :focus-within would keep the sidebar stuck open after a mouse
-            // click, because the clicked link keeps focus.
-            &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible))),
-            :where([data-bs-sidebar='folded']) &,
-            :where([data-bs-sidebar='folded-hover']) &:not(:hover):not(:has(:focus-visible)) {
-              @include navbar-vertical-folded();
-            }
-
-            &.navbar-folded-hover,
-            :where([data-bs-sidebar='folded-hover']) & {
-              @include transition(transform $transition-time, width $transition-time);
-
-              .nav-link-title {
-                @include transition(opacity $transition-time);
-              }
-
-              // Temporarily unfolds as an overlay: siblings keep the folded
-              // --sidebar-width, so page content does not reflow.
-              &:hover,
-              &:has(:focus-visible) {
-                width: $sidebar-width;
-                box-shadow:
-                  inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color),
-                  var(--shadow-lg);
-              }
+            // Temporarily unfolds as an overlay: siblings keep the folded
+            // --sidebar-width, so page content does not reflow.
+            &:hover,
+            &:has(:focus-visible) {
+              width: $sidebar-width;
+              box-shadow:
+                inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color),
+                var(--shadow-lg);
             }
           }
         }
