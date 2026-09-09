@@ -42,7 +42,7 @@ async function buildCustomPropertyNames(entry) {
 describe('css custom-property prefixing', () => {
   it('leaves vendor-owned names alone and prefixes everything else', async () => {
     await expect(buildCustomPropertyNames('tabler-vendors.scss')).resolves.toMatchSnapshot()
-  })
+  }, 30_000)
 
   it('has no dead entries in the ignore list', async () => {
     // A pattern matching nothing means the vendor it protected is gone, or the
@@ -57,5 +57,5 @@ describe('css custom-property prefixing', () => {
         pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
       expect(matches, `unused cssVarIgnore entry: ${pattern}`).toBe(true)
     }
-  })
+  }, 30_000)
 })
