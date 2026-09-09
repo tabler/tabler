@@ -1,24 +1,10 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start tracking-css-vars
-$tracking-tokens: () !default;
-$tracking-tokens: defaults(
-  (
-    --tracking-height: $tracking-height,
-    --tracking-gap-width: $tracking-gap-width,
-    --tracking-block-border-radius: $tracking-border-radius,
-    --tracking-block-min-width: $tracking-block-min-width,
-  ),
-  $tracking-tokens
-);
-// scss-docs-end tracking-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .tracking {
-  @include tokens($tracking-tokens);
+  --tracking-height: #{$tracking-height};
+  --tracking-gap-width: #{$tracking-gap-width};
+  --tracking-block-border-radius: #{$tracking-border-radius};
+  --tracking-block-min-width: #{$tracking-block-min-width};
   display: flex;
   gap: var(--tracking-gap-width);
 }

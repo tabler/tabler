@@ -4,24 +4,11 @@
 
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start datagrid-css-vars
-$datagrid-tokens: () !default;
-$datagrid-tokens: defaults(
-  (
-    --datagrid-padding: $datagrid-padding,
-    --datagrid-item-width: $datagrid-item-width,
-    --datagrid-title-margin-bottom: $datagrid-title-margin-bottom,
-  ),
-  $datagrid-tokens
-);
-// scss-docs-end datagrid-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .datagrid {
-  @include tokens($datagrid-tokens);
+  --datagrid-padding: #{$datagrid-padding};
+  --datagrid-item-width: #{$datagrid-item-width};
+  --datagrid-title-margin-bottom: #{$datagrid-title-margin-bottom};
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--datagrid-item-width), 1fr));
   grid-gap: var(--datagrid-padding);

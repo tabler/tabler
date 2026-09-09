@@ -744,7 +744,6 @@ $border-widths: (
   3: 3px,
   4: 4px,
   5: 5px,
-  keyline: var(--border-width-keyline),
 ) !default;
 $border-style: solid !default;
 
@@ -765,6 +764,12 @@ $border-radiuses: (
   pill: $border-radius-pill,
   null: var(--border-radius-md),
 ) !default;
+
+$border-values: (
+  null: var(--border-width) var(--border-style) $border-color-translucent,
+  wide: $border-width-wide var(--border-style) $border-color-translucent,
+  0: 0,
+);
 
 $icon-color: var(--gray-400) !default;
 
@@ -1041,6 +1046,7 @@ $alert-margin-bottom: 1rem !default;
 $alert-link-font-weight: var(--font-weight-semibold) !default;
 $alert-border-width: var(--border-width) !default;
 $alert-border-color: var(--border-color-translucent) !default;
+$alert-shadow: rgba($dark, 0.04) 0 2px 4px 0 !default;
 $alert-heading-margin-bottom: 0.25rem !default;
 $alert-icon-size: 1.25rem !default;
 $alert-padding-inline-end: 3rem !default;
@@ -1055,7 +1061,7 @@ $breadcrumb-padding-x: 0 !default;
 $breadcrumb-item-padding-x: 0.5rem !default;
 $breadcrumb-margin-bottom: 1rem !default;
 $breadcrumb-bg: null !default;
-$breadcrumb-divider-color: var(--secondary) !default;
+$breadcrumb-divider-color: var(--gray-500) !default;
 $breadcrumb-active-color: inherit !default;
 $breadcrumb-divider: string.quote('/') !default;
 $breadcrumb-border-radius: null !default;
@@ -1083,7 +1089,6 @@ $badge-empty-size: 0.5rem !default;
 $badge-color: var(--secondary) !default;
 $badge-bg-color: var(--bg-surface-secondary) !default;
 $badge-gap: 0.25rem !default;
-$badge-padding-y-sm: 2px !default;
 $badge-padding-x-sm: 0.25rem !default;
 $badge-padding-y-lg: 0.25rem !default;
 $badge-padding-x-lg: 0.5rem !default;
@@ -1254,7 +1259,7 @@ $card-bg: var(--bg-surface) !default;
 $card-img-overlay-padding: $spacer !default;
 $card-group-margin: 1.5rem !default;
 
-$card-status-size: $border-width-wide !default;
+$card-status-size: 3px !default;
 // The strip sits on top of the card border, so it is pulled out by the border width
 $card-status-offset: calc(-1 * var(--card-border-width)) !default;
 
@@ -1335,10 +1340,10 @@ $carousel-control-icon-width: 1.5rem !default;
 $carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'></polyline></svg>") !default;
 $carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>") !default;
 
-$carousel-indicator-width: 32px !default;
-$carousel-indicator-height: 2px !default;
-$carousel-indicator-hit-area-height: 12px !default;
-$carousel-indicator-spacer: 4px !default;
+$carousel-indicator-width: 30px !default;
+$carousel-indicator-height: 3px !default;
+$carousel-indicator-hit-area-height: 10px !default;
+$carousel-indicator-spacer: 3px !default;
 $carousel-indicator-opacity: 0.5 !default;
 $carousel-indicator-active-bg: $white !default;
 $carousel-indicator-active-opacity: 1 !default;
@@ -1431,7 +1436,6 @@ $dropdown-scrollable-height: 13rem !default;
 $dropdown-item-gap: 0.5rem !default;
 $dropdown-header-padding-bottom: 0.25rem !default;
 $dropdown-menu-columns-gap: 0.25rem !default;
-$dropdown-arrow-size: 0.75rem !default;
 $dropdown-arrow-offset: 0.25rem !default;
 $dropdown-arrow-inset: 0.75rem !default;
 $dropdown-dropend-offset: 0.25rem !default;
@@ -1472,7 +1476,7 @@ $tooltip-arrow-height: 0.4rem !default;
 $loader-size: 2.5rem !default;
 
 $list-group-header-bg: var(--bg-surface-tertiary) !default;
-$list-group-header-color: var(--secondary) !default;
+$list-group-header-color: var(--gray-500) !default;
 
 // Modals
 // scss-docs-start modal-variables
@@ -1531,7 +1535,7 @@ $nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 0.75rem !default;
 $nav-link-font-size: var(--body-font-size) !default;
 $nav-link-font-weight: null !default;
-$nav-link-color: var(--secondary) !default;
+$nav-link-color: var(--gray-500) !default;
 $nav-link-active-color: var(--body-color) !default;
 $nav-link-hover-color: var(--link-hover-color) !default;
 $nav-link-transition:
@@ -1703,7 +1707,7 @@ $pagination-focus-box-shadow: $focus-ring-box-shadow !default;
 $pagination-focus-outline: 0 !default;
 
 $pagination-hover-color: var(--link-hover-color) !default;
-$pagination-hover-bg: $hover-bg !default;
+$pagination-hover-bg: var(--active-bg) !default;
 $pagination-hover-border-color: var(--pagination-border-color) !default; // Todo in v6: remove this?
 
 $pagination-active-color: $component-active-color !default;
@@ -1752,8 +1756,8 @@ $steps-counter-dot-size: 1.5rem !default;
 $steps-vertical-padding-start: 1rem !default;
 $steps-vertical-item-gap: 1rem !default;
 $steps-vertical-connector-gap: 1rem !default;
-// Centers the dot on the first line of the step label, whatever the dot size.
-$steps-dot-offset: calc((var(--body-line-height) * 1em - var(--steps-dot-size)) / 2) !default;
+$steps-dot-offset: 6px !default;
+$steps-dot-offset-counter: -2px !default;
 // scss-docs-end steps-variables
 
 // Spinner
@@ -1839,7 +1843,7 @@ $toast-background-color: var(--bg-surface) !default;
 $toast-border-width: var(--border-width) !default;
 $toast-border-color: var(--border-color) !default;
 $toast-border-radius: var(--border-radius) !default;
-$toast-box-shadow: var(--shadow) !default;
+$toast-box-shadow: var(--box-shadow) !default;
 $toast-spacing: $container-padding-x !default;
 
 $toast-header-color: var(--gray-500) !default;
@@ -2128,9 +2132,6 @@ $legend-bg: var(--border-color) !default;
 $legend-size: 0.75em !default;
 $legend-border-radius: var(--border-radius-sm) !default;
 
-// Signature
-$signature-canvas-height: 12.5rem !default;
-
 // Offcanvas
 // scss-docs-start offcanvas-variables
 $offcanvas-padding-y: $modal-inner-padding !default;
@@ -2185,19 +2186,19 @@ $nav-segmented-height: 2.5rem !default;
 $nav-segmented-padding: 2px !default;
 $nav-segmented-radius: 6px !default;
 $nav-segmented-gap: 0.25rem !default;
-$nav-segmented-link-gap: 0.5rem !default;
+$nav-segmented-link-gap: 0.25rem !default;
 $nav-segmented-link-padding-x: 0.75rem !default;
 $nav-segmented-link-icon-size: 1.25rem !default;
 $nav-segmented-icon-margin: -0.25rem !default;
 $nav-segmented-height-sm: 2rem !default;
 $nav-segmented-radius-sm: 4px !default;
 $nav-segmented-link-padding-x-sm: 0.5rem !default;
-$nav-segmented-link-gap-sm: 0.5rem !default;
+$nav-segmented-link-gap-sm: 0.25rem !default;
 $nav-segmented-link-icon-size-sm: 1rem !default;
 $nav-segmented-height-lg: 3rem !default;
 $nav-segmented-radius-lg: 8px !default;
 $nav-segmented-link-padding-x-lg: 1rem !default;
-$nav-segmented-link-gap-lg: 0.75rem !default;
+$nav-segmented-link-gap-lg: 0.5rem !default;
 $nav-segmented-link-icon-size-lg: 1.5rem !default;
 // scss-docs-end segmented-nav-variables
 

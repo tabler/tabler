@@ -198,49 +198,6 @@
   @return $merged-maps;
 }
 
-// Build a per-component token map from its defaults and an overrides map.
-//
-// - A plain list of keys is expanded to `key: true` (mirrors Bootstrap v6).
-// - Keys in `$overrides` win over the defaults and keep their original slot.
-// - A `null` value in `$overrides` drops that key, so
-//   `@use "tabler" with ($card-tokens: (--card-bg: null))` removes the token.
-// - A `null` value in `$defaults` is kept: `tokens()` then emits an empty
-//   custom property, which is the current behaviour for unset variables.
-//
-// scss-docs-start defaults-function
-@function defaults($defaults, $overrides: ()) {
-  @if meta.type-of($defaults) == 'list' {
-    $map: ();
-    @each $key in $defaults {
-      $map: map.merge(
-        $map,
-        (
-          $key: true,
-        )
-      );
-    }
-    $defaults: $map;
-  }
-
-  $result: $defaults;
-
-  @each $key, $value in $overrides {
-    @if $value == null {
-      $result: map.remove($result, $key);
-    } @else {
-      $result: map.merge(
-        $result,
-        (
-          $key: $value,
-        )
-      );
-    }
-  }
-
-  @return $result;
-}
-// scss-docs-end defaults-function
-
 // Replace `$search` with `$replace` in `$string`
 // Used on our SVG icon backgrounds for custom forms.
 //

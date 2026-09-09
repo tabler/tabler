@@ -2,33 +2,20 @@
 
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start ribbon-css-vars
-$ribbon-tokens: () !default;
-$ribbon-tokens: defaults(
-  (
-    --ribbon-margin: $card-ribbon-margin,
-    --ribbon-border-radius: $card-ribbon-border-radius,
-    --ribbon-font-size: $card-ribbon-font-size,
-    --ribbon-icon-size: $card-ribbon-icon-size,
-    --ribbon-offset: $ribbon-offset,
-    --ribbon-padding-y: $ribbon-padding-y,
-    --ribbon-padding-x: $ribbon-padding-x,
-    --ribbon-min-size: $ribbon-min-size,
-    --ribbon-top-width: $ribbon-top-width,
-    --ribbon-top-padding-y: $ribbon-top-padding-y,
-    --ribbon-bookmark-border-size: $ribbon-bookmark-border-size,
-    --ribbon-bookmark-notch-width: $ribbon-bookmark-notch-width,
-  ),
-  $ribbon-tokens
-);
-// scss-docs-end ribbon-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .ribbon {
-  @include tokens($ribbon-tokens);
+  --ribbon-margin: #{$card-ribbon-margin};
+  --ribbon-border-radius: #{$card-ribbon-border-radius};
+  --ribbon-font-size: #{$card-ribbon-font-size};
+  --ribbon-icon-size: #{$card-ribbon-icon-size};
+  --ribbon-offset: #{$ribbon-offset};
+  --ribbon-padding-y: #{$ribbon-padding-y};
+  --ribbon-padding-x: #{$ribbon-padding-x};
+  --ribbon-min-size: #{$ribbon-min-size};
+  --ribbon-top-width: #{$ribbon-top-width};
+  --ribbon-top-padding-y: #{$ribbon-top-padding-y};
+  --ribbon-bookmark-border-size: #{$ribbon-bookmark-border-size};
+  --ribbon-bookmark-notch-width: #{$ribbon-bookmark-notch-width};
+
   position: absolute;
   inset-inline-end: calc(-1 * var(--ribbon-margin));
   top: var(--ribbon-offset);
@@ -40,9 +27,9 @@ $ribbon-tokens: defaults(
   min-height: var(--ribbon-min-size);
   padding: var(--ribbon-padding-y) var(--ribbon-padding-x);
   font-size: var(--ribbon-font-size);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   line-height: 1;
-  color: var(--primary-fg);
+  color: $white;
   text-align: center;
   text-transform: uppercase;
   background: var(--primary);

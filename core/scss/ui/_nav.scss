@@ -1,30 +1,15 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// Tabler's additions on top of Bootstrap's `.nav` tokens.
-// scss-docs-start nav-css-vars
-$nav-tokens: () !default;
-$nav-tokens: defaults(
-  (
-    --nav-link-hover-bg: $hover-bg,
-    // Read by `.nav-vertical .nav-link.active` below; without it that rule's
-    // color declaration was invalid and the active link fell back to the
-    // inherited color.
-    --nav-link-active-color: $nav-link-active-color,
-    --nav-vertical-nested-margin-start: $nav-vertical-nested-margin-start,
-    --nav-vertical-nested-padding-start: $nav-vertical-nested-padding-start,
-    --nav-link-toggle-padding-x: $nav-link-toggle-padding-x,
-    --nav-link-icon-margin-end: $nav-link-icon-margin-end,
-  ),
-  $nav-tokens
-);
-// scss-docs-end nav-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .nav {
-  @include tokens($nav-tokens);
+  --nav-link-hover-bg: #{color-transparent(var(--nav-link-color), 0.04)};
+  // Read by `.nav-vertical .nav-link.active` below; without it that rule's
+  // color declaration was invalid and the active link fell back to the
+  // inherited color.
+  --nav-link-active-color: #{$nav-link-active-color};
+  --nav-vertical-nested-margin-start: #{$nav-vertical-nested-margin-start};
+  --nav-vertical-nested-padding-start: #{$nav-vertical-nested-padding-start};
+  --nav-link-toggle-padding-x: #{$nav-link-toggle-padding-x};
+  --nav-link-icon-margin-end: #{$nav-link-icon-margin-end};
   font-size: var(--body-font-size);
 }
 
@@ -43,7 +28,7 @@ $nav-tokens: defaults(
 
   .nav-link.active,
   .nav-item.show .nav-link {
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     color: var(--nav-link-active-color);
   }
 

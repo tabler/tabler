@@ -1,28 +1,14 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start btn-close-css-vars
-$btn-close-tokens: () !default;
-$btn-close-tokens: defaults(
-  (
-    --btn-close-color: currentColor,
-    --btn-close-bg: #{escape-svg($btn-close-bg)},
-    --btn-close-opacity: $btn-close-opacity,
-    --btn-close-hover-opacity: $btn-close-hover-opacity,
-    --btn-close-focus-shadow: $btn-close-focus-shadow,
-    --btn-close-focus-opacity: $btn-close-focus-opacity,
-    --btn-close-disabled-opacity: $btn-close-disabled-opacity,
-    --btn-close-size: $btn-close-width,
-  ),
-  $btn-close-tokens
-);
-// scss-docs-end btn-close-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .btn-close {
-  @include tokens($btn-close-tokens);
+  --btn-close-color: currentColor;
+  --btn-close-bg: #{escape-svg($btn-close-bg)};
+  --btn-close-opacity: #{$btn-close-opacity};
+  --btn-close-hover-opacity: #{$btn-close-hover-opacity};
+  --btn-close-focus-shadow: #{$btn-close-focus-shadow};
+  --btn-close-focus-opacity: #{$btn-close-focus-opacity};
+  --btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
+  --btn-close-size: #{$btn-close-width};
   position: relative;
   display: block;
 

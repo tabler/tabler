@@ -2,6 +2,14 @@ import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearFixture, getFixture } from '../helpers/fixture'
 
+vi.mock('@popperjs/core', () => ({
+  createPopper: vi.fn(() => ({
+    destroy: vi.fn(),
+    update: vi.fn(),
+    setOptions: vi.fn(),
+  })),
+}))
+
 describe('Tooltip', () => {
   let fixtureEl: HTMLElement
 
@@ -278,16 +286,15 @@ describe('Tooltip', () => {
   })
 
   describe('update', () => {
-    it('should call update on the positioner', () => {
+    it('should call popper update', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
 
         el.addEventListener('shown.bs.tooltip', () => {
-          const updateSpy = vi.spyOn(tooltip._floatingUi, 'update')
           tooltip.update()
-          expect(updateSpy).toHaveBeenCalled()
+          expect(tooltip._popper!.update).toHaveBeenCalled()
           resolve()
         })
 
@@ -295,7 +302,7 @@ describe('Tooltip', () => {
       })
     })
 
-    it('should do nothing if the tooltip was never shown', () => {
+    it('should do nothing if popper is null', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
       const el = fixtureEl.querySelector('a')!
       const tooltip = new Tooltip(el)
@@ -324,16 +331,16 @@ describe('Tooltip', () => {
       expect(el.getAttribute('title')).toBe('Tooltip title')
     })
 
-    it('should stop the positioner on dispose', () => {
+    it('should destroy popper on dispose', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
 
         el.addEventListener('shown.bs.tooltip', () => {
-          const stopSpy = vi.spyOn(tooltip._floatingUi, 'stop')
+          const destroySpy = tooltip._popper!.destroy
           tooltip.dispose()
-          expect(stopSpy).toHaveBeenCalled()
+          expect(destroySpy).toHaveBeenCalled()
           resolve()
         })
 
@@ -477,51 +484,31 @@ describe('Tooltip', () => {
     })
   })
 
-  describe('_getFloatingConfig', () => {
-    it('should build the default middleware', () => {
+  describe('_getOffset', () => {
+    it('should handle string offset', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
       const el = fixtureEl.querySelector('a')!
-      const tooltip = new Tooltip(el)
+      const tooltip = new Tooltip(el, { offset: '10,20' as any })
 
-      const config = tooltip._getFloatingConfig('top')
-      expect(config.placement).toBe('top')
-      expect(config.middleware!.map((middleware) => middleware.name)).toEqual(['offset', 'flip', 'shift'])
+      expect(tooltip._getOffset()).toEqual([10, 20])
     })
 
-    it('should set the placement attribute before the arrow is measured', () => {
+    it('should handle function offset', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
       const el = fixtureEl.querySelector('a')!
-      const tooltip = new Tooltip(el)
-      const tip = tooltip._getTipElement()!
+      const offsetFn = vi.fn().mockReturnValue([5, 10])
+      const tooltip = new Tooltip(el, { offset: offsetFn })
 
-      const names = tooltip._getFloatingConfig('top', tip).middleware!.map((middleware) => middleware.name)
-      expect(names).toEqual(['offset', 'flip', 'shift', 'preSetPlacement', 'arrow'])
+      const offset = tooltip._getOffset()
+      expect(typeof offset).toBe('function')
     })
 
-    it('should resolve auto with autoPlacement instead of flip', () => {
+    it('should handle array offset', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
       const el = fixtureEl.querySelector('a')!
-      const tooltip = new Tooltip(el)
+      const tooltip = new Tooltip(el, { offset: [5, 15] })
 
-      const config = tooltip._getFloatingConfig('auto')
-      expect(config.placement).toBeUndefined()
-      expect(config.middleware!.map((middleware) => middleware.name)).toEqual(['offset', 'autoPlacement', 'shift'])
-    })
-
-    it('should apply a custom positionConfig function', () => {
-      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
-      const el = fixtureEl.querySelector('a')!
-      const tooltip = new Tooltip(el, { positionConfig: (defaultConfig: any) => ({ ...defaultConfig, strategy: 'fixed' }) })
-
-      expect(tooltip._getFloatingConfig('top').strategy).toBe('fixed')
-    })
-
-    it('should still accept the deprecated popperConfig option', () => {
-      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
-      const el = fixtureEl.querySelector('a')!
-      const tooltip = new Tooltip(el, { popperConfig: { placement: 'bottom' } })
-
-      expect(tooltip._getFloatingConfig('top').placement).toBe('bottom')
+      expect(tooltip._getOffset()).toEqual([5, 15])
     })
   })
 
@@ -538,20 +525,20 @@ describe('Tooltip', () => {
     })
   })
 
-  describe('_disposeFloatingUi', () => {
-    it('should stop the positioner and remove the tip', () => {
+  describe('_disposePopper', () => {
+    it('should destroy popper and remove tip', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
 
         el.addEventListener('shown.bs.tooltip', () => {
-          expect(tooltip._floatingUi._cleanup).not.toBeNull()
+          expect(tooltip._popper).not.toBeNull()
           expect(tooltip.tip).not.toBeNull()
 
-          tooltip._disposeFloatingUi()
+          tooltip._disposePopper()
 
-          expect(tooltip._floatingUi._cleanup).toBeNull()
+          expect(tooltip._popper).toBeNull()
           expect(tooltip.tip).toBeNull()
           resolve()
         })

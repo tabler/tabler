@@ -43,26 +43,14 @@
 //
 // Status
 //
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start status-css-vars
-$status-tokens: () !default;
-$status-tokens: defaults(
-  (
-    --status-height: $status-height,
-    --status-color: $text-secondary,
-    --status-padding-y: $status-padding-y,
-    --status-padding-x: $status-padding-x,
-    --status-gap: $status-gap,
-  ),
-  $status-tokens
-);
-// scss-docs-end status-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .status {
-  @include tokens($status-tokens);
+  --status-height: #{$status-height};
+  --status-color: #{$text-secondary};
+  --status-color-rgb: #{to-rgb($text-secondary)};
+  --status-padding-y: #{$status-padding-y};
+  --status-padding-x: #{$status-padding-x};
+  --status-gap: #{$status-gap};
+
   display: inline-flex;
   gap: var(--status-gap);
   align-items: center;
@@ -96,6 +84,7 @@ $status-tokens: defaults(
 @each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
     --status-color: var(--#{$name});
+    --status-color-rgb: var(--#{$name}-rgb);
   }
 }
 

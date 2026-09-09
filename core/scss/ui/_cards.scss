@@ -2,38 +2,6 @@
 
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start card-css-vars
-$card-tokens: () !default;
-$card-tokens: defaults(
-  (
-    --card-spacer-y: $card-spacer-y,
-    --card-spacer-x: $card-spacer-x,
-    --card-title-spacer-y: $card-title-spacer-y,
-    --card-title-color: $card-title-color,
-    --card-subtitle-color: $card-subtitle-color,
-    --card-border-width: $card-border-width,
-    --card-border-color: $card-border-color,
-    --card-border-radius: $card-border-radius,
-    --card-box-shadow: $card-box-shadow,
-    --card-inner-border-radius: $card-inner-border-radius,
-    --card-cap-padding-y: $card-cap-padding-y,
-    --card-cap-padding-x: $card-cap-padding-x,
-    --card-cap-bg: $card-cap-bg,
-    --card-cap-color: $card-cap-color,
-    --card-height: $card-height,
-    --card-color: $card-color,
-    --card-bg: $card-bg,
-    --card-img-overlay-padding: $card-img-overlay-padding,
-    --card-group-margin: $card-group-margin,
-  ),
-  $card-tokens
-);
-// scss-docs-end card-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 @property --card-gradient-direction {
   syntax: '<angle>';
   inherits: true;
@@ -51,7 +19,6 @@ $card-tokens: defaults(
 }
 
 .card {
-  @include tokens($card-tokens);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @include media-print() {
@@ -106,7 +73,7 @@ $card-tokens: defaults(
   max-height: 100%;
   overflow: hidden;
   pointer-events: none;
-  border-start-end-radius: var(--card-border-radius);
+  border-start-end-radius: $border-radius;
   opacity: $card-stamp-opacity;
 }
 
@@ -132,7 +99,7 @@ $card-tokens: defaults(
   .icon {
     width: calc(var(--stamp-size) * 0.75);
     height: calc(var(--stamp-size) * 0.75);
-    stroke-width: 1;
+    stroke-width: 2;
   }
 }
 
@@ -176,7 +143,7 @@ $card-tokens: defaults(
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding: var(--card-spacer-y) var(--card-spacer-x);
+  padding: $card-spacer-y $card-spacer-x;
   font-weight: var(--font-weight-medium);
   color: inherit;
   text-align: center;
@@ -185,7 +152,7 @@ $card-tokens: defaults(
 
   &:hover {
     text-decoration: none;
-    background: $hover-bg;
+    background: $active-bg;
   }
 
   & + & {
@@ -215,7 +182,7 @@ Stacked card
 
 .card-cover {
   position: relative;
-  padding: var(--card-spacer-y) var(--card-spacer-x);
+  padding: $card-spacer-y $card-spacer-x;
   background: #666 no-repeat center/cover;
 
   &::before {
@@ -225,12 +192,12 @@ Stacked card
     top: 0;
     bottom: 0;
     content: '';
-    background: color-transparent(var(--dark), 0.48);
+    background: rgba($dark, 0.48);
   }
 
   &:first-child,
   &:first-child::before {
-    @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
+    @include border-radius($border-radius $border-radius 0 0);
   }
 }
 
@@ -301,7 +268,7 @@ Stacked card
   &:hover {
     color: inherit;
     text-decoration: none;
-    box-shadow: var(--shadow-card-hover);
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -340,11 +307,11 @@ Stacked card
   height: var(--card-progress-height);
 
   &:last-child {
-    @include border-radius(0 0 var(--border-radius-xs) var(--border-radius-xs));
+    @include border-radius(0 0 2px 2px);
   }
 
   &:first-child {
-    @include border-radius(var(--border-radius-xs) var(--border-radius-xs) 0 0);
+    @include border-radius(2px 2px 0 0);
   }
 }
 
@@ -374,7 +341,7 @@ Stacked card
 .card-subtitle {
   --card-subtitle-margin-start: #{$card-subtitle-margin-start};
   margin-bottom: $card-title-spacer-y;
-  font-weight: var(--font-weight-normal);
+  font-weight: 400;
   color: var(--secondary);
 
   .card-header & {
@@ -495,13 +462,13 @@ Card table
     td,
     th {
       &:first-child {
-        padding-inline-start: var(--card-spacer-x);
+        padding-inline-start: $card-spacer-x;
         border-inline-start: 0;
         border-start-start-radius: var(--card-border-radius);
       }
 
       &:last-child {
-        padding-inline-end: var(--card-spacer-x);
+        padding-inline-end: $card-spacer-x;
         border-inline-end: 0;
         border-start-end-radius: var(--card-border-radius);
       }
@@ -622,8 +589,8 @@ Card list group
   }
 
   .list-group-item {
-    padding-inline-start: var(--card-spacer-x);
-    padding-inline-end: var(--card-spacer-x);
+    padding-inline-start: $card-spacer-x;
+    padding-inline-end: $card-spacer-x;
     border-inline-start: 0;
     border-inline-end: 0;
     border-radius: 0;
@@ -646,18 +613,18 @@ Card list group
     border-bottom: 0;
 
     .nav-link {
-      background: var(--card-cap-bg);
-      border: var(--card-border-width) var(--border-style) var(--card-border-color);
+      background: $card-cap-bg;
+      border: $card-border-width var(--border-style) $card-border-color;
 
       &.active,
       &:active,
       &:hover {
         color: var(--body-color);
-        border-color: var(--card-border-color);
+        border-color: $card-border-color;
       }
 
       &.active {
-        color: var(--heading-color);
+        color: $headings-color;
         background: var(--card-bg, var(--bg-surface));
         border-bottom-color: transparent;
       }

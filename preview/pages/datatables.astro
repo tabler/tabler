@@ -4,6 +4,7 @@ import { toUnixSeconds, formatLongDate } from '@shared/lib/date-format'
 import { randomNumber, randomDate } from '@shared/lib/pseudo-random'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import Progress from '@ui/Progress.astro'
@@ -43,45 +44,47 @@ const valueNames = ['sort-name', 'sort-type', 'sort-city', 'sort-score', { attr:
         <CardSubtitle>Click a column header to sort the rows by that value.</CardSubtitle>
       </div>
     </CardHeader>
-    <div id={`table-${id}`} class="table-responsive">
-      <table class="table card-table">
-        <thead>
-          <tr>
-            <th><button class="table-sort" data-sort="sort-name">Name</button></th>
-            <th><button class="table-sort" data-sort="sort-city">City</button></th>
-            <th><button class="table-sort" data-sort="sort-type">Type</button></th>
-            <th><button class="table-sort" data-sort="sort-score">Score</button></th>
-            <th><button class="table-sort" data-sort="sort-date">Date</button></th>
-            <th><button class="table-sort" data-sort="sort-quantity">Quantity</button></th>
-            <th><button class="table-sort" data-sort="sort-progress">Progress</button></th>
-          </tr>
-        </thead>
-        <tbody class="table-tbody">
-          {
-            rows.map(({ rc, progress, quantity, dateSeconds, dateLabel }) => (
-              <tr>
-                <td class="sort-name">{rc.name}</td>
-                <td class="sort-city">{rc.city}</td>
-                <td class="sort-type">{rc.type}</td>
-                <td class="sort-score">{rc.score}</td>
-                <td class="sort-date" data-date={dateSeconds}>
-                  {dateLabel}
-                </td>
-                <td class="sort-quantity">{quantity}</td>
-                <td class="sort-progress" data-progress={progress}>
-                  <div class="row align-items-center">
-                    <div class="col-12 col-lg-auto">{progress}%</div>
-                    <div class="col">
-                      <Progress value={progress} width="5rem" />
+    <CardBody class="p-0">
+      <div id={`table-${id}`} class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+              <th><button class="table-sort" data-sort="sort-city">City</button></th>
+              <th><button class="table-sort" data-sort="sort-type">Type</button></th>
+              <th><button class="table-sort" data-sort="sort-score">Score</button></th>
+              <th><button class="table-sort" data-sort="sort-date">Date</button></th>
+              <th><button class="table-sort" data-sort="sort-quantity">Quantity</button></th>
+              <th><button class="table-sort" data-sort="sort-progress">Progress</button></th>
+            </tr>
+          </thead>
+          <tbody class="table-tbody">
+            {
+              rows.map(({ rc, progress, quantity, dateSeconds, dateLabel }) => (
+                <tr>
+                  <td class="sort-name">{rc.name}</td>
+                  <td class="sort-city">{rc.city}</td>
+                  <td class="sort-type">{rc.type}</td>
+                  <td class="sort-score">{rc.score}</td>
+                  <td class="sort-date" data-date={dateSeconds}>
+                    {dateLabel}
+                  </td>
+                  <td class="sort-quantity">{quantity}</td>
+                  <td class="sort-progress" data-progress={progress}>
+                    <div class="row align-items-center">
+                      <div class="col-12 col-lg-auto">{progress}%</div>
+                      <div class="col">
+                        <Progress value={progress} width="5rem" />
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </CardBody>
   </Card>
 
   <TablerList id={id} valueNames={valueNames} />

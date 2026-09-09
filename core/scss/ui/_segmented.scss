@@ -1,32 +1,19 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start nav-segmented-css-vars
-$nav-segmented-tokens: () !default;
-$nav-segmented-tokens: defaults(
-  (
-    --nav-bg: var(--bg-surface-tertiary),
-    --nav-padding: $nav-segmented-padding,
-    --nav-height: $nav-segmented-height,
-    --nav-gap: $nav-segmented-gap,
-    --nav-active-bg: var(--bg-surface),
-    --nav-font-size: inherit,
-    --nav-radius: $nav-segmented-radius,
-    --nav-link-disabled-color: var(--disabled-color),
-    --nav-link-gap: $nav-segmented-link-gap,
-    --nav-link-padding-x: $nav-segmented-link-padding-x,
-    --nav-link-icon-size: $nav-segmented-link-icon-size,
-    --nav-link-icon-margin: $nav-segmented-icon-margin,
-  ),
-  $nav-segmented-tokens
-);
-// scss-docs-end nav-segmented-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .nav-segmented {
-  @include tokens($nav-segmented-tokens);
+  --nav-bg: var(--bg-surface-tertiary);
+  --nav-padding: #{$nav-segmented-padding};
+  --nav-height: #{$nav-segmented-height};
+  --nav-gap: #{$nav-segmented-gap};
+  --nav-active-bg: var(--bg-surface);
+  --nav-font-size: inherit;
+  --nav-radius: #{$nav-segmented-radius};
+
+  --nav-link-disabled-color: var(--disabled-color);
+  --nav-link-gap: #{$nav-segmented-link-gap};
+  --nav-link-padding-x: #{$nav-segmented-link-padding-x};
+  --nav-link-icon-size: #{$nav-segmented-link-icon-size};
+  --nav-link-icon-margin: #{$nav-segmented-icon-margin};
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--nav-gap);
@@ -34,12 +21,12 @@ $nav-segmented-tokens: defaults(
   list-style: none;
   background: var(--nav-bg);
   @include border-radius(calc(var(--nav-radius) + var(--nav-padding)));
-  box-shadow: inset 0 0 0 var(--border-width) var(--border-color-translucent);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
 
   .nav-link {
     display: inline-flex;
     flex-grow: 1;
-    gap: var(--nav-link-gap);
+    gap: calc(#{$nav-segmented-link-gap} + var(--nav-link-gap));
     align-items: center;
     justify-content: center;
     min-width: calc(var(--nav-height) - 2 * var(--nav-padding));
@@ -53,7 +40,7 @@ $nav-segmented-tokens: defaults(
     white-space: nowrap;
     cursor: pointer;
     background: transparent;
-    border: var(--border-width) solid transparent;
+    border: 1px solid transparent;
     transition:
       background-color $transition-time,
       color $transition-time;
@@ -62,7 +49,7 @@ $nav-segmented-tokens: defaults(
     &:hover,
     &.hover {
       color: var(--body-color);
-      background: $hover-bg;
+      background: rgba(0, 0, 0, 0.04);
     }
 
     &.disabled,

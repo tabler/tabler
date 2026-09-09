@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'sass:map';
 
 //
@@ -5,31 +6,17 @@
 //
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start btn-css-vars
-$btn-tokens: () !default;
-$btn-tokens: defaults(
-  (
-    --btn-icon-size: $input-btn-icon-size,
-    --btn-icon-color: inherit,
-    --btn-bg: var(--bg-surface),
-    --btn-color: var(--body-color),
-    --btn-border-color: $btn-border-color,
-    --btn-hover-bg: var(--btn-bg),
-    --btn-hover-border-color: var(--border-active-color),
-    --btn-active-color: $active-color,
-    --btn-active-bg: var(--active-bg),
-    --btn-active-border-color: $active-border-color,
-  ),
-  $btn-tokens
-);
-// scss-docs-end btn-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .btn {
-  @include tokens($btn-tokens);
+  --btn-icon-size: #{$input-btn-icon-size};
+  --btn-icon-color: inherit;
+  --btn-bg: var(--bg-surface);
+  --btn-color: var(--body-color);
+  --btn-border-color: #{$btn-border-color};
+  --btn-hover-bg: var(--btn-bg);
+  --btn-hover-border-color: var(--border-active-color);
+  --btn-active-color: #{$active-color};
+  --btn-active-bg: #{$active-bg};
+  --btn-active-border-color: #{$active-border-color};
   position: relative;
 
   display: inline-flex;
@@ -80,7 +67,7 @@ $btn-tokens: defaults(
   // here would leave a disabled link button with the default surface and border.
   --btn-bg: transparent;
   --btn-border-color: transparent;
-  color: var(--link-color);
+  color: #{color.adjust($primary, $lightness: 5%)};
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -90,7 +77,7 @@ $btn-tokens: defaults(
   }
 
   &:hover {
-    color: var(--link-hover-color);
+    color: $link-hover-color;
     border-color: transparent;
   }
 }
@@ -119,7 +106,7 @@ $btn-tokens: defaults(
       --btn-active-border-color: transparent;
     }
 
-    --btn-color: var(--#{$color}-fg);
+    --btn-color: var(--#{$color}-fg, #{$white});
     --btn-bg: var(--#{$color});
     --btn-hover-color: var(--#{$color}-fg);
     --btn-hover-bg: var(--#{$color}-darken);
@@ -286,7 +273,7 @@ $btn-tokens: defaults(
 // Action button
 //
 .btn-action {
-  --btn-border-color: transparent;
+  --border-color: transparent;
   --btn-bg: transparent;
   --btn-disabled-color: var(--secondary);
   color: var(--secondary);
@@ -312,7 +299,7 @@ $btn-tokens: defaults(
   &:hover,
   &.show {
     color: var(--body-color);
-    background: $hover-bg;
+    background: var(--active-bg);
     border-color: transparent;
   }
 
@@ -335,7 +322,7 @@ $btn-tokens: defaults(
 
 .btn-animate-icon {
   .icon {
-    transition: transform $transition-time ease;
+    transition: transform 0.3s ease;
   }
 
   &:hover,

@@ -2,7 +2,7 @@
 name: mr-description
 description: >-
   Drafts a merge request (MR) or pull request title and body in simple English
-  from the current branch versus origin/v2-dev (Tabler). Use when the
+  from the current branch versus origin/dev (Tabler). Use when the
   user asks for an MR/PR description, GitLab merge request text, or a branch
   summary for reviewers.
 ---
@@ -13,26 +13,26 @@ Produce a **short title** and a **markdown body**, each in its own fenced **`mar
 
 ## 1. Base branch (this repo)
 
-**Default integration branch:** `v2-dev` (the 2.0 branch, which becomes the main branch). Compare against **`origin/v2-dev`**. `dev` is frozen for 1.x maintenance — use it only when the user explicitly asks for a 1.x PR.
+**Default integration branch:** `dev`. Compare against **`origin/dev`**.
 
-If `origin/v2-dev` is missing (offline clone, no remote), fall back to local `v2-dev`, then ask the user. Only use another base (`dev` for 1.x, anything else) if the user says so explicitly.
+If `origin/dev` is missing (offline clone, no remote), fall back to local `dev`, then ask the user. Only use another base (e.g. `develop`) if the user says so explicitly.
 
 **Comparison range:** use three-dot merge syntax so the description reflects *this branch’s* commits and diff:
 
-- Commits: `git log origin/v2-dev...HEAD --oneline`
-- Diff: `git diff origin/v2-dev...HEAD`
-- Overview: `git diff origin/v2-dev...HEAD --stat`
+- Commits: `git log origin/dev...HEAD --oneline`
+- Diff: `git diff origin/dev...HEAD`
+- Overview: `git diff origin/dev...HEAD --stat`
 
-If the branch is not pushed yet: `git merge-base v2-dev HEAD` then `git diff <merge-base>...HEAD` (or same with `origin/v2-dev` when available).
+If the branch is not pushed yet: `git merge-base dev HEAD` then `git diff <merge-base>...HEAD` (or same with `origin/dev` when available).
 
 ## 2. Gather facts (run in parallel when independent)
 
 From the repository root:
 
 - `git status -sb`
-- `git log origin/v2-dev...HEAD --oneline` (or `v2-dev...HEAD` if no remote tracking)
-- `git diff origin/v2-dev...HEAD --stat`
-- `git diff origin/v2-dev...HEAD` — if output is very large, rely on `--stat` plus targeted `git diff origin/v2-dev...HEAD -- <paths>` for the touched areas
+- `git log origin/dev...HEAD --oneline` (or `dev...HEAD` if no remote tracking)
+- `git diff origin/dev...HEAD --stat`
+- `git diff origin/dev...HEAD` — if output is very large, rely on `--stat` plus targeted `git diff origin/dev...HEAD -- <paths>` for the touched areas
 - `git branch --show-current` — current branch name for the Vercel preview URL
 
 Use this to infer **intent**, **user-visible behavior**, and **risk**—not only filenames.
@@ -64,7 +64,7 @@ gh api repos/tabler/tabler/deployments/<id>/statuses --jq '.[0].environment_url'
 curl -s -o /dev/null -w '%{http_code}\n' <link>
 ```
 
-**Links to the published docs** (not a Vercel preview) belong to a different pair of hosts: `docs.tabler.io` serves the last release, `docs-dev.tabler.io` serves `dev` (the 1.x branch — nothing publishes `v2-dev` yet, so 2.0 docs changes are only visible on the Vercel preview). Check any `docs.tabler.io` link you mention against `docs-dev.tabler.io` — production still serves the pre-content-collection URLs, so a page that exists in `docs/content/**` can 404 there without being a broken link.
+**Links to the published docs** (not a Vercel preview) belong to a different pair of hosts: `docs.tabler.io` serves the last release, `docs-dev.tabler.io` serves `dev`. Check any `docs.tabler.io` link you mention against `docs-dev.tabler.io` — production still serves the pre-content-collection URLs, so a page that exists in `docs/content/**` can 404 there without being a broken link.
 
 If the diff touches specific routes or pages, append that path. Path shape differs per project:
 
@@ -77,7 +77,7 @@ Mention the exact path(s) in **Preview**.
 
 - One line, **imperative mood**, **≤ 72 characters** when possible.
 - Prefer **why** or **outcome** over a generic “Update components”.
-- Match existing team style if `git log origin/v2-dev..HEAD` shows a pattern (e.g. conventional prefixes).
+- Match existing team style if `git log origin/dev..HEAD` shows a pattern (e.g. conventional prefixes).
 - If the title names a **code-level identifier** (feature-flag key, exported function, env var, route, exact symbol from the diff), wrap that token in **backticks** (grave accents), not quotes.
 
 **Deliver the title to the user** inside a fenced **`markdown`** block with **only** the title line inside (no heading, no label). That matches the body block and makes one-click copy work in the UI.
@@ -124,5 +124,3 @@ Write the **title** and **full MR body** in **simple English**, even if the user
 ## 6. After output
 
 Offer to open/create the MR if the user uses **GitLab** (project MCP or UI) or **GitHub** (`gh pr create`), without running destructive git commands unless they ask.
-
-Create the PR with `gh pr create --base v2-dev --milestone "2.0" …` — every PR into `v2-dev` belongs to the GitHub milestone **2.0**. If the PR already exists, add it with `gh pr edit <n> --milestone "2.0"`. Only a 1.x PR into `dev` skips the milestone.

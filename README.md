@@ -75,7 +75,7 @@ Load Tabler from the CDN and start building:
   <body>
     <h1>Hello, Tabler!</h1>
     <button class="btn btn-primary">Primary button</button>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
   </body>
 </html>
 ```
@@ -106,7 +106,7 @@ The `@tabler/core` package contains compiled and minified CSS and JavaScript, th
 ├── dist/
 │   ├── css/       tabler.css and the optional stylesheets (flags, marketing, payments, socials,
 │   │              themes, vendors), each with .min and .rtl versions
-│   ├── js/        tabler.js (ESM, load with <script type="module">), plus the standalone tabler-theme.js
+│   ├── js/        tabler.js and tabler.esm.js, plus the standalone tabler-theme.js
 │   ├── libs/      bundled plugins: ApexCharts, Tom Select, Litepicker, FullCalendar and others
 │   ├── types/     TypeScript declarations
 │   ├── fonts/

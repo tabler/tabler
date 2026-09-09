@@ -3,26 +3,11 @@
 //
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start steps-css-vars
-$steps-tokens: () !default;
-$steps-tokens: defaults(
-  (
-    --steps-color: $steps-color,
-    --steps-fg: var(--primary-fg),
-    --steps-inactive-color: $steps-inactive-color,
-    --steps-dot-size: $steps-dot-size,
-    --steps-border-width: $steps-border-width,
-  ),
-  $steps-tokens
-);
-// scss-docs-end steps-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .steps {
-  @include tokens($steps-tokens);
+  --steps-color: #{$steps-color};
+  --steps-inactive-color: #{$steps-inactive-color};
+  --steps-dot-size: #{$steps-dot-size};
+  --steps-border-width: #{$steps-border-width};
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -40,11 +25,9 @@ $steps-tokens: defaults(
 @each $name, $color in $extra-colors {
   .steps-#{$name} {
     --steps-color: var(--#{$name});
-    --steps-fg: var(--#{$name}-fg);
 
     &-lt {
       --steps-color: var(--#{$name}-lt);
-      --steps-fg: var(--#{$name});
     }
   }
 }
@@ -100,7 +83,7 @@ $steps-tokens: defaults(
     justify-content: center;
     width: var(--steps-dot-size);
     height: var(--steps-dot-size);
-    color: var(--steps-fg);
+    color: var(--white);
     content: '';
 
     /* rtl:ignore */
@@ -109,7 +92,7 @@ $steps-tokens: defaults(
   }
 
   &.active {
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
 
     &::after {
       background: var(--steps-inactive-color);
@@ -121,10 +104,6 @@ $steps-tokens: defaults(
       &::after,
       &::before {
         background: var(--steps-inactive-color);
-      }
-
-      &::before {
-        color: var(--disabled-color);
       }
     }
   }
@@ -155,6 +134,10 @@ $steps-tokens: defaults(
   --steps-vertical-item-gap: #{$steps-vertical-item-gap};
   --steps-vertical-connector-gap: #{$steps-vertical-connector-gap};
   flex-direction: column;
+
+  &.steps-counter {
+    --steps-dot-offset: #{$steps-dot-offset-counter};
+  }
 
   .step-item {
     min-height: auto;

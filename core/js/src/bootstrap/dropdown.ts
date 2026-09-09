@@ -5,13 +5,12 @@
  * --------------------------------------------------------------------------
  */
 
-import { flip, offset, shift, type Placement } from '@floating-ui/dom'
+import * as Popper from '@popperjs/core'
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import FloatingUi, { type FloatingConfig } from './util/floating-ui'
-import { execute, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
+import { execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
 import type { ComponentConfig, ComponentConfigType } from './types'
 
 const NAME = 'dropdown'
@@ -62,7 +61,6 @@ const Default: ComponentConfig = {
   display: 'dynamic',
   offset: [0, 2],
   popperConfig: null,
-  positionConfig: null,
   reference: 'toggle',
 }
 
@@ -72,12 +70,11 @@ const DefaultType: ComponentConfigType = {
   display: 'string',
   offset: '(array|string|function)',
   popperConfig: '(null|object|function)',
-  positionConfig: '(null|object|function)',
   reference: '(string|element|object)',
 }
 
 class Dropdown extends BaseComponent {
-  _floatingUi: FloatingUi
+  _popper: Popper.Instance | null
   _parent: HTMLElement
   _menu: HTMLElement
   _inNavbar: boolean
@@ -85,7 +82,7 @@ class Dropdown extends BaseComponent {
   constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
     super(element, config)
 
-    this._floatingUi = new FloatingUi()
+    this._popper = null
     this._parent = this._element.parentNode as HTMLElement
     this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] || SelectorEngine.prev(this._element, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._parent)!
     this._inNavbar = this._detectNavbar()
@@ -122,7 +119,7 @@ class Dropdown extends BaseComponent {
       return
     }
 
-    this._createFloatingUi()
+    this._createPopper()
 
     if ('ontouchstart' in document.documentElement && !this._parent.closest(SELECTOR_NAVBAR_NAV)) {
       for (const element of [].concat(...(document.body.children as any))) {
@@ -151,13 +148,18 @@ class Dropdown extends BaseComponent {
   }
 
   dispose(): void {
-    this._floatingUi.stop()
+    if (this._popper) {
+      this._popper.destroy()
+    }
+
     super.dispose()
   }
 
   update(): void {
     this._inNavbar = this._detectNavbar()
-    this._floatingUi.update()
+    if (this._popper) {
+      this._popper.update()
+    }
   }
 
   _completeHide(relatedTarget: Record<string, any>): void {
@@ -172,7 +174,9 @@ class Dropdown extends BaseComponent {
       }
     }
 
-    this._floatingUi.stop()
+    if (this._popper) {
+      this._popper.destroy()
+    }
 
     this._menu.classList.remove(CLASS_NAME_SHOW)
     this._element.classList.remove(CLASS_NAME_SHOW)
@@ -191,15 +195,23 @@ class Dropdown extends BaseComponent {
     return config
   }
 
-  _createFloatingUi(): void {
-    // A static menu is placed by the stylesheet, so nothing has to be computed.
-    if (this._inNavbar || this._config.display === 'static') {
-      Manipulator.setDataAttribute(this._menu, 'popper', 'static')
-      return
+  _createPopper(): void {
+    if (typeof Popper === 'undefined') {
+      throw new TypeError("Bootstrap's dropdowns require Popper (https://popper.js.org/docs/v2/)")
     }
 
-    const referenceElement = FloatingUi.getReferenceElement(this._config.reference, this._element, this._parent)
-    this._floatingUi.calculate(referenceElement, this._menu, this._getFloatingConfig())
+    let referenceElement: HTMLElement | Popper.VirtualElement = this._element
+
+    if (this._config.reference === 'parent') {
+      referenceElement = this._parent
+    } else if (isElement(this._config.reference)) {
+      referenceElement = getElement(this._config.reference as HTMLElement | string)!
+    } else if (typeof this._config.reference === 'object') {
+      referenceElement = this._config.reference as Popper.VirtualElement
+    }
+
+    const popperConfig = this._getPopperConfig()
+    this._popper = Popper.createPopper(referenceElement, this._menu, popperConfig)
   }
 
   _isShown(): boolean {
@@ -238,18 +250,53 @@ class Dropdown extends BaseComponent {
     return this._element.closest(SELECTOR_NAVBAR) !== null
   }
 
-  _getFloatingConfig(): FloatingConfig {
-    const boundary = FloatingUi.getBoundary(this._config.boundary)
+  _getOffset(): number[] | ((popperData: any) => number[]) {
+    const { offset } = this._config
 
-    const defaultBsConfig: FloatingConfig = {
-      placement: this._getPlacement() as Placement,
-      middleware: [offset(FloatingUi.parseOffset(this._config.offset, this._element)), flip({ boundary }), shift({ boundary })],
+    if (typeof offset === 'string') {
+      return offset.split(',').map((value) => Number.parseInt(value, 10))
     }
 
-    const positionConfig = execute(this._config.positionConfig ?? this._config.popperConfig, [undefined, defaultBsConfig])
+    if (typeof offset === 'function') {
+      return (popperData: any) => (offset as Function)(popperData, this._element)
+    }
+
+    return offset as number[]
+  }
+
+  _getPopperConfig(): Partial<Popper.Options> {
+    const defaultBsPopperConfig: Partial<Popper.Options> = {
+      placement: this._getPlacement() as Popper.Placement,
+      modifiers: [
+        {
+          name: 'preventOverflow',
+          options: {
+            boundary: this._config.boundary,
+          },
+        },
+        {
+          name: 'offset',
+          options: {
+            offset: this._getOffset(),
+          },
+        },
+      ],
+    }
+
+    if (this._inNavbar || this._config.display === 'static') {
+      Manipulator.setDataAttribute(this._menu, 'popper', 'static')
+      defaultBsPopperConfig.modifiers = [
+        {
+          name: 'applyStyles',
+          enabled: false,
+        },
+      ]
+    }
+
+    const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
-      ...defaultBsConfig,
-      ...(typeof positionConfig === 'object' && positionConfig !== null ? positionConfig : {}),
+      ...defaultBsPopperConfig,
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {}),
     }
   }
 

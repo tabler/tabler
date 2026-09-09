@@ -34,7 +34,7 @@ const peopleList = people
 const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1))
 ---
 
-<DefaultLayout title="Task list" pageMenu="extra.tasks.list">
+<DefaultLayout title="Task List" pageMenu="extra.tasks.list">
   <div class="row">
     <div class="col-12">
       {
@@ -43,7 +43,7 @@ const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1)
             <div class="card-header">
               <CardTitle class="mb-0">{section.name}</CardTitle>
               <CardActions>
-                <Button text="New task" icon="plus" modalId="add-task" size="sm" />
+                <Button text="New Task" icon="plus" modalId="add-task" size="sm" />
               </CardActions>
             </div>
             <div class="table-responsive">
@@ -54,8 +54,8 @@ const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1)
                       <input type="checkbox" class="form-check-input align-middle table-selectable-check" aria-label="Select all tasks" />
                     </th>
                     <th class="w-50">Name</th>
-                    <th class="d-none d-xl-table-cell">Assigned to</th>
-                    <th class="d-none d-xxl-table-cell">Due date</th>
+                    <th class="d-none d-xl-table-cell">Assigned To</th>
+                    <th class="d-none d-xxl-table-cell">Due Date</th>
                     <th>Priority</th>
                     <th class="text-end">Actions</th>
                   </tr>
@@ -91,7 +91,7 @@ const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1)
                               {task['due-date']}
                             </Fragment>
                           ) : (
-                            <span class="text-secondary">—</span>
+                            <span class="text-muted">—</span>
                           )}
                         </td>
                         <td>{task.priority === 'High' ? <Badge text="High" color="red" light /> : task.priority === 'Medium' ? <Badge text="Medium" color="yellow" light /> : task.priority === 'Low' ? <Badge text="Low" color="blue" light /> : <Badge text="—" light />}</td>
@@ -122,7 +122,7 @@ const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1)
           <FormGroup label="Name" for="tasks-list-add-task-name">
             <input type="text" class="form-control" id="tasks-list-add-task-name" placeholder="Task name" />
           </FormGroup>
-          <FormGroup label="Assigned to" for="tasks-list-add-task-assigned">
+          <FormGroup label="Assigned To" for="tasks-list-add-task-assigned">
             <select class="form-select" id="tasks-list-add-task-assigned">
               <option value="">Select person</option>
               {selectedPeople.map((person) => <option value={person.id}>{person.full_name}</option>)}

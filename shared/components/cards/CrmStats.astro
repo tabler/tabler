@@ -6,7 +6,7 @@ import Trending from '@ui/Trending.astro'
 interface Props {
   color?: string
   icon?: string
-  /** light avatar background (bg-{color}-lt) instead of bg-{color} text-{color}-fg */
+  /** light avatar background (bg-{color}-lt) instead of bg-{color} text-white */
   lt?: boolean
   title?: string
   description?: string
@@ -19,7 +19,7 @@ interface Props {
 
 const { color, icon, lt, title = '1700', description = 'Users', changeValue, changeValueUnit, class: className } = Astro.props
 
-const avatarClass = [color ? (lt ? `bg-${color}-lt` : `bg-${color} text-${color}-fg`) : '', 'avatar', 'avatar-square']
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square']
 ---
 
 <div class:list={['card card-sm', className]}>

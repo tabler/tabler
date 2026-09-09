@@ -18,10 +18,8 @@ description: >-
 
 | Entry | Ships as | Holds |
 | --- | --- | --- |
-| `js/tabler.ts` | `tabler.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper exports |
-| `js/tabler-theme.ts` | `tabler-theme.js` (+ `.min`) | the colour-mode/theme switcher only |
-
-Both bundles are **ESM only** (Tabler 2.0, like Bootstrap v6): no UMD, no `window.tabler` global. `tabler.js` is loaded with `<script type="module">`; `tabler-theme.js` has no imports or exports once bundled, so it stays a classic blocking script.
+| `js/tabler.ts` | `tabler.js` / `.esm.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper namespace |
+| `js/tabler-theme.ts` | `tabler-theme.js` (+ variants) | the colour-mode/theme switcher only |
 
 `tabler-theme.js` is loaded right after `<body>` and **not deferred**, so the chosen theme applies before the first paint. It stays tiny on purpose (bundlewatch: 1 kB raw, 800 B minified) — do not add anything to it that is not needed before paint.
 
@@ -74,13 +72,13 @@ pnpm --filter @tabler/core test:js:coverage
 
 ## 6. Build and budget
 
-`vite` builds each entry as a library in `es` only (`BASE_NAME` selects the entry), then terser produces the `.min` variants with source maps. `core/dist/js/` holds 4 files + maps. Sizes are enforced:
+`vite` builds each entry as a library in `es` + `umd` (`BASE_NAME` selects the entry), then terser produces the `.min` variants with source maps. Sizes are enforced:
 
 | File | Limit |
 | --- | --- |
 | `dist/js/tabler.js` | 64 kB |
 | `dist/js/tabler.min.js` | 48 kB |
-| `dist/js/tabler-theme.js` | 1.3 kB |
+| `dist/js/tabler-theme.js` | 1 kB |
 
 ```bash
 pnpm --filter @tabler/core build

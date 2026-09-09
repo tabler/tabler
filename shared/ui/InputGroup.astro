@@ -60,13 +60,13 @@ const toggleScript = `<!-- BEGIN INPUT GROUP PASSWORD TOGGLE -->
   {append && <span class="input-group-text">{append}</span>}
   {
     appendButtons.length > 0 && (
-      <span class="input-group-text gap-2">
-        {appendButtons.map(({ icon, description, pressed }) => {
+      <span class="input-group-text">
+        {appendButtons.map(({ icon, description, pressed }, index) => {
           const isPasswordToggle = icon === 'eye' && type === 'password' && id
           return (
             <button
               type="button"
-              class="link-secondary input-group-link border-0 bg-transparent p-0"
+              class:list={['link-secondary input-group-link border-0 bg-transparent p-0', index > 0 && 'ms-2']}
               title={description}
               aria-label={description}
               aria-pressed={isPasswordToggle || pressed !== undefined ? ((pressed ?? false) ? 'true' : 'false') : undefined}

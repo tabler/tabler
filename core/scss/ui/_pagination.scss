@@ -1,28 +1,13 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// Tabler's additions on top of Bootstrap's `.pagination` tokens.
-// scss-docs-start pagination-css-vars
-$pagination-tokens: () !default;
-$pagination-tokens: defaults(
-  (
-    --pagination-gap: $pagination-gap,
-    --pagination-link-min-width: $pagination-link-min-width,
-    --page-text-padding-x: $page-text-padding-x,
-  ),
-  $pagination-tokens
-);
-// scss-docs-end pagination-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .pagination {
-  @include tokens($pagination-tokens);
   gap: var(--pagination-gap);
   margin: 0;
   line-height: var(--body-line-height);
   user-select: none;
+  --pagination-gap: #{$pagination-gap};
+  --pagination-link-min-width: #{$pagination-link-min-width};
+  --page-text-padding-x: #{$page-text-padding-x};
 
   @include media-print() {
     display: none;
@@ -77,7 +62,7 @@ $pagination-tokens: defaults(
   color: var(--body-color);
 
   .page-link:hover & {
-    color: var(--link-color);
+    color: $link-color;
   }
 
   .page-item.disabled & {
@@ -88,7 +73,7 @@ $pagination-tokens: defaults(
 .pagination-outline {
   --pagination-border-color: var(--border-color);
   --pagination-disabled-border-color: var(--border-color);
-  --pagination-border-width: var(--border-width);
+  --pagination-border-width: 1px;
 }
 
 .pagination-circle {

@@ -32,60 +32,24 @@ The module graph uses `@use` / `@forward`: a partial starts with `@use '../confi
 
 ## 2. The component pattern
 
-Every themeable value is a **custom property on the component's root class**, seeded
-from a Sass variable so users can retheme without recompiling. Declarations below
-read `var(--badge-*)`, never the Sass variable directly.
-
-The root-class tokens come from **one per-component map**, declared in the partial and
-rendered with `tokens()` (both helpers live in `core/scss/mixins/`, forwarded through
-`config`):
-
 ```scss
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design
-// scss-docs-start badge-css-vars
-$badge-tokens: () !default;
-$badge-tokens: defaults(
-  (
-    --badge-padding-x: $badge-padding-x,
-    --badge-font-size: $badge-font-size,
-    --badge-line-height: 1,
-  ),
-  $badge-tokens
-);
-// scss-docs-end badge-css-vars
-// stylelint-enable custom-property-no-missing-var-function
-
 .badge {
-  @include tokens($badge-tokens);
+  --badge-padding-x: #{$badge-padding-x};
+  --badge-font-size: #{$badge-font-size};
+  --badge-line-height: 1;
   display: inline-flex;
   padding: var(--badge-padding-y) var(--badge-padding-x);
   font-size: var(--badge-font-size);
+  @include border-radius(var(--badge-border-radius));
 }
 ```
 
-- `defaults($defaults, $overrides)` merges the two maps; `defaults()` and `tokens()` are
-  ported from Bootstrap v6. One mechanism now covers both override paths: compile-time
-  `@use 'tabler' with ($badge-tokens: (--badge-font-size: 1rem))` and runtime
-  `.badge { --badge-font-size: 1rem }`. Setting a key to `null` in the override removes the token.
-- Map values point at the existing `!default` Sass variables (`--badge-font-size: $badge-font-size`),
-  so `$badge-*` overrides keep working and the variables stay "used" for `lint:scss:vars`.
+- Every themeable value becomes a **custom property declared at the top of the component's root rule**, seeded from a Sass variable (`#{$badge-font-size}`). Declarations below read `var(--badge-*)`, never the Sass variable directly — that is what lets users retheme without recompiling.
 - A value with no reason to be overridden can be a literal (`--badge-line-height: 1`).
-- The `custom-property-no-missing-var-function` lint fires on the map keys when the same
-  name is also declared literally in a modifier ruleset in the file — wrap the map in the
-  `stylelint-disable`/`enable` pair shown above.
-- **Only the root class gets a map.** Modifiers still set custom properties inline
-  (`.badge-sm { --badge-font-size: … }`), and so do one-off tokens on sub-elements.
-- Keep map entries in the exact order the properties were emitted before, so the compiled
-  block stays byte-identical. Converting a component is output-neutral: prove it with a
-  rebuild diff (`html-diff` only covers markup).
+- Modifiers set custom properties rather than redeclaring properties: `.badge-sm { --badge-font-size: … }`.
 - Sass variables go to `_variables.scss` with `!default`, dark-mode counterparts to `_variables-dark.scss`.
-- Most `ui/` components now use this pattern (`$<component>-tokens`). A few small ones still
-  declare one or two custom properties inline at the top of the root rule
-  (`--icon-size: #{$icon-size};`) — that is fine; reach for a map once there is a cluster.
-- Keep the map value bare (`--card-bg: $card-bg`); only wrap it in `#{…}` when it is a
-  function call or an interpolated expression (`--alert-bg: #{color-transparent(…)}`).
 
 ## 3. Custom properties are authored bare
 

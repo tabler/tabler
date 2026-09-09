@@ -1,31 +1,17 @@
 @use '../config' as *;
 
-// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
-
-// scss-docs-start tag-css-vars
-$tag-tokens: () !default;
-$tag-tokens: defaults(
-  (
-    --tag-height: $tag-height,
-    --tag-padding-x: $tag-padding-x,
-    --tag-gap: $tag-gap,
-    --tag-close-margin-end: $tag-close-margin-end,
-    --tag-close-margin-start: $tag-close-margin-start,
-    --tag-close-size: $tag-close-size,
-    --tag-close-font-size: $tag-close-font-size,
-    --tag-addon-margin-start: $tag-addon-margin-start,
-    --tag-icon-margin-end: $tag-icon-margin-end,
-    --tag-icon-size: $tag-icon-size,
-    --tag-check-size: $tag-check-size,
-  ),
-  $tag-tokens
-);
-// scss-docs-end tag-css-vars
-
-// stylelint-enable custom-property-no-missing-var-function
-
 .tag {
-  @include tokens($tag-tokens);
+  --tag-height: #{$tag-height};
+  --tag-padding-x: #{$tag-padding-x};
+  --tag-gap: #{$tag-gap};
+  --tag-close-margin-end: #{$tag-close-margin-end};
+  --tag-close-margin-start: #{$tag-close-margin-start};
+  --tag-close-size: #{$tag-close-size};
+  --tag-close-font-size: #{$tag-close-font-size};
+  --tag-addon-margin-start: #{$tag-addon-margin-start};
+  --tag-icon-margin-end: #{$tag-icon-margin-end};
+  --tag-icon-size: #{$tag-icon-size};
+  --tag-check-size: #{$tag-check-size};
   display: inline-flex;
   gap: var(--tag-gap);
   align-items: center;
@@ -33,7 +19,7 @@ $tag-tokens: defaults(
   padding: 0 var(--tag-padding-x);
   background: var(--bg-surface);
 
-  border: var(--border-width) solid var(--border-color);
+  border: $border-width solid var(--border-color);
   box-shadow: var(--shadow-input);
   @include border-radius(var(--border-radius));
 

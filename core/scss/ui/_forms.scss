@@ -19,15 +19,10 @@ Form label
   &.required {
     &::after {
       margin-inline-start: var(--form-label-required-gap);
-      color: var(--danger);
+      color: $red;
       content: '*';
     }
   }
-}
-
-// A fieldset legend used as a label keeps the label size, not the reboot's 1.5rem.
-legend.form-label {
-  font-size: inherit;
 }
 
 .form-label-description {
@@ -98,23 +93,23 @@ Form control
 }
 
 .form-control-light {
-  background-color: var(--bg-surface-secondary);
+  background-color: var(--gray-100);
   border-color: transparent;
 }
 
 .form-control-dark {
-  color: var(--white);
-  background-color: color-transparent(var(--black), 0.1);
+  color: $white;
+  background-color: rgba($black, 0.1);
   border-color: transparent;
 
   &:focus {
-    background-color: color-transparent(var(--black), 0.1);
-    border-color: color-transparent(var(--white), 0.24);
+    background-color: rgba($black, 0.1);
+    border-color: rgba($white, 0.24);
     box-shadow: none;
   }
 
   &::placeholder {
-    color: color-transparent(var(--white), 0.6);
+    color: rgba($white, 0.6);
   }
 }
 
@@ -171,19 +166,14 @@ Form help
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  background: var(--bg-surface-secondary);
+  background: var(--gray-100);
   @include border-radius(var(--border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
 
-  &:hover {
-    color: var(--body-color);
-    background: $hover-bg;
-  }
-
-  // Popover open
+  &:hover,
   &[aria-describedby] {
-    color: var(--primary);
-    background: var(--active-bg);
+    color: $white;
+    background: var(--primary);
   }
 }
 

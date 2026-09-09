@@ -5,11 +5,10 @@
  * --------------------------------------------------------------------------
  */
 
-import { arrow, autoPlacement, flip, offset, shift, type Middleware, type Placement } from '@floating-ui/dom'
+import * as Popper from '@popperjs/core'
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
-import FloatingUi, { type FloatingConfig } from './util/floating-ui'
 import { execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
 import { DefaultAllowlist } from './util/sanitizer'
 import TemplateFactory from './util/template-factory'
@@ -27,8 +26,6 @@ const CLASS_NAME_SHOW = 'show'
 
 const SELECTOR_TOOLTIP_INNER = '.tooltip-inner'
 const SELECTOR_MODAL = `.${CLASS_NAME_MODAL}`
-
-const PLACEMENT_AUTO = 'auto'
 
 const EVENT_MODAL_HIDE = 'hide.bs.modal'
 
@@ -76,7 +73,6 @@ const Default: ComponentConfig = {
   offset: [0, 6],
   placement: 'top',
   popperConfig: null,
-  positionConfig: null,
   sanitize: true,
   sanitizeFn: null,
   selector: false,
@@ -97,7 +93,6 @@ const DefaultType: ComponentConfigType = {
   offset: '(array|string|function)',
   placement: '(string|function)',
   popperConfig: '(null|object|function)',
-  positionConfig: '(null|object|function)',
   sanitize: 'boolean',
   sanitizeFn: '(null|function)',
   selector: '(string|boolean)',
@@ -115,20 +110,24 @@ class Tooltip extends BaseComponent {
   _timeout: ReturnType<typeof setTimeout> | number
   _isHovered: boolean | null
   _activeTrigger: Record<string, boolean>
-  _floatingUi: FloatingUi
+  _popper: Popper.Instance | null
   _templateFactory: TemplateFactory | null
   _newContent: Record<string, any> | null
   tip: HTMLElement | null
   _hideModalHandler: (() => void) | null
 
   constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+    if (typeof Popper === 'undefined') {
+      throw new TypeError("Bootstrap's tooltips require Popper (https://popper.js.org/docs/v2/)")
+    }
+
     super(element, config)
 
     this._isEnabled = true
     this._timeout = 0
     this._isHovered = null
     this._activeTrigger = {}
-    this._floatingUi = new FloatingUi()
+    this._popper = null
     this._templateFactory = null
     this._newContent = null
 
@@ -188,7 +187,7 @@ class Tooltip extends BaseComponent {
       this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title') || '')
     }
 
-    this._disposeFloatingUi()
+    this._disposePopper()
     super.dispose()
   }
 
@@ -209,7 +208,7 @@ class Tooltip extends BaseComponent {
       return
     }
 
-    this._disposeFloatingUi()
+    this._disposePopper()
 
     const tip = this._getTipElement()
 
@@ -222,7 +221,7 @@ class Tooltip extends BaseComponent {
       EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_INSERTED))
     }
 
-    this._createFloatingUi(tip!)
+    this._popper = this._createPopper(tip!)
 
     tip!.classList.add(CLASS_NAME_SHOW)
 
@@ -275,7 +274,7 @@ class Tooltip extends BaseComponent {
       }
 
       if (!this._isHovered) {
-        this._disposeFloatingUi()
+        this._disposePopper()
       }
 
       this._element.removeAttribute('aria-describedby')
@@ -286,7 +285,9 @@ class Tooltip extends BaseComponent {
   }
 
   update(): void {
-    this._floatingUi.update()
+    if (this._popper) {
+      this._popper.update()
+    }
   }
 
   _isWithContent(): boolean {
@@ -325,7 +326,7 @@ class Tooltip extends BaseComponent {
   setContent(content: Record<string, any>): void {
     this._newContent = content
     if (this._isShown()) {
-      this._disposeFloatingUi()
+      this._disposePopper()
       this.show()
     }
   }
@@ -366,48 +367,73 @@ class Tooltip extends BaseComponent {
     return this.tip !== null && this.tip.classList.contains(CLASS_NAME_SHOW)
   }
 
-  _createFloatingUi(tip: HTMLElement): void {
+  _createPopper(tip: HTMLElement): Popper.Instance {
     const placement = execute(this._config.placement, [this, tip, this._element]) as string
     const attachment = AttachmentMap[placement.toUpperCase()]
-    const arrowElement = this._getArrowElement(tip)
-
-    this._floatingUi.calculate(this._element, tip, this._getFloatingConfig(attachment, tip), arrowElement)
+    return Popper.createPopper(this._element, tip, this._getPopperConfig(attachment))
   }
 
-  _getArrowElement(tip: HTMLElement): HTMLElement | null {
-    return tip.querySelector<HTMLElement>(`.${(this.constructor as typeof Tooltip).NAME}-arrow`)
+  _getOffset(): number[] | ((popperData: any) => number[]) {
+    const { offset } = this._config
+
+    if (typeof offset === 'string') {
+      return offset.split(',').map((value: string) => Number.parseInt(value, 10))
+    }
+
+    if (typeof offset === 'function') {
+      return (popperData: any) => (offset as Function)(popperData, this._element)
+    }
+
+    return offset as number[]
   }
 
   _resolvePossibleFunction(arg: any): any {
     return execute(arg, [this._element, this._element])
   }
 
-  _getFloatingConfig(attachment: string, tip: HTMLElement | null = null): FloatingConfig {
-    const boundary = FloatingUi.getBoundary(this._config.boundary)
-    const middleware: Middleware[] = [offset(FloatingUi.parseOffset(this._config.offset, this._element))]
-
-    // Popper resolved `auto` inside its flip modifier, Floating UI has a
-    // dedicated one and the two must not be combined.
-    middleware.push(attachment === PLACEMENT_AUTO ? autoPlacement({ boundary }) : flip({ boundary, fallbackPlacements: this._config.fallbackPlacements }), shift({ boundary }))
-
-    const arrowElement = tip ? this._getArrowElement(tip) : null
-
-    if (arrowElement) {
-      // The attribute has to land before the arrow is measured: the arrow swaps
-      // its width and height between the vertical and horizontal placements.
-      middleware.push(FloatingUi.setPlacement(tip!), arrow({ element: arrowElement }))
+  _getPopperConfig(attachment: string): Partial<Popper.Options> {
+    const defaultBsPopperConfig: Partial<Popper.Options> = {
+      placement: attachment as Popper.Placement,
+      modifiers: [
+        {
+          name: 'flip',
+          options: {
+            fallbackPlacements: this._config.fallbackPlacements,
+          },
+        },
+        {
+          name: 'offset',
+          options: {
+            offset: this._getOffset(),
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            boundary: this._config.boundary,
+          },
+        },
+        {
+          name: 'arrow',
+          options: {
+            element: `.${(this.constructor as typeof Tooltip).NAME}-arrow`,
+          },
+        },
+        {
+          name: 'preSetPlacement',
+          enabled: true,
+          phase: 'beforeMain',
+          fn: (data: any) => {
+            this._getTipElement()!.setAttribute('data-popper-placement', data.state.placement)
+          },
+        },
+      ],
     }
 
-    const defaultBsConfig: FloatingConfig = {
-      // `auto` is not a Floating UI placement, `autoPlacement()` resolves it.
-      placement: attachment === PLACEMENT_AUTO ? undefined : (attachment as Placement),
-      middleware,
-    }
-
-    const positionConfig = execute(this._config.positionConfig ?? this._config.popperConfig, [undefined, defaultBsConfig])
+    const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
-      ...defaultBsConfig,
-      ...(typeof positionConfig === 'object' && positionConfig !== null ? positionConfig : {}),
+      ...defaultBsPopperConfig,
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {}),
     }
   }
 
@@ -556,8 +582,11 @@ class Tooltip extends BaseComponent {
     return config
   }
 
-  _disposeFloatingUi(): void {
-    this._floatingUi.stop()
+  _disposePopper(): void {
+    if (this._popper) {
+      this._popper.destroy()
+      this._popper = null
+    }
 
     if (this.tip) {
       this.tip.remove()

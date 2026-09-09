@@ -18,9 +18,11 @@ const entry = `${entryPath}.ts`
 export default createViteConfig({
   entry: entry,
   name: libraryName,
-  // ESM only (Tabler 2.0, like Bootstrap v6): one artifact per entry, no `.esm` suffix.
-  fileName: () => `${baseName}.js`,
-  formats: ['es'],
+  fileName: (format) => {
+    const esmSuffix = format === 'es' ? '.esm' : ''
+    return `${baseName}${esmSuffix}.js`
+  },
+  formats: ['es', 'umd'],
   outDir: path.resolve(__dirname, '../dist/js'),
   banner: bannerText,
   minify: false,

@@ -32,7 +32,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="secondary" />
+                <Icon name="star" color="muted" />
               </a>
             </div>
           </div>
@@ -64,7 +64,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="secondary" />
+                <Icon name="star" color="muted" />
               </a>
             </div>
           </div>
@@ -80,7 +80,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="secondary" />
+                <Icon name="star" color="muted" />
               </a>
             </div>
           </div>
@@ -102,9 +102,7 @@ import CaptureScript from '../CaptureScript.astro'
     for (const close of document.querySelectorAll('[data-navbar-notifications-close]')) {
       close.addEventListener('click', () => {
         const toggle = close.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]')
-        // ESM-only build: no window.tabler global. Close via Bootstrap's own
-        // data-API — clicking an open toggle dismisses the dropdown.
-        if (toggle && toggle.getAttribute('aria-expanded') === 'true') toggle.click()
+        window.tabler.bootstrap.Dropdown.getOrCreateInstance(toggle).hide()
       })
     }
   </script>

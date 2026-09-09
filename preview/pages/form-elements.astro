@@ -109,14 +109,14 @@ const rows = [
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Node.js version</CardTitle>
+          <CardTitle>Node.js Version</CardTitle>
           <CardSubtitle> The version of Node.js that is used in the Build Step and for Serverless Functions. A new Deployment is required for your changes to take effect. </CardSubtitle>
           <select class="form-select">
             <option>14.x</option>
             <option>12.x</option>
           </select>
         </CardBody>
-        <CardFooter>Learn more about <a href="#">Node.js version</a></CardFooter>
+        <CardFooter>Learn more about <a href="#">Node.js Version</a></CardFooter>
       </Card>
     </div>
 
@@ -134,14 +134,14 @@ const rows = [
               <FormGroup label="ZIP Code"><InputMask mask="00000-000" visible /></FormGroup>
               <FormGroup label="Money"><InputMask mask="000.000.000.000.000,00" visible reverse /></FormGroup>
               <FormGroup label="Telephone"><InputMask mask="0000-0000" visible /></FormGroup>
-              <FormGroup label="Telephone with area code"><InputMask mask="(00) 0000-0000" visible /></FormGroup>
-              <FormGroup label="IP address"><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></FormGroup>
+              <FormGroup label="Telephone with Code Area"><InputMask mask="(00) 0000-0000" visible /></FormGroup>
+              <FormGroup label="IP Address"><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></FormGroup>
             </CardBody>
           </Card>
         </div>
         <div class="col-12 col-lg-6">
           <Card as="form" class="h-100">
-            <CardHeader title="My profile" />
+            <CardHeader title="My Profile" />
             <CardBody>
               <div class="mb-3">
                 <div class="row">
@@ -174,82 +174,82 @@ const rows = [
         <div class="col-12 col-lg-6">
           <Card as="form">
             <CardBody>
-              <CardTitle>Edit profile</CardTitle>
+              <CardTitle>Edit Profile</CardTitle>
               <div class="row row-cards">
                 <div class="col-md-5"><FormGroup label="Company"><input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc." /></FormGroup></div>
                 <div class="col-sm-6 col-md-3"><FormGroup label="Username"><input type="text" class="form-control" placeholder="Username" value="michael23" /></FormGroup></div>
                 <div class="col-sm-6 col-md-4"><FormGroup label="Email address"><input type="email" class="form-control" placeholder="Email" /></FormGroup></div>
-                <div class="col-sm-6 col-md-6"><FormGroup label="First name"><input type="text" class="form-control" placeholder="Company" value="Chet" /></FormGroup></div>
-                <div class="col-sm-6 col-md-6"><FormGroup label="Last name"><input type="text" class="form-control" placeholder="Last name" value="Faker" /></FormGroup></div>
-                <div class="col-md-12"><FormGroup label="Address"><input type="text" class="form-control" placeholder="Home address" value="Melbourne, Australia" /></FormGroup></div>
+                <div class="col-sm-6 col-md-6"><FormGroup label="First Name"><input type="text" class="form-control" placeholder="Company" value="Chet" /></FormGroup></div>
+                <div class="col-sm-6 col-md-6"><FormGroup label="Last Name"><input type="text" class="form-control" placeholder="Last Name" value="Faker" /></FormGroup></div>
+                <div class="col-md-12"><FormGroup label="Address"><input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia" /></FormGroup></div>
                 <div class="col-sm-6 col-md-4"><FormGroup label="City"><input type="text" class="form-control" placeholder="City" value="Melbourne" /></FormGroup></div>
-                <div class="col-sm-6 col-md-3"><FormGroup label="Postal code"><input type="text" class="form-control" placeholder="ZIP code" /></FormGroup></div>
+                <div class="col-sm-6 col-md-3"><FormGroup label="Postal Code"><input type="text" class="form-control" placeholder="ZIP Code" /></FormGroup></div>
                 <div class="col-md-5"><FormGroup label="Country"><select class="form-control form-select"><option value="">Germany</option></select></FormGroup></div>
                 <div class="col-md-12">
-                  <FormGroup label="About me" class="mb-0">
+                  <FormGroup label="About Me" class="mb-3 mb-0">
                     <textarea rows="5" class="form-control" placeholder="Here can be your description">Oh so, your weak rhyme You doubt I'll bother, reading into it I'll probably won't, left to my own devices But that's the difference in our opinions.</textarea>
                   </FormGroup>
                 </div>
               </div>
             </CardBody>
-            <CardFooter class="text-end"><button type="submit" class="btn btn-primary">Update profile</button></CardFooter>
+            <CardFooter class="text-end"><button type="submit" class="btn btn-primary">Update Profile</button></CardFooter>
           </Card>
         </div>
         <div class="col-12 col-lg-6">
           <Card class="h-100">
-            <CardHeader title="HTTP request" />
+            <CardHeader title="HTTP Request" />
             <CardBody>
               <div class="row row-cards">
-                <FormGroup label="Method" required class="col-sm-4 col-md-2">
+                <FormGroup label="Method" required class="mb-3 col-sm-4 col-md-2">
                   <select class="form-select">
                     {httpMethods.map((m) => <option value={m}>{m}</option>)}
                   </select>
                 </FormGroup>
-                <FormGroup label="URL" required class="col-sm-8 col-md-10">
+                <FormGroup label="URL" required class="mb-3 col-sm-8 col-md-10">
                   <input name="url" type="text" class="form-control" value="https://content.googleapis.com/discovery/v1/apis/surveys/v2/rest" />
                 </FormGroup>
               </div>
               <div class="form-label">Assertions</div>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr><th>Source</th><th>Property</th><th>Comparison</th><th>Target</th></tr>
+                  </thead>
+                  <tbody>
+                    {
+                      rows.map((row) => (
+                        <tr>
+                          <td>
+                            <select class="form-select">
+                              {sources.map(([v, l]) => (
+                                <option value={v} selected={v === row.source || undefined}>
+                                  {l}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" value={row.prop || undefined} />
+                          </td>
+                          <td>
+                            <select class="form-select">
+                              {comparisons.map(([v, l]) => (
+                                <option value={v} selected={v === row.comparison || undefined}>
+                                  {l}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <input type="text" class="form-control" value={row.target} />
+                          </td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              </div>
             </CardBody>
-            <div class="table-responsive">
-              <table class="table card-table">
-                <thead>
-                  <tr><th>Source</th><th>Property</th><th>Comparison</th><th>Target</th></tr>
-                </thead>
-                <tbody>
-                  {
-                    rows.map((row) => (
-                      <tr>
-                        <td>
-                          <select class="form-select">
-                            {sources.map(([v, l]) => (
-                              <option value={v} selected={v === row.source || undefined}>
-                                {l}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" value={row.prop || undefined} />
-                        </td>
-                        <td>
-                          <select class="form-select">
-                            {comparisons.map(([v, l]) => (
-                              <option value={v} selected={v === row.comparison || undefined}>
-                                {l}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" value={row.target} />
-                        </td>
-                      </tr>
-                    ))
-                  }
-                </tbody>
-              </table>
-            </div>
             <CardFooter class="text-end"><button type="submit" class="btn btn-primary">Make request</button></CardFooter>
           </Card>
         </div>
