@@ -1,5 +1,13 @@
 # @tabler/docs
 
+## 1.5.1
+
+### Patch Changes
+
+- ac001f8: Updated `astro` to 7.3.1 and `@astrojs/vercel` to 11.0.10, and stopped installing optional peers such as `next`.
+- 8fc079d: Added the color palette, flags, payments and social icons tables to the docs `.md` mirrors via a new `MarkdownSource` component.
+- 57a29eb: Fixed the docs "On this page" list running past the viewport; the sticky rail now scrolls on its own.
+
 ## 1.5.0
 
 ### Minor Changes
