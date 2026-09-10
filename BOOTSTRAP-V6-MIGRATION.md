@@ -420,8 +420,16 @@ Kept late because it is the most disruptive phase and the only one that breaks t
   well, and the tracked total is about five times smaller.
 - **Sass side done** (`breakpoint-prefix()`, all call sites, the compatibility plugin). `breakpoint-infix()`
   survives as a deprecated alias so custom Sass written against 1.x still compiles.
-- Print keeps its 1.x middle position (`.d-print-none`) until question 18 is settled, so
-  `generate-utility()` now takes a `$prefix` (front) and an `$infix` (middle) separately.
+- **Print and state variants moved to prefixes too** (question 18, settled 2026-09-10):
+  `.d-print-none` → `.print:d-none` (11 classes), `.link-opacity-50-hover` →
+  `.hover:link-opacity-50` (14). `generate-utility()` takes one `$prefix` again; the middle position
+  is gone entirely.
+- **`dark:` is not adopted**, and not for scheduling reasons. v6 emits its `dark:` utilities inside
+  `@media (prefers-color-scheme: dark)`, while our colour mode is attribute-driven
+  (`$color-mode-type: data` → `[data-bs-theme='dark']`). A media-query variant would ignore the theme
+  toggle: someone who picks light on a dark OS would still get every `dark:` utility. Emitting them
+  under the attribute instead would work, but we ship no dark utilities today, so that is a new
+  feature rather than a rename — its own task, if it is wanted at all.
 - The prefix sits at the **front of the whole class**, not in the middle, so the 19
   `breakpoint-infix()` call sites in 13 files cannot be sed'ed: `.col#{$infix}-6` becomes
   `.#{$prefix}col-6`. The four nested `&#{$infix}` blocks (`ui/_tables.scss`, `layout/_navbar.scss`
@@ -549,6 +557,10 @@ Decided:
     it now reads like the opposite of `md:table-mobile`. Making the two read alike would change what
     existing markup does, so it is a documentation problem, not a behavioural one. Revisit only with
     the container-query rework of `.navbar-expand` and `.table-responsive`.
+18. `print:` and the state prefixes are taken as well (decided 2026-09-10); `dark:` is not. v6's
+    `dark:` lives in `@media (prefers-color-scheme: dark)` and our colour mode is attribute-driven,
+    so it would ignore the theme toggle. An attribute-scoped equivalent is possible but would be a
+    new feature — we ship no dark utilities today — so it is out of phase 8.
 
 Open:
 
@@ -563,9 +575,6 @@ Open:
 12. Datepicker library: upstream picked Vanilla Calendar Pro; do we follow?
 13. `data-bs-*` → `data-tblr-*`: does 2.0 switch docs and markup and drop `data-bs-*`, or only keep
     the alias?
-18. Does 2.0 also take the other v6 prefixes — `print:`, `dark:` and the state variants
-    (`hover:link-10`)? They share the same mechanism in `generate-utility()`. `dark:` has to agree
-    with our `_dark.scss` and `light-dark()` approach first.
 
 ## 6. Task board
 
@@ -595,7 +604,7 @@ PR #2966 is parked.
 | #2975 | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
 | ~~—~~ done | 8 | ~~`breakpoint-prefix()` and every call site moved to a leading prefix, the four nested `&#{$infix}` blocks unrolled, `breakpoint-infix()` removed, print split onto its own `$infix` argument, plus the compatibility plugin and its frozen class list~~ | `core/scss/mixins/**`, `bootstrap/**`, `ui/_tables.scss`, `layout/_navbar.scss`, `helpers/_helpers.scss`, `.build/postcss-legacy-responsive.ts`, `.build/legacy-responsive-classes.txt` | per-class behaviour comparison over every bundle, SCSS unit tests | L |
 | ~~—~~ done | 8 | ~~Codemod over our own markup (923 names in 157 files) plus the agent rules and the policy reviewer, which stated the opposite naming rule~~ | `.build/codemod-responsive-prefix.ts`, `preview/**`, `docs/**`, `shared/**`, `core/js/tests/**`, `screenshots/**`, `.agents/**` | inverse-rename equality against the pre-codemod tree, `check-markup-classes` | M |
-| — | 8 | Hand-written `classnames` front matter and the grid/utility prose, which no codemod reaches | `docs/content/**` | docs build, link gate | M |
+| ~~—~~ done | 8 | ~~`classnames` front matter and prose on the dropdown, list-group, modal, offcanvas, table and llms pages, which no codemod reaches~~ | `docs/content/**` | docs build, `check-markup-classes` | M |
 | #2971 | 6 | Framework icons drawn with `mask-image` + `currentcolor`; close button, toggler and breadcrumb are already done, so the scope is the form-control, select, carousel and validation SVGs and dropping their `-dark` variants; `.btn-close-white` kept as an empty alias | `core/scss/bootstrap/forms/**`, `bootstrap/_navbar.scss`, `_carousel.scss`, `ui/forms/**`, `ui/_close.scss` | visual review light/dark, `check:css-vars` | S–M |
 | — | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |
 | — | 2 | Colours on `oklch()` + `color-mix(in lab)`, `--theme-bg/fg/border/contrast` and `.theme-*`, remove the 52 `--tblr-*-rgb` sites; `.btn-primary` etc. keep emitting via the theme tokens | `_colors.scss`, `_theme.scss`, `_props.scss`, `core/scss/ui/**` | contrast gate, dark mode screenshots, hand-reviewed `html-diff` | L |
@@ -623,5 +632,4 @@ and should go in before the codemod, so the gate can police the sweep.
 | 11 forms validation and `_form-check` split | phase 7 PRs |
 | 12 datepicker library | new component or nothing |
 | 13 `data-tblr-*` switch | docs and markup sweep, or nothing |
-| 18 `print:` / `dark:` / state prefixes | additional utility variants, or nothing |
 
