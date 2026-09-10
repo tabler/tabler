@@ -25,7 +25,7 @@ const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
 {file === 'uptime' && <HeaderUptime />}
 {
 	!file && title && (
-		<div class={`page-header${className ? ` ${className}` : ''} d-print-none`}>
+		<div class={`page-header${className ? ` ${className}` : ''} print:d-none`}>
 			<div class="xl:container">
 				<div class="row g-2 align-items-center">
 					<div class="col">
@@ -45,7 +45,7 @@ const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
 					{actionsSlot && (
 						<Fragment>
 							<!-- Page title actions -->
-							<div class="col-auto ms-auto d-print-none">
+							<div class="col-auto ms-auto print:d-none">
 								<Fragment set:html={actionsSlot} />
 							</div>
 						</Fragment>
