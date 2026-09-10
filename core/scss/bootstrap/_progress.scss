@@ -12,60 +12,62 @@
 }
 // scss-docs-end progress-keyframes
 
-.progress,
-.progress-stacked {
-  // scss-docs-start progress-css-vars
-  --progress-height: #{$progress-height};
-  @include rfs($progress-font-size, --progress-font-size);
-  --progress-bg: #{$progress-bg};
-  --progress-border-radius: #{$progress-border-radius};
-  --progress-box-shadow: #{$progress-box-shadow};
-  --progress-bar-color: #{$progress-bar-color};
-  --progress-bar-bg: #{$progress-bar-bg};
-  --progress-bar-transition: #{$progress-bar-transition};
-  // scss-docs-end progress-css-vars
+@layer components {
+  .progress,
+  .progress-stacked {
+    // scss-docs-start progress-css-vars
+    --progress-height: #{$progress-height};
+    @include rfs($progress-font-size, --progress-font-size);
+    --progress-bg: #{$progress-bg};
+    --progress-border-radius: #{$progress-border-radius};
+    --progress-box-shadow: #{$progress-box-shadow};
+    --progress-bar-color: #{$progress-bar-color};
+    --progress-bar-bg: #{$progress-bar-bg};
+    --progress-bar-transition: #{$progress-bar-transition};
+    // scss-docs-end progress-css-vars
 
-  display: flex;
-  height: var(--progress-height);
-  overflow: hidden; // force rounded corners by cropping it
-  @include font-size(var(--progress-font-size));
-  background-color: var(--progress-bg);
-  @include border-radius(var(--progress-border-radius));
-  @include box-shadow(var(--progress-box-shadow));
-}
+    display: flex;
+    height: var(--progress-height);
+    overflow: hidden; // force rounded corners by cropping it
+    @include font-size(var(--progress-font-size));
+    background-color: var(--progress-bg);
+    @include border-radius(var(--progress-border-radius));
+    @include box-shadow(var(--progress-box-shadow));
+  }
 
-.progress-bar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-  color: var(--progress-bar-color);
-  text-align: center;
-  white-space: nowrap;
-  background-color: var(--progress-bar-bg);
-  @include transition(var(--progress-bar-transition));
-}
+  .progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--progress-bar-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--progress-bar-bg);
+    @include transition(var(--progress-bar-transition));
+  }
 
-.progress-bar-striped {
-  @include gradient-striped();
-  background-size: var(--progress-height) var(--progress-height);
-}
+  .progress-bar-striped {
+    @include gradient-striped();
+    background-size: var(--progress-height) var(--progress-height);
+  }
 
-.progress-stacked > .progress {
-  overflow: visible;
-}
+  .progress-stacked > .progress {
+    overflow: visible;
+  }
 
-.progress-stacked > .progress > .progress-bar {
-  width: 100%;
-}
+  .progress-stacked > .progress > .progress-bar {
+    width: 100%;
+  }
 
-@if $enable-transitions {
-  .progress-bar-animated {
-    animation: $progress-bar-animation-timing progress-bar-stripes;
+  @if $enable-transitions {
+    .progress-bar-animated {
+      animation: $progress-bar-animation-timing progress-bar-stripes;
 
-    @if $enable-reduced-motion {
-      @media (prefers-reduced-motion: reduce) {
-        animation: none;
+      @if $enable-reduced-motion {
+        @media (prefers-reduced-motion: reduce) {
+          animation: none;
+        }
       }
     }
   }

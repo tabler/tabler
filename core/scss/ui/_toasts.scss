@@ -1,27 +1,29 @@
 @use 'sass:map';
 @use '../config' as *;
 
-.toast {
-  border: $alert-border-width var(--border-style) $alert-border-color;
+@layer components {
+  .toast {
+    border: $alert-border-width var(--border-style) $alert-border-color;
 
-  .toast-header {
-    user-select: none;
-  }
+    .toast-header {
+      user-select: none;
+    }
 
-  button[data-bs-dismiss='toast'],
-  button[data-dismiss='toast'] {
-    &:focus:not(:focus-visible) {
-      outline: none;
+    button[data-bs-dismiss='toast'],
+    button[data-dismiss='toast'] {
+      &:focus:not(:focus-visible) {
+        outline: none;
+      }
+    }
+
+    @include media-print() {
+      display: none;
     }
   }
 
-  @include media-print() {
-    display: none;
-  }
-}
-
-@each $state in map.keys($theme-colors) {
-  .toast-#{$state} {
-    --toast-color: var(--#{$state});
+  @each $state in map.keys($theme-colors) {
+    .toast-#{$state} {
+      --toast-color: var(--#{$state});
+    }
   }
 }

@@ -52,6 +52,18 @@ $input-border-width: 1px;
       background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
     }
   }
+
+  // The same preset also sets `border-color: var(--bs-form-*-border-color)`,
+  // undefined outside Bootstrap. It used to lose to `.form-select.is-valid` on
+  // source order; now that rule is in the `components` layer and the preset is
+  // not, so the validated border has to be handed back here.
+  &.form-select.is-valid {
+    border-color: var(--form-valid-border-color);
+  }
+
+  &.form-select.is-invalid {
+    border-color: var(--form-invalid-border-color);
+  }
 }
 
 // Every declaration below is `!important`: the bootstrap5 preset CSS targets

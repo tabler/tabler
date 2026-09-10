@@ -3,29 +3,31 @@
 
 @use '../config' as *;
 
-.payment {
-  display: inline-block;
-  height: config.$avatar-size;
-  aspect-ratio: 1.66666;
-  font-style: normal;
-  vertical-align: bottom;
-  background: no-repeat center/100% 100%;
-  box-shadow: var(--shadow-border);
-  @include config.border-radius(var(--border-radius));
-}
-
-@each $payment in config.$payment-providers {
-  .payment-provider-#{$payment} {
-    background-image: url('#{config.$assets-base}/img/payments/#{$payment}.svg');
+@layer components {
+  .payment {
+    display: inline-block;
+    height: config.$avatar-size;
+    aspect-ratio: 1.66666;
+    font-style: normal;
+    vertical-align: bottom;
+    background: no-repeat center/100% 100%;
+    box-shadow: var(--shadow-border);
+    @include config.border-radius(var(--border-radius));
   }
 
-  .payment-provider-#{$payment}-dark {
-    background-image: url('#{config.$assets-base}/img/payments/#{$payment}-dark.svg');
-  }
-}
+  @each $payment in config.$payment-providers {
+    .payment-provider-#{$payment} {
+      background-image: url('#{config.$assets-base}/img/payments/#{$payment}.svg');
+    }
 
-@each $payment-size, $size in config.$payment-sizes {
-  .payment-#{$payment-size} {
-    height: map.get($size, size);
+    .payment-provider-#{$payment}-dark {
+      background-image: url('#{config.$assets-base}/img/payments/#{$payment}-dark.svg');
+    }
+  }
+
+  @each $payment-size, $size in config.$payment-sizes {
+    .payment-#{$payment-size} {
+      height: map.get($size, size);
+    }
   }
 }

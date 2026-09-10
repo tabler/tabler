@@ -1,7 +1,16 @@
 @use '../config' as *;
 
+// noUiSlider draws its handle and connect bar with `currentColor`. That seed
+// color is the one declaration here a project is meant to override with a
+// `.text-*` utility, so it goes in a layer — the rest of the file stays
+// unlayered to keep beating the widget's own stylesheet, which sets no color.
+@layer components {
+  .noUi-target {
+    color: $form-range-thumb-bg;
+  }
+}
+
 .noUi-target {
-  color: $form-range-thumb-bg;
   background: none;
   border: 0;
   box-shadow: none;

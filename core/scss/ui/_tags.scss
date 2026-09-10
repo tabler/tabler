@@ -22,68 +22,70 @@ $tag-tokens: defaults(
 );
 // scss-docs-end tag-css-vars
 
-// stylelint-enable custom-property-no-missing-var-function
+@layer components {
+  // stylelint-enable custom-property-no-missing-var-function
 
-.tag {
-  @include tokens($tag-tokens);
-  display: inline-flex;
-  gap: var(--tag-gap);
-  align-items: center;
-  height: var(--tag-height);
-  padding: 0 var(--tag-padding-x);
-  background: var(--bg-surface);
+  .tag {
+    @include tokens($tag-tokens);
+    display: inline-flex;
+    gap: var(--tag-gap);
+    align-items: center;
+    height: var(--tag-height);
+    padding: 0 var(--tag-padding-x);
+    background: var(--bg-surface);
 
-  border: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-input);
-  @include border-radius(var(--border-radius));
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: var(--shadow-input);
+    @include border-radius(var(--border-radius));
 
-  .btn-close {
-    width: var(--tag-close-size);
-    height: var(--tag-close-size);
-    padding: 0;
-    margin-inline-start: var(--tag-close-margin-start);
-    margin-inline-end: var(--tag-close-margin-end);
-    font-size: var(--tag-close-font-size);
+    .btn-close {
+      width: var(--tag-close-size);
+      height: var(--tag-close-size);
+      padding: 0;
+      margin-inline-start: var(--tag-close-margin-start);
+      margin-inline-end: var(--tag-close-margin-end);
+      font-size: var(--tag-close-font-size);
+    }
   }
-}
 
-.tag-badge {
-  --tag-badge-padding-y: #{$tag-badge-padding-y};
-  --tag-badge-padding-x: #{$tag-badge-padding-x};
-  --tag-badge-margin-end: #{$tag-badge-margin-end};
+  .tag-badge {
+    --tag-badge-padding-y: #{$tag-badge-padding-y};
+    --tag-badge-padding-x: #{$tag-badge-padding-x};
+    --tag-badge-margin-end: #{$tag-badge-margin-end};
 
-  --badge-font-size: #{$h6-font-size};
-  --badge-padding-x: var(--tag-badge-padding-x);
-  --badge-padding-y: var(--tag-badge-padding-y);
-  margin-inline-end: var(--tag-badge-margin-end);
-}
+    --badge-font-size: #{$h6-font-size};
+    --badge-padding-x: var(--tag-badge-padding-x);
+    --badge-padding-y: var(--tag-badge-padding-y);
+    margin-inline-end: var(--tag-badge-margin-end);
+  }
 
-.tag-avatar,
-.tag-flag,
-.tag-payment,
-.tag-icon,
-.tag-check {
-  margin-inline-start: var(--tag-addon-margin-start);
-}
+  .tag-avatar,
+  .tag-flag,
+  .tag-payment,
+  .tag-icon,
+  .tag-check {
+    margin-inline-start: var(--tag-addon-margin-start);
+  }
 
-.tag-icon {
-  width: var(--tag-icon-size);
-  height: var(--tag-icon-size);
-  margin-inline-end: var(--tag-icon-margin-end);
-  color: var(--secondary);
-}
+  .tag-icon {
+    width: var(--tag-icon-size);
+    height: var(--tag-icon-size);
+    margin-inline-end: var(--tag-icon-margin-end);
+    color: var(--secondary);
+  }
 
-.tag-check {
-  width: var(--tag-check-size);
-  height: var(--tag-check-size);
-  background-size: var(--tag-check-size);
-}
+  .tag-check {
+    width: var(--tag-check-size);
+    height: var(--tag-check-size);
+    background-size: var(--tag-check-size);
+  }
 
-//
-// Tag list
-//
-.tag-list,
-.tags-list {
-  // `.tags-list` is deprecated, use `.tag-list` instead
-  @include elements-list();
+  //
+  // Tag list
+  //
+  .tag-list,
+  .tags-list {
+    // `.tags-list` is deprecated, use `.tag-list` instead
+    @include elements-list();
+  }
 }

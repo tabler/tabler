@@ -15,32 +15,34 @@ $tracking-tokens: defaults(
 );
 // scss-docs-end tracking-css-vars
 
-// stylelint-enable custom-property-no-missing-var-function
+@layer components {
+  // stylelint-enable custom-property-no-missing-var-function
 
-.tracking {
-  @include tokens($tracking-tokens);
-  display: flex;
-  gap: var(--tracking-gap-width);
-}
+  .tracking {
+    @include tokens($tracking-tokens);
+    display: flex;
+    gap: var(--tracking-gap-width);
+  }
 
-.tracking-squares {
-  --tracking-block-border-radius: var(--border-radius-sm);
+  .tracking-squares {
+    --tracking-block-border-radius: var(--border-radius-sm);
 
-  .tracking-block {
-    height: auto;
+    .tracking-block {
+      height: auto;
 
-    &::before {
-      display: block;
-      padding-top: 100%;
-      content: '';
+      &::before {
+        display: block;
+        padding-top: 100%;
+        content: '';
+      }
     }
   }
-}
 
-.tracking-block {
-  flex: 1;
-  min-width: var(--tracking-block-min-width);
-  height: var(--tracking-height);
-  background: var(--border-color);
-  @include border-radius(var(--tracking-block-border-radius));
+  .tracking-block {
+    flex: 1;
+    min-width: var(--tracking-block-min-width);
+    height: var(--tracking-height);
+    background: var(--border-color);
+    @include border-radius(var(--tracking-block-border-radius));
+  }
 }

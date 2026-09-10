@@ -32,6 +32,14 @@
   }
 }
 
+// Restores the `button` rule from Tabler's `reboot` layer: the editor's own
+// `.tox :not(svg):not(rect) { cursor: inherit }` outweighs it, and an unlayered
+// third-party stylesheet now beats every layer. Disabled buttons keep the
+// editor's `not-allowed`.
+.tox button:not(:disabled):not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
 .tox-edit-area {
   &::before {
     border: none !important;

@@ -4,59 +4,61 @@
 
 @use '../config' as *;
 
-@if $enable-dark-mode {
-  :root {
-    &:not(.theme-dark):not([data-bs-theme='dark'], [data-theme='dark']) {
-      .hide-theme-light {
-        display: none !important;
+@layer components {
+  @if $enable-dark-mode {
+    :root {
+      &:not(.theme-dark):not([data-bs-theme='dark'], [data-theme='dark']) {
+        .hide-theme-light {
+          display: none !important;
+        }
+
+        .img-dark {
+          display: none !important;
+        }
       }
 
-      .img-dark {
-        display: none !important;
+      &.theme-dark,
+      &[data-bs-theme='dark'],
+      &[data-theme='dark'] {
+        .hide-theme-dark {
+          display: none !important;
+        }
+
+        .img-light {
+          display: none !important;
+        }
+      }
+    }
+
+    @include color-mode(dark, true) {
+      // Must come after layout/_root's `color-scheme: light` on `:root` (equal specificity,
+      // later source wins) — this is what actually flips every light-dark() token to dark.
+      color-scheme: dark;
+
+      // Everything else here has been folded into light-dark() declarations in
+      // layout/_root.scss; only genuinely dark-only, non-paired values remain.
+      --btn-color: #{$darken-dark};
+
+      .navbar-brand-autodark {
+        .navbar-brand-image {
+          @include autodark-image();
+        }
       }
     }
 
-    &.theme-dark,
-    &[data-bs-theme='dark'],
-    &[data-theme='dark'] {
-      .hide-theme-dark {
-        display: none !important;
+    // The global `@extend [data-bs-theme='dark']` for light-scoped subtrees
+    // inside a dark body lives in `_extends.scss` — with the module system it
+    // must have every dark-styling module upstream.
+
+    // Printing a dark page wastes ink/toner and can leave near-white text on
+    // paper, since browsers skip background colors in print by default. Force
+    // every light-dark() token back to its light value regardless of theme.
+    @include media-print() {
+      :root,
+      [data-bs-theme='dark'],
+      [data-theme='dark'] {
+        color-scheme: light !important;
       }
-
-      .img-light {
-        display: none !important;
-      }
-    }
-  }
-
-  @include color-mode(dark, true) {
-    // Must come after layout/_root's `color-scheme: light` on `:root` (equal specificity,
-    // later source wins) — this is what actually flips every light-dark() token to dark.
-    color-scheme: dark;
-
-    // Everything else here has been folded into light-dark() declarations in
-    // layout/_root.scss; only genuinely dark-only, non-paired values remain.
-    --btn-color: #{$darken-dark};
-
-    .navbar-brand-autodark {
-      .navbar-brand-image {
-        @include autodark-image();
-      }
-    }
-  }
-
-  // The global `@extend [data-bs-theme='dark']` for light-scoped subtrees
-  // inside a dark body lives in `_extends.scss` — with the module system it
-  // must have every dark-styling module upstream.
-
-  // Printing a dark page wastes ink/toner and can leave near-white text on
-  // paper, since browsers skip background colors in print by default. Force
-  // every light-dark() token back to its light value regardless of theme.
-  @include media-print() {
-    :root,
-    [data-bs-theme='dark'],
-    [data-theme='dark'] {
-      color-scheme: light !important;
     }
   }
 }

@@ -3,45 +3,47 @@ Scrollable
 */
 @use '../config' as *;
 
-.scrollable {
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+@layer utilities {
+  .scrollable {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 
-  &.hover {
-    overflow-y: hidden;
+    &.hover {
+      overflow-y: hidden;
 
-    > * {
-      margin-top: -1px;
+      > * {
+        margin-top: -1px;
+      }
+
+      &:hover,
+      &:focus,
+      &:active {
+        overflow: visible;
+        overflow-y: auto;
+      }
     }
 
-    &:hover,
-    &:focus,
-    &:active {
-      overflow: visible;
-      overflow-y: auto;
+    .touch & {
+      overflow-y: auto !important;
     }
   }
 
-  .touch & {
-    overflow-y: auto !important;
+  .scroll-x,
+  .scroll-y {
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
   }
-}
 
-.scroll-x,
-.scroll-y {
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-}
+  .scroll-y {
+    overflow-y: auto;
+  }
 
-.scroll-y {
-  overflow-y: auto;
-}
+  .scroll-x {
+    overflow-x: auto;
+  }
 
-.scroll-x {
-  overflow-x: auto;
-}
-
-.no-scroll {
-  overflow: hidden;
+  .no-scroll {
+    overflow: hidden;
+  }
 }

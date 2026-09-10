@@ -3,78 +3,80 @@ Horizontal rules
  */
 @use '../../config' as *;
 
-// The `.hr` helper lives in `_extends.scss` — it extends the `hr` element
-// selector across all modules, which with the module system requires the
-// whole core to be upstream.
+@layer content {
+  // The `.hr` helper lives in `_extends.scss` — it extends the `hr` element
+  // selector across all modules, which with the module system requires the
+  // whole core to be upstream.
 
-/**
-Hr text
- */
-.hr-text {
-  --hr-text-gap: #{$hr-text-gap};
-  display: flex;
-  align-items: center;
-  height: 1px;
-  margin: $hr-margin-y 0;
-  @include subheader();
-
-  &::after,
-  &::before {
-    flex: 1 1 auto;
+  /**
+  Hr text
+   */
+  .hr-text {
+    --hr-text-gap: #{$hr-text-gap};
+    display: flex;
+    align-items: center;
     height: 1px;
-    background-color: var(--border-color);
-  }
+    margin: $hr-margin-y 0;
+    @include subheader();
 
-  &::before {
-    margin-inline-end: var(--hr-text-gap);
-    content: '';
-  }
-
-  &::after {
-    margin-inline-start: var(--hr-text-gap);
-    content: '';
-  }
-
-  > *:first-child {
-    padding-inline-start: 0;
-    padding-inline-end: var(--hr-text-gap);
-    color: var(--secondary);
-  }
-
-  &.hr-text-left,
-  &.hr-text-start {
+    &::after,
     &::before {
-      content: none;
+      flex: 1 1 auto;
+      height: 1px;
+      background-color: var(--border-color);
     }
 
-    > *:first-child {
-      padding-inline-start: var(--hr-text-gap);
-      padding-inline-end: var(--hr-text-gap);
-    }
-  }
-
-  &.hr-text-right,
-  &.hr-text-end {
     &::before {
+      margin-inline-end: var(--hr-text-gap);
       content: '';
     }
 
     &::after {
-      content: none;
+      margin-inline-start: var(--hr-text-gap);
+      content: '';
     }
 
     > *:first-child {
-      padding-inline-start: var(--hr-text-gap);
-      padding-inline-end: 0;
+      padding-inline-start: 0;
+      padding-inline-end: var(--hr-text-gap);
+      color: var(--secondary);
+    }
+
+    &.hr-text-left,
+    &.hr-text-start {
+      &::before {
+        content: none;
+      }
+
+      > *:first-child {
+        padding-inline-start: var(--hr-text-gap);
+        padding-inline-end: var(--hr-text-gap);
+      }
+    }
+
+    &.hr-text-right,
+    &.hr-text-end {
+      &::before {
+        content: '';
+      }
+
+      &::after {
+        content: none;
+      }
+
+      > *:first-child {
+        padding-inline-start: var(--hr-text-gap);
+        padding-inline-end: 0;
+      }
+    }
+
+    .card > & {
+      margin: 0;
     }
   }
 
-  .card > & {
-    margin: 0;
+  .hr-text-spaceless {
+    --hr-text-spaceless-margin-y: #{$hr-text-spaceless-margin-y};
+    margin: var(--hr-text-spaceless-margin-y) 0;
   }
-}
-
-.hr-text-spaceless {
-  --hr-text-spaceless-margin-y: #{$hr-text-spaceless-margin-y};
-  margin: var(--hr-text-spaceless-margin-y) 0;
 }

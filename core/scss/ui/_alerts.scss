@@ -26,92 +26,94 @@ $alert-tokens: defaults(
 );
 // scss-docs-end alert-css-vars
 
-// stylelint-enable custom-property-no-missing-var-function
+@layer components {
+  // stylelint-enable custom-property-no-missing-var-function
 
-.alert {
-  @include tokens($alert-tokens);
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: var(--alert-gap);
-  padding: var(--alert-padding-y) var(--alert-padding-x);
-  margin-bottom: var(--alert-margin-bottom);
-  color: var(--alert-color);
-  background-color: color-mix(in sRGB, var(--alert-bg), var(--bg-surface));
-  border: var(--border-width) var(--border-style) var(--alert-border-color);
-  @include border-radius(var(--alert-border-radius));
-}
-
-.alert-heading {
-  margin-bottom: var(--alert-heading-margin-bottom);
-  font-weight: var(--alert-heading-font-weight);
-  color: inherit;
-}
-
-.alert-description {
-  color: var(--secondary);
-}
-
-.alert-icon {
-  width: var(--alert-icon-size) !important;
-  height: var(--alert-icon-size) !important;
-  color: var(--alert-color);
-}
-
-.alert-action {
-  color: var(--alert-color);
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.alert-list {
-  margin: 0;
-}
-
-.alert-link {
-  font-weight: $alert-link-font-weight;
-  color: var(--alert-link-color);
-
-  &,
-  &:hover {
+  .alert {
+    @include tokens($alert-tokens);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: var(--alert-gap);
+    padding: var(--alert-padding-y) var(--alert-padding-x);
+    margin-bottom: var(--alert-margin-bottom);
     color: var(--alert-color);
+    background-color: color-mix(in sRGB, var(--alert-bg), var(--bg-surface));
+    border: var(--border-width) var(--border-style) var(--alert-border-color);
+    @include border-radius(var(--alert-border-radius));
   }
-}
 
-.alert-dismissible {
-  padding-inline-end: var(--alert-padding-inline-end);
-
-  .btn-close {
-    position: absolute;
-    inset-inline-end: calc(var(--alert-padding-x) / 2);
-    top: calc(var(--alert-padding-y) / 2);
-    z-index: 1;
-    padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
-  }
-}
-
-.alert-important {
-  // Set the shared color token so every child that reads it - text, icon,
-  // `.alert-action`, `.alert-link` - flips to white instead of the variant
-  // color, which is the background here.
-  --alert-color: var(--white);
-  background-color: var(--alert-variant-color);
-
-  .alert-description {
+  .alert-heading {
+    margin-bottom: var(--alert-heading-margin-bottom);
+    font-weight: var(--alert-heading-font-weight);
     color: inherit;
   }
-}
 
-.alert-minor {
-  background: transparent;
-  border-color: var(--border-color);
-}
+  .alert-description {
+    color: var(--secondary);
+  }
 
-@each $name, $color in $theme-colors {
-  .alert-#{$name} {
-    --alert-variant-color: var(--#{$name});
+  .alert-icon {
+    width: var(--alert-icon-size) !important;
+    height: var(--alert-icon-size) !important;
+    color: var(--alert-color);
+  }
+
+  .alert-action {
+    color: var(--alert-color);
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .alert-list {
+    margin: 0;
+  }
+
+  .alert-link {
+    font-weight: $alert-link-font-weight;
+    color: var(--alert-link-color);
+
+    &,
+    &:hover {
+      color: var(--alert-color);
+    }
+  }
+
+  .alert-dismissible {
+    padding-inline-end: var(--alert-padding-inline-end);
+
+    .btn-close {
+      position: absolute;
+      inset-inline-end: calc(var(--alert-padding-x) / 2);
+      top: calc(var(--alert-padding-y) / 2);
+      z-index: 1;
+      padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
+    }
+  }
+
+  .alert-important {
+    // Set the shared color token so every child that reads it - text, icon,
+    // `.alert-action`, `.alert-link` - flips to white instead of the variant
+    // color, which is the background here.
+    --alert-color: var(--white);
+    background-color: var(--alert-variant-color);
+
+    .alert-description {
+      color: inherit;
+    }
+  }
+
+  .alert-minor {
+    background: transparent;
+    border-color: var(--border-color);
+  }
+
+  @each $name, $color in $theme-colors {
+    .alert-#{$name} {
+      --alert-variant-color: var(--#{$name});
+    }
   }
 }

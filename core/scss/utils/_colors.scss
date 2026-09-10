@@ -3,130 +3,132 @@
 // All colors
 @use '../config' as *;
 
-@each $color,
-  $value
-    in map.merge(
-      $theme-colors,
-      (
-        white: $white,
+@layer utilities {
+  @each $color,
+    $value
+      in map.merge(
+        $theme-colors,
+        (
+          white: $white,
+        )
       )
-    )
-{
-  .bg-#{'' + $color} {
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity, 1) * 100%), transparent) !important;
-  }
+  {
+    .bg-#{'' + $color} {
+      background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity, 1) * 100%), transparent);
+    }
 
-  .bg-#{'' + $color}-lt {
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity, 1) * 100%), transparent) !important;
-    background-color: color-mix(in srgb, var(--#{$color}-lt) calc(var(--bg-opacity, 1) * 100%), transparent) !important;
-  }
+    .bg-#{'' + $color}-lt {
+      color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity, 1) * 100%), transparent);
+      background-color: color-mix(in srgb, var(--#{$color}-lt) calc(var(--bg-opacity, 1) * 100%), transparent);
+    }
 
-  .border-#{'' + $color} {
-    border-color: color-mix(in srgb, var(--#{$color}) calc(var(--border-opacity, 1) * 100%), transparent) !important;
-  }
+    .border-#{'' + $color} {
+      border-color: color-mix(in srgb, var(--#{$color}) calc(var(--border-opacity, 1) * 100%), transparent);
+    }
 
-  .bg-gradient-from-#{'' + $color} {
-    --gradient-from: var(--#{$color});
-  }
+    .bg-gradient-from-#{'' + $color} {
+      --gradient-from: var(--#{$color});
+    }
 
-  .bg-gradient-to-#{'' + $color} {
-    --gradient-to: var(--#{$color});
-  }
+    .bg-gradient-to-#{'' + $color} {
+      --gradient-to: var(--#{$color});
+    }
 
-  .bg-gradient-via-#{'' + $color} {
-    --gradient-via: var(--#{$color});
-    --gradient-stops: var(--gradient-from, transparent), var(--gradient-via, transparent), var(--gradient-to, transparent);
-  }
+    .bg-gradient-via-#{'' + $color} {
+      --gradient-via: var(--#{$color});
+      --gradient-stops: var(--gradient-from, transparent), var(--gradient-via, transparent), var(--gradient-to, transparent);
+    }
 
-  .text-bg-#{'' + $color} {
-    color: color-contrast($value) if(sass($enable-important-utilities): !important; else: null);
-    background-color: RGBA(var(--#{$color}-rgb), var(--bg-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
-  }
+    .text-bg-#{'' + $color} {
+      color: color-contrast($value);
+      background-color: RGBA(var(--#{$color}-rgb), var(--bg-opacity, 1));
+    }
 
-  .link-#{'' + $color} {
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--link-opacity, 1) * 100%), transparent) !important;
-    text-decoration-color: color-mix(in srgb, var(--#{$color}) calc(var(--link-underline-opacity, 1) * 100%), transparent) !important;
+    .link-#{'' + $color} {
+      color: color-mix(in srgb, var(--#{$color}) calc(var(--link-opacity, 1) * 100%), transparent);
+      text-decoration-color: color-mix(in srgb, var(--#{$color}) calc(var(--link-underline-opacity, 1) * 100%), transparent);
 
-    @if $link-shade-percentage != 0 {
-      &:hover,
-      &:focus {
-        $hover-color: if(sass(color-contrast($value) == $color-contrast-light): shade-color($value, $link-shade-percentage); else: tint-color($value, $link-shade-percentage));
-        color: RGBA(#{to-rgb($hover-color)}, var(--link-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
-        text-decoration-color: rgba(to-rgb($hover-color), var(--link-underline-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
+      @if $link-shade-percentage != 0 {
+        &:hover,
+        &:focus {
+          $hover-color: if(sass(color-contrast($value) == $color-contrast-light): shade-color($value, $link-shade-percentage); else: tint-color($value, $link-shade-percentage));
+          color: RGBA(#{to-rgb($hover-color)}, var(--link-opacity, 1));
+          text-decoration-color: rgba(to-rgb($hover-color), var(--link-underline-opacity, 1));
+        }
       }
     }
   }
-}
 
-@each $color, $value in $theme-colors {
-  .text-#{'' + $color} {
-    --text-opacity: 1;
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity) * 100%), transparent) !important;
+  @each $color, $value in $theme-colors {
+    .text-#{'' + $color} {
+      --text-opacity: 1;
+      color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity) * 100%), transparent);
+    }
+
+    .text-#{'' + $color}-fg {
+      color: var(--#{$color}-fg);
+    }
   }
 
-  .text-#{'' + $color}-fg {
-    color: var(--#{$color}-fg) !important;
-  }
-}
+  @each $color, $value in $gray-colors {
+    .bg-#{'' + $color} {
+      --bg-opacity: 1;
+      background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent);
+    }
 
-@each $color, $value in $gray-colors {
-  .bg-#{'' + $color} {
+    .text-#{'' + $color}-fg {
+      color: var(--#{$color}-fg);
+    }
+
+    .text-#{'' + $color} {
+      color: var(--#{$color});
+    }
+  }
+
+  @each $color, $value in $social-colors {
+    .bg-#{'' + $color} {
+      --bg-opacity: 1;
+      background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent);
+    }
+
+    .text-#{'' + $color}-fg {
+      color: var(--#{$color}-fg);
+    }
+  }
+
+  .bg-inverted {
     --bg-opacity: 1;
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent) !important;
+    background-color: color-mix(in sRGB, var(--bg-surface-inverted) calc(var(--bg-opacity) * 100%), transparent);
+  }
+  .bg-surface {
+    background-color: var(--bg-surface);
   }
 
-  .text-#{'' + $color}-fg {
-    color: var(--#{$color}-fg) !important;
+  .bg-surface-secondary {
+    background-color: var(--bg-surface-secondary);
   }
 
-  .text-#{'' + $color} {
-    color: var(--#{$color}) !important;
-  }
-}
-
-@each $color, $value in $social-colors {
-  .bg-#{'' + $color} {
-    --bg-opacity: 1;
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent) !important;
+  .bg-surface-tertiary {
+    background-color: var(--bg-surface-tertiary);
   }
 
-  .text-#{'' + $color}-fg {
-    color: var(--#{$color}-fg) !important;
-  }
-}
-
-.bg-inverted {
-  --bg-opacity: 1;
-  background-color: color-mix(in sRGB, var(--bg-surface-inverted) calc(var(--bg-opacity) * 100%), transparent) !important;
-}
-.bg-surface {
-  background-color: var(--bg-surface) !important;
-}
-
-.bg-surface-secondary {
-  background-color: var(--bg-surface-secondary) !important;
-}
-
-.bg-surface-tertiary {
-  background-color: var(--bg-surface-tertiary) !important;
-}
-
-.bg-surface-backdrop {
-  background-color: color-transparent($modal-backdrop-bg, $modal-backdrop-opacity) !important;
-}
-
-// Gradient stops that are not theme colors: fade to nothing, or to the inverted surface.
-@each $name, $value in ('transparent': transparent, 'inverted': var(--bg-surface-inverted)) {
-  .bg-gradient-from-#{$name} {
-    --gradient-from: #{$value};
+  .bg-surface-backdrop {
+    background-color: color-transparent($modal-backdrop-bg, $modal-backdrop-opacity);
   }
 
-  .bg-gradient-to-#{$name} {
-    --gradient-to: #{$value};
-  }
+  // Gradient stops that are not theme colors: fade to nothing, or to the inverted surface.
+  @each $name, $value in ('transparent': transparent, 'inverted': var(--bg-surface-inverted)) {
+    .bg-gradient-from-#{$name} {
+      --gradient-from: #{$value};
+    }
 
-  .bg-gradient-via-#{$name} {
-    --gradient-via: #{$value};
-    --gradient-stops: var(--gradient-from, transparent), var(--gradient-via, transparent), var(--gradient-to, transparent);
+    .bg-gradient-to-#{$name} {
+      --gradient-to: #{$value};
+    }
+
+    .bg-gradient-via-#{$name} {
+      --gradient-via: #{$value};
+      --gradient-stops: var(--gradient-from, transparent), var(--gradient-via, transparent), var(--gradient-to, transparent);
+    }
   }
 }

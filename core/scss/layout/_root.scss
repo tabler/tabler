@@ -1,73 +1,75 @@
 @use '../config' as *;
 
-:root,
-:host {
-  // No fixed root font-size: rem sizing must track the user's browser preference (WCAG 1.4.4)
-  height: 100%;
-}
+@layer root {
+  :root,
+  :host {
+    // No fixed root font-size: rem sizing must track the user's browser preference (WCAG 1.4.4)
+    height: 100%;
+  }
 
-:root,
-:host,
-[data-bs-theme='light'],
-[data-theme='light'] {
-  color-scheme: light;
-  --spacer: var(--spacer-2);
+  :root,
+  :host,
+  [data-bs-theme='light'],
+  [data-theme='light'] {
+    color-scheme: light;
+    --spacer: var(--spacer-2);
 
-  --bg-surface: light-dark(var(--bg-surface-primary), var(--gray-800));
-  --bg-surface-primary: var(--white);
-  --bg-surface-secondary: light-dark(var(--gray-50), var(--gray-900));
-  --bg-surface-tertiary: light-dark(var(--gray-50), var(--gray-800));
-  --bg-surface-dark: var(--gray-900);
-  --bg-surface-inverted: light-dark(var(--gray-900), var(--gray-100));
-  --bg-forms: light-dark(var(--bg-surface), var(--gray-900));
-  --bg-forms-disabled: light-dark(var(--bg-surface-secondary), var(--gray-800));
+    --bg-surface: light-dark(var(--bg-surface-primary), var(--gray-800));
+    --bg-surface-primary: var(--white);
+    --bg-surface-secondary: light-dark(var(--gray-50), var(--gray-900));
+    --bg-surface-tertiary: light-dark(var(--gray-50), var(--gray-800));
+    --bg-surface-dark: var(--gray-900);
+    --bg-surface-inverted: light-dark(var(--gray-900), var(--gray-100));
+    --bg-forms: light-dark(var(--bg-surface), var(--gray-900));
+    --bg-forms-disabled: light-dark(var(--bg-surface-secondary), var(--gray-800));
 
-  --text-inverted: light-dark(var(--gray-100), var(--gray-800));
+    --text-inverted: light-dark(var(--gray-100), var(--gray-800));
 
-  --body-color: light-dark(var(--gray-700), var(--gray-200));
-  --body-bg: light-dark(var(--bg-surface-secondary), var(--gray-900));
+    --body-color: light-dark(var(--gray-700), var(--gray-200));
+    --body-bg: light-dark(var(--bg-surface-secondary), var(--gray-900));
 
-  // Dark mode tints the primary towards white, so links keep a 4.5:1 contrast
-  // on the dark surfaces. Hover shades the link in light mode and tints it in dark.
-  --link-color: light-dark(var(--primary), color-mix(in srgb, var(--primary), #fff 40%));
-  --link-hover-color: light-dark(color-mix(in srgb, var(--link-color), #000 20%), color-mix(in srgb, var(--link-color), #fff 20%));
+    // Dark mode tints the primary towards white, so links keep a 4.5:1 contrast
+    // on the dark surfaces. Hover shades the link in light mode and tints it in dark.
+    --link-color: light-dark(var(--primary), color-mix(in srgb, var(--primary), #fff 40%));
+    --link-hover-color: light-dark(color-mix(in srgb, var(--link-color), #000 20%), color-mix(in srgb, var(--link-color), #fff 20%));
 
-  --secondary: light-dark(var(--gray-500), var(--gray-400));
-  --tertiary: var(--gray-400);
+    --secondary: light-dark(var(--gray-500), var(--gray-400));
+    --tertiary: var(--gray-400);
 
-  --border-color: light-dark(#{$border-color}, var(--gray-700));
-  --border-color-translucent: light-dark(#{$border-color-translucent}, var(--dark-mode-border-color-translucent));
-  --border-dark-color: light-dark(#{$border-dark-color}, var(--dark-mode-border-dark-color));
-  --border-dark-color-translucent: #{$border-dark-color-translucent};
-  --border-light-color: #{$border-light-color};
-  --border-light-color-translucent: #{$border-light-color-translucent};
-  --border-active-color: light-dark(#{$border-active-color}, var(--dark-mode-border-active-color));
-  --border-active-color-translucent: #{$border-active-color-translucent};
+    --border-color: light-dark(#{$border-color}, var(--gray-700));
+    --border-color-translucent: light-dark(#{$border-color-translucent}, var(--dark-mode-border-color-translucent));
+    --border-dark-color: light-dark(#{$border-dark-color}, var(--dark-mode-border-dark-color));
+    --border-dark-color-translucent: #{$border-dark-color-translucent};
+    --border-light-color: #{$border-light-color};
+    --border-light-color-translucent: #{$border-light-color-translucent};
+    --border-active-color: light-dark(#{$border-active-color}, var(--dark-mode-border-active-color));
+    --border-active-color-translucent: #{$border-active-color-translucent};
 
-  --icon-color: #{$icon-color};
+    --icon-color: #{$icon-color};
 
-  --active-bg: light-dark(#{$active-bg}, #{$lighten-dark});
+    --active-bg: light-dark(#{$active-bg}, #{$lighten-dark});
 
-  --disabled-bg: #{$disabled-bg};
-  // $disabled-color already derives from var(--body-color) at compute time, so it
-  // adapts to dark mode on its own — no light-dark() or dark-block override needed.
-  --disabled-color: #{$disabled-color};
+    --disabled-bg: #{$disabled-bg};
+    // $disabled-color already derives from var(--body-color) at compute time, so it
+    // adapts to dark mode on its own — no light-dark() or dark-block override needed.
+    --disabled-color: #{$disabled-color};
 
-  --code-color: #{$code-color};
-  --code-bg: #{$code-bg};
+    --code-color: #{$code-color};
+    --code-bg: #{$code-bg};
 
-  --dark-mode-border-color: #{$border-color-dark};
-  --dark-mode-border-color-translucent: #{$border-color-translucent-dark};
-  --dark-mode-border-active-color: #{$border-active-color-dark};
-  --dark-mode-border-dark-color: #{$border-dark-color-dark};
+    --dark-mode-border-color: #{$border-color-dark};
+    --dark-mode-border-color-translucent: #{$border-color-translucent-dark};
+    --dark-mode-border-active-color: #{$border-active-color-dark};
+    --dark-mode-border-dark-color: #{$border-dark-color-dark};
 
-  --page-padding: #{$page-padding};
-  --page-padding-y: #{$page-padding-y};
+    --page-padding: #{$page-padding};
+    --page-padding-y: #{$page-padding-y};
 
-  --sidebar-width: #{$sidebar-width};
-  --sidebar-folded-width: #{$sidebar-folded-width};
+    --sidebar-width: #{$sidebar-width};
+    --sidebar-folded-width: #{$sidebar-folded-width};
 
-  @include media-breakpoint-down($cards-grid-breakpoint) {
-    --page-padding: #{$page-padding-sm};
+    @include media-breakpoint-down($cards-grid-breakpoint) {
+      --page-padding: #{$page-padding-sm};
+    }
   }
 }
