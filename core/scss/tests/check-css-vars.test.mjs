@@ -6,11 +6,10 @@
 // selector that cannot inherit them — the bug class from #3013, where
 // `.input-icon-addon` read `--icon-size` while only `.icon` ever set it.
 //
-// This test runs the pass over the real compiled bundles (it must stay clean and
-// the seed list must keep describing the css), then over a synthetic stylesheet
-// to prove an out-of-scope read is actually caught.
+// This test runs the pass over the real compiled main bundle (it must stay clean
+// and the seed list must keep describing the css), then over a synthetic
+// stylesheet to prove an out-of-scope read is actually caught.
 import { describe, expect, it } from 'vitest'
-import { readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { compile as compileSass } from 'sass'
@@ -21,25 +20,21 @@ import { findScopeViolations, scopedProperties } from '../../../.build/check-css
 
 const scssDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
-// The same two passes build-css.ts runs before autoprefixer.
-async function prefixedCss(entry) {
-  const { css } = compileSass(path.join(scssDir, entry), { loadPaths: ['node_modules'], style: 'expanded' })
+// The same two passes build-css.ts runs before autoprefixer, on the main bundle.
+// The gate itself (`pnpm run check:css-vars`, part of the lint job) covers every
+// entry point; compiling one here keeps this test off the vitest timeout.
+async function mainBundleCss() {
+  const { css } = compileSass(path.join(scssDir, 'tabler.scss'), { loadPaths: ['node_modules'], style: 'expanded' })
   const result = await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(css, { from: undefined })
   return result.css
 }
 
-async function wholeBundle() {
-  const entries = readdirSync(scssDir).filter((file) => file.endsWith('.scss') && !file.startsWith('_'))
-  const parts = await Promise.all(entries.map(prefixedCss))
-  return parts.join('\n')
-}
-
 describe('check-css-vars token scope', () => {
   it('the shipped css has no out-of-scope reads and the seed list is current', async () => {
-    const { violations, stale } = findScopeViolations(await wholeBundle(), scopedProperties)
+    const { violations, stale } = findScopeViolations(await mainBundleCss(), scopedProperties)
     expect(violations).toEqual([])
     expect(stale).toEqual([])
-  })
+  }, 30_000)
 
   it('flags a scoped property read from a selector that cannot inherit it', () => {
     const css = `
