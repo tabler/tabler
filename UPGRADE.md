@@ -56,8 +56,10 @@ If you need a rule to beat components but still lose to utilities, put it in the
 }
 ```
 
-`@keyframes`, `@property`, `@font-face` and the whole of `tabler-vendors.css` stay
-outside the layers on purpose.
+`@keyframes`, `@property`, `@font-face` and `tabler-vendors.css` stay outside the
+layers on purpose, so Tabler's plugin overrides keep beating each plugin's own
+stylesheet. The exception is a few seed color declarations in `tabler-vendors.css`,
+layered so a `.text-*` utility can still recolor the widget.
 
 ## Upgrading to Tabler 1.5
 

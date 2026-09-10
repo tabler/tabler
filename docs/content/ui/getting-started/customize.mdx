@@ -45,11 +45,11 @@ Use the empty `custom` layer when you want your rules to beat Tabler's component
 Inside layers, `!important` reverses the order: an important declaration in an earlier layer beats an important one in a later layer. Two rules follow from that:
 
 - An `!important` in your unlayered CSS still beats every `!important` Tabler ships.
-- An `!important` you add no longer guarantees a win over an important declaration in one of Tabler's early layers, such as the reduced-motion rules. Drop the `!important` and the normal layer order applies again.
+- An `!important` you add inside a layer no longer guarantees a win over an important declaration in an earlier layer. `[hidden] { display: none !important }` sits in `reboot`, so it beats `.d-block` and an `!important` of your own in a later layer. Move the rule out of the layer, or drop the `!important` and let the normal layer order apply.
 
 ### Third party CSS
 
-A stylesheet you load from a library is unlayered too, so it beats Tabler's layers - including the utilities. `tabler-vendors.css`, which restyles the supported plugins, is deliberately left out of the layers for the same reason. If a `.text-*` or `.bg-*` utility no longer changes a plugin's widget, write the override in your own unlayered CSS instead.
+A stylesheet you load from a library is unlayered too, so it beats Tabler's layers - including the utilities. `tabler-vendors.css`, which restyles the supported plugins, is left out of the layers for the same reason: it has to keep winning over the plugin's own CSS. The exception is a handful of seed color declarations there, which are layered on purpose so a `.text-*` utility can still recolor a slider or a star rating. If a utility no longer changes some other plugin's widget, write the override in your own unlayered CSS instead.
 
 ## Custom Google font
 

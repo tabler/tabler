@@ -36,8 +36,10 @@
 // `.tox :not(svg):not(rect) { cursor: inherit }` outweighs it, and an unlayered
 // third-party stylesheet now beats every layer. Disabled buttons keep the
 // editor's `not-allowed`.
-.tox button:not(:disabled):not([aria-disabled='true']) {
-  cursor: pointer;
+@if $enable-button-pointers {
+  .tox button:not(:disabled):not([aria-disabled='true']) {
+    cursor: pointer;
+  }
 }
 
 .tox-edit-area {
