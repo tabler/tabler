@@ -433,6 +433,12 @@ Kept late because it is the most disruptive phase and the only one that breaks t
   regex, since parsing alone reads `btn-sm` as `sm:btn`, and it skips the handful of files where a
   1.x name is the subject rather than markup (this plan, the compatibility layer and its test, the
   changesets, the two agent files stating naming policy — those were updated by hand).
+- `.container-xl` becomes `.xl:container`, with no exception carved out for it (asked and settled
+  2026-09-10). Upstream does the same — v6 ships `.sm:container` … `.\32 xl:container` and lists
+  `.container-sm` → `.sm:container` in its own migration guide — and the semantics match the utility
+  rule: fluid below the breakpoint, constrained from it up, exactly as `md:d-none` applies from `md`
+  up. `.container` and `.sm:container` stay identical, as `.container` and `.container-sm` were.
+  `.container-fluid` is unchanged, having no breakpoint.
 - `css-escape-ident()` from upstream is only needed if the breakpoints are renamed (question 10). It
   exists to escape the leading digit of `2xl` (`.\32 xl\:`); with `xxl` kept, `xxl\:` needs no escape.
 - Hand-written `classnames` front matter (at least `page-layouts`, `navbars`, `modal`, `table`,
