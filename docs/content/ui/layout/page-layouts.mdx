@@ -18,7 +18,7 @@ To create a sample version of the dashboard, you can use the following code snip
 
 <Example>
 <div class="page">
-  <header class="navbar sm:navbar-expand d-print-none">
+  <header class="navbar sm:navbar-expand print:d-none">
     <div class="xl:container">
       <h1 class="navbar-brand navbar-brand-autodark pe-0 md:pe-3">
         <a href="#">
@@ -71,10 +71,10 @@ To create a sample version of the dashboard, you can use the following code snip
 
 ## Footer
 
-Add a `footer` element with the `footer` class after `.page-wrapper` to close the page. `d-print-none` hides it when the page is printed, the same as the navbar. Use [`list-inline list-inline-dots`](/ui/components/list-group#inline-list) for the footer links.
+Add a `footer` element with the `footer` class after `.page-wrapper` to close the page. `print:d-none` hides it when the page is printed, the same as the navbar. Use [`list-inline list-inline-dots`](/ui/components/list-group#inline-list) for the footer links.
 
 <Example>
-<footer class="footer footer-transparent d-print-none">
+<footer class="footer footer-transparent print:d-none">
   <div class="xl:container">
     <div class="row text-center align-items-center flex-row-reverse">
       <div class="lg:col-auto lg:ms-auto">
@@ -140,7 +140,7 @@ To create a sidebar layout, you can use the following code snippet. This code sn
     </div>
   </aside>
   <div class="page-wrapper">
-    <div class="page-header d-print-none">
+    <div class="page-header print:d-none">
       <div class="xl:container">
         <div class="row g-2 align-items-center">
           <div class="col">
@@ -501,4 +501,4 @@ A layout is what a screen reader user navigates by, so the landmarks matter more
 - Label each navigation region. A page with a sidebar and a top bar has two `nav` elements, and `aria-label="Primary"` on one of them is what tells them apart.
 - The navbar toggler needs `aria-controls` pointing at the collapsing element and a name such as "Toggle navigation". Bootstrap keeps `aria-expanded` in sync.
 - Keep the DOM order close to the reading order. A sidebar that appears on the right visually should still come where it belongs in the markup.
-- `d-print-none` on the navbar and the footer removes them from print, which is what you want - but check that nothing users need only exists there.
+- `print:d-none` on the navbar and the footer removes them from print, which is what you want - but check that nothing users need only exists there.

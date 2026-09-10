@@ -129,7 +129,7 @@
         .text-decoration-underline {
           text-decoration: underline !important;
         }
-        .text-decoration-underline-hover:hover {
+        .hover\:text-decoration-underline:hover {
           text-decoration: underline !important;
         }
       }
@@ -156,9 +156,7 @@
     }
   }
 
-  // Print keeps the 1.x middle position until the `print:` prefix is decided,
-  // so the two positions have to coexist in the mixin.
-  @include it('keeps print in the middle of the class name') {
+  @include it('puts the print prefix in front too') {
     @include assert() {
       @include output() {
         @include generate-utility(
@@ -167,11 +165,11 @@
             class: d,
             values: (none),
           ),
-          $infix: '-print'
+          'print\\:'
         );
       }
       @include expect() {
-        .d-print-none {
+        .print\:d-none {
           display: none !important;
         }
       }
