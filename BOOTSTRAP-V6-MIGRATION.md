@@ -413,11 +413,11 @@ Kept late because it is the most disruptive phase and the only one that breaks t
   `breakpoint-prefix()` and returns `"md\:"`; responsive classes move from `.col-md-6` / `.d-md-none`
   to `.md\:col-6` / `.md\:d-none`.
 - Measured scope: **2 480 responsive classes across all bundles** (1 670 in `tabler.css`, 810 more in
-  `tabler-marketing.css`, which carries its own utilities map), **129 of them actually used in our own
-  markup, 4 866 occurrences across 353 files**: `docs/` 4 042 in 209 files (mostly copyable examples in
-  `.mdx`), `preview/` 582 in 78, `shared/` 191 in 50 (including class names inside `shared/data/*.json`),
-  and 40 across `core/js/tests/visual/`, `screenshots/` and `.agents/`. The earlier "~1 800 occurrences
-  in ~200 files" estimate in this plan was low by about 2.7×.
+  `tabler-marketing.css`, which carries its own utilities map), **959 occurrences across 163 tracked
+  files**: `preview/` 545 in 69, `shared/` 186 in 41 (including class names inside `shared/data/*.json`),
+  `docs/` 154 in 32, and the rest across `core/js/tests/`, `screenshots/` and `.agents/`. An earlier
+  pass in this plan said 4 866 in 353 files; that counted generated `.cache` and `.astro` output as
+  well, and the tracked total is about five times smaller.
 - **Sass side done** (`breakpoint-prefix()`, all call sites, the compatibility plugin). `breakpoint-infix()`
   survives as a deprecated alias so custom Sass written against 1.x still compiles.
 - Print keeps its 1.x middle position (`.d-print-none`) until question 18 is settled, so
@@ -427,10 +427,12 @@ Kept late because it is the most disruptive phase and the only one that breaks t
   `.#{$prefix}col-6`. The four nested `&#{$infix}` blocks (`ui/_tables.scss`, `layout/_navbar.scss`
   ×2, `bootstrap/_navbar.scss`) have to be unrolled into full selectors, because `&` cannot prepend.
   This is the bulk of the SCSS work.
-- The markup sweep is no longer on the critical path: the compatibility plugin keeps every 1.x class
-  alive, so `preview/`, `docs/` and `shared/` can move page by page. The codemod still needs a
-  whitelist from the frozen list rather than a regex — parsing alone reads `btn-sm` as `sm:btn`.
-  Prettier does not run on `.mdx`, so the codemod owns formatting there.
+- **Markup swept** by `.build/codemod-responsive-prefix.ts`: 923 names in 157 files. The codemod is
+  committed rather than thrown away, because anyone upgrading their own templates needs it — point it
+  at a directory and it edits in place. It matches whole words against the frozen list rather than a
+  regex, since parsing alone reads `btn-sm` as `sm:btn`, and it skips the handful of files where a
+  1.x name is the subject rather than markup (this plan, the compatibility layer and its test, the
+  changesets, the two agent files stating naming policy — those were updated by hand).
 - `css-escape-ident()` from upstream is only needed if the breakpoints are renamed (question 10). It
   exists to escape the leading digit of `2xl` (`.\32 xl\:`); with `xxl` kept, `xxl\:` needs no escape.
 - Hand-written `classnames` front matter (at least `page-layouts`, `navbars`, `modal`, `table`,
@@ -586,7 +588,7 @@ PR #2966 is parked.
 | #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
 | #2975 | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
 | ~~—~~ done | 8 | ~~`breakpoint-prefix()` and every call site moved to a leading prefix, the four nested `&#{$infix}` blocks unrolled, `breakpoint-infix()` removed, print split onto its own `$infix` argument, plus the compatibility plugin and its frozen class list~~ | `core/scss/mixins/**`, `bootstrap/**`, `ui/_tables.scss`, `layout/_navbar.scss`, `helpers/_helpers.scss`, `.build/postcss-legacy-responsive.ts`, `.build/legacy-responsive-classes.txt` | per-class behaviour comparison over every bundle, SCSS unit tests | L |
-| — | 8 | Codemod for our own markup: `preview/`, `docs/`, `shared/data/*.json`, `core/js/tests/visual/`, `screenshots/`. Not urgent — the compatibility layer keeps the current spelling working — but it needs #3028 merged first, so the gate can read prefixed classes | `preview/**`, `docs/**`, `shared/**` | `check-markup-classes` | M |
+| ~~—~~ done | 8 | ~~Codemod over our own markup (923 names in 157 files) plus the agent rules and the policy reviewer, which stated the opposite naming rule~~ | `.build/codemod-responsive-prefix.ts`, `preview/**`, `docs/**`, `shared/**`, `core/js/tests/**`, `screenshots/**`, `.agents/**` | inverse-rename equality against the pre-codemod tree, `check-markup-classes` | M |
 | — | 8 | Hand-written `classnames` front matter and the grid/utility prose, which no codemod reaches | `docs/content/**` | docs build, link gate | M |
 | #2971 | 6 | Framework icons drawn with `mask-image` + `currentcolor`; close button, toggler and breadcrumb are already done, so the scope is the form-control, select, carousel and validation SVGs and dropping their `-dark` variants; `.btn-close-white` kept as an empty alias | `core/scss/bootstrap/forms/**`, `bootstrap/_navbar.scss`, `_carousel.scss`, `ui/forms/**`, `ui/_close.scss` | visual review light/dark, `check:css-vars` | S–M |
 | — | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |

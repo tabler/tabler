@@ -24,11 +24,11 @@ interface Props {
   navbarPosition?: 'horizontal' | 'vertical'
   /** container width: default, fluid or boxed */
   layout?: 'default' | 'fluid' | 'boxed'
-  /** adds my-auto to the .container-xl */
+  /** adds my-auto to the .xl:container */
   containerCentered?: boolean
-  /** page-wrapper-full and no .container-xl around the body */
+  /** page-wrapper-full and no .xl:container around the body */
   wrapperFull?: boolean
-  /** extra classes on the .container-xl */
+  /** extra classes on the .xl:container */
   containerClass?: string
   /** extra body classes */
   bodyClass?: string
@@ -94,7 +94,7 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
           wrapperFull ? (
             <slot />
           ) : (
-            <div class={`container-xl${containerCentered ? ' my-auto' : ''}${containerClass ? ` ${containerClass}` : ''}`}>
+            <div class={`xl:container${containerCentered ? ' my-auto' : ''}${containerClass ? ` ${containerClass}` : ''}`}>
               <slot />
             </div>
           )

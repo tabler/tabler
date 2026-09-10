@@ -18,14 +18,23 @@ Applies to every change on `v2-dev`. The plan, phases and open questions live in
 
 ## Kept from Bootstrap v5 — the public contract
 
-- Class names: `.modal`, `.offcanvas`, `.dropdown-menu`, `.btn-primary`, `.col-md-6`, `.d-md-none`, `.text-*`, `.fs-1`…`.fs-6`, `.rounded-*`, and every class documented for 1.x.
+- Class names: `.modal`, `.offcanvas`, `.dropdown-menu`, `.btn-primary`, `.text-*`, `.fs-1`…`.fs-6`, `.rounded-*`, and every class documented for 1.x. The responsive classes are the one exception — see below.
 - `data-bs-*` attributes and their values (`data-bs-toggle="modal"`), with the `data-tblr-*` alias still working.
 - Event names (`shown.bs.modal`), JavaScript plugin names and methods (`Modal.getInstance`, `show`, `hide`, `dispose`).
 - The **values** behind existing utilities: `$spacers`, `.rounded-N`, `.fs-N`, breakpoints and container widths do not change silently.
 
+## Adopted from v6, against the rule above
+
+- The **responsive** `md:` prefix (decided 2026-09-10): `.col-md-6` is now `.md\:col-6`, `.d-md-none`
+  is `.md\:d-none`. This is a deliberate exception to "v5 class names stay" — it is the only one.
+  Nothing breaks in existing markup: `.build/postcss-legacy-responsive.ts` adds every 1.x name back
+  as a second selector on the same rule, from a frozen list, for one major.
+- A pure rename, with no change in behaviour: `md:navbar-expand` expands from `md` up, exactly as
+  `.navbar-expand-md` did, even though it now reads like the opposite of `md:table-mobile`.
+
 ## Not adopted from v6
 
-- The `md:` / `hover:` prefix syntax — infix names (`.col-md-6`) stay. Revisit no earlier than 3.0.
+- The `hover:` / `focus:` / `active:` / `print:` state prefixes — those names keep their 1.x form (`.opacity-50-hover`, `.d-print-none`). Revisit no earlier than 3.0.
 - Renames: `.dialog`, `.drawer`, `.menu`, `.fg-*`, `.bg-1`…`.bg-4`, `.fs-xs`…`.fs-6xl`, `.max-w-*`, `.underline-*`, `data-bs-toggle="dialog|drawer|menu"`, `*.bs.dialog|drawer|menu` events, `Dialog`/`Drawer`/`Menu` exports.
 - The v6 remaps of `$spacers` (0–9) and `.rounded-*`.
 - Removing `.form-select` — it stays untouched in 2.0.

@@ -29,7 +29,7 @@ import DocsLink from '@ui/DocsLink.astro'
   <DocsLink slot="page-header-actions" path="/ui/components/badge" />
 
   <div class="row row-cards">
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>

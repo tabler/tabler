@@ -321,16 +321,16 @@ const relatedPages = await Promise.all(
 		<!-- END NAVBAR  -->
 		<!-- BEGIN PAGE BODY -->
 		<main id="content" class="flex-fill">
-			<div class="container-lg">
+			<div class="lg:container">
 				<div class="row g-0">
 					<!-- BEGIN DOCS MENU -->
-					<div class="col-docs offcanvas-lg offcanvas-start" tabindex="-1" id="docs-menu-offcanvas" aria-labelledby="docs-menu-offcanvas-title">
-						<div class="offcanvas-header d-lg-none">
+					<div class="col-docs lg:offcanvas offcanvas-start" tabindex="-1" id="docs-menu-offcanvas" aria-labelledby="docs-menu-offcanvas-title">
+						<div class="offcanvas-header lg:d-none">
 							<h2 class="offcanvas-title" id="docs-menu-offcanvas-title">Menu</h2>
 							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-label="Close"></button>
 						</div>
 						<div class="offcanvas-body">
-							<div class="py-lg-4 flex-fill">
+							<div class="lg:py-4 flex-fill">
 								<div class="space-y space-y-5">
 									<DocsSearch />
 									<div class="flex-fill">
@@ -349,7 +349,7 @@ const relatedPages = await Promise.all(
 					<!-- END DOCS MENU -->
 					<div class="col d-flex flex-column">
 						<div class="docs-article flex-fill">
-							<div class="p-4 py-6 p-lg-6">
+							<div class="p-4 py-6 lg:p-6">
 								{
 									(breadcrumbs || markdownUrl) && (
 										<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
@@ -382,14 +382,14 @@ const relatedPages = await Promise.all(
 									data-bs-smooth-scroll={toc.length > 0 ? 'true' : undefined}
 									tabindex="0"
 								>
-									<div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+									<div class="d-flex flex-column sm:flex-row sm:align-items-center gap-2">
 										<h1 class="docs-page-title mb-0">
 											{title}
 										</h1>
 
 										{
 											addedIn && (
-												<div class="ms-sm-auto">
+												<div class="sm:ms-auto">
 													<span class="badge bg-primary-lt">Added in {addedIn}</span>
 												</div>
 											)
@@ -422,7 +422,7 @@ const relatedPages = await Promise.all(
 						{!hidePagination && <DocsPagination url={docsUrl} only="pagination" />}
 
 						<footer class="docs-footer">
-							<nav class="d-md-none mb-3" aria-label="Tabler sites">
+							<nav class="md:d-none mb-3" aria-label="Tabler sites">
 								<ul class="list-inline list-inline-dots mb-0 text-secondary">
 									{docsLinks.map((link) => (
 										<li class="list-inline-item">
@@ -456,11 +456,11 @@ const relatedPages = await Promise.all(
 
 							<div class="mt-4">
 								<div class="row">
-									<div class="col-12 col-sm text-secondary">
+									<div class="col-12 sm:col text-secondary">
 										© {year} Tabler. All rights reserved.
 									</div>
 
-									<div class="col-12 col-sm d-flex align-items-center justify-content-start justify-content-sm-end gap-4 mt-3 mt-sm-0">
+									<div class="col-12 sm:col d-flex align-items-center justify-content-start sm:justify-content-end gap-4 mt-3 sm:mt-0">
 										<nav class="nav nav-segmented nav-sm docs-theme-toggle" aria-label="Color scheme">
 											<a href="?theme=light" class="nav-link docs-theme-toggle-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Light mode" aria-label="Enable light mode"><Icon name="sun" class="nav-link-icon" /></a>
 											<a href="?theme=auto" class="nav-link docs-theme-toggle-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="System mode" aria-label="Follow the system color scheme"><Icon name="sun-moon" class="nav-link-icon" /></a>
@@ -479,7 +479,7 @@ const relatedPages = await Promise.all(
 						</footer>
 					</div>
 					<!-- BEGIN DOCS TOC -->
-					<div class="col-2 d-none d-xxl-block">
+					<div class="col-2 d-none xxl:d-block">
 						<div class="py-5 sticky-top docs-toc-sticky">
 							<DocsToc toc={toc} editUrl={`${site.githubUrl}/edit/dev/${editFilePath}`} sourceUrl={sourcePath ? `${site.githubUrl}/blob/dev/${sourcePath}` : undefined} />
 						</div>
