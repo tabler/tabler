@@ -325,7 +325,7 @@ left is mostly the auth and marketing cards, which use a wider rhythm on purpose
 ```html
 <!-- Recommended -->
 <div class="row row-cards">
-  <div class="col-md-6"><div class="card"><div class="card-body">
+  <div class="md:col-6"><div class="card"><div class="card-body">
     <div class="mb-3">…</div>
     <div class="mb-3">…</div>
     <div>…</div>

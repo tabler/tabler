@@ -56,8 +56,8 @@ Every page renders **both** navigations — the vertical sidebar and the horizon
 | `sidebarMode` | `data-bs-sidebar` — `folded` or `folded-hover` |
 | `sidebarEnd`, `sidebarFoldToggle` | sidebar markup: end side, pin button |
 | `navbarTransparent`, `navbarCondensed`, `navbarOverlap` | navbar markup variants |
-| `wrapperFull` | `page-wrapper-full`, drops the `.container-xl` around the body |
-| `containerCentered`, `containerClass` | `my-auto` / extra classes on the `.container-xl` |
+| `wrapperFull` | `page-wrapper-full`, drops the `.xl:container` around the body |
+| `containerCentered`, `containerClass` | `my-auto` / extra classes on the `.xl:container` |
 | `bodyClass` | free-form body classes; use `layout` for the container width |
 | `rtl` | `dir="rtl"` plus the RTL stylesheets |
 
