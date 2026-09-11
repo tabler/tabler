@@ -496,6 +496,10 @@ Decided:
     keeps its meaning for click-to-dismiss but can no longer suppress the backdrop itself or keep
     the rest of the page interactive — `showModal()`'s top layer is inert regardless of the config.
     `.modal-open` moves from `<body>` to `<html>` to pair with `scrollbar-gutter: stable`.
+    Overlays appended to `<body>` (Tom Select's `dropdownParent: 'body'`, Litepicker's default
+    container, tooltips and popovers with `container: 'body'`) render underneath the top layer
+    while a modal is open — inside a modal they must stay in the modal's subtree. The shared
+    `Select` and `Datepicker` components detect `.closest('.modal')` and do that on their own.
 
 Open:
 
