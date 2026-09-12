@@ -34,9 +34,9 @@ Color Input
     width: 100%;
     height: 100%;
     content: '';
-    background: no-repeat center center/$form-check-input-checked-bg-size;
-    background-image: escape-svg($form-check-input-checked-bg-image);
+    background-color: currentColor;
     opacity: 0;
+    @include mask-icon(escape-svg($form-check-input-checked-bg-image), $size: $form-check-input-checked-bg-size);
     @include transition(opacity $transition-time);
 
     .form-colorinput-input:checked ~ & {
@@ -50,8 +50,6 @@ Color Input
   }
 
   @at-root .form-colorinput-light & {
-    &::before {
-      background-image: escape-svg($form-check-input-checked-bg-image-dark);
-    }
+    color: #{$body-color};
   }
 }

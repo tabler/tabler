@@ -27,8 +27,11 @@ Form check
   --form-check-input-width: #{$form-check-input-width};
   margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
 
-  background-size: var(--form-check-input-width);
   box-shadow: $form-check-input-box-shadow;
+
+  &::before {
+    mask-size: var(--form-check-input-width);
+  }
 }
 
 .form-check-label {
@@ -69,7 +72,11 @@ Form switch
   .form-check-input {
     height: $form-switch-height;
     margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
-    @include transition(background-color $transition-time, background-position $transition-time);
+    @include transition(background-color $transition-time);
+
+    &::before {
+      @include transition(inset-inline-start $transition-time);
+    }
   }
 }
 
@@ -86,10 +93,11 @@ Form switch
   padding-inline-start: var(--form-switch-lg-padding-start);
 
   .form-check-input {
+    --form-switch-knob-size: var(--form-switch-lg-bg-size);
+
     width: var(--form-switch-lg-width);
     height: var(--form-switch-lg-height);
     margin-inline-start: var(--form-switch-lg-input-offset);
-    background-size: var(--form-switch-lg-bg-size);
   }
 
   .form-check-label {

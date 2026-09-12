@@ -1,0 +1,17 @@
+// Paints an SVG icon through a CSS mask so it takes the element's
+// `background-color`. Pass `$icon: null` to set the mask image per state.
+
+// scss-docs-start mask-icon-mixin
+@mixin mask-icon($icon: null, $size: contain, $position: center) {
+  @if $icon != null {
+    mask-image: $icon;
+  }
+  mask-repeat: no-repeat;
+  @if $position != null {
+    mask-position: $position;
+  }
+  @if $size != null {
+    mask-size: $size;
+  }
+}
+// scss-docs-end mask-icon-mixin

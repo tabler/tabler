@@ -62,12 +62,21 @@ Select group
 }
 
 .form-selectgroup-check {
+  position: relative;
   display: inline-block;
   width: $form-check-input-width;
   height: $form-check-input-width;
   vertical-align: middle;
   border: $form-check-input-border;
   box-shadow: $form-check-input-box-shadow;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    content: none;
+    background-color: var(--white);
+    @include mask-icon($size: $form-check-input-checked-bg-size);
+  }
 
   .form-selectgroup-input[type='checkbox'] + .form-selectgroup-label & {
     @include border-radius($form-check-input-border-radius);
@@ -79,18 +88,19 @@ Select group
 
   .form-selectgroup-input:checked + .form-selectgroup-label & {
     background-color: $form-check-input-checked-bg-color;
-    background-repeat: $form-check-input-checked-bg-repeat;
-    background-position: center;
-    background-size: $form-check-input-checked-bg-size;
     border-color: $form-check-input-checked-border-color;
+
+    &::before {
+      content: '';
+    }
   }
 
-  .form-selectgroup-input[type='checkbox']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-input-checked-bg-image);
+  .form-selectgroup-input[type='checkbox']:checked + .form-selectgroup-label &::before {
+    mask-image: escape-svg($form-check-input-checked-bg-image);
   }
 
-  .form-selectgroup-input[type='radio']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-radio-checked-bg-image);
+  .form-selectgroup-input[type='radio']:checked + .form-selectgroup-label &::before {
+    mask-image: escape-svg($form-check-radio-checked-bg-image);
   }
 }
 

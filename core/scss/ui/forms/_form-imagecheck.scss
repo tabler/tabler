@@ -43,7 +43,6 @@ Image check
     display: block;
     width: $form-check-input-width;
     height: $form-check-input-width;
-    color: var(--white);
     pointer-events: none;
     content: '';
     user-select: none;
@@ -54,19 +53,33 @@ Image check
 
     .form-imagecheck-input:checked ~ & {
       background-color: $form-check-input-checked-bg-color;
-      background-image: escape-svg($form-check-input-checked-bg-image);
-      background-repeat: $form-check-input-checked-bg-repeat;
-      background-position: center;
-      background-size: $form-check-input-checked-bg-size;
       border-color: $form-check-input-checked-border-color;
     }
 
     .form-imagecheck-input[type='radio'] ~ & {
       @include border-radius($form-check-radio-border-radius);
     }
+  }
+
+  // Tick overlay; the box is drawn by ::before.
+  &::after {
+    position: absolute;
+    inset-inline-start: var(--form-imagecheck-check-offset);
+    top: var(--form-imagecheck-check-offset);
+    z-index: 1;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    pointer-events: none;
+    content: none;
+    background-color: var(--white);
+    @include mask-icon(escape-svg($form-check-input-checked-bg-image), $size: $form-check-input-checked-bg-size);
+
+    .form-imagecheck-input:checked ~ & {
+      content: '';
+    }
 
     .form-imagecheck-input[type='radio']:checked ~ & {
-      background-image: escape-svg($form-check-radio-checked-bg-image);
+      mask-image: escape-svg($form-check-radio-checked-bg-image);
     }
   }
 }
