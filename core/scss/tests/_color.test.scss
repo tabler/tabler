@@ -42,6 +42,17 @@
   }
 }
 
+@include describe('adjust-lightness') {
+  @include it('shifts the oklch lightness channel by the given amount') {
+    @include assert-equal(math.round(color.channel(adjust-lightness(#1f2937, 8%), 'lightness', $space: oklch)), math.round(color.channel(#1f2937, 'lightness', $space: oklch)) + 8);
+  }
+
+  @include it('keeps the hue and returns a legacy rgb colour') {
+    @include assert-equal(math.round(color.channel(adjust-lightness(#066fd1, 5%), 'hue', $space: oklch)), math.round(color.channel(#066fd1, 'hue', $space: oklch)));
+    @include assert-true(color.is-legacy(adjust-lightness(#066fd1, 5%)));
+  }
+}
+
 @include describe('shift-color') {
   @include it('shades when the weight is positive') {
     @include assert-equal(shift-color(#808080, 20%), shade-color(#808080, 20%));

@@ -21,6 +21,12 @@
   @return color-mix(in oklab, #{$color1} #{to-percentage($weight)}, #{$color2});
 }
 
+// Shifts lightness in `oklch` (perceptual, keeps hue and chroma) and clips the
+// result to sRGB. `$amount` is a percentage added to the oklch L channel.
+@function adjust-lightness($color, $amount) {
+  @return color.to-gamut(color.adjust($color, $lightness: $amount, $space: oklch), $space: rgb, $method: clip);
+}
+
 @function theme-color-lighter($color, $background: #fff) {
   @return mix-color($color, $background, 10%);
 }
