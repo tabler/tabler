@@ -1,0 +1,217 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import Icon from '@ui/Icon.astro'
+import Payment from '@ui/Payment.astro'
+import Progress from '@ui/Progress.astro'
+import type { PaymentProvider } from '@shared/lib/tokens'
+
+const usage = { used: 7420, limit: 10000 }
+const usagePercent = Math.round((usage.used / usage.limit) * 100)
+
+const paymentMethods: { provider: PaymentProvider; title: string; description: string; isDefault: boolean }[] = [
+  { provider: 'visa', title: 'Visa ending in 4242', description: 'Expires 09/2028', isDefault: true },
+  { provider: 'mastercard', title: 'Mastercard ending in 5512', description: 'Expires 03/2027', isDefault: false },
+  { provider: 'paypal', title: 'PayPal', description: 'billing@tabler.io', isDefault: false },
+]
+
+const invoices: { date: string; number: string; amount: string; status: 'paid' | 'open' }[] = [
+  { date: 'Sep 18, 2026', number: 'INV-2026-0089', amount: '$49.00', status: 'open' },
+  { date: 'Aug 18, 2026', number: 'INV-2026-0081', amount: '$49.00', status: 'paid' },
+  { date: 'Jul 18, 2026', number: 'INV-2026-0074', amount: '$49.00', status: 'paid' },
+  { date: 'Jun 18, 2026', number: 'INV-2026-0066', amount: '$49.00', status: 'paid' },
+]
+
+const invoiceStatus = {
+  paid: { text: 'Paid', color: 'success' },
+  open: { text: 'Open', color: 'warning' },
+}
+---
+
+<DefaultLayout title="Billing" pageMenu="extra.billing" description="Manage your plan, payment methods, and invoices.">
+  <Button slot="page-header-actions" text="Manage subscription" color="primary" icon="settings" />
+
+  <div class="row row-cards">
+    <div class="col-lg-8">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader class="flex-wrap gap-3">
+              <div>
+                <CardTitle>
+                  Pro plan
+                  <Badge text="Active" color="success" light class="ms-1" />
+                </CardTitle>
+                <CardSubtitle>Renews on September 18, 2026</CardSubtitle>
+              </div>
+              <CardActions class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-baseline">
+                  <span class="h1 m-0">$49</span>
+                  <span class="text-secondary">/month</span>
+                </div>
+                <Button text="Change plan" size="sm" />
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <div class="d-flex justify-content-between align-items-baseline mb-2">
+                <div class="fw-medium">Monthly requests</div>
+                <div>
+                  <strong>{usage.used.toLocaleString('en-US')}</strong>
+                  <span class="text-secondary">/ {usage.limit.toLocaleString('en-US')}</span>
+                </div>
+              </div>
+              <Progress value={usagePercent} color="primary" size="sm" class="mb-2" />
+              <div class="text-secondary">{usagePercent}% of the included usage. The counter resets at the start of each billing period.</div>
+            </CardBody>
+            <CardBody>
+              <Datagrid>
+                <DatagridItem title="Billing period">Monthly</DatagridItem>
+                <DatagridItem title="Next invoice">September 18, 2026</DatagridItem>
+                <DatagridItem title="Seats">8 of 10 used</DatagridItem>
+              </Datagrid>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>Invoices</CardTitle>
+                <CardSubtitle>Invoices are issued on the 18th of each month.</CardSubtitle>
+              </div>
+              <CardActions>
+                <Button text="View all" size="sm" href="./invoice.html" />
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group" hoverable>
+              {
+                invoices.map((invoice) => (
+                  <ListGroupItem>
+                    <div class="row align-items-center g-3">
+                      <div class="col-12 col-sm">
+                        <div class="fw-medium">{invoice.date}</div>
+                        <div class="text-secondary">{invoice.number}</div>
+                      </div>
+                      <div class="col-auto fw-medium">{invoice.amount}</div>
+                      <div class="col-auto">
+                        <Badge text={invoiceStatus[invoice.status].text} color={invoiceStatus[invoice.status].color} light />
+                      </div>
+                      <div class="col-auto ms-auto ms-sm-0">
+                        <ButtonList>
+                          {invoice.status === 'open' && <Button text="Pay now" size="sm" color="primary" />}
+                          <Button icon="download" iconOnly text={`Download invoice ${invoice.number}`} size="sm" />
+                        </ButtonList>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>Payment method</CardTitle>
+                <CardSubtitle>The default method is charged on every invoice.</CardSubtitle>
+              </div>
+              <CardActions>
+                <Button text="Add method" size="sm" icon="plus" />
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                {
+                  paymentMethods.map((method) => (
+                    <label class="form-selectgroup-item flex-fill">
+                      <input type="radio" name="payment-method" value={method.provider} class="form-selectgroup-input" checked={method.isDefault} />
+                      <div class="form-selectgroup-label d-flex align-items-center p-3">
+                        <div class="me-3">
+                          <span class="form-selectgroup-check" />
+                        </div>
+                        <Payment payment={method.provider} size="sm" class="me-3" />
+                        <div class="me-auto">
+                          <div class="fw-medium">{method.title}</div>
+                          <div class="text-secondary">{method.description}</div>
+                        </div>
+                        {method.isDefault && <Badge text="Default" color="primary" light class="me-2" />}
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-action btn-sm" data-bs-toggle="dropdown" aria-expanded="false" aria-label={`Actions for ${method.title}`}>
+                            <Icon name="dots-vertical" />
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end">
+                            {!method.isDefault && (
+                              <button type="button" class="dropdown-item">
+                                <Icon name="star" class="dropdown-item-icon" />
+                                Set as default
+                              </button>
+                            )}
+                            <button type="button" class="dropdown-item">
+                              <Icon name="pencil" class="dropdown-item-icon" />
+                              Edit
+                            </button>
+                            <button type="button" class="dropdown-item text-danger">
+                              <Icon name="trash" class="dropdown-item-icon" />
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </label>
+                  ))
+                }
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>Billing details</CardTitle>
+                <CardSubtitle>Shown on every invoice and receipt.</CardSubtitle>
+              </div>
+              <CardActions>
+                <Button text="Edit" size="sm" icon="pencil" />
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <Datagrid>
+                <DatagridItem title="Company">Tabler Ltd.</DatagridItem>
+                <DatagridItem title="Billing email">billing@tabler.io</DatagridItem>
+                <DatagridItem title="Tax ID">EU123456789</DatagridItem>
+                <DatagridItem title="Address">44 Harbor Street, Portland, OR 97209, United States</DatagridItem>
+              </Datagrid>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Cancel subscription</CardTitle>
+              <CardSubtitle>Your plan stays active until the end of the current billing period. After that the workspace switches to the free plan and API access is paused.</CardSubtitle>
+              <Button text="Cancel subscription" color="danger" variant="ghost" size="sm" icon="x" />
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>
