@@ -12,3 +12,6 @@ import './src/sortable'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
+
+// Tabler's own components
+export { default as Autosize } from './src/autosize'

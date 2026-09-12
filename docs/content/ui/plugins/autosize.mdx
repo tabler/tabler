@@ -1,15 +1,11 @@
 ---
 title: Autosize
 summary: The autosize element will automatically adjust the textarea height and make it easier for users to follow as they type.
-docs-libs: [autosize]
 description: Make textareas grow automatically as users type with the autosize plugin, so longer text stays visible without manual resizing.
 related: [/ui/forms/elements]
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
-import TabsPackage from '@components/TabsPackage.astro';
-import { Code } from 'astro:components';
-import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
@@ -21,15 +17,7 @@ A textarea keeps its height no matter how much text it holds, so long answers en
 
 ## Installation
 
-Install autosize with npm:
-
-<TabsPackage name="autosize" />
-
-Or include it from a CDN:
-
-<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/autosize/dist/autosize.min.js"></script>`} />
-
-The plugin only changes the height of the field, so it needs no CSS of its own.
+The plugin is bundled with `tabler.js`, so there is nothing extra to install or load. It only changes the height of the field, so it needs no CSS of its own.
 
 ## Usage
 
@@ -43,21 +31,36 @@ Set `rows` to choose the starting height. With `rows="1"` the field starts as a 
 
 ## JavaScript
 
-Tabler initializes every element with `data-bs-toggle="autosize"` on page load. This is the code that runs:
+Tabler wraps the plugin in an `Autosize` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-toggle="autosize"`. This is the code that runs:
 
 <CodeDocs name="autosize-init" file="core/js/src/autosize.ts" />
 
-Call the plugin yourself when you add a textarea later, for example inside a modal or a row added by JavaScript:
+Create the component yourself when you add a textarea later, for example inside a modal or a row added by JavaScript:
 
 ```js
-autosize(document.getElementById('message'));
+const autosize = new tabler.Autosize(document.getElementById('message'));
 ```
 
-Autosize measures the field, so a hidden textarea gets the wrong height. Run `autosize.update()` once it becomes visible:
+`tabler.Autosize.getOrCreateInstance(element)` returns the existing component or creates a new one, so it is safe to call more than once for the same field.
+
+Autosize measures the field, so a hidden textarea gets the wrong height. Call `update()` once it becomes visible:
 
 ```js
-autosize.update(document.getElementById('message'));
+tabler.Autosize.getOrCreateInstance(document.getElementById('message')).update();
 ```
+
+Call `dispose()` to stop the plugin and remove the component from the element:
+
+```js
+tabler.Autosize.getInstance(document.getElementById('message'))?.dispose();
+```
+
+| Method | Description |
+| --- | --- |
+| `update()` | Recalculates the height, for example after the textarea becomes visible or its value changes from code. |
+| `dispose()` | Stops the plugin and removes the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element)` | Static. Returns the component for the element and creates it when needed. |
 
 ## Accessibility
 

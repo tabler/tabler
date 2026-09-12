@@ -1,5 +1,18 @@
+// The `autosize` package ships no type definitions
+declare module 'autosize' {
+  type AutosizeTarget = Element | ArrayLike<Element>
+
+  interface Autosize {
+    (target: AutosizeTarget): AutosizeTarget
+    update(target: AutosizeTarget): AutosizeTarget
+    destroy(target: AutosizeTarget): AutosizeTarget
+  }
+
+  const autosize: Autosize
+  export default autosize
+}
+
 interface Window {
-  autosize?: (element: HTMLElement | HTMLTextAreaElement) => void
   countUp?: {
     CountUp: new (
       target: HTMLElement,
