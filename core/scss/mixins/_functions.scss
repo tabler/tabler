@@ -66,12 +66,16 @@
  * @param {Color} $color - The base color to be made transparent.
  * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
  * @return {Color} - The resulting color with the specified transparency.
+ *
+ * Mixes in `oklab` so tints against an opaque background (e.g. alert backgrounds
+ * over `--bg-surface`) stay perceptually even; mixing with `transparent` gives
+ * the same result in every color space.
  */
 @function color-transparent($color, $alpha: 1, $background: transparent) {
   @if $alpha == 1 or $alpha == 100% {
     @return $color;
   }
-  @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
+  @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
 @function url-svg($svg) {
