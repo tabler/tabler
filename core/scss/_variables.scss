@@ -732,7 +732,7 @@ $backdrops: (
 ) !default;
 
 // Gradient
-$gradient: linear-gradient(180deg, rgba($white, 0.15), rgba($white, 0)) !default;
+$gradient: linear-gradient(180deg, color-transparent(var(--white), 0.15), color-transparent(var(--white), 0)) !default;
 
 // Borders
 $border-width: 1px !default;
@@ -1045,7 +1045,7 @@ $alert-margin-bottom: 1rem !default;
 $alert-link-font-weight: var(--font-weight-semibold) !default;
 $alert-border-width: var(--border-width) !default;
 $alert-border-color: var(--border-color-translucent) !default;
-$alert-shadow: rgba($dark, 0.04) 0 2px 4px 0 !default;
+$alert-shadow: color-transparent(var(--dark), 0.04) 0 2px 4px 0 !default;
 $alert-heading-margin-bottom: 0.25rem !default;
 $alert-icon-size: 1.25rem !default;
 $alert-padding-inline-end: 3rem !default;
@@ -1133,7 +1133,7 @@ $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
 $btn-focus-box-shadow: $focus-ring-box-shadow !default;
 $btn-disabled-opacity: 0.4 !default;
-$btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125) !default;
+$btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
 $btn-link-color: var(--link-color) !default;
 $btn-link-hover-color: var(--link-hover-color) !default;
@@ -1449,7 +1449,7 @@ $dropdown-dark-divider-bg: $dropdown-divider-bg !default;
 $dropdown-dark-box-shadow: null !default;
 $dropdown-dark-link-color: $dropdown-dark-color !default;
 $dropdown-dark-link-hover-color: $white !default;
-$dropdown-dark-link-hover-bg: rgba($white, 0.15) !default;
+$dropdown-dark-link-hover-bg: color-transparent(var(--white), 0.15) !default;
 $dropdown-dark-link-active-color: $dropdown-link-active-color !default;
 $dropdown-dark-link-active-bg: $dropdown-link-active-bg !default;
 $dropdown-dark-link-disabled-color: $gray-500 !default;
@@ -1594,23 +1594,24 @@ $navbar-light-active-color: var(--body-color) !default;
 $navbar-light-hover-color: var(--body-color) !default;
 $navbar-light-disabled-color: var(--disabled-color) !default;
 $navbar-light-active-bg: color-transparent(var(--primary), 0.08) !default;
-// Spelled with the literal prefix: this value is url-encoded into the svg data
-// uri below, so the build-time prefixing in .build/build-css.ts never sees a
-// `var()` here to rewrite (it arrives as `var%28--body-color%29`).
-$navbar-light-icon-color: color-transparent(var(--tblr-body-color), 0.75) !default;
+// Compile-time `rgba()` on purpose: this value is url-encoded into the svg data
+// uri below, and an svg image cannot resolve `var()` or `color-mix()` with
+// `var()` — the stroke would be dropped and the icon would disappear.
+$navbar-light-icon-color: rgba($body-color, 0.75) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
 $navbar-light-toggler-border-color: color-transparent(var(--emphasis-color), 0.15) !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;
 
-$navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
-$navbar-dark-hover-color: rgba($white, 0.75) !default;
-$navbar-dark-active-bg: rgba($white, 0.06) !default;
+$navbar-dark-color: color-transparent(var(--white), $text-secondary-opacity) !default;
+$navbar-dark-hover-color: color-transparent(var(--white), 0.75) !default;
+$navbar-dark-active-bg: color-transparent(var(--white), 0.06) !default;
 $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: var(--disabled-color) !default;
-$navbar-dark-icon-color: $navbar-dark-color !default;
+// Compile-time `rgba()` on purpose, see `$navbar-light-icon-color`.
+$navbar-dark-icon-color: rgba($white, $text-secondary-opacity) !default;
 $navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-dark-toggler-border-color: rgba($white, 0.1) !default;
+$navbar-dark-toggler-border-color: color-transparent(var(--white), 0.1) !default;
 $navbar-dark-brand-hover-color: $navbar-dark-active-color !default;
 
 $navbar-brand-font-size: $h2-font-size !default;
@@ -2023,7 +2024,7 @@ $form-range-thumb-height: 1rem !default;
 $form-range-thumb-bg: var(--primary) !default;
 $form-range-thumb-border: 2px var(--border-style) $white !default;
 $form-range-thumb-border-radius: 1rem !default;
-$form-range-thumb-box-shadow: 0 0.1rem 0.25rem rgba($black, 0.1) !default;
+$form-range-thumb-box-shadow: 0 0.1rem 0.25rem color-transparent(var(--black), 0.1) !default;
 $form-range-thumb-focus-box-shadow:
   0 0 0 1px $body-bg,
   $input-focus-box-shadow !default;
