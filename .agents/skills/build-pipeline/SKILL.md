@@ -19,7 +19,7 @@ Astro only renders pages. Every stylesheet, script, font and image on a page arr
 | Directory | Written by | Notes |
 | --- | --- | --- |
 | `core/dist/` | `@tabler/core` (`css:dev`, `js:build`, `copy`) | the framework: css, js, fonts, img, vendored libs |
-| `preview/tmp-assets/` | `preview` `assets` (`build-css.ts` + vite/terser) | demo css/js, isolated from Astro's output |
+| `preview/tmp-assets/` | `preview` `assets` / `watch:css` (`build-css.ts` + vite/terser) | demo css/js, isolated from Astro's output |
 | `docs/tmp-assets/css/` | `docs` `css` / `watch:css` (build-css, `--no-prefix`) | docs stylesheets |
 | `<pkg>/public/` | **`copy-assets` only** | fully generated, wiped and rebuilt on every Astro start |
 | `<pkg>/dist/` | `astro build` | the shipped site |
@@ -32,10 +32,10 @@ An Astro integration, configured per package in `astro.config.mjs`:
 
 - On `astro:config:done` it **deletes `public/`** and rebuilds it from the `copies` manifest (core dist, the package's `tmp-assets`, `shared/static`, favicons). Running it twice must never accumulate content — that is why it starts from a clean directory.
 - It is skipped when the Astro command is `sync`, so `astro check` (and CI's type-check job) does not need built workspace assets.
-- In dev it watches `syncDirs` and copies changed files into `public/`, then sends one coalesced `full-reload` (250 ms window, `.map` files ride along with their source file). `reloadDirs` are directories a watcher already writes into directly — those only get the reload.
+- In dev it watches `syncDirs` and copies changed files into `public/`, then sends one coalesced `full-reload` (250 ms window, `.map` files ride along with their source file).
 - `allowDestinationFallback` keeps the existing copy when the source vanishes mid-copy — `@tabler/core` cleaning `dist/` while `turbo dev` starts the dependents.
 
-**Rule for watchers:** because `public/` is wiped at startup, a watcher writing straight into it (preview's `watch:css` / `watch:js`) only works when `dev:prepare` has produced the same output into `tmp-assets` first, so the startup copy seeds it. The safer arrangement is docs': the watcher writes into `tmp-assets/css` and `copy-assets` syncs it to `public/css`. Prefer that for anything new.
+**Rule for watchers:** `copy-assets` is the only writer of `public/`. It wipes the directory at startup, and the wipe can race a watcher that writes there directly — that was the `ENOENT` in #3006. Every watcher (preview's and docs' `watch:css`) writes into `tmp-assets/css`, and `copy-assets` syncs it into `public/` via `syncDirs`. Do the same for anything new.
 
 ## 3. Ordering
 
@@ -56,7 +56,7 @@ Work down this list; each step is cheap:
 
 1. **404 on `/dist/css/tabler.css` or `/preview/css/demo.css`** — the source was never built. `pnpm --dir core run dev:prepare`, then `pnpm --dir preview run dev:prepare`.
 2. **Assets vanished after restarting dev** — something wrote into `public/` that `copy-assets` does not know about; it was wiped at startup. Add it to the manifest, or write it into `tmp-assets` instead.
-3. **CSS/JS edits do not appear** — the watcher is not running (started `astro dev` alone instead of the package's `dev` script), or its output dir is not in `syncDirs`/`reloadDirs`.
+3. **CSS/JS edits do not appear** — the watcher is not running (started `astro dev` alone instead of the package's `dev` script), or its output dir is not in `syncDirs`.
 4. **Stale content that survives a rebuild** — `pnpm --dir <pkg> run clean`, then `dev:prepare`.
 5. **`dist/` grows between identical builds** — an output dir is nested inside another copy step (see the first trap).
 6. **CI type-check fails on missing assets** — something made `copy-assets` run for the `sync` command; keep the early return.
