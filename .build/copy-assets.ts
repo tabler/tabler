@@ -58,11 +58,9 @@ interface CopyAssetsOptions {
   copies: CopyEntry[]
   /** generated source dirs to live-sync into publicDir while `astro dev` runs */
   syncDirs?: { from: string; to: string }[]
-  /** dirs written to directly by watchers — already in place, only trigger a browser reload */
-  reloadDirs?: string[]
 }
 
-export function copyAssets({ repo, publicDir, copies, syncDirs = [], reloadDirs = [] }: CopyAssetsOptions): Integration {
+export function copyAssets({ repo, publicDir, copies, syncDirs = [] }: CopyAssetsOptions): Integration {
   let command: string
 
   function rebuildPublicDir(logger: Logger) {
@@ -124,7 +122,7 @@ export function copyAssets({ repo, publicDir, copies, syncDirs = [], reloadDirs 
         // dirs during `pnpm run dev` (e.g. core/dist by core's watchers) would
         // never reach the served public/ copy. Watch them, sync changed files
         // into public/, and trigger a browser reload.
-        server.watcher.add([...syncDirs.map((dir) => dir.from), ...reloadDirs])
+        server.watcher.add(syncDirs.map((dir) => dir.from))
         let reloadTimer: ReturnType<typeof setTimeout> | undefined
         const scheduleReload = (file: string) => {
           // Source maps piggyback on their css/js file's reload. build-css.ts
@@ -146,7 +144,6 @@ export function copyAssets({ repo, publicDir, copies, syncDirs = [], reloadDirs 
             scheduleReload(file)
             return
           }
-          if (reloadDirs.some((dir) => file.startsWith(dir + sep))) scheduleReload(file)
         }
         server.watcher.on('add', sync)
         server.watcher.on('change', sync)
