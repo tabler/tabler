@@ -27,15 +27,15 @@ type BuildStep = {
 }
 
 const buildSteps: BuildStep[] = [
-  { status: 'success', icon: 'check', name: 'Clone', time: '2s', detail: 'Fetched <code>feat/redis-limiter</code> at <code>2e77b09</code>' },
-  { status: 'success', icon: 'check', name: 'Install', time: '38s', detail: 'pnpm install, 412 packages' },
-  { status: 'success', icon: 'check', name: 'Build', time: '24s', detail: 'pnpm build completed' },
+  { status: 'success', icon: 'check', name: 'Clone', time: '2s', detail: 'Checked out <code>feat/redis-limiter</code> at <code>2e77b09</code>' },
+  { status: 'success', icon: 'check', name: 'Install', time: '38s', detail: 'Installed 412 packages with pnpm, cache hit' },
+  { status: 'success', icon: 'check', name: 'Build', time: '24s', detail: 'Bundled 128 routes, 3.2 MB output' },
   {
     status: 'danger',
     icon: 'x',
     name: 'Compile',
     time: '8s',
-    detail: 'TypeScript exited with code 2',
+    detail: '<code>tsc</code> exited with code 2, 2 errors in 1 file',
     error: `src/lib/rate-limit.ts:47:12 - error TS2345:
 Argument of type 'RedisClient' is not assignable to
 parameter of type 'RateLimiterStore'.
@@ -47,13 +47,13 @@ type 'Promise<number>'.
 
 Found 2 errors in 1 file.`,
   },
-  { status: 'secondary', name: 'Deploy', time: '-', detail: 'Skipped' },
+  { status: 'secondary', name: 'Deploy', time: '-', detail: 'Skipped because Compile failed' },
 ]
 
 const nextSteps = [
-  { title: 'Fix type errors in <code>rate-limit.ts</code>', description: 'Align <code>RedisClient</code> with <code>RateLimiterStore</code>' },
-  { title: 'Push to <a href="#">feat/redis-limiter</a>', description: 'A new preview deploy starts automatically' },
-  { title: 'Or retry this deployment', description: 'Re-runs the same commit without a new push' },
+  { title: 'Fix the type errors in <code>rate-limit.ts</code>', description: 'Add the missing <code>incr</code> method to <code>RedisClient</code> and return <code>Promise&lt;number&gt;</code> from it.' },
+  { title: 'Push the fix to <a href="#">feat/redis-limiter</a>', description: 'Every push starts a new preview build for this branch.' },
+  { title: 'Or retry this deployment', description: 'Runs the same commit again. Use it only if you think the failure was temporary.' },
 ]
 ---
 
@@ -65,7 +65,7 @@ const nextSteps = [
     </ButtonList>
   </ProjectHeader>
 
-  <Alert color="danger" title="Build failed at Compile" description="Preview deployment stopped after 1m 12s. Production on <a href='#'>api.pulsehq.dev</a> is unchanged." class="mb-3" />
+  <Alert color="danger" title="Build failed at Compile" description="The preview build stopped after 1m 12s with 2 TypeScript errors in <code>src/lib/rate-limit.ts</code>. Production on <a href='#'>api.pulsehq.dev</a> is not affected." class="mb-3" />
 
   <div class="row row-cards">
     <div class="col-12">
@@ -73,7 +73,7 @@ const nextSteps = [
         <CardHeader>
           <CardTitle>Deployment</CardTitle>
           <CardActions>
-            <span class="text-secondary">pulse-api-2e77b09.relay.app, 1 day ago</span>
+            <span class="text-secondary">Started 1 day ago</span>
           </CardActions>
         </CardHeader>
         <CardBody>
@@ -83,7 +83,7 @@ const nextSteps = [
                 <StatusDot color="danger" />
                 Error
               </span>
-              <span class="text-secondary ms-1">failed at Compile, 1m 12s</span>
+              <span class="text-secondary ms-1">failed at Compile after 1m 12s</span>
             </DatagridItem>
             <DatagridItem title="Source">
               <a href="#" class="text-reset">
@@ -99,6 +99,9 @@ const nextSteps = [
             <DatagridItem title="Environment">
               <Badge text="Preview" color="secondary" light />
             </DatagridItem>
+            <DatagridItem title="Preview URL">
+              <span class="text-secondary">pulse-api-2e77b09.relay.app, not deployed</span>
+            </DatagridItem>
           </Datagrid>
         </CardBody>
       </Card>
@@ -109,7 +112,7 @@ const nextSteps = [
         <CardHeader>
           <CardTitle>Build steps</CardTitle>
           <CardActions>
-            <span class="text-secondary">3 of 5 completed</span>
+            <span class="text-secondary">3 passed, 1 failed, 1 skipped</span>
           </CardActions>
         </CardHeader>
         <CardBody>
@@ -129,7 +132,7 @@ const nextSteps = [
                         <>
                           {/* prettier-ignore */}
                           <pre class="mt-2 mb-2"><code set:text={step.error} /></pre>
-                          <a href="#">View full logs</a>
+                          <a href="#">Open the full Compile log</a>
                         </>
                       )}
                     </CardBody>
