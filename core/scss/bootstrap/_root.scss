@@ -3,173 +3,175 @@
 
 @use '../config' as *;
 
-:root,
-[data-bs-theme='light'],
-[data-theme='light'] {
-  // Note: Custom variable values only support SassScript inside `#{}`.
+@layer root {
+  :root,
+  [data-bs-theme='light'],
+  [data-theme='light'] {
+    // Note: Custom variable values only support SassScript inside `#{}`.
 
-  // Colors
-  //
-  // Generate palettes for full colors, grays, and theme colors.
+    // Colors
+    //
+    // Generate palettes for full colors, grays, and theme colors.
 
-  @each $color, $value in $colors {
-    --#{$color}: #{$value};
+    @each $color, $value in $colors {
+      --#{$color}: #{$value};
+    }
+
+    @each $color, $value in $grays {
+      --gray-#{$color}: #{$value};
+    }
+
+    @each $color, $value in $theme-colors {
+      --#{$color}: #{$value};
+    }
+
+    @each $color, $value in $theme-colors-rgb {
+      --#{$color}-rgb: #{$value};
+    }
+
+    // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)
+    @if $enable-dark-mode {
+      @each $color, $value in $theme-colors-text {
+        --#{$color}-text-emphasis: light-dark(#{$value}, #{map.get($theme-colors-text-dark, $color)});
+      }
+
+      @each $color, $value in $theme-colors-bg-subtle {
+        --#{$color}-bg-subtle: light-dark(#{$value}, #{map.get($theme-colors-bg-subtle-dark, $color)});
+      }
+
+      @each $color, $value in $theme-colors-border-subtle {
+        --#{$color}-border-subtle: light-dark(#{$value}, #{map.get($theme-colors-border-subtle-dark, $color)});
+      }
+    } @else {
+      @each $color, $value in $theme-colors-text {
+        --#{$color}-text-emphasis: #{$value};
+      }
+
+      @each $color, $value in $theme-colors-bg-subtle {
+        --#{$color}-bg-subtle: #{$value};
+      }
+
+      @each $color, $value in $theme-colors-border-subtle {
+        --#{$color}-border-subtle: #{$value};
+      }
+    }
+
+    --white-rgb: #{to-rgb($white)};
+    --black-rgb: #{to-rgb($black)};
+
+    // Fonts
+
+    // Note: Use `inspect` for lists so that quoted items keep the quotes.
+    // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
+    --font-sans-serif: #{meta.inspect($font-family-sans-serif)};
+    --font-monospace: #{meta.inspect($font-family-monospace)};
+    --gradient: #{$gradient};
+
+    // Root and body
+    // scss-docs-start root-body-variables
+    @if $font-size-root != null {
+      --root-font-size: #{$font-size-root};
+    }
+    --body-font-family: #{meta.inspect($font-family-base)};
+    @include rfs($font-size-base, --body-font-size);
+    --body-font-weight: #{$font-weight-base};
+    --body-line-height: #{$line-height-base};
+    --body-text-align: #{$body-text-align};
+
+    --body-color: light-dark(#{$body-color}, #{$body-color-dark});
+    --body-color-rgb: #{to-rgb($body-color)};
+    --body-bg: light-dark(#{$body-bg}, #{$body-bg-dark});
+    --body-bg-rgb: #{to-rgb($body-bg)};
+
+    --emphasis-color: light-dark(#{$body-emphasis-color}, #{$body-emphasis-color-dark});
+    --emphasis-color-rgb: #{to-rgb($body-emphasis-color)};
+
+    --secondary-color: light-dark(#{$body-secondary-color}, #{$body-secondary-color-dark});
+    --secondary-color-rgb: #{to-rgb($body-secondary-color)};
+    --secondary-bg: light-dark(#{$body-secondary-bg}, #{$body-secondary-bg-dark});
+    --secondary-bg-rgb: #{to-rgb($body-secondary-bg)};
+
+    --tertiary-color: light-dark(#{$body-tertiary-color}, #{$body-tertiary-color-dark});
+    --tertiary-color-rgb: #{to-rgb($body-tertiary-color)};
+    --tertiary-bg: light-dark(#{$body-tertiary-bg}, #{$body-tertiary-bg-dark});
+    --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg)};
+    // scss-docs-end root-body-variables
+
+    // $headings-color is itself light-dark(gray-900, white); the dark-mode block below
+    // overrides it to `inherit`, which can't be expressed as a light-dark() branch.
+    --heading-color: #{$headings-color};
+
+    --link-color: light-dark(#{$link-color}, #{$link-color-dark});
+    --link-color-rgb: #{to-rgb($link-color)};
+    --link-decoration: #{$link-decoration};
+
+    --link-hover-color: light-dark(#{$link-hover-color}, #{$link-hover-color-dark});
+    --link-hover-color-rgb: #{to-rgb($link-hover-color)};
+
+    @if $link-hover-decoration != null {
+      --link-hover-decoration: #{$link-hover-decoration};
+    }
+
+    // $code-color is itself light-dark(gray-600, gray-400); layout/_root.scss re-declares
+    // --code-color afterwards and is the one that actually wins in the compiled cascade.
+    --code-color: #{$code-color};
+    --highlight-color: light-dark(#{$mark-color}, #{$mark-color-dark});
+    --highlight-bg: light-dark(#{$mark-bg}, #{$mark-bg-dark});
+
+    // scss-docs-start root-border-var
+    --border-width: #{$border-width};
+    --border-style: #{$border-style};
+    --border-color: light-dark(#{$border-color}, #{$border-color-dark});
+    --border-color-translucent: light-dark(#{$border-color-translucent}, #{$border-color-translucent-dark});
+
+    --border-radius: #{$border-radius};
+    --border-radius-sm: #{$border-radius-sm};
+    --border-radius-lg: #{$border-radius-lg};
+    --border-radius-xl: #{$border-radius-xl};
+    --border-radius-xxl: #{$border-radius-xxl};
+    --border-radius-2xl: var(--border-radius-xxl); // Deprecated in v5.3.0 for consistency
+    --border-radius-pill: #{$border-radius-pill};
+    // scss-docs-end root-border-var
+
+    --box-shadow: #{$box-shadow};
+    --box-shadow-sm: #{$box-shadow-sm};
+    --box-shadow-lg: #{$box-shadow-lg};
+    --box-shadow-inset: #{$box-shadow-inset};
+
+    // Focus styles
+    // scss-docs-start root-focus-variables
+    --focus-ring-width: #{$focus-ring-width};
+    --focus-ring-opacity: #{$focus-ring-opacity};
+    --focus-ring-color: #{$focus-ring-color};
+    --focus-ring-inner-width: #{$focus-ring-inner-width};
+    --focus-ring-box-shadow: #{$focus-ring-box-shadow-value};
+    // scss-docs-end root-focus-variables
+
+    // scss-docs-start root-form-validation-variables
+    --form-valid-color: light-dark(#{$form-valid-color}, #{$form-valid-color-dark});
+    --form-valid-border-color: light-dark(#{$form-valid-border-color}, #{$form-valid-border-color-dark});
+    --form-invalid-color: light-dark(#{$form-invalid-color}, #{$form-invalid-color-dark});
+    --form-invalid-border-color: light-dark(#{$form-invalid-border-color}, #{$form-invalid-border-color-dark});
+    // scss-docs-end root-form-validation-variables
   }
 
-  @each $color, $value in $grays {
-    --gray-#{$color}: #{$value};
-  }
-
-  @each $color, $value in $theme-colors {
-    --#{$color}: #{$value};
-  }
-
-  @each $color, $value in $theme-colors-rgb {
-    --#{$color}-rgb: #{$value};
-  }
-
-  // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)
   @if $enable-dark-mode {
-    @each $color, $value in $theme-colors-text {
-      --#{$color}-text-emphasis: light-dark(#{$value}, #{map.get($theme-colors-text-dark, $color)});
+    @include color-mode(dark, true) {
+      // scss-docs-start root-dark-mode-vars
+      // -rgb triplets and non-color overrides can't be expressed inside light-dark(), so they stay here.
+      --body-color-rgb: #{to-rgb($body-color-dark)};
+      --body-bg-rgb: #{to-rgb($body-bg-dark)};
+      --emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
+      --secondary-color-rgb: #{to-rgb($body-secondary-color-dark)};
+      --secondary-bg-rgb: #{to-rgb($body-secondary-bg-dark)};
+      --tertiary-color-rgb: #{to-rgb($body-tertiary-color-dark)};
+      --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg-dark)};
+
+      --heading-color: #{$headings-color-dark};
+
+      --link-color-rgb: #{to-rgb($link-color-dark)};
+      --link-hover-color-rgb: #{to-rgb($link-hover-color-dark)};
+      // scss-docs-end root-dark-mode-vars
     }
-
-    @each $color, $value in $theme-colors-bg-subtle {
-      --#{$color}-bg-subtle: light-dark(#{$value}, #{map.get($theme-colors-bg-subtle-dark, $color)});
-    }
-
-    @each $color, $value in $theme-colors-border-subtle {
-      --#{$color}-border-subtle: light-dark(#{$value}, #{map.get($theme-colors-border-subtle-dark, $color)});
-    }
-  } @else {
-    @each $color, $value in $theme-colors-text {
-      --#{$color}-text-emphasis: #{$value};
-    }
-
-    @each $color, $value in $theme-colors-bg-subtle {
-      --#{$color}-bg-subtle: #{$value};
-    }
-
-    @each $color, $value in $theme-colors-border-subtle {
-      --#{$color}-border-subtle: #{$value};
-    }
-  }
-
-  --white-rgb: #{to-rgb($white)};
-  --black-rgb: #{to-rgb($black)};
-
-  // Fonts
-
-  // Note: Use `inspect` for lists so that quoted items keep the quotes.
-  // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
-  --font-sans-serif: #{meta.inspect($font-family-sans-serif)};
-  --font-monospace: #{meta.inspect($font-family-monospace)};
-  --gradient: #{$gradient};
-
-  // Root and body
-  // scss-docs-start root-body-variables
-  @if $font-size-root != null {
-    --root-font-size: #{$font-size-root};
-  }
-  --body-font-family: #{meta.inspect($font-family-base)};
-  @include rfs($font-size-base, --body-font-size);
-  --body-font-weight: #{$font-weight-base};
-  --body-line-height: #{$line-height-base};
-  --body-text-align: #{$body-text-align};
-
-  --body-color: light-dark(#{$body-color}, #{$body-color-dark});
-  --body-color-rgb: #{to-rgb($body-color)};
-  --body-bg: light-dark(#{$body-bg}, #{$body-bg-dark});
-  --body-bg-rgb: #{to-rgb($body-bg)};
-
-  --emphasis-color: light-dark(#{$body-emphasis-color}, #{$body-emphasis-color-dark});
-  --emphasis-color-rgb: #{to-rgb($body-emphasis-color)};
-
-  --secondary-color: light-dark(#{$body-secondary-color}, #{$body-secondary-color-dark});
-  --secondary-color-rgb: #{to-rgb($body-secondary-color)};
-  --secondary-bg: light-dark(#{$body-secondary-bg}, #{$body-secondary-bg-dark});
-  --secondary-bg-rgb: #{to-rgb($body-secondary-bg)};
-
-  --tertiary-color: light-dark(#{$body-tertiary-color}, #{$body-tertiary-color-dark});
-  --tertiary-color-rgb: #{to-rgb($body-tertiary-color)};
-  --tertiary-bg: light-dark(#{$body-tertiary-bg}, #{$body-tertiary-bg-dark});
-  --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg)};
-  // scss-docs-end root-body-variables
-
-  // $headings-color is itself light-dark(gray-900, white); the dark-mode block below
-  // overrides it to `inherit`, which can't be expressed as a light-dark() branch.
-  --heading-color: #{$headings-color};
-
-  --link-color: light-dark(#{$link-color}, #{$link-color-dark});
-  --link-color-rgb: #{to-rgb($link-color)};
-  --link-decoration: #{$link-decoration};
-
-  --link-hover-color: light-dark(#{$link-hover-color}, #{$link-hover-color-dark});
-  --link-hover-color-rgb: #{to-rgb($link-hover-color)};
-
-  @if $link-hover-decoration != null {
-    --link-hover-decoration: #{$link-hover-decoration};
-  }
-
-  // $code-color is itself light-dark(gray-600, gray-400); layout/_root.scss re-declares
-  // --code-color afterwards and is the one that actually wins in the compiled cascade.
-  --code-color: #{$code-color};
-  --highlight-color: light-dark(#{$mark-color}, #{$mark-color-dark});
-  --highlight-bg: light-dark(#{$mark-bg}, #{$mark-bg-dark});
-
-  // scss-docs-start root-border-var
-  --border-width: #{$border-width};
-  --border-style: #{$border-style};
-  --border-color: light-dark(#{$border-color}, #{$border-color-dark});
-  --border-color-translucent: light-dark(#{$border-color-translucent}, #{$border-color-translucent-dark});
-
-  --border-radius: #{$border-radius};
-  --border-radius-sm: #{$border-radius-sm};
-  --border-radius-lg: #{$border-radius-lg};
-  --border-radius-xl: #{$border-radius-xl};
-  --border-radius-xxl: #{$border-radius-xxl};
-  --border-radius-2xl: var(--border-radius-xxl); // Deprecated in v5.3.0 for consistency
-  --border-radius-pill: #{$border-radius-pill};
-  // scss-docs-end root-border-var
-
-  --box-shadow: #{$box-shadow};
-  --box-shadow-sm: #{$box-shadow-sm};
-  --box-shadow-lg: #{$box-shadow-lg};
-  --box-shadow-inset: #{$box-shadow-inset};
-
-  // Focus styles
-  // scss-docs-start root-focus-variables
-  --focus-ring-width: #{$focus-ring-width};
-  --focus-ring-opacity: #{$focus-ring-opacity};
-  --focus-ring-color: #{$focus-ring-color};
-  --focus-ring-inner-width: #{$focus-ring-inner-width};
-  --focus-ring-box-shadow: #{$focus-ring-box-shadow-value};
-  // scss-docs-end root-focus-variables
-
-  // scss-docs-start root-form-validation-variables
-  --form-valid-color: light-dark(#{$form-valid-color}, #{$form-valid-color-dark});
-  --form-valid-border-color: light-dark(#{$form-valid-border-color}, #{$form-valid-border-color-dark});
-  --form-invalid-color: light-dark(#{$form-invalid-color}, #{$form-invalid-color-dark});
-  --form-invalid-border-color: light-dark(#{$form-invalid-border-color}, #{$form-invalid-border-color-dark});
-  // scss-docs-end root-form-validation-variables
-}
-
-@if $enable-dark-mode {
-  @include color-mode(dark, true) {
-    // scss-docs-start root-dark-mode-vars
-    // -rgb triplets and non-color overrides can't be expressed inside light-dark(), so they stay here.
-    --body-color-rgb: #{to-rgb($body-color-dark)};
-    --body-bg-rgb: #{to-rgb($body-bg-dark)};
-    --emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
-    --secondary-color-rgb: #{to-rgb($body-secondary-color-dark)};
-    --secondary-bg-rgb: #{to-rgb($body-secondary-bg-dark)};
-    --tertiary-color-rgb: #{to-rgb($body-tertiary-color-dark)};
-    --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg-dark)};
-
-    --heading-color: #{$headings-color-dark};
-
-    --link-color-rgb: #{to-rgb($link-color-dark)};
-    --link-hover-color-rgb: #{to-rgb($link-hover-color-dark)};
-    // scss-docs-end root-dark-mode-vars
   }
 }

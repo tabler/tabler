@@ -2,22 +2,26 @@
 
 @use '../config' as *;
 
-.img-responsive {
-  --img-responsive-ratio: #{math.percentage(0.75)};
-  padding-top: var(--img-responsive-ratio);
-  background: no-repeat center/cover;
-}
-
-.img-responsive-grid {
-  padding-top: calc(var(--img-responsive-ratio) - calc(var(--gutter-y) / 2));
-}
-
-@each $key, $ratio in $aspect-ratios {
-  .img-responsive-#{$key} {
-    --img-responsive-ratio: #{$ratio};
+// `components`, not `content`: these are Tabler's image components, not the
+// element rules `bootstrap/_images.scss` puts in `content`.
+@layer components {
+  .img-responsive {
+    --img-responsive-ratio: #{math.percentage(0.75)};
+    padding-top: var(--img-responsive-ratio);
+    background: no-repeat center/cover;
   }
-}
 
-.img-bg {
-  background: no-repeat center/cover;
+  .img-responsive-grid {
+    padding-top: calc(var(--img-responsive-ratio) - calc(var(--gutter-y) / 2));
+  }
+
+  @each $key, $ratio in $aspect-ratios {
+    .img-responsive-#{$key} {
+      --img-responsive-ratio: #{$ratio};
+    }
+  }
+
+  .img-bg {
+    background: no-repeat center/cover;
+  }
 }

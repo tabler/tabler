@@ -1,113 +1,115 @@
 @use 'sass:map';
 @use 'config' as *;
 
-:root,
-:host {
-  /** Direction multiplier for physical transforms (1 = LTR, -1 = RTL) */
-  --dir: 1;
+@layer root {
+  :root,
+  :host {
+    /** Direction multiplier for physical transforms (1 = LTR, -1 = RTL) */
+    --dir: 1;
 
-  /** Fonts */
-  --font-monospace: #{$font-family-monospace};
-  --font-sans-serif: #{$font-family-sans-serif};
-  --font-serif: #{$font-family-serif};
-  --font-comic: #{$font-family-comic};
+    /** Fonts */
+    --font-monospace: #{$font-family-monospace};
+    --font-sans-serif: #{$font-family-sans-serif};
+    --font-serif: #{$font-family-serif};
+    --font-comic: #{$font-family-comic};
 
-  /** Gray colors */
-  --gray-50: #{$gray-50};
-  --gray-100: #{$gray-100};
-  --gray-200: #{$gray-200};
-  --gray-300: #{$gray-300};
-  --gray-400: #{$gray-400};
-  --gray-500: #{$gray-500};
-  --gray-600: #{$gray-600};
-  --gray-700: #{$gray-700};
-  --gray-800: #{$gray-800};
-  --gray-900: #{$gray-900};
-  --gray-950: #{$gray-950};
+    /** Gray colors */
+    --gray-50: #{$gray-50};
+    --gray-100: #{$gray-100};
+    --gray-200: #{$gray-200};
+    --gray-300: #{$gray-300};
+    --gray-400: #{$gray-400};
+    --gray-500: #{$gray-500};
+    --gray-600: #{$gray-600};
+    --gray-700: #{$gray-700};
+    --gray-800: #{$gray-800};
+    --gray-900: #{$gray-900};
+    --gray-950: #{$gray-950};
 
-  --white: #{$white};
-  --white-lt: color-mix(in oklab, var(--white) 10%, transparent);
-  --black: #{$black};
-  // `.shape-*` runs over `$colors`, which carries these three on top of the
-  // theme colors; the `-lt` tint below is generated for the theme colors only.
-  --black-lt: color-mix(in oklab, var(--black) 10%, transparent);
-  --gray-lt: color-mix(in oklab, var(--gray) 10%, transparent);
-  --gray-dark-lt: color-mix(in oklab, var(--gray-dark) 10%, transparent);
-  --dark: #{$dark};
-  --light: #{$light};
+    --white: #{$white};
+    --white-lt: color-mix(in oklab, var(--white) 10%, transparent);
+    --black: #{$black};
+    // `.shape-*` runs over `$colors`, which carries these three on top of the
+    // theme colors; the `-lt` tint below is generated for the theme colors only.
+    --black-lt: color-mix(in oklab, var(--black) 10%, transparent);
+    --gray-lt: color-mix(in oklab, var(--gray) 10%, transparent);
+    --gray-dark-lt: color-mix(in oklab, var(--gray-dark) 10%, transparent);
+    --dark: #{$dark};
+    --light: #{$light};
 
-  /** Brand colors */
-  --brand: #{$primary};
+    /** Brand colors */
+    --brand: #{$primary};
 
-  /** Theme colors */
-  @each $name, $color in map.merge($theme-colors, $social-colors) {
-    --#{$name}: #{$color};
-    --#{$name}-rgb: #{to-rgb($color)};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    --#{$name}-darken: #{theme-color-darker($color)};
-    --#{$name}-darken: color-mix(in oklab, var(--#{$name}), transparent 20%);
-    --#{$name}-lt: #{theme-color-lighter($color)};
-    --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
-    --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
-    --#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
-  }
-
-  /** Gray colors */
-  @each $name, $color in $gray-colors {
-    --#{$name}-fg: var(--#{$name});
-  }
-
-  /** Spacers */
-  @each $name, $value in $spacers {
-    --spacer-#{$name}: #{$value};
-  }
-
-  /** Font sizes */
-  @each $name, $value in $font-weights {
-    --font-weight-#{$name}: #{$value};
-  }
-
-  @each $name, $value in $font-sizes {
-    --font-size-h#{$name}: #{$value};
-  }
-
-  @each $name, $value in $line-heights {
-    --line-height-#{$name}: #{$value};
-  }
-
-  /** Shadows */
-  --shadow-color: #{$box-shadow-color};
-  @each $name, $value in $box-shadows {
-    --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
-  }
-
-  /** Borders */
-  --border-width-keyline: 0.5px;
-
-  /** Border radiuses */
-  --border-radius-scale: 1;
-  @each $name, $value in $border-radiuses {
-    @if $name {
-      --border-radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
-    } @else {
-      --border-radius: #{$value};
+    /** Theme colors */
+    @each $name, $color in map.merge($theme-colors, $social-colors) {
+      --#{$name}: #{$color};
+      --#{$name}-rgb: #{to-rgb($color)};
+      --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+      --#{$name}-darken: #{theme-color-darker($color)};
+      --#{$name}-darken: color-mix(in oklab, var(--#{$name}), transparent 20%);
+      --#{$name}-lt: #{theme-color-lighter($color)};
+      --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
+      --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
+      --#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
     }
+
+    /** Gray colors */
+    @each $name, $color in $gray-colors {
+      --#{$name}-fg: var(--#{$name});
+    }
+
+    /** Spacers */
+    @each $name, $value in $spacers {
+      --spacer-#{$name}: #{$value};
+    }
+
+    /** Font sizes */
+    @each $name, $value in $font-weights {
+      --font-weight-#{$name}: #{$value};
+    }
+
+    @each $name, $value in $font-sizes {
+      --font-size-h#{$name}: #{$value};
+    }
+
+    @each $name, $value in $line-heights {
+      --line-height-#{$name}: #{$value};
+    }
+
+    /** Shadows */
+    --shadow-color: #{$box-shadow-color};
+    @each $name, $value in $box-shadows {
+      --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
+    }
+
+    /** Borders */
+    --border-width-keyline: 0.5px;
+
+    /** Border radiuses */
+    --border-radius-scale: 1;
+    @each $name, $value in $border-radiuses {
+      @if $name {
+        --border-radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+      } @else {
+        --border-radius: #{$value};
+      }
+    }
+
+    /** Backdrops */
+    --backdrop-opacity: #{$backdrop-opacity};
+    --backdrop-bg: var(--bg-surface-dark);
+    @each $name, $value in $backdrops {
+      --backdrop-bg#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
+    }
+    --backdrop-blur: #{$backdrop-blur};
+    --backdrop-filter: blur(var(--backdrop-blur));
   }
 
-  /** Backdrops */
-  --backdrop-opacity: #{$backdrop-opacity};
-  --backdrop-bg: var(--bg-surface-dark);
-  @each $name, $value in $backdrops {
-    --backdrop-bg#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
+  [dir='ltr'] {
+    --dir: 1;
   }
-  --backdrop-blur: #{$backdrop-blur};
-  --backdrop-filter: blur(var(--backdrop-blur));
-}
 
-[dir='ltr'] {
-  --dir: 1;
-}
-
-[dir='rtl'] {
-  --dir: -1;
+  [dir='rtl'] {
+    --dir: -1;
+  }
 }

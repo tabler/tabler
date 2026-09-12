@@ -1,3 +1,5 @@
+@forward 'layers';
+
 @forward 'config';
 
 @forward 'marketing';
@@ -7,4 +9,6 @@
 @use 'utilities-marketing' as um;
 @use 'mixins/utilities-api' as *;
 
-@include utilities-api(um.$marketing-utilities);
+@layer utilities {
+  @include utilities-api(um.$marketing-utilities);
+}

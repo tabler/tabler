@@ -3,154 +3,156 @@ Select group
  */
 @use '../../config' as *;
 
-.form-selectgroup {
-  --form-selectgroup-gap: #{$form-selectgroup-gap};
-  --form-selectgroup-icon-margin-x: #{$form-selectgroup-icon-margin-x};
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: var(--form-selectgroup-gap);
-  margin: 0;
+@layer components {
+  .form-selectgroup {
+    --form-selectgroup-gap: #{$form-selectgroup-gap};
+    --form-selectgroup-icon-margin-x: #{$form-selectgroup-icon-margin-x};
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--form-selectgroup-gap);
+    margin: 0;
+
+    .form-selectgroup-item {
+      margin: 0;
+    }
+  }
+
+  .form-selectgroup-vertical {
+    flex-direction: column;
+  }
 
   .form-selectgroup-item {
-    margin: 0;
-  }
-}
-
-.form-selectgroup-vertical {
-  flex-direction: column;
-}
-
-.form-selectgroup-item {
-  position: relative;
-  display: block;
-}
-
-.form-selectgroup-input {
-  position: absolute;
-  inset-inline-start: 0;
-  top: 0;
-  z-index: -1;
-  opacity: 0;
-}
-
-.form-selectgroup-label {
-  position: relative;
-  display: block;
-  min-width: $input-height;
-  padding: $input-btn-padding-y $input-btn-padding-x;
-  margin: 0;
-  font-size: $input-btn-font-size;
-  line-height: $input-line-height;
-  color: var(--secondary);
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  background: $form-check-input-bg;
-  border: var(--border-width) var(--border-style) $input-border-color;
-  box-shadow: $input-box-shadow;
-  @include border-radius(var(--border-radius));
-  @include transition(border-color $transition-time, background $transition-time, color $transition-time);
-
-  .icon:only-child {
-    margin: 0 var(--form-selectgroup-icon-margin-x);
+    position: relative;
+    display: block;
   }
 
-  &:hover {
-    color: var(--body-color);
-    border-color: var(--border-active-color);
-  }
-}
-
-.form-selectgroup-check {
-  display: inline-block;
-  width: $form-check-input-width;
-  height: $form-check-input-width;
-  vertical-align: middle;
-  border: $form-check-input-border;
-  box-shadow: $form-check-input-box-shadow;
-
-  .form-selectgroup-input[type='checkbox'] + .form-selectgroup-label & {
-    @include border-radius($form-check-input-border-radius);
+  .form-selectgroup-input {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    z-index: -1;
+    opacity: 0;
   }
 
-  .form-selectgroup-input[type='radio'] + .form-selectgroup-label & {
-    @include border-radius($form-check-radio-border-radius);
-  }
-
-  .form-selectgroup-input:checked + .form-selectgroup-label & {
-    background-color: $form-check-input-checked-bg-color;
-    background-repeat: $form-check-input-checked-bg-repeat;
-    background-position: center;
-    background-size: $form-check-input-checked-bg-size;
-    border-color: $form-check-input-checked-border-color;
-  }
-
-  .form-selectgroup-input[type='checkbox']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-input-checked-bg-image);
-  }
-
-  .form-selectgroup-input[type='radio']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-radio-checked-bg-image);
-  }
-}
-
-.form-selectgroup-check-floated {
-  position: absolute;
-  inset-inline-end: $input-btn-padding-y;
-  top: $input-btn-padding-y;
-}
-
-.form-selectgroup-input:checked + .form-selectgroup-label {
-  z-index: 1;
-  color: #{$active-color};
-  background: var(--active-bg);
-  border-color: #{$active-border-color};
-}
-
-.form-selectgroup-input:focus + .form-selectgroup-label {
-  z-index: 2;
-  color: var(--primary);
-  border-color: var(--primary);
-  @include focus-ring($shadow: $input-btn-focus-box-shadow, $outline: null);
-}
-
-/**
-Alternate version of form select group
- */
-.form-selectgroup-boxes {
   .form-selectgroup-label {
-    padding: var(--card-spacer-y) var(--card-spacer-x);
-    color: inherit;
-    text-align: start;
+    position: relative;
+    display: block;
+    min-width: $input-height;
+    padding: $input-btn-padding-y $input-btn-padding-x;
+    margin: 0;
+    font-size: $input-btn-font-size;
+    line-height: $input-line-height;
+    color: var(--secondary);
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    background: $form-check-input-bg;
+    border: var(--border-width) var(--border-style) $input-border-color;
+    box-shadow: $input-box-shadow;
+    @include border-radius(var(--border-radius));
+    @include transition(border-color $transition-time, background $transition-time, color $transition-time);
+
+    .icon:only-child {
+      margin: 0 var(--form-selectgroup-icon-margin-x);
+    }
+
+    &:hover {
+      color: var(--body-color);
+      border-color: var(--border-active-color);
+    }
   }
 
-  .form-selectgroup-input:checked {
-    + .form-selectgroup-label {
+  .form-selectgroup-check {
+    display: inline-block;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    vertical-align: middle;
+    border: $form-check-input-border;
+    box-shadow: $form-check-input-box-shadow;
+
+    .form-selectgroup-input[type='checkbox'] + .form-selectgroup-label & {
+      @include border-radius($form-check-input-border-radius);
+    }
+
+    .form-selectgroup-input[type='radio'] + .form-selectgroup-label & {
+      @include border-radius($form-check-radio-border-radius);
+    }
+
+    .form-selectgroup-input:checked + .form-selectgroup-label & {
+      background-color: $form-check-input-checked-bg-color;
+      background-repeat: $form-check-input-checked-bg-repeat;
+      background-position: center;
+      background-size: $form-check-input-checked-bg-size;
+      border-color: $form-check-input-checked-border-color;
+    }
+
+    .form-selectgroup-input[type='checkbox']:checked + .form-selectgroup-label & {
+      background-image: escape-svg($form-check-input-checked-bg-image);
+    }
+
+    .form-selectgroup-input[type='radio']:checked + .form-selectgroup-label & {
+      background-image: escape-svg($form-check-radio-checked-bg-image);
+    }
+  }
+
+  .form-selectgroup-check-floated {
+    position: absolute;
+    inset-inline-end: $input-btn-padding-y;
+    top: $input-btn-padding-y;
+  }
+
+  .form-selectgroup-input:checked + .form-selectgroup-label {
+    z-index: 1;
+    color: #{$active-color};
+    background: var(--active-bg);
+    border-color: #{$active-border-color};
+  }
+
+  .form-selectgroup-input:focus + .form-selectgroup-label {
+    z-index: 2;
+    color: var(--primary);
+    border-color: var(--primary);
+    @include focus-ring($shadow: $input-btn-focus-box-shadow, $outline: null);
+  }
+
+  /**
+  Alternate version of form select group
+   */
+  .form-selectgroup-boxes {
+    .form-selectgroup-label {
+      padding: var(--card-spacer-y) var(--card-spacer-x);
       color: inherit;
+      text-align: start;
+    }
 
-      .form-selectgroup-title {
-        color: var(--primary);
-      }
+    .form-selectgroup-input:checked {
+      + .form-selectgroup-label {
+        color: inherit;
 
-      .form-selectgroup-label-content {
-        opacity: 1;
+        .form-selectgroup-title {
+          color: var(--primary);
+        }
+
+        .form-selectgroup-label-content {
+          opacity: 1;
+        }
       }
     }
   }
-}
 
-/**
-Select group
- */
-.form-selectgroup-pills {
-  flex-wrap: wrap;
-  align-items: start;
+  /**
+  Select group
+   */
+  .form-selectgroup-pills {
+    flex-wrap: wrap;
+    align-items: start;
 
-  .form-selectgroup-item {
-    flex-grow: 0;
-  }
+    .form-selectgroup-item {
+      flex-grow: 0;
+    }
 
-  .form-selectgroup-label {
-    @include border-radius(var(--border-radius-pill));
+    .form-selectgroup-label {
+      @include border-radius(var(--border-radius-pill));
+    }
   }
 }

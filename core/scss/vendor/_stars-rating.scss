@@ -6,6 +6,16 @@
   --gl-star-color-inactive: var(--border-color);
 }
 
+// The default star color is the one declaration in this file a project is meant
+// to override with a `.text-*` utility, so it goes in a layer — the rest of the
+// file stays unlayered to keep beating the widget's own stylesheet, which sets
+// no color of its own.
+@layer components {
+  [data-star-rating] .gl-active > .gl-star-full {
+    color: var(--gl-star-color);
+  }
+}
+
 [data-star-rating] {
   svg {
     width: var(--icon-size, var(--gl-star-size));
@@ -17,7 +27,6 @@
   }
 
   .gl-active > .gl-star-full {
-    color: var(--gl-star-color);
     fill: currentColor;
     stroke: currentColor;
   }

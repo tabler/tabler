@@ -5,6 +5,52 @@ description: Customize Tabler fonts, colors, and styles with CSS variables and S
 ---
 import Example from '@components/Example.astro';
 
+## Cascade layers
+
+Tabler ships its CSS inside [cascade layers](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer). The order is declared once, at the top of `tabler.css`:
+
+```css
+@layer colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities;
+```
+
+A later layer always wins over an earlier one, whatever the selectors weigh. That is what makes `.d-none` beat `.card` without `!important` - utilities carry none.
+
+### Your own CSS wins
+
+CSS that is not in a layer beats every layer. So your own stylesheet overrides Tabler on every property, with no `!important` and no extra selectors:
+
+```css
+/* Wins over `.card` in the components layer, even though both weigh the same. */
+.card {
+  border-radius: 0;
+}
+```
+
+Load your stylesheet after `tabler.css` only if you also need it to win over other unlayered CSS. Against Tabler itself the order of the files no longer matters.
+
+### The custom layer
+
+Use the empty `custom` layer when you want your rules to beat Tabler's components but still lose to its utilities, so a `.d-none` on the same element keeps working:
+
+```css
+@layer custom {
+  .card {
+    border-radius: 0;
+  }
+}
+```
+
+### !important works the other way round
+
+Inside layers, `!important` reverses the order: an important declaration in an earlier layer beats an important one in a later layer. Two rules follow from that:
+
+- An `!important` in your unlayered CSS still beats every `!important` Tabler ships.
+- An `!important` you add inside a layer no longer guarantees a win over an important declaration in an earlier layer. `[hidden] { display: none !important }` sits in `reboot`, so it beats `.d-block` and an `!important` of your own in a later layer. Move the rule out of the layer, or drop the `!important` and let the normal layer order apply.
+
+### Third party CSS
+
+A stylesheet you load from a library is unlayered too, so it beats Tabler's layers - including the utilities. `tabler-vendors.css`, which restyles the supported plugins, is left out of the layers for the same reason: it has to keep winning over the plugin's own CSS. The exception is a handful of seed color declarations there, which are layered on purpose so a `.text-*` utility can still recolor a slider or a star rating. If a utility no longer changes some other plugin's widget, write the override in your own unlayered CSS instead.
+
 ## Custom Google font
 
 To use a custom Google Fonts font in Tabler you must import the font in the `<head>` section of the page. In this example we will use the _Inter_ font:

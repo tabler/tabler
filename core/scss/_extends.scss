@@ -10,90 +10,99 @@
 // Rules containing only `@extend` emit no CSS of their own, so placing them
 // here does not change the compiled output — each extension is applied
 // in-place to the rules it extends.
+//
+// That also decides the cascade layer: an extending selector lands in the layer
+// of every rule it extends, not in the `@layer components` below. `.h1`–`.h6`
+// and `.hr` join their element rules in `reboot` and in `components`, `.small`
+// and `.mark` join theirs in `reboot` only, and `.prose > table` joins `.table`
+// in both `content` and `components`. Only the declarations `.prose > table`
+// adds on its own are emitted here, in `components`.
 @use 'config' as *;
 @use 'core';
 
-// Heading helpers (from `bootstrap/_type.scss`)
-.h1 {
-  @extend h1;
-}
-
-.h2 {
-  @extend h2;
-}
-
-.h3 {
-  @extend h3;
-}
-
-.h4 {
-  @extend h4;
-}
-
-.h5 {
-  @extend h5;
-}
-
-.h6 {
-  @extend h6;
-}
-
-// Emphasis helpers (from `bootstrap/_type.scss`)
-.small {
-  @extend small;
-}
-
-.mark {
-  @extend mark;
-}
-
-// Horizontal rule helper (from `ui/typo/_hr.scss`)
-.hr {
-  @extend hr;
-}
-
-// Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
-.prose > table,
-.markdown > table {
-  @extend .table;
-  font-size: var(--body-font-size);
-
-  th:first-child,
-  td:first-child {
-    padding-inline-start: 0;
+@layer components {
+  // Heading helpers (from `bootstrap/_type.scss`)
+  .h1 {
+    @extend h1;
   }
 
-  th:last-child,
-  td:last-child {
-    padding-inline-end: 0;
+  .h2 {
+    @extend h2;
   }
 
-  tr:last-child > * {
-    border-bottom: 0;
+  .h3 {
+    @extend h3;
   }
 
-  th {
-    --bg-surface-tertiary: transparent;
-  }
-}
-
-// Light-scoped subtrees inside a dark body inherit the dark styles
-// (from `layout/_dark.scss`)
-@if $enable-dark-mode {
-  body[data-bs-theme='dark'] [data-bs-theme='light'],
-  body[data-theme='dark'] [data-theme='light'] {
-    @extend [data-bs-theme='dark'];
+  .h4 {
+    @extend h4;
   }
 
-  // Navbar theme chosen at runtime (data-bs-navbar-theme on <html>). It covers
-  // whichever navigation the page shows — the vertical sidebar is a .navbar
-  // too. Extending the dark color mode keeps this route identical to the
-  // static one, which sets data-bs-theme="dark" on the element itself; the
-  // primary variant is the dark palette on a primary background (see
-  // layout/_navbar.scss). The default value writes no attribute and means
-  // "follow the page", so there is no rule for it.
-  html[data-bs-navbar-theme='dark'] .page > .navbar,
-  html[data-bs-navbar-theme='primary'] .page > .navbar {
-    @extend [data-bs-theme='dark'];
+  .h5 {
+    @extend h5;
+  }
+
+  .h6 {
+    @extend h6;
+  }
+
+  // Emphasis helpers (from `bootstrap/_type.scss`)
+  .small {
+    @extend small;
+  }
+
+  .mark {
+    @extend mark;
+  }
+
+  // Horizontal rule helper (from `ui/typo/_hr.scss`)
+  .hr {
+    @extend hr;
+  }
+
+  // Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
+  .prose > table,
+  .markdown > table {
+    @extend .table;
+    font-size: var(--body-font-size);
+
+    th:first-child,
+    td:first-child {
+      padding-inline-start: 0;
+    }
+
+    th:last-child,
+    td:last-child {
+      padding-inline-end: 0;
+    }
+
+    tr:last-child > * {
+      border-bottom: 0;
+    }
+
+    th {
+      --bg-surface-tertiary: transparent;
+    }
+  }
+
+  // Light-scoped subtrees inside a dark body inherit the dark styles
+  // (from `layout/_dark.scss`)
+  @if $enable-dark-mode {
+    body[data-bs-theme='dark'] [data-bs-theme='light'],
+    body[data-theme='dark'] [data-theme='light'] {
+      @extend [data-bs-theme='dark'];
+    }
+
+    // Navbar theme chosen at runtime (data-bs-navbar-theme on <html>). It covers
+    // whichever navigation the page shows — the vertical sidebar is a .navbar
+    // too. Extending the dark color mode keeps this route identical to the
+    // static one, which sets data-bs-theme="dark" on the element itself; the
+    // primary variant is the dark palette on a primary background (see
+    // layout/_navbar.scss). The default value writes no attribute and means
+    // "follow the page", so there is no rule for it.
+    html[data-bs-navbar-theme='dark'] .page > .navbar,
+    html[data-bs-navbar-theme='primary'] .page > .navbar {
+      @extend [data-bs-theme='dark'];
+    }
   }
 }

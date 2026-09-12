@@ -4,215 +4,217 @@
 
 @use '../config' as *;
 
-.card {
-  // Base `--card-*` tokens are declared on `.card` from `$card-tokens`
-  // in `ui/_cards.scss` so the component has a single token source.
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
-  height: var(--card-height);
-  color: var(--body-color);
-  word-wrap: break-word;
-  background-color: var(--card-bg);
-  background-clip: border-box;
-  border: var(--card-border-width) solid var(--card-border-color);
-  @include border-radius(var(--card-border-radius));
-  @include box-shadow(var(--card-box-shadow));
+@layer components {
+  .card {
+    // Base `--card-*` tokens are declared on `.card` from `$card-tokens`
+    // in `ui/_cards.scss` so the component has a single token source.
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+    height: var(--card-height);
+    color: var(--body-color);
+    word-wrap: break-word;
+    background-color: var(--card-bg);
+    background-clip: border-box;
+    border: var(--card-border-width) solid var(--card-border-color);
+    @include border-radius(var(--card-border-radius));
+    @include box-shadow(var(--card-box-shadow));
 
-  > hr {
-    margin-inline-end: 0;
-    margin-inline-start: 0;
+    > hr {
+      margin-inline-end: 0;
+      margin-inline-start: 0;
+    }
+
+    > .list-group {
+      border-top: inherit;
+      border-bottom: inherit;
+
+      &:first-child {
+        border-top-width: 0;
+        @include border-top-radius(var(--card-inner-border-radius));
+      }
+
+      &:last-child {
+        border-bottom-width: 0;
+        @include border-bottom-radius(var(--card-inner-border-radius));
+      }
+    }
+
+    // Due to specificity of the above selector (`.card > .list-group`), we must
+    // use a child selector here to prevent double borders.
+    > .card-header + .list-group,
+    > .list-group + .card-footer {
+      border-top: 0;
+    }
   }
 
-  > .list-group {
-    border-top: inherit;
-    border-bottom: inherit;
+  .card-body {
+    // Enable `flex-grow: 1` for decks and groups so that card blocks take up
+    // as much space as possible, ensuring footers are aligned to the bottom.
+    flex: 1 1 auto;
+    padding: var(--card-spacer-y) var(--card-spacer-x);
+    color: var(--card-color);
+  }
+
+  .card-title {
+    margin-bottom: var(--card-title-spacer-y);
+    color: var(--card-title-color);
+  }
+
+  .card-subtitle {
+    margin-top: calc(-0.5 * var(--card-title-spacer-y)); // stylelint-disable-line function-disallowed-list
+    margin-bottom: 0;
+    color: var(--card-subtitle-color);
+  }
+
+  .card-text:last-child {
+    margin-bottom: 0;
+  }
+
+  .card-link {
+    &:hover {
+      text-decoration: if(sass($link-hover-decoration == underline): none; else: null);
+    }
+
+    + .card-link {
+      margin-inline-start: var(--card-spacer-x);
+    }
+  }
+
+  //
+  // Optional textual caps
+  //
+
+  .card-header {
+    @if $card-header-bg != null {
+      --card-header-bg: #{$card-header-bg};
+    }
+    padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
+    margin-bottom: 0; // Removes the default margin-bottom of <hN>
+    color: var(--card-cap-color);
+    background-color: var(--card-header-bg, var(--card-cap-bg));
+    border-bottom: var(--card-border-width) solid var(--card-border-color);
 
     &:first-child {
-      border-top-width: 0;
-      @include border-top-radius(var(--card-inner-border-radius));
+      @include border-radius(var(--card-inner-border-radius) var(--card-inner-border-radius) 0 0);
     }
+  }
+
+  .card-footer {
+    @if $card-footer-bg != null {
+      --card-footer-bg: #{$card-footer-bg};
+    }
+    padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
+    color: var(--card-cap-color);
+    background-color: var(--card-footer-bg, var(--card-cap-bg));
+    border-top: var(--card-border-width) solid var(--card-border-color);
 
     &:last-child {
-      border-bottom-width: 0;
-      @include border-bottom-radius(var(--card-inner-border-radius));
+      @include border-radius(0 0 var(--card-inner-border-radius) var(--card-inner-border-radius));
     }
   }
 
-  // Due to specificity of the above selector (`.card > .list-group`), we must
-  // use a child selector here to prevent double borders.
-  > .card-header + .list-group,
-  > .list-group + .card-footer {
-    border-top: 0;
-  }
-}
+  //
+  // Header navs
+  //
 
-.card-body {
-  // Enable `flex-grow: 1` for decks and groups so that card blocks take up
-  // as much space as possible, ensuring footers are aligned to the bottom.
-  flex: 1 1 auto;
-  padding: var(--card-spacer-y) var(--card-spacer-x);
-  color: var(--card-color);
-}
+  .card-header-tabs {
+    margin-inline-end: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
+    margin-bottom: calc(-1 * var(--card-cap-padding-y)); // stylelint-disable-line function-disallowed-list
+    margin-inline-start: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
+    border-bottom: 0;
 
-.card-title {
-  margin-bottom: var(--card-title-spacer-y);
-  color: var(--card-title-color);
-}
-
-.card-subtitle {
-  margin-top: calc(-0.5 * var(--card-title-spacer-y)); // stylelint-disable-line function-disallowed-list
-  margin-bottom: 0;
-  color: var(--card-subtitle-color);
-}
-
-.card-text:last-child {
-  margin-bottom: 0;
-}
-
-.card-link {
-  &:hover {
-    text-decoration: if(sass($link-hover-decoration == underline): none; else: null);
+    .nav-link.active {
+      background-color: var(--card-bg);
+      border-bottom-color: var(--card-bg);
+    }
   }
 
-  + .card-link {
-    margin-inline-start: var(--card-spacer-x);
-  }
-}
-
-//
-// Optional textual caps
-//
-
-.card-header {
-  @if $card-header-bg != null {
-    --card-header-bg: #{$card-header-bg};
-  }
-  padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
-  margin-bottom: 0; // Removes the default margin-bottom of <hN>
-  color: var(--card-cap-color);
-  background-color: var(--card-header-bg, var(--card-cap-bg));
-  border-bottom: var(--card-border-width) solid var(--card-border-color);
-
-  &:first-child {
-    @include border-radius(var(--card-inner-border-radius) var(--card-inner-border-radius) 0 0);
-  }
-}
-
-.card-footer {
-  @if $card-footer-bg != null {
-    --card-footer-bg: #{$card-footer-bg};
-  }
-  padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
-  color: var(--card-cap-color);
-  background-color: var(--card-footer-bg, var(--card-cap-bg));
-  border-top: var(--card-border-width) solid var(--card-border-color);
-
-  &:last-child {
-    @include border-radius(0 0 var(--card-inner-border-radius) var(--card-inner-border-radius));
-  }
-}
-
-//
-// Header navs
-//
-
-.card-header-tabs {
-  margin-inline-end: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
-  margin-bottom: calc(-1 * var(--card-cap-padding-y)); // stylelint-disable-line function-disallowed-list
-  margin-inline-start: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
-  border-bottom: 0;
-
-  .nav-link.active {
-    background-color: var(--card-bg);
-    border-bottom-color: var(--card-bg);
-  }
-}
-
-.card-header-pills {
-  margin-inline-end: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
-  margin-inline-start: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
-}
-
-// Card image
-.card-img-overlay {
-  position: absolute;
-  inset: 0;
-  padding: var(--card-img-overlay-padding);
-  @include border-radius(var(--card-inner-border-radius));
-}
-
-.card-img,
-.card-img-top,
-.card-img-bottom {
-  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
-}
-
-.card-img,
-.card-img-top {
-  @include border-top-radius(var(--card-inner-border-radius));
-}
-
-.card-img,
-.card-img-bottom {
-  @include border-bottom-radius(var(--card-inner-border-radius));
-}
-
-//
-// Card groups
-//
-
-.card-group {
-  // The child selector allows nested `.card` within `.card-group`
-  // to display properly.
-  > .card {
-    margin-bottom: var(--card-group-margin);
+  .card-header-pills {
+    margin-inline-end: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
+    margin-inline-start: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
   }
 
-  @include media-breakpoint-up(sm) {
-    display: flex;
-    flex-flow: row wrap;
+  // Card image
+  .card-img-overlay {
+    position: absolute;
+    inset: 0;
+    padding: var(--card-img-overlay-padding);
+    @include border-radius(var(--card-inner-border-radius));
+  }
+
+  .card-img,
+  .card-img-top,
+  .card-img-bottom {
+    width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
+  }
+
+  .card-img,
+  .card-img-top {
+    @include border-top-radius(var(--card-inner-border-radius));
+  }
+
+  .card-img,
+  .card-img-bottom {
+    @include border-bottom-radius(var(--card-inner-border-radius));
+  }
+
+  //
+  // Card groups
+  //
+
+  .card-group {
     // The child selector allows nested `.card` within `.card-group`
     // to display properly.
     > .card {
-      flex: 1 0 0;
-      margin-bottom: 0;
+      margin-bottom: var(--card-group-margin);
+    }
 
-      + .card {
-        margin-inline-start: 0;
-        border-inline-start: 0;
-      }
+    @include media-breakpoint-up(sm) {
+      display: flex;
+      flex-flow: row wrap;
+      // The child selector allows nested `.card` within `.card-group`
+      // to display properly.
+      > .card {
+        flex: 1 0 0;
+        margin-bottom: 0;
 
-      // Handle rounded corners
-      @if $enable-rounded {
-        &:not(:last-child) {
-          @include border-end-radius(0);
-
-          > .card-img-top,
-          > .card-header {
-            // stylelint-disable-next-line property-disallowed-list
-            border-top-right-radius: 0;
-          }
-          > .card-img-bottom,
-          > .card-footer {
-            // stylelint-disable-next-line property-disallowed-list
-            border-bottom-right-radius: 0;
-          }
+        + .card {
+          margin-inline-start: 0;
+          border-inline-start: 0;
         }
 
-        &:not(:first-child) {
-          @include border-start-radius(0);
+        // Handle rounded corners
+        @if $enable-rounded {
+          &:not(:last-child) {
+            @include border-end-radius(0);
 
-          > .card-img-top,
-          > .card-header {
-            // stylelint-disable-next-line property-disallowed-list
-            border-top-left-radius: 0;
+            > .card-img-top,
+            > .card-header {
+              // stylelint-disable-next-line property-disallowed-list
+              border-top-right-radius: 0;
+            }
+            > .card-img-bottom,
+            > .card-footer {
+              // stylelint-disable-next-line property-disallowed-list
+              border-bottom-right-radius: 0;
+            }
           }
-          > .card-img-bottom,
-          > .card-footer {
-            // stylelint-disable-next-line property-disallowed-list
-            border-bottom-left-radius: 0;
+
+          &:not(:first-child) {
+            @include border-start-radius(0);
+
+            > .card-img-top,
+            > .card-header {
+              // stylelint-disable-next-line property-disallowed-list
+              border-top-left-radius: 0;
+            }
+            > .card-img-bottom,
+            > .card-footer {
+              // stylelint-disable-next-line property-disallowed-list
+              border-bottom-left-radius: 0;
+            }
           }
         }
       }
