@@ -6,5 +6,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     include: ['scss/tests/**/*.test.mjs'],
+    // Specs that compile every Sass entry point in parallel need more than the 5s default on CI.
+    testTimeout: 30_000,
   },
 })
