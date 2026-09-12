@@ -1,5 +1,17 @@
 # @tabler/docs
 
+## 1.6.0
+
+### Patch Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 86ac4f1: Fixed the unreadable "5" badge in the avatar status docs example by adding `text-gray-100`.
+- 6f96282: Fixed the "Card on a background pattern" docs example so the preview shows the `.bg-pattern-diagonal` background.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 0fe02b3: Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+- 107e493: Updated the color palette to `oklch()`, masked the checkbox, switch, toggler and carousel icons, and removed the `tabler` JS namespace.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`, with countUp.js bundled.
+
 ## 1.5.1
 
 ### Patch Changes

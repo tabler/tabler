@@ -1,5 +1,22 @@
 # @tabler/core
 
+## 1.6.0
+
+### Minor Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+- 0fe02b3: Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+- 107e493: Updated the color palette to `oklch()`, masked the checkbox, switch, toggler and carousel icons, and removed the `tabler` JS namespace.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`, with countUp.js bundled.
+
+### Patch Changes
+
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 64dd529: Fixed the `.form-selectgroup-label` icon-only margin applying to icons nested deeper inside the label.
+- c1786b5: Added `overscroll-behavior: contain` to `.modal`, `.modal-body`, `.offcanvas-body` and `.dropdown-menu-scrollable`.
+- 1ffbeec: Updated the Bootstrap component port to strict TypeScript with typed `ComponentConfig` types and added `eventActionOnPlugin`.
+
 ## 1.5.1
 
 ### Patch Changes
