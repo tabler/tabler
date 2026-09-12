@@ -1,0 +1,80 @@
+---
+title: CSS plugin
+seoTitle: Payments CSS plugin
+summary: The payments plugin adds payment provider logos, such as Visa or PayPal, as CSS classes for checkout pages and forms.
+description: Show payment provider logos like Visa, Mastercard, and PayPal with the payments CSS plugin to make checkout pages clearer.
+order: 1
+css-plugins: [payments]
+---
+
+import Example from '@components/Example.astro'
+import Payments from '@components/Payments.astro'
+import CdnImportPlugin from '@components/CdnImportPlugin.astro'
+
+## Installation
+
+The payment logos are a plugin. Include `tabler-payments.css` or `tabler-payments.min.css` in your page to enable them.
+
+You can also include the plugin via CDN:
+
+<CdnImportPlugin plugins={['payments']} />
+
+## Payment
+
+Add the `payment` class to an element and a `payment-provider-*` class with the provider name. The full list is at the end of this page.
+
+<Example centered>
+<span class="payment payment-provider-shopify"></span>
+<span class="payment payment-provider-visa"></span>
+<span class="payment payment-provider-paypal"></span>
+</Example>
+
+## Payment sizes
+
+Add a size class such as `payment-lg` to scale the logo. The names follow the usual Bootstrap pattern.
+
+<Example centered>
+<span class="payment payment-xl payment-provider-shopify"></span>
+<span class="payment payment-lg payment-provider-visa"></span>
+<span class="payment payment-md payment-provider-paypal"></span>
+<span class="payment payment-sm payment-provider-amazon"></span>
+<span class="payment payment-xs payment-provider-blik"></span>
+</Example>
+
+## Light and dark logos
+
+Every provider ships in two variants. `payment-provider-*` is the light one, and `payment-provider-*-dark` is meant for a dark surface.
+
+<Example centered background="dark">
+<span class="payment payment-lg payment-provider-visa-dark"></span>
+<span class="payment payment-lg payment-provider-paypal-dark"></span>
+<span class="payment payment-lg payment-provider-mastercard-dark"></span>
+</Example>
+
+## Accepted methods in a checkout
+
+The usual place for these logos is under a payment form, to say which cards you take. They are decoration there, so keep the list in text as well.
+
+<Example>
+<div>
+  <div class="text-secondary mb-2">We accept Visa, Mastercard and PayPal.</div>
+  <div class="d-flex gap-1" aria-hidden="true">
+    <span class="payment payment-provider-visa"></span>
+    <span class="payment payment-provider-mastercard"></span>
+    <span class="payment payment-provider-paypal"></span>
+  </div>
+</div>
+</Example>
+
+## List of available payment providers
+
+Every provider below comes in a light and a dark variant. Pick the one that matches the surface it sits on.
+
+<Payments />
+
+## Accessibility
+
+- A card logo is a picture. Put the card name in text or in an `aria-label`, so the accepted methods are not left to logo recognition.
+- When the logos only say which cards you take, they are decoration. Mark them `aria-hidden="true"` and put the list in a sentence: "We accept Visa, Mastercard and American Express."
+- When a logo is a choice the user makes, it has to be a real `input` with a label, not a clickable image. See [image check](/ui/forms/image-check).
+- Never rely on the logo alone to mark the selected payment method. Add a visible mark and keep the state in the input.

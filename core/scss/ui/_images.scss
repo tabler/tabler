@@ -3,18 +3,18 @@
 @use '../config' as *;
 
 .img-responsive {
-  --#{$prefix}img-responsive-ratio: #{math.percentage(0.75)};
+  --img-responsive-ratio: #{math.percentage(0.75)};
+  padding-top: var(--img-responsive-ratio);
   background: no-repeat center/cover;
-  padding-top: var(--#{$prefix}img-responsive-ratio);
 }
 
 .img-responsive-grid {
-  padding-top: calc(var(--#{$prefix}img-responsive-ratio) - calc(var(--#{$prefix}gutter-y) / 2));
+  padding-top: calc(var(--img-responsive-ratio) - calc(var(--gutter-y) / 2));
 }
 
 @each $key, $ratio in $aspect-ratios {
   .img-responsive-#{$key} {
-    --#{$prefix}img-responsive-ratio: #{$ratio};
+    --img-responsive-ratio: #{$ratio};
   }
 }
 

@@ -4,60 +4,62 @@
 .modal-header {
   > .btn-close {
     position: absolute;
-    top: 0;
     inset-inline-end: 0;
+    top: 0;
+    z-index: 10;
     width: $modal-header-height;
     height: $modal-header-height;
-    margin: 0;
     padding: 0;
-    z-index: 10;
+    margin: 0;
   }
 }
 
 .modal-body {
-  @include scrollbar;
+  @include scrollbar();
+  overscroll-behavior: contain;
 
   .modal-title {
-    margin-bottom: 1rem;
+    margin-bottom: var(--modal-body-title-margin-bottom);
   }
 
   & + & {
-    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border-top: var(--border-width) var(--border-style) var(--border-color);
   }
 }
 
 .modal-status {
   position: absolute;
-  top: 0;
   inset-inline-start: 0;
   inset-inline-end: 0;
+  top: 0;
   height: $modal-status-size;
-  background: var(--#{$prefix}secondary);
+  background: var(--secondary);
   @include border-radius($modal-content-border-radius $modal-content-border-radius 0 0);
 }
 
 .modal-header {
   align-items: center;
   min-height: $modal-header-height;
+  padding-block: 0;
+  padding-inline: $modal-inner-padding $modal-header-height;
   background: $modal-header-bg;
-  padding: 0 $modal-header-height 0 $modal-inner-padding;
 }
 
 .modal-title {
   font-size: $h3-font-size;
   font-weight: $headings-font-weight;
-  color: $headings-color;
   line-height: $line-height-base;
+  color: $headings-color;
 }
 
 .modal-footer {
   @if $modal-footer-border-width == 0 {
     padding-top: 0;
   } @else {
-    padding-top: 0.75rem;
+    padding-top: var(--modal-footer-padding-y);
   }
 
-  padding-bottom: 0.75rem;
+  padding-bottom: var(--modal-footer-padding-y);
 }
 
 .modal-blur {
@@ -70,7 +72,28 @@
 }
 
 .modal {
-  @include media-print {
+  --modal-body-title-margin-bottom: #{$modal-body-title-margin-bottom};
+  --modal-footer-padding-y: #{$modal-footer-padding-y};
+
+  overscroll-behavior: contain;
+
+  @include media-print() {
     display: none !important;
   }
+}
+
+//
+// Native dialog
+//
+// Make the backdrop of a native `<dialog>` opened with `showModal()` match the
+// backdrop used by modals and offcanvases.
+//
+// The alpha is part of the color instead of `opacity`, so that `backdrop-filter`
+// blurs the page instead of blending a blurred copy over the sharp one.
+dialog::backdrop {
+  background: color-mix(in sRGB, var(--backdrop-bg) calc(var(--backdrop-opacity) * 100%), transparent);
+}
+
+dialog.modal-blur::backdrop {
+  backdrop-filter: var(--backdrop-filter);
 }

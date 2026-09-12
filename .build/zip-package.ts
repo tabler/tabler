@@ -5,42 +5,29 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readFileSync } from 'node:fs'
 
-// Get __dirname in ESM
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 interface PackageJson {
-	version: string
-	[key: string]: unknown
+  version: string
+  [key: string]: unknown
 }
 
-const pkg: PackageJson = JSON.parse(
-	readFileSync(path.join(__dirname, '../core', 'package.json'), 'utf8')
-)
+const pkg: PackageJson = JSON.parse(readFileSync(path.join(__dirname, '../core', 'package.json'), 'utf8'))
 
-// Create zip instance and add folder
+// macOS and Windows drop these files into the folders they browse, so a zip
+// built there ships them to everyone who downloads the package.
+const junkFiles = ['.DS_Store', 'Thumbs.db']
+const isJunk = (entry: string): boolean => junkFiles.includes(path.basename(entry))
+
 const zip = new AdmZip()
-zip.addLocalFolder(path.join(__dirname, '../preview/dist'), 'dashboard')
+zip.addLocalFolder(path.join(__dirname, '../preview/dist'), 'dashboard', (entry: string) => !isJunk(entry))
 
-zip.addLocalFile(
-	path.join(__dirname, '../shared/static', 'og.png'),
-	'.',
-	'preview.png'
-)
+zip.addLocalFile(path.join(__dirname, '../shared/static', 'og.png'), '.', 'preview.png')
 
-zip.addFile(
-	'documentation.url',
-	Buffer.from('[InternetShortcut]\nURL = https://tabler.io/docs')
-)
+zip.addFile('documentation.url', Buffer.from('[InternetShortcut]\nURL = https://tabler.io/docs'))
 
-// Folder to zip and output path
-const outputZipPath = path.join(
-	__dirname,
-	'../packages-zip',
-	`tabler-${pkg.version}.zip`
-)
+const outputZipPath = path.join(__dirname, '../packages-zip', `tabler-${pkg.version}.zip`)
 
-// Write the zip file
 zip.writeZip(outputZipPath)
 
 console.log(`Zipped folder to ${outputZipPath}`)
-

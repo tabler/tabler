@@ -1,0 +1,105 @@
+---
+import { range } from '@shared/lib/array'
+import Icon from './Icon.astro'
+
+interface Props {
+  count: number
+  offset?: number
+  /** 1-based index of the active page (default: first) */
+  activeItem?: number
+  class?: string
+  firstLast?: boolean
+  text?: boolean
+  prevDescription?: string
+  nextDescription?: string
+}
+
+const { count, offset = count, activeItem = 1, class: className, firstLast, text, prevDescription, nextDescription } = Astro.props
+
+// (1..offset), then (count-offset+1..count) when there is a tail
+const firstPages = range(1, offset)
+const countOffset = count - offset + 1
+const lastPages = offset < count ? range(countOffset, count) : []
+---
+
+<!-- BEGIN PAGINATION -->
+<nav aria-label="Pagination">
+  <ul class={`pagination${className ? ` ${className}` : ''}`}>
+    {
+      firstLast && (
+        <li class="page-item disabled">
+          <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true" aria-label={!text ? 'First page' : undefined}>
+            {!text ? <Icon name="chevrons-left" /> : 'First'}
+          </a>
+        </li>
+      )
+    }
+    <li class={`page-item${prevDescription ? ' page-prev' : ''} disabled`}>
+      <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true" aria-label={!prevDescription && !text ? 'Previous page' : undefined}>
+        {
+          prevDescription ? (
+            <>
+              <div class="page-item-subtitle">previous</div>
+              <div class="page-item-title">{prevDescription}</div>
+            </>
+          ) : !text ? (
+            <Icon name="chevron-left" />
+          ) : (
+            'Previous'
+          )
+        }
+      </a>
+    </li>
+    {
+      firstPages.map((i) => (
+        <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
+            {i}
+          </a>
+        </li>
+      ))
+    }
+    {
+      offset < count && (
+        <>
+          <li class="page-item">
+            <span class="page-link disabled">&hellip;</span>
+          </li>
+          {lastPages.map((i) => (
+            <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
+                {i}
+              </a>
+            </li>
+          ))}
+        </>
+      )
+    }
+    <li class={`page-item${nextDescription ? ' page-next' : ''}`}>
+      <a class={`page-link${text ? ' page-text' : ''}`} href="#" aria-label={!nextDescription && !text ? 'Next page' : undefined}>
+        {
+          nextDescription ? (
+            <>
+              <div class="page-item-subtitle">next</div>
+              <div class="page-item-title">{nextDescription}</div>
+            </>
+          ) : !text ? (
+            <Icon name="chevron-right" />
+          ) : (
+            'Next'
+          )
+        }
+      </a>
+    </li>
+    {
+      firstLast && (
+        <li class="page-item">
+          <a class={`page-link${text ? ' page-text' : ''}`} href="#" aria-label={!text ? 'Last page' : undefined}>
+            {!text ? <Icon name="chevrons-right" /> : 'Last'}
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>
+<!-- END PAGINATION -->

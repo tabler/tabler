@@ -1,0 +1,17 @@
+---
+// A single label/value pair (.datagrid-item); slot renders the value.
+
+interface Props {
+  title: string
+  class?: string
+}
+
+const { title, class: className } = Astro.props
+---
+
+<div class:list={['datagrid-item', className]}>
+  <div class="datagrid-title">{title}</div>
+  <div class="datagrid-content">
+    <slot />
+  </div>
+</div>

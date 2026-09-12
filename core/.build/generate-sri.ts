@@ -1,121 +1,134 @@
+// Writes SRI hashes for the built core files to shared/data/sri.json.
+//
+// Nothing consumes that file yet: the CDN snippets in the docs are shown without `integrity`, and
+// Subresource Integrity is planned for v2.0. The script is kept here so the hashes are ready to be
+// wired up then; it is not part of any build or workflow. Run it by hand after building core:
+//
+//   pnpm exec tsx core/.build/generate-sri.ts
+//
+// Hashes describe the release the snippets would link to (@tabler/core@<version>), so a real setup
+// must run this against the published build — hashing an unreleased core/dist would pin an
+// `integrity` value the browser rejects, which is worse for users than no `integrity` at all. The
+// version is stored next to the hashes so the consumer can check the two match.
 import * as crypto from 'node:crypto'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const configFile = path.join(__dirname, '../../shared/data/sri.json')
+const distDir = path.join(__dirname, '../dist')
+const { version } = JSON.parse(readFileSync(path.join(__dirname, '../package.json'), 'utf8')) as { version: string }
 
 interface FileConfig {
-	file: string
-	configPropertyName: string
+  file: string
+  configPropertyName: string
+}
+
+interface SriData {
+  version: string
+  hashes: Record<string, string>
 }
 
 const files: FileConfig[] = [
-	{
-		file: 'dist/css/tabler.min.css',
-		configPropertyName: 'css'
-	},
-	{
-		file: 'dist/css/tabler.rtl.min.css',
-		configPropertyName: 'css-rtl'
-	},
-	{
-		file: 'dist/css/tabler-flags.min.css',
-		configPropertyName: 'css-flags'
-	},
-	{
-		file: 'dist/css/tabler-flags.rtl.min.css',
-		configPropertyName: 'css-flags-rtl'
-	},
-	{
-		file: 'dist/css/tabler-marketing.min.css',
-		configPropertyName: 'css-marketing'
-	},
-	{
-		file: 'dist/css/tabler-marketing.rtl.min.css',
-		configPropertyName: 'css-marketing-rtl'
-	},
-	{
-		file: 'dist/css/tabler-payments.min.css',
-		configPropertyName: 'css-payments'
-	},
-	{
-		file: 'dist/css/tabler-payments.rtl.min.css',
-		configPropertyName: 'css-payments-rtl'
-	},
-	{
-		file: 'dist/css/tabler-props.min.css',
-		configPropertyName: 'css-props'
-	},
-	{
-		file: 'dist/css/tabler-props.rtl.min.css',
-		configPropertyName: 'css-props-rtl'
-	},
-	{
-		file: 'dist/css/tabler-themes.min.css',
-		configPropertyName: 'css-themes'
-	},
-	{
-		file: 'dist/css/tabler-themes.rtl.min.css',
-		configPropertyName: 'css-themes-rtl'
-	},
-	{
-		file: 'dist/css/tabler-socials.min.css',
-		configPropertyName: 'css-socials'
-	},
-	{
-		file: 'dist/css/tabler-socials.rtl.min.css',
-		configPropertyName: 'css-socials-rtl'
-	},
-	{
-		file: 'dist/css/tabler-vendors.min.css',
-		configPropertyName: 'css-vendors'
-	},
-	{
-		file: 'dist/css/tabler-vendors.rtl.min.css',
-		configPropertyName: 'css-vendors-rtl'
-	},
-	{
-		file: 'dist/js/tabler.min.js',
-		configPropertyName: 'js'
-	},
-	{
-		file: 'dist/js/tabler-theme.min.js',
-		configPropertyName: 'js-theme'
-	},
+  {
+    file: 'css/tabler.min.css',
+    configPropertyName: 'css',
+  },
+  {
+    file: 'css/tabler.rtl.min.css',
+    configPropertyName: 'css-rtl',
+  },
+  {
+    file: 'css/tabler-flags.min.css',
+    configPropertyName: 'css-flags',
+  },
+  {
+    file: 'css/tabler-flags.rtl.min.css',
+    configPropertyName: 'css-flags-rtl',
+  },
+  {
+    file: 'css/tabler-marketing.min.css',
+    configPropertyName: 'css-marketing',
+  },
+  {
+    file: 'css/tabler-marketing.rtl.min.css',
+    configPropertyName: 'css-marketing-rtl',
+  },
+  {
+    file: 'css/tabler-payments.min.css',
+    configPropertyName: 'css-payments',
+  },
+  {
+    file: 'css/tabler-payments.rtl.min.css',
+    configPropertyName: 'css-payments-rtl',
+  },
+  {
+    file: 'css/tabler-props.min.css',
+    configPropertyName: 'css-props',
+  },
+  {
+    file: 'css/tabler-props.rtl.min.css',
+    configPropertyName: 'css-props-rtl',
+  },
+  {
+    file: 'css/tabler-themes.min.css',
+    configPropertyName: 'css-themes',
+  },
+  {
+    file: 'css/tabler-themes.rtl.min.css',
+    configPropertyName: 'css-themes-rtl',
+  },
+  {
+    file: 'css/tabler-socials.min.css',
+    configPropertyName: 'css-socials',
+  },
+  {
+    file: 'css/tabler-socials.rtl.min.css',
+    configPropertyName: 'css-socials-rtl',
+  },
+  {
+    file: 'css/tabler-vendors.min.css',
+    configPropertyName: 'css-vendors',
+  },
+  {
+    file: 'css/tabler-vendors.rtl.min.css',
+    configPropertyName: 'css-vendors-rtl',
+  },
+  {
+    file: 'js/tabler.min.js',
+    configPropertyName: 'js',
+  },
+  {
+    file: 'js/tabler-theme.min.js',
+    configPropertyName: 'js-theme',
+  },
 ]
 
 function generateSRI(): void {
-	const sriData: Record<string, string> = {}
+  const hashes: Record<string, string> = {}
 
-	for (const { file, configPropertyName } of files) {
-		try {
-			const filePath = path.join(__dirname, '..', file)
-			const data = readFileSync(filePath, 'utf8')
+  for (const { file, configPropertyName } of files) {
+    const filePath = path.join(distDir, file)
 
-			const algorithm = 'sha384'
-			const hash = crypto.createHash(algorithm).update(data, 'utf8').digest('base64')
-			const integrity = `${algorithm}-${hash}`
+    if (!existsSync(filePath)) {
+      throw new Error(`${filePath} is missing. Run \`pnpm --filter @tabler/core build\` first.`)
+    }
 
-			console.log(`${configPropertyName}: ${integrity}`)
+    const integrity = `sha384-${crypto.createHash('sha384').update(readFileSync(filePath)).digest('base64')}`
 
-			sriData[configPropertyName] = integrity
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : String(error)
-			console.error(`Error processing ${file}:`, errorMessage)
-			throw error
-		}
-	}
+    console.log(`${configPropertyName}: ${integrity}`)
 
-	writeFileSync(configFile, JSON.stringify(sriData, null, 2) + '\n', 'utf8')
+    hashes[configPropertyName] = integrity
+  }
+
+  writeFileSync(configFile, JSON.stringify({ version, hashes } satisfies SriData, null, 2) + '\n', 'utf8')
 }
 
 try {
-	generateSRI()
+  generateSRI()
 } catch (error) {
-	console.error('Failed to generate SRI:', error)
-	process.exit(1)
+  console.error('Failed to generate SRI:', error)
+  process.exit(1)
 }
-

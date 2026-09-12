@@ -1,0 +1,82 @@
+---
+// (noUiSlider), datepickers, progress bars, form buttons, and TomSelect variants.
+import flags from '@data/flags.json'
+import FormGroup from '@ui/FormGroup.astro'
+import Range from '@ui/Range.astro'
+import Datepicker from '@ui/Datepicker.astro'
+import Progress from '@ui/Progress.astro'
+import Button from '@ui/Button.astro'
+import DataSelect from '@shared/components/demo/DataSelect.astro'
+
+const datalistCountries = (flags as { name: string }[]).slice(0, 10)
+---
+
+<FormGroup label="Datalist example" for="fe6-datalist">
+  <input class="form-control" id="fe6-datalist" list="datalistOptions" placeholder="Type to search..." />
+  <datalist id="datalistOptions">
+    {datalistCountries.map((country) => <option value={country.name} />)}
+  </datalist>
+</FormGroup>
+
+<FormGroup label="Range input" associate={false}>
+  <Range value={40} />
+  <Range value={20} id="simple" connect />
+  <Range value={[60, 90]} id="connect" />
+  <Range value={40} id="color" class="text-green" connect />
+</FormGroup>
+
+<FormGroup label="Datepicker" associate={false}>
+  <Datepicker id="default" class="mb-2" value="2020-06-20" />
+  <Datepicker id="icon" layout="icon" class="mb-2" value="2020-06-20" />
+  <Datepicker id="icon-prepend" layout="icon-prepend" value="2020-06-20" />
+</FormGroup>
+
+{/* Inline datepicker renders a calendar div (`datepicker-inline`), not a labelable input — `for` intentionally skipped, same as Range. */}
+<FormGroup label="Inline datepicker" associate={false}>
+  <Datepicker id="inline" inline value="2020-06-20" />
+</FormGroup>
+
+<FormGroup label="Progress" associate={false}>
+  <Progress value={38} class="mb-2" />
+  <Progress indeterminate color="green" />
+</FormGroup>
+
+<FormGroup label="Form buttons" associate={false}>
+  <div class="row">
+    <div class="col">
+      <Button block icon="brand-github" text="Login with Github" />
+    </div>
+    <div class="col">
+      <Button block icon="brand-x" text="Login with X" />
+    </div>
+  </div>
+</FormGroup>
+
+<FormGroup label="Tags input" for="select-fe6-tags">
+  <DataSelect id="fe6-tags" key="tags" placeholder="Select tags" />
+</FormGroup>
+
+<FormGroup label="Advanced select" for="select-fe6-advanced-select">
+  <DataSelect id="fe6-advanced-select" key="users" />
+</FormGroup>
+
+<FormGroup label="Advanced select with optgroup" for="select-fe6-select-optgroup">
+  <DataSelect id="fe6-select-optgroup" key="optgroups" />
+</FormGroup>
+
+<FormGroup label="Select with avatars" for="select-fe6-select-avatars">
+  <DataSelect id="fe6-select-avatars" key="people" indicator="avatar" />
+</FormGroup>
+
+<FormGroup label="Select with flags" for="select-fe6-select-flags">
+  <DataSelect id="fe6-select-flags" key="countries" indicator="flag" />
+</FormGroup>
+
+<FormGroup label="Select with labels" for="select-fe6-select-labels">
+  <DataSelect id="fe6-select-labels" key="labels" indicator="label" />
+</FormGroup>
+
+<FormGroup label="Advanced select with validation state" associate={false}>
+  <DataSelect id="countries-valid" key="countries" state="valid" class="mb-3" />
+  <DataSelect id="countries-invalid" key="countries" state="invalid" />
+</FormGroup>

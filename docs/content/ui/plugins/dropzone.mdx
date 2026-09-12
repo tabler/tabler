@@ -1,0 +1,93 @@
+---
+title: Dropzone
+summary: Dropzone adds drag-and-drop file uploads to a form, with previews and progress bars styled by Tabler.
+description: Add drag-and-drop file uploads to your forms with the Dropzone library, styled to match Tabler out of the box.
+docs-libs: [dropzone]
+related: [/ui/forms/elements]
+---
+import Example from '@components/Example.astro';
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+A dropzone is a form users can drop files onto instead of picking them through a file dialog. It is built with the [Dropzone](https://www.dropzone.dev/) library, which handles the drag events, the previews and the upload.
+
+Tabler styles the drop area, the file previews and the progress bars, so a dropzone matches the rest of your forms without extra CSS.
+
+## Installation
+
+Install Dropzone with npm:
+
+<TabsPackage name="dropzone" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/dropzone/dist/dropzone.css" />\n<script src="${site.cdnUrl}/dist/libs/dropzone/dist/dropzone-min.js"></script>`} />
+
+Tabler restyles the drop area in the vendors plugin, so include `tabler-vendors.css` as well:
+
+<CdnImportPlugin plugins={['vendors']} />
+
+## Basic usage
+
+The basic setup is a `form` with the `dropzone` class. The `.fallback` element holds a normal file input for browsers without drag and drop support:
+
+```html
+<form class="dropzone" id="dropzone-default" action="." autocomplete="off" novalidate>
+  <div class="fallback">
+    <input name="file" type="file" />
+  </div>
+</form>
+```
+
+Then create a `Dropzone` instance for the form:
+
+```html
+<script>
+  {
+    `document.addEventListener("DOMContentLoaded", function () {
+    new Dropzone("#dropzone-default");
+  });`;
+  }
+</script>
+```
+
+From now on a file dropped on the form is uploaded right away, to the URL in the form's `action` attribute.
+
+<Example>
+<form class="dropzone" id="dropzone-default" action="." autocomplete="off" novalidate> <div class="fallback"> <input name="..." type="file" /> </div> </form> <script>{`document.addEventListener("DOMContentLoaded", function () { new Dropzone("#dropzone-default"); });`}</script>
+</Example>
+
+## Add multiple files
+
+Add the `multiple` attribute to the input to accept several files at once, for example for a gallery upload:
+
+```html
+<input name="..." type="file" multiple />
+```
+
+<Example>
+<form class="dropzone" id="dropzone-mulitple" action="." autocomplete="off" novalidate> <div class="fallback"> <input name="file" type="file" multiple /> </div> </form> <script>{`document.addEventListener("DOMContentLoaded", function () { new Dropzone("#dropzone-mulitple"); });`}</script>
+</Example>
+
+## Custom dropzone
+
+You can replace the default message in the drop area with your own markup, for example an icon and a hint about the accepted file types:
+
+<Example>
+<form class="dropzone" id="dropzone-custom" action="." autocomplete="off" novalidate> <div class="fallback"> <input name="file" type="file" /> </div> <div class="dz-message"> <h3 class="dropzone-msg-title">Your text here</h3> <span class="dropzone-msg-desc">Your custom description here</span> <button type="button" class="btn btn-sm mt-3">Select files</button> </div> </form> <script>{`document.addEventListener("DOMContentLoaded", function () { new Dropzone("#dropzone-custom"); });`}</script>
+</Example>
+
+Custom content replaces the button Dropzone renders by default, and that button is the only part of the drop area a keyboard can reach. Keep a focusable control - such as the one above - inside your own message.
+
+## Accessibility
+
+A drop area is only usable with a mouse, so the file input behind it does the real work.
+
+- Dropzone removes the `.fallback` input as soon as the browser supports drag and drop, so it is a fallback for old browsers, not the keyboard path. Keep it anyway - it costs nothing and covers that case.
+- Keyboard users reach the drop area through the `button` Dropzone renders inside `.dz-message`. If you replace that message with your own markup, put a focusable button back, or the area becomes mouse-only.
+- Say which files are accepted and how large they can be, in text next to the field rather than only in the plugin options.
+- Report upload progress and errors in text as well. A red border on a thumbnail is invisible to a screen reader - Dropzone's `error` event is the place to add a message.

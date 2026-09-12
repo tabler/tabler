@@ -1,0 +1,20 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// Card header (.card-header) with an optional h2.card-title; slot renders after the title.
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  title?: string
+  class?: string
+}
+
+// h2 to match CardTitle — cards sit directly under the page h1.
+const { title, as: TitleTag = 'h2', class: className }: Props = Astro.props
+---
+
+<div class:list={['card-header', className]}>
+  {title && <TitleTag class:list={['card-title']}>{title}</TitleTag>}
+  <slot />
+</div>

@@ -1,0 +1,30 @@
+---
+import { staticPath } from '@shared/lib/assets'
+import tracks from '@data/tracks.json'
+import { requireIndex } from '@shared/lib/array'
+
+interface Props {
+  trackId?: number
+}
+
+const { trackId = 5 } = Astro.props
+
+const track = requireIndex(tracks, trackId)
+const trackImage = requireIndex(track.album.images, 1)
+---
+
+<div class="card">
+  <div class="row row-0">
+    <div class="col-auto">
+      <img src={staticPath(`tracks/${trackImage.path}`)} class="rounded-start" alt={track.name} width="80" height="80" />
+    </div>
+    <div class="col">
+      <div class="card-body">
+        {track.name}
+        <div class="text-secondary">
+          {track.artists.map((artist) => artist.name).join(', ')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,9 +7,7 @@
 
 import EventHandler from '../dom/event-handler.js'
 import Config from './config'
-import {
-  execute, executeAfterTransition, getElement, reflow
-} from './index'
+import { execute, executeAfterTransition, getElement, reflow } from './index'
 import type { ComponentConfig, ComponentConfigType } from '../types'
 
 const NAME = 'backdrop'
@@ -30,7 +28,7 @@ const Default: BackdropConfig = {
   clickCallback: null,
   isAnimated: false,
   isVisible: true,
-  rootElement: 'body'
+  rootElement: 'body',
 }
 
 const DefaultType: ComponentConfigType = {
@@ -38,7 +36,7 @@ const DefaultType: ComponentConfigType = {
   clickCallback: '(function|null)',
   isAnimated: 'boolean',
   isVisible: 'boolean',
-  rootElement: '(element|string)'
+  rootElement: '(element|string)',
 }
 
 class Backdrop extends Config {

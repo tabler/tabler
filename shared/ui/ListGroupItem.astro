@@ -1,0 +1,23 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// List group item (.list-group-item).
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  /** list-group-item-action (hover/focus affordance, typically for a/button items) */
+  action?: boolean
+  active?: boolean
+  disabled?: boolean
+  class?: string
+  /** remaining attributes (href, data-*, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { as: Element = 'div', action, active, disabled, class: className, ...rest }: Props = Astro.props
+---
+
+<Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} {...rest}>
+  <slot />
+</Element>

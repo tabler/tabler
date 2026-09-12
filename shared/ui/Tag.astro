@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
+import type { Person } from '@shared/lib/people'
+import Flag from './Flag.astro'
+import Avatar from './Avatar.astro'
+import Badge from './Badge.astro'
+
+interface Props {
+  text?: string | undefined
+  flag?: FlagCountry | undefined
+  icon?: string
+  person?: Person
+  status?: string
+  legend?: string
+  checkbox?: boolean
+  checked?: boolean
+  badge?: string | number
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { text, flag, icon, person, status, legend, checkbox, checked, badge, class: className, ...rest } = Astro.props
+---
+
+<span class:list={['tag', className]} {...rest}>
+  {
+    flag ? (
+      <Flag flag={flag} size="xxs" class="tag-flag" />
+    ) : icon ? (
+      <Icon name={icon} size="sm" class="tag-icon" />
+    ) : person ? (
+      <Avatar person={person} size="xxs" class="tag-avatar" />
+    ) : status ? (
+      <Badge color={status} class="badge-dot" text="" />
+    ) : legend ? (
+      <span class={`legend bg-${legend}`} />
+    ) : checkbox ? (
+      <input type="checkbox" class="form-check-input tag-check" checked={checked} />
+    ) : null
+  }
+  {text}
+  {badge != null && <Badge class="tag-badge" text={String(badge)} />}
+
+  <button type="button" class="btn-close" aria-label={text ? `Remove ${text}` : 'Remove'}></button>
+</span>

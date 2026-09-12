@@ -1,0 +1,73 @@
+---
+import NavbarToggler from './NavbarToggler.astro'
+import Logo from './Logo.astro'
+import NavbarMenu from './NavbarMenu.astro'
+import SidebarUser from './SidebarUser.astro'
+import Icon from '@ui/Icon.astro'
+import type { Breakpoint } from './NavbarSide.astro'
+
+interface Props {
+  dark?: boolean | undefined
+  breakpoint?: Breakpoint | undefined
+  /** navbar-end: sidebar on the end side */
+  end?: boolean | undefined
+  /** navbar-transparent */
+  transparent?: boolean | undefined
+  /** navbar-folded: icon-only rail with flyout submenus */
+  folded?: boolean | undefined
+  /** navbar-folded-hover: folded rail that unfolds on hover/focus */
+  foldedHover?: boolean | undefined
+  /** renders a bottom-pinned button toggling the folded state at runtime */
+  foldToggle?: boolean | undefined
+  /** active menu entry, e.g. "layout.vertical" */
+  pageMenu?: string | undefined
+}
+
+const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, pageMenu } = Astro.props
+
+const isFolded = folded || foldedHover
+
+const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expand-${breakpoint}`, transparent && 'navbar-transparent', folded && 'navbar-folded', foldedHover && 'navbar-folded-hover'].filter(Boolean).join(' ')
+---
+
+<!-- BEGIN SIDEBAR -->
+<aside class={asideClass} data-bs-theme={dark ? 'dark' : undefined}>
+  <div class="container-fluid">
+    <NavbarToggler target="sidebar-menu" />
+
+    {/* Small logo mark: the full wordmark would crop in the folded rail and jump during the hover-expand transition. */}
+    <Logo header smallLogo>
+      {
+        foldToggle && (
+          <button type="button" class="btn btn-action btn-sm d-none d-lg-inline-flex" data-bs-toggle="sidebar-folded" aria-pressed={folded ? 'true' : 'false'} aria-label="Pin sidebar">
+            <Icon name="pin" />
+          </button>
+        )
+      }
+    </Logo>
+
+    {
+      /* Before the collapse, like the regular navbar's side items — on mobile it
+        stays in the top bar row; on desktop CSS order moves it to the bottom. */
+    }
+    <SidebarUser />
+
+    <nav class="collapse navbar-collapse" id="sidebar-menu" aria-label="Sidebar">
+      {/* A folded sidebar renders flyout submenus, so the active branch is not kept open inline. */}
+      <NavbarMenu autoOpen={!isFolded} class="pt-lg-3" keepOpen={!isFolded} sections pageMenu={pageMenu} />
+
+      {/* .navbar-side: the menu's trailing group, pinned to the bottom of the sidebar. */}
+      <div class="navbar-side">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings">
+              <span class="nav-link-icon"><Icon name="brush" /></span>
+              <span class="nav-link-title">Customize</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</aside>
+<!-- END SIDEBAR -->

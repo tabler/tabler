@@ -1,0 +1,37 @@
+name: Branch guard
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Reject branches forked from v2-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check where the PR branch was forked from
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --quiet origin v2-dev "$BASE"
+          fork_point="$(git merge-base "$HEAD_SHA" origin/v2-dev)"
+
+          if git merge-base --is-ancestor "$fork_point" "origin/$BASE"; then
+            echo "OK: the branch was forked from $BASE."
+            exit 0
+          fi
+
+          echo "::error::This branch contains v2-dev history that is not on $BASE (fork point $fork_point)."
+          echo "::error::Merging it would pull the whole 2.0 delta into $BASE. Rebase onto origin/$BASE or retarget the PR to v2-dev."
+          exit 1

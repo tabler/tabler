@@ -1,0 +1,41 @@
+---
+import FormGroup from '@ui/FormGroup.astro'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+
+const selectedPeople = ['5', '6', '2', '3'].map((idStr) => requireIndex(people, Number(idStr) - 1))
+---
+
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-add-task-title">Add task</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  <form>
+    <FormGroup label="Name" for="add-task-name">
+      <input type="text" class="form-control" id="add-task-name" placeholder="Task name" />
+    </FormGroup>
+    <FormGroup label="Assigned To" for="add-task-assigned">
+      <select class="form-select" id="add-task-assigned">
+        <option value="">Select person</option>
+        {selectedPeople.map((person) => <option value={person.id}>{person.full_name}</option>)}
+      </select>
+    </FormGroup>
+    <FormGroup label="Priority" for="add-task-priority">
+      <select class="form-select" id="add-task-priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </FormGroup>
+    <FormGroup label="Description" for="add-task-description">
+      <textarea class="form-control" id="add-task-description" rows="3" placeholder="Task description"></textarea>
+    </FormGroup>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+  <button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal"> Save </button>
+</div>

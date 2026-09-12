@@ -1,0 +1,75 @@
+---
+title: Installation
+order: 1
+summary: Set up Tabler in a plain HTML file. Create the page, add the CSS and JavaScript from the CDN, and open it in the browser.
+description: 'Set up Tabler in a plain HTML file with the CSS and JavaScript from the CDN.'
+---
+
+import Example from '@components/Example.astro'
+import CdnImportPackage from '@components/CdnImportPackage.astro'
+import { Code } from 'astro:components'
+import { cdnCssTag, cdnJsTag } from '@lib/cdn-snippets.ts'
+import Steps from '@components/Steps.astro'
+
+Using a framework? See [Tabler framework integration guides](/ui/getting-started/frameworks).
+
+This page walks through the shortest way to get Tabler running: one HTML file, two tags from the CDN, and a page you can open in the browser. There's no build step involved.
+
+## Setup
+
+<Steps>
+
+### Create a basic HTML file
+
+Start with a new `index.html` file in the root of your project. It only needs the usual HTML skeleton and a `<meta name="viewport" />` tag, so the page scales correctly on phones:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabler demo</title>
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+  </body>
+</html>
+```
+
+### Add Tabler CSS and JavaScript
+
+Next, add Tabler's CSS and JavaScript. These two tags load the core files from the CDN:
+
+<CdnImportPackage />
+
+Put the stylesheet in `<head>` and the script at the end of `<body>`. The file then looks like this:
+
+<Code
+  lang="html"
+  code={`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabler Demo</title>
+    ${cdnCssTag()}
+  </head>
+  <body>
+    <h1>Hello, Tabler!</h1>
+    ${cdnJsTag()}
+  </body>
+</html>`}
+/>
+
+That's the whole setup. The CSS covers the layout and components, and the script adds the interactive parts such as dropdowns and modals.
+
+If you'd rather not depend on a CDN, you can download the files and serve them from your own project. The [Download](/ui/getting-started/download) page explains how.
+
+### Open in your browser
+
+Save the file and open it in your browser. You should see your first page styled by Tabler. From here you can add a layout, drop in components and build up the app.
+
+</Steps>
+
+If you want to see what's possible, the demo pages at [preview.tabler.io](https://preview.tabler.io) show every layout and component in use. The rest of this documentation covers each of them in detail.

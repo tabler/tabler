@@ -1,0 +1,103 @@
+---
+import DocsCard from './DocsCard.astro'
+import docs from '@data/docs.json'
+import Icon from '@ui/Icon.astro'
+import { getDocsChildren } from '@lib/docs-pages'
+import type { DocsPage } from '@lib/docs-pages'
+
+interface MenuLeaf {
+  title: string
+  url: string
+}
+
+interface MenuNode {
+  title: string
+  url?: string
+  children?: MenuNode[]
+}
+
+interface Props {
+  /** Page URL in the docs namespace, e.g. "/ui/components/alert". */
+  url: string
+  /**
+   * Which half to render. The child cards of an index page are content and stay
+   * inside the article panel; the prev/next nav sits on the page canvas below
+   * it. Omitted renders both.
+   */
+  only?: 'children' | 'pagination'
+}
+
+const { url, only } = Astro.props
+
+const children = await getDocsChildren(url)
+
+type Pagination = {
+  prev: MenuLeaf | null
+  next: MenuLeaf | null
+  found: boolean
+}
+
+function findPage(nodes: MenuNode[]): Pagination | null {
+  const index = nodes.findIndex((item) => item.url === url)
+
+  if (index !== -1) {
+    const previousNode = index > 0 ? nodes[index - 1] : null
+    const nextNode = index < nodes.length - 1 ? nodes[index + 1] : null
+
+    return {
+      prev: previousNode?.url ? { title: previousNode.title, url: previousNode.url } : null,
+      next: nextNode?.url ? { title: nextNode.title, url: nextNode.url } : null,
+      found: true,
+    }
+  }
+
+  for (const node of nodes) {
+    const result = node.children ? findPage(node.children) : null
+    if (result) return result
+  }
+
+  return null
+}
+
+const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
+  prev: null,
+  next: null,
+  found: false,
+}
+---
+
+<!-- BEGIN DOCS PAGINATION -->{
+  only !== 'pagination' && children.length > 0 && (
+    <div class="mt-6 pt-6">
+      <div class="row row-deck row-cards">
+        {children.map((child: DocsPage) => (
+          <DocsCard href={child.url} title={child.title} description={child.description} icon={child.icon} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+{
+  only !== 'children' && children.length === 0 && found && (prev || next) && (
+    <nav class="docs-pagination" aria-label="Pagination">
+      {prev && (
+        <a class="docs-pagination-link" href={prev.url} rel="prev">
+          <span class="docs-pagination-label">
+            <Icon name="chevron-left" /> Previous
+          </span>
+          <span class="docs-pagination-title">{prev.title}</span>
+        </a>
+      )}
+      {next && (
+        <a class="docs-pagination-link docs-pagination-next" href={next.url} rel="next">
+          <span class="docs-pagination-label">
+            Next <Icon name="chevron-right" />
+          </span>
+          <span class="docs-pagination-title">{next.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+<!-- END DOCS PAGINATION -->

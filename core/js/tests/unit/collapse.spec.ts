@@ -46,14 +46,7 @@ describe('Collapse', () => {
     })
 
     it('should allow DOM element in parent config', () => {
-      fixtureEl.innerHTML = [
-        '<div class="my-collapse">',
-        '  <div class="item">',
-        '    <a data-bs-toggle="collapse" href="#">Toggle</a>',
-        '    <div class="collapse">Lorem ipsum</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="my-collapse">', '  <div class="item">', '    <a data-bs-toggle="collapse" href="#">Toggle</a>', '    <div class="collapse">Lorem ipsum</div>', '  </div>', '</div>'].join('')
 
       const collapseEl = fixtureEl.querySelector('div.collapse')!
       const myCollapseEl = fixtureEl.querySelector('.my-collapse')!
@@ -63,14 +56,7 @@ describe('Collapse', () => {
     })
 
     it('should allow string selector in parent config', () => {
-      fixtureEl.innerHTML = [
-        '<div class="my-collapse">',
-        '  <div class="item">',
-        '    <a data-bs-toggle="collapse" href="#">Toggle</a>',
-        '    <div class="collapse">Lorem ipsum</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="my-collapse">', '  <div class="item">', '    <a data-bs-toggle="collapse" href="#">Toggle</a>', '    <div class="collapse">Lorem ipsum</div>', '  </div>', '</div>'].join('')
 
       const collapseEl = fixtureEl.querySelector('div.collapse')!
       const myCollapseEl = fixtureEl.querySelector('.my-collapse')!
@@ -104,7 +90,7 @@ describe('Collapse', () => {
     })
 
     it('should collapse children with parent', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div class="my-collapse">',
           '  <div class="item">',
@@ -115,15 +101,14 @@ describe('Collapse', () => {
           '    <a data-bs-toggle="collapse" href="#">Toggle 2</a>',
           '    <div id="collapse2" class="collapse">Lorem ipsum 2</div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const parent = fixtureEl.querySelector('.my-collapse')!
         const collapseEl1 = fixtureEl.querySelector('#collapse1')!
         const collapseEl2 = fixtureEl.querySelector('#collapse2')!
 
-        const collapseList = Array.from(fixtureEl.querySelectorAll('.collapse'))
-          .map(el => new Collapse(el, { parent, toggle: false }))
+        const collapseList = Array.from(fixtureEl.querySelectorAll('.collapse')).map((el) => new Collapse(el, { parent, toggle: false }))
 
         collapseEl2.addEventListener('shown.bs.collapse', () => {
           expect(collapseEl2.classList.contains('show')).toBe(true)
@@ -162,7 +147,7 @@ describe('Collapse', () => {
     })
 
     it('should show a collapsed element', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="collapse" style="height: 0px;"></div>'
 
         const collapseEl = fixtureEl.querySelector('div')!
@@ -183,7 +168,7 @@ describe('Collapse', () => {
     })
 
     it('should show a collapsed element on width', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="collapse collapse-horizontal" style="width: 0px;"></div>'
 
         const collapseEl = fixtureEl.querySelector('div')!
@@ -204,15 +189,8 @@ describe('Collapse', () => {
     })
 
     it('should collapse only the first collapse', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="card" id="accordion1">',
-          '  <div id="collapse1" class="collapse"></div>',
-          '</div>',
-          '<div class="card" id="accordion2">',
-          '  <div id="collapse2" class="collapse show"></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="card" id="accordion1">', '  <div id="collapse1" class="collapse"></div>', '</div>', '<div class="card" id="accordion2">', '  <div id="collapse2" class="collapse show"></div>', '</div>'].join('')
 
         const el1 = fixtureEl.querySelector('#collapse1')!
         const el2 = fixtureEl.querySelector('#collapse2')!
@@ -229,7 +207,7 @@ describe('Collapse', () => {
     })
 
     it('should handle toggling children siblings in accordion', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="parentGroup" class="accordion">',
           '  <div class="accordion-header">',
@@ -249,7 +227,7 @@ describe('Collapse', () => {
           '      </div>',
           '    </div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const el = (s: string) => fixtureEl.querySelector(s) as HTMLElement
@@ -282,12 +260,7 @@ describe('Collapse', () => {
     })
 
     it('should not show if active children are transitioning', () => {
-      fixtureEl.innerHTML = [
-        '<div id="accordion">',
-        '  <div id="collapse1" class="collapse show" data-bs-parent="#accordion"></div>',
-        '  <div id="collapse2" class="collapse" data-bs-parent="#accordion"></div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="accordion">', '  <div id="collapse1" class="collapse show" data-bs-parent="#accordion"></div>', '  <div id="collapse2" class="collapse" data-bs-parent="#accordion"></div>', '</div>'].join('')
 
       const el1 = fixtureEl.querySelector('#collapse1')!
       const el2 = fixtureEl.querySelector('#collapse2')!
@@ -310,7 +283,7 @@ describe('Collapse', () => {
         const collapseEl = fixtureEl.querySelector('div')!
         const collapse = new Collapse(collapseEl, { toggle: false })
 
-        collapseEl.addEventListener('show.bs.collapse', event => {
+        collapseEl.addEventListener('show.bs.collapse', (event) => {
           event.preventDefault()
           setTimeout(() => {
             resolve()
@@ -352,7 +325,7 @@ describe('Collapse', () => {
     })
 
     it('should hide a collapse element', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="collapse show"></div>'
 
         const collapseEl = fixtureEl.querySelector('div')!
@@ -375,7 +348,7 @@ describe('Collapse', () => {
         const collapseEl = fixtureEl.querySelector('div')!
         const collapse = new Collapse(collapseEl, { toggle: false })
 
-        collapseEl.addEventListener('hide.bs.collapse', event => {
+        collapseEl.addEventListener('hide.bs.collapse', (event) => {
           event.preventDefault()
           setTimeout(resolve, 10)
         })
@@ -406,20 +379,15 @@ describe('Collapse', () => {
 
   describe('data-api', () => {
     it('should prevent url change on nested elements', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a role="button" data-bs-toggle="collapse" class="collapsed" href="#collapse">',
-          '  <span id="nested"></span>',
-          '</a>',
-          '<div id="collapse" class="collapse"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a role="button" data-bs-toggle="collapse" class="collapsed" href="#collapse">', '  <span id="nested"></span>', '</a>', '<div id="collapse" class="collapse"></div>'].join('')
 
         const triggerEl = fixtureEl.querySelector('a')!
         const nestedTriggerEl = fixtureEl.querySelector('#nested')!
 
         const spy = vi.spyOn(Event.prototype, 'preventDefault')
 
-        triggerEl.addEventListener('click', event => {
+        triggerEl.addEventListener('click', (event) => {
           expect((event.target as Element).isEqualNode(nestedTriggerEl)).toBe(true)
           expect(spy).toHaveBeenCalled()
           resolve()
@@ -430,12 +398,8 @@ describe('Collapse', () => {
     })
 
     it('should show multiple collapsed elements', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a role="button" data-bs-toggle="collapse" class="collapsed" href=".multi"></a>',
-          '<div id="collapse1" class="collapse multi"></div>',
-          '<div id="collapse2" class="collapse multi"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a role="button" data-bs-toggle="collapse" class="collapsed" href=".multi"></a>', '<div id="collapse1" class="collapse multi"></div>', '<div id="collapse2" class="collapse multi"></div>'].join('')
 
         const trigger = fixtureEl.querySelector('a')!
         const collapse1 = fixtureEl.querySelector('#collapse1')!
@@ -454,12 +418,8 @@ describe('Collapse', () => {
     })
 
     it('should hide multiple collapsed elements', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a role="button" data-bs-toggle="collapse" href=".multi"></a>',
-          '<div id="collapse1" class="collapse multi show"></div>',
-          '<div id="collapse2" class="collapse multi show"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a role="button" data-bs-toggle="collapse" href=".multi"></a>', '<div id="collapse1" class="collapse multi show"></div>', '<div id="collapse2" class="collapse multi show"></div>'].join('')
 
         const trigger = fixtureEl.querySelector('a')!
         const collapse1 = fixtureEl.querySelector('#collapse1')!
@@ -478,11 +438,8 @@ describe('Collapse', () => {
     })
 
     it('should show collapse via data-tblr-target', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a role="button" data-bs-toggle="collapse" class="collapsed" data-tblr-target="#test1"></a>',
-          '<div id="test1" class="collapse"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a role="button" data-bs-toggle="collapse" class="collapsed" data-tblr-target="#test1"></a>', '<div id="test1" class="collapse"></div>'].join('')
 
         const trigger = fixtureEl.querySelector('a') as HTMLElement
         const collapseEl = fixtureEl.querySelector('#test1')!
@@ -499,11 +456,8 @@ describe('Collapse', () => {
     })
 
     it('should hide collapse via data-tblr-target', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a role="button" data-bs-toggle="collapse" data-tblr-target="#test1"></a>',
-          '<div id="test1" class="collapse show"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a role="button" data-bs-toggle="collapse" data-tblr-target="#test1"></a>', '<div id="test1" class="collapse show"></div>'].join('')
 
         const trigger = fixtureEl.querySelector('a') as HTMLElement
         const collapseEl = fixtureEl.querySelector('#test1')!
@@ -520,12 +474,8 @@ describe('Collapse', () => {
     })
 
     it('should remove collapsed class from trigger on show', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a id="link1" role="button" data-bs-toggle="collapse" class="collapsed" href="#" data-bs-target="#test1"></a>',
-          '<a id="link2" role="button" data-bs-toggle="collapse" class="collapsed" href="#" data-bs-target="#test1"></a>',
-          '<div id="test1"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a id="link1" role="button" data-bs-toggle="collapse" class="collapsed" href="#" data-bs-target="#test1"></a>', '<a id="link2" role="button" data-bs-toggle="collapse" class="collapsed" href="#" data-bs-target="#test1"></a>', '<div id="test1"></div>'].join('')
 
         const link1 = fixtureEl.querySelector('#link1')!
         const link2 = fixtureEl.querySelector('#link2')!
@@ -544,12 +494,8 @@ describe('Collapse', () => {
     })
 
     it('should add collapsed class to trigger on hide', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<a id="link1" role="button" data-bs-toggle="collapse" href="#" data-bs-target="#test1"></a>',
-          '<a id="link2" role="button" data-bs-toggle="collapse" href="#" data-bs-target="#test1"></a>',
-          '<div id="test1" class="show"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<a id="link1" role="button" data-bs-toggle="collapse" href="#" data-bs-target="#test1"></a>', '<a id="link2" role="button" data-bs-toggle="collapse" href="#" data-bs-target="#test1"></a>', '<div id="test1" class="show"></div>'].join('')
 
         const link1 = fixtureEl.querySelector('#link1')!
         const link2 = fixtureEl.querySelector('#link2')!
@@ -568,7 +514,7 @@ describe('Collapse', () => {
     })
 
     it('should allow accordion with non-card children', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="accordion">',
           '  <div class="item">',
@@ -579,7 +525,7 @@ describe('Collapse', () => {
           '    <a id="linkTriggerTwo" data-bs-toggle="collapse" href="#collapseTwo"></a>',
           '    <div id="collapseTwo" class="collapse show" data-bs-parent="#accordion"></div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const trigger = fixtureEl.querySelector('#linkTrigger') as HTMLElement
@@ -605,11 +551,8 @@ describe('Collapse', () => {
     })
 
     it('should not prevent event for input', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<input type="checkbox" data-bs-toggle="collapse" data-bs-target="#collapsediv1">',
-          '<div id="collapsediv1"></div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<input type="checkbox" data-bs-toggle="collapse" data-bs-target="#collapsediv1">', '<div id="collapsediv1"></div>'].join('')
 
         const target = fixtureEl.querySelector('input') as HTMLInputElement
         const collapseEl = fixtureEl.querySelector('#collapsediv1')!
@@ -625,7 +568,7 @@ describe('Collapse', () => {
     })
 
     it('should allow accordion with nested elements', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="accordion">',
           '  <div class="row">',
@@ -642,7 +585,7 @@ describe('Collapse', () => {
           '      </div>',
           '    </div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const triggerEl = fixtureEl.querySelector('#linkTrigger') as HTMLElement
@@ -678,7 +621,7 @@ describe('Collapse', () => {
     })
 
     it('should collapse accordion children but not nested accordion', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="accordion">',
           '  <div class="item">',
@@ -696,7 +639,7 @@ describe('Collapse', () => {
           '    <a id="linkTriggerTwo" data-bs-toggle="collapse" href="#collapseTwo"></a>',
           '    <div id="collapseTwo" data-bs-parent="#accordion" class="collapse show"></div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const trigger = fixtureEl.querySelector('#linkTrigger') as HTMLElement
@@ -798,11 +741,8 @@ describe('Collapse', () => {
 
   describe('data-tblr-toggle', () => {
     it('should show collapse via data-tblr-toggle="collapse"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>',
-          '<div id="test1" class="collapse">Content</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>', '<div id="test1" class="collapse">Content</div>'].join('')
 
         const target = fixtureEl.querySelector('#test1')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement
@@ -817,11 +757,8 @@ describe('Collapse', () => {
     })
 
     it('should hide collapse via data-tblr-toggle="collapse"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>',
-          '<div id="test1" class="collapse show">Content</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>', '<div id="test1" class="collapse show">Content</div>'].join('')
 
         const target = fixtureEl.querySelector('#test1')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement
@@ -836,11 +773,8 @@ describe('Collapse', () => {
     })
 
     it('should show collapse via data-tblr-toggle with data-tblr-target', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="collapse" data-tblr-target="#test1">Toggle</button>',
-          '<div id="test1" class="collapse">Content</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="collapse" data-tblr-target="#test1">Toggle</button>', '<div id="test1" class="collapse">Content</div>'].join('')
 
         const target = fixtureEl.querySelector('#test1')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement

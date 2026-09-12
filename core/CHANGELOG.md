@@ -1,5 +1,134 @@
 # @tabler/core
 
+## 1.5.1
+
+### Patch Changes
+
+- f311287: Fixed `.card-code` so the code block follows the card corners instead of drawing its own `border-radius`.
+- 718fdd7: Fixed invisible box-shadows in dark mode with a new global `--tblr-shadow-color` `light-dark()` token.
+- 6f64f33: Fixed the `.dropdown-menu-arrow` border color and replaced the deprecated `clip` with `clip-path`.
+- b8e61db: Fixed the folded sidebar flashing the active submenu as a flyout on reload before `tabler.js` closed it.
+- 692a3a2: Fixed the invisible `.form-switch` knob in light mode by restoring a gray `$form-switch-color`.
+- d4c5be6: Fixed unreadable counter digit on not-yet-reached steps by giving `.step-item` `::before` the `--tblr-disabled-color`.
+
+## 1.5.0
+
+### Minor Changes
+
+- 9ea657b: Added `.text-gray-50` through `.text-gray-950` utility classes alongside the existing `.bg-gray-*` utilities.
+- 100a37b: Added background pattern utilities and documentation, including updated preview demos.
+- 9d5c83f: Added Bootstrap 5.3.8 to the core source tree, with SCSS as modules and components converted to TypeScript.
+- e1ecd39: Updated the supported browser baseline to what the CSS needs: Chrome 123, Firefox 128, Safari 17.5.
+- 9c5d729: Added `.btn-ghost` button variant with transparent background and hover effects.
+- ec94693: Added `.card-gradient` component with gradient variants, direction modifiers, and animated backgrounds.
+- 324b0fb: Added `--tblr-card-header-bg` and `--tblr-card-footer-bg` variables so both backgrounds can be overridden independently.
+- 09d419a: Added a `--tblr-chart-1` … `--tblr-chart-5` palette and wired ApexCharts theme tokens, so every chart follows the color mode.
+- d2c1271: Added TypeScript declarations to the npm package, so `import { Modal } from "@tabler/core"` is typed.
+- 9d5c83f: Added support for `data-tblr-*` attributes alongside `data-bs-*` for dropdown and other components.
+- bf9e7ad: Added Driver.js to `libs.json` and `dist/libs` for product tours.
+- bf9e7ad: Added `--tblr-dropdown-item-gap`, `--tblr-dropdown-item-icon-size` and `--tblr-dropdown-item-icon-color` to `.dropdown-menu`.
+- 4f6e99b: Added a folded sidebar (`navbar-folded`, `navbar-folded-hover`) with flyout submenus, a pin toggle and a light `16rem` sidebar by default.
+- 70f996b: Added the `.font-sans-serif`, `.font-serif` and `.font-comic` utilities next to `.font-monospace`.
+- d2c1271: Added `.bg-gradient-{from,via,to}-transparent` and `-inverted` gradient stops, which the gradient docs already described.
+- 5baf073: Added 74 new payment provider icons imported from `tabler-payments` and removed 12 outdated providers like `dotpay` and `solo`.
+- 5e119d4: Added `bg-blur` utility and increased `container-tight` width for layout flexibility.
+- 70f996b: Added the `data-bs-layout`, `data-bs-navbar-position`, `data-bs-navbar` and `data-bs-navbar-theme` layout settings.
+- 0c79963: Added `media-print` mixin and print styles to hide interactive components during printing.
+- 48dbd1e: Updated the core build system from Rollup to Vite, with identical UMD and ESM output.
+- 4ce08ca: Updated the navbar-side component and reorganized its apps, language, notifications and user sections.
+- 70f996b: Added `.navbar-side` support in the vertical navbar: a wrapper for a trailing `.navbar-nav` group pinned to the bottom of the menu.
+- f11ece4: Added `--tblr-pattern-opacity-factor` and `.bg-pattern-opacity-*` utilities for background patterns.
+- cad8eb8: Removed the `$prefix` Sass variable; the `--tblr-` prefix is now applied at build time by PostCSS.
+- 9c5d729: Added Progress Background component with text labels and value display.
+- 9c5d729: Added `.progress-lg` and `.progress-xl` size variants for the progress component.
+- 9c5d729: Added Progress Steps component for step-by-step navigation indicators.
+- bea97f8: Removed `@hotwired/turbo` integration, including `.turbo-progress-bar` styles and the Turbo loader preview demo.
+- 8962710: Removed unused SCSS `!default` variables, which now raise a Sass error when set via `@use ... with (...)`.
+- 9820d11: Updated core SCSS to the Sass module system with `@use` and `@forward`.
+- 4f6e99b: Added `nav-section-title` group labels to the vertical sidebar, shown as short separators in the folded state.
+- 4f6e99b: Added a `navbar-footer` sidebar zone with a user block; the sidebar nav scrolls between the pinned brand and footer.
+- ff24af9: Updated the default `$font-family-sans-serif` and `$font-family-monospace` to the system font stacks. Tabler no longer bundles a web font, so no font files are downloaded.
+- 9dd26fd: Changed the default theme of `tabler-theme.js` to `auto`, following the system color scheme.
+- 7556ae2: Added an `auto` color mode to theme settings with system `prefers-color-scheme` support.
+- e3d86c5: Updated `apexcharts` from `3.54.1` to `7.0.0` and added `--chart-{id}-color-{index}` variables.
+
+### Patch Changes
+
+- 1effe22: Fixed invisible keyboard focus indicators and added `prefers-reduced-motion` and `forced-colors` support.
+- 09d419a: Documented the ApexCharts dual license, which applies to the copy shipped in `dist/libs`, in the readme and chart docs.
+- 080d3aa: Fixed the ApexCharts tooltip arrow staying white on the dark tooltip by setting the `--apx-tt-bg` and `--apx-tt-border` tokens.
+- ffe3489: Updated `.badges-list` to `.badge-list` and `.tags-list` to `.tag-list`, keeping the old names as deprecated aliases.
+- 059bae1: Updated Bootstrap exports to a single source of truth in `bootstrap.js` and removed the duplicates from `tabler.js`.
+- 4f6e99b: Moved `btn-floating` to the end side of the screen, so it does not cover the sidebar.
+- 5018aa9: Fixed `.btn-icon` to be square by aligning `min-width` calculation with base `.btn` formula.
+- a508bb6: Updated hardcoded `rem` and `px` values to SCSS variables across core components for easier theming.
+- c71a321: Updated the `@tabler/core` README with package usage, optional stylesheets, Sass setup and browser support.
+- a0d84f6: Updated the npm package README with badges, quick links, CDN usage, documentation and changelog links.
+- c860288: Fixed icon alignment for `.btn-sm` and `.btn-xl` sizes.
+- 1adb710: Fixed `.alert-action` and `.alert-link` colors inside `.alert-important` so links stay readable.
+- 2dc7eda: Updated `$border-color-translucent-dark` to `rgba(128, 150, 172, 0.2)` for better dark mode visibility.
+- 09ab0bc: Fixed disabled buttons falling back to `currentColor` for the border and to a transparent background.
+- febfa9f: Fixed the missing focus ring on buttons and `btn-check` button groups by using the shared focus ring token.
+- 8324701: Fixed `.card-header` background being overridden by a `background: transparent` shorthand.
+- 0187b26: Fixed the `card-status-*` strips leaving a thin line over the card border and a mismatched corner radius.
+- 70ec683: Fixed card corner radius in tab layouts when tabs sit above or below tab content.
+- c1e1fdf: Fixed the corner radius and the double bottom border on the first and last rows of a table inside a `.card`.
+- de44d61: Fixed `.card-tabs .nav-tabs` sharing `z-index` with `.dropdown-menu`, which hid dropdowns behind card tabs.
+- 6414238: Fixed barely visible checkbox and radio borders in dark theme by using `$input-border-color`.
+- b1d49e9: Fixed CountUp to parse formatted number targets and avoid double-start when `enableScrollSpy` is enabled.
+- 09d419a: Fixed chart colors in dark mode: axis lines and ticks, marker and treemap outlines, and the tooltip title.
+- 070248d: Fixed dark mode link contrast: `--tblr-link-color` is now a lighter tint of `--tblr-primary` on dark surfaces.
+- 601e950: Fixed dark mode text selection contrast with a new `$selection-bg` Sass variable.
+- d0a793c: Fixed the disabled form control background in dark theme with a new `--tblr-bg-forms-disabled` variable.
+- b1d49e9: Fixed dropdown `data-bs-boundary="viewport"` to use `document.documentElement` instead of the first `.btn` element.
+- c527135: Fixed `.input-icon` inline-start padding for `.form-select`.
+- 70f069c: Fixed `.form-select` keeping its default box-shadow inside `.input-group`.
+- 9c78cf6: Fixed `.bg-gradient` conflicts that broke `from`/`via`/`to` rendering and updated the gradient docs.
+- bc24b3a: Fixed `--tblr-gray-*-fg` tokens to map directly to `--tblr-gray-*` instead of contrast-based fallbacks.
+- c8b8b24: Fixed gray theme custom properties output using SCSS interpolation and updated default `$body-color` to `$gray-500`.
+- 70193fe: Fixed `.icon-pulse`, `.icon-tada` and `.icon-rotate` not animating webfont icons.
+- f0b909d: Fixed the `sm` and `lg` size mismatch between form controls, buttons and input groups.
+- 6e656ad: Fixed `.input-icon-addon` z-index issue with form validation feedback and added default height.
+- b1d49e9: Fixed input mask `lazy` option to read `data-mask-visible` via `dataset.maskVisible`.
+- fc16b6a: Defined `--tblr-body-text-align`, `--tblr-nav-link-font-size` and `--tblr-nav-link-active-color`, which the css already read.
+- a883531: Fixed `.list-group-item-{color}`: the palette colors had no styling at all and no variant had its background.
+- 9dd26fd: Fixed the markdown table header keeping its surface background instead of going transparent.
+- 9d04e14: Fixed the marketing hero, browser and shape components reading custom properties nothing defined.
+- 9dd26fd: Fixed `offcanvas-narrow`, which had no effect on the width of the panel.
+- f5f75d4: Fixed print styles: hidden navbar/sidebar, forced light `color-scheme`, and avoided breaking `.card`/table rows.
+- 1da70a7: Fixed ScrollSpy throwing on target ids that start with a digit, such as headings like `1. Setup`.
+- 464a522: Fixed oversized and mismatched validation icons on `.form-select` and Tom Select selects.
+- 8bc6fa7: Fixed status color classes to use CSS variables and to include the social colors.
+- c527135: Fixed `.steps` horizontal overflow on small screens by enabling scrollable overflow below the `sm` breakpoint.
+- cd0b210: Fixed the typographic `.steps` rule leaking its guideline and spacing onto the `.steps` component.
+- 90c42f2: Fixed Tom Select's `.ts-dropdown` losing its z-index, background, and colors to the bootstrap5 preset CSS.
+- 6849337: Fixed Tom Select styles to use `--tblr-*` variables instead of undefined `--bs-*` references.
+- e206d7a: Fixed white space next to the scrollbar by using `scrollbar-gutter: stable` on `html`.
+- bf9e7ad: Updated `.flag` to size by width with `$border-radius-xs` on `xs`, and narrowed tooltip `padding-x` to `spacer-2`.
+- b8b63d7: Fixed Sass mixed-declaration warnings in the navbar, card, nav and table styles.
+- 9432835: Updated SCSS files to use the `border-radius` mixin.
+- 9c5d729: Updated `stroke-width` for `.icon-sm` from `1` to `1.5` for better visibility.
+- bf9e7ad: Updated `.input-group-flat` addons to drop the inner border and sit above the control.
+- fa678a7: Updated root color tokens to use CSS `light-dark()` so paired values live in one `:root` declaration.
+- 7ae422f: Updated core SCSS to logical properties and a `--tblr-dir` multiplier, so RTL works with plain `tabler.css`.
+- 301e778: Updated `rgba()` calls to the modern `color-mix()` and `color-transparent()` functions.
+- 9dd26fd: Fixed the avatar corner radius inside `.form-imagecheck-image` and set `.nav` font size to the body font size.
+- 4f6e99b: Fixed the `navbar-toggler` icon: the middle bar was flex-squeezed, breaking the open-state X and shortening the hamburger.
+- 9c5d729: Added smooth transitions for progress bar `width` and `background-color` changes.
+- 1489b13: Added `.prose` alias for markdown content and updated preview/docs references and redirects.
+- f35aab3: Added the same border and radius to `figure` images as plain images in `.prose` and `.markdown` content.
+- 66dc336: Fixed the `caret()` mixin by restoring `$caret-width` to `0.36em`.
+- 70f996b: Fixed the sidebar marking two items as selected: a group holding the current page is now emphasized, not filled.
+- 70f996b: Fixed the vertical navbar brand sitting at the far edge on small screens when nothing follows it in the top bar.
+- 9c5d729: Updated skip-link to use `visually-hidden` for improved accessibility.
+- 346e091: Fixed oversized `dist/libs` by copying only the runtime files each library declares in `libs.json`.
+- d2c1271: Fixed `tabler-theme.js` replacing a server-rendered `data-bs-theme` when the visitor has no stored choice.
+- 736e604: Updated deprecated global Sass functions to module equivalents (`map.merge`, `string.slice`, `math.percentage`, etc.).
+- b8b63d7: Updated Bootstrap to v5.3.8.
+- 9c5d729: Updated trending component to use `arrow-up`/`arrow-down` instead of `trending-up`/`trending-down`.
+- 70ec683: Updated `$card-status-size` default from `$border-width-wide` to `3px`.
+- 666ccd6: Updated shadow tokens (`--tblr-shadow-*`) to use the new `xs`–`2xl` and `overlay` values.
+
 ## 1.4.0
 
 ### Minor Changes
@@ -133,7 +262,7 @@
 - 24b944c: Fix `.avatar-upload` double borders
 - ca4ba14: Fixes navbar styles with new hover effects and color variables
 
-## 1.0.0 - 2025-01-28
+## 1.0.0
 
 ### Minor Changes
 
@@ -255,14 +384,14 @@
 - 94b83d4: Add support for changeset tool for more efficient and organized code changes
 - c51ff28: Fix colors in date range datepicker
 
-## `1.0.0-beta24` - 2025-01-11
+## 1.0.0-beta24
 
 - Enhanced documentation.
 - Updated illustrations and improved SVG handling in HTML.
 - Updated copyright year in LICENSE file to 2025.
 - Added marketing pages plugin.
 
-## `1.0.0-beta23` - 2025-01-07
+## 1.0.0-beta23
 
 - Documentation improvements.
 - Added countup functionality and updated documentation example.
@@ -299,7 +428,7 @@
 - Fixed icon issues.
 - Fixed URL in documentation.
 
-## `1.0.0-beta22` - 2025-01-02
+## 1.0.0-beta22
 
 - Fixed `@charset` CSS declaration in bundle.
 - Fixed cells with inline icons.
@@ -322,7 +451,7 @@
 - Read changelog from `CHANGELOG.md` file.
 - Initialized VS Code configuration.
 
-## `1.0.0-beta21` - 2024-09-8
+## 1.0.0-beta21
 
 - Updated dependencies.
 - Updated Tabler Icons to v3.14.0 and the import script.
@@ -359,7 +488,7 @@
 - Improved heights, scrolls, and layouts in Docs examples.
 - Fixed flags display in preview.
 
-## `1.0.0-beta20` - 2023-08-24
+## 1.0.0-beta20
 
 - Update `bootstrap` to v5.3.1
 - Add new `Chat` component
@@ -385,7 +514,7 @@
 - `Dockerfile` fix
 - Switch from `npm` to `pnpm` for faster package installation
 
-## `1.0.0-beta19` - 2023-05-15
+## 1.0.0-beta19
 
 - Add customizable Star Ratings component using `star-rating.js` library (#1571)
 - Add new "Filled" section to Icons page (#1574)
@@ -393,7 +522,7 @@
 - Fix text color in dark version of navbar (#1569)
 - Changelog update
 
-## `1.0.0-beta18` - 2023-05-14
+## 1.0.0-beta18
 
 - new page: Cookie banner
 - Unify dark mode with latest Bootstrap API and improve dark mode elements (#1561)
@@ -416,7 +545,7 @@
 - Dark mode lite colors improvement
 - Fix non full width selects (#1392)
 
-## `1.0.0-beta17` - 2023-01-28
+## 1.0.0-beta17
 
 - update `bootstrap` to v5.3.0
 - update icons to v2.1.2
@@ -438,7 +567,7 @@
 - move `@tabler/icons` to `dev-dependencies`
 - fix #1370: avatar stacked list is not stacked anymore
 
-## `1.0.0-beta16` - 2022-11-12
+## 1.0.0-beta16
 
 - new `Photogrid` page
 - `Steps` component improvements
@@ -452,7 +581,7 @@
 - homepage navbar fix
 - fix #1262 - `.bg-opacity-xx` class is not functioning properly
 
-## `1.0.0-beta15` - 2022-11-01
+## 1.0.0-beta15
 
 - new `badges` page
 - `<kbd>` styling
@@ -469,12 +598,12 @@
 - `btn-actions` fixes
 - replace `$text-muted` to css variable
 
-## `1.0.0-beta14` - 2022-10-21
+## 1.0.0-beta14
 
 - fix active items in dark mode
 - update Jekyll to newest version
 
-## `1.0.0-beta13` - 2022-10-18
+## 1.0.0-beta13
 
 - update Bootstrap to 5.2.1, update dependencies
 - new `tracking` component
@@ -504,7 +633,7 @@
 - fix #1275 - remove last border-right on progress bar
 - fix #1261 - broken offcanvas bg
 
-## `1.0.0-beta12` - 2022-09-19
+## 1.0.0-beta12
 
 - new "Job listing" page
 - new "Sign in with cover" page
@@ -529,7 +658,7 @@
 - fix form elements demo page radio buttons
 - replace `gulp-minify` with `gulp-terser`
 
-## `1.0.0-beta11` - 2022-07-05
+## 1.0.0-beta11
 
 - new `Dropzone` component
 - new `Lightbox` component
@@ -544,7 +673,7 @@
 - fix: #1125 incorrect chart display in the mobile version
 - update Bootstrap to 5.2.0
 
-## `1.0.0-beta10` - 2022-04-29
+## 1.0.0-beta10
 
 - new `datatable` component
 - update Tabler Icons to v1.67
@@ -553,7 +682,7 @@
 - replace !important modifier with more specific selectors (#1100)
 - new `FAQ` page
 
-## `1.0.0-beta9` - 2022-02-26
+## 1.0.0-beta9
 
 - fix: #1061 - list group item colors in light and dark modes
 - new `tasks` dashboard
@@ -566,7 +695,7 @@
 - add `font-display: swap;` to improve font loading
 - new `Boxed` layout
 
-## `1.0.0-beta8` - 2022-02-05
+## 1.0.0-beta8
 
 - update dependencies
 - new vector maps demos
@@ -575,7 +704,7 @@
 - replace `badge` with `status-dot` in `navbar-notifications.html`
 - map tooltip fixes
 
-## `1.0.0-beta7` - 2022-02-05
+## 1.0.0-beta7
 
 - fix: #1019 - project-overview.html link not working
 - fix: #1010 - card with bottom tabs has incorrect border radius
@@ -588,7 +717,7 @@
 - RTL stylesheet fixes
 - new card action demos
 
-## `1.0.0-beta6` - 2022-01-18
+## 1.0.0-beta6
 
 - pricing cards fix
 - fix bug `fw-...`, `.fs-...` is missed (#987)
@@ -601,7 +730,7 @@
 - fix #959 - `node-sass` does not properly compile nested media queries
 - update package dependencies to newest version
 
-## `1.0.0-beta5` - 2021-12-07
+## 1.0.0-beta5
 
 **Tabler has finally lived to see dark mode! 🌝🌚**
 
@@ -618,7 +747,7 @@
 - colors unify
 - add `tom-select` and remove `choices.js`
 
-## `1.0.0-beta4` - 2021-10-24
+## 1.0.0-beta4
 
 - upgrade required node.js version to 14
 - upgrade Bootstrap to 5.1
@@ -626,14 +755,14 @@
 - fix #775 - litepicker not initializing
 - fix `nouislider` import in dev
 
-## `1.0.0-beta3` - 2021-05-08
+## 1.0.0-beta3
 
 - upgrade Bootstrap to 5.0
 - upgrade dependencies
 - change `$border-radius-pill` variable
 - badge vertical align fix
 
-## `1.0.0-beta2` - 2021-03-29
+## 1.0.0-beta2
 
 - update dependencies
 - `li` marker fix
@@ -646,7 +775,7 @@
 - charts label fixes
 - charts docs
 
-## `1.0.0-beta` - 2021-02-17
+## 1.0.0-beta
 
 **Initial beta release of Tabler v1.0! Lots more coming soon though 😁**
 

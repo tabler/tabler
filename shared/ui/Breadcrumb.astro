@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro'
+import type { BreadcrumbVariant } from '@shared/lib/tokens'
+
+interface Props {
+  pages: string[]
+  class?: string
+  /** breadcrumb-{separator} class (`$breadcrumb-variants` SCSS map) */
+  separator?: BreadcrumbVariant | undefined
+  /** first item becomes a home-icon link */
+  homeIcon?: boolean
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { pages, class: className, separator, homeIcon, ...rest } = Astro.props
+
+const items = pages
+
+const classes = ['breadcrumb', className, separator && `breadcrumb-${separator}`]
+---
+
+<!-- BEGIN BREADCRUMB -->
+<nav aria-label="Breadcrumb" {...rest}>
+  <ol class:list={classes}>
+    {
+      items.map((page, index) =>
+        index === items.length - 1 ? (
+          <li class="breadcrumb-item active" aria-current="page">
+            {page}
+          </li>
+        ) : (
+          <li class="breadcrumb-item">
+            {index === 0 && homeIcon ? (
+              /* Home icon link uses href="/". */
+              <a href="/">
+                <Icon name="home" />
+              </a>
+            ) : (
+              <a href="#">{page}</a>
+            )}
+          </li>
+        ),
+      )
+    }
+  </ol>
+</nav>
+<!-- END BREADCRUMB -->

@@ -32,13 +32,13 @@ const CLASS_NAME_SHOWING = 'showing'
 const DefaultType: ComponentConfigType = {
   animation: 'boolean',
   autohide: 'boolean',
-  delay: 'number'
+  delay: 'number',
 }
 
 const Default: ComponentConfig = {
   animation: true,
   autohide: true,
-  delay: 5000
+  delay: 5000,
 }
 
 class Toast extends BaseComponent {

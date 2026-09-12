@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, isDisabled, isVisible } from './util/index'
+import { getElement, isDisabled, isVisible, parseSelector } from './util/index'
 import type { ComponentConfig, ComponentConfigType } from './types'
 
 const NAME = 'scrollspy'
@@ -38,7 +38,7 @@ const Default: ComponentConfig = {
   rootMargin: '0px 0px -25%',
   smoothScroll: false,
   target: null,
-  threshold: [0.1, 0.5, 1]
+  threshold: [0.1, 0.5, 1],
 }
 
 const DefaultType: ComponentConfigType = {
@@ -46,7 +46,7 @@ const DefaultType: ComponentConfigType = {
   rootMargin: 'string',
   smoothScroll: 'boolean',
   target: 'element',
-  threshold: 'array'
+  threshold: 'array',
 }
 
 class ScrollSpy extends BaseComponent {
@@ -70,7 +70,7 @@ class ScrollSpy extends BaseComponent {
     this._observer = null
     this._previousScrollData = {
       visibleEntryTop: 0,
-      parentScrollTop: 0
+      parentScrollTop: 0,
     }
     this.refresh()
   }
@@ -137,7 +137,7 @@ class ScrollSpy extends BaseComponent {
           return
         }
 
-        (root as HTMLElement).scrollTop = height
+        ;(root as HTMLElement).scrollTop = height
       }
     })
   }
@@ -146,10 +146,10 @@ class ScrollSpy extends BaseComponent {
     const options: IntersectionObserverInit = {
       root: this._rootElement,
       threshold: this._config.threshold as number[],
-      rootMargin: this._config.rootMargin as string
+      rootMargin: this._config.rootMargin as string,
     }
 
-    return new IntersectionObserver(entries => this._observerCallback(entries), options)
+    return new IntersectionObserver((entries) => this._observerCallback(entries), options)
   }
 
   _observerCallback(entries: IntersectionObserverEntry[]): void {
@@ -198,7 +198,7 @@ class ScrollSpy extends BaseComponent {
         continue
       }
 
-      const observableSection = SelectorEngine.findOne(decodeURI((anchor as HTMLAnchorElement).hash), this._element)
+      const observableSection = SelectorEngine.findOne(parseSelector(decodeURI((anchor as HTMLAnchorElement).hash)), this._element)
 
       if (isVisible(observableSection!)) {
         this._targetLinks.set(decodeURI((anchor as HTMLAnchorElement).hash), anchor)
@@ -222,8 +222,7 @@ class ScrollSpy extends BaseComponent {
 
   _activateParents(target: HTMLElement): void {
     if (target.classList.contains(CLASS_NAME_DROPDOWN_ITEM)) {
-      SelectorEngine.findOne(SELECTOR_DROPDOWN_TOGGLE, target.closest(SELECTOR_DROPDOWN)!)!
-        .classList.add(CLASS_NAME_ACTIVE)
+      SelectorEngine.findOne(SELECTOR_DROPDOWN_TOGGLE, target.closest(SELECTOR_DROPDOWN)!)!.classList.add(CLASS_NAME_ACTIVE)
       return
     }
 

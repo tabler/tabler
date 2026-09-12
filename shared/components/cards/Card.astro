@@ -1,0 +1,193 @@
+---
+import { staticPath } from '@shared/lib/assets';
+import Icon from '@ui/Icon.astro';
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro';
+import Empty from '@ui/Empty.astro';
+import Progress from '@ui/Progress.astro';
+import photos from '@data/photos.json';
+import { requireIndex } from '@shared/lib/array';
+import CardTitle from '@ui/CardTitle.astro';
+
+interface Props {
+	class?: string;
+	empty?: boolean;
+	imgTop?: boolean;
+	imgBottom?: boolean;
+	statusTop?: string;
+	statusBottom?: string;
+	statusStart?: string;
+	headerTabs?: boolean;
+	headerPills?: boolean;
+	title?: string;
+	footerButton?: boolean;
+	footerButtons?: boolean;
+	/** a right-angle-bracket prefix pushes the element (and every following one) to the right — `right` is never reset */
+	footerElements?: string[];
+	progress?: boolean;
+}
+
+const {
+	class: className,
+	empty,
+	imgTop,
+	imgBottom,
+	statusTop,
+	statusBottom,
+	statusStart,
+	headerTabs,
+	headerPills,
+	title,
+	footerButton,
+	footerButtons,
+	footerElements,
+	progress,
+}: Props = Astro.props;
+
+const classes = ['card', className]
+
+// footer-elements parsing — `right` is never reset once set across iterations.
+let right = false;
+const footerEls = (footerElements ?? []).map((element: string) => {
+		let el = element;
+		if (el.slice(0, 1) === '>') {
+			right = true;
+			el = element.slice(1);
+		}
+		return { el, right };
+	});
+
+const hasHeader = headerTabs || headerPills;
+const hasFooter = footerButton || footerButtons || footerElements;
+
+const imgTopPhoto = requireIndex(photos as { file: string; title: string }[], 7);
+const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[], 11);
+---
+
+<div class:list={classes}>
+	{
+		empty ? (
+			<Empty illustration="not-found" height={160} title="No results found" description="Try adjusting your search or filter to find what you're looking for." buttonText="Search again" buttonIcon="search" />
+		) : (
+			<Fragment>
+				{imgTop && (
+					<Fragment>
+						<!-- Photo -->
+						<div
+							class="img-responsive img-responsive-21x9 card-img-top"
+							style={`background-image: url(${staticPath(`photos/${imgTopPhoto.file}`)})`}
+						/>
+					</Fragment>
+				)}
+
+				{statusTop ? (
+					<div class={`card-status-top bg-${statusTop}`} />
+				) : statusBottom ? (
+					<div class={`card-status-bottom bg-${statusBottom}`} />
+				) : statusStart ? (
+					<div class={`card-status-start bg-${statusStart}`} />
+				) : null}
+
+				{hasHeader && (
+					<div class="card-header">
+						{headerTabs || headerPills ? (
+							<ul class={`nav ${headerPills ? 'nav-pills card-header-pills' : 'nav-tabs card-header-tabs'}`}>
+								<li class="nav-item">
+									<a class="nav-link active" href="#">
+										Active
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										<Icon name="star" class="nav-link-icon" />
+										Link
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+										Disabled
+									</a>
+								</li>
+								<li class="nav-item ms-auto">
+									<a class="nav-link" href="#" aria-label="Settings">
+										<Icon name="settings" />
+									</a>
+								</li>
+							</ul>
+						) : (
+							<CardTitle>Header title</CardTitle>
+						)}
+					</div>
+				)}
+
+				<div class="card-body">
+					{title && (
+						<CardTitle>
+							<Fragment set:html={title} />
+						</CardTitle>
+					)}
+
+					<p class="text-secondary">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque
+						minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
+					</p>
+				</div>
+
+				{hasFooter && (
+					<Fragment>
+						<!-- Card footer -->
+						<div class="card-footer">
+							{footerElements ? (
+								<div class="row align-items-center">
+									{footerEls.map(({ el, right: elRight }: { el: string; right: boolean }) => (
+										<div class={`col-auto${elRight ? ' ms-auto' : ''}`}>
+											{el === 'switch' ? (
+												<label class="form-check form-switch m-0">
+													<input class="form-check-input position-static" type="checkbox" checked />
+												</label>
+											) : el === 'check' ? (
+												<label class="form-check m-0">
+													<input class="form-check-input position-static" type="checkbox" checked />
+												</label>
+											) : el === 'avatars' ? (
+												<PeopleAvatarList stacked={true} size="sm" text="+3" />
+											) : el === 'more' ? (
+												<a href="#">More information</a>
+											) : null}
+										</div>
+									))}
+								</div>
+							) : footerButton ? (
+								<a href="#" class="btn btn-primary">
+									Go somewhere
+								</a>
+							) : footerButtons ? (
+								<div class="btn-list">
+									<a href="#" class="btn btn-link">
+										Cancel
+									</a>
+									<a href="#" class="btn btn-primary ms-auto">
+										Go somewhere
+									</a>
+								</div>
+							) : (
+								'This is standard card footer'
+							)}
+						</div>
+					</Fragment>
+				)}
+
+				{imgBottom && (
+					<Fragment>
+						<!-- Photo -->
+						<div
+							class="img-responsive img-responsive-21x9 card-img-bottom"
+							style={`background-image: url(${staticPath(`photos/${imgBottomPhoto.file}`)})`}
+						/>
+					</Fragment>
+				)}
+
+				{progress && <Progress value={38} class="progress-sm card-progress" />}
+			</Fragment>
+		)
+	}
+</div>

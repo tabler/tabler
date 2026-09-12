@@ -1,0 +1,52 @@
+---
+import { assetRoot } from '@shared/lib/assets'
+import type { Person } from '@shared/lib/people'
+import Icon from './Icon.astro'
+import { firstLetters } from '@shared/lib/string-format'
+
+import type { AvatarSize } from '@shared/lib/tokens'
+
+/** re-exported for callers; generated from the `$avatar-sizes` SCSS map */
+export type { AvatarSize }
+
+interface Props {
+  src?: string
+  placeholder?: string | undefined
+  /** person object (photo → src, initials → placeholder); resolve demo ids with personById() from @shared/lib/people */
+  person?: Person | undefined
+  link?: boolean
+  size?: AvatarSize | undefined
+  class?: string
+  /** avatar-{shape} (core/scss/ui/_avatars.scss) */
+  shape?: 'rounded' | 'square' | undefined
+  color?: string | undefined
+  status?: string
+  statusLabel?: string
+  brand?: string
+  icon?: string | undefined
+  /** asset URL base — defaults to assetRoot (@shared/lib/assets); pass '..' for pages one level deep (e.g. marketing/) */
+  base?: string
+  /** remaining attributes (data-bs-toggle for tooltips, aria-*, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, size, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
+
+let src = srcProp
+let placeholder = placeholderProp
+
+if (person) {
+  src = person.photo
+  if (!src) {
+    placeholder = firstLetters(person.full_name ?? '')
+  }
+}
+
+const El = linkProp ? 'a' : 'span'
+
+const classes = ['avatar', size && `avatar-${size}`, className, shape && `avatar-${shape}`, color && `bg-${color}-lt`]
+---
+
+<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
+  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />}</El
+>

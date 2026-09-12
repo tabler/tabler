@@ -1,0 +1,40 @@
+---
+import Icon from '@ui/Icon.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
+import { people } from '@shared/lib/people'
+import Flag from '@ui/Flag.astro'
+import { requireIndex } from '@shared/lib/array'
+import CardTitle from '@ui/CardTitle.astro'
+
+const person = requireIndex(people, 24)
+---
+
+<div class="card">
+  <div class="card-body">
+    <CardTitle>Basic info</CardTitle>
+    <div class="mb-2">
+      <Icon name="book" class="me-2 text-secondary" />
+      Went to: <strong>{person.university}</strong>
+    </div>
+    <div class="mb-2">
+      <Icon name="briefcase" class="me-2 text-secondary" />
+      Worked at: <strong>{person.company}</strong>
+    </div>
+    <div class="mb-2">
+      <Icon name="home" class="me-2 text-secondary" />
+      Lives in: <strong>{person.city}, {person.country}</strong>
+    </div>
+    <div class="mb-2">
+      <Icon name="map-pin" class="me-2 text-secondary" />
+      From: <strong><Flag size="xs" flag={(person.country_code ?? '') as FlagCountry} /> {person.country}</strong>
+    </div>
+    <div class="mb-2">
+      <Icon name="calendar" class="me-2 text-secondary" />
+      Birth date: <strong>{person.birth_date}</strong>
+    </div>
+    <div>
+      <Icon name="clock" class="me-2 text-secondary" />
+      Time zone: <strong>{person.time_zone}</strong>
+    </div>
+  </div>
+</div>

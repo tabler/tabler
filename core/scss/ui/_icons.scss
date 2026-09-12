@@ -4,11 +4,13 @@
 @use '../config' as *;
 
 .icon {
-  --#{$prefix}icon-size: #{$font-size-base * $line-height-base};
-  width: var(--#{$prefix}icon-size);
-  height: var(--#{$prefix}icon-size);
-  font-size: var(--#{$prefix}icon-size);
+  --icon-size: #{$font-size-base * $line-height-base};
+  display: inline-block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  font-size: var(--icon-size);
   vertical-align: bottom;
+  transform-origin: center;
 
   @if $icon-stroke-width {
     stroke-width: $icon-stroke-width;
@@ -23,8 +25,9 @@
 // Inline icon
 //
 .icon-inline {
-  --#{$prefix}icon-size: 1rem;
-  vertical-align: -0.2rem;
+  --icon-size: #{$icon-inline-size};
+  --icon-inline-vertical-align: #{$icon-inline-vertical-align};
+  vertical-align: var(--icon-inline-vertical-align);
 }
 
 //
@@ -38,17 +41,17 @@
 // Icon size
 //
 .icon-sm {
-  --#{$prefix}icon-size: 1rem;
+  --icon-size: #{$icon-sm-size};
   stroke-width: 1.5;
 }
 
 .icon-md {
-  --#{$prefix}icon-size: 2.5rem;
+  --icon-size: #{$icon-md-size};
   stroke-width: 1;
 }
 
 .icon-lg {
-  --#{$prefix}icon-size: 3.5rem;
+  --icon-size: #{$icon-lg-size};
   stroke-width: 1;
 }
 

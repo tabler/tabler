@@ -37,10 +37,7 @@ describe('Button', () => {
 
   describe('data-api', () => {
     it('should toggle active class on click', () => {
-      fixtureEl.innerHTML = [
-        '<button class="btn" data-bs-toggle="button">btn</button>',
-        '<button class="btn testParent" data-bs-toggle="button"><div class="test"></div></button>'
-      ].join('')
+      fixtureEl.innerHTML = ['<button class="btn" data-bs-toggle="button">btn</button>', '<button class="btn testParent" data-bs-toggle="button"><div class="test"></div></button>'].join('')
 
       const btn = fixtureEl.querySelector('.btn') as HTMLElement
       const divTest = fixtureEl.querySelector('.test') as HTMLElement

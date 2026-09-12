@@ -1,0 +1,38 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+
+interface Props {
+  personId?: number
+  right?: boolean
+}
+
+const { personId = 0, right } = Astro.props
+const person = requireIndex(people, personId)
+---
+
+<a class="card card-link" href="#">
+  <div class="card-body">
+    <div class="row">
+      {
+        !right && (
+          <div class="col-auto">
+            <Avatar person={person} class="rounded" />
+          </div>
+        )
+      }
+      <div class="col">
+        <div class="fw-medium">{person.full_name}</div>
+        <div class="text-secondary">{person.job_title}</div>
+      </div>
+      {
+        right && (
+          <div class="col-auto">
+            <Avatar person={person} class="rounded" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</a>

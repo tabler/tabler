@@ -1,0 +1,22 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// List group container (.list-group).
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  flush?: boolean
+  hoverable?: boolean
+  transparent?: boolean
+  class?: string
+  /** remaining attributes (data-sortable, style, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest }: Props = Astro.props
+---
+
+<Element class:list={['list-group', flush && 'list-group-flush', hoverable && 'list-group-hoverable', transparent && 'list-group-transparent', className]} {...rest}>
+  <slot />
+</Element>

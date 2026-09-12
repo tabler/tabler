@@ -1,5 +1,4 @@
-// Input mask plugin
-
+// js-docs-start input-mask-init
 const maskElementList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-mask]'))
 maskElementList.map(function (maskEl: HTMLElement) {
   window.IMask &&
@@ -8,3 +7,4 @@ maskElementList.map(function (maskEl: HTMLElement) {
       lazy: maskEl.dataset.maskVisible !== 'true',
     })
 })
+// js-docs-end input-mask-init

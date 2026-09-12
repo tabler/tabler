@@ -1,15 +1,20 @@
 @use '../config' as *;
 
-$markdown-font-size: var(--#{$prefix}font-size-h3) !default;
-$markdown-line-height: var(--#{$prefix}line-height-lg) !default;
+$markdown-font-size: var(--font-size-h3) !default;
+$markdown-line-height: var(--line-height-lg) !default;
 
 /**
 Prose (formerly markdown)
  */
 .prose,
 .markdown {
-  line-height: $markdown-line-height;
+  --markdown-heading-margin-top: #{$markdown-heading-margin-top};
+  --markdown-blockquote-margin-y: #{$markdown-blockquote-margin-y};
+  --markdown-blockquote-padding-y: #{$markdown-blockquote-padding-y};
+  --markdown-blockquote-padding-x: #{$markdown-blockquote-padding-x};
+  --markdown-pre-max-height: #{$markdown-pre-max-height};
   font-size: $markdown-font-size;
+  line-height: $markdown-line-height;
 
   > :first-child {
     margin-top: 0;
@@ -42,29 +47,30 @@ Prose (formerly markdown)
     h4,
     h5,
     h6 {
-      margin-top: 2.5rem;
+      margin-top: var(--markdown-heading-margin-top);
     }
   }
 
   > table {
     // The `@extend .table, .table-bordered, .table-sm` part lives in
     // `_extends.scss` — its targets span modules loaded after this one.
-    font-size: var(--#{$prefix}body-font-size);
+    font-size: var(--body-font-size);
   }
 
   > blockquote {
+    padding: var(--markdown-blockquote-padding-y) var(--markdown-blockquote-padding-x);
+    margin: var(--markdown-blockquote-margin-y) 0;
     font-size: $h3-font-size;
-    margin: 1.5rem 0;
-    padding: 0.5rem 1.5rem;
   }
 
   > img,
-  > p > img {
-    @include border-radius(var(--#{$prefix}border-radius));
-    border: 1px solid var(--#{$prefix}border-color);
+  > p > img,
+  > figure > img {
+    @include border-radius(var(--border-radius));
+    border: 1px solid var(--border-color);
   }
 
   pre {
-    max-height: 20rem;
+    max-height: var(--markdown-pre-max-height);
   }
 }

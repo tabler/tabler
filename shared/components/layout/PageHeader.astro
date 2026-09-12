@@ -1,0 +1,59 @@
+---
+import HeaderProfile from './HeaderProfile.astro';
+import HeaderUptime from './HeaderUptime.astro';
+import PageTitle from '@ui/PageTitle.astro';
+
+interface Props {
+	/** page title; without it the whole block is not rendered */
+	title?: string | undefined;
+	/** small text above the title */
+	pretitle?: string | undefined;
+	/** text below the title */
+	description?: string | undefined;
+	/** extra classes on .page-header */
+	class?: string;
+	/** name of a layout/headers/ component rendered instead of the title block, e.g. "profile" */
+	file?: string | undefined;
+	/** text-white on .page-header (dark overlapping navbar) */
+	textWhite?: boolean | undefined;
+}
+
+const { title, pretitle, description, class: className, file, textWhite } = Astro.props;
+
+const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
+---
+
+{file === 'profile' && <HeaderProfile />}
+{file === 'uptime' && <HeaderUptime />}
+{
+	!file && title && (
+		<div class={`page-header${className ? ` ${className}` : ''} d-print-none${textWhite ? ' text-white' : ''}`}>
+			<div class="container-xl">
+				<div class="row g-2 align-items-center">
+					<div class="col">
+						{pretitle && (
+							<Fragment>
+								<!-- Page pre-title -->
+								<div class="page-pretitle">{pretitle}</div>
+							</Fragment>
+						)}
+						<PageTitle>
+							{title}
+						</PageTitle>
+
+						{description && <div class="text-secondary mt-1">{description}</div>}
+					</div>
+
+					{actionsSlot && (
+						<Fragment>
+							<!-- Page title actions -->
+							<div class="col-auto ms-auto d-print-none">
+								<Fragment set:html={actionsSlot} />
+							</div>
+						</Fragment>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}

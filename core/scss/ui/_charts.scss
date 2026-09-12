@@ -1,8 +1,10 @@
 @use '../config' as *;
 
 .chart {
+  --chart-min-height: #{$chart-min-height};
+
   display: block;
-  min-height: 10rem;
+  min-height: var(--chart-min-height);
 
   text {
     font-family: inherit;
@@ -10,54 +12,71 @@
 }
 
 .chart-sm {
-  height: 2.5rem;
+  --chart-height-sm: #{$chart-height-sm};
+
+  height: var(--chart-height-sm);
 }
 
 .chart-lg {
-  height: 15rem;
+  --chart-height-lg: #{$chart-height-lg};
+
+  height: var(--chart-height-lg);
 }
 
 .chart-square {
-  height: 5.75rem;
+  --chart-height-square: #{$chart-height-square};
+
+  height: var(--chart-height-square);
 }
 
 /**
 Chart sparkline
  */
 .chart-sparkline {
+  --chart-sparkline-width: #{$chart-sparkline-width};
+  --chart-sparkline-height: #{$chart-sparkline-height};
+
   position: relative;
-  width: 4rem;
-  height: 2.5rem;
-  line-height: 1;
+  width: var(--chart-sparkline-width);
+  height: var(--chart-sparkline-height);
   min-height: 0 !important;
+  line-height: 1;
 }
 
 .chart-sparkline-sm {
-  height: 1.5rem;
+  --chart-sparkline-height-sm: #{$chart-sparkline-height-sm};
+
+  height: var(--chart-sparkline-height-sm);
 }
 
 .chart-sparkline-square {
-  width: 2.5rem;
+  --chart-sparkline-width-square: #{$chart-sparkline-width-square};
+
+  width: var(--chart-sparkline-width-square);
 }
 
 .chart-sparkline-wide {
-  width: 6rem;
+  --chart-sparkline-width-wide: #{$chart-sparkline-width-wide};
+
+  width: var(--chart-sparkline-width-wide);
 }
 
 .chart-sparkline-label {
+  --chart-sparkline-label-icon-size: #{$chart-sparkline-label-icon-size};
+
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  bottom: 0;
   inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: $h6-font-size;
 
   .icon {
-    width: 1rem;
-    height: 1rem;
-    font-size: 1rem;
+    width: var(--chart-sparkline-label-icon-size);
+    height: var(--chart-sparkline-label-icon-size);
+    font-size: var(--chart-sparkline-label-icon-size);
   }
 }

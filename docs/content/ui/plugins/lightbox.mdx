@@ -1,0 +1,265 @@
+---
+title: Lightbox
+summary: A lightbox opens images and videos in a fullscreen overlay above the page. Use it for galleries, photo grids, and media previews.
+docs-libs: [fslightbox]
+description: Open images and videos in a fullscreen lightbox.
+---
+import Example from '@components/Example.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+The lightbox shows a full size image or video above the page. The user can move between slides, open the overlay in fullscreen, and close it.
+
+Tabler uses the [fslightbox](https://fslightbox.com/) library and styles the overlay to match the theme. The backdrop uses the theme backdrop color and blur, so the lightbox looks the same in light and dark mode.
+
+## Installation
+
+The lightbox is not part of the Tabler CSS bundle. You need to add the fslightbox script to your page.
+
+Install it with npm:
+
+```shell
+npm install fslightbox
+```
+
+You can also include the script from a CDN. Add it at the end of the `<body>` tag:
+
+<Code
+	lang="html"
+	code={`<script src="${site.cdnUrl}/dist/libs/fslightbox/index.js"></script>`}
+/>
+
+The script runs on load. It reads all `<a>` tags with the `data-fslightbox` attribute and handles their clicks. You do not need to write any init code.
+
+## Usage
+
+### Single image
+
+Add `data-fslightbox` to a link and set `href` to the full size image. The link content can be anything, for example a thumbnail.
+
+<Example centered>
+<a data-fslightbox="single" href="/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg">
+  <div class="img-responsive img-responsive-4x3 rounded border" style="background-image: url(/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg); width: 15rem;"></div>
+</a>
+</Example>
+
+### Gallery
+
+Give the same `data-fslightbox` value to several links. They become one gallery, and the user can move between the slides with the arrows or arrow keys.
+
+<Example>
+<div class="row row-cols-2 row-cols-md-4 g-3">
+  <div class="col">
+    <a data-fslightbox="gallery" href="/static/photos/young-woman-working-in-a-cafe.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/young-woman-working-in-a-cafe.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="gallery" href="/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="gallery" href="/static/photos/finances-us-dollars-and-bitcoins-currency-money.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/finances-us-dollars-and-bitcoins-currency-money.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="gallery" href="/static/photos/brainstorming-session-with-creative-designers.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/brainstorming-session-with-creative-designers.jpg)"></div>
+    </a>
+  </div>
+</div>
+</Example>
+
+### Separate galleries
+
+Use a different `data-fslightbox` value for each group. Each value creates its own lightbox instance, so slides from one group never mix with another.
+
+<Example>
+<div class="row row-cols-2 row-cols-md-4 g-3">
+  <div class="col">
+    <a data-fslightbox="places" href="/static/photos/a-visit-to-the-bookstore.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/a-visit-to-the-bookstore.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="places" href="/static/photos/cup-of-coffee-on-table-in-cafe-2.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/cup-of-coffee-on-table-in-cafe-2.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="desks" href="/static/photos/stylish-workspace-with-macbook-pro.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/stylish-workspace-with-macbook-pro.jpg)"></div>
+    </a>
+  </div>
+  <div class="col">
+    <a data-fslightbox="desks" href="/static/photos/workplace-with-laptop-on-table-at-home-4.jpg">
+      <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/workplace-with-laptop-on-table-at-home-4.jpg)"></div>
+    </a>
+  </div>
+</div>
+</Example>
+
+### Text links
+
+The link does not have to be an image. Any link with `data-fslightbox` opens the lightbox.
+
+<Example centered>
+<a class="btn btn-primary" data-fslightbox="text-links" href="/static/photos/making-magic-with-fairy-lights.jpg"> Open photo </a>
+<a class="link-primary" data-fslightbox="text-links" href="/static/photos/man-looking-out-to-sea.jpg"> Open second photo </a>
+</Example>
+
+### Videos and YouTube
+
+A link to a video file or to a YouTube URL opens a player inside the lightbox. The library reads the source type from the URL.
+
+<Example centered>
+<a class="btn btn-primary" data-fslightbox="video" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"> Play YouTube video </a>
+</Example>
+
+Use these attributes to control the media:
+
+| Attribute | Description |
+| --- | --- |
+| `data-type` | Sets the source type when the URL has no file extension. Use `image`, `video`, `youtube`, or `custom`. |
+| `data-video-poster` | Sets the poster image of a video slide. |
+| `data-autoplay` | Plays the video when its slide opens. |
+
+```html
+<a
+  data-fslightbox="video"
+  data-type="video"
+  data-video-poster="/static/photos/man-looking-out-to-sea.jpg"
+  data-autoplay
+  href="/media/clip"
+>
+  Play video
+</a>
+```
+
+### Separate thumbnail and source
+
+Use `data-href` when the link should point somewhere else than the lightbox slide. The lightbox uses `data-href`, and `href` stays the normal link target.
+
+```html
+<a data-fslightbox="gallery" data-href="/static/photos/book-on-the-grass.jpg" href="/photos/12">
+  <img src="/static/photos/book-on-the-grass.jpg" class="rounded" alt="Photo" />
+</a>
+```
+
+### Custom sources
+
+Set `href` to the id of an element on the page. The lightbox clones that element and shows it as a slide. Use it for iframes, maps, or any custom markup.
+
+```html
+<a data-fslightbox="custom" href="#vimeo-player">Open Vimeo video</a>
+<iframe
+  id="vimeo-player"
+  src="https://player.vimeo.com/video/22439234"
+  width="1920"
+  height="1080"
+  allow="autoplay; fullscreen"
+  allowfullscreen
+></iframe>
+```
+
+### Open from JavaScript
+
+Every gallery is stored in the global `fsLightboxInstances` object under its `data-fslightbox` value. Use `open()` with a slide index to open it, and `close()` to hide it.
+
+```js
+// open the second slide of the "gallery" group
+fsLightboxInstances['gallery'].open(1)
+
+// close it
+fsLightboxInstances['gallery'].close()
+```
+
+### Dynamic content
+
+The script reads the links only once. Call `refreshFsLightbox()` after you add or remove links, for example after loading more photos.
+
+```js
+document.querySelector('#photos').insertAdjacentHTML('beforeend', newPhotoHtml)
+refreshFsLightbox()
+```
+
+## Examples
+
+### Photo grid
+
+Mix column sizes to build a photo grid. All links share one `data-fslightbox` value, so the whole grid is a single gallery.
+
+<Example>
+<div class="row g-3">
+  <div class="col-6">
+    <a data-fslightbox="grid" href="/static/photos/beautiful-blonde-woman-relaxing-with-a-can-of-coke-on-a-tree-stump-by-the-beach.jpg">
+      <div class="img-responsive img-responsive-4x3 rounded border" style="background-image: url(/static/photos/beautiful-blonde-woman-relaxing-with-a-can-of-coke-on-a-tree-stump-by-the-beach.jpg)"></div>
+    </a>
+  </div>
+  <div class="col-6">
+    <div class="row g-3">
+      <div class="col-6">
+        <a data-fslightbox="grid" href="/static/photos/book-on-the-grass.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/book-on-the-grass.jpg)"></div>
+        </a>
+      </div>
+      <div class="col-6">
+        <a data-fslightbox="grid" href="/static/photos/coffee-on-a-table-with-other-items.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/coffee-on-a-table-with-other-items.jpg)"></div>
+        </a>
+      </div>
+      <div class="col-6">
+        <a data-fslightbox="grid" href="/static/photos/city-lights-reflected-in-the-water-at-night.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/city-lights-reflected-in-the-water-at-night.jpg)"></div>
+        </a>
+      </div>
+      <div class="col-6">
+        <a data-fslightbox="grid" href="/static/photos/tropical-palm-leaves-floral-pattern-background.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded border" style="background-image: url(/static/photos/tropical-palm-leaves-floral-pattern-background.jpg)"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+### Card gallery
+
+Put the gallery inside a card to show it next to other page content.
+
+<Example>
+<div class="card" style="width: 24rem;">
+  <div class="card-header"><h3 class="card-title">Photos</h3></div>
+  <div class="card-body">
+    <div class="row row-cols-3 g-2">
+      <div class="col">
+        <a data-fslightbox="card" href="/static/photos/group-of-people-sightseeing-in-the-city.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded" style="background-image: url(/static/photos/group-of-people-sightseeing-in-the-city.jpg)"></div>
+        </a>
+      </div>
+      <div class="col">
+        <a data-fslightbox="card" href="/static/photos/people-by-a-banquet-table-full-with-food.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded" style="background-image: url(/static/photos/people-by-a-banquet-table-full-with-food.jpg)"></div>
+        </a>
+      </div>
+      <div class="col">
+        <a data-fslightbox="card" href="/static/photos/cup-of-coffee-and-an-open-book.jpg">
+          <div class="img-responsive img-responsive-1x1 rounded" style="background-image: url(/static/photos/cup-of-coffee-and-an-open-book.jpg)"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- Keep a real `href` on every link, so the image opens even when JavaScript fails.
+- Add `alt` text to thumbnail images. For a background image, add a text label inside the link and hide it with `visually-hidden`.
+- The lightbox can be closed with the `Escape` key. Slides change with the left and right arrow keys, and `F11` toggles fullscreen.
+- On touch devices the user can swipe left and right to change slides.
+- Do not use `data-autoplay` for long videos with sound, because it starts without user action.

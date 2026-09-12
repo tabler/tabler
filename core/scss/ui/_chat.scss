@@ -1,28 +1,31 @@
 @use '../config' as *;
 
 .chat {
+  --chat-bubbles-gap: #{$chat-bubbles-gap};
+  --chat-bubble-padding: #{$chat-bubble-padding};
+  --chat-bubble-title-margin-bottom: #{$chat-bubble-title-margin-bottom};
 }
 
 .chat-bubbles {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--chat-bubbles-gap);
 }
 
 .chat-bubble {
-  background: var(--#{$prefix}bg-surface-secondary);
-  @include border-radius(var(--#{$prefix}border-radius-lg));
-  padding: 1rem;
   position: relative;
+  padding: var(--chat-bubble-padding);
+  background: var(--bg-surface-secondary);
+  @include border-radius(var(--border-radius-lg));
 }
 
 .chat-bubble-me {
-  background-color: var(--#{$prefix}primary-lt);
+  background-color: var(--primary-lt);
   box-shadow: none;
 }
 
 .chat-bubble-title {
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--chat-bubble-title-margin-bottom);
 }
 
 .chat-bubble-author {
@@ -30,7 +33,7 @@
 }
 
 .chat-bubble-date {
-  color: var(--#{$prefix}secondary);
+  color: var(--secondary);
 }
 
 .chat-bubble-body {

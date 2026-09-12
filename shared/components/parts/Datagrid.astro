@@ -1,0 +1,45 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
+import Icon from '@ui/Icon.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import { requireIndex } from '@shared/lib/array'
+
+const creator = requireIndex(people, 0)
+---
+
+<Datagrid>
+  <DatagridItem title="Registrar">Third Party</DatagridItem>
+  <DatagridItem title="Nameservers">Third Party</DatagridItem>
+  <DatagridItem title="Port number">3306</DatagridItem>
+  <DatagridItem title="Expiration date">–</DatagridItem>
+  <DatagridItem title="Creator">
+    <div class="d-flex align-items-center">
+      <Avatar person={creator} size="xs" class="me-2" />
+      {creator.full_name}
+    </div>
+  </DatagridItem>
+  <DatagridItem title="Age">15 days</DatagridItem>
+  <DatagridItem title="Edge network">
+    <span class="status status-green"> Active </span>
+  </DatagridItem>
+  <DatagridItem title="Avatars list">
+    <PeopleAvatarList stacked={true} size="xs" text="+3" />
+  </DatagridItem>
+  <DatagridItem title="Checkbox">
+    <label class="form-check">
+      <input class="form-check-input" type="checkbox" checked />
+      <span class="form-check-label">Click me</span>
+    </label>
+  </DatagridItem>
+  <DatagridItem title="Icon">
+    <Icon name="check" color="green" />
+    Checked
+  </DatagridItem>
+  <DatagridItem title="Form control">
+    <input type="text" class="form-control form-control-flush" placeholder="Input placeholder" />
+  </DatagridItem>
+  <DatagridItem title="Longer description">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</DatagridItem>
+</Datagrid>

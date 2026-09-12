@@ -1,0 +1,80 @@
+---
+title: Breadcrumb
+summary: A breadcrumb shows where the current page sits in the site hierarchy and links to the levels above it.
+description: A breadcrumb trail for the current page location, with separators, icons and a muted style.
+related: [/ui/components/pagination]
+source: core/scss/ui/_breadcrumbs.scss
+classnames:
+  component:
+    - class: breadcrumb
+      desc: Container element, an ordered list
+  part:
+    - class: breadcrumb-item
+      desc: One step in the trail
+  style:
+    - class: breadcrumb-arrows
+      desc: Chevron between the items
+    - class: breadcrumb-bullets
+      desc: Bullet between the items
+    - class: breadcrumb-dots
+      desc: Dot between the items
+    - class: breadcrumb-muted
+      desc: Quieter text color for the whole trail
+---
+import Example from '@components/Example.astro';
+import Breadcrumb from '@ui/Breadcrumb.astro';
+import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+Add the `breadcrumb` class to the list and `breadcrumb-item` to each item. Mark the current page with the `active` class on its `li`.
+
+<Example centered>
+<Breadcrumb pages={['Home', 'Library', 'Data']} />
+</Example>
+
+## Different separators
+
+The separator is drawn in CSS and is a slash by default. `breadcrumb-dots`, `breadcrumb-arrows` and `breadcrumb-bullets` change it.
+
+<Example vertical separated centered>
+<Breadcrumb pages={['Home', 'Library', 'Data']} separator="dots" /> <Breadcrumb pages={['Home', 'Library', 'Data']} separator="arrows" /> <Breadcrumb pages={['Home', 'Library', 'Data']} separator="bullets" />
+</Example>
+
+## With icon
+
+An item can hold an [icon](/ui/components/icon) next to or instead of the text.
+
+<Example vertical separated>
+<Breadcrumb pages={['Home', 'Library', 'Data']} homeIcon />
+</Example>
+
+## Muted breadcrumbs
+
+The `breadcrumb-muted` class renders the trail in the secondary text color, so it takes less attention than the page title next to it.
+
+<Example>
+<Breadcrumb pages={['Home', 'Library', 'Data']} class="breadcrumb-muted" />
+</Example>
+
+## Breadcrumb in headers
+
+A breadcrumb usually sits in the [page header](/ui/layout/page-headers), above the title:
+
+<Example centered vertical>
+<div class="page-header"> <div class="row align-items-center mw-100"> <div class="col"> <Breadcrumb pages={['Home', 'Library', 'Articles']} /> <h2 class="page-title"> <span class="text-truncate">How to Build a Modern Dashboard with Tabler</span> </h2> </div> <div class="col-auto"> <div class="btn-list"> <a href="#" class="btn d-none d-md-inline-flex"> <Icon name="edit" /> Edit </a> <a href="#" class="btn btn-primary">Publish</a> </div> </div> </div> </div>
+</Example>
+
+## Accessibility
+
+- Wrap the list in `<nav aria-label="Breadcrumb">`. That label is what tells this navigation apart from the others on the page.
+- Mark the last item with `aria-current="page"`. It is the current page, so it should not be a link.
+- Keep the separator in CSS, as Tabler does. A separator typed into the markup is read out between every item.
+- Breadcrumbs show where a page sits, not where the user has been. Keep them the same for everyone who lands on that page.
+
+## SCSS variables
+
+Use these SCSS variables to customize breadcrumbs. The default values are:
+
+<CodeDocs name="breadcrumb-variables" file="core/scss/_variables.scss" />

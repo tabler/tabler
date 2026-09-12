@@ -37,12 +37,12 @@ const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"], [data-tblr-toggle="co
 
 const Default: ComponentConfig = {
   parent: null,
-  toggle: true
+  toggle: true,
 }
 
 const DefaultType: ComponentConfigType = {
   parent: '(null|element)',
-  toggle: 'boolean'
+  toggle: 'boolean',
 }
 
 class Collapse extends BaseComponent {
@@ -59,8 +59,7 @@ class Collapse extends BaseComponent {
 
     for (const elem of toggleList) {
       const selector = SelectorEngine.getSelectorFromElement(elem)
-      const filterElement = SelectorEngine.find(selector!)
-        .filter(foundElement => foundElement === this._element)
+      const filterElement = SelectorEngine.find(selector!).filter((foundElement) => foundElement === this._element)
 
       if (selector !== null && filterElement.length) {
         this._triggerArray.push(elem)
@@ -107,8 +106,8 @@ class Collapse extends BaseComponent {
 
     if (this._config.parent) {
       activeChildren = this._getFirstLevelChildren(SELECTOR_ACTIVES)
-        .filter(element => element !== this._element)
-        .map(element => Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse)
+        .filter((element) => element !== this._element)
+        .map((element) => Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse)
     }
 
     if (activeChildren.length && activeChildren[0]._isTransitioning) {
@@ -225,7 +224,7 @@ class Collapse extends BaseComponent {
 
   _getFirstLevelChildren(selector: string): HTMLElement[] {
     const children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent as HTMLElement)
-    return SelectorEngine.find(selector, this._config.parent as HTMLElement).filter(element => !children.includes(element))
+    return SelectorEngine.find(selector, this._config.parent as HTMLElement).filter((element) => !children.includes(element))
   }
 
   _addAriaAndCollapsedClass(triggerArray: HTMLElement[], isOpen: boolean): void {
@@ -246,7 +245,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   for (const element of SelectorEngine.getMultipleElementsFromSelector(this)) {
-    (Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
+    ;(Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
   }
 })
 

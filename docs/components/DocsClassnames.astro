@@ -1,0 +1,71 @@
+---
+// Class reference for a component, from the page's `classnames` front matter
+// (see docs/content.config.ts). Groups are rendered in a fixed order so every
+// page reads the same way, whatever order the front matter happens to use.
+import Badge from '@ui/Badge.astro'
+
+type Entry = { class: string; desc: string; default: boolean }
+
+interface Props {
+  classnames: Record<string, Entry[]>
+}
+
+const { classnames }: Props = Astro.props
+
+const groupOrder = ['component', 'part', 'style', 'modifier', 'behavior', 'direction', 'color', 'size']
+
+// One soft color per kind, so the type column can be scanned without reading it.
+// `bg-*-lt` carries both the tint and a matching text color, and follows the
+// color mode on its own.
+const groupColors: Record<string, string> = {
+  component: 'blue',
+  part: 'cyan',
+  style: 'purple',
+  modifier: 'indigo',
+  behavior: 'yellow',
+  direction: 'teal',
+  color: 'pink',
+  size: 'orange',
+}
+
+const groupIcons: Record<string, string> = {
+  component: 'box',
+  part: 'puzzle',
+  style: 'brush',
+  modifier: 'adjustments',
+  behavior: 'hand-click',
+  direction: 'arrows-move',
+  color: 'palette',
+  size: 'ruler-measure',
+}
+const groups = Object.entries(classnames).sort(([a], [b]) => (groupOrder.indexOf(a) + 1 || 99) - (groupOrder.indexOf(b) + 1 || 99))
+---
+
+<!-- BEGIN DOCS CLASSNAMES -->
+<h2 id="class-reference">Class reference</h2>
+
+<p>Every class this component ships, grouped by what it changes. A name in braces stands for a family — <code>{'{color}'}</code> is any base color, <code>{'{breakpoint}'}</code> any responsive step.</p>
+
+<table class="docs-classnames">
+  <tbody>
+    {
+      groups.map(([group, entries]) =>
+        entries.map((entry) => (
+          <tr>
+            <td>
+              <code>{entry.class}</code>
+            </td>
+            <td>
+              <Badge color={groupColors[group] ?? 'secondary'} light icon={groupIcons[group] ?? 'tag'} text={group} class="text-capitalize" />
+            </td>
+            <td>
+              {entry.desc}
+              {entry.default && <Badge color="blue" light text="default" class="ms-2" />}
+            </td>
+          </tr>
+        )),
+      )
+    }
+  </tbody>
+</table>
+<!-- END DOCS CLASSNAMES -->

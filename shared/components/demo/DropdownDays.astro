@@ -1,0 +1,18 @@
+---
+interface Props {
+  id?: string
+  label?: string
+}
+
+const { id, label = 'Select time range' } = Astro.props
+const value = 'Last 7 days'
+---
+
+<div class="dropdown">
+  <button type="button" class="dropdown-toggle text-secondary border-0 bg-transparent p-0" id={id ? `${id}-dropdown` : undefined} data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title={label}>{value}</button>
+  <div class="dropdown-menu dropdown-menu-end" aria-labelledby={id ? `${id}-dropdown` : undefined}>
+    <button type="button" class="dropdown-item active" aria-current="true">Last 7 days</button>
+    <button type="button" class="dropdown-item">Last 30 days</button>
+    <button type="button" class="dropdown-item">Last 3 months</button>
+  </div>
+</div>

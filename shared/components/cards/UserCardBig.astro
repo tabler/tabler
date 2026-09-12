@@ -1,0 +1,24 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+import CardTitle from '@ui/CardTitle.astro'
+
+interface Props {
+  personId?: number
+}
+
+const { personId = 0 } = Astro.props
+const person = requireIndex(people, personId)
+---
+
+<div class="card">
+  <div class="card-body text-center">
+    <div class="mb-3">
+      <Avatar size="xl" person={person} />
+    </div>
+    <CardTitle class="mb-1">{person.full_name}</CardTitle>
+    <div class="text-secondary">{person.job_title}</div>
+  </div>
+  <a href="#" class="card-btn">View full profile</a>
+</div>

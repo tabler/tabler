@@ -1,0 +1,41 @@
+---
+import MarkdownSource from './MarkdownSource.astro'
+import { markdownTable } from '@shared/lib/markdown-source'
+import flags from '@data/flags.json'
+
+// Same list as a table for the page's .md mirror
+const markdown = markdownTable(
+  ['Country', 'Code', 'CSS class'],
+  flags.map((flag) => [flag.name, `\`${flag.flag}\``, `\`.flag-country-${flag.flag}\``]),
+)
+---
+
+<table class="table table-vcenter">
+  <thead>
+    <tr>
+      <th class="w-1">Flag</th>
+      <th>Name</th>
+      <th class="w-1">Country code</th>
+      <th>CSS class</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      flags.map((flag) => (
+        <tr>
+          <td>
+            <div class={`flag flag-sm flag-country-${flag.flag}`} />
+          </td>
+          <td>{flag.name}</td>
+          <td>
+            <code>{flag.flag}</code>
+          </td>
+          <td>
+            <code>.flag-country-{flag.flag}</code>
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+<MarkdownSource name="Flags" markdown={markdown} />

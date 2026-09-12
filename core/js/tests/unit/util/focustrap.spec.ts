@@ -6,7 +6,7 @@ vi.mock('../../../src/bootstrap/util/index', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../../src/bootstrap/util/index')>()
   return {
     ...actual,
-    isVisible: () => true
+    isVisible: () => true,
   }
 })
 
@@ -19,12 +19,7 @@ describe('FocusTrap', () => {
   })
 
   beforeEach(() => {
-    fixtureEl.innerHTML =
-      '<div id="trap" tabindex="-1">' +
-        '<button id="btn1">First</button>' +
-        '<button id="btn2">Second</button>' +
-      '</div>' +
-      '<button id="outside">Outside</button>'
+    fixtureEl.innerHTML = '<div id="trap" tabindex="-1">' + '<button id="btn1">First</button>' + '<button id="btn2">Second</button>' + '</div>' + '<button id="outside">Outside</button>'
     trapEl = fixtureEl.querySelector('#trap')!
   })
 
@@ -40,14 +35,14 @@ describe('FocusTrap', () => {
     it('Default should have correct values', () => {
       expect(FocusTrap.Default).toEqual({
         autofocus: true,
-        trapElement: null
+        trapElement: null,
       })
     })
 
     it('DefaultType should have correct values', () => {
       expect(FocusTrap.DefaultType).toEqual({
         autofocus: 'boolean',
-        trapElement: 'element'
+        trapElement: 'element',
       })
     })
   })

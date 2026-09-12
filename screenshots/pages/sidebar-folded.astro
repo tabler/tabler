@@ -1,0 +1,44 @@
+---
+// The folded sidebar added in 1.5 (`navbar-folded`): an icon-only rail with the
+// pinned brand on top, the section separators in place of the group labels and
+// the user block at the bottom.
+import ScreenshotAppLayout from '../layouts/ScreenshotAppLayout.astro'
+import CrmStats from '@shared/components/cards/CrmStats.astro'
+import MrrOverview from '@shared/components/cards/charts/MrrOverview.astro'
+---
+
+<ScreenshotAppLayout title="Folded sidebar" pageHeader="CRM Dashboard" description="Welcome back — here's your CRM overview for today." pageMenu="dashboards.crm" sidebarMode="folded" pageLibs={['apexcharts']}>
+  <div class="row row-cards">
+    <div class="col-6 col-lg-3">
+      <CrmStats color="primary" icon="currency-dollar" lt title="MRR" description="$92.4K" changeValue="+9.5" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="azure" icon="filter" lt title="Pipeline" description="$2.4M" changeValue="+14" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="green" icon="circle-check" lt title="Deals won" description="74" changeValue="+8" />
+    </div>
+    <div class="col-6 col-lg-3">
+      <CrmStats color="purple" icon="percentage" lt title="Win rate" description="38%" changeValue="+0.4" />
+    </div>
+    <div class="col-12">
+      <MrrOverview />
+    </div>
+  </div>
+
+  <!-- The flyout submenu is what the folded rail trades the labels for, so it
+  is opened here rather than left to a hover the capture tool cannot make. -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      // A group low in the rail, so the flyout lands over the empty part of the
+      // page instead of covering the cards.
+      const items = [...document.querySelectorAll('.navbar-vertical .navbar-nav > .nav-item')]
+      const toggle = items.find((item) => item.textContent?.trim().startsWith('Addons'))?.querySelector('[data-bs-toggle="dropdown"]')
+      if (!toggle || !window.tabler?.Dropdown) return
+
+      // Deferred by a timeout: opened straight from this handler the menu is
+      // closed again by the framework's own DOMContentLoaded wiring.
+      setTimeout(() => window.tabler.Dropdown.getOrCreateInstance(toggle).show(), 0)
+    })
+  </script>
+</ScreenshotAppLayout>

@@ -1,0 +1,17 @@
+---
+// Button group container (.btn-group / .btn-group-vertical).
+
+interface Props {
+  /** use .btn-group-vertical instead of .btn-group */
+  vertical?: boolean
+  class?: string
+  /** remaining attributes (aria-label, …) are forwarded */
+  [key: string]: unknown
+}
+
+const { vertical, class: className, ...rest } = Astro.props
+---
+
+<div class:list={[vertical ? 'btn-group-vertical' : 'btn-group', className]} role="group" {...rest}>
+  <slot />
+</div>

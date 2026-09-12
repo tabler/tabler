@@ -12,51 +12,42 @@ const ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i
 
 export const DefaultAllowlist: AllowList = {
   '*': ['class', 'dir', 'id', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
-  a: ['target', 'href', 'title', 'rel'],
-  area: [],
-  b: [],
-  br: [],
-  col: [],
-  code: [],
-  dd: [],
-  div: [],
-  dl: [],
-  dt: [],
-  em: [],
-  hr: [],
-  h1: [],
-  h2: [],
-  h3: [],
-  h4: [],
-  h5: [],
-  h6: [],
-  i: [],
-  img: ['src', 'srcset', 'alt', 'title', 'width', 'height'],
-  li: [],
-  ol: [],
-  p: [],
-  pre: [],
-  s: [],
-  small: [],
-  span: [],
-  sub: [],
-  sup: [],
-  strong: [],
-  u: [],
-  ul: []
+  'a': ['target', 'href', 'title', 'rel'],
+  'area': [],
+  'b': [],
+  'br': [],
+  'col': [],
+  'code': [],
+  'dd': [],
+  'div': [],
+  'dl': [],
+  'dt': [],
+  'em': [],
+  'hr': [],
+  'h1': [],
+  'h2': [],
+  'h3': [],
+  'h4': [],
+  'h5': [],
+  'h6': [],
+  'i': [],
+  'img': ['src', 'srcset', 'alt', 'title', 'width', 'height'],
+  'li': [],
+  'ol': [],
+  'p': [],
+  'pre': [],
+  's': [],
+  'small': [],
+  'span': [],
+  'sub': [],
+  'sup': [],
+  'strong': [],
+  'u': [],
+  'ul': [],
 }
 // js-docs-end allow-list
 
-const uriAttributes = new Set([
-  'background',
-  'cite',
-  'href',
-  'itemtype',
-  'longdesc',
-  'poster',
-  'src',
-  'xlink:href'
-])
+const uriAttributes = new Set(['background', 'cite', 'href', 'itemtype', 'longdesc', 'poster', 'src', 'xlink:href'])
 
 const SAFE_URL_PATTERN = /^(?!javascript:)(?:[a-z0-9+.-]+:|[^&:/?#]*(?:[/?#]|$))/i
 
@@ -71,8 +62,7 @@ const allowedAttribute = (attribute: Attr, allowedAttributeList: (string | RegEx
     return true
   }
 
-  return allowedAttributeList.filter(attributeRegex => attributeRegex instanceof RegExp)
-    .some(regex => (regex as RegExp).test(attributeName))
+  return allowedAttributeList.filter((attributeRegex) => attributeRegex instanceof RegExp).some((regex) => (regex as RegExp).test(attributeName))
 }
 
 export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeFunction?: SanitizeFn): string {

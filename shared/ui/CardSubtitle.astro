@@ -1,0 +1,17 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// Card subtitle (.card-subtitle).
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  class?: string
+}
+
+const { as: Tag = 'p', class: className }: Props = Astro.props
+---
+
+<Tag class:list={['card-subtitle', className]}>
+  <slot />
+</Tag>

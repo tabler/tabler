@@ -29,9 +29,9 @@ class ScrollBarHelper {
   hide(): void {
     const width = this.getWidth()
     this._disableOverFlow()
-    this._setElementAttributes(this._element, PROPERTY_PADDING, calculatedValue => calculatedValue + width)
-    this._setElementAttributes(SELECTOR_FIXED_CONTENT, PROPERTY_PADDING, calculatedValue => calculatedValue + width)
-    this._setElementAttributes(SELECTOR_STICKY_CONTENT, PROPERTY_MARGIN, calculatedValue => calculatedValue - width)
+    this._setElementAttributes(this._element, PROPERTY_PADDING, (calculatedValue) => calculatedValue + width)
+    this._setElementAttributes(SELECTOR_FIXED_CONTENT, PROPERTY_PADDING, (calculatedValue) => calculatedValue + width)
+    this._setElementAttributes(SELECTOR_STICKY_CONTENT, PROPERTY_MARGIN, (calculatedValue) => calculatedValue - width)
   }
 
   reset(): void {

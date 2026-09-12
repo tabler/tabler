@@ -1,0 +1,19 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// Section subheader label (.subheader).
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  class?: string
+  /** remaining attributes (colspan, …) are forwarded */
+  [key: string]: unknown
+}
+
+const { as: Tag = 'div', class: className, ...rest }: Props = Astro.props
+---
+
+<Tag class:list={['subheader', className]} {...rest}>
+  <slot />
+</Tag>

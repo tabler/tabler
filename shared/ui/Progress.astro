@@ -1,0 +1,45 @@
+---
+/** core/scss/ui/_progress.scss `.progress-{size}` modifier classes */
+export type ProgressSize = 'sm' | 'lg' | 'xl'
+
+interface Props {
+  value?: number | undefined
+  values?: number[]
+  /** per-bar colors for the `values` variant, e.g. ['blue', 'red'] */
+  colors?: string[]
+  color?: string | undefined
+  size?: ProgressSize | undefined
+  class?: string
+  width?: string
+  id?: string
+  indeterminate?: boolean
+  striped?: boolean
+  animated?: boolean
+  showValue?: boolean
+  /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { value, values, colors: colorsProp, color, size, class: className, width, id, indeterminate, striped, animated, showValue, ...rest } = Astro.props
+
+const percentage = value ?? 0
+
+const colors = color ? [color] : (colorsProp ?? [])
+const valueList = values
+
+const classes = ['progress', size && `progress-${size}`, className]
+---
+
+<div class:list={classes} style={width ? `width: ${width}` : undefined} id={id} {...rest}>
+  {
+    indeterminate ? (
+      <div class={`progress-bar progress-bar-indeterminate${color ? ` bg-${color}` : ''}`} />
+    ) : valueList ? (
+      valueList.map((v, i) => <div class={`progress-bar${colors[i] ? ` bg-${colors[i]}` : ''}`} style={`width: ${v}%`} role="progressbar" aria-valuenow={v} aria-valuemin="0" aria-valuemax="100" />)
+    ) : (
+      <div class={`progress-bar${color ? ` bg-${color}` : ''}${striped ? ` progress-bar-striped${animated ? ' progress-bar-animated' : ''}` : ''}`} style={`width: ${percentage}%`} role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100" aria-label={`${percentage}% Complete`}>
+        {showValue ? `${percentage}%` : <span class="visually-hidden">{percentage}% Complete</span>}
+      </div>
+    )
+  }
+</div>

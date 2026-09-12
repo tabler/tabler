@@ -1,0 +1,90 @@
+---
+import CaptureScript from '../components/CaptureScript.astro';
+
+export type SparklineType = 'bar' | 'line' | 'area' | 'pie' | 'donut';
+
+interface Props {
+	id?: string | undefined;
+	/** apexcharts type handled by this component ('donut' renders as radialBar) */
+	type?: SparklineType;
+	color?: string | undefined;
+	/** chart-sparkline-{size} — only 'sm' exists */
+	size?: 'sm' | undefined;
+	data?: string | number;
+	percentage?: string | number;
+}
+
+const {
+	id,
+	type = 'bar',
+	color = 'primary',
+	size,
+	data: dataProp,
+	percentage,
+} = Astro.props;
+
+const height = size === 'sm' ? 1.5 : 2.5;
+const heightPx = Math.round(height * 16);
+
+const data = percentage ?? dataProp;
+
+const isSquare = type === 'pie' || type === 'donut';
+const chartType = type === 'donut' ? 'radialBar' : type;
+
+const classes = [
+	'chart-sparkline',
+	isSquare && 'chart-sparkline-square',
+	size === 'sm' && 'chart-sparkline-sm',
+]
+
+const seriesData = String(data ?? '').split(',').map(Number);
+const chartKey = `sparkline-${id}`;
+
+const chartOptions = id
+	? {
+			chart: {
+				type: chartType,
+				fontFamily: 'inherit',
+				height: heightPx,
+				...(isSquare ? { width: heightPx } : {}),
+				animations: { enabled: false },
+				sparkline: { enabled: true },
+			},
+			tooltip: { enabled: false },
+			...(type === 'donut'
+				? {
+						plotOptions: {
+							radialBar: {
+								hollow: { margin: 0, size: '75%' },
+								track: { margin: 0 },
+								dataLabels: { show: false },
+							},
+						},
+					}
+				: {}),
+			...(type === 'area' ? { fill: { gradient: { opacityFrom: [0.1, 0.1] } } } : {}),
+			...(type === 'area' || type === 'line' ? { stroke: { width: 2, lineCap: 'round' } } : {}),
+			...(type === 'donut' || type === 'pie'
+				? { colors: [`var(--tblr-${color})`], series: seriesData }
+				: { series: [{ color: `var(--tblr-${color})`, data: seriesData }] }),
+		}
+	: undefined;
+---
+
+{id && <div class:list={classes} id={chartKey} aria-hidden="true" />}
+{
+	id && (
+		<CaptureScript>
+			<!-- BEGIN CHART SPARKLINE -->
+			<script is:inline define:vars={{ chartKey, chartOptions }}>
+				function initSparkline() {
+					window.tabler_chart ??= {};
+					window.ApexCharts && (window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(chartKey), chartOptions)).render();
+				}
+
+				document.readyState !== 'loading' ? initSparkline() : document.addEventListener('DOMContentLoaded', initSparkline, { once: true });
+			</script>
+			<!-- END CHART SPARKLINE -->
+		</CaptureScript>
+	)
+}

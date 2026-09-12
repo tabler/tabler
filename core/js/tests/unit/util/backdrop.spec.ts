@@ -22,7 +22,7 @@ describe('Backdrop', () => {
 
   describe('show', () => {
     it('should append the backdrop and include the "show" class', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, isAnimated: false })
         const getElements = () => document.querySelectorAll(CLASS_BACKDROP)
 
@@ -41,7 +41,7 @@ describe('Backdrop', () => {
     })
 
     it('should not append the backdrop if not visible', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: false, isAnimated: true })
         const getElements = () => document.querySelectorAll(CLASS_BACKDROP)
 
@@ -54,7 +54,7 @@ describe('Backdrop', () => {
     })
 
     it('should include the "fade" class if animated', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, isAnimated: true })
         const getElements = () => document.querySelectorAll(CLASS_BACKDROP)
 
@@ -73,7 +73,7 @@ describe('Backdrop', () => {
 
   describe('hide', () => {
     it('should remove the backdrop html', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, isAnimated: true })
         const getElements = () => document.body.querySelectorAll(CLASS_BACKDROP)
 
@@ -89,7 +89,7 @@ describe('Backdrop', () => {
     })
 
     it('should remove the "show" class', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, isAnimated: true })
         const elem = instance._getElement()
 
@@ -102,7 +102,7 @@ describe('Backdrop', () => {
     })
 
     it('should not try to remove if not visible', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: false, isAnimated: true })
         const getElements = () => document.querySelectorAll(CLASS_BACKDROP)
 
@@ -121,12 +121,14 @@ describe('Backdrop', () => {
 
   describe('click callback', () => {
     it('should execute callback on click', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         let called = false
         const instance = new Backdrop({
           isVisible: true,
           isAnimated: false,
-          clickCallback: () => { called = true }
+          clickCallback: () => {
+            called = true
+          },
         })
 
         instance.show(() => {
@@ -143,7 +145,7 @@ describe('Backdrop', () => {
 
   describe('Config', () => {
     it('should be appended on document.body by default', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true })
         instance.show(() => {
           expect(document.querySelector(CLASS_BACKDROP)!.parentElement).toBe(document.body)
@@ -153,7 +155,7 @@ describe('Backdrop', () => {
     })
 
     it('should find rootElement if passed as a string', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, rootElement: 'body' })
         instance.show(() => {
           expect(document.querySelector(CLASS_BACKDROP)!.parentElement).toBe(document.body)
@@ -163,7 +165,7 @@ describe('Backdrop', () => {
     })
 
     it('should be appended on custom rootElement', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div id="wrapper"></div>'
         const wrapper = fixtureEl.querySelector('#wrapper')!
 
@@ -176,7 +178,7 @@ describe('Backdrop', () => {
     })
 
     it('should allow configuring className', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, className: 'foo' })
         instance.show(() => {
           expect(document.querySelector('.foo')).toBe(instance._getElement())
@@ -196,7 +198,7 @@ describe('Backdrop', () => {
     })
 
     it('should remove element and reset _isAppended after show', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         const instance = new Backdrop({ isVisible: true, isAnimated: false })
         instance.show(() => {
           expect(instance._isAppended).toBe(true)
