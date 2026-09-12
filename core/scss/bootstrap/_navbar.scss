@@ -24,7 +24,8 @@
   --navbar-toggler-padding-y: #{$navbar-toggler-padding-y};
   --navbar-toggler-padding-x: #{$navbar-toggler-padding-x};
   --navbar-toggler-font-size: #{$navbar-toggler-font-size};
-  --navbar-toggler-icon-bg: #{escape-svg($navbar-light-toggler-icon-bg)};
+  --navbar-toggler-icon-bg: #{escape-svg($navbar-toggler-icon-bg)};
+  --navbar-toggler-icon-color: #{$navbar-light-icon-color};
   --navbar-toggler-border-color: #{$navbar-light-toggler-border-color};
   --navbar-toggler-border-radius: #{$navbar-toggler-border-radius};
   --navbar-toggler-focus-width: #{$navbar-toggler-focus-width};
@@ -175,10 +176,8 @@
   width: 1.5em;
   height: 1.5em;
   vertical-align: middle;
-  background-image: var(--navbar-toggler-icon-bg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
+  background-color: var(--navbar-toggler-icon-color);
+  @include mask-icon(var(--navbar-toggler-icon-bg), $size: 100%);
 }
 
 .navbar-nav-scroll {
@@ -278,14 +277,14 @@
   --navbar-brand-color: #{$navbar-dark-brand-color};
   --navbar-brand-hover-color: #{$navbar-dark-brand-hover-color};
   --navbar-toggler-border-color: #{$navbar-dark-toggler-border-color};
-  --navbar-toggler-icon-bg: #{escape-svg($navbar-dark-toggler-icon-bg)};
+  --navbar-toggler-icon-color: #{$navbar-dark-icon-color};
   // scss-docs-end navbar-dark-css-vars
 }
 
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .navbar-toggler-icon {
-      --navbar-toggler-icon-bg: #{escape-svg($navbar-dark-toggler-icon-bg)};
+      --navbar-toggler-icon-color: #{$navbar-dark-icon-color};
     }
   }
 }

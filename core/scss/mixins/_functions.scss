@@ -98,6 +98,14 @@
   @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
+// Paints a monochrome svg data uri (authored with `black`) in a Sass colour, for
+// the few places that cannot use `mask-icon()`: a pseudo-element that already
+// carries a background, or a form control without pseudo-elements. Pass a Sass
+// colour, never `var()` — an svg image cannot resolve custom properties.
+@function svg-icon-color($svg, $color) {
+  @return str-replace($svg, "'black'", "'#{$color}'");
+}
+
 @function url-svg($svg) {
   $svg: str-replace($svg, '#', '%23');
   $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');

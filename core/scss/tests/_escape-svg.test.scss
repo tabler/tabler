@@ -10,7 +10,7 @@
 
 @include describe('escape-svg') {
   @include it('percent-encodes % so oklch() lightness survives inside a data uri') {
-    @include assert-equal(meta.inspect(escape-svg("url(\"data:image/svg+xml,<path stroke='oklch(54.6% 0.17 254deg)'/>\")")), "url(\"data:image/svg+xml,%3cpath stroke='oklch%2854.6%25 0.17 254deg%29'/%3e\")");
+    @include assert-equal(meta.inspect(escape-svg('url("data:image/svg+xml,<path stroke=\'oklch(54.6% 0.17 254deg)\'/>")')), 'url("data:image/svg+xml,%3cpath stroke=\'oklch%2854.6%25 0.17 254deg%29\'/%3e")');
   }
 
   @include it('returns a non data-URI string unchanged') {
