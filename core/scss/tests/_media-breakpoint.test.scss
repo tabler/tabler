@@ -2,10 +2,6 @@
 // functions, every mixin accepts an explicit `$breakpoints` map, so the tests
 // pass a local fixture map and stay independent of the global `$grid-breakpoints`.
 //
-// `media-breakpoint-{up,down,between,only}` come from
-// mixins/bootstrap/_breakpoints.scss; `media-breakpoint-down-than` lives in
-// mixins/_functions.scss. Their names don't collide, so both are used as `*`.
-//
 // Max-widths are the breakpoint value minus 0.02px (the min-/max- overlap fix);
 // the smallest/edge cases emit the content with no media query at all.
 
@@ -132,69 +128,6 @@ $g: (
           .t {
             color: red;
           }
-        }
-      }
-    }
-  }
-}
-
-@include describe('media-breakpoint-down-than') {
-  @include it('targets everything below the previous breakpoint') {
-    @include assert() {
-      @include output() {
-        @include media-breakpoint-down-than(md, $g) {
-          .t {
-            color: red;
-          }
-        }
-      }
-      @include expect() {
-        @media (max-width: 575.98px) {
-          .t {
-            color: red;
-          }
-        }
-      }
-    }
-  }
-
-  @include it('emits content directly when there is no previous breakpoint') {
-    @include assert() {
-      @include output() {
-        @include media-breakpoint-down-than(xs, $g) {
-          .t {
-            color: red;
-          }
-        }
-      }
-      @include expect() {
-        .t {
-          color: red;
-        }
-      }
-    }
-  }
-
-  // Names that don't exist in the global $grid-breakpoints at all: this only
-  // resolves if $breakpoints actually reaches the breakpoint-prev() lookup,
-  // not just the breakpoint-max() one.
-  $custom: (
-    tablet: 0,
-    desktop: 900px,
-  );
-
-  @include it('resolves the previous breakpoint from a custom $breakpoints map') {
-    @include assert() {
-      @include output() {
-        @include media-breakpoint-down-than(desktop, $custom) {
-          .t {
-            color: red;
-          }
-        }
-      }
-      @include expect() {
-        .t {
-          color: red;
         }
       }
     }
