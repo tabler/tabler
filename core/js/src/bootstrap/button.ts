@@ -18,6 +18,8 @@ const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="button"], [data-tblr-toggle="butt
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 
 class Button extends BaseComponent {
+  declare _element: HTMLElement
+
   static get NAME(): string {
     return NAME
   }

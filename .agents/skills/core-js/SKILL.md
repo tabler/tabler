@@ -1,13 +1,8 @@
 ---
 name: core-js
 description: >-
-  Work on the framework's own JavaScript in `core/js/` — the `tabler.js` and
-  `tabler-theme.js` bundles, the vendored Bootstrap component port, and their
-  browser tests. Use when a Tabler behaviour needs adding or fixing (a
-  `data-bs-toggle` handler, the theme switcher, a plugin initialiser), when a
-  Bootstrap component's JS misbehaves, and before changing anything under
-  `core/js/src/`. Not for demo-page scripts — that is the `astro-scripts`
-  skill.
+  Work on the framework's own JavaScript in `core/js/` — the `tabler.js` and `tabler-theme.js` bundles, the vendored Bootstrap component port, and their browser tests. Use when a Tabler behaviour needs adding or fixing (a `data-bs-toggle` handler, the theme switcher, a plugin initialiser), when a Bootstrap component's
+  JS misbehaves, and before changing anything under `core/js/src/`. Not for demo-page scripts — that is the `astro-scripts` skill.
 ---
 
 # The framework JavaScript
@@ -16,10 +11,10 @@ description: >-
 
 ## 1. Two entry points
 
-| Entry | Ships as | Holds |
-| --- | --- | --- |
-| `js/tabler.ts` | `tabler.js` / `.esm.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper namespace |
-| `js/tabler-theme.ts` | `tabler-theme.js` (+ variants) | the colour-mode/theme switcher only |
+| Entry                | Ships as                           | Holds                                                                        |
+| -------------------- | ---------------------------------- | ---------------------------------------------------------------------------- |
+| `js/tabler.ts`       | `tabler.js` / `.esm.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper namespace |
+| `js/tabler-theme.ts` | `tabler-theme.js` (+ variants)     | the colour-mode/theme switcher only                                          |
 
 `tabler-theme.js` is loaded right after `<body>` and **not deferred**, so the chosen theme applies before the first paint. It stays tiny on purpose (bundlewatch: 1 kB raw, 800 B minified) — do not add anything to it that is not needed before paint.
 
@@ -29,6 +24,7 @@ That directory is Bootstrap's JavaScript rewritten in TypeScript, MIT headers ke
 
 - Fix bugs the way upstream did, and keep the file's structure recognisable against `twbs/bootstrap`. Gratuitous restructuring makes the next upstream sync expensive.
 - `js/src/bootstrap.ts` is the single source of truth for what is exported and for the `bootstrap` namespace object.
+- The package compiles with `strict: true`. Every component declares its own `ComponentConfig` type and `declare _element` / `declare _config` — the `bootstrap-component` skill has the pattern.
 - Coverage is configured to measure exactly this directory (`js/src/bootstrap/**`), and `js/tests/unit/*.spec.ts` mirrors upstream's suite — a change here is expected to come with its test.
 
 ## 3. Tabler's own modules
@@ -74,11 +70,11 @@ pnpm --filter @tabler/core test:js:coverage
 
 `vite` builds each entry as a library in `es` + `umd` (`BASE_NAME` selects the entry), then terser produces the `.min` variants with source maps. Sizes are enforced:
 
-| File | Limit |
-| --- | --- |
-| `dist/js/tabler.js` | 64 kB |
-| `dist/js/tabler.min.js` | 48 kB |
-| `dist/js/tabler-theme.js` | 1 kB |
+| File                      | Limit |
+| ------------------------- | ----- |
+| `dist/js/tabler.js`       | 64 kB |
+| `dist/js/tabler.min.js`   | 48 kB |
+| `dist/js/tabler-theme.js` | 1 kB  |
 
 ```bash
 pnpm --filter @tabler/core build

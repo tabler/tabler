@@ -10,7 +10,7 @@ const MILLISECONDS_MULTIPLIER = 1000
 const TRANSITION_END = 'transitionend'
 
 const parseSelector = (selector: string): string => {
-  if (selector && window.CSS && window.CSS.escape) {
+  if (selector && typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
     selector = selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`)
   }
 

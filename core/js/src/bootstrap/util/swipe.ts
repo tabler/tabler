@@ -43,8 +43,8 @@ const DefaultType: ComponentConfigType = {
 class Swipe extends Config {
   declare _config: SwipeConfig & ComponentConfig
   _element: HTMLElement
-  _deltaX: number
-  _supportPointerEvents: boolean
+  declare _deltaX: number
+  declare _supportPointerEvents: boolean
 
   constructor(element: HTMLElement, config?: ComponentConfig) {
     super()

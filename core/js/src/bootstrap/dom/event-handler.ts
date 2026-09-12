@@ -5,7 +5,12 @@
  * --------------------------------------------------------------------------
  */
 
-type EventCallback = (this: EventTarget, ...args: unknown[]) => void
+// `this` is the element the handler was bound to (or the delegate target); it is
+// left open so handlers can declare `this: HTMLElement` when they need it.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type EventCallback<E extends Event = Event> = (this: any, event: E) => void
+
+export type DelegatedEvent<E extends Event = Event> = E & { delegateTarget: HTMLElement }
 
 interface BootstrapHandler {
   (event: Event): void
@@ -129,7 +134,7 @@ function findHandler(events: Record<string | number, BootstrapHandler>, callable
   return Object.values(events).find((event) => event.callable === callable && event.delegationSelector === delegationSelector)
 }
 
-function normalizeParameters(originalTypeEvent: string, handler: string | EventCallback | undefined, delegationFunction: EventCallback | undefined): [boolean, EventCallback, string] {
+function normalizeParameters(originalTypeEvent: string, handler: string | false | EventCallback | undefined, delegationFunction: EventCallback | undefined): [boolean, EventCallback, string] {
   const isDelegated = typeof handler === 'string'
   const callable = isDelegated ? delegationFunction! : (handler || delegationFunction)!
   let typeEvent = getTypeEvent(originalTypeEvent)
@@ -141,7 +146,7 @@ function normalizeParameters(originalTypeEvent: string, handler: string | EventC
   return [isDelegated, callable, typeEvent]
 }
 
-function addHandler(element: EventTarget | null, originalTypeEvent: string, handler: string | EventCallback | undefined, delegationFunction: EventCallback | undefined, oneOff: boolean): void {
+function addHandler(element: EventTarget | null, originalTypeEvent: string, handler: string | false | EventCallback | undefined, delegationFunction: EventCallback | undefined, oneOff: boolean): void {
   if (typeof originalTypeEvent !== 'string' || !element) {
     return
   }
@@ -150,8 +155,8 @@ function addHandler(element: EventTarget | null, originalTypeEvent: string, hand
 
   if (originalTypeEvent in customEvents) {
     const wrapFunction = (fn: EventCallback): EventCallback => {
-      return function (this: EventTarget, event: unknown) {
-        const evt = event as MouseEvent & { delegateTarget: HTMLElement }
+      return function (this: EventTarget, event: Event) {
+        const evt = event as DelegatedEvent<MouseEvent>
         if (!evt.relatedTarget || (evt.relatedTarget !== evt.delegateTarget && !evt.delegateTarget.contains(evt.relatedTarget as Node))) {
           return fn.call(this, event)
         }
@@ -210,20 +215,20 @@ function getTypeEvent(event: string): string {
 }
 
 const EventHandler = {
-  on(element: EventTarget | null, event: string, handler: string | EventCallback, delegationFunction?: EventCallback): void {
-    addHandler(element, event, handler, delegationFunction, false)
+  on<E extends Event = Event>(element: EventTarget | null, event: string, handler: string | false | EventCallback<E>, delegationFunction?: EventCallback<E>): void {
+    addHandler(element, event, handler as string | false | EventCallback, delegationFunction as EventCallback | undefined, false)
   },
 
-  one(element: EventTarget | null, event: string, handler: string | EventCallback, delegationFunction?: EventCallback): void {
-    addHandler(element, event, handler, delegationFunction, true)
+  one<E extends Event = Event>(element: EventTarget | null, event: string, handler: string | false | EventCallback<E>, delegationFunction?: EventCallback<E>): void {
+    addHandler(element, event, handler as string | false | EventCallback, delegationFunction as EventCallback | undefined, true)
   },
 
-  off(element: EventTarget | null, originalTypeEvent: string, handler?: string | EventCallback, delegationFunction?: EventCallback): void {
+  off<E extends Event = Event>(element: EventTarget | null, originalTypeEvent: string, handler?: string | false | EventCallback<E>, delegationFunction?: EventCallback<E>): void {
     if (typeof originalTypeEvent !== 'string' || !element) {
       return
     }
 
-    const [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction)
+    const [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler as string | false | EventCallback | undefined, delegationFunction as EventCallback | undefined)
     const inNamespace = typeEvent !== originalTypeEvent
     const events = getElementEvents(element)
     const storeElementEvent = events[typeEvent] || {}

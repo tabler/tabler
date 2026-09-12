@@ -9,7 +9,15 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
 import { getElement, reflow } from './util/index'
-import type { ComponentConfig, ComponentConfigType, ElementSelector } from './types'
+import type { DelegatedEvent } from './dom/event-handler'
+import type { ElementSelector } from './types'
+
+type ComponentConfig = {
+  parent: HTMLElement | null
+  toggle: boolean
+}
+
+type ComponentConfigInput = Partial<Omit<ComponentConfig, 'parent'>> & { parent?: HTMLElement | string | null } & Record<string, unknown>
 
 const NAME = 'collapse'
 const DATA_KEY = 'bs.collapse'
@@ -40,16 +48,18 @@ const Default: ComponentConfig = {
   toggle: true,
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   parent: '(null|element)',
   toggle: 'boolean',
 }
 
 class Collapse extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _isTransitioning: boolean
   _triggerArray: HTMLElement[]
 
-  constructor(element: ElementSelector, config?: ComponentConfig) {
+  constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isTransitioning = false
@@ -81,7 +91,7 @@ class Collapse extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -240,7 +250,8 @@ class Collapse extends BaseComponent {
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
-  if ((event.target as HTMLElement).tagName === 'A' || ((event as any).delegateTarget && (event as any).delegateTarget.tagName === 'A')) {
+  const { delegateTarget } = event as DelegatedEvent
+  if ((event.target as HTMLElement).tagName === 'A' || (delegateTarget && delegateTarget.tagName === 'A')) {
     event.preventDefault()
   }
 

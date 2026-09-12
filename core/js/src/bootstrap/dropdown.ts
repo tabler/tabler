@@ -11,7 +11,22 @@ import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
 import { execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
-import type { ComponentConfig, ComponentConfigType } from './types'
+import type { DelegatedEvent } from './dom/event-handler'
+
+type PopperOffsetData = { placement: Popper.Placement; reference: Popper.Rect; popper: Popper.Rect }
+type PopperOffsetFunction = (popperData: PopperOffsetData) => number[]
+type PopperConfigFunction = (defaultConfig: Partial<Popper.Options>) => Partial<Popper.Options>
+
+type ComponentConfig = {
+  autoClose: boolean | 'inside' | 'outside'
+  boundary: Popper.Boundary
+  display: 'dynamic' | 'static'
+  offset: number[] | string | ((popperData: PopperOffsetData, element: HTMLElement) => number[])
+  popperConfig: Partial<Popper.Options> | PopperConfigFunction | null
+  reference: 'toggle' | 'parent' | HTMLElement | Popper.VirtualElement
+}
+
+type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 const NAME = 'dropdown'
 const DATA_KEY = 'bs.dropdown'
@@ -64,7 +79,7 @@ const Default: ComponentConfig = {
   reference: 'toggle',
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   autoClose: '(boolean|string)',
   boundary: '(string|element)',
   display: 'string',
@@ -74,12 +89,14 @@ const DefaultType: ComponentConfigType = {
 }
 
 class Dropdown extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _popper: Popper.Instance | null
   _parent: HTMLElement
   _menu: HTMLElement
   _inNavbar: boolean
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._popper = null
@@ -92,7 +109,7 @@ class Dropdown extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -115,14 +132,14 @@ class Dropdown extends BaseComponent {
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, relatedTarget)
 
-    if (showEvent.defaultPrevented) {
+    if (showEvent?.defaultPrevented) {
       return
     }
 
     this._createPopper()
 
     if ('ontouchstart' in document.documentElement && !this._parent.closest(SELECTOR_NAVBAR_NAV)) {
-      for (const element of [].concat(...(document.body.children as any))) {
+      for (const element of Array.from(document.body.children)) {
         EventHandler.on(element, 'mouseover', noop)
       }
     }
@@ -164,12 +181,12 @@ class Dropdown extends BaseComponent {
 
   _completeHide(relatedTarget: Record<string, any>): void {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE, relatedTarget)
-    if (hideEvent.defaultPrevented) {
+    if (hideEvent?.defaultPrevented) {
       return
     }
 
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...(document.body.children as any))) {
+      for (const element of Array.from(document.body.children)) {
         EventHandler.off(element, 'mouseover', noop)
       }
     }
@@ -185,14 +202,14 @@ class Dropdown extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_HIDDEN, relatedTarget)
   }
 
-  _getConfig(config: Partial<ComponentConfig>): ComponentConfig {
-    config = super._getConfig(config)
+  _getConfig(config?: ComponentConfigInput): ComponentConfig {
+    const merged = super._getConfig(config) as ComponentConfig
 
-    if (typeof config.reference === 'object' && !isElement(config.reference) && typeof (config.reference as any).getBoundingClientRect !== 'function') {
+    if (typeof merged.reference === 'object' && !isElement(merged.reference) && typeof (merged.reference as Popper.VirtualElement).getBoundingClientRect !== 'function') {
       throw new TypeError(`${NAME.toUpperCase()}: Option "reference" provided type "object" without a required "getBoundingClientRect" method.`)
     }
 
-    return config
+    return merged
   }
 
   _createPopper(): void {
@@ -250,7 +267,7 @@ class Dropdown extends BaseComponent {
     return this._element.closest(SELECTOR_NAVBAR) !== null
   }
 
-  _getOffset(): number[] | ((popperData: any) => number[]) {
+  _getOffset(): number[] | PopperOffsetFunction {
     const { offset } = this._config
 
     if (typeof offset === 'string') {
@@ -258,10 +275,10 @@ class Dropdown extends BaseComponent {
     }
 
     if (typeof offset === 'function') {
-      return (popperData: any) => (offset as Function)(popperData, this._element)
+      return (popperData: PopperOffsetData) => offset(popperData, this._element)
     }
 
-    return offset as number[]
+    return offset
   }
 
   _getPopperConfig(): Partial<Popper.Options> {
@@ -300,14 +317,15 @@ class Dropdown extends BaseComponent {
     }
   }
 
-  _selectMenuItem({ key, target }: { key: string; target: HTMLElement }): void {
+  _selectMenuItem({ key, target }: { key: string; target: EventTarget | null }): void {
     const items = SelectorEngine.find(SELECTOR_VISIBLE_ITEMS, this._menu).filter((element) => isVisible(element))
 
     if (!items.length) {
       return
     }
 
-    getNextActiveElement(items, target, key === ARROW_DOWN_KEY, !items.includes(target)).focus()
+    const activeElement = target as HTMLElement
+    getNextActiveElement(items, activeElement, key === ARROW_DOWN_KEY, !items.includes(activeElement)).focus()
   }
 
   static clearMenus(event: Event & { button?: number; key?: string; composedPath?: () => EventTarget[] }): void {
@@ -358,14 +376,14 @@ class Dropdown extends BaseComponent {
 
     event.preventDefault()
 
-    const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as any).delegateTarget.parentNode)
+    const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as DelegatedEvent<KeyboardEvent>).delegateTarget.parentNode as Element)
 
     const instance = Dropdown.getOrCreateInstance(getToggleButton!) as Dropdown
 
     if (isUpOrDownEvent) {
       event.stopPropagation()
       instance.show()
-      instance._selectMenuItem(event as any)
+      instance._selectMenuItem(event)
       return
     }
 

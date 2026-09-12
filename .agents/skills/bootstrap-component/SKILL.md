@@ -45,7 +45,8 @@ In this order:
   - `declare _isTransitioning: boolean` (when needed).
 - Type method signatures explicitly (`show(): void`, `hide(): void`).
 - `EventHandler.trigger(...)` can return `null` — use `?.defaultPrevented`.
-- Use `Event` for handlers, and cast when you need specifics (`const keyboardEvent = event as KeyboardEvent`).
+- Use `Event` for handlers, and cast when you need specifics (`const keyboardEvent = event as KeyboardEvent`). `EventHandler.on` is generic, so `(event: KeyboardEvent) => …` type-checks without a cast; for `event.delegateTarget` cast to `DelegatedEvent` from `./dom/event-handler`.
+- `core/tsconfig.json` is `strict`, so a missing null check or an implicit `any` fails `pnpm run type-check`. Never widen a type with `[key: string]: any` or `as any` to get past it.
 - Prefer modern syntax like `#private` class fields over the `private` keyword.
 
 ## 3. Constructor and config

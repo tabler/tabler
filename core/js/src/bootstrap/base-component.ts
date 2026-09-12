@@ -58,7 +58,7 @@ class BaseComponent extends Config {
   }
 
   static getOrCreateInstance(element: ElementSelector, config: ComponentConfig = {}): BaseComponent {
-    return this.getInstance(element) || new this(element, typeof config === 'object' ? config : null)
+    return this.getInstance(element) || new this(element, typeof config === 'object' ? config : undefined)
   }
 
   static get VERSION(): string {

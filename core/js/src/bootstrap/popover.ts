@@ -6,6 +6,7 @@
  */
 
 import Tooltip from './tooltip'
+import type { TooltipConfig, TooltipContent } from './tooltip'
 
 /**
  * Constants
@@ -16,13 +17,11 @@ const NAME = 'popover'
 const SELECTOR_TITLE = '.popover-header'
 const SELECTOR_CONTENT = '.popover-body'
 
-interface ComponentConfig {
-  [key: string]: any
+type ComponentConfig = TooltipConfig & {
+  content: TooltipContent
 }
 
-interface ComponentConfigType {
-  [key: string]: string
-}
+type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 const Default: ComponentConfig = {
   ...Tooltip.Default,
@@ -33,7 +32,7 @@ const Default: ComponentConfig = {
   trigger: 'click',
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   ...Tooltip.DefaultType,
   content: '(null|string|element|function)',
 }
@@ -43,11 +42,18 @@ const DefaultType: ComponentConfigType = {
  */
 
 class Popover extends Tooltip {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
+
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
+    super(element, config)
+  }
+
   static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -66,7 +72,7 @@ class Popover extends Tooltip {
     }
   }
 
-  _getContent(): any {
+  _getContent(): string | HTMLElement | null {
     return this._resolvePossibleFunction(this._config.content)
   }
 }

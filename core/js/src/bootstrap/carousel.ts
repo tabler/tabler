@@ -11,7 +11,18 @@ import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
 import { getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
 import Swipe from './util/swipe'
-import type { ComponentConfig, ComponentConfigType } from './types'
+
+type ComponentConfig = {
+  interval: number | boolean
+  keyboard: boolean
+  pause: 'hover' | boolean
+  ride: boolean | 'carousel'
+  touch: boolean
+  wrap: boolean
+  defaultInterval?: number | boolean
+}
+
+type ComponentConfigInput = Partial<Omit<ComponentConfig, 'defaultInterval'>> & Record<string, unknown>
 
 const NAME = 'carousel'
 const DATA_KEY = 'bs.carousel'
@@ -66,7 +77,7 @@ const Default: ComponentConfig = {
   wrap: true,
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<Exclude<keyof ComponentConfig, 'defaultInterval'>, string> = {
   interval: '(number|boolean)',
   keyboard: 'boolean',
   pause: '(string|boolean)',
@@ -76,6 +87,8 @@ const DefaultType: ComponentConfigType = {
 }
 
 class Carousel extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _interval: ReturnType<typeof setInterval> | null
   _activeElement: HTMLElement | null
   _isSliding: boolean
@@ -83,7 +96,7 @@ class Carousel extends BaseComponent {
   _swipeHelper: Swipe | null
   _indicatorsElement: HTMLElement | null
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._interval = null
@@ -104,7 +117,7 @@ class Carousel extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<Exclude<keyof ComponentConfig, 'defaultInterval'>, string> {
     return DefaultType
   }
 
@@ -273,7 +286,7 @@ class Carousel extends BaseComponent {
 
     const elementInterval = Number.parseInt(element.getAttribute('data-bs-interval') || element.getAttribute('data-tblr-interval') || '', 10)
 
-    this._config.interval = elementInterval || this._config.defaultInterval
+    this._config.interval = elementInterval || (this._config.defaultInterval ?? this._config.interval)
   }
 
   _slide(order: string, element: HTMLElement | null = null): void {
@@ -302,7 +315,7 @@ class Carousel extends BaseComponent {
 
     const slideEvent = triggerEvent(EVENT_SLIDE)
 
-    if (slideEvent.defaultPrevented) {
+    if (slideEvent?.defaultPrevented) {
       return
     }
 

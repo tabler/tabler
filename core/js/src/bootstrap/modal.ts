@@ -45,13 +45,13 @@ const SELECTOR_DIALOG = '.modal-dialog'
 const SELECTOR_MODAL_BODY = '.modal-body'
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"], [data-tblr-toggle="modal"]'
 
-interface ComponentConfig {
-  [key: string]: any
+type ComponentConfig = {
+  backdrop: boolean | 'static'
+  focus: boolean
+  keyboard: boolean
 }
 
-interface ComponentConfigType {
-  [key: string]: string
-}
+type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 const Default: ComponentConfig = {
   backdrop: true,
@@ -59,7 +59,7 @@ const Default: ComponentConfig = {
   keyboard: true,
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   focus: 'boolean',
   keyboard: 'boolean',
@@ -70,6 +70,8 @@ const DefaultType: ComponentConfigType = {
  */
 
 class Modal extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _dialog: HTMLElement | null
   _backdrop: Backdrop
   _focustrap: FocusTrap
@@ -77,7 +79,7 @@ class Modal extends BaseComponent {
   _isTransitioning: boolean
   _scrollBar: ScrollBarHelper
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element)
@@ -94,7 +96,7 @@ class Modal extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -115,7 +117,7 @@ class Modal extends BaseComponent {
       relatedTarget,
     })
 
-    if (showEvent.defaultPrevented) {
+    if (showEvent?.defaultPrevented) {
       return
     }
 
@@ -138,7 +140,7 @@ class Modal extends BaseComponent {
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
-    if (hideEvent.defaultPrevented) {
+    if (hideEvent?.defaultPrevented) {
       return
     }
 
@@ -189,7 +191,7 @@ class Modal extends BaseComponent {
     this._element.setAttribute('role', 'dialog')
     this._element.scrollTop = 0
 
-    const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog)
+    const modalBody = this._dialog ? SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog) : null
     if (modalBody) {
       modalBody.scrollTop = 0
     }
@@ -271,7 +273,7 @@ class Modal extends BaseComponent {
 
   _triggerBackdropTransition(): void {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED)
-    if (hideEvent.defaultPrevented) {
+    if (hideEvent?.defaultPrevented) {
       return
     }
 
@@ -329,8 +331,12 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     event.preventDefault()
   }
 
+  if (!target) {
+    return
+  }
+
   EventHandler.one(target, EVENT_SHOW, (showEvent: Event) => {
-    if (showEvent.defaultPrevented) {
+    if (showEvent?.defaultPrevented) {
       return
     }
 
