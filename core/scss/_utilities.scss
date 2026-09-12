@@ -564,13 +564,6 @@ $utilities: map.merge(
       class: column-gap,
       values: $spacers,
     ),
-    'bg-pattern': (
-      property: background,
-      class: bg-pattern,
-      values: (
-        transparent: #{url-svg('<svg width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="8" height="8" fill="rgba(130, 130, 130, .1)" /><rect x="8" y="8" width="8" height="8" fill="rgba(130, 130, 130, .1)" /></svg>')} repeat center/16px 16px,
-      ),
-    ),
     'bg-gradient': (
       property: background,
       class: bg-gradient,
@@ -608,11 +601,16 @@ $utilities: map.merge(
       ),
     ),
     // Text
+    // The four families the theme switcher can pick (data-bs-theme-font), as
+    // utilities, so a font can be shown or previewed outside the body setting.
     'font-family': (
         property: font-family,
         class: font,
         values: (
+          sans-serif: var(--font-sans-serif),
+          serif: var(--font-serif),
           monospace: var(--font-monospace),
+          comic: var(--font-comic),
         ),
       ),
     'font-size': (

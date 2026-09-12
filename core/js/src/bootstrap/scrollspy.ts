@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, isDisabled, isVisible } from './util/index'
+import { getElement, isDisabled, isVisible, parseSelector } from './util/index'
 import type { ComponentConfig, ComponentConfigType } from './types'
 
 const NAME = 'scrollspy'
@@ -198,7 +198,7 @@ class ScrollSpy extends BaseComponent {
         continue
       }
 
-      const observableSection = SelectorEngine.findOne(decodeURI((anchor as HTMLAnchorElement).hash), this._element)
+      const observableSection = SelectorEngine.findOne(parseSelector(decodeURI((anchor as HTMLAnchorElement).hash)), this._element)
 
       if (isVisible(observableSection!)) {
         this._targetLinks.set(decodeURI((anchor as HTMLAnchorElement).hash), anchor)

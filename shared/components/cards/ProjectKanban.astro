@@ -1,6 +1,6 @@
 ---
 import Progress from '@ui/Progress.astro'
-import AvatarList from '@ui/AvatarList.astro'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import Icon from '@ui/Icon.astro'
 import CardTitle from '@ui/CardTitle.astro'
 
@@ -11,7 +11,7 @@ interface Props {
   limit?: number
   percentageColor?: string
   due?: string
-  value?: number | string
+  value?: number
 }
 
 const { title = 'Task Title', badge, offset = 40, limit = 7, percentageColor = 'green', due = '2 days', value = 20 } = Astro.props
@@ -32,7 +32,7 @@ const { title = 'Task Title', badge, offset = 40, limit = 7, percentageColor = '
       }
     </CardTitle>
 
-    <AvatarList offset={offset} limit={limit} stacked class="mb-3" />
+    <PeopleAvatarList offset={offset} limit={limit} stacked class="mb-3" />
 
     <div class="card-meta d-flex justify-content-between">
       <div class="d-flex align-items-center">

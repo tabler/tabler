@@ -2,39 +2,34 @@
   "name": "@tabler/preview",
   "private": true,
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.5.1",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "assets": "shx rm -rf tmp-assets && pnpm run css && pnpm run js",
+    "assets": "shx rm -rf tmp-assets && pnpm run css",
     "css": "tsx ../.build/build-css.ts scss tmp-assets/css --minify",
-    "js": "vite build --config .build/vite.config.mts && terser tmp-assets/js/demo.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=tmp-assets/js/demo.js.map,filename=tmp-assets/js/demo.min.js.map,url=demo.min.js.map\" -o tmp-assets/js/demo.min.js",
-    "watch-css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss public/preview/css\"",
-    "watch-js": "cross-env PREVIEW_JS_OUT_DIR=public/preview/js vite build --watch --config .build/vite.config.mts",
-    "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
-    "dev": "concurrently -n astro,css,js -c blue,magenta,cyan \"astro dev\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
-    "dev-prepare": "pnpm run assets",
+    "watch:css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss tmp-assets/css\"",
+    "watch": "pnpm run watch:css",
+    "dev": "concurrently -n astro,css -c blue,magenta \"astro dev\" \"pnpm run watch:css\"",
+    "dev:prepare": "pnpm run assets",
     "build": "pnpm run assets && astro build",
     "preview": "astro preview",
     "clean": "shx rm -rf dist public/dist public/preview public/css .astro tmp-assets",
-    "import-icons": "pnpm up @tabler/icons@latest && node .build/import-icons.mjs",
-    "import-illustrations": "node .build/import-illustrations.mjs",
     "type-check": "astro check"
   },
   "dependencies": {
     "@tabler/core": "workspace:*",
-    "astro": "^7.1.6"
+    "astro": "^7.3.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/markdown-satteri": "^0.3.4",
-    "@astrojs/mdx": "^7.0.3",
-    "@tabler/icons": "^3.45.0",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-satteri": "^0.3.8",
+    "@astrojs/mdx": "^7.0.8",
     "@types/js-beautify": "^1.14.3",
     "js-beautify": "^2.0.3",
     "prettier": "^3.9.6",
-    "shiki": "^4.3.1",
+    "shiki": "^4.4.3",
     "shx": "^0.4.0",
     "typescript": "^5.7.3"
   }

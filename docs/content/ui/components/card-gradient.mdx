@@ -1,8 +1,30 @@
 ---
 title: Card gradient
-summary: Card gradients add rich color backgrounds to cards and help emphasize key information in dashboards and marketing sections.
-description: Build eye-catching cards with gradient variants, directions, and animated backgrounds.
+summary: Card gradients give a card a colored gradient background, in single-color, multi-color, directional and animated variants.
+description: Gradient card backgrounds, with color variants, multi-color themes, directions and animation.
+added-in: '1.5.0'
 related: [/ui/components/card]
+source: core/scss/ui/_cards.scss
+classnames:
+  component:
+    - class: card-gradient
+      desc: Applied with card, fills the card with a gradient
+  style:
+    - class: card-gradient-{preset}
+      desc: Ready-made blends - disco, gold, love, mellow, ocean, psychedelic, rainbow, snow, sun
+  behavior:
+    - class: card-gradient-animated
+      desc: Slowly shifts the gradient
+  direction:
+    - class: card-gradient-bottom
+      desc: Starts the gradient at the bottom edge
+  color:
+    - class: card-gradient-{color}
+      desc: Any base color as the gradient start
+    - class: card-gradient-start
+      desc: Sets the first color stop with a CSS custom property
+    - class: card-gradient-end
+      desc: Sets the second color stop
 ---
 
 import Example from '@components/Example.astro'
@@ -16,9 +38,9 @@ Use the `.card-gradient` class on a `.card` element to apply the default gradien
 <div class="card card-gradient">...</div>
 ```
 
-The example below shows the base gradient card style.
+The base gradient card:
 
-<Example>
+<Example column>
 <div class="card card-gradient">
   <div class="card-body">
     <h3 class="card-title">Total Revenue</h3>
@@ -29,9 +51,9 @@ The example below shows the base gradient card style.
 
 ## Color variants
 
-You can change the color of card gradient by adding a color class like `.card-gradient-primary` or `.card-gradient-success` to the `.card-gradient` element. You can choose any color from [full list of available colors](/ui/base/colors).
+Add a color class such as `.card-gradient-primary` or `.card-gradient-success` next to `.card-gradient`. Any name from the [color palette](/ui/base/colors) works.
 
-<Example>
+<Example column>
 <div class="card card-gradient card-gradient-primary">
   <div class="card-body">
     <h3 class="card-title">Primary</h3>
@@ -56,13 +78,11 @@ You can change the color of card gradient by adding a color class like `.card-gr
 
 ## Named gradients
 
-In addition to color-based variants, card gradients include predefined multi-color themes.
-
-Here is a list of classes:
+There are also multi-color themes with their own names:
 <ul>
 {gradients.map((gradient, i) => { return ( <li class={`card-gradient-${gradient}`}>{gradient.charAt(0).toUpperCase() + gradient.slice(1)}</li> ) })}
 </ul>
-<Example>
+<Example column>
 
 {gradients.map((gradient, i) => {
 	return (
@@ -78,7 +98,7 @@ Here is a list of classes:
 
 ## Direction modifiers
 
-Use direction modifiers to control where the gradient flow starts.
+The direction classes set where the gradient starts.
 
 ```html
 <div class="card card-gradient card-gradient-start">...</div>
@@ -86,7 +106,7 @@ Use direction modifiers to control where the gradient flow starts.
 <div class="card card-gradient card-gradient-bottom">...</div>
 ```
 
-<Example>
+<Example column>
 <div class="card card-gradient card-gradient-start card-gradient-purple">
   <div class="card-body">
     <h3 class="card-title">Start</h3>
@@ -108,7 +128,7 @@ Use direction modifiers to control where the gradient flow starts.
 
 Add `.card-gradient-animated` to animate gradient direction over time.
 
-<Example>
+<Example column>
 <div class="card card-gradient card-gradient-rainbow card-gradient-animated">
   <div class="card-body">
     <h3 class="card-title">Animated gradient</h3>

@@ -1,14 +1,29 @@
-// Source-level MDX → plain markdown, for the /llms.txt endpoints.
+// MDX → plain markdown, for the /llms.txt endpoints.
 //
 // The docs are MDX: prose is already markdown, but the parts that carry the most
 // value for a reader (the actual Tabler markup) sit inside <Example> slots and
 // component props. Stripping components wholesale — the usual llms.txt recipe —
 // would delete exactly that. So the components that hold content are unwrapped
 // into fenced code blocks instead, and only the decorative ones are dropped.
+// A component whose content is data rather than markup (<Colors />, <Flags />)
+// renders its own markdown in a comment, see shared/lib/markdown-source.ts.
+//
+// Prose comes from the MDX source, but example markup comes from the *rendered*
+// page (see renderedPage below): a third of the examples are written with
+// docs components — <Icon>, <AvatarList>, <Badge> — and the source form of those
+// is of no use to a reader who wants the html.
 import type { CollectionEntry } from 'astro:content'
-import { extractMarkedSnippet } from '@shared/lib/code-example'
+import { render } from 'astro:content'
+import { loadRenderers } from 'astro:container'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container'
+import { getContainerRenderer } from '@astrojs/mdx/container-renderer'
+import { beautifyHtml, extractMarkedSnippet } from '@shared/lib/code-example'
+import { extractMarkdownSources } from '@shared/lib/markdown-source'
 import { site } from '@shared/lib/site'
+import { callouts } from '@components/callouts/index.ts'
+import docs from '@data/docs.json'
 import packageManagers from '@data/package-managers.json'
+import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
 
 // Lazy raw imports, same as CodeDocs.astro — node:fs paths break once this is
 // bundled into dist/.prerender.
@@ -16,6 +31,20 @@ const scssSources = import.meta.glob('../../core/scss/**/*.scss', { query: '?raw
 const jsSources = import.meta.glob('../../core/js/**/*.{js,ts}', { query: '?raw', import: 'default' })
 
 const fence = (code: string, lang = 'html') => `\`\`\`${lang}\n${code.trim()}\n\`\`\``
+
+/**
+ * `<Code code={`…`} />` blocks are read as source text, never evaluated, so the few interpolations
+ * the docs use inside them are resolved by hand. Anything not listed here is left as written.
+ */
+function resolveCodeTokens(snippet: string): string {
+  const tokens: Record<string, () => string> = {
+    '${site.cdnUrl}': () => site.cdnUrl,
+    '${cdnCssTag()}': cdnCssTag,
+    '${cdnJsTag()}': cdnJsTag,
+  }
+
+  return Object.entries(tokens).reduce((text, [token, resolve]) => text.replaceAll(token, resolve()), snippet)
+}
 
 /** Strip the common leading indentation from a block and trim blank edges. */
 const dedent = (text: string) => {
@@ -95,13 +124,72 @@ function restoreCode(text: string, store: string[]) {
   return result
 }
 
-/** Turn one page's MDX body into plain markdown. */
-export async function mdxToMarkdown(body: string): Promise<string> {
+// Marker Example.astro puts in front of every example it renders.
+const EXAMPLE_MARKER = '<!--EXAMPLE-->'
+
+const decodeEntities = (value: string) =>
+  value
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+
+// One container for the whole build: creating it loads the MDX renderer.
+let container: Promise<AstroContainer> | undefined
+
+const getContainer = () => (container ??= loadRenderers([getContainerRenderer()]).then((renderers) => AstroContainer.create({ renderers })))
+
+type RenderedPage = {
+  /** final markup of every <Example>, in document order; null when the example renders nothing */
+  examples: (string | null)[]
+  /** markdown shipped by components via <MarkdownSource />, per component name */
+  sources: Map<string, string[]>
+}
+
+const EMPTY_PAGE: RenderedPage = { examples: [], sources: new Map() }
+
+/**
+ * What the rendered page carries for the markdown mirror: the final markup of
+ * every <Example> — the same html the page's copy button hands out, so
+ * components are already expanded — and the markdown sources of data
+ * components. Both lists are empty when the page cannot be rendered.
+ */
+async function renderedPage(entry: CollectionEntry<'docs'>): Promise<RenderedPage> {
+  try {
+    const { Content } = await render(entry)
+    // Same components the page route passes, or every page using a callout throws.
+    // The local tells <MarkdownSource /> this render is for the mirror.
+    const html = await (await getContainer()).renderToString(Content, { props: { components: callouts }, locals: { markdownMirror: true } })
+
+    const examples = html
+      .split(EXAMPLE_MARKER)
+      .slice(1)
+      .map((block) => {
+        // the copy button, or the wrapper attribute when the example hides its code panel
+        const markup = block.match(/data-clipboard-text="([^"]*)"/) ?? block.match(/data-example-markup="([^"]*)"/)
+        return markup ? beautifyHtml(decodeEntities(markup[1]!)) : null
+      })
+
+    return { examples, sources: extractMarkdownSources(html) }
+  } catch (error) {
+    console.warn(`[llms] Rendering ${entry.id} failed, examples fall back to their MDX source:`, error)
+    return EMPTY_PAGE
+  }
+}
+
+/**
+ * Turn one page's MDX body into plain markdown. `examples` and `sources` come
+ * from renderedPage(): the examples replace the source of each <Example> slot,
+ * the sources replace the tags of the components that shipped them. Either is
+ * ignored unless it lines up one-to-one with the tags in the source.
+ */
+export async function mdxToMarkdown(body: string, examples: (string | null)[] = [], sources: Map<string, string[]> = new Map()): Promise<string> {
   // `<Code lang code={`…`} />` first: its template literal contains backticks, which
   // would otherwise be mistaken for markdown code spans by protectCode() below.
   let text = body.replace(/<Code\b[^>]*?code=\{`([\s\S]*?)`\}[\s\S]*?\/>/g, (match, snippet: string) => {
     const lang = attr(match, 'lang') ?? 'html'
-    return `\n${fence(snippet.replaceAll('${site.cdnUrl}', site.cdnUrl), lang)}\n`
+    return `\n${fence(resolveCodeTokens(snippet), lang)}\n`
   })
 
   const code: string[] = []
@@ -112,8 +200,11 @@ export async function mdxToMarkdown(body: string): Promise<string> {
   text = text.replace(/^import\s+.+?from\s+['"][^'"]+['"];?[ \t]*$/gm, '')
 
   // <Example> slots hold the markup the page is actually documenting
-  text = text.replace(/<Example\b[^>]*>([\s\S]*?)<\/Example>/g, (_match, inner: string) => {
-    const snippet = dedent(inner)
+  const examplePattern = /<Example\b[^>]*>([\s\S]*?)<\/Example>/g
+  const useRendered = examples.length === (text.match(examplePattern)?.length ?? 0)
+  let exampleIndex = 0
+  text = text.replace(examplePattern, (_match, inner: string) => {
+    const snippet = (useRendered ? examples[exampleIndex++] : null) ?? dedent(inner)
     return snippet ? `\n${fence(snippet)}\n` : ''
   })
 
@@ -127,14 +218,21 @@ export async function mdxToMarkdown(body: string): Promise<string> {
     return `\n${fence(commands.join('\n'), 'shell')}\n`
   })
 
-  text = text.replace(/<CdnImportPackage\b[^>]*\/>/g, () => `\n${fence(`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />\n<script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>`)}\n`)
+  text = text.replace(/<CdnImportPackage\b[^>]*\/>/g, () => `\n${fence(cdnPackageSnippet())}\n`)
 
   text = text.replace(/<CdnImportPlugin\b[^>]*\/>/g, (match: string) => {
-    const plugins = [...match.matchAll(/'([^']+)'/g)].map((plugin) => plugin[1])
+    const plugins = [...match.matchAll(/'([^']+)'/g)].map((plugin) => plugin[1]).filter((plugin): plugin is string => Boolean(plugin))
     if (!plugins.length) return ''
-    const links = plugins.map((plugin) => `<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-${plugin}.min.css" />`)
-    return `\n${fence(links.join('\n'))}\n`
+    return `\n${fence(cdnPluginSnippet(plugins))}\n`
   })
+
+  // data components that shipped their own markdown (<Colors />, <Flags />, …)
+  for (const [name, markdowns] of sources) {
+    const tagPattern = new RegExp(`<${name}\\b[^>]*/>`, 'g')
+    if ((text.match(tagPattern)?.length ?? 0) !== markdowns.length) continue
+    let sourceIndex = 0
+    text = text.replace(tagPattern, () => `\n${markdowns[sourceIndex++]}\n`)
+  }
 
   // the blocks just produced must be protected too, for the same reason
   text = protectCode(text, code)
@@ -151,12 +249,38 @@ export async function mdxToMarkdown(body: string): Promise<string> {
     .trim()
 }
 
-/** A single docs page as a standalone markdown document. */
-export async function pageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
+async function buildPageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
   const { title, summary, description } = entry.data
   const header = [`# ${title}`, '', `> ${summary}`, '', description, '', `Source: ${url}`, '', '---', ''].join('\n')
 
-  return `${header}\n${await mdxToMarkdown(entry.body ?? '')}\n`
+  const { examples, sources } = await renderedPage(entry)
+  return `${header}\n${await mdxToMarkdown(entry.body ?? '', examples, sources)}\n`
+}
+
+// [...slug].md.ts and llms-full.txt.ts render the same pages in one build.
+const pageCache = new Map<string, Promise<string>>()
+
+/** A single docs page as a standalone markdown document. */
+export function pageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
+  const key = `${entry.id}\n${url}`
+  let cached = pageCache.get(key)
+  if (!cached) {
+    cached = buildPageMarkdown(entry, url)
+    pageCache.set(key, cached)
+  }
+  return cached
+}
+
+type MenuNode = { url?: string; children?: MenuNode[] }
+
+/** Docs urls in sidebar (docs.json) order — the shared reading order of llms.txt and llms-full.txt. */
+export function menuOrderedUrls(): string[] {
+  const normalize = (url: string) => {
+    const parts = url.split('/').filter(Boolean)
+    return parts.length ? `/${parts.join('/')}` : '/'
+  }
+  const walk = (nodes: MenuNode[]): string[] => nodes.flatMap((node) => [...(node.url ? [normalize(node.url)] : []), ...walk(node.children ?? [])])
+  return [...new Set(walk(docs.menu as MenuNode[]))]
 }
 
 /** Absolute in production, root-relative in dev — same rule as sitemap.xml.ts. */

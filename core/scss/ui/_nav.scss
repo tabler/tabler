@@ -2,10 +2,15 @@
 
 .nav {
   --nav-link-hover-bg: #{color-transparent(var(--nav-link-color), 0.04)};
+  // Read by `.nav-vertical .nav-link.active` below; without it that rule's
+  // color declaration was invalid and the active link fell back to the
+  // inherited color.
+  --nav-link-active-color: #{$nav-link-active-color};
   --nav-vertical-nested-margin-start: #{$nav-vertical-nested-margin-start};
   --nav-vertical-nested-padding-start: #{$nav-vertical-nested-padding-start};
   --nav-link-toggle-padding-x: #{$nav-link-toggle-padding-x};
   --nav-link-icon-margin-end: #{$nav-link-icon-margin-end};
+  font-size: var(--body-font-size);
 }
 
 .nav-vertical {
@@ -96,10 +101,11 @@
 }
 
 .nav-link-icon {
-  width: $nav-link-icon-size;
-  height: $nav-link-icon-size;
+  flex-shrink: 0;
+  width: var(--nav-link-icon-width, #{$nav-link-icon-size});
+  height: var(--nav-link-icon-height, #{$nav-link-icon-size});
   margin-inline-end: var(--nav-link-icon-margin-end);
-  color: $nav-link-icon-color;
+  color: var(--nav-link-icon-color, #{$nav-link-icon-color});
 
   svg {
     display: block;

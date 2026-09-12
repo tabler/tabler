@@ -4,12 +4,13 @@ import SingleLayout from '@shared/layouts/SingleLayout.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import CaptureScript from '@shared/components/CaptureScript.astro'
+import CardTitle from '@ui/CardTitle.astro'
 ---
 
 <SingleLayout title="2-Step Verification">
   <form class="card card-md" action="./" method="get" novalidate>
     <div class="card-body">
-      <h2 class="card-title card-title-lg text-center mb-4">Authenticate Your Account</h2>
+      <CardTitle class="text-center mb-4">Authenticate Your Account</CardTitle>
 
       <p class="my-4 text-center">
         Please confirm your account by entering the authorization code sent to <strong>+1 856-672-8552</strong>.
@@ -55,11 +56,9 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
     <script is:inline>
       const inputs = document.querySelectorAll('[data-code-input]')
 
-      // Attach an event listener to each input element
       inputs.forEach((input, i) => {
         input.addEventListener('input', (e) => {
           const target = e.target
-          // If the input field has a character, and there is a next input field, focus it
           if (target.value.length === target.maxLength && i + 1 < inputs.length) {
             inputs[i + 1].focus()
           }
@@ -67,7 +66,6 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
 
         input.addEventListener('keydown', (e) => {
           const target = e.target
-          // If the input field is empty and Backspace is pressed, and there is a previous input field, focus it
           if (target.value.length === 0 && e.key === 'Backspace' && i > 0) {
             inputs[i - 1].focus()
           }

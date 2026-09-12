@@ -31,6 +31,12 @@ interface Props {
 }
 
 const { title, rtl = false, showLogo = true, columns, zoom = 1, pageLibs = [], cssPlugins = [], class: className } = Astro.props
+
+// tabler-vendors.css carries the third-party styling (the ApexCharts tokens
+// among them, which is what themes a chart's labels, grid and legend for the
+// color mode). A page that pulls a lib in needs it, so it is added rather than
+// left to every page to remember — the preview loads it on every page.
+const stylePlugins = [...new Set([...(pageLibs.length > 0 ? ['vendors'] : []), ...cssPlugins])]
 const targetStyle = [columns && `max-width: ${columns * 310}px`, `zoom: ${zoom}`].filter(Boolean).join('; ')
 const rtlSuffix = rtl ? '.rtl' : ''
 // core/dist only has .min. files after a full `pnpm build`; `astro dev` (this
@@ -58,11 +64,24 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
 
     <link href={`./dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
 
-    {cssPlugins.map((plugin) => <link href={`./dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    {stylePlugins.map((plugin) => <link href={`./dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
 
     {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
 
+    <!-- Inter for the captures: Tabler ships system font stacks (no web font),
+    and the body's cv03/cv04/cv11 feature settings were tuned for Inter, so the
+    pictures show the face the design was drawn in — the same on every machine
+    that runs the capture. The serif and monospace theme variants keep their own
+    stacks; only the sans token is replaced. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
     <style is:inline>
+      :root {
+        --tblr-font-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+
       /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret. */
       *,
       *::before,

@@ -184,18 +184,28 @@
 // Add modifier classes to change text and background color on individual items.
 // Organizationally, this must come after the `:hover` states.
 
+// Built from the palette tokens every color has - `--{color}`, `--{color}-lt`
+// and `--{color}-fg` - rather than bootstrap's subtle/emphasis pairs. Tabler's
+// `$theme-colors` carries the twelve palette colors on top of bootstrap's own,
+// and the subtle/emphasis maps only cover the latter, so upstream's version
+// left `.list-group-item-azure` and twelve more reading tokens nobody defines.
+// The tint also matches the `bg-{color}-lt` utilities used elsewhere.
 @each $state in map.keys($theme-colors) {
   .list-group-item-#{$state} {
-    --list-group-color: var(--#{$state}-text-emphasis);
-    --list-group-bg: var(--#{$state}-bg-subtle);
-    --list-group-border-color: var(--#{$state}-border-subtle);
-    --list-group-action-hover-color: var(--emphasis-color);
-    --list-group-action-hover-bg: var(--#{$state}-border-subtle);
-    --list-group-action-active-color: var(--emphasis-color);
-    --list-group-action-active-bg: var(--#{$state}-border-subtle);
-    --list-group-active-color: var(--#{$state}-bg-subtle);
-    --list-group-active-bg: var(--#{$state}-text-emphasis);
-    --list-group-active-border-color: var(--#{$state}-text-emphasis);
+    --list-group-color: var(--#{$state});
+    --list-group-bg: var(--#{$state}-lt);
+    --list-group-border-color: #{color-transparent(var(--#{$state}), $list-group-variant-border-alpha)};
+    --list-group-action-color: var(--#{$state});
+    --list-group-action-hover-color: var(--#{$state});
+    --list-group-action-hover-bg: #{color-transparent(var(--#{$state}), $list-group-variant-hover-alpha)};
+    --list-group-action-active-color: var(--#{$state}-fg);
+    --list-group-action-active-bg: var(--#{$state});
+    // The selected row keeps the tint: `.list-group-item.active` paints its own
+    // neutral highlight, so a solid fill here would only show through as text
+    // on a background it was never matched against.
+    --list-group-active-color: var(--#{$state});
+    --list-group-active-bg: var(--#{$state}-lt);
+    --list-group-active-border-color: #{color-transparent(var(--#{$state}), $list-group-variant-border-alpha)};
   }
 }
 // scss-docs-end list-group-modifiers

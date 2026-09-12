@@ -3,11 +3,12 @@ import Icon from '@ui/Icon.astro'
 import { site } from '@shared/lib/site'
 import { formatUtcTimestamp } from '@shared/lib/date-format'
 
-// Development build (unminified assets), same as BaseLayout.
-const environment: string = 'development'
+// Vercel sets VERCEL_ENV to "production" on preview.tabler.io and to "preview"
+// on branch deploys. Only branch deploys get the build stamp next to the
+// version; production and local/packaged builds stay byte-stable.
+const isBranchDeploy = process.env.VERCEL_ENV === 'preview'
 
 const now = new Date()
-const generatedAt = formatUtcTimestamp(now)
 ---
 
 <!--  BEGIN FOOTER  -->
@@ -28,7 +29,6 @@ const generatedAt = formatUtcTimestamp(now)
             </li>
             <li class="list-inline-item">
               <a href={site.githubSponsorsUrl} target="_blank" class="link-secondary" rel="noopener">
-                {/* filled prop ignored — only type matters, heart renders as outline */}
                 <Icon name="heart" inline color="pink" />
                 Sponsor
               </a>
@@ -43,16 +43,11 @@ const generatedAt = formatUtcTimestamp(now)
             <a href="." class="link-secondary">{site.title}</a>. All rights reserved.
           </li>
           <li class="list-inline-item">
-            {
-              environment === 'production' || environment === 'preview' ? (
-                <a href="./changelog.html" class="link-secondary" rel="noopener">
-                  v{site.version}
-                </a>
-              ) : (
-                `Generated ${generatedAt}`
-              )
-            }
+            <a href="./changelog.html" class="link-secondary" rel="noopener">
+              v{site.version}
+            </a>
           </li>
+          {isBranchDeploy && <li class="list-inline-item">Generated {formatUtcTimestamp(now)}</li>}
         </ul>
       </div>
     </div>

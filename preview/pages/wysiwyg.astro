@@ -1,15 +1,20 @@
 ---
-// The front matter uses `menu: base.wysiwyg` (not `page-menu`), so no pageMenu prop.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Wysiwyg from '@ui/Wysiwyg.astro'
 import FormGroup from '@ui/FormGroup.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="HugeRTE" pageHeader="HugeRTE" pageLibs={['hugerte']}>
+<DefaultLayout title="HugeRTE" pageMenu="plugins.wysiwyg" pageLibs={['hugerte']}>
+  <DocsLink slot="page-header-actions" path="/ui/plugins/wysiwyg" />
   <Card>
     <CardBody>
+      <CardTitle>Rich text editor</CardTitle>
+      <CardSubtitle>A formatting toolbar for headings, lists, and links, dropped into a normal form field.</CardSubtitle>
       <FormGroup label="Your name" for="wysiwyg-name">
         <input type="text" class="form-control" id="wysiwyg-name" placeholder="Name" />
       </FormGroup>

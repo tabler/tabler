@@ -1,28 +1,22 @@
 // Single-pass CSS pipeline shared by @tabler/core and @tabler/preview.
 //
-// Replaces the `sass` + `postcss` + `cleancss` CLI chain: each output file used
-// to be written twice (sass first, then postcss rewriting it in place), which
-// briefly exposed un-prefixed CSS on disk and made file watchers (dev-server
-// live reload) fire once per write burst. Here everything runs in-process and
-// each output file is written exactly once, fully processed.
-//
-// All options mirror the replaced CLI invocations — the output was verified
-// byte-identical (css, rtl, min and their source maps), bar the deliberate
-// breaks:afterComment deviation documented on minify() below:
+// Runs sass, autoprefixer, the --tblr- prefix, rtlcss and clean-css in one
+// process; each output file is written exactly once, fully processed. The
+// options mirror the CLI invocations this replaced:
 // - sass --no-source-map --load-path=node_modules --style expanded
 // - postcss (autoprefixer cascade:false, rtlcss for --rtl, external map with
-//   annotation + sourcesContent — the former core/.build/postcss.config.mjs)
+//   annotation + sourcesContent)
 // - cleancss -O1 --format breakWith=lf --with-rebase --source-map
 //   --source-map-inline-sources --batch --batch-suffix ".min"
+// The one deviation, breaks:afterComment, is documented on minify() below.
 //
-// --banner replaces the former core/.build/add-banner.ts, which ran as a
-// separate step *after* minification and rewrote the finished files in place.
-// Prepending the 6-line license comment there shifted every rule down without
-// touching the already-written .map, so all mappings pointed 7 lines too high
-// (#2766). Here the banner is part of the css before any map is generated, so
-// postcss and clean-css both account for it.
+// --banner adds the license comment before any source map is generated, so
+// the maps account for its lines (#2766).
 //
-// Usage: tsx ../.build/build-css.ts <scssDir> <outDir> [--rtl] [--minify] [--banner]
+// --no-prefix skips the --tblr- pass, for a stylesheet that inlines vendor css
+// whose variables are set at runtime (docs/scss/docs.scss).
+//
+// Usage: tsx ../.build/build-css.ts <scssDir> <outDir> [--rtl] [--minify] [--banner] [--no-prefix]
 // (cwd = the package)
 /// <reference path="./modules.d.ts" />
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -41,12 +35,13 @@ const args = process.argv.slice(2)
 const flags = args.filter((arg) => arg.startsWith('--'))
 const [scssDir, outDir] = args.filter((arg) => !arg.startsWith('--'))
 if (!scssDir || !outDir) {
-  console.error('usage: tsx build-css.ts <scssDir> <outDir> [--rtl] [--minify] [--banner]')
+  console.error('usage: tsx build-css.ts <scssDir> <outDir> [--rtl] [--minify] [--banner] [--no-prefix]')
   process.exit(1)
 }
 const withRtl = flags.includes('--rtl')
 const withMinify = flags.includes('--minify')
 const withBanner = flags.includes('--banner')
+const withPrefix = !flags.includes('--no-prefix')
 
 const mapOptions = { inline: false, annotation: true, sourcesContent: true }
 
@@ -75,7 +70,7 @@ async function compile(entry: string): Promise<{ outFile: string; result: Result
   // postcss maps generated positions back to *its own input*, so renaming
   // inside the map-generating pass would leave every mapping — and the
   // embedded sourcesContent — describing css that no longer exists on disk.
-  const { css: prefixed } = await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(input, { from: outFile, to: outFile, map: false })
+  const { css: prefixed } = withPrefix ? await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(input, { from: outFile, to: outFile, map: false }) : { css: input }
   const result = await postcss([autoprefixer({ cascade: false })]).process(prefixed, {
     from: outFile,
     to: outFile,

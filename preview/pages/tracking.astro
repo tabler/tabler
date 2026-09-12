@@ -3,7 +3,9 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import StatusMonitoring from '@shared/components/cards/StatusMonitoring.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 interface TrackingItem {
   status?: 'success' | 'warning' | 'danger'
@@ -45,12 +47,15 @@ const uptime: TrackingItem[] = [
 ]
 ---
 
-<DefaultLayout title="Tracking" pageHeader="Tracking" pageMenu="base.tracking">
+<DefaultLayout title="Tracking" pageMenu="base.tracking" description="Tracking blocks show an uptime or activity history as a row of colored bars.">
+  <DocsLink slot="page-header-actions" path="/ui/components/tracking" />
+
   <div class="row row-cards">
     <div class="col-12">
       <Card>
         <CardBody>
           <CardTitle>Basic example</CardTitle>
+          <CardSubtitle>Hover a block to see its status.</CardSubtitle>
           <div class="tracking">
             {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
           </div>
@@ -65,7 +70,8 @@ const uptime: TrackingItem[] = [
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Squares variant (.tracking-squares)</CardTitle>
+          <CardTitle>Squares variant</CardTitle>
+          <CardSubtitle>Add <code>.tracking-squares</code> for square, evenly spaced blocks.</CardSubtitle>
           <div class="tracking tracking-squares">
             {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
           </div>

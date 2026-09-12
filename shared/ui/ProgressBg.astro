@@ -1,22 +1,25 @@
 ---
 import Progress from './Progress.astro'
-import { parsePercentage } from '@shared/lib/string-format'
 
 interface Props {
-  value?: number | string
+  value?: number
   color?: string
+  /** -lt soft color variant (default true — the usual look for a background progress) */
+  light?: boolean
   class?: string
   text?: string
   showValue?: boolean
 }
 
-const { value, color = 'primary-lt', class: className, text, showValue } = Astro.props
+const { value, color = 'primary', light = true, class: className, text, showValue } = Astro.props
 
-const percentage = parsePercentage(value)
+const barColor = `${color}${light ? '-lt' : ''}`
+
+const percentage = value ?? 0
 ---
 
 <div class={`progressbg${className ? ` ${className}` : ''}`}>
-  <Progress value={percentage} class="progressbg-progress" color={color} />
+  <Progress value={percentage} class="progressbg-progress" color={barColor} />
   {text && <div class="progressbg-text">{text}</div>}
   {showValue && <div class="progressbg-value">{percentage}%</div>}
 </div>

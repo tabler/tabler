@@ -81,14 +81,13 @@
 }
 
 .alert-important {
-  color: var(--white);
+  // Set the shared color token so every child that reads it - text, icon,
+  // `.alert-action`, `.alert-link` - flips to white instead of the variant
+  // color, which is the background here.
+  --alert-color: var(--white);
   background-color: var(--alert-variant-color);
 
   .alert-description {
-    color: inherit;
-  }
-
-  .alert-icon {
     color: inherit;
   }
 }

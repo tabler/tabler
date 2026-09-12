@@ -1,10 +1,12 @@
 ---
+import { range } from '@shared/lib/array'
 import Icon from './Icon.astro'
 
 interface Props {
-  count?: number
+  count: number
   offset?: number
-  activeItem?: number | string
+  /** 1-based index of the active page (default: first) */
+  activeItem?: number
   class?: string
   firstLast?: boolean
   text?: boolean
@@ -12,21 +14,12 @@ interface Props {
   nextDescription?: string
 }
 
-const { count = 5, offset = count, activeItem: activeItemProp = 3, class: className, firstLast, text, prevDescription, nextDescription } = Astro.props
+const { count, offset = count, activeItem = 1, class: className, firstLast, text, prevDescription, nextDescription } = Astro.props
 
-const activeItem = Number(activeItemProp)
-const normalizedActiveItem = Number.isFinite(activeItem) ? activeItem : 3
-
-// equivalent of the (1..offset) loop
-const firstPages: number[] = []
-for (let i = 1; i <= offset; i++) firstPages.push(i)
-
-// equivalent of (count-offset..count), where count-offset = count - offset + 1
+// (1..offset), then (count-offset+1..count) when there is a tail
+const firstPages = range(1, offset)
 const countOffset = count - offset + 1
-const lastPages: number[] = []
-if (offset < count) {
-  for (let i = countOffset; i <= count; i++) lastPages.push(i)
-}
+const lastPages = offset < count ? range(countOffset, count) : []
 ---
 
 <!-- BEGIN PAGINATION -->
@@ -59,8 +52,8 @@ if (offset < count) {
     </li>
     {
       firstPages.map((i) => (
-        <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+        <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
             {i}
           </a>
         </li>
@@ -73,8 +66,8 @@ if (offset < count) {
             <span class="page-link disabled">&hellip;</span>
           </li>
           {lastPages.map((i) => (
-            <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+            <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
                 {i}
               </a>
             </li>

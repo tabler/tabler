@@ -114,3 +114,19 @@
 .bg-surface-backdrop {
   background-color: color-transparent($modal-backdrop-bg, $modal-backdrop-opacity) !important;
 }
+
+// Gradient stops that are not theme colors: fade to nothing, or to the inverted surface.
+@each $name, $value in ('transparent': transparent, 'inverted': var(--bg-surface-inverted)) {
+  .bg-gradient-from-#{$name} {
+    --gradient-from: #{$value};
+  }
+
+  .bg-gradient-to-#{$name} {
+    --gradient-to: #{$value};
+  }
+
+  .bg-gradient-via-#{$name} {
+    --gradient-via: #{$value};
+    --gradient-stops: var(--gradient-from, transparent), var(--gradient-via, transparent), var(--gradient-to, transparent);
+  }
+}

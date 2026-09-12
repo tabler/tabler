@@ -114,6 +114,17 @@ Prose and example markup are only as accurate as their source. Before writing ex
 8. Ensure prose is in simple English.
 9. Verify heading hierarchy (`##` then `###`) and snippet validity.
 
+## 8a. Checking a page on the published site
+
+Two hosts serve the docs, and they are not in sync:
+
+| Host | Serves |
+| --- | --- |
+| `docs.tabler.io` | the last release — can be many commits behind `dev` |
+| `docs-dev.tabler.io` | the `dev` branch |
+
+Check a page's live url on `docs-dev.tabler.io`. Production still serves the pre-content-collection urls, so a page that exists in `docs/content/**` can return 404 there while being perfectly fine. A 404 on `docs.tabler.io` alone never justifies renaming a page or rewriting a link — confirm on `docs-dev.tabler.io` first.
+
 ## 9. Rules while updating existing docs
 
 - Preserve valid existing content that is still correct.

@@ -3,17 +3,18 @@
 import BaseLayout from './BaseLayout.astro'
 import Empty from '@ui/Empty.astro'
 import errors from '@data/errors.json'
+import type { IllustrationImage } from '@shared/lib/svg'
 
 interface Props {
   title?: string
-  /** page-error front matter — key into errors.json ("404" | "500" | "maintenance" | …) */
+  /** key into errors.json ("404" | "500" | "maintenance" | …) */
   pageError: string
 }
 
 const { title, pageError } = Astro.props
 
 type ErrorEntry = {
-  illustration?: string
+  illustration?: IllustrationImage
   title?: string | number
   header?: string
   description?: string
@@ -27,7 +28,7 @@ const header = error.header ?? 'Oops… You just found an error page'
   <!-- BEGIN PAGE BODY -->
   <main class="page page-center" id="content">
     <div class="container-tight py-4">
-      <Empty icon="settings" illustration={error.illustration} iconText={error.title != null ? String(error.title) : undefined} title={header} subtitle={error.description} buttonIcon="arrow-left" buttonText="Take me home" />
+      <Empty as="h1" icon="settings" illustration={error.illustration} iconText={error.title != null ? String(error.title) : undefined} title={header} description={error.description} buttonIcon="arrow-left" buttonText="Take me home" />
     </div>
   </main>
   <!-- END PAGE BODY -->

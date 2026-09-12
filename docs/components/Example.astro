@@ -9,7 +9,7 @@ import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-exampl
  * - transparent — checkerboard pattern, for components with their own background
  * - primary — theme-aware white (bg-surface)
  */
-type ExampleBackground = 'surface-secondary' | 'transparent' | 'primary'
+type ExampleBackground = 'surface-secondary' | 'transparent' | 'primary' | 'dark'
 
 interface Props {
   /** raw HTML of the example; when absent — the slot is rendered */
@@ -35,6 +35,7 @@ const backgroundClasses: Record<ExampleBackground, string> = {
   'surface-secondary': 'bg-surface-secondary',
   'transparent': 'bg-pattern-rectangles',
   'primary': 'bg-surface',
+  'dark': 'bg-dark',
 }
 
 // Strip empty lines from the example HTML.
@@ -45,36 +46,43 @@ let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\
 // code in the panel looks like hand-written HTML.
 html = html.replace(/<(path|circle|line|polyline|polygon|rect|ellipse)([^>]*?)\s*><\/\1>/g, '<$1$2 />').replace(/&#39;/g, "'")
 
-const exampleClasses = ['example fs-base border rounded my-5', !raw && 'd-flex flex-wrap justify-content-center', `overflow-${overflow}`, 'position-relative', backgroundClasses[background], className]
+// Demo and its code panel render as one visually joined group: the demo keeps
+// only its top corners rounded when a code panel is attached below it.
+const hasDemo = !codeOnly
+const hasCode = !hideCode
+const exampleClasses = ['example fs-base border', hasCode ? 'rounded-top' : 'rounded', !raw && 'd-flex flex-wrap justify-content-center', `overflow-${overflow}`, 'position-relative', backgroundClasses[background], className]
 
 const innerClasses = ['p-6 w-full', column && 'd-flex gap-3 flex-column', !column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`, columnFullWidth && 'd-flex flex-fill flex-column gap-2']
 
 const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? html), 'html')
 ---
 
-<!--EXAMPLE-->{
-  !codeOnly && (
-    <div class:list={exampleClasses} style={height ? `height: ${height}` : undefined}>
-      {raw ? (
-        <Fragment set:html={removeHref(html)} />
-      ) : (
-        <div class:list={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
+<!--EXAMPLE-->{/* data-example-markup carries the markup for examples with no code panel, so the .md mirror (docs/lib/llms.ts) still has real html to show */}
+<div class="docs-example my-5" data-example-markup={hideCode ? (code ?? html) : undefined}>
+  {
+    hasDemo && (
+      <div class:list={exampleClasses} style={height ? `height: ${height}` : undefined}>
+        {raw ? (
           <Fragment set:html={removeHref(html)} />
-        </div>
-      )}
-    </div>
-  )
-}
+        ) : (
+          <div class:list={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
+            <Fragment set:html={removeHref(html)} />
+          </div>
+        )}
+      </div>
+    )
+  }
 
-{
-  !hideCode && (
-    <div class="position-relative">
-      <a class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={code ?? html}>
-        <Icon name="clipboard" />
-        <Icon name="check" class="d-none" />
-      </a>
-      <Fragment set:html={highlighted} />
-    </div>
-  )
-}
+  {
+    hasCode && (
+      <div class:list={['docs-example-code position-relative', hasDemo && 'docs-example-code-attached']}>
+        <button type="button" class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={code ?? html} aria-label="Copy code">
+          <Icon name="clipboard" />
+          <Icon name="check" class="d-none" />
+        </button>
+        <Fragment set:html={highlighted} />
+      </div>
+    )
+  }
+</div>
 <!--/EXAMPLE-->

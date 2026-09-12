@@ -5,13 +5,15 @@ import type { AvatarSize } from './Avatar.astro'
 interface Props {
   class?: string
   size?: AvatarSize | undefined
+  /** accessible name of the upload link */
+  label?: string
 }
 
-const { class: className, size } = Astro.props
+const { class: className, size, label = 'Upload photo' } = Astro.props
 
 const classes = ['avatar', 'avatar-upload', className, size && `avatar-${size}`]
 ---
 
-<a href="#" class:list={classes}>
+<a href="#" class:list={classes} aria-label={label}>
   <Icon name="plus" />
 </a>

@@ -25,13 +25,12 @@ const escapeXml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, 
 export const GET: APIRoute = () => {
   const environment = process.env.NODE_ENV || 'production'
   const baseUrl = environment !== 'development' ? site.previewUrl : ''
-  // ISO 8601 UTC timestamp (+00:00 suffix)
-  const lastModified = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00')
+  // No <lastmod>: it is optional, and stamping every url with the build time
+  // said nothing about the pages while making the file differ on every build.
   const entries = urls
     .map(
       (url) => `<url>
 	<loc>${escapeXml(`${baseUrl}${url}`)}</loc>
-	<lastmod>${lastModified}</lastmod>
 </url>`,
     )
     .join('\n')

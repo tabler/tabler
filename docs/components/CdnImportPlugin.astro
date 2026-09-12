@@ -1,6 +1,6 @@
 ---
 import { Code } from 'astro:components'
-import { site } from '@shared/lib/site.ts'
+import { cdnPluginSnippet } from '@lib/cdn-snippets.ts'
 
 interface Props {
   plugins: string[]
@@ -9,11 +9,4 @@ interface Props {
 const { plugins }: Props = Astro.props
 ---
 
-<Code
-  lang="html"
-  code={plugins
-    .map((plugin) => {
-      return `<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-${plugin}.min.css" />`
-    })
-    .join('\n')}
-/>
+<Code lang="html" code={cdnPluginSnippet(plugins)} />

@@ -1,0 +1,43 @@
+---
+// `treemap` — one of the chart types added in 1.5. Each cell is shaded from the
+// series color by value, so it reads in both color modes.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import Subheader from '@ui/Subheader.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// Sum and largest share of the treemap data in charts.json.
+const figures = [
+  { label: 'Used', value: '791 GB' },
+  { label: 'Largest', value: 'Documents · 28%' },
+]
+---
+
+<ScreenshotLayout title="Treemap chart" columns={2} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader>
+      <div>
+        <CardTitle>Storage by folder</CardTitle>
+        <CardSubtitle>Space used across the workspace</CardSubtitle>
+      </div>
+      <CardActions class="d-flex gap-4 text-end">
+        {
+          figures.map((figure) => (
+            <div>
+              <Subheader>{figure.label}</Subheader>
+              <div class="fw-semibold">{figure.value}</div>
+            </div>
+          ))
+        }
+      </CardActions>
+    </CardHeader>
+    <CardBody>
+      <Chart chartId="treemap" height={16} label="Storage used per folder" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

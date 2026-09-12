@@ -8,6 +8,7 @@ import docs from '@data/docs.json'
 import { site } from '@shared/lib/site'
 import { docsUrlFromId } from '@lib/docs-pages'
 import { baseUrl } from '@lib/llms'
+import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
 
 export const prerender = true
 
@@ -28,18 +29,29 @@ export const GET: APIRoute = async () => {
     const entry = byUrl.get(url)
     if (!entry || listed.has(url)) return null
     listed.add(url)
-    // `/` has no `.md` sibling — its mirror is `/index.md`
-    return `- [${entry.data.title}](${base}${url === '/' ? '/index' : url}.md): ${entry.data.description}`
+    return `- [${entry.data.title}](${base}${markdownUrlFromDocsUrl(url)}): ${entry.data.description}`
   }
+
+  const pageUrls = (nodes: (MenuNode | undefined)[]) => nodes.flatMap((node) => [node?.url, ...(node?.children ?? []).map((child) => child.url)]).filter((url): url is string => typeof url === 'string' && url.startsWith('/'))
 
   const sections: string[] = []
   for (const group of docs.menu as MenuNode[]) {
-    for (const section of group.children ?? []) {
-      const urls = [section.url, ...(section.children ?? []).map((child) => child.url)].filter((url): url is string => typeof url === 'string' && url.startsWith('/'))
-      const lines = urls.map((url) => item(normalizeUrl(url))).filter(Boolean)
+    // Groups get a heading of their own; pages listed straight under a section
+    // (products without sub-groups) are collected into one heading for it.
+    const loose = (group.children ?? []).filter((child) => !child.children?.length)
+    for (const section of (group.children ?? []).filter((child) => child.children?.length)) {
+      const lines = pageUrls([section])
+        .map((url) => item(normalizeUrl(url)))
+        .filter(Boolean)
       if (lines.length) {
         sections.push(`## ${group.title} — ${section.title}\n\n${lines.join('\n')}`)
       }
+    }
+    const looseLines = pageUrls(loose)
+      .map((url) => item(normalizeUrl(url)))
+      .filter(Boolean)
+    if (looseLines.length) {
+      sections.push(`## ${group.title}\n\n${looseLines.join('\n')}`)
     }
   }
 
@@ -52,17 +64,34 @@ export const GET: APIRoute = async () => {
     sections.push(`## Other\n\n${remaining.join('\n')}`)
   }
 
+  // Class reference for every page that carries `classnames` front matter, so an
+  // agent reading this file alone knows which classes exist without fetching
+  // each page. Grouped by kind, in the same order the page renders them.
+  const groupOrder = ['component', 'part', 'style', 'modifier', 'behavior', 'direction', 'color', 'size']
+  const classSections = entries
+    .filter((entry) => entry.data.classnames)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title))
+    .map((entry) => {
+      const groups = Object.entries(entry.data.classnames as Record<string, { class: string }[]>).sort(([a], [b]) => (groupOrder.indexOf(a) + 1 || 99) - (groupOrder.indexOf(b) + 1 || 99))
+      const lines = groups.map(([group, rows]) => `- ${group}: ${rows.map((row) => `\`${row.class}\``).join(', ')}`)
+      return `### ${entry.data.title}\n\n[${entry.data.title} documentation](${base}${docsUrlFromId(entry.id)})\n\n${lines.join('\n')}`
+    })
+
+  const classReference = classSections.length ? `## Class names\n\nEvery class each component ships, grouped by kind. A name in braces stands for a family: \`alert-{color}\` means any base color, \`table-mobile-{breakpoint}\` any breakpoint.\n\n${classSections.join('\n\n')}` : ''
+
   const body = `# Tabler
 
 > ${site.description}
 
 Tabler is a free and open source dashboard UI kit built on Bootstrap. This file indexes the documentation at ${site.docsUrl}.
 
-Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks.
+Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks. The whole documentation concatenated into one file is available at \`${site.docsUrl}/llms-full.txt\`.
 
-The markup is taken from the documentation source. A small number of examples are written with Tabler's own documentation components, and those appear as component tags (for example \`<Alert type="success" />\`) instead of the final html; open the page itself for those.
+The markup is taken from the rendered pages, so every example is plain html — the same markup the copy button on the page gives you.
 
 ${sections.join('\n\n')}
+
+${classReference}
 `
 
   return new Response(body, {

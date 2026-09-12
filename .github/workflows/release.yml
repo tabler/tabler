@@ -16,36 +16,76 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to create release 
+      contents: write # to create release
       issues: write # to post issue comments
       pull-requests: write # to create pull request
+      id-token: write # for npm trusted publishing (OIDC)
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v6
+      - name: Set up the workspace
+        uses: ./.github/actions/setup
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm install
+      - name: Update npm # trusted publishing requires npm >= 11.5.1
+        run: npm install -g npm@latest
 
       - name: Build
         run: pnpm run build
 
       - name: Create release Pull Request or publish to NPM
-        uses: changesets/action@v1
+        id: changesets
+        uses: changesets/action@v2
         with:
-          version: pnpm run version
-          publish: pnpm run publish
-          commit: "chore: update versions"
-          title: "chore: update versions"
+          version-script: pnpm run version
+          publish-script: pnpm run publish
+          commit-message: "chore: update versions"
+          pr-title: "chore: update versions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # `changesets/action` fills the version pull request with one section per
+      # package (`## @tabler/core@1.5.1`, …), so a changeset that touches several
+      # packages shows up several times. Replace that body with the same notes the
+      # GitHub release gets: the intro from `.github/release-notes/<version>.md`
+      # and the changes grouped as core / demo / docs, each listed once. The
+      # action rewrites the body on every push to dev, so this runs right after it.
+      - name: Write the release notes into the version pull request
+        if: steps.changesets.outputs.pr-number != ''
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.changesets.outputs.pr-number }}
+        run: |
+          git fetch --depth=1 origin changeset-release/dev
+          git checkout --force --detach origin/changeset-release/dev
+          version=$(node -p "require('./core/package.json').version")
+          {
+            echo "Merging this pull request publishes \`@tabler/core@${version}\` to npm and creates the GitHub release. It is regenerated on every push to \`dev\`."
+            echo
+            pnpm run --silent release-notes
+          } > "${RUNNER_TEMP}/pr-body.md"
+          gh pr edit "${PR_NUMBER}" --body-file "${RUNNER_TEMP}/pr-body.md"
+
+      # `pnpm run build` above zipped preview/dist into packages-zip/; attach it to
+      # the GitHub release that changesets/action just created for @tabler/core.
+      - name: Attach the preview zip to the GitHub release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./core/package.json').version")
+          gh release upload "@tabler/core@${version}" "packages-zip/tabler-${version}.zip" --clobber
+
+      # `changesets/action` names the release `@tabler/core@1.5.0` and fills it with
+      # the raw changelog entry. Rename it to `Tabler v1.5.0` and replace the body with
+      # the intro from `.github/release-notes/<version>.md` followed by the changes
+      # grouped per package.
+      - name: Write the release notes
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./core/package.json').version")
+          pnpm run release-notes "${RUNNER_TEMP}/release-body.md"
+          gh release edit "@tabler/core@${version}" --title "Tabler v${version}" --notes-file "${RUNNER_TEMP}/release-body.md"

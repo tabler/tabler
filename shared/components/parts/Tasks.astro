@@ -1,8 +1,6 @@
 ---
-// task['due-date'] is undefined (field is due_date) — due-date branch never renders.
-// Avatar offset uses task['users-offset'] (hyphenated key).
 import Icon from '@ui/Icon.astro'
-import AvatarList from '@ui/AvatarList.astro'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import tasksData from '@data/tasks.json'
 
@@ -52,19 +50,19 @@ const data = tasksData as unknown as { columns: Column[] }
 
                     <div class="mt-4">
                       <div class="row">
-                        <div class="col">{task.users && <AvatarList stacked={true} size="xs" offset={task['users-offset'] ?? 0} limit={task.users} />}</div>
+                        <div class="col">{task.users && <PeopleAvatarList stacked={true} size="xs" offset={task['users-offset'] ?? 0} limit={task.users} />}</div>
 
-                        {task['due-date'] && (
+                        {task.due_date && (
                           <div class="col-auto">
                             <a href="#" class="link-warning">
                               <Icon name="calendar" />
-                              {task['due-date']}
+                              {task.due_date}
                             </a>
                           </div>
                         )}
 
                         <div class="col-auto text-secondary">
-                          <button class={`switch-icon switch-icon-scale${task.favorite ? ' active' : ''}`} data-bs-toggle="switch-icon">
+                          <button class={`switch-icon switch-icon-scale${task.favorite ? ' active' : ''}`} aria-label="Mark as favorite" data-bs-toggle="switch-icon">
                             <span class="switch-icon-a text-muted">
                               <Icon name="heart" />
                             </span>
@@ -91,7 +89,7 @@ const data = tasksData as unknown as { columns: Column[] }
                           </div>
                         )}
                         <div class="col-auto">
-                          <a href="#" class="link-secondary">
+                          <a href="#" class="link-secondary" aria-label="Share">
                             <Icon name="share" />
                           </a>
                         </div>

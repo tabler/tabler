@@ -5,11 +5,13 @@ interface Props {
   /** core/scss/bootstrap/_spinners.scss `.spinner-{type}-{size}` — only 'sm' exists */
   size?: 'sm' | undefined
   class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { type = 'border', color, size, class: className } = Astro.props
+const { type = 'border', color, size, class: className, ...rest } = Astro.props
 
 const classes = [`spinner-${type}`, color && `text-${color}`, size && `spinner-${type}-${size}`, className]
 ---
 
-<div class:list={classes} role="status"></div>
+<div class:list={classes} role="status" {...rest}></div>

@@ -1,0 +1,112 @@
+---
+import { people } from '@shared/lib/people'
+import type { FlagCountry } from '@shared/lib/tokens'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
+import Flag from '@ui/Flag.astro'
+import countries from '@data/countries.json'
+
+interface Props {
+  right?: boolean
+  show?: boolean
+  arrow?: boolean
+  dark?: boolean
+  class?: string
+  check?: boolean
+  radio?: boolean
+  people?: boolean
+  flag?: boolean
+  header?: boolean
+  icons?: boolean
+  badge?: boolean
+  active?: boolean
+  disabled?: boolean
+  separated?: boolean
+}
+
+const { right, show, arrow, dark, class: className, check, radio, people: showPeople, flag: showFlags, header, icons, badge, active, disabled, separated } = Astro.props
+
+const classes = ['dropdown-menu', right && 'dropdown-menu-end', show && 'dropdown-menu-demo', arrow && 'dropdown-menu-arrow', className]
+
+const peopleItems = people.slice(0, 5)
+const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
+---
+
+<div class:list={classes} data-bs-theme={dark ? 'dark' : undefined}>
+  {
+    check || radio ? (
+      [1, 2, 3].map((i) => (
+        <label class="dropdown-item">
+          <input class="form-check-input m-0 me-2" type={radio ? 'radio' : 'checkbox'} name={radio ? 'dropdown-menu-radio' : undefined} /> Option {i}
+        </label>
+      ))
+    ) : showPeople ? (
+      peopleItems.map((person) => (
+        <button type="button" class="dropdown-item">
+          <Avatar person={person} size="xs" /> {person.full_name}
+        </button>
+      ))
+    ) : showFlags ? (
+      countryItems.map((country) => (
+        <button type="button" class="dropdown-item">
+          <Flag flag={country.flag as FlagCountry} size="xs" /> {country.name}
+        </button>
+      ))
+    ) : (
+      <>
+        {header && <span class="dropdown-header">Dropdown header</span>}
+        <button type="button" class="dropdown-item">
+          {icons && (
+            <>
+              <Icon name="settings" class="dropdown-item-icon" />{' '}
+            </>
+          )}
+          Action
+          {badge && <span class="badge bg-primary text-primary-fg ms-auto">12</span>}
+        </button>
+        <button type="button" class="dropdown-item">
+          {icons && (
+            <>
+              <Icon name="edit" class="dropdown-item-icon" />{' '}
+            </>
+          )}
+          Another action
+          {badge && <span class="badge bg-green ms-auto" />}
+        </button>
+        {active && (
+          <button type="button" class="dropdown-item active">
+            {icons && (
+              <>
+                <Icon name="activity" class="dropdown-item-icon" />{' '}
+              </>
+            )}
+            Active action
+          </button>
+        )}
+        {disabled && (
+          <button type="button" class="dropdown-item disabled" disabled>
+            {icons && (
+              <>
+                <Icon name="user-x" class="dropdown-item-icon" />{' '}
+              </>
+            )}
+            Disabled action
+          </button>
+        )}
+        {separated && (
+          <>
+            <div class="dropdown-divider" />
+            <button type="button" class="dropdown-item">
+              {icons && (
+                <>
+                  <Icon name="plus" class="dropdown-item-icon" />{' '}
+                </>
+              )}
+              Separated link
+            </button>
+          </>
+        )}
+      </>
+    )
+  }
+</div>

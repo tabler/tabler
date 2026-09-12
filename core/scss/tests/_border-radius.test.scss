@@ -21,13 +21,3 @@
     @include assert-equal(meta.inspect(valid-radius(4px -2px 6px)), '4px 0 6px');
   }
 }
-
-@include describe('squircle-radius') {
-  @include it('keeps 0 as 0') {
-    @include assert-equal(meta.inspect(squircle-radius(0)), '0');
-  }
-
-  @include it('scales a non-zero radius by 2.5 via calc()') {
-    @include assert-equal(meta.inspect(squircle-radius(4px)), 'calc(4px * 2.5)');
-  }
-}

@@ -24,6 +24,7 @@
   @include media-print() {
     border: none;
     box-shadow: none;
+    break-inside: avoid;
   }
 
   @at-root a#{&} {
@@ -424,27 +425,29 @@ Card status
  */
 .card-status-top {
   position: absolute;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  top: 0;
+  inset-inline-start: $card-status-offset;
+  inset-inline-end: $card-status-offset;
+  top: $card-status-offset;
   height: $card-status-size;
   @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
 }
 
 .card-status-start {
   position: absolute;
+  inset-inline-start: $card-status-offset;
   inset-inline-end: auto;
-  bottom: 0;
+  top: $card-status-offset;
+  bottom: $card-status-offset;
   width: $card-status-size;
-  height: 100%;
   @include border-radius(var(--card-border-radius) 0 0 var(--card-border-radius));
 }
 
 .card-status-bottom {
   position: absolute;
+  inset-inline-start: $card-status-offset;
+  inset-inline-end: $card-status-offset;
   top: initial;
-  bottom: 0;
-  width: 100%;
+  bottom: $card-status-offset;
   height: $card-status-size;
   @include border-radius(0 0 var(--card-border-radius) var(--card-border-radius));
 }
@@ -532,6 +535,17 @@ Card code
  */
 .card-code {
   padding: 0;
+  overflow: hidden;
+
+  // The code block is a dark box, so it follows the card's corners: rounded at
+  // the card's top or bottom edge, square when another section sits next to it.
+  &:first-child {
+    @include border-top-radius(var(--card-border-radius));
+  }
+
+  &:last-child {
+    @include border-bottom-radius(var(--card-border-radius));
+  }
 
   .highlight {
     margin: 0;
@@ -541,6 +555,7 @@ Card code
   pre {
     margin: 0 !important;
     border: 0 !important;
+    @include border-radius(0);
   }
 }
 

@@ -9,3 +9,8 @@ export function requireIndex<T>(array: readonly T[], index: number): T {
   }
   return item
 }
+
+/** Inclusive integer range [from, to]; empty when from > to. */
+export function range(from: number, to: number): number[] {
+  return Array.from({ length: Math.max(0, to - from + 1) }, (_, i) => from + i)
+}

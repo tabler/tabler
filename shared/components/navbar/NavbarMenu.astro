@@ -1,5 +1,4 @@
 ---
-// TODO: %ICONS_COUNT% substitution in titles — menu.json has no placeholder, skipped for now.
 import Icon from '@ui/Icon.astro'
 import NavbarMenuItem from './NavbarMenuItem.astro'
 import menu from '@data/menu.json'
@@ -15,21 +14,25 @@ interface Level1 {
   'disabled'?: boolean
   'right'?: boolean
   'columns'?: number
+  /** section label rendered before this item (sidebar only, needs the `sections` prop) */
+  'section'?: string
   'children'?: Record<string, Record<string, unknown>>
 }
 
 interface Props {
-  /** equivalent of the page-menu front matter, e.g. "dashboards.default" */
+  /** active menu entry, e.g. "dashboards.default" */
   pageMenu?: string | undefined
   sample?: boolean
   hideIcons?: boolean
   longTitles?: boolean
   keepOpen?: boolean
   autoOpen?: boolean
+  /** renders `section` fields from the menu data as group labels */
+  sections?: boolean
   class?: string
 }
 
-const { pageMenu = '', sample = false, hideIcons = false, longTitles = false, keepOpen = false, autoOpen = false, class: className } = Astro.props
+const { pageMenu = '', sample = false, hideIcons = false, longTitles = false, keepOpen = false, autoOpen = false, sections = false, class: className } = Astro.props
 
 const currentPage = pageMenu.split('.')
 const items = Object.entries((sample ? menuSample : menu) as Record<string, Level1>)
@@ -54,19 +57,20 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
 
       return (
         <Fragment>
+          {sections && item.section && <li class="nav-section-title">{item.section}</li>}
           <Fragment set:html={'<!-- BEGIN NAVBAR ITEM -->'} />
           <li class:list={['nav-item', active && 'active', hasChildren && 'dropdown']}>
             <a
               class:list={['nav-link', hasChildren && 'dropdown-toggle', item.disabled && 'disabled']}
-              href={hasChildren ? `#navbar-${key}` : `./${item.url}`}
+              href={hasChildren ? '#' : `./${item.url}`}
               data-bs-toggle={hasChildren ? 'dropdown' : undefined}
               data-bs-auto-close={hasChildren ? (keepOpen ? 'false' : 'outside') : undefined}
               role={hasChildren ? 'button' : undefined}
               aria-haspopup={hasChildren ? 'true' : undefined}
               aria-expanded={hasChildren ? (autoOpen && key === currentPage[0] ? 'true' : 'false') : undefined}
-              aria-current={active ? 'page' : undefined}
+              aria-current={active && !hasChildren ? 'page' : undefined}
             >
-              {!hideIcons && <span class="nav-link-icon d-md-none d-lg-inline-block">{item.icon && <Icon name={item.icon} />}</span>}
+              {!hideIcons && <span class="nav-link-icon">{item.icon && <Icon name={item.icon} />}</span>}
 
               <span class="nav-link-title">{title}</span>
 

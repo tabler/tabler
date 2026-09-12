@@ -1,180 +1,128 @@
 @use '../config' as *;
 
-.bg-pattern-diagonal {
+@mixin pattern-base($opacity: $pattern-opacity) {
   --pattern-color: var(--body-color);
   --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  background-image: repeating-linear-gradient(-45deg, var(--pattern-fill) 0 1px, transparent 0 50%);
+  --pattern-opacity: calc(var(--pattern-opacity-factor, #{$pattern-opacity-factor}) * #{$opacity});
+  --pattern-fill: color-mix(in oklch, var(--pattern-color) var(--pattern-opacity), transparent);
   background-clip: padding-box;
+}
+
+.bg-pattern-transparent {
+  @include pattern-base();
+  background-image: repeating-conic-gradient(var(--pattern-fill) 0% 25%, transparent 0% 50%);
+  background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
+}
+
+.bg-pattern-diagonal {
+  @include pattern-base();
+  background-image: repeating-linear-gradient(-45deg, var(--pattern-fill) 0 1px, transparent 0 50%);
   background-size: var(--pattern-size) var(--pattern-size);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-diagonal-2 {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base();
   background-image: repeating-linear-gradient(45deg, var(--pattern-fill) 0 1px, transparent 0 50%);
-  background-clip: padding-box;
   background-size: var(--pattern-size) var(--pattern-size);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-dots {
-  --pattern-color: var(--body-color);
-  --pattern-size: 5px;
-  --pattern-dot: 0.5px;
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 20%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  background-image: radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent var(--pattern-dot)), radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent var(--pattern-dot));
+  @include pattern-base(20%);
+  --pattern-dot: max(1px, calc(var(--pattern-size) * 0.1));
+  background-image: radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent calc(var(--pattern-dot) + 0.5px)), radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent calc(var(--pattern-dot) + 0.5px));
   background-position:
     0 0,
-    calc(var(--pattern-size) / 2) calc(var(--pattern-size) / 2);
-  background-clip: padding-box;
-  background-size: var(--pattern-size) var(--pattern-size);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
+    calc(var(--pattern-size)) calc(var(--pattern-size));
+  background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
 }
 
 .bg-pattern-rectangles {
-  --pattern-color: var(--body-color);
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 3%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-size: #{$pattern-size};
+  @include pattern-base(3%);
   background-image: repeating-linear-gradient(45deg, var(--pattern-fill) 25%, transparent 25%, transparent 75%, var(--pattern-fill) 75%, var(--pattern-fill)), repeating-linear-gradient(45deg, var(--pattern-fill) 25%, transparent 25%, transparent 75%, var(--pattern-fill) 75%, var(--pattern-fill));
   background-position:
     -1px -1px,
     calc(var(--pattern-size) - 1px) calc(var(--pattern-size) - 1px);
-  background-clip: padding-box;
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-lines {
-  --pattern-color: var(--body-color);
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 6%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-size: #{$pattern-size};
+  @include pattern-base(6%);
   background-image: repeating-linear-gradient(0deg, var(--pattern-fill), var(--pattern-fill) 1px, transparent 1px, transparent);
   background-position: -1px -1px;
-  background-clip: padding-box;
   background-size: var(--pattern-size) var(--pattern-size);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-lines-vertical {
-  --pattern-color: var(--body-color);
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 6%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-size: #{$pattern-size};
+  @include pattern-base(6%);
   background-image: repeating-linear-gradient(90deg, var(--pattern-fill), var(--pattern-fill) 1px, transparent 1px, transparent);
   background-position: -1px -1px;
-  background-clip: padding-box;
   background-size: var(--pattern-size) var(--pattern-size);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-grid {
-  --pattern-color: var(--body-color);
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 6%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-size: #{$pattern-size};
+  @include pattern-base(6%);
   background-image: linear-gradient(to right, var(--pattern-fill) 1px, transparent 1px), linear-gradient(to bottom, var(--pattern-fill) 1px, transparent 1px);
   background-position:
     -1px -1px,
     -1px -1px;
-  background-clip: padding-box;
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-grid-diagonal {
-  --pattern-color: var(--body-color);
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-size: #{$pattern-size};
+  @include pattern-base();
   background-image: linear-gradient(45deg, transparent 49%, var(--pattern-fill) 49%, var(--pattern-fill) 51%, transparent 51%), linear-gradient(-45deg, transparent 49%, var(--pattern-fill) 49%, var(--pattern-fill) 51%, transparent 51%);
   background-position: center center;
-  background-clip: padding-box;
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-blueprint {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-line: color-mix(in oklch, var(--pattern-color) 6%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(6%);
+  --pattern-line: var(--pattern-fill);
   background-image: linear-gradient(var(--pattern-line) 2px, transparent 2px), linear-gradient(90deg, var(--pattern-line) 2px, transparent 2px), linear-gradient(var(--pattern-line) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-line) 1px, transparent 1px);
   background-position:
     -3px -3px,
     -3px -3px,
     -2px -2px,
     -2px -2px;
-  background-clip: padding-box;
   background-size:
     calc(var(--pattern-size) * 10) calc(var(--pattern-size) * 10),
     calc(var(--pattern-size) * 10) calc(var(--pattern-size) * 10),
     calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2),
     calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-cross-dots {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base();
   background-image: radial-gradient(var(--pattern-fill) 1px, transparent 1px), radial-gradient(var(--pattern-fill) 1px, transparent 1px);
   background-position:
     0 0,
     var(--pattern-size) var(--pattern-size);
-  background-clip: padding-box;
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-circles {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 10%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base();
   background-image:
     radial-gradient(circle at center top, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%), radial-gradient(circle at center bottom, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%),
     radial-gradient(circle at right center, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%), radial-gradient(circle at left center, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%);
   background-position: 0 0;
   background-size: calc(var(--pattern-size) * 3) calc(var(--pattern-size) * 3);
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-diagonal-stripes {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 5%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(5%);
   background-image: repeating-linear-gradient(45deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-repeat: no-repeat;
-  background-clip: padding-box;
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-diagonal-stripes-2 {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 5%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(5%);
   background-image: repeating-linear-gradient(-45deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-repeat: no-repeat;
-  background-clip: padding-box;
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-zigzag {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 5%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(5%);
   background:
     linear-gradient(135deg, var(--pattern-fill) 25%, transparent 25%) calc(-1 * var(--pattern-size)) 0,
     linear-gradient(225deg, var(--pattern-fill) 25%, transparent 25%) calc(-1 * var(--pattern-size)) 0,
@@ -182,28 +130,17 @@
     linear-gradient(45deg, var(--pattern-fill) 25%, transparent 25%);
   background-clip: padding-box;
   background-size: calc(2 * var(--pattern-size)) calc(2 * var(--pattern-size));
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-vertical-stripes {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 5%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(5%);
   background-image: repeating-linear-gradient(90deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
-  background-clip: padding-box;
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 .bg-pattern-horizontal-stripes {
-  --pattern-color: var(--body-color);
-  --pattern-size: #{$pattern-size};
-  --pattern-fill: color-mix(in oklch, var(--pattern-color) 5%, transparent);
-  --pattern-border: color-mix(in oklch, var(--pattern-color) 10%, transparent);
+  @include pattern-base(5%);
   background-image: repeating-linear-gradient(0deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-position: -1px -1px;
-  background-clip: padding-box;
-  border: var(--border-width) var(--border-style) var(--pattern-border);
 }
 
 // Color variants
@@ -224,5 +161,11 @@ $sizes: (
 @each $size, $value in $sizes {
   .bg-pattern-#{$size} {
     --pattern-size: #{$value};
+  }
+}
+
+@each $key, $value in $pattern-opacities {
+  .bg-pattern-opacity-#{$key} {
+    --pattern-opacity: #{$value};
   }
 }

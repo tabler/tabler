@@ -1,5 +1,3 @@
-// Input mask plugin
-
 // js-docs-start input-mask-init
 const maskElementList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-mask]'))
 maskElementList.map(function (maskEl: HTMLElement) {

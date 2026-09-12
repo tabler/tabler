@@ -1,8 +1,5 @@
 import { Dropdown } from './bootstrap'
 
-/*
-Core dropdowns
- */
 // js-docs-start dropdown-init
 const dropdownTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]'))
 dropdownTriggerList.map(function (dropdownTriggerEl: HTMLElement) {

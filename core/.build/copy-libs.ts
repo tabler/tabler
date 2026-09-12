@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs'
 import { globSync } from 'glob'
-import { emptyDirSync, copySync } from 'fs-extra/esm'
 import libs from '../libs.json' with { type: 'json' }
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path'
@@ -23,7 +22,8 @@ interface Libs {
 
 const libsData = libs as Libs
 
-emptyDirSync(join(__dirname, '..', 'dist/libs'))
+rmSync(join(__dirname, '..', 'dist/libs'), { recursive: true, force: true })
+mkdirSync(join(__dirname, '..', 'dist/libs'), { recursive: true })
 
 for (const name in libsData) {
   const { npm, js, css, extra } = libsData[name]
@@ -49,9 +49,7 @@ for (const name in libsData) {
 
     if (files) {
       for (const file of files) {
-        copySync(join(pkgDir, file), join(to, file), {
-          dereference: true,
-        })
+        cpSync(join(pkgDir, file), join(to, file), { recursive: true, dereference: true })
       }
     }
 
@@ -64,9 +62,7 @@ for (const name in libsData) {
     }
 
     for (const file of licenses) {
-      copySync(join(pkgDir, file), join(to, file), {
-        dereference: true,
-      })
+      cpSync(join(pkgDir, file), join(to, file), { recursive: true, dereference: true })
     }
 
     console.log(`Successfully copied ${npm}`)

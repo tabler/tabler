@@ -1,5 +1,13 @@
 ---
+import MarkdownSource from './MarkdownSource.astro'
+import { markdownTable } from '@shared/lib/markdown-source'
 import socials from '@data/socials.json'
+
+// Same list as a table for the page's .md mirror
+const markdown = markdownTable(
+  ['App', 'CSS class'],
+  socials.map((social) => [social.name, `\`.social-app-${social.file}\``]),
+)
 ---
 
 <table class="table table-vcenter">
@@ -14,7 +22,7 @@ import socials from '@data/socials.json'
     {
       socials.map((social) => (
         <tr>
-          <td>
+          <td class="p-2">
             <div class={`social social-sm social-app-${social.file}`} />
           </td>
           <td>{social.name}</td>
@@ -29,3 +37,4 @@ import socials from '@data/socials.json'
     }
   </tbody>
 </table>
+<MarkdownSource name="Socials" markdown={markdown} />

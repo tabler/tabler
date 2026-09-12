@@ -3,23 +3,40 @@
 // routes every unmatched URL to /404.html with a 404 status.
 // Excluded from sitemap.xml.ts and absent from docs.json on purpose.
 import DocsLayout from '@layouts/DocsLayout.astro'
-import DocsCard from '@components/DocsCard.astro'
-
-const sections = [
-  { title: 'UI Components', href: '/ui', icon: 'paint', description: 'Free and open source web application UI kit based on Bootstrap' },
-  { title: 'Plugins', href: '/ui/plugins', icon: 'plug', description: 'Free and open source plugins for Tabler UI components' },
-  { title: 'Icons', href: '/icons', icon: 'ghost', description: 'Pixel-perfect icons for web design and development' },
-  { title: 'Illustrations', href: '/illustrations', icon: 'brand-figma', description: 'Customizable SVG illustrations for your web project' },
-  { title: 'Email Templates', href: '/emails', icon: 'mail', description: 'Responsive email templates ready to use in your marketing campaigns' },
-]
+import Illustration from '@ui/Illustration.astro'
+import Icon from '@ui/Icon.astro'
 ---
 
 <DocsLayout title="Page not found" summary="The page you are looking for does not exist or has been moved." description="The page you are looking for does not exist. Browse the Tabler documentation sections or use the search." hidePagination url="/404" editPath="docs/pages/404.astro">
-  <p>Check the address for typos, use the search at the top of the page, or start from one of the sections below.</p>
+  <div class="py-4" aria-hidden="true">
+    <Illustration image="not-found.svg" class="d-block mx-auto mw-100" height={240} />
+  </div>
 
-  <div class="mt-6">
-    <div class="row row-deck row-cards">
-      {sections.map((section) => <DocsCard href={section.href} title={section.title} description={section.description} icon={section.icon} />)}
-    </div>
+  <p>The link may be broken, or the page may have been moved. Try searching the documentation or go back to the homepage.</p>
+
+  <div class="btn-list justify-content-center mt-6">
+    <a href="/" class="btn">
+      <Icon name="arrow-left" />
+      Back to homepage
+    </a>
+    <button type="button" class="btn btn-primary" id="docs-404-search">
+      <Icon name="search" />
+      Search the docs
+    </button>
   </div>
 </DocsLayout>
+
+<script>
+  // Forward the CTA to the sidebar search input — clicking it lazy-loads
+  // DocSearch and opens the modal (see DocsSearch.astro). When search is
+  // disabled (no DOCSEARCH_* env), that input is hidden and the CTA follows.
+  const searchInput = document.getElementById('docs-search-input')
+  const searchButton = document.getElementById('docs-404-search')
+  if (searchButton) {
+    if (searchInput && !searchInput.closest('.docs-search')?.classList.contains('d-none')) {
+      searchButton.addEventListener('click', () => searchInput.click())
+    } else {
+      searchButton.classList.add('d-none')
+    }
+  }
+</script>

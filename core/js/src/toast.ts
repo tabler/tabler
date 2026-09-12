@@ -1,8 +1,5 @@
 import { Toast } from './bootstrap'
 
-/*
-Toasts
- */
 // js-docs-start toast-init
 const toastsTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="toast"]'))
 toastsTriggerList.map(function (toastTriggerEl: HTMLElement) {

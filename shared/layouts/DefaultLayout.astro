@@ -1,90 +1,91 @@
 ---
-// TODO: no-container (<div class="container-xl">-less body) — unused so far.
 import BaseLayout from './BaseLayout.astro'
 import Navbar from '@shared/components/navbar/Navbar.astro'
 import Sidebar from '@shared/components/navbar/Sidebar.astro'
 import PageHeader from '@shared/components/layout/PageHeader.astro'
 import Footer from '@shared/components/layout/Footer.astro'
+import type { ThemeKey } from '@shared/lib/theme-config'
 
 interface Props {
   title?: string | undefined
   /** Script/CSS library keys passed to BaseLayout */
   pageLibs?: string[]
-  /** page-header — the title in the page header */
-  pageHeader?: string | undefined
-  /** page-header-file — renders a layout/headers/{file} component instead of the title block */
+  /** title shown in the page header; defaults to `title`, pass false for no page header */
+  pageHeader?: string | false | undefined
+  /** renders a layout/headers/{file} component instead of the title block */
   pageHeaderFile?: string | undefined
-  /** page-header-pretitle */
+  /** small text above the page title */
   pretitle?: string | undefined
-  /** page-header-description */
+  /** text below the page title */
   description?: string | undefined
-  /** page-header-actions, e.g. "buttons" */
-  actions?: string | undefined
-  /** page-menu from the front matter, e.g. "layout.vertical" — active menu entry */
+  /** active menu entry, e.g. "layout.vertical" */
   pageMenu?: string | undefined
-  /** layout-sidebar */
-  sidebar?: boolean
-  /** layout-sidebar-dark */
-  sidebarDark?: boolean
-  /** layout-hide-topbar */
-  hideTopbar?: boolean
-  /** page-container-centered — adds my-auto to the .container-xl */
+  /** where the main menu lives: the top navbar or the vertical sidebar */
+  navbarPosition?: 'horizontal' | 'vertical'
+  /** container width: default, fluid or boxed */
+  layout?: 'default' | 'fluid' | 'boxed'
+  /** adds my-auto to the .container-xl */
   containerCentered?: boolean
-  /** layout-wrapper-full — page-wrapper-full + no .container-xl around the body */
+  /** page-wrapper-full and no .container-xl around the body */
   wrapperFull?: boolean
-  /** page-container-class — extra classes appended to the .container-xl */
+  /** extra classes on the .container-xl */
   containerClass?: string
-  /** body-class front matter (e.g. "layout-boxed"/"layout-fluid") → passed to BaseLayout */
+  /** extra body classes */
   bodyClass?: string
-  /** layout-rtl → passed to BaseLayout (dir="rtl" + RTL stylesheets) */
+  /** dir="rtl" and the RTL stylesheets */
   rtl?: boolean
-  /** layout-sidebar-end */
+  /** sidebar on the end side */
   sidebarEnd?: boolean
-  /** layout-navbar-transparent (sidebar variant) */
+  /** icon-only sidebar rail: folded, or folded until hovered */
+  sidebarMode?: 'folded' | 'folded-hover'
+  /** renders the runtime fold toggle button in the sidebar */
+  sidebarFoldToggle?: boolean
+  /** transparent sidebar */
   navbarTransparent?: boolean
-  /** layout-navbar-condensed */
+  /** condensed single-row navbar */
   navbarCondensed?: boolean
-  /** layout-navbar-dark */
+  /** dark navbar */
   navbarDark?: boolean
-  /** layout-navbar-overlap */
+  /** navbar overlapping the page header */
   navbarOverlap?: boolean
-  /** layout-navbar-sticky */
+  /** sticky navbar */
   navbarSticky?: boolean
-  /** layout-navbar-hide-brand */
-  navbarHideBrand?: boolean
-  /** layout-navbar-class */
-  navbarClass?: string
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, actions, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } =
-  Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } = Astro.props
+
+// Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
+// Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
+const headerTitle = pageHeader === false ? undefined : (pageHeader ?? title)
+
+// The page always renders both navigations and states its own layout as
+// data-bs-* attributes on <html>; CSS shows one of them. That is what lets the
+// theme settings panel switch the layout at runtime on any page — see
+// `shared/lib/theme-config.ts`.
+const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
+  'navbar-position': navbarPosition,
+  'layout': layout,
+  'navbar': navbarSticky ? 'sticky' : undefined,
+  'navbar-theme': navbarDark ? 'dark' : undefined,
+  'sidebar': sidebarMode,
+}
 ---
 
-<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl}>
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description} themeSettings={themeSettings}>
   <div class="page">
-    {
-      sidebar && (
-        <Fragment>
-          <Fragment set:html={'<!--  BEGIN SIDEBAR  -->'} />
-          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} breakpoint="lg" pageMenu={pageMenu} />
-          <Fragment set:html={'<!--  END SIDEBAR  -->'} />
-        </Fragment>
-      )
-    }
+    <!--  BEGIN SIDEBAR  -->
+    <Sidebar end={sidebarEnd} transparent={navbarTransparent} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
+    <!--  END SIDEBAR  -->
 
-    {
-      !hideTopbar && (
-        <Fragment>
-          <Fragment set:html={'<!-- BEGIN NAVBAR  -->'} />
-          <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} dark={navbarDark} overlap={navbarOverlap} sticky={navbarSticky} hideBrand={navbarHideBrand} class={navbarClass} />
-          <Fragment set:html={'<!-- END NAVBAR  -->'} />
-        </Fragment>
-      )
-    }
+    <!-- BEGIN NAVBAR  -->
+    <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} overlap={navbarOverlap} />
+    <!-- END NAVBAR  -->
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
       <!-- BEGIN PAGE HEADER -->
-      <PageHeader title={pageHeader} pretitle={pretitle} description={description} actions={actions} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark} />
+      <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark}>
+        <slot name="page-header-actions" slot="actions" />
+      </PageHeader>
       <!-- END PAGE HEADER -->
 
       <!-- BEGIN PAGE BODY -->
