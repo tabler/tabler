@@ -1,0 +1,83 @@
+---
+// Rich, zero-JS <select> built on the experimental "customizable select" CSS
+// API (`appearance: base-select`, `<selectedcontent>`, `::picker(select)`).
+// Chromium-only today — see core/scss/ui/forms/_form-select-custom.scss for
+// the fallback story. Not wired to TomSelect; see Select.astro for the
+// cross-browser rich-select approach used elsewhere in the docs.
+import Icon from './Icon.astro'
+import StatusDot from './StatusDot.astro'
+import Avatar from './Avatar.astro'
+import Flag from './Flag.astro'
+import Badge from './Badge.astro'
+
+interface Option {
+  value: string
+  text: string
+  description?: string
+  selected?: boolean
+  disabled?: boolean
+  dot?: string
+  personId?: number
+  flag?: string
+  badge?: string
+  badgeColor?: string
+}
+
+interface Group {
+  label?: string
+  options: Option[]
+}
+
+interface Props {
+  id: string
+  class?: string
+  label?: string
+  primary?: boolean
+  scrollable?: boolean
+  options?: Option[]
+  groups?: Group[]
+}
+
+const { id, class: className, label, primary, scrollable, options = [], groups = [] } = Astro.props
+
+const selectClasses = ['form-select', 'form-select-custom', primary && 'form-select-custom-primary', className]
+const listboxClasses = ['form-select-custom-listbox', scrollable && 'scrollable']
+
+// Ungrouped options are just a single unlabeled group — keeps the option
+// markup below to one call site instead of one per grouped/flat branch.
+const renderGroups: Group[] = groups.length > 0 ? groups : [{ options }]
+---
+
+<select id={id} class:list={selectClasses}>
+  <button type="button">
+    <span class="form-select-custom-toggle">
+      {label && <small class="form-select-custom-label">{label}</small>}
+      {/* set:html: Astro renders <selectedcontent> as void otherwise, breaking the post-build HTML prettify pass */}
+      <Fragment set:html="<selectedcontent></selectedcontent>" />
+    </span>
+    <Icon name="chevron-down" class="form-select-custom-caret" />
+  </button>
+  <div class:list={listboxClasses}>
+    {
+      renderGroups.map((group) => (
+        <div role={group.label ? 'group' : undefined}>
+          {group.label && <label class="form-select-custom-group-label">{group.label}</label>}
+          {group.options.map((option) => (
+            <option value={option.value} selected={option.selected || undefined} disabled={option.disabled || undefined}>
+              <div class="form-select-custom-option">
+                {option.dot && <StatusDot color={option.dot} />}
+                {option.personId && <Avatar personId={option.personId} size="xs" />}
+                {option.flag && <Flag flag={option.flag} size="xs" />}
+                <span class="form-select-custom-option-text">
+                  {option.text}
+                  {option.description && <span class="form-select-custom-option-description">{option.description}</span>}
+                </span>
+                {option.badge && <Badge text={option.badge} color={option.badgeColor ?? 'primary'} light />}
+              </div>
+            </option>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</select>

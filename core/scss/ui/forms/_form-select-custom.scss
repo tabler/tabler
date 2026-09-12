@@ -1,0 +1,194 @@
+/**
+Customizable <select> (appearance: base-select, Chromium only). Unsupported
+browsers keep a plain native select — the extra markup isn't rendered there.
+ */
+@use '../../config' as *;
+
+.form-select-custom {
+  @supports (appearance: base-select) {
+    padding: 0;
+    appearance: base-select;
+    background: none;
+    border: 0;
+    box-shadow: none;
+
+    &::picker(select) {
+      min-inline-size: calc(anchor-size(self-inline) + #{$dropdown-item-padding-x * 2}); // stylelint-disable-line function-disallowed-list
+      padding: $dropdown-padding-y $dropdown-padding-x;
+      margin-block: $dropdown-spacer;
+      color: $dropdown-color;
+      appearance: base-select;
+      background-color: $dropdown-bg;
+      border: $dropdown-border-width solid $dropdown-border-color;
+      @include border-radius($dropdown-border-radius);
+      @include box-shadow($dropdown-box-shadow);
+      @include transition(opacity 0.15s ease, transform 0.15s ease);
+
+      &:not(:popover-open) {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+
+      &:popover-open {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    &::picker-icon {
+      display: none;
+    }
+
+    > button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      inline-size: 100%;
+      padding: $form-select-padding-y $form-select-padding-x;
+      text-align: start;
+      background-color: $form-select-bg;
+      border: $form-select-border-width solid $form-select-border-color;
+      @include border-radius($form-select-border-radius);
+      @include box-shadow($form-select-box-shadow);
+      @include transition($form-select-transition);
+
+      &:focus-visible {
+        border-color: $form-select-focus-border-color;
+        outline: 0;
+        box-shadow: $form-select-focus-box-shadow;
+      }
+    }
+
+    &:disabled > button {
+      color: $form-select-disabled-color;
+      background-color: $form-select-disabled-bg;
+      border-color: $form-select-disabled-border-color;
+    }
+
+    &:open > button .form-select-custom-caret {
+      transform: rotate(0.5turn);
+    }
+
+    .form-select-custom-toggle {
+      display: block;
+      overflow: hidden;
+    }
+
+    .form-select-custom-label {
+      display: block;
+      @include font-size($font-size-sm);
+      color: $form-secondary-color;
+    }
+
+    selectedcontent {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .form-select-custom-caret {
+      flex-shrink: 0;
+      inline-size: 1.2em;
+      color: $form-select-indicator-color;
+      @include transition(transform 0.2s ease);
+    }
+
+    .form-select-custom-listbox {
+      &.scrollable {
+        max-block-size: 20lh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+      }
+
+      .form-select-custom-group-label {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 1;
+        display: block;
+        padding: $dropdown-header-padding-y $dropdown-header-padding-x;
+        font-weight: var(--font-weight-medium);
+        color: $dropdown-header-color;
+        background: var(--bg-surface-tertiary);
+        @include font-size($font-size-sm);
+      }
+    }
+
+    option {
+      display: flex;
+      gap: $dropdown-item-gap;
+      align-items: center;
+      padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+      cursor: pointer;
+
+      &::checkmark {
+        color: $dropdown-link-active-color;
+      }
+
+      &:is(:hover, :focus-visible) {
+        color: $dropdown-link-hover-color;
+        background: $dropdown-link-hover-bg;
+      }
+
+      &:checked {
+        color: $dropdown-link-active-color;
+        background: $dropdown-link-active-bg;
+      }
+
+      &:disabled {
+        color: $dropdown-link-disabled-color;
+        cursor: not-allowed;
+      }
+    }
+
+    &.form-select-custom-primary {
+      > button {
+        color: var(--white);
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .form-select-custom-label {
+        color: inherit;
+        opacity: 0.7;
+      }
+
+      .form-select-custom-caret {
+        color: inherit;
+      }
+    }
+  }
+}
+
+.form-select-custom-option {
+  display: flex;
+  flex: 1;
+  gap: $dropdown-item-gap;
+  align-items: center;
+  justify-content: space-between;
+
+  &:has(.form-select-custom-option-description) {
+    display: grid;
+    gap: 0.125rem;
+    justify-items: start;
+  }
+}
+
+.form-select-custom-option-text {
+  flex: 1;
+}
+
+.form-select-custom-option-description {
+  display: block;
+  @include font-size($font-size-sm);
+  color: $form-secondary-color;
+
+  option:checked & {
+    color: inherit;
+    opacity: 0.75;
+  }
+
+  selectedcontent & {
+    display: none;
+  }
+}
