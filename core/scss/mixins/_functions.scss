@@ -27,6 +27,14 @@
   @return color.to-gamut(color.adjust($color, $lightness: $amount, $space: oklch), $space: rgb, $method: clip);
 }
 
+// Runtime counterpart of `adjust-lightness()`: relative color syntax, so the
+// token follows `--tblr-*` overrides in the browser. Emit-only, like `mix-color-css()`.
+@function adjust-lightness-css($color, $amount) {
+  $delta: math.div($amount, 100%);
+  $sign: if(sass($delta < 0): '-'; else: '+');
+  @return oklch(from #{$color} calc(l #{$sign} #{math.abs($delta)}) c h);
+}
+
 @function theme-color-lighter($color, $background: #fff) {
   @return mix-color($color, $background, 10%);
 }

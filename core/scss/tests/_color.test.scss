@@ -6,6 +6,7 @@
 
 @use 'sass:color';
 @use 'sass:math';
+@use 'sass:meta';
 @use '../mixins/functions' as *;
 
 @include describe('luminance') {
@@ -50,6 +51,16 @@
   @include it('keeps the hue and returns a legacy rgb colour') {
     @include assert-equal(math.round(color.channel(adjust-lightness(#066fd1, 5%), 'hue', $space: oklch)), math.round(color.channel(#066fd1, 'hue', $space: oklch)));
     @include assert-true(color.is-legacy(adjust-lightness(#066fd1, 5%)));
+  }
+}
+
+@include describe('adjust-lightness-css') {
+  @include it('builds a relative oklch colour that adds to the lightness channel') {
+    @include assert-equal(meta.inspect(adjust-lightness-css(var(--dark), 8%)), 'oklch(from var(--dark) calc(l + 0.08) c h)');
+  }
+
+  @include it('subtracts when the amount is negative') {
+    @include assert-equal(meta.inspect(adjust-lightness-css(var(--dark), -2%)), 'oklch(from var(--dark) calc(l - 0.02) c h)');
   }
 }
 
