@@ -2,4 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Added the deployment failed and project settings preview pages with a shared `ProjectHeader` component.
+Added project overview, deployment failed, analytics, logs and settings preview pages with a shared `ProjectHeader`.
