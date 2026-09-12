@@ -50,7 +50,7 @@ switchesTriggerList.map(function (switchTriggerEl: HTMLElement) {
 - The attribute API stays `data-bs-*`. Renaming it to `data-tblr-*` is a breaking change held for 2.0 — do not start it here.
 - Keep the accessible state in sync with the class (`aria-pressed`, `aria-expanded`), as above.
 - A new module must be imported from `js/tabler.ts`, or it never ships.
-- Shared helpers go to `js/src/tabler.ts` (`prefix`, `hexToRgba`, `getColor`), which reads theme values through `--tblr-*` custom properties.
+- There is no shared colour helper: demo charts resolve `--tblr-*` colours to hex in `shared/components/demo/Chart.astro`.
 
 ## 4. Docs markers
 

@@ -12,6 +12,3 @@ import './src/sortable'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
-
-// Re-export tabler namespace
-export * as tabler from './src/tabler'

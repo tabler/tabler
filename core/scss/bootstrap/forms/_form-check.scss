@@ -30,7 +30,9 @@
 
 .form-check-input {
   --form-check-bg: #{$form-check-input-bg};
+  --form-check-icon-color: #{$form-check-input-checked-color};
 
+  position: relative;
   flex-shrink: 0;
   width: $form-check-input-width;
   height: $form-check-input-width;
@@ -38,19 +40,32 @@
   vertical-align: top;
   appearance: none;
   background-color: var(--form-check-bg);
-  background-image: var(--form-check-bg-image);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
   border: $form-check-input-border;
   print-color-adjust: exact; // Keep themed appearance for print
   @include transition($form-check-transition);
 
+  // The check, dash or dot is a pseudo-element painted through a CSS mask, so
+  // its colour comes from `--form-check-icon-color` instead of a colour baked
+  // into the svg. Hidden until the input is checked or indeterminate.
+  &::before {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    background-color: var(--form-check-icon-color);
+    opacity: 0;
+    @include mask-icon(var(--form-check-icon));
+  }
+
   &[type='checkbox'] {
+    --form-check-icon: #{escape-svg($form-check-input-checked-bg-image)};
+
     @include border-radius($form-check-input-border-radius);
   }
 
   &[type='radio'] {
+    --form-check-icon: #{escape-svg($form-check-radio-checked-bg-image)};
+
     // stylelint-disable-next-line property-disallowed-list
     border-radius: $form-check-radio-border-radius;
   }
@@ -69,31 +84,20 @@
     background-color: $form-check-input-checked-bg-color;
     border-color: $form-check-input-checked-border-color;
 
-    &[type='checkbox'] {
-      @if $enable-gradients {
-        --form-check-bg-image: #{escape-svg($form-check-input-checked-bg-image)}, var(--gradient);
-      } @else {
-        --form-check-bg-image: #{escape-svg($form-check-input-checked-bg-image)};
-      }
-    }
-
-    &[type='radio'] {
-      @if $enable-gradients {
-        --form-check-bg-image: #{escape-svg($form-check-radio-checked-bg-image)}, var(--gradient);
-      } @else {
-        --form-check-bg-image: #{escape-svg($form-check-radio-checked-bg-image)};
-      }
+    &::before {
+      opacity: 1;
     }
   }
 
   &[type='checkbox']:indeterminate {
+    --form-check-icon: #{escape-svg($form-check-input-indeterminate-bg-image)};
+    --form-check-icon-color: #{$form-check-input-indeterminate-color};
+
     background-color: $form-check-input-indeterminate-bg-color;
     border-color: $form-check-input-indeterminate-border-color;
 
-    @if $enable-gradients {
-      --form-check-bg-image: #{escape-svg($form-check-input-indeterminate-bg-image)}, var(--gradient);
-    } @else {
-      --form-check-bg-image: #{escape-svg($form-check-input-indeterminate-bg-image)};
+    &::before {
+      opacity: 1;
     }
   }
 
@@ -127,26 +131,40 @@
   padding-inline-start: $form-switch-padding-start;
 
   .form-check-input {
-    --form-switch-bg: #{escape-svg($form-switch-bg-image)};
+    --form-switch-color: #{$form-switch-color};
+    // The knob is a circle three quarters of the track height, inset by an eighth
+    // — the same geometry the old `viewBox='-4 -4 8 8'` svg had.
+    --form-switch-knob-size: calc(#{$form-switch-height} * 0.75);
+    --form-switch-knob-offset: calc(#{$form-switch-height} * 0.125);
 
     width: $form-switch-width;
     margin-inline-start: $form-switch-padding-start * -1;
-    background-image: var(--form-switch-bg);
-    background-position: left center;
     @include border-radius($form-switch-border-radius, 0);
     @include transition($form-switch-transition);
 
+    // The knob replaces the masked check icon: a plain circle that slides.
+    &::before {
+      inset: 0 auto 0 var(--form-switch-knob-offset);
+      width: var(--form-switch-knob-size);
+      height: var(--form-switch-knob-size);
+      margin-block: auto;
+      background-color: var(--form-switch-color);
+      // stylelint-disable-next-line property-disallowed-list
+      border-radius: 50%;
+      opacity: 1;
+      mask-image: none;
+      @include transition($form-switch-knob-transition);
+    }
+
     &:focus {
-      --form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
+      --form-switch-color: #{$form-switch-focus-color};
     }
 
     &:checked {
-      background-position: $form-switch-checked-bg-position;
+      --form-switch-color: #{$form-switch-checked-color};
 
-      @if $enable-gradients {
-        --form-switch-bg: #{escape-svg($form-switch-checked-bg-image)}, var(--gradient);
-      } @else {
-        --form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
+      &::before {
+        inset-inline-start: calc(100% - var(--form-switch-knob-size) - var(--form-switch-knob-offset));
       }
     }
   }
@@ -185,7 +203,7 @@
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .form-switch .form-check-input:not(:checked):not(:focus) {
-      --form-switch-bg: #{escape-svg($form-switch-bg-image-dark)};
+      --form-switch-color: #{$form-switch-color-dark};
     }
   }
 }

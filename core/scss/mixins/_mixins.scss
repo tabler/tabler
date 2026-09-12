@@ -79,6 +79,23 @@
 //
 // Print styles
 //
+// Renders an svg icon through a CSS mask so the shape is painted with the
+// element's `background-color` and follows the theme without a colour baked
+// into the data uri. Set `background-color` on the element; pass `null` for
+// `$icon` when the mask image is applied per state.
+@mixin mask-icon($icon: null, $size: contain, $position: center) {
+  @if $icon != null {
+    mask-image: $icon;
+  }
+  mask-repeat: no-repeat;
+  @if $position != null {
+    mask-position: $position;
+  }
+  @if $size != null {
+    mask-size: $size;
+  }
+}
+
 @mixin media-print {
   @media print {
     @content;

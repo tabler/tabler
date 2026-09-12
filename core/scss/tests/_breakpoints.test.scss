@@ -2,11 +2,7 @@
 // "needs config" tier: they default to the global `$grid-breakpoints`, but every
 // function also accepts an explicit `$breakpoints` map, so the tests pass a
 // local fixture map and stay independent of the project variables.
-//
-// `breakpoint-prev` lives in mixins/_functions.scss; the rest live in
-// mixins/bootstrap/_breakpoints.scss.
 
-@use '../mixins/functions' as fn;
 @use '../mixins/bootstrap/breakpoints' as *;
 
 $grid: (
@@ -17,15 +13,13 @@ $grid: (
   xl: 1200px,
 );
 
-@include describe('breakpoint-next / breakpoint-prev') {
+@include describe('breakpoint-next') {
   @include it('returns the neighbouring breakpoint name') {
     @include assert-equal(breakpoint-next(md, $grid), lg);
-    @include assert-equal(fn.breakpoint-prev(md, $grid), sm);
   }
 
-  @include it('returns null past the last / before the first breakpoint') {
+  @include it('returns null past the last breakpoint') {
     @include assert-equal(breakpoint-next(xl, $grid), null);
-    @include assert-equal(fn.breakpoint-prev(xs, $grid), null);
   }
 }
 

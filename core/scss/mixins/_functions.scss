@@ -35,38 +35,6 @@
   @return oklch(from #{$color} calc(l #{$sign} #{math.abs($delta)}) c h);
 }
 
-// str-replace was defined here twice — the canonical copy lives in the
-// "Bootstrap functions" section below.
-
-@mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
-  $prev: breakpoint-prev($name, $breakpoints);
-
-  @if $prev == null {
-    @content;
-  } @else {
-    $max: breakpoint-max($prev, $breakpoints);
-
-    @if $max {
-      @media (max-width: $max) {
-        @content;
-      }
-    } @else {
-      @content;
-    }
-  }
-}
-
-@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map.keys($breakpoints)) {
-  $n: list.index($breakpoint-names, $name);
-  @if not $n {
-    @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
-  }
-  @return if(sass($n > 1): list.nth($breakpoint-names, $n - 1); else: null);
-}
-
-// escape-svg was defined here twice — the canonical copy lives in the
-// "Bootstrap functions" section below.
-
 /**
  * Converts a given value to a percentage string.
  *
@@ -98,46 +66,17 @@
   @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
-@function url-svg($svg) {
-  $svg: str-replace($svg, '#', '%23');
-  $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
-
-  @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
+// Paints a monochrome svg data uri (authored with `black`) in a Sass colour, for
+// the few places that cannot use `mask-icon()`: a pseudo-element that already
+// carries a background, or a form control without pseudo-elements. Pass a Sass
+// colour, never `var()` — an svg image cannot resolve custom properties.
+@function svg-icon-color($svg, $color) {
+  @return str-replace($svg, "'black'", "'#{$color}'");
 }
 
 // Bootstrap functions
 //
 // Utility mixins and functions for evaluating source code across our variables, maps, and mixins.
-
-// Ascending
-// Used to evaluate Sass maps like our grid breakpoints.
-@mixin _assert-ascending($map, $map-name) {
-  $prev-key: null;
-  $prev-num: null;
-  @each $key, $num in $map {
-    @if $prev-num == null or math.unit($num) == '%' or math.unit($prev-num) == '%' {
-      // Do nothing
-    } @else if not math.compatible($prev-num, $num) {
-      @warn "Potentially invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} whose unit makes it incomparable to #{$prev-num}, the value of the previous key '#{$prev-key}' !";
-    } @else if $prev-num >= $num {
-      @warn "Invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} which isn't greater than #{$prev-num}, the value of the previous key '#{$prev-key}' !";
-    }
-    $prev-key: $key;
-    $prev-num: $num;
-  }
-}
-
-// Starts at zero
-// Used to ensure the min-width of the lowest breakpoint starts at 0.
-@mixin _assert-starts-at-zero($map, $map-name: '$grid-breakpoints') {
-  @if list.length($map) > 0 {
-    $values: map.values($map);
-    $first-value: list.nth($values, 1);
-    @if $first-value != 0 {
-      @warn "First breakpoint in #{$map-name} must start at 0, but starts at #{$first-value}.";
-    }
-  }
-}
 
 // Colors
 @function to-rgb($value) {
@@ -177,14 +116,6 @@
 }
 // stylelint-enable scss/dollar-variable-pattern
 
-@function varify($list) {
-  $result: null;
-  @each $entry in $list {
-    $result: list.append($result, var(--#{$entry}), space);
-  }
-  @return $result;
-}
-
 // Internal Bootstrap function to turn maps into its negative variant.
 // It prefixes the keys with `n` and makes the value negative.
 @function negativify-map($map) {
@@ -195,32 +126,6 @@
     }
   }
   @return $result;
-}
-
-// Get multiple keys from a sass map
-@function map-get-multiple($map, $values) {
-  $result: ();
-  @each $key, $value in $map {
-    @if (list.index($values, $key) != null) {
-      $result: map.merge(
-        $result,
-        (
-          $key: $value,
-        )
-      );
-    }
-  }
-  @return $result;
-}
-
-// Merge multiple maps
-@function map-merge-multiple($maps...) {
-  $merged-maps: ();
-
-  @each $map in $maps {
-    $merged-maps: map.merge($merged-maps, $map);
-  }
-  @return $merged-maps;
 }
 
 // Replace `$search` with `$replace` in `$string`
@@ -325,7 +230,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
 // Return opaque color
 // opaque(#fff, rgba(0, 0, 0, .5)) => #808080
 @function opaque($background, $foreground) {
-  @return color.mix(rgba($foreground, 1), $background, color.opacity($foreground) * 100%);
+  @return color.mix(color.change($foreground, $alpha: 1), $background, color.channel($foreground, 'alpha') * 100%, $method: srgb);
 }
 
 // Tint a color: mix a color with white (in oklab, see `mix-color()`)

@@ -67,16 +67,6 @@
   }
 }
 
-@include describe('url-svg') {
-  @include it("percent-encodes '#' so the data URI stays valid") {
-    @include assert-equal(meta.inspect(url-svg('#')), 'url("data:image/svg+xml;charset=UTF-8,%23")');
-  }
-
-  @include it('injects the SVG xmlns attribute') {
-    @include assert-equal(meta.inspect(url-svg('<svg></svg>')), 'url(\'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg"></svg>\')');
-  }
-}
-
 @include describe('map-loop') {
   // Applies a module-level function (resolved by name via meta.get-function) to
   // every value in the map. `to-percentage` lives in the same module, so it
