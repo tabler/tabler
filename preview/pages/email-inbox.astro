@@ -23,11 +23,11 @@ const labelColors: Record<string, string> = { Updates: 'azure', Friends: 'orange
 <DefaultLayout title="Email inbox" pageHeader="Inbox" pageMenu="extra.email-inbox" pageLibs={['hugerte']}>
   <Card>
     <div class="row g-0">
-      <div class="col-xxl-3 border-end">
+      <div class="xxl:col-3 border-end">
         <Offcanvas responsive="xxl" direction="start" class="h-100" tabindex="-1" id="emailSidebaroffcanvas">
           <div class="card-body h-100">
             <div>
-              <Button icon="pencil" text="Compose" color="primary" block class="d-none d-sm-block" modalId="new-email" />
+              <Button icon="pencil" text="Compose" color="primary" block class="d-none sm:d-block" modalId="new-email" />
             </div>
 
             <div class="mt-3 nav nav-vertical nav-pills">
@@ -67,10 +67,10 @@ const labelColors: Record<string, string> = { Updates: 'azure', Friends: 'orange
         </Offcanvas>
       </div>
 
-      <div class="col-xxl-9">
+      <div class="xxl:col-9">
         <div class="card-body">
           <div class="d-flex flex-wrap align-items-center gap-2">
-            <div class="d-xxl-none d-inline-flex">
+            <div class="xxl:d-none d-inline-flex">
               <button class="btn btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#emailSidebaroffcanvas" aria-controls="emailSidebaroffcanvas" aria-label="Show folders">
                 <Icon name="menu-2" />
               </button>
@@ -135,7 +135,7 @@ const labelColors: Record<string, string> = { Updates: 'azure', Friends: 'orange
                         <Icon name="star" color={mail.starred ? 'yellow' : 'secondary'} />
                       </a>
                     </div>
-                    <div class="col-3 col-lg-2 text-truncate">
+                    <div class="col-3 lg:col-2 text-truncate">
                       <a href="#" class="text-body">
                         {mail.sender}
                       </a>
@@ -146,12 +146,12 @@ const labelColors: Record<string, string> = { Updates: 'azure', Friends: 'orange
                       </a>
                       <span class="text-secondary"> – {mail.preview}</span>
                     </div>
-                    <div class="col-auto d-none d-lg-block">
+                    <div class="col-auto d-none lg:d-block">
                       {mail.labels.map((label) => (
                         <span class={`badge bg-${labelColors[label] ?? 'secondary'}`} title={label} aria-label={label} />
                       ))}
                     </div>
-                    <div class="col-auto d-none d-md-block">
+                    <div class="col-auto d-none md:d-block">
                       <div class="list-group-item-actions d-flex gap-2">
                         <a href="#" class="text-secondary" aria-label="Archive">
                           <Icon name="archive" />

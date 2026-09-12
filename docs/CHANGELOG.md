@@ -79,7 +79,7 @@
 - f35aab3: Added Introduction pages with quick starts and cover images to the Icons, Illustrations, Emails and Payments docs sections.
 - 1ec82d0: Fixed documentation formatting issues: heading hierarchy, missing image alt texts and broken list structure across docs pages.
 - 9dd26fd: Split the getting started menu group into Getting started and Resources.
-- 9dd26fd: Updated the docs navbar to use `container-lg`.
+- 9dd26fd: Updated the docs navbar to use `lg:container`.
 - 4afc2ea: Updated the prose on 75 docs pages to plain English, shortened the page summaries and merged duplicate sections on the button and card pages.
 - 9dd26fd: Moved components that need a third-party library into the Plugins section.
 - 9dd26fd: Moved the Website, Preview and Support links from the docs sidebar to the top navbar.
