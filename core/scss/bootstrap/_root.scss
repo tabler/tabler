@@ -24,10 +24,6 @@
     --#{$color}: #{$value};
   }
 
-  @each $color, $value in $theme-colors-rgb {
-    --#{$color}-rgb: #{$value};
-  }
-
   // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)
   @if $enable-dark-mode {
     @each $color, $value in $theme-colors-text {
@@ -55,8 +51,6 @@
     }
   }
 
-  --white-rgb: #{to-rgb($white)};
-  --black-rgb: #{to-rgb($black)};
 
   // Fonts
 
@@ -78,22 +72,15 @@
   --body-text-align: #{$body-text-align};
 
   --body-color: light-dark(#{$body-color}, #{$body-color-dark});
-  --body-color-rgb: #{to-rgb($body-color)};
   --body-bg: light-dark(#{$body-bg}, #{$body-bg-dark});
-  --body-bg-rgb: #{to-rgb($body-bg)};
 
   --emphasis-color: light-dark(#{$body-emphasis-color}, #{$body-emphasis-color-dark});
-  --emphasis-color-rgb: #{to-rgb($body-emphasis-color)};
 
   --secondary-color: light-dark(#{$body-secondary-color}, #{$body-secondary-color-dark});
-  --secondary-color-rgb: #{to-rgb($body-secondary-color)};
   --secondary-bg: light-dark(#{$body-secondary-bg}, #{$body-secondary-bg-dark});
-  --secondary-bg-rgb: #{to-rgb($body-secondary-bg)};
 
   --tertiary-color: light-dark(#{$body-tertiary-color}, #{$body-tertiary-color-dark});
-  --tertiary-color-rgb: #{to-rgb($body-tertiary-color)};
   --tertiary-bg: light-dark(#{$body-tertiary-bg}, #{$body-tertiary-bg-dark});
-  --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg)};
   // scss-docs-end root-body-variables
 
   // $headings-color is itself light-dark(gray-900, white); the dark-mode block below
@@ -101,11 +88,9 @@
   --heading-color: #{$headings-color};
 
   --link-color: light-dark(#{$link-color}, #{$link-color-dark});
-  --link-color-rgb: #{to-rgb($link-color)};
   --link-decoration: #{$link-decoration};
 
   --link-hover-color: light-dark(#{$link-hover-color}, #{$link-hover-color-dark});
-  --link-hover-color-rgb: #{to-rgb($link-hover-color)};
 
   @if $link-hover-decoration != null {
     --link-hover-decoration: #{$link-hover-decoration};
@@ -155,19 +140,10 @@
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
     // scss-docs-start root-dark-mode-vars
-    // -rgb triplets and non-color overrides can't be expressed inside light-dark(), so they stay here.
-    --body-color-rgb: #{to-rgb($body-color-dark)};
-    --body-bg-rgb: #{to-rgb($body-bg-dark)};
-    --emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
-    --secondary-color-rgb: #{to-rgb($body-secondary-color-dark)};
-    --secondary-bg-rgb: #{to-rgb($body-secondary-bg-dark)};
-    --tertiary-color-rgb: #{to-rgb($body-tertiary-color-dark)};
-    --tertiary-bg-rgb: #{to-rgb($body-tertiary-bg-dark)};
+    // Non-color overrides can't be expressed inside light-dark(), so they stay here.
 
     --heading-color: #{$headings-color-dark};
 
-    --link-color-rgb: #{to-rgb($link-color-dark)};
-    --link-hover-color-rgb: #{to-rgb($link-hover-color-dark)};
     // scss-docs-end root-dark-mode-vars
   }
 }
