@@ -1,0 +1,63 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Breadcrumb from '@ui/Breadcrumb.astro'
+import PageTitle from '@ui/PageTitle.astro'
+
+// Shared header for the project pages (deployment-failed, project-settings):
+// breadcrumb, project name with a status badge, actions slot and section tabs.
+
+type Tab = 'overview' | 'deployments' | 'analytics' | 'logs' | 'settings'
+
+interface Props {
+  /** project name, also the avatar placeholder letter */
+  name: string
+  /** last breadcrumb item */
+  section: string
+  /** status badge text */
+  badge: string
+  /** status badge color, e.g. "danger" */
+  badgeColor: string
+  /** highlighted tab */
+  active: Tab
+}
+
+const { name, section, badge, badgeColor, active } = Astro.props
+
+const tabs: { key: Tab; label: string; href?: string }[] = [
+  { key: 'overview', label: 'Overview' },
+  { key: 'deployments', label: 'Deployments', href: './deployment-failed.html' },
+  { key: 'analytics', label: 'Analytics' },
+  { key: 'logs', label: 'Logs' },
+  { key: 'settings', label: 'Settings', href: './project-settings.html' },
+]
+---
+
+<Breadcrumb pages={['Projects', name, section]} />
+
+<div class="row g-3 align-items-center mt-1">
+  <div class="col">
+    <div class="d-flex align-items-center gap-2">
+      <Avatar placeholder={name.charAt(0).toUpperCase()} shape="square" />
+      <PageTitle class="text-truncate">{name}</PageTitle>
+      <Badge text={badge} color={badgeColor} light />
+    </div>
+  </div>
+  <div class="col-12 col-sm-auto">
+    <slot />
+  </div>
+</div>
+
+<div class="overflow-x-auto my-3">
+  <ul class="nav nav-bordered flex-nowrap" aria-label="Project sections">
+    {
+      tabs.map((tab) => (
+        <li class="nav-item">
+          <a class:list={['nav-link', 'text-nowrap', { active: tab.key === active }]} href={tab.href ?? '#'} aria-current={tab.key === active ? 'page' : undefined}>
+            {tab.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
