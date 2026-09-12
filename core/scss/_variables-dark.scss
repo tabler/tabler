@@ -1,4 +1,3 @@
-@use 'sass:color';
 @use 'settings' as *;
 @use 'variables' as *;
 @use 'mixins/functions' as *;
@@ -6,12 +5,12 @@
 //
 // Dark mode
 //
-$darken-dark: color.adjust($dark, $lightness: -2%) !default;
-$lighten-dark: color.adjust($dark, $lightness: 2%) !default;
-$border-color-dark: color.adjust($dark, $lightness: 8%) !default;
+$darken-dark: adjust-lightness-css(var(--dark), -2%) !default;
+$lighten-dark: adjust-lightness-css(var(--dark), 2%) !default;
+$border-color-dark: adjust-lightness-css(var(--dark), 8%) !default;
 $border-color-translucent-dark: rgba(128, 150, 172, 0.2) !default;
-$border-dark-color-dark: color.adjust($dark, $lightness: 4%) !default;
-$border-active-color-dark: color.adjust($dark, $lightness: 12%) !default;
+$border-dark-color-dark: adjust-lightness-css(var(--dark), 4%) !default;
+$border-active-color-dark: adjust-lightness-css(var(--dark), 12%) !default;
 
 //new bootsrap variables
 $body-color-dark: $gray-200 !default;
@@ -20,41 +19,41 @@ $body-emphasis-color-dark: $white !default;
 $text-secondary-dark: rgba(153, 159, 164, 1) !default;
 
 // Theme text emphasis dark
-$primary-text-emphasis-dark: tint-color($primary, 40%) !default;
-$secondary-text-emphasis-dark: tint-color($secondary, 40%) !default;
-$success-text-emphasis-dark: tint-color($success, 40%) !default;
-$info-text-emphasis-dark: tint-color($info, 40%) !default;
-$warning-text-emphasis-dark: tint-color($warning, 40%) !default;
-$danger-text-emphasis-dark: tint-color($danger, 40%) !default;
+$primary-text-emphasis-dark: mix-color-css(var(--white), var(--primary), 40%) !default;
+$secondary-text-emphasis-dark: mix-color-css(var(--white), var(--secondary), 40%) !default;
+$success-text-emphasis-dark: mix-color-css(var(--white), var(--success), 40%) !default;
+$info-text-emphasis-dark: mix-color-css(var(--white), var(--info), 40%) !default;
+$warning-text-emphasis-dark: mix-color-css(var(--white), var(--warning), 40%) !default;
+$danger-text-emphasis-dark: mix-color-css(var(--white), var(--danger), 40%) !default;
 $light-text-emphasis-dark: $gray-100 !default;
 $dark-text-emphasis-dark: $gray-300 !default;
 
 // Theme bg subtle dark
-$primary-bg-subtle-dark: shade-color($primary, 80%) !default;
-$secondary-bg-subtle-dark: shade-color($secondary, 80%) !default;
-$success-bg-subtle-dark: shade-color($success, 80%) !default;
-$info-bg-subtle-dark: shade-color($info, 80%) !default;
-$warning-bg-subtle-dark: shade-color($warning, 80%) !default;
-$danger-bg-subtle-dark: shade-color($danger, 80%) !default;
+$primary-bg-subtle-dark: mix-color-css(var(--black), var(--primary), 80%) !default;
+$secondary-bg-subtle-dark: mix-color-css(var(--black), var(--secondary), 80%) !default;
+$success-bg-subtle-dark: mix-color-css(var(--black), var(--success), 80%) !default;
+$info-bg-subtle-dark: mix-color-css(var(--black), var(--info), 80%) !default;
+$warning-bg-subtle-dark: mix-color-css(var(--black), var(--warning), 80%) !default;
+$danger-bg-subtle-dark: mix-color-css(var(--black), var(--danger), 80%) !default;
 $light-bg-subtle-dark: $gray-800 !default;
-$dark-bg-subtle-dark: color.mix($gray-800, $black) !default;
+$dark-bg-subtle-dark: mix-color-css(var(--gray-800), var(--black)) !default;
 
 // Theme border subtle dark
-$primary-border-subtle-dark: shade-color($primary, 40%) !default;
-$secondary-border-subtle-dark: shade-color($secondary, 40%) !default;
-$success-border-subtle-dark: shade-color($success, 40%) !default;
-$info-border-subtle-dark: shade-color($info, 40%) !default;
-$warning-border-subtle-dark: shade-color($warning, 40%) !default;
-$danger-border-subtle-dark: shade-color($danger, 40%) !default;
+$primary-border-subtle-dark: mix-color-css(var(--black), var(--primary), 40%) !default;
+$secondary-border-subtle-dark: mix-color-css(var(--black), var(--secondary), 40%) !default;
+$success-border-subtle-dark: mix-color-css(var(--black), var(--success), 40%) !default;
+$info-border-subtle-dark: mix-color-css(var(--black), var(--info), 40%) !default;
+$warning-border-subtle-dark: mix-color-css(var(--black), var(--warning), 40%) !default;
+$danger-border-subtle-dark: mix-color-css(var(--black), var(--danger), 40%) !default;
 $light-border-subtle-dark: $gray-700 !default;
 $dark-border-subtle-dark: $gray-800 !default;
 
 // Body dark
 $body-bg-dark: $gray-900 !default;
-$body-secondary-color-dark: rgba($body-color-dark, 0.75) !default;
+$body-secondary-color-dark: color-transparent(var(--body-color), 0.75) !default;
 $body-secondary-bg-dark: $gray-800 !default;
-$body-tertiary-color-dark: rgba($body-color-dark, 0.5) !default;
-$body-tertiary-bg-dark: color.mix($gray-800, $gray-900, 50%) !default;
+$body-tertiary-color-dark: color-transparent(var(--body-color), 0.5) !default;
+$body-tertiary-bg-dark: mix-color($gray-800, $gray-900, 50%) !default;
 
 // Headings dark
 $headings-color-dark: inherit !default;
@@ -65,7 +64,7 @@ $link-hover-color-dark: shift-color($link-color-dark, -$link-shade-percentage) !
 
 // Mark dark
 $mark-color-dark: $body-color-dark !default;
-$mark-bg-dark: shade-color($yellow, 60%) !default;
+$mark-bg-dark: mix-color-css(var(--black), var(--yellow), 60%) !default;
 
 //
 // Forms dark
@@ -74,14 +73,15 @@ $mark-bg-dark: shade-color($yellow, 60%) !default;
 $form-select-indicator-color-dark: $body-color-dark !default;
 $form-select-indicator-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-select-indicator-color-dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>") !default;
 
+// Compile-time `rgba()` on purpose: url-encoded into the svg below, where `var()` cannot resolve.
 $form-switch-color-dark: rgba($white, 0.25) !default;
 $form-switch-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color-dark}'/></svg>") !default;
 
 // Form validation colors dark
-$form-valid-color-dark: tint-color($green, 40%) !default;
-$form-valid-border-color-dark: tint-color($green, 40%) !default;
-$form-invalid-color-dark: tint-color($red, 40%) !default;
-$form-invalid-border-color-dark: tint-color($red, 40%) !default;
+$form-valid-color-dark: mix-color-css(var(--white), var(--green), 40%) !default;
+$form-valid-border-color-dark: mix-color-css(var(--white), var(--green), 40%) !default;
+$form-invalid-color-dark: mix-color-css(var(--white), var(--red), 40%) !default;
+$form-invalid-border-color-dark: mix-color-css(var(--white), var(--red), 40%) !default;
 
 //
 // Accordion dark

@@ -35,6 +35,10 @@
   @include it('passes a value that already has a unit straight through') {
     @include assert-equal(to-percentage(10px), 10px);
   }
+
+  @include it('passes a calc() expression straight through') {
+    @include assert-equal(meta.inspect(to-percentage(calc(var(--x) * 100%))), 'calc(var(--x) * 100%)');
+  }
 }
 
 @include describe('color-transparent') {
@@ -42,8 +46,24 @@
     @include assert-equal(color-transparent(#f00, 1), #f00);
   }
 
+  @include it('returns the colour untouched when alpha is 100%') {
+    @include assert-equal(color-transparent(#f00, 100%), #f00);
+  }
+
   @include it('builds a color-mix() with the alpha as a percentage otherwise') {
-    @include assert-equal(meta.inspect(color-transparent(#f00, 0.5)), 'color-mix(in srgb, #f00 50%, transparent)');
+    @include assert-equal(meta.inspect(color-transparent(#f00, 0.5)), 'color-mix(in oklab, #f00 50%, transparent)');
+  }
+
+  @include it('accepts a percentage alpha and a custom property colour') {
+    @include assert-equal(meta.inspect(color-transparent(var(--primary), 40%)), 'color-mix(in oklab, var(--primary) 40%, transparent)');
+  }
+
+  @include it('passes a calc() alpha through so opacity can come from a custom property') {
+    @include assert-equal(meta.inspect(color-transparent(var(--primary), calc(var(--bg-opacity) * 100%))), 'color-mix(in oklab, var(--primary) calc(var(--bg-opacity) * 100%), transparent)');
+  }
+
+  @include it('mixes against a custom background instead of transparent') {
+    @include assert-equal(meta.inspect(color-transparent(var(--primary), 0.16, var(--bg-surface))), 'color-mix(in oklab, var(--primary) 16%, var(--bg-surface))');
   }
 }
 

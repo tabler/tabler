@@ -7,12 +7,32 @@
 @use '../settings' as *;
 @use 'bootstrap/breakpoints' as *;
 
-@function theme-color-lighter($color, $background: #fff) {
-  @return color.mix($color, $background, 10%);
+// Mixes two colours in `oklab` so tints and shades stay perceptually even, then
+// clips the result to the sRGB gamut so every consumer (`luminance()`,
+// `to-rgb()`, the emitted `rgb()` values) keeps working on legacy channels.
+@function mix-color($color1, $color2, $weight: 50%) {
+  @return color.to-gamut(color.mix($color1, $color2, $weight, $method: oklab), $space: rgb, $method: clip);
 }
 
-@function theme-color-darker($color) {
-  @return shade-color($color, 10%);
+// Runtime counterpart of `mix-color()`: returns a CSS `color-mix()` so the token
+// follows `--tblr-*` overrides in the browser. Use it only where the result is
+// emitted as-is; it cannot feed `color-contrast()`, `to-rgb()` or `luminance()`.
+@function mix-color-css($color1, $color2, $weight: 50%) {
+  @return color-mix(in oklab, #{$color1} #{to-percentage($weight)}, #{$color2});
+}
+
+// Shifts lightness in `oklch` (perceptual, keeps hue and chroma) and clips the
+// result to sRGB. `$amount` is a percentage added to the oklch L channel.
+@function adjust-lightness($color, $amount) {
+  @return color.to-gamut(color.adjust($color, $lightness: $amount, $space: oklch), $space: rgb, $method: clip);
+}
+
+// Runtime counterpart of `adjust-lightness()`: relative color syntax, so the
+// token follows `--tblr-*` overrides in the browser. Emit-only, like `mix-color-css()`.
+@function adjust-lightness-css($color, $amount) {
+  $delta: math.div($amount, 100%);
+  $sign: if(sass($delta < 0): '-'; else: '+');
+  @return oklch(from #{$color} calc(l #{$sign} #{math.abs($delta)}) c h);
 }
 
 // str-replace was defined here twice — the canonical copy lives in the
@@ -54,7 +74,10 @@
  * @return {String} - The percentage representation of the value.
  */
 @function to-percentage($value) {
-  @return if(sass(math.is-unitless($value)): math.percentage($value); else: $value);
+  @if meta.type-of($value) == number and math.is-unitless($value) {
+    @return math.percentage($value);
+  }
+  @return $value;
 }
 
 /**
@@ -63,13 +86,16 @@
  * @param {Color} $color - The base color to be made transparent.
  * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
  * @return {Color} - The resulting color with the specified transparency.
+ *
+ * Mixes in `oklab` so tints against an opaque background (e.g. alert backgrounds
+ * over `--bg-surface`) stay perceptually even; mixing with `transparent` gives
+ * the same result in every color space.
  */
 @function color-transparent($color, $alpha: 1, $background: transparent) {
-  @if $alpha == 1 {
+  @if $alpha == 1 or $alpha == 100% {
     @return $color;
-  } @else {
-    @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
   }
+  @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
 @function url-svg($svg) {
@@ -121,13 +147,12 @@
 // stylelint-disable scss/dollar-variable-pattern
 @function rgba-css-var($identifier, $target) {
   @if $identifier == 'body' and $target == 'bg' {
-    @return color-mix(in srgb, var(--#{$identifier}-bg) calc(var(--#{$target}-opacity) * 100%), transparent);
+    @return color-transparent(var(--#{$identifier}-bg), calc(var(--#{$target}-opacity) * 100%));
   }
   @if $identifier == 'body' and $target == 'text' {
-    @return color-mix(in srgb, var(--#{$identifier}-color) calc(var(--#{$target}-opacity) * 100%), transparent);
-  } @else {
-    @return color-mix(in srgb, var(--#{$identifier}) calc(var(--#{$target}-opacity) * 100%), transparent);
+    @return color-transparent(var(--#{$identifier}-color), calc(var(--#{$target}-opacity) * 100%));
   }
+  @return color-transparent(var(--#{$identifier}), calc(var(--#{$target}-opacity) * 100%));
 }
 
 @function map-loop($map, $func, $args...) {
@@ -303,14 +328,14 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return color.mix(rgba($foreground, 1), $background, color.opacity($foreground) * 100%);
 }
 
-// Tint a color: mix a color with white
+// Tint a color: mix a color with white (in oklab, see `mix-color()`)
 @function tint-color($color, $weight) {
-  @return color.mix(white, $color, $weight);
+  @return mix-color(white, $color, $weight);
 }
 
-// Shade a color: mix a color with black
+// Shade a color: mix a color with black (in oklab, see `mix-color()`)
 @function shade-color($color, $weight) {
-  @return color.mix(black, $color, $weight);
+  @return mix-color(black, $color, $weight);
 }
 
 // Shade the color if the weight is positive, else tint it

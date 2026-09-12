@@ -1,7 +1,6 @@
 @use 'sass:string';
 @use 'sass:math';
 @use 'sass:map';
-@use 'sass:color';
 @use 'settings' as *;
 @use 'mixins/functions' as *;
 
@@ -370,10 +369,10 @@ $body-text-align: start !default;
 $body-color: $gray-500 !default;
 $body-bg: $white !default;
 
-$body-secondary-color: rgba($body-color, 0.75) !default;
+$body-secondary-color: color-transparent(var(--body-color), 0.75) !default;
 $body-secondary-bg: $gray-200 !default;
 
-$body-tertiary-color: rgba($body-color, 0.5) !default;
+$body-tertiary-color: color-transparent(var(--body-color), 0.5) !default;
 $body-tertiary-bg: $gray-100 !default;
 
 // Typography
@@ -558,19 +557,19 @@ $text-secondary-dark: $gray-600 !default;
 
 $border-light-color: var(--gray-200) !default;
 $border-light-opacity: 4.7% !default;
-$border-light-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-light-opacity}, transparent) !default;
+$border-light-color-translucent: color-transparent(var(--gray-800), $border-light-opacity) !default;
 
 $border-color: var(--gray-200) !default;
 $border-opacity: 11.9% !default;
-$border-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-opacity}, transparent) !default;
+$border-color-translucent: color-transparent(var(--gray-800), $border-opacity) !default;
 
 $border-dark-color: var(--gray-300) !default;
 $border-dark-opacity: 20.7% !default;
-$border-dark-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-dark-opacity}, transparent) !default;
+$border-dark-color-translucent: color-transparent(var(--gray-800), $border-dark-opacity) !default;
 
 $border-active-color: var(--gray-400) !default;
 $border-active-opacity: 44.8% !default;
-$border-active-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-active-opacity}, transparent) !default;
+$border-active-color-translucent: color-transparent(var(--gray-800), $border-active-opacity) !default;
 
 $active-bg: color-transparent(var(--primary), 0.04) !default;
 $active-color: var(--primary) !default;
@@ -663,7 +662,6 @@ $gray-colors: (
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
 
-$theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value') !default;
 $grays: (
   '100': $gray-100,
   '200': $gray-200,
@@ -694,32 +692,32 @@ $colors: (
 ) !default;
 
 // Theme color emphasis
-$primary-text-emphasis: shade-color($primary, 60%) !default;
-$secondary-text-emphasis: shade-color($secondary, 60%) !default;
-$success-text-emphasis: shade-color($success, 60%) !default;
-$info-text-emphasis: shade-color($info, 60%) !default;
-$warning-text-emphasis: shade-color($warning, 60%) !default;
-$danger-text-emphasis: shade-color($danger, 60%) !default;
+$primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;
+$secondary-text-emphasis: mix-color-css(var(--black), var(--secondary), 60%) !default;
+$success-text-emphasis: mix-color-css(var(--black), var(--success), 60%) !default;
+$info-text-emphasis: mix-color-css(var(--black), var(--info), 60%) !default;
+$warning-text-emphasis: mix-color-css(var(--black), var(--warning), 60%) !default;
+$danger-text-emphasis: mix-color-css(var(--black), var(--danger), 60%) !default;
 $light-text-emphasis: $gray-700 !default;
 $dark-text-emphasis: $gray-700 !default;
 
 // Theme bg subtle
-$primary-bg-subtle: tint-color($primary, 80%) !default;
-$secondary-bg-subtle: tint-color($secondary, 80%) !default;
-$success-bg-subtle: tint-color($success, 80%) !default;
-$info-bg-subtle: tint-color($info, 80%) !default;
-$warning-bg-subtle: tint-color($warning, 80%) !default;
-$danger-bg-subtle: tint-color($danger, 80%) !default;
-$light-bg-subtle: color.mix($gray-100, $white) !default;
+$primary-bg-subtle: mix-color-css(var(--white), var(--primary), 80%) !default;
+$secondary-bg-subtle: mix-color-css(var(--white), var(--secondary), 80%) !default;
+$success-bg-subtle: mix-color-css(var(--white), var(--success), 80%) !default;
+$info-bg-subtle: mix-color-css(var(--white), var(--info), 80%) !default;
+$warning-bg-subtle: mix-color-css(var(--white), var(--warning), 80%) !default;
+$danger-bg-subtle: mix-color-css(var(--white), var(--danger), 80%) !default;
+$light-bg-subtle: mix-color-css(var(--gray-100), var(--white)) !default;
 $dark-bg-subtle: $gray-400 !default;
 
 // Theme border subtle
-$primary-border-subtle: tint-color($primary, 60%) !default;
-$secondary-border-subtle: tint-color($secondary, 60%) !default;
-$success-border-subtle: tint-color($success, 60%) !default;
-$info-border-subtle: tint-color($info, 60%) !default;
-$warning-border-subtle: tint-color($warning, 60%) !default;
-$danger-border-subtle: tint-color($danger, 60%) !default;
+$primary-border-subtle: mix-color-css(var(--white), var(--primary), 60%) !default;
+$secondary-border-subtle: mix-color-css(var(--white), var(--secondary), 60%) !default;
+$success-border-subtle: mix-color-css(var(--white), var(--success), 60%) !default;
+$info-border-subtle: mix-color-css(var(--white), var(--info), 60%) !default;
+$warning-border-subtle: mix-color-css(var(--white), var(--warning), 60%) !default;
+$danger-border-subtle: mix-color-css(var(--white), var(--danger), 60%) !default;
 $light-border-subtle: $gray-200 !default;
 $dark-border-subtle: $gray-500 !default;
 
@@ -728,12 +726,12 @@ $backdrop-opacity: 0.32 !default;
 $backdrop-blur: 4px !default;
 $backdrop-bg: light-dark(var(--gray-800), var(--black)) !default;
 $backdrops: (
-  dark: color-mix(in sRGB, var(--dark), transparent var(--backdrop-opacity)),
-  light: color-mix(in sRGB, var(--light), transparent var(--backdrop-opacity)),
+  dark: color-transparent(var(--dark), calc(var(--backdrop-opacity) * 100%)),
+  light: color-transparent(var(--light), calc(var(--backdrop-opacity) * 100%)),
 ) !default;
 
 // Gradient
-$gradient: linear-gradient(180deg, rgba($white, 0.15), rgba($white, 0)) !default;
+$gradient: linear-gradient(180deg, color-transparent(var(--white), 0.15), color-transparent(var(--white), 0)) !default;
 
 // Borders
 $border-width: 1px !default;
@@ -1020,7 +1018,7 @@ $component-active-bg: $primary !default;
 // Focus (WCAG 2.2 SC 1.4.11)
 $focus-ring-width: 0.25rem !default;
 $focus-ring-opacity: 0.25 !default;
-$focus-ring-color: color-mix(in srgb, var(--primary) #{math.percentage($focus-ring-opacity)}, transparent) !default;
+$focus-ring-color: color-transparent(var(--primary), $focus-ring-opacity) !default;
 $focus-ring-blur: 0 !default;
 // Inner 2px solid ring keeps the indicator above the 3:1 non-text contrast minimum;
 // the translucent halo preserves the soft look
@@ -1046,7 +1044,7 @@ $alert-margin-bottom: 1rem !default;
 $alert-link-font-weight: var(--font-weight-semibold) !default;
 $alert-border-width: var(--border-width) !default;
 $alert-border-color: var(--border-color-translucent) !default;
-$alert-shadow: rgba($dark, 0.04) 0 2px 4px 0 !default;
+$alert-shadow: color-transparent(var(--dark), 0.04) 0 2px 4px 0 !default;
 $alert-heading-margin-bottom: 0.25rem !default;
 $alert-icon-size: 1.25rem !default;
 $alert-padding-inline-end: 3rem !default;
@@ -1134,7 +1132,7 @@ $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
 $btn-focus-box-shadow: $focus-ring-box-shadow !default;
 $btn-disabled-opacity: 0.4 !default;
-$btn-active-box-shadow: inset 0 3px 5px rgba($black, 0.125) !default;
+$btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
 $btn-link-color: var(--link-color) !default;
 $btn-link-hover-color: var(--link-hover-color) !default;
@@ -1203,7 +1201,7 @@ $input-box-shadow: var(--shadow-input) !default;
 $input-plaintext-color: var(--body-color) !default;
 
 $input-focus-bg: $input-bg !default;
-$input-focus-border-color: tint-color($component-active-bg, 50%) !default;
+$input-focus-border-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $input-focus-color: var(--body-color) !default;
 $input-focus-width: $input-btn-focus-width !default;
 $input-focus-box-shadow: $input-btn-focus-box-shadow !default;
@@ -1450,7 +1448,7 @@ $dropdown-dark-divider-bg: $dropdown-divider-bg !default;
 $dropdown-dark-box-shadow: null !default;
 $dropdown-dark-link-color: $dropdown-dark-color !default;
 $dropdown-dark-link-hover-color: $white !default;
-$dropdown-dark-link-hover-bg: rgba($white, 0.15) !default;
+$dropdown-dark-link-hover-bg: color-transparent(var(--white), 0.15) !default;
 $dropdown-dark-link-active-color: $dropdown-link-active-color !default;
 $dropdown-dark-link-active-bg: $dropdown-link-active-bg !default;
 $dropdown-dark-link-disabled-color: $gray-500 !default;
@@ -1595,23 +1593,24 @@ $navbar-light-active-color: var(--body-color) !default;
 $navbar-light-hover-color: var(--body-color) !default;
 $navbar-light-disabled-color: var(--disabled-color) !default;
 $navbar-light-active-bg: color-transparent(var(--primary), 0.08) !default;
-// Spelled with the literal prefix: this value is url-encoded into the svg data
-// uri below, so the build-time prefixing in .build/build-css.ts never sees a
-// `var()` here to rewrite (it arrives as `var%28--body-color%29`).
-$navbar-light-icon-color: color-transparent(var(--tblr-body-color), 0.75) !default;
+// Compile-time `rgba()` on purpose: this value is url-encoded into the svg data
+// uri below, and an svg image cannot resolve `var()` or `color-mix()` with
+// `var()` — the stroke would be dropped and the icon would disappear.
+$navbar-light-icon-color: rgba($body-color, 0.75) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
 $navbar-light-toggler-border-color: color-transparent(var(--emphasis-color), 0.15) !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;
 
-$navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
-$navbar-dark-hover-color: rgba($white, 0.75) !default;
-$navbar-dark-active-bg: rgba($white, 0.06) !default;
+$navbar-dark-color: color-transparent(var(--white), $text-secondary-opacity) !default;
+$navbar-dark-hover-color: color-transparent(var(--white), 0.75) !default;
+$navbar-dark-active-bg: color-transparent(var(--white), 0.06) !default;
 $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: var(--disabled-color) !default;
-$navbar-dark-icon-color: $navbar-dark-color !default;
+// Compile-time `rgba()` on purpose, see `$navbar-light-icon-color`.
+$navbar-dark-icon-color: rgba($white, $text-secondary-opacity) !default;
 $navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-dark-toggler-border-color: rgba($white, 0.1) !default;
+$navbar-dark-toggler-border-color: color-transparent(var(--white), 0.1) !default;
 $navbar-dark-brand-hover-color: $navbar-dark-active-color !default;
 
 $navbar-brand-font-size: $h2-font-size !default;
@@ -1808,7 +1807,7 @@ $table-active-bg: var(--active-bg) !default;
 
 $table-hover-color: $table-color !default;
 $table-hover-bg-factor: 0.075 !default;
-$table-hover-bg: color-mix(in srgb, var(--emphasis-color) #{math.percentage($table-hover-bg-factor)}, transparent) !default;
+$table-hover-bg: color-transparent(var(--emphasis-color), $table-hover-bg-factor) !default;
 
 $table-caption-color: var(--secondary-color) !default;
 
@@ -2005,7 +2004,8 @@ $form-switch-padding-start: $form-switch-width + 0.5rem !default;
 $form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color}'/></svg>") !default;
 $form-switch-border-radius: $form-switch-width !default;
 $form-switch-transition: background-position 0.15s ease-in-out !default;
-$form-switch-focus-color: $input-focus-border-color !default;
+// Compile-time tint on purpose: url-encoded into the svg below, where `var()` cannot resolve.
+$form-switch-focus-color: tint-color($component-active-bg, 50%) !default;
 $form-switch-focus-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-focus-color}'/></svg>") !default;
 $form-switch-checked-color: $white !default;
 $form-switch-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-checked-color}'/></svg>") !default;
@@ -2024,12 +2024,12 @@ $form-range-thumb-height: 1rem !default;
 $form-range-thumb-bg: var(--primary) !default;
 $form-range-thumb-border: 2px var(--border-style) $white !default;
 $form-range-thumb-border-radius: 1rem !default;
-$form-range-thumb-box-shadow: 0 0.1rem 0.25rem rgba($black, 0.1) !default;
+$form-range-thumb-box-shadow: 0 0.1rem 0.25rem color-transparent(var(--black), 0.1) !default;
 $form-range-thumb-focus-box-shadow:
   0 0 0 1px $body-bg,
   $input-focus-box-shadow !default;
 $form-range-thumb-focus-box-shadow-width: 0.125rem !default;
-$form-range-thumb-active-bg: tint-color($component-active-bg, 70%) !default;
+$form-range-thumb-active-bg: mix-color-css(var(--white), var(--primary), 70%) !default;
 $form-range-thumb-disabled-bg: var(--secondary-color) !default;
 $form-range-thumb-transition:
   background-color 0.15s ease-in-out,
@@ -2091,7 +2091,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--success) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--success), $input-btn-focus-color-opacity),
     'border-color': var(--form-valid-border-color),
   ),
   'invalid': (
@@ -2099,7 +2099,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--danger) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--danger), $input-btn-focus-color-opacity),
     'border-color': var(--form-invalid-border-color),
   ),
 ) !default;
