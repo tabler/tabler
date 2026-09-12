@@ -4,6 +4,8 @@
 // isolation. A regression here silently degrades accessibility, which is why
 // they rank high.
 
+@use 'sass:color';
+@use 'sass:math';
 @use '../mixins/functions' as *;
 
 @include describe('luminance') {
@@ -24,12 +26,19 @@
 }
 
 @include describe('shade-color / tint-color') {
-  @include it('shade mixes the colour toward black') {
-    @include assert-equal(shade-color(#ffffff, 10%), rgb(229.5, 229.5, 229.5));
+  @include it('shade mixes the colour toward black in oklab') {
+    @include assert-equal(shade-color(#ffffff, 10%), color.mix(black, #ffffff, 10%, $method: oklab));
+    @include assert-equal(math.round(color.channel(shade-color(#ffffff, 10%), 'red')), 222);
   }
 
-  @include it('tint mixes the colour toward white') {
-    @include assert-equal(tint-color(#000000, 10%), rgb(25.5, 25.5, 25.5));
+  @include it('tint mixes the colour toward white in oklab') {
+    @include assert-equal(tint-color(#000000, 10%), color.mix(white, #000000, 10%, $method: oklab));
+    @include assert-equal(math.round(color.channel(tint-color(#000000, 10%), 'red')), 3);
+  }
+
+  @include it('returns a legacy rgb colour inside the sRGB gamut') {
+    @include assert-true(color.is-legacy(tint-color(#f59f00, 40%)));
+    @include assert-true(color.is-in-gamut(shade-color(#f59f00, 20%), $space: rgb));
   }
 }
 

@@ -7,8 +7,22 @@
 @use '../settings' as *;
 @use 'bootstrap/breakpoints' as *;
 
+// Mixes two colours in `oklab` so tints and shades stay perceptually even, then
+// clips the result to the sRGB gamut so every consumer (`luminance()`,
+// `to-rgb()`, the emitted `rgb()` values) keeps working on legacy channels.
+@function mix-color($color1, $color2, $weight: 50%) {
+  @return color.to-gamut(color.mix($color1, $color2, $weight, $method: oklab), $space: rgb, $method: clip);
+}
+
+// Runtime counterpart of `mix-color()`: returns a CSS `color-mix()` so the token
+// follows `--tblr-*` overrides in the browser. Use it only where the result is
+// emitted as-is; it cannot feed `color-contrast()`, `to-rgb()` or `luminance()`.
+@function mix-color-css($color1, $color2, $weight: 50%) {
+  @return color-mix(in oklab, #{$color1} #{to-percentage($weight)}, #{$color2});
+}
+
 @function theme-color-lighter($color, $background: #fff) {
-  @return color.mix($color, $background, 10%);
+  @return mix-color($color, $background, 10%);
 }
 
 @function theme-color-darker($color) {
@@ -308,14 +322,14 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return color.mix(rgba($foreground, 1), $background, color.opacity($foreground) * 100%);
 }
 
-// Tint a color: mix a color with white
+// Tint a color: mix a color with white (in oklab, see `mix-color()`)
 @function tint-color($color, $weight) {
-  @return color.mix(white, $color, $weight);
+  @return mix-color(white, $color, $weight);
 }
 
-// Shade a color: mix a color with black
+// Shade a color: mix a color with black (in oklab, see `mix-color()`)
 @function shade-color($color, $weight) {
-  @return color.mix(black, $color, $weight);
+  @return mix-color(black, $color, $weight);
 }
 
 // Shade the color if the weight is positive, else tint it
