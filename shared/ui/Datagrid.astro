@@ -3,11 +3,13 @@
 
 interface Props {
   class?: string
+  /** remaining attributes (style, id, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { class: className } = Astro.props
+const { class: className, ...rest } = Astro.props
 ---
 
-<div class:list={['datagrid', className]}>
+<div class:list={['datagrid', className]} {...rest}>
   <slot />
 </div>
