@@ -103,13 +103,7 @@ Coloris({
 })
 ```
 
-To read the colors from the theme instead of writing them by hand, take them from the CSS variables:
-
-```js
-const swatches = ['--tblr-blue', '--tblr-azure', '--tblr-indigo'].map(function (prop) {
-  return getComputedStyle(document.body).getPropertyValue(prop)
-})
-```
+Write the swatches as hex values. Tabler's CSS variables such as `--tblr-blue` hold `oklch()` colors, which Coloris cannot parse, so do not read the swatches from them.
 
 ### Swatches only
 
@@ -192,9 +186,7 @@ Use the picker like any other form field: a label, the input, and a hint below i
 window.addEventListener('load', function () {
 	if (typeof Coloris === 'undefined') return;
 
-	const swatches = ['--tblr-blue', '--tblr-azure', '--tblr-indigo', '--tblr-purple', '--tblr-pink', '--tblr-red', '--tblr-orange', '--tblr-green'].map(function (prop) {
-		return getComputedStyle(document.body).getPropertyValue(prop).trim();
-	});
+	const swatches = ['#066fd1', '#4299e1', '#4263eb', '#ae3ec9', '#d6336c', '#d63939', '#f76707', '#2fb344'];
 
 	Coloris({ el: '.form-control[id^="colorpicker"]', selectInput: false, format: 'hex', alpha: false, swatchesOnly: false, swatches: swatches });
 
