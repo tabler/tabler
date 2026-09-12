@@ -5,14 +5,12 @@
  */
 import { themeDefaults, type ThemeKey } from './src/theme-config'
 
-const params = new Proxy(new URLSearchParams(window.location.search), {
-  get: (searchParams: URLSearchParams, prop: string): string | null => searchParams.get(prop),
-})
+const params = new URLSearchParams(window.location.search)
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
 for (const key in themeDefaults) {
-  const param = params[key]
+  const param = params.get(key)
   let selectedValue: string
 
   if (!!param) {

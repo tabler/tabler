@@ -3,7 +3,7 @@ const countupElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLE
 
 if (countupElements.length) {
   countupElements.forEach(function (element: HTMLElement) {
-    let options: Record<string, any> = {}
+    let options: Record<string, unknown> = {}
     try {
       const dataOptions = element.getAttribute('data-countup') ? JSON.parse(element.getAttribute('data-countup')!) : {}
       options = Object.assign(
