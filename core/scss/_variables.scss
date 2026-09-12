@@ -1,5 +1,6 @@
 @use 'sass:string';
 @use 'sass:math';
+@use 'sass:color';
 @use 'sass:map';
 @use 'settings' as *;
 @use 'mixins/functions' as *;
@@ -34,17 +35,17 @@ $enable-important-utilities: true !default;
 $color-mode-type: data !default;
 
 // Colors
-$gray-50: #f9fafb !default;
-$gray-100: #f3f4f6 !default;
-$gray-200: #e5e7eb !default;
-$gray-300: #d1d5db !default;
-$gray-400: #9ca3af !default;
-$gray-500: #6b7280 !default;
-$gray-600: #4b5563 !default;
-$gray-700: #374151 !default;
-$gray-800: #1f2937 !default;
-$gray-900: #111827 !default;
-$gray-950: #030712 !default;
+$gray-50: oklch(98.46% 0.0017 247.84deg) !default; // #f9fafb
+$gray-100: oklch(96.7% 0.0029 264.54deg) !default; // #f3f4f6
+$gray-200: oklch(92.76% 0.0058 264.53deg) !default; // #e5e7eb
+$gray-300: oklch(87.17% 0.0093 258.34deg) !default; // #d1d5db
+$gray-400: oklch(71.37% 0.0192 261.32deg) !default; // #9ca3af
+$gray-500: oklch(55.1% 0.0234 264.36deg) !default; // #6b7280
+$gray-600: oklch(44.61% 0.0263 256.8deg) !default; // #4b5563
+$gray-700: oklch(37.29% 0.0306 259.73deg) !default; // #374151
+$gray-800: oklch(27.81% 0.0296 256.85deg) !default; // #1f2937
+$gray-900: oklch(21.01% 0.0318 264.66deg) !default; // #111827
+$gray-950: oklch(12.96% 0.0274 261.69deg) !default; // #030712
 
 // $black and $white moved to `_settings.scss`
 
@@ -63,18 +64,18 @@ $grays: (
   '900': $gray-900,
 ) !default;
 
-$blue: #066fd1 !default;
-$azure: #4299e1 !default;
-$indigo: #4263eb !default;
-$purple: #ae3ec9 !default;
-$pink: #d6336c !default;
-$red: #d63939 !default;
-$orange: #f76707 !default;
-$yellow: #f59f00 !default;
-$lime: #74b816 !default;
-$green: #2fb344 !default;
-$teal: #0ca678 !default;
-$cyan: #17a2b8 !default;
+$blue: oklch(54.6% 0.1724 254.2deg) !default; // #066fd1
+$azure: oklch(66.26% 0.1358 246.81deg) !default; // #4299e1
+$indigo: oklch(55.66% 0.2082 268.35deg) !default; // #4263eb
+$purple: oklch(57.83% 0.2186 319.15deg) !default; // #ae3ec9
+$pink: oklch(58.81% 0.201 5.25deg) !default; // #d6336c
+$red: oklch(58.29% 0.1941 25.59deg) !default; // #d63939
+$orange: oklch(68.51% 0.1954 44.57deg) !default; // #f76707
+$yellow: oklch(77.02% 0.1658 71.02deg) !default; // #f59f00
+$lime: oklch(70.99% 0.1897 131.53deg) !default; // #74b816
+$green: oklch(67.38% 0.1885 145.43deg) !default; // #2fb344
+$teal: oklch(64.32% 0.1338 164.7deg) !default; // #0ca678
+$cyan: oklch(65.52% 0.1105 212.17deg) !default; // #17a2b8
 
 $colors: (
   'blue': $blue,
@@ -629,21 +630,21 @@ $extra-colors: (
 
 $social-colors: (
   'x': #000,
-  'facebook': #1877f2,
-  'twitter': #1da1f2,
-  'linkedin': #0a66c2,
-  'google': #dc4e41,
+  'facebook': oklch(58.91% 0.2029 257.86deg),
+  'twitter': oklch(68.18% 0.1584 243.35deg),
+  'linkedin': oklch(51.56% 0.1632 254.73deg),
+  'google': oklch(61.58% 0.1799 28.6deg),
   'youtube': #f00,
-  'vimeo': #1ab7ea,
-  'dribbble': #ea4c89,
-  'github': #181717,
-  'instagram': #e4405f,
-  'pinterest': #bd081c,
-  'vk': #6383a8,
-  'rss': #ffa500,
-  'flickr': #0063dc,
-  'bitbucket': #0052cc,
-  'tabler': #066fd1,
+  'vimeo': oklch(72.84% 0.1372 227.55deg),
+  'dribbble': oklch(65.15% 0.1995 0.71deg),
+  'github': oklch(20.58% 0.0016 17.29deg),
+  'instagram': oklch(61.95% 0.1995 14.61deg),
+  'pinterest': oklch(50.5% 0.2018 25.75deg),
+  'vk': oklch(60.01% 0.0675 252.52deg),
+  'rss': oklch(79.27% 0.171 70.67deg),
+  'flickr': oklch(52.81% 0.2011 258.62deg),
+  'bitbucket': oklch(48.02% 0.2012 260.48deg),
+  'tabler': oklch(54.6% 0.1724 254.2deg),
 ) !default;
 
 $gray-colors: (
@@ -1596,7 +1597,7 @@ $navbar-light-active-bg: color-transparent(var(--primary), 0.08) !default;
 // Compile-time `rgba()` on purpose: this value is url-encoded into the svg data
 // uri below, and an svg image cannot resolve `var()` or `color-mix()` with
 // `var()` — the stroke would be dropped and the icon would disappear.
-$navbar-light-icon-color: rgba($body-color, 0.75) !default;
+$navbar-light-icon-color: color.change($body-color, $alpha: 0.75) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
 $navbar-light-toggler-border-color: color-transparent(var(--emphasis-color), 0.15) !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;
@@ -1608,7 +1609,7 @@ $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: var(--disabled-color) !default;
 // Compile-time `rgba()` on purpose, see `$navbar-light-icon-color`.
-$navbar-dark-icon-color: rgba($white, $text-secondary-opacity) !default;
+$navbar-dark-icon-color: color.change($white, $alpha: $text-secondary-opacity) !default;
 $navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
 $navbar-dark-toggler-border-color: color-transparent(var(--white), 0.1) !default;
 $navbar-dark-brand-hover-color: $navbar-dark-active-color !default;

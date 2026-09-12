@@ -9,7 +9,9 @@
 // Prefixes
 
 // Characters which are escaped by the escape-svg function
-$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;
+// `%` goes first so the escapes added below are not re-encoded; it shows up in
+// `oklch()` lightness values that end up inside svg data uris.
+$escaped-characters: (('%', '%25'), ('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;
 
 $black: #000 !default;
 $white: #fff !default;

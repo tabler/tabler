@@ -325,7 +325,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
 // Return opaque color
 // opaque(#fff, rgba(0, 0, 0, .5)) => #808080
 @function opaque($background, $foreground) {
-  @return color.mix(rgba($foreground, 1), $background, color.opacity($foreground) * 100%);
+  @return color.mix(color.change($foreground, $alpha: 1), $background, color.channel($foreground, 'alpha') * 100%, $method: srgb);
 }
 
 // Tint a color: mix a color with white (in oklab, see `mix-color()`)
