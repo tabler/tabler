@@ -7,73 +7,74 @@
 // a `url(...)` token; those are asserted through `meta.inspect(...)` so the
 // comparison is against the exact rendered output.
 
-@use "sass:meta";
-@use "../mixins/functions" as *;
+@use 'sass:meta';
+@use '../mixins/functions' as *;
 
-@include describe("to-rgb") {
-  @include it("returns the comma-separated rgb channels") {
+@include describe('to-rgb') {
+  @include it('returns the comma-separated rgb channels') {
     @include assert-equal(to-rgb(#ff0000), (255, 0, 0));
     @include assert-equal(to-rgb(#123456), (18, 52, 86));
   }
 }
 
-@include describe("opaque") {
-  @include it("flattens a translucent foreground over the background") {
+@include describe('opaque') {
+  @include it('flattens a translucent foreground over the background') {
     @include assert-equal(opaque(#fff, rgba(#000, 0.5)), rgb(127.5, 127.5, 127.5));
   }
 
-  @include it("returns the foreground unchanged when it is fully opaque") {
+  @include it('returns the foreground unchanged when it is fully opaque') {
     @include assert-equal(opaque(#fff, #000), black);
   }
 }
 
-@include describe("to-percentage") {
-  @include it("converts a unitless number to a percentage") {
+@include describe('to-percentage') {
+  @include it('converts a unitless number to a percentage') {
     @include assert-equal(to-percentage(0.5), 50%);
   }
 
-  @include it("passes a value that already has a unit straight through") {
+  @include it('passes a value that already has a unit straight through') {
     @include assert-equal(to-percentage(10px), 10px);
   }
 }
 
-@include describe("color-transparent") {
-  @include it("returns the colour untouched when alpha is 1") {
+@include describe('color-transparent') {
+  @include it('returns the colour untouched when alpha is 1') {
     @include assert-equal(color-transparent(#f00, 1), #f00);
   }
 
-  @include it("builds a color-mix() with the alpha as a percentage otherwise") {
-    @include assert-equal(
-      meta.inspect(color-transparent(#f00, 0.5)),
-      "color-mix(in srgb, #f00 50%, transparent)"
-    );
+  @include it('builds a color-mix() with the alpha as a percentage otherwise') {
+    @include assert-equal(meta.inspect(color-transparent(#f00, 0.5)), 'color-mix(in srgb, #f00 50%, transparent)');
   }
 }
 
-@include describe("url-svg") {
+@include describe('url-svg') {
   @include it("percent-encodes '#' so the data URI stays valid") {
-    @include assert-equal(
-      meta.inspect(url-svg("#")),
-      'url("data:image/svg+xml;charset=UTF-8,%23")'
-    );
+    @include assert-equal(meta.inspect(url-svg('#')), 'url("data:image/svg+xml;charset=UTF-8,%23")');
   }
 
-  @include it("injects the SVG xmlns attribute") {
-    @include assert-equal(
-      meta.inspect(url-svg("<svg></svg>")),
-      "url('data:image/svg+xml;charset=UTF-8,<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>')"
-    );
+  @include it('injects the SVG xmlns attribute') {
+    @include assert-equal(meta.inspect(url-svg('<svg></svg>')), 'url(\'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg"></svg>\')');
   }
 }
 
-@include describe("map-loop") {
+@include describe('map-loop') {
   // Applies a module-level function (resolved by name via meta.get-function) to
   // every value in the map. `to-percentage` lives in the same module, so it
   // resolves correctly.
-  @include it("maps every value through the named function") {
+  @include it('maps every value through the named function') {
     @include assert-equal(
-      map-loop((a: 0.5, b: 0.25), "to-percentage", "$value"),
-      (a: 50%, b: 25%)
+      map-loop(
+        (
+          a: 0.5,
+          b: 0.25,
+        ),
+        'to-percentage',
+        '$value'
+      ),
+      (
+        a: 50%,
+        b: 25%,
+      )
     );
   }
 }

@@ -7,38 +7,38 @@
 // and cannot be caught by sass-true (there is no assert-throws), so it is not
 // covered here.
 
-@use "../mixins/functions" as *;
+@use '../mixins/functions' as *;
 
-@include describe("divide") {
-  @include it("divides two unitless numbers") {
+@include describe('divide') {
+  @include it('divides two unitless numbers') {
     @include assert-equal(divide(4, 2), 2);
   }
 
-  @include it("returns a fractional result") {
+  @include it('returns a fractional result') {
     @include assert-equal(divide(10, 4), 2.5);
     @include assert-equal(divide(1, 2), 0.5);
   }
 
-  @include it("returns 0 when the dividend is 0") {
+  @include it('returns 0 when the dividend is 0') {
     @include assert-equal(divide(0, 5), 0);
   }
 
-  @include it("keeps the correct sign for mixed-sign operands") {
+  @include it('keeps the correct sign for mixed-sign operands') {
     @include assert-equal(divide(-6, 2), -3);
     @include assert-equal(divide(6, -2), -3);
     @include assert-equal(divide(-6, -2), 3);
   }
 
-  @include it("propagates the dividend unit when the divisor is unitless") {
+  @include it('propagates the dividend unit when the divisor is unitless') {
     @include assert-equal(divide(10px, 2), 5px);
     @include assert-equal(divide(5%, 2), 2.5%);
   }
 
-  @include it("cancels matching units to a unitless result") {
+  @include it('cancels matching units to a unitless result') {
     @include assert-equal(divide(10px, 2px), 5);
   }
 
-  @include it("rounds to the requested precision") {
+  @include it('rounds to the requested precision') {
     @include assert-equal(divide(2, 3, 0), 1);
     @include assert-equal(divide(2, 3, 2), 0.67);
   }

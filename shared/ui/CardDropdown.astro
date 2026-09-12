@@ -1,0 +1,22 @@
+---
+import Icon from './Icon.astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+const icon = 'dots-vertical'
+---
+
+<div class:list={['dropdown', className]}>
+  <button type="button" class="btn btn-action" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions">
+    <Icon name={icon} />
+  </button>
+  <div class="dropdown-menu dropdown-menu-end">
+    <button type="button" class="dropdown-item">Import</button>
+    <button type="button" class="dropdown-item">Export</button>
+    <button type="button" class="dropdown-item">Download</button>
+    <button type="button" class="dropdown-item text-danger">Delete</button>
+  </div>
+</div>

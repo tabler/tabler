@@ -1,25 +1,35 @@
 ---
-// Port of preview/pages/pagination.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Pagination from '@shared/components/ui/Pagination.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Pagination from '@ui/Pagination.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Pagination" pageHeader="Pagination" pageMenu="base.pagination">
-	<div class="row row-cards">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
-					<Pagination />
-					<Pagination text />
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
-					<Pagination count={0} prevDescription="Getting started" nextDescription="Breadcrumbs" />
-				</div>
-			</div>
-		</div>
-	</div>
+<DefaultLayout title="Pagination" pageMenu="base.pagination" description="Pagination splits a long list of results into pages, with Prev/Next controls.">
+  <DocsLink slot="page-header-actions" path="/ui/components/pagination" />
+
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Numbered</CardTitle>
+          <CardSubtitle>Page numbers, with or without Prev/Next text labels (<code>page-text</code>).</CardSubtitle>
+          <Pagination count={5} activeItem={3} />
+          <Pagination count={5} activeItem={3} text />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>With descriptions</CardTitle>
+          <CardSubtitle>Name the adjacent page with <code>page-item-subtitle</code> for the direction and <code>page-item-title</code> for the page name.</CardSubtitle>
+          <Pagination count={0} prevDescription="Getting started" nextDescription="Breadcrumbs" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

@@ -1,0 +1,60 @@
+---
+import CaptureScript from '../components/CaptureScript.astro'
+interface Props {
+  id: string
+  multiple?: boolean
+  custom?: boolean
+  text?: string
+  description?: string
+}
+
+const { id, multiple, custom, text, description } = Astro.props
+const label = 'Upload file'
+
+const dropzoneId = `dropzone-${id}`
+const dropzoneSelector = `#dropzone-${id}`
+const fileInputId = `${dropzoneId}-file`
+---
+
+<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate tabindex="0" role="button" aria-label="Click or drag files to upload">
+  <div class="fallback">
+    <label class="visually-hidden" for={fileInputId}>{label}</label>
+    <input id={fileInputId} name="file" type="file" multiple={multiple ? '' : undefined} />
+  </div>
+  {
+    custom && (
+      <div class="dz-message">
+        <h3 class="dropzone-msg-title">{text}</h3>
+        <span class="dropzone-msg-desc">{description}</span>
+      </div>
+    )
+  }
+</form>
+<CaptureScript>
+  <!-- BEGIN DROPZONE -->
+  <script is:inline define:vars={{ dropzoneId, dropzoneSelector }}>
+    window.tabler_dropzone ??= {}
+
+    function initDropzone() {
+      const dropzoneEl = document.querySelector(dropzoneSelector)
+      const instance = new Dropzone(dropzoneSelector)
+      window.tabler_dropzone[dropzoneId] = instance
+
+      // Dropzone.js is click/drag-only by default: it binds a click handler on the whole
+      // element but never wires a keyboard equivalent. Since the element is now focusable
+      // (role="button" + tabindex="0"), forward Enter/Space to a programmatic click on
+      // Dropzone's own hidden file input so keyboard users can open the file picker too.
+      // Note: that input is appended to <body> (hiddenInputContainer default), not inside
+      // dropzoneEl, so it must be reached via the instance rather than a DOM query here.
+      dropzoneEl?.addEventListener('keydown', (event) => {
+        if (event.target !== dropzoneEl) return
+        if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return
+        event.preventDefault()
+        instance.hiddenFileInput?.click()
+      })
+    }
+
+    document.readyState !== 'loading' ? initDropzone() : document.addEventListener('DOMContentLoaded', initDropzone, { once: true })
+  </script>
+  <!-- END DROPZONE -->
+</CaptureScript>

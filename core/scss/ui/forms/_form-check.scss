@@ -7,11 +7,11 @@ Form check
   user-select: none;
 
   &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
-    color: var(--#{$prefix}secondary);
+    color: var(--secondary);
   }
 
   .form-check-label-off {
-    color: var(--#{$prefix}secondary);
+    color: var(--secondary);
   }
 
   .form-check-input:checked ~ .form-check-label-off {
@@ -24,32 +24,34 @@ Form check
 }
 
 .form-check-input {
-  background-size: $form-check-input-width;
+  --form-check-input-width: #{$form-check-input-width};
   margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
-  box-shadow: $form-check-input-box-shadow;
 
-  .form-switch & {
-    @include transition(background-color$transition-time, background-position $transition-time);
-  }
+  background-size: var(--form-check-input-width);
+  box-shadow: $form-check-input-box-shadow;
 }
 
 .form-check-label {
+  --form-check-label-required-gap: #{$form-check-label-required-gap};
+
   display: block;
 
   &.required {
-    &:after {
-      content: '*';
-      margin-inline-start: 0.25rem;
+    &::after {
+      margin-inline-start: var(--form-check-label-required-gap);
       color: $red;
+      content: '*';
     }
   }
 }
 
 .form-check-description {
+  --form-check-description-margin-top: #{$form-check-description-margin-top};
+
   display: block;
-  color: var(--#{$prefix}secondary);
+  margin-top: var(--form-check-description-margin-top);
   font-size: $h5-font-size;
-  margin-top: 0.25rem;
+  color: var(--secondary);
 }
 
 .form-check-single {
@@ -67,21 +69,30 @@ Form switch
   .form-check-input {
     height: $form-switch-height;
     margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
+    @include transition(background-color $transition-time, background-position $transition-time);
   }
 }
 
 .form-switch-lg {
-  padding-inline-start: 3.5rem;
-  min-height: 1.5rem;
+  --form-switch-lg-padding-start: #{$form-switch-lg-padding-start};
+  --form-switch-lg-min-height: #{$form-switch-lg-min-height};
+  --form-switch-lg-height: #{$form-switch-lg-height};
+  --form-switch-lg-width: #{$form-switch-lg-width};
+  --form-switch-lg-bg-size: #{$form-switch-lg-bg-size};
+  --form-switch-lg-input-offset: #{$form-switch-lg-input-offset};
+  --form-switch-lg-label-padding-top: #{$form-switch-lg-label-padding-top};
+  min-height: var(--form-switch-lg-min-height);
+
+  padding-inline-start: var(--form-switch-lg-padding-start);
 
   .form-check-input {
-    height: 1.5rem;
-    width: 2.75rem;
-    background-size: 1.5rem;
-    margin-inline-start: -3.5rem;
+    width: var(--form-switch-lg-width);
+    height: var(--form-switch-lg-height);
+    margin-inline-start: var(--form-switch-lg-input-offset);
+    background-size: var(--form-switch-lg-bg-size);
   }
 
   .form-check-label {
-    padding-top: 0.125rem;
+    padding-top: var(--form-switch-lg-label-padding-top);
   }
 }

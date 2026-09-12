@@ -31,13 +31,13 @@ interface SwipeConfig {
 const Default: SwipeConfig = {
   endCallback: null,
   leftCallback: null,
-  rightCallback: null
+  rightCallback: null,
 }
 
 const DefaultType: ComponentConfigType = {
   endCallback: '(function|null)',
   leftCallback: '(function|null)',
-  rightCallback: '(function|null)'
+  rightCallback: '(function|null)',
 }
 
 class Swipe extends Config {
@@ -97,9 +97,7 @@ class Swipe extends Config {
   }
 
   _move(event: Event): void {
-    this._deltaX = (event as TouchEvent).touches && (event as TouchEvent).touches.length > 1 ?
-      0 :
-      (event as TouchEvent).touches[0].clientX - this._deltaX
+    this._deltaX = (event as TouchEvent).touches && (event as TouchEvent).touches.length > 1 ? 0 : (event as TouchEvent).touches[0].clientX - this._deltaX
   }
 
   _handleSwipe(): void {

@@ -30,7 +30,7 @@ describe('TemplateFactory', () => {
       it('should sanitize template by default', () => {
         const factory = new TemplateFactory({
           sanitize: true,
-          template: '<div><a href="javascript:alert(7)">Click me</a></div>'
+          template: '<div><a href="javascript:alert(7)">Click me</a></div>',
         })
         expect(factory.toHtml().innerHTML).not.toContain('href="javascript:alert(7)')
       })
@@ -38,7 +38,7 @@ describe('TemplateFactory', () => {
       it('should not sanitize template if disabled', () => {
         const factory = new TemplateFactory({
           sanitize: false,
-          template: '<div><a href="javascript:alert(7)">Click me</a></div>'
+          template: '<div><a href="javascript:alert(7)">Click me</a></div>',
         })
         expect(factory.toHtml().innerHTML).toContain('href="javascript:alert(7)')
       })
@@ -48,7 +48,7 @@ describe('TemplateFactory', () => {
           sanitize: true,
           html: true,
           template: '<div id="foo"></div>',
-          content: { '#foo': '<a href="javascript:alert(7)">Click me</a>' }
+          content: { '#foo': '<a href="javascript:alert(7)">Click me</a>' },
         })
         expect(factory.toHtml().innerHTML).not.toContain('href="javascript:alert(7)')
       })
@@ -58,7 +58,7 @@ describe('TemplateFactory', () => {
           sanitize: false,
           html: true,
           template: '<div id="foo"></div>',
-          content: { '#foo': '<a href="javascript:alert(7)">Click me</a>' }
+          content: { '#foo': '<a href="javascript:alert(7)">Click me</a>' },
         })
         expect(factory.toHtml().innerHTML).toContain('href="javascript:alert(7)')
       })
@@ -81,7 +81,7 @@ describe('TemplateFactory', () => {
         const factory = new TemplateFactory({
           extraClass() {
             return 'testClass'
-          }
+          },
         })
         expect(factory.toHtml().classList.contains('testClass')).toBe(true)
       })
@@ -93,7 +93,7 @@ describe('TemplateFactory', () => {
       const template = '<div><div class="foo"></div><div class="foo2"></div></div>'
       const factory = new TemplateFactory({
         template,
-        content: { '.foo': 'bar', '.foo2': 'bar2' }
+        content: { '.foo': 'bar', '.foo2': 'bar2' },
       })
 
       const html = factory.toHtml()
@@ -106,7 +106,7 @@ describe('TemplateFactory', () => {
         sanitize: true,
         html: true,
         template: '<div id="foo"></div>',
-        content: { '#bar': 'test' }
+        content: { '#bar': 'test' },
       })
       expect(factory.toHtml().outerHTML).toBe('<div id="foo"></div>')
     })
@@ -116,7 +116,7 @@ describe('TemplateFactory', () => {
         sanitize: true,
         html: true,
         template: '<div><div id="foo"></div></div>',
-        content: { '#foo': null }
+        content: { '#foo': null },
       })
       expect(factory.toHtml().outerHTML).toBe('<div></div>')
     })
@@ -126,7 +126,7 @@ describe('TemplateFactory', () => {
         sanitize: true,
         html: true,
         template: '<div><div id="foo"></div></div>',
-        content: { '#foo': () => null }
+        content: { '#foo': () => null },
       })
       expect(factory.toHtml().outerHTML).toBe('<div></div>')
     })
@@ -138,7 +138,7 @@ describe('TemplateFactory', () => {
       const factory = new TemplateFactory({
         html: false,
         template: '<div><div id="foo"></div></div>',
-        content: { '#foo': contentElement }
+        content: { '#foo': contentElement },
       })
 
       const fooEl = factory.toHtml().querySelector('#foo')!
@@ -154,7 +154,7 @@ describe('TemplateFactory', () => {
       const factory = new TemplateFactory({
         html: true,
         template: '<div><div id="foo"></div></div>',
-        content: { '#foo': contentElement }
+        content: { '#foo': contentElement },
       })
 
       const fooEl = factory.toHtml().querySelector('#foo')!
@@ -165,7 +165,7 @@ describe('TemplateFactory', () => {
   describe('getContent', () => {
     it('should get content as array', () => {
       const factory = new TemplateFactory({
-        content: { '.foo': 'bar', '.foo2': 'bar2' }
+        content: { '.foo': 'bar', '.foo2': 'bar2' },
       })
       expect(factory.getContent()).toEqual(['bar', 'bar2'])
     })
@@ -177,8 +177,8 @@ describe('TemplateFactory', () => {
           '.foo2': '',
           '.foo3': null,
           '.foo4': () => 2,
-          '.foo5': () => null
-        }
+          '.foo5': () => null,
+        },
       })
       expect(factory.getContent()).toEqual(['bar', 2])
     })
@@ -187,14 +187,14 @@ describe('TemplateFactory', () => {
   describe('hasContent', () => {
     it('should return true if it has content', () => {
       const factory = new TemplateFactory({
-        content: { '.foo': 'bar', '.foo2': 'bar2', '.foo3': '' }
+        content: { '.foo': 'bar', '.foo2': 'bar2', '.foo3': '' },
       })
       expect(factory.hasContent()).toBe(true)
     })
 
     it('should return false if all content is empty', () => {
       const factory = new TemplateFactory({
-        content: { '.foo2': '', '.foo3': null, '.foo4': () => null }
+        content: { '.foo2': '', '.foo3': null, '.foo4': () => null },
       })
       expect(factory.hasContent()).toBe(false)
     })
@@ -205,7 +205,7 @@ describe('TemplateFactory', () => {
       const template = '<div><div class="foo"></div><div class="foo2"></div></div>'
       const factory = new TemplateFactory({
         template,
-        content: { '.foo': 'bar', '.foo2': 'bar2' }
+        content: { '.foo': 'bar', '.foo2': 'bar2' },
       })
 
       const text = (sel: string) => factory.toHtml().querySelector(sel)!.textContent
@@ -221,7 +221,7 @@ describe('TemplateFactory', () => {
       const template = '<div><div class="foo"></div><div class="foo2"></div></div>'
       const factory = new TemplateFactory({
         template,
-        content: { '.foo': 'bar', '.foo2': 'bar2' }
+        content: { '.foo': 'bar', '.foo2': 'bar2' },
       })
 
       const text = (sel: string) => factory.toHtml().querySelector(sel)!.textContent

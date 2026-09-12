@@ -1,0 +1,24 @@
+---
+// "Less -> More" gradient legend, e.g. for a choropleth map's color scale.
+import { range } from '@shared/lib/array'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+const steps = 10
+const color = 'primary'
+const minLabel = 'Less'
+const maxLabel = 'More'
+
+const items = range(1, steps)
+---
+
+<div class:list={['d-flex align-items-center gap-2', className]}>
+  <div class="text-secondary">{minLabel}</div>
+  <div class="d-flex gap-1">
+    {items.map((step) => <span class="legend" style={`background: color-mix(in srgb, transparent, var(--tblr-${color}) ${(step / steps) * 100}%);`} />)}
+  </div>
+  <div class="text-secondary">{maxLabel}</div>
+</div>

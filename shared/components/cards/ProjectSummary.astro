@@ -1,0 +1,29 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
+import Progress from '@ui/Progress.astro'
+
+interface Props {
+  stageColor?: string
+}
+
+const { stageColor = 'green' } = Astro.props
+const title = 'New website'
+const date = '28 Aug 2019'
+const stage = 'Waiting'
+---
+
+<div class="card">
+  <div class="card-body p-4 py-5 text-center">
+    <Avatar size="xl" placeholder="W" class="mb-4" />
+    <h3 class="mb-0">{title}</h3>
+    <p class="text-secondary">Due to: {date}</p>
+    <p class="mb-3">
+      <span class={`badge bg-${stageColor}-lt`}>{stage}</span>
+    </p>
+    <div>
+      <PeopleAvatarList stacked />
+    </div>
+  </div>
+  <Progress value={38} class="card-progress" />
+</div>

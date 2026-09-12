@@ -1,0 +1,52 @@
+---
+import Progress from '@ui/Progress.astro'
+import CardDropdown from '@ui/CardDropdown.astro'
+import projects from '@data/projects.json'
+import { requireIndex } from '@shared/lib/array'
+import CardTitle from '@ui/CardTitle.astro'
+
+interface Project {
+  title?: string
+  image?: string
+  [key: string]: unknown
+}
+
+interface Props {
+  projectId?: number
+  progress?: number
+  daysAgo?: number
+}
+
+const { projectId = 0, progress = 25, daysAgo = 2 } = Astro.props
+const project = requireIndex(projects as Project[], projectId)
+---
+
+<div class="card">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-3">
+        <img src={project.image} alt={project.title} class="rounded" />
+      </div>
+      <div class="col">
+        <CardTitle class="mb-1">
+          <a href="#" class="text-reset">{project.title}</a>
+        </CardTitle>
+        <div class="text-secondary">Updated {daysAgo} days ago</div>
+
+        <div class="mt-3">
+          <div class="row g-2 align-items-center">
+            <div class="col-auto">
+              {progress}%
+            </div>
+            <div class="col">
+              <Progress value={progress} size="sm" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-auto">
+        <CardDropdown />
+      </div>
+    </div>
+  </div>
+</div>

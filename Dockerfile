@@ -1,20 +1,18 @@
-FROM ruby:3.2-alpine
+FROM node:22-alpine
 
 WORKDIR /app
-ADD _config.yml /app/
-ADD _config_prod.yml /app/
-ADD package.json /app/
-ADD pnpm-lock.yaml /app/
-ADD gulpfile.js /app/
 
-RUN apk add --virtual build-dependencies build-base npm
-RUN apk upgrade
-RUN npm i -g pnpm
-RUN pnpm install
+# pnpm via corepack, pinned by the "packageManager" field in package.json
+RUN corepack enable
 
-# website
+COPY . .
+
+RUN pnpm install --frozen-lockfile
+
+# preview website
 EXPOSE 3000
-# website management (browser auto reload)
-EXPOSE 3001
-# run tabler
+# documentation website
+EXPOSE 3010
+
+# run tabler dev servers
 ENTRYPOINT [ "pnpm", "run", "start" ]

@@ -7,7 +7,7 @@
 }
 
 .col-separator {
-  border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-inline-start: var(--border-width) var(--border-style) var(--border-color);
 }
 
 .container {
@@ -19,19 +19,20 @@
   }
 }
 
-@each $name, $value in (0: 0, sm: 0.375rem, md: 1.5rem, lg: 3rem) {
+@each $name, $value in (0: 0, sm: $grid-row-gutter-sm, md: $grid-row-gutter-md, lg: $grid-row-gutter-lg) {
   .row-#{$name} {
-    margin-inline-end: calc(-1 * $value);
-    margin-inline-start: calc(-1 * $value);
+    --grid-row-gutter: #{$value};
+    margin-inline-start: calc(-1 * var(--grid-row-gutter));
+    margin-inline-end: calc(-1 * var(--grid-row-gutter));
 
     > .col,
     > [class*='col-'] {
-      padding-inline-end: $value;
-      padding-inline-start: $value;
+      padding-inline-start: var(--grid-row-gutter);
+      padding-inline-end: var(--grid-row-gutter);
     }
 
     .card {
-      margin-bottom: 2 * $value;
+      margin-bottom: calc(2 * var(--grid-row-gutter));
     }
   }
 }
@@ -49,8 +50,8 @@
 }
 
 .row-cards {
-  --#{$prefix}gutter-x: #{$cards-grid-gap};
-  --#{$prefix}gutter-y: #{$cards-grid-gap};
+  --gutter-x: #{$cards-grid-gap};
+  --gutter-y: #{$cards-grid-gap};
   min-width: 0;
 
   .row-cards {
@@ -94,7 +95,7 @@
 
   .divide-y#{$name-prefixed} {
     > :not(template) ~ :not(template) {
-      border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color-translucent) !important;
+      border-top: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
     }
 
     > :not(template):not(:first-child) {
@@ -108,7 +109,7 @@
 
   .divide-x#{$name-prefixed} {
     > :not(template) ~ :not(template) {
-      border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color-translucent) !important;
+      border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
     }
 
     > :not(template):not(:first-child) {
@@ -127,9 +128,9 @@
   height: 100%;
 
   > :not(template) {
-    flex: 1;
     display: flex;
-    justify-content: center;
+    flex: 1;
     flex-direction: column;
+    justify-content: center;
   }
 }

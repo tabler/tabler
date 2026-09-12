@@ -1,0 +1,148 @@
+---
+title: Step
+summary: "Steps show where the user is in a multi-step process: which steps are done, which one is active and which are left."
+description: Guide users through multi-step processes with a steps indicator. Show completed, active, and upcoming steps in a clear layout.
+related: [/ui/components/progress-step]
+source: core/scss/ui/_steps.scss
+classnames:
+  component:
+    - class: steps
+      desc: Container element
+  part:
+    - class: step-item
+      desc: One step; mark the current one with aria-current="step"
+  modifier:
+    - class: steps-counter
+      desc: Numbers the steps
+  direction:
+    - class: steps-vertical
+      desc: Stacks the steps in a column
+  color:
+    - class: steps-{color}
+      desc: Any base color for the completed steps; -lt variants use the soft tint
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+Use the `.steps` class for the list and `.step-item` for each step. The `active` class marks the current step.
+
+```html
+<div class="steps">
+  <a href="#" class="step-item"> Step 1 </a>
+  <a href="#" class="step-item"> Step 2 </a>
+  <a href="#" class="step-item active"> Step 3 </a>
+</div>
+```
+
+Four steps, with the third one active:
+
+<Example>
+<div class="steps">
+  <a href="#" class="step-item">Step 1</a>
+  <a href="#" class="step-item">Step 2</a>
+  <a href="#" class="step-item active">Step 3</a>
+  <span href="#" class="step-item">Step 4</span>
+</div>
+</Example>
+
+## Tooltips
+
+Add a [tooltip](/ui/components/tooltip) to a step to explain it on hover, for example when the step titles are short.
+
+To add a tooltip, use the `data-bs-toggle="tooltip"` attribute and specify the tooltip content with the `title` attribute.
+
+```html
+<a
+  href="#"
+  class="step-item"
+  data-bs-toggle="tooltip"
+  data-bs-placement="top"
+  title="Step 1 description"
+>
+  Step 1
+</a>
+```
+
+A tracker with a tooltip on each step:
+
+<Example>
+<div class="steps">
+  <a href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 1 description"> Step 1 </a>
+  <a href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 2 description"> Step 2 </a>
+  <a href="#" class="step-item active" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 3 description"> Step 3 </a>
+  <span href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 4 description"> Step 4 </span>
+</div>
+</Example>
+
+## Color
+
+Change the color with a `steps-*` class, using any name from the [color palette](/ui/base/colors).
+
+```html
+<div class="steps steps-green">...</div>
+```
+
+Two color schemes:
+
+<Example>
+<div class="steps steps-green">
+  <a href="#" class="step-item">Step 1</a>
+  <a href="#" class="step-item">Step 2</a>
+  <a href="#" class="step-item active">Step 3</a>
+  <span href="#" class="step-item">Step 4</span>
+</div>
+<div class="steps steps-red">
+  <a href="#" class="step-item">Step 1</a>
+  <a href="#" class="step-item">Step 2</a>
+  <a href="#" class="step-item active">Step 3</a>
+  <span href="#" class="step-item">Step 4</span>
+</div>
+</Example>
+
+## Steps without title
+
+When there's no room for titles, use steps without them and put the details in tooltips.
+
+<Example>
+<div class="steps">
+  <a href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 1 description"></a>
+  <a href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 2 description"></a>
+  <a href="#" class="step-item active" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 3 description"></a>
+  <span href="#" class="step-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 4 description"></span>
+</div>
+</Example>
+
+## Steps with numbers
+
+The `steps-counter` class shows a number in each step instead of a title.
+
+```html
+<div class="steps steps-counter">...</div>
+```
+
+Numbered steps in another color:
+
+<Example>
+<div class="steps steps-counter">
+  <a href="#" class="step-item"></a>
+  <a href="#" class="step-item active"></a>
+  <span href="#" class="step-item"></span>
+  <span href="#" class="step-item"></span>
+  <span href="#" class="step-item"></span>
+</div>
+</Example>
+
+## Accessibility
+
+- Use an ordered list for the steps. The numbering is meaning, not decoration, so let the markup carry it.
+- Mark the current step with `aria-current="step"`. The `active` class only changes the colors.
+- A completed step and a pending one must differ in more than color - a checkmark, a label, or the word "done".
+- If a step is a link, keep it a real link; if it cannot be reached yet, use `aria-disabled="true"` and take it out of the tab order.
+
+## SCSS variables
+
+Use these SCSS variables to customize steps. The default values are:
+
+<CodeDocs name="steps-variables" file="core/scss/_variables.scss" />

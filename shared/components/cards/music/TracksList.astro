@@ -1,0 +1,52 @@
+---
+import { staticPath } from '@shared/lib/assets'
+import Icon from '@ui/Icon.astro'
+import DropdownMenu from '@shared/components/demo/DropdownMenu.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import tracks from '@data/tracks.json'
+import { millisecondsToMinutes } from '@shared/lib/string-format'
+import { requireIndex } from '@shared/lib/array'
+
+const items = tracks.slice(0, 12)
+---
+
+<div class="card">
+  <ListGroup class="card-list-group">
+    {
+      items.map((track, index) => (
+        <ListGroupItem>
+          <div class="row g-2 align-items-center">
+            <div class="col-auto fs-3">{index + 1}</div>
+            <div class="col-auto">
+              <img src={staticPath(`tracks/${requireIndex(track.album.images, 1).path}`)} class="rounded" alt={track.name} width="40" height="40" />
+            </div>
+            <div class="col">
+              {track.name}
+              <div class="text-secondary">{track.artists.map((artist) => artist.name).join(', ')}</div>
+            </div>
+            <div class="col-auto text-secondary">{millisecondsToMinutes(track.duration_ms)}</div>
+            <div class="col-auto">
+              <button class="switch-icon" data-bs-toggle="switch-icon" aria-label="Like">
+                <span class="switch-icon-a text-muted">
+                  <Icon name="heart" />
+                </span>
+                <span class="switch-icon-b text-red">
+                  <Icon name="heart" class="icon-filled" />
+                </span>
+              </button>
+            </div>
+            <div class="col-auto lh-1">
+              <div class="dropdown">
+                <a href="#" class="link-secondary" data-bs-toggle="dropdown" aria-label="Track options">
+                  <Icon name="dots" />
+                </a>
+                <DropdownMenu right />
+              </div>
+            </div>
+          </div>
+        </ListGroupItem>
+      ))
+    }
+  </ListGroup>
+</div>

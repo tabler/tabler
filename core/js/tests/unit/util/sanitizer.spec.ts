@@ -5,7 +5,7 @@ describe('sanitizer', () => {
   describe('DefaultAllowlist', () => {
     it('should have a wildcard entry with common attributes', () => {
       expect(DefaultAllowlist['*']).toBeDefined()
-      const wildcardStrings = DefaultAllowlist['*'].filter(a => typeof a === 'string')
+      const wildcardStrings = DefaultAllowlist['*'].filter((a) => typeof a === 'string')
       expect(wildcardStrings).toContain('class')
       expect(wildcardStrings).toContain('id')
       expect(wildcardStrings).toContain('role')

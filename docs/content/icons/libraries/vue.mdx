@@ -1,0 +1,54 @@
+---
+title: Vue
+description: Add Tabler Icons to Vue apps with the official package. Import over 5000 SVG icons as Vue components with tree-shaking and full styling control.
+summary: The official Vue package for Tabler Icons. Every icon is a component, so only the icons you import end up in the bundle.
+---
+
+import TabsPackage from '@components/TabsPackage.astro'
+
+![Tabler Icons for Vue](/img/icons/package-vue.png)
+
+
+## Installation
+
+<TabsPackage name="@tabler/icons-vue" />
+
+or just [download from Github](https://github.com/tabler/tabler-icons/releases).
+
+## How to use
+
+Each icon is a Vue component that renders an SVG. The package ships as ES modules, so only the icons you import end up in the bundle.
+
+```vue
+<template>
+  <IconHome />
+</template>
+
+<script>
+  // Returns Vue component
+  import { IconHome } from '@tabler/icons-vue';
+
+  export default {
+    components: {
+      IconHome
+    }
+  };
+</script>
+```
+
+You can pass additional props to adjust the icon.
+
+```html
+<IconHome color="red" :size="48" stroke-width="1" />
+```
+
+### Props
+
+All icon components accept these props to control the size, color, and stroke width of the rendered SVG:
+
+| name          | type     | default      |
+| ------------- | -------- | ------------ |
+| `size`        | _Number_ | 24           |
+| `color`       | _String_ | currentColor |
+| `stroke`      | _Number_ | 2            |
+

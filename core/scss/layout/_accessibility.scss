@@ -1,0 +1,42 @@
+@use '../config' as *;
+
+// Forced-colors (Windows High Contrast) support: the UA strips box-shadow there,
+// and Tabler's focus indicator is shadow-based, so restore an outline-drawn one.
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  // .btn-close is drawn with a mask + background-color and would disappear
+  .btn-close {
+    forced-color-adjust: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // Decorative looping animations are dropped entirely
+  .badge-blink,
+  .status-dot-animated::before,
+  .status-indicator-animated .status-indicator-circle,
+  .icon-pulse,
+  .icon-tada,
+  .icon-rotate,
+  .card-gradient-animated,
+  .btn-animate-icon-pulse .icon,
+  .btn-animate-icon-shake .icon,
+  .btn-animate-icon-tada .icon,
+  .wave-1,
+  .wave-2,
+  .wave-3 {
+    animation: none !important;
+  }
+
+  // Loading indicators still convey state, so slow them down instead of stopping
+  .loader::after,
+  .btn-loading::after,
+  .progress-bar-indeterminate::before,
+  .animated-dots::after {
+    animation-duration: 3s !important;
+  }
+}

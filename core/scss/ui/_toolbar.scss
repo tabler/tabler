@@ -1,16 +1,18 @@
 @use '../config' as *;
 
 .toolbar {
+  --toolbar-gutter: #{$toolbar-gutter};
+
   display: flex;
-  flex-wrap: nowrap;
   flex-shrink: 0;
-  margin: 0 -0.5rem;
+  flex-wrap: nowrap;
+  margin: 0 calc(-1 * var(--toolbar-gutter));
 
   > * {
-    margin: 0 0.5rem;
+    margin: 0 var(--toolbar-gutter);
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }

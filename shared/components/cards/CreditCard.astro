@@ -1,0 +1,50 @@
+---
+import Button from '@ui/Button.astro'
+import FormGroup from '@ui/FormGroup.astro'
+
+const months = Array.from({ length: 12 }, (_, i) => i + 1)
+const years = Array.from({ length: 11 }, (_, i) => 2020 + i)
+---
+
+<div class="card">
+  <div class="card-body">
+    <div class="mb-3">
+      <label class="form-label" for="credit-card-number">Card number</label>
+      <input type="text" name="input-mask" id="credit-card-number" class="form-control" data-mask="0000 0000 0000 0000" data-mask-visible="true" placeholder="0000 0000 0000 0000" autocomplete="cc-number" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="credit-card-name">Card name</label>
+      <input type="text" id="credit-card-name" class="form-control" autocomplete="cc-name" />
+    </div>
+
+    <div class="row">
+      <div class="col-8">
+        <FormGroup label="Expiration date" associate={false}>
+          <div class="row g-2">
+            <div class="col">
+              <select class="form-select" aria-label="Expiration month" autocomplete="cc-exp-month">
+                {months.map((month) => <option value={month}>{month}</option>)}
+              </select>
+            </div>
+            <div class="col">
+              <select class="form-select" aria-label="Expiration year" autocomplete="cc-exp-year">
+                {years.map((year) => <option value={year}>{year}</option>)}
+              </select>
+            </div>
+          </div>
+        </FormGroup>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label class="form-label" for="credit-card-cvv">CVV</label>
+          <input type="number" id="credit-card-cvv" class="form-control" autocomplete="cc-csc" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <Button text="Pay now" color="primary" block />
+    </div>
+  </div>
+</div>

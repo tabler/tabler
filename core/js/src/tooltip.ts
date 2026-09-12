@@ -1,5 +1,6 @@
 import { Tooltip } from './bootstrap'
 
+// js-docs-start tooltip-init
 const tooltipTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="tooltip"]'))
 tooltipTriggerList.map(function (tooltipTriggerEl: HTMLElement) {
   const options = {
@@ -9,3 +10,4 @@ tooltipTriggerList.map(function (tooltipTriggerEl: HTMLElement) {
   }
   return new Tooltip(tooltipTriggerEl, options)
 })
+// js-docs-end tooltip-init

@@ -11,21 +11,23 @@ Form label
  */
 .col-form-label,
 .form-label {
+  --form-label-required-gap: #{$form-label-required-gap};
+
   display: block;
-  font-weight: var(--#{$prefix}font-weight-medium);
+  font-weight: var(--font-weight-medium);
 
   &.required {
-    &:after {
-      content: '*';
-      margin-inline-start: 0.25rem;
+    &::after {
+      margin-inline-start: var(--form-label-required-gap);
       color: $red;
+      content: '*';
     }
   }
 }
 
 .form-label-description {
   float: inline-end;
-  font-weight: var(--#{$prefix}font-weight-normal);
+  font-weight: var(--font-weight-normal);
   color: $form-secondary-color;
 }
 
@@ -33,6 +35,10 @@ Form label
 Form hint
  */
 .form-hint {
+  --form-hint-margin-top: #{$form-hint-margin-top};
+  --form-hint-label-offset: #{$form-hint-label-offset};
+  --form-hint-control-margin-top: #{$form-hint-control-margin-top};
+
   display: block;
   color: $form-secondary-color;
 
@@ -40,18 +46,18 @@ Form hint
     margin-bottom: 0;
   }
 
-  & + .form-control {
-    margin-top: 0.25rem;
+  + .form-control {
+    margin-top: var(--form-hint-margin-top);
   }
 
   .form-label + & {
-    margin-top: -0.25rem;
+    margin-top: var(--form-hint-label-offset);
   }
 
   .input-group + &,
   .form-control + &,
   .form-select + & {
-    margin-top: 0.5rem;
+    margin-top: var(--form-hint-control-margin-top);
     color: $form-secondary-color;
   }
 }
@@ -61,7 +67,7 @@ Form select
  */
 .form-select {
   &:-moz-focusring {
-    color: var(--#{$prefix}body-color);
+    color: var(--body-color);
   }
 }
 
@@ -70,9 +76,9 @@ Form control
  */
 .form-control {
   &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px var(--#{$prefix}bg-surface-secondary) inset;
-    color: var(--#{$prefix}body-color);
-    -webkit-text-fill-color: var(--#{$prefix}body-color);
+    color: var(--body-color);
+    box-shadow: 0 0 0 1000px var(--bg-surface-secondary) inset;
+    -webkit-text-fill-color: var(--body-color);
   }
 
   &:disabled,
@@ -87,19 +93,19 @@ Form control
 }
 
 .form-control-light {
-  background-color: var(--#{$prefix}gray-100);
+  background-color: var(--gray-100);
   border-color: transparent;
 }
 
 .form-control-dark {
-  background-color: rgba($black, 0.1);
   color: $white;
+  background-color: rgba($black, 0.1);
   border-color: transparent;
 
   &:focus {
     background-color: rgba($black, 0.1);
-    box-shadow: none;
     border-color: rgba($white, 0.24);
+    box-shadow: none;
   }
 
   &::placeholder {
@@ -108,28 +114,33 @@ Form control
 }
 
 .form-control-rounded {
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  @include border-radius(var(--border-radius-pill));
 }
 
 .form-control-flush {
   padding: 0;
+  line-height: inherit;
+  resize: none;
   background: none !important;
   border-color: transparent !important;
-  resize: none;
   box-shadow: none !important;
-  line-height: inherit;
 }
 
 .form-footer {
-  margin-top: 2rem;
+  --form-footer-margin-top: #{$form-footer-margin-top};
+
+  margin-top: var(--form-footer-margin-top);
 }
 
 .form-fieldset {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background: var(--#{$prefix}bg-surface-secondary);
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  @include border-radius(var(--#{$prefix}border-radius));
+  --form-fieldset-padding: #{$form-fieldset-padding};
+  --form-fieldset-margin-bottom: #{$form-fieldset-margin-bottom};
+
+  padding: var(--form-fieldset-padding);
+  margin-bottom: var(--form-fieldset-margin-bottom);
+  background: var(--bg-surface-secondary);
+  border: var(--border-width) var(--border-style) var(--border-color);
+  @include border-radius(var(--border-radius));
 }
 
 fieldset:empty {
@@ -140,26 +151,29 @@ fieldset:empty {
 Form help
  */
 .form-help {
+  --form-help-size: #{$form-help-size};
+  --form-help-font-size: #{$form-help-font-size};
+
   display: inline-flex;
-  font-weight: var(--#{$prefix}font-weight-semibold);
   align-items: center;
   justify-content: center;
-  width: 1.125rem;
-  height: 1.125rem;
-  font-size: 0.75rem;
+  width: var(--form-help-size);
+  height: var(--form-help-size);
+  font-size: var(--form-help-font-size);
+  font-weight: var(--font-weight-semibold);
   color: $form-secondary-color;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  background: var(--#{$prefix}gray-100);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  background: var(--gray-100);
+  @include border-radius(var(--border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
 
   &:hover,
   &[aria-describedby] {
     color: $white;
-    background: var(--#{$prefix}primary);
+    background: var(--primary);
   }
 }
 
@@ -171,6 +185,7 @@ Input group
   @include border-radius($input-border-radius);
 
   .form-control,
+  .form-select,
   .btn {
     box-shadow: none;
   }
@@ -207,8 +222,8 @@ Input group
   }
 
   .input-group-text {
-    background: $form-check-input-bg;
     z-index: 10;
+    background: $form-check-input-bg;
     @include transition($input-transition);
 
     &:first-child {
@@ -247,7 +262,9 @@ Forms on mobile devices
   */
 .form-control,
 .form-select {
+  --form-control-mobile-font-size: #{$form-control-mobile-font-size};
+
   @include media-breakpoint-down(sm) {
-    font-size: 1rem;
+    font-size: var(--form-control-mobile-font-size);
   }
 }

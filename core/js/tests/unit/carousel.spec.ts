@@ -61,16 +61,8 @@ describe('Carousel', () => {
     })
 
     it('should go to next item on right arrow key', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div class="carousel-item active">item 1</div>',
-          '    <div id="item2" class="carousel-item">item 2</div>',
-          '    <div class="carousel-item">item 3</div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl, { keyboard: true })
@@ -87,16 +79,8 @@ describe('Carousel', () => {
     })
 
     it('should go to previous item on left arrow key', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div id="item1" class="carousel-item">item 1</div>',
-          '    <div class="carousel-item active">item 2</div>',
-          '    <div class="carousel-item">item 3</div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="item1" class="carousel-item">item 1</div>', '    <div class="carousel-item active">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl, { keyboard: true })
@@ -113,14 +97,7 @@ describe('Carousel', () => {
     })
 
     it('should not prevent keydown for non-arrow keys', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active">item 1</div>',
-        '    <div class="carousel-item">item 2</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       new Carousel(carouselEl, { keyboard: true })
@@ -133,14 +110,7 @@ describe('Carousel', () => {
     })
 
     it('should ignore keyboard in input/textarea', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active"><input type="text"></div>',
-        '    <div class="carousel-item">item 2</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active"><input type="text"></div>', '    <div class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl, { keyboard: true })
@@ -172,15 +142,8 @@ describe('Carousel', () => {
 
   describe('next', () => {
     it('should slide to next item', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div class="carousel-item active">item 1</div>',
-          '    <div id="item2" class="carousel-item">item 2</div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl)
@@ -199,14 +162,7 @@ describe('Carousel', () => {
   describe('prev', () => {
     it('should stay at start when wrap is false', () => {
       return new Promise<void>((resolve, reject) => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div id="one" class="carousel-item active"></div>',
-          '    <div id="two" class="carousel-item"></div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"></div>', '    <div id="two" class="carousel-item"></div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl, { wrap: false })
@@ -255,16 +211,8 @@ describe('Carousel', () => {
 
   describe('to', () => {
     it('should go to specific index', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div class="carousel-item active">item 1</div>',
-          '    <div id="item2" class="carousel-item">item 2</div>',
-          '    <div id="item3" class="carousel-item">item 3</div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div id="item3" class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl)
@@ -280,14 +228,7 @@ describe('Carousel', () => {
     })
 
     it('should ignore invalid index', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active">item 1</div>',
-        '    <div class="carousel-item">item 2</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl)
@@ -352,14 +293,7 @@ describe('Carousel', () => {
 
   describe('_updateInterval', () => {
     it('should use data-bs-interval from active element', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active" data-bs-interval="2000">item 1</div>',
-        '    <div class="carousel-item">item 2</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active" data-bs-interval="2000">item 1</div>', '    <div class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl)
@@ -369,14 +303,7 @@ describe('Carousel', () => {
     })
 
     it('should use data-tblr-interval from active element', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active" data-tblr-interval="3000">item 1</div>',
-        '    <div class="carousel-item">item 2</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active" data-tblr-interval="3000">item 1</div>', '    <div class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl)
@@ -386,13 +313,7 @@ describe('Carousel', () => {
     })
 
     it('should fall back to defaultInterval if no data-interval', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active">item 1</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl)
@@ -414,7 +335,7 @@ describe('Carousel', () => {
         '    <div class="carousel-item active">item 1</div>',
         '    <div class="carousel-item">item 2</div>',
         '  </div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
@@ -439,7 +360,7 @@ describe('Carousel', () => {
         '    <div class="carousel-item active">item 1</div>',
         '    <div class="carousel-item">item 2</div>',
         '  </div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
@@ -453,13 +374,7 @@ describe('Carousel', () => {
     })
 
     it('should skip if no indicators element', () => {
-      fixtureEl.innerHTML = [
-        '<div id="myCarousel" class="carousel slide">',
-        '  <div class="carousel-inner">',
-        '    <div class="carousel-item active">item 1</div>',
-        '  </div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '  </div>', '</div>'].join('')
 
       const carouselEl = fixtureEl.querySelector('#myCarousel')!
       const carousel = new Carousel(carouselEl)
@@ -493,16 +408,8 @@ describe('Carousel', () => {
 
   describe('wrap', () => {
     it('should wrap from end to start', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div id="one" class="carousel-item active"></div>',
-          '    <div id="two" class="carousel-item"></div>',
-          '    <div id="three" class="carousel-item"></div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
         const carousel = new Carousel(carouselEl, { wrap: true })
@@ -562,7 +469,7 @@ describe('Carousel', () => {
     })
 
     it('should navigate via data-tblr-slide="next"', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="myCarousel" class="carousel slide">',
           '  <div class="carousel-inner">',
@@ -570,7 +477,7 @@ describe('Carousel', () => {
           '    <div id="item2" class="carousel-item">item 2</div>',
           '  </div>',
           '  <button data-tblr-slide="next" data-bs-target="#myCarousel">Next</button>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
@@ -586,7 +493,7 @@ describe('Carousel', () => {
     })
 
     it('should navigate via data-tblr-slide="prev"', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="myCarousel" class="carousel slide">',
           '  <div class="carousel-inner">',
@@ -594,7 +501,7 @@ describe('Carousel', () => {
           '    <div class="carousel-item active">item 2</div>',
           '  </div>',
           '  <button data-tblr-slide="prev" data-bs-target="#myCarousel">Prev</button>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!
@@ -610,7 +517,7 @@ describe('Carousel', () => {
     })
 
     it('should handle data-tblr-slide-to in indicators', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = [
           '<div id="myCarousel" class="carousel slide">',
           '  <div class="carousel-indicators">',
@@ -621,7 +528,7 @@ describe('Carousel', () => {
           '    <div class="carousel-item active">item 1</div>',
           '    <div id="item2" class="carousel-item">item 2</div>',
           '  </div>',
-          '</div>'
+          '</div>',
         ].join('')
 
         const carouselEl = fixtureEl.querySelector('#myCarousel')!

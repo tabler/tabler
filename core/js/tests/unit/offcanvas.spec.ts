@@ -17,15 +17,8 @@ describe('Offcanvas', () => {
     }
   })
 
-  const createOffcanvasHTML = () => [
-    '<div class="offcanvas offcanvas-start" tabindex="-1">',
-    '  <div class="offcanvas-header">',
-    '    <h5 class="offcanvas-title">Offcanvas</h5>',
-    '    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>',
-    '  </div>',
-    '  <div class="offcanvas-body">Content</div>',
-    '</div>'
-  ].join('')
+  const createOffcanvasHTML = () =>
+    ['<div class="offcanvas offcanvas-start" tabindex="-1">', '  <div class="offcanvas-header">', '    <h5 class="offcanvas-title">Offcanvas</h5>', '    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>', '  </div>', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
 
   describe('VERSION', () => {
     it('should return plugin version', () => {
@@ -68,7 +61,7 @@ describe('Offcanvas', () => {
 
   describe('toggle', () => {
     it('should show when hidden', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -83,7 +76,7 @@ describe('Offcanvas', () => {
     })
 
     it('should hide when shown', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -104,7 +97,7 @@ describe('Offcanvas', () => {
 
   describe('show', () => {
     it('should show offcanvas', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -122,7 +115,7 @@ describe('Offcanvas', () => {
     })
 
     it('should not show if already shown', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -145,12 +138,12 @@ describe('Offcanvas', () => {
     })
 
     it('should not show if show event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
 
-        el.addEventListener('show.bs.offcanvas', event => {
+        el.addEventListener('show.bs.offcanvas', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(instance._isShown).toBe(false)
@@ -163,7 +156,7 @@ describe('Offcanvas', () => {
     })
 
     it('should pass relatedTarget in show event', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML() + '<button id="trigger">Open</button>'
         const el = fixtureEl.querySelector('.offcanvas')!
         const trigger = fixtureEl.querySelector('#trigger') as HTMLElement
@@ -181,7 +174,7 @@ describe('Offcanvas', () => {
 
   describe('hide', () => {
     it('should hide offcanvas', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -215,13 +208,13 @@ describe('Offcanvas', () => {
     })
 
     it('should not hide if hide event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
 
         el.addEventListener('shown.bs.offcanvas', () => {
-          el.addEventListener('hide.bs.offcanvas', event => {
+          el.addEventListener('hide.bs.offcanvas', (event) => {
             event.preventDefault()
             setTimeout(() => {
               expect(instance._isShown).toBe(true)
@@ -250,7 +243,7 @@ describe('Offcanvas', () => {
 
   describe('keyboard', () => {
     it('should close on Escape when keyboard is true', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el, { keyboard: true })
@@ -269,7 +262,7 @@ describe('Offcanvas', () => {
     })
 
     it('should fire hidePrevented when keyboard is false and Escape pressed', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         new Offcanvas(el, { keyboard: false })
@@ -287,7 +280,7 @@ describe('Offcanvas', () => {
     })
 
     it('should ignore non-Escape keys', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el)
@@ -340,7 +333,7 @@ describe('Offcanvas', () => {
 
   describe('scroll option', () => {
     it('should not hide scrollbar when scroll is true', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el, { scroll: true })
@@ -357,7 +350,7 @@ describe('Offcanvas', () => {
 
   describe('backdrop option', () => {
     it('should work with backdrop set to false', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createOffcanvasHTML()
         const el = fixtureEl.querySelector('.offcanvas')!
         const instance = new Offcanvas(el, { backdrop: false })
@@ -382,13 +375,8 @@ describe('Offcanvas', () => {
 
   describe('data-tblr-toggle', () => {
     it('should open offcanvas via data-tblr-toggle="offcanvas"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="offcanvas" data-bs-target="#testOffcanvas">Open</button>',
-          '<div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1">',
-          '  <div class="offcanvas-body">Content</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="offcanvas" data-bs-target="#testOffcanvas">Open</button>', '<div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1">', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
 
         const offcanvasEl = fixtureEl.querySelector('#testOffcanvas')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="offcanvas"]') as HTMLElement
@@ -404,13 +392,8 @@ describe('Offcanvas', () => {
     })
 
     it('should open offcanvas via data-tblr-toggle with data-tblr-target', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="offcanvas" data-tblr-target="#testOffcanvas">Open</button>',
-          '<div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1">',
-          '  <div class="offcanvas-body">Content</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="offcanvas" data-tblr-target="#testOffcanvas">Open</button>', '<div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1">', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
 
         const offcanvasEl = fixtureEl.querySelector('#testOffcanvas')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="offcanvas"]') as HTMLElement
@@ -428,15 +411,8 @@ describe('Offcanvas', () => {
 
   describe('data-tblr-dismiss', () => {
     it('should close offcanvas via data-tblr-dismiss="offcanvas"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="offcanvas offcanvas-start" tabindex="-1">',
-          '  <div class="offcanvas-header">',
-          '    <button type="button" class="btn-close" data-tblr-dismiss="offcanvas"></button>',
-          '  </div>',
-          '  <div class="offcanvas-body">Content</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="offcanvas offcanvas-start" tabindex="-1">', '  <div class="offcanvas-header">', '    <button type="button" class="btn-close" data-tblr-dismiss="offcanvas"></button>', '  </div>', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
 
         const el = fixtureEl.querySelector('.offcanvas')!
         const dismissBtn = fixtureEl.querySelector('[data-tblr-dismiss="offcanvas"]') as HTMLElement

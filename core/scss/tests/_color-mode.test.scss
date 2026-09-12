@@ -5,19 +5,21 @@
 // Tabler uses for dark mode). The `media-query` branch depends on overriding
 // that global through the variables module, so it is not covered here.
 
-@use "../mixins/bootstrap/color-mode" as *;
+@use '../mixins/bootstrap/color-mode' as *;
 
-@include describe("color-mode") {
-  @include it("scopes content under the theme attribute selectors") {
+@include describe('color-mode') {
+  @include it('scopes content under the theme attribute selectors') {
     @include assert() {
       @include output() {
         @include color-mode(dark) {
-          .x { color: red; }
+          .x {
+            color: red;
+          }
         }
       }
       @include expect() {
-        [data-bs-theme=dark] .x,
-        [data-theme=dark] .x {
+        [data-bs-theme='dark'] .x,
+        [data-theme='dark'] .x {
           color: red;
         }
       }

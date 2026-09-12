@@ -1,50 +1,70 @@
 ---
-// Port of preview/pages/accordion.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Accordion from '@shared/components/ui/Accordion.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Accordion from '@components/demo/Accordion.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Accordion" pageHeader="Accordion" pageMenu="base.accordion">
-	<div class="row row-cards">
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<Accordion />
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card">
-				<Accordion type="flush" id="flush" />
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<Accordion type="tabs" id="tabs" />
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<Accordion type="inverted" id="inverted" />
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<Accordion id="inverted-plus" type="inverted,plus" toggleIcon="plus" />
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<Accordion id="icons" showIcon />
-				</div>
-			</div>
-		</div>
-	</div>
+<DefaultLayout title="Accordion" pageMenu="base.accordion" description="Accordions show and hide sections of content, one panel at a time, inside a card.">
+  <DocsLink slot="page-header-actions" path="/ui/components/accordion" />
+
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Default</CardTitle>
+          <CardSubtitle>The base accordion — one panel open at a time.</CardSubtitle>
+          <Accordion id="default" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Flush</CardTitle>
+          <CardSubtitle>Add <code>accordion-flush</code> to remove the card border and rounded corners.</CardSubtitle>
+        </CardBody>
+        <Accordion type={['flush']} id="flush" />
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Tabs</CardTitle>
+          <CardSubtitle>Add <code>accordion-tabs</code> for a tab-like header instead of the default style.</CardSubtitle>
+          <Accordion type={['tabs']} id="tabs" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Inverted</CardTitle>
+          <CardSubtitle>Add <code>accordion-inverted</code> to flip the toggle icon to the start of the header.</CardSubtitle>
+          <Accordion type={['inverted']} id="inverted" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Inverted with plus icon</CardTitle>
+          <CardSubtitle>Combine <code>accordion-inverted</code> with <code>accordion-button-toggle-plus</code> and a custom icon in the toggle.</CardSubtitle>
+          <Accordion id="inverted-plus" type={['inverted']} toggleIcon="plus" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>With icons</CardTitle>
+          <CardSubtitle>Add an <code>accordion-button-icon</code> next to each panel's title.</CardSubtitle>
+          <Accordion id="icons" showIcon />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

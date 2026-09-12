@@ -1,0 +1,147 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Prose from '@ui/Prose.astro'
+import Avatar from '@ui/Avatar.astro'
+import DocsLink from '@ui/DocsLink.astro'
+---
+
+<DefaultLayout title="Prose" pageMenu="base.prose" description="Wrap long-form content in .prose to style headings, paragraphs, lists, and tables without adding classes to every element.">
+  <DocsLink slot="page-header-actions" path="/ui/base/prose" />
+
+  <div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+      <div class="card card-lg">
+        <div class="card-body">
+          <Prose>
+            <h1>Getting started with documentation <span class="badge">New</span></h1>
+            <div class="d-flex align-items-center text-secondary mb-4">
+              <Avatar placeholder="PK" size="sm" class="me-2" />
+              Written by Paweł Kuna · 6 min read
+            </div>
+            <p class="lead">
+              Writing clear and effective documentation is essential for any project. When you create content that others will read and use, proper formatting makes all the difference. <em>Good documentation</em> helps users understand complex concepts quickly and efficiently.
+            </p>
+            <blockquote>
+              <p>Documentation is a love letter that you write to your future self.</p>
+            </blockquote>
+            <p>
+              The foundation of great documentation starts with <strong>understanding your audience</strong> and their needs. Along the way you'll reach for a handful of inline elements: <mark>highlights</mark> to draw the eye, an <abbr title="HyperText Markup Language">HTML</abbr> tag for terms that deserve a definition,
+              and <del>outdated advice</del> replaced with <ins>the current recommendation</ins>. Formulas read naturally too, like H<sub>2</sub>O or 2<sup>10</sup>.
+            </p>
+            <p>
+              As <cite>The Elements of Style</cite> puts it, omit needless words — the same rule applies to interfaces and to the docs that explain them.
+            </p>
+
+            <div class="callout">
+              <p>
+                <strong>Tip.</strong> Keep a glossary of terms your readers might not know. It saves you from re-explaining the same concept in every article.
+              </p>
+            </div>
+
+            <h2>A quick glossary</h2>
+            <dl>
+              <dt>Prose</dt>
+              <dd>Long-form, readable content — articles, changelogs, help center entries.</dd>
+              <dt>Markdown</dt>
+              <dd>A plain-text format that compiles down to the same HTML this page uses.</dd>
+              <dt>Style guide</dt>
+              <dd>A shared reference so every writer on the team formats things the same way.</dd>
+            </dl>
+
+            <h2>Adding code examples</h2>
+            <p>
+              Inline code looks like <code>console.log("Hello")</code> and uses monospace styling. For anything longer, drop it into a code block, and mention shortcuts with <kbd>Ctrl</kbd> + <kbd>C</kbd> style keys:
+            </p>
+            <pre><code>{`function add(a, b) {\n  return a + b;\n}`}</code></pre>
+
+            <h2>Structuring steps and points</h2>
+            <p>Use an ordered list to walk through a process:</p>
+            <ol>
+              <li>Start with the most important information.</li>
+              <li>Provide context before technical details.</li>
+              <li>Include practical examples.</li>
+            </ol>
+            <p>And an unordered list for related points that don't have a specific order:</p>
+            <ul>
+              <li>Write clear, concise list items.</li>
+              <li>Keep the structure consistent.</li>
+              <li>Avoid overly long items.</li>
+            </ul>
+
+            <h3>Nesting related items</h3>
+            <p>Lists can nest, with indentation and spacing handled automatically:</p>
+            <ul>
+              <li>
+                Editing
+                <ul>
+                  <li>Undo and redo</li>
+                  <li>Cut, copy, and paste</li>
+                </ul>
+              </li>
+              <li>
+                Formatting
+                <ul>
+                  <li>Bold and italic</li>
+                  <li>Headings and lists</li>
+                </ul>
+              </li>
+              <li>Sharing</li>
+            </ul>
+
+            <h3>A visual checklist</h3>
+            <p>For a status readers can scan at a glance, drop in the steps component instead of a plain list:</p>
+            <ul class="steps steps-vertical steps-counter my-4">
+              <li class="step-item">Draft</li>
+              <li class="step-item">Review</li>
+              <li class="step-item active">Publish</li>
+              <li class="step-item">Announce</li>
+            </ul>
+
+            <hr />
+
+            <h2>Supporting images</h2>
+            <p>Images should support the text and provide useful context, not just decorate the page.</p>
+            <figure>
+              <img src="/static/photos/cup-of-coffee-and-an-open-book.jpg" alt="Open book and coffee" />
+              <figcaption class="text-secondary small mt-2">A quiet spot makes for better writing sessions.</figcaption>
+            </figure>
+
+            <h2>Comparing data in tables</h2>
+            <p>Tables work best for comparing related data points, like votes on a proposal:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Up-votes</th>
+                  <th>Down-votes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Alice</td>
+                  <td>10</td>
+                  <td>11</td>
+                </tr>
+                <tr>
+                  <td>Bob</td>
+                  <td>4</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>Charlie</td>
+                  <td>7</td>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <td>Totals</td>
+                  <td>21</td>
+                  <td>23</td>
+                </tr>
+              </tbody>
+            </table>
+          </Prose>
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

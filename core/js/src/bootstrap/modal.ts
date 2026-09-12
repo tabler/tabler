@@ -11,9 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import {
-  isRTL, isVisible, reflow
-} from './util/index'
+import { isRTL, isVisible, reflow } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 
 /**
@@ -58,13 +56,13 @@ interface ComponentConfigType {
 const Default: ComponentConfig = {
   backdrop: true,
   focus: true,
-  keyboard: true
+  keyboard: true,
 }
 
 const DefaultType: ComponentConfigType = {
   backdrop: '(boolean|string)',
   focus: 'boolean',
-  keyboard: 'boolean'
+  keyboard: 'boolean',
 }
 
 /**
@@ -114,7 +112,7 @@ class Modal extends BaseComponent {
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
-      relatedTarget
+      relatedTarget,
     })
 
     if (showEvent.defaultPrevented) {
@@ -170,13 +168,13 @@ class Modal extends BaseComponent {
   _initializeBackDrop(): Backdrop {
     return new Backdrop({
       isVisible: Boolean(this._config.backdrop),
-      isAnimated: this._isAnimated()
+      isAnimated: this._isAnimated(),
     })
   }
 
   _initializeFocusTrap(): FocusTrap {
     return new FocusTrap({
-      trapElement: this._element
+      trapElement: this._element,
     })
   }
 
@@ -207,7 +205,7 @@ class Modal extends BaseComponent {
 
       this._isTransitioning = false
       EventHandler.trigger(this._element, EVENT_SHOWN, {
-        relatedTarget
+        relatedTarget,
       })
     }
 

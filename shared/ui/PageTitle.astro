@@ -1,0 +1,18 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+// Page heading (.page-title), used at the top of a page or inside a .page-header.
+
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
+  class?: string
+  id?: string
+}
+
+const { as: Tag = 'h1', class: className, id }: Props = Astro.props
+---
+
+<Tag class:list={['page-title', className]} {...id ? { id } : {}}>
+  <slot />
+</Tag>

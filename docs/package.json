@@ -2,28 +2,37 @@
   "name": "@tabler/docs",
   "private": true,
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.5.1",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "assets": "node .build/copy-assets.mjs",
-    "dev": "pnpm run assets && astro dev",
-    "build": "pnpm run assets && astro build",
+    "dev": "pnpm run css && concurrently -n astro,css -c blue,magenta \"astro dev\" \"pnpm run watch:css\"",
+    "build": "pnpm run css && astro build",
+    "css": "tsx ../.build/build-css.ts scss tmp-assets/css --minify --no-prefix",
+    "watch:css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss tmp-assets/css --no-prefix\"",
     "preview": "astro preview",
-    "clean": "shx rm -rf dist public .astro",
-    "astro": "astro"
+    "clean": "shx rm -rf dist public .astro tmp-assets",
+    "type-check": "astro check"
   },
   "dependencies": {
+    "@astrojs/vercel": "^11.0.10",
+    "@docsearch/js": "^5.0.4",
     "@tabler/core": "workspace:*",
-    "astro": "^7.0.9",
-    "shiki": "^4.3.1"
+    "@vercel/functions": "^3.9.5",
+    "astro": "^7.3.1",
+    "shiki": "^4.4.3"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^7.0.3",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-satteri": "^0.3.8",
+    "@astrojs/mdx": "^7.0.8",
+    "@docsearch/css": "^5.0.4",
     "@tabler/preview": "workspace:*",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.4.0",
     "js-beautify": "^2.0.3",
-    "shx": "^0.4.0"
+    "sharp": "^0.35.4",
+    "shx": "^0.4.0",
+    "typescript": "^5.7.3"
   }
 }

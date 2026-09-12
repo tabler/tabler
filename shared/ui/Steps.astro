@@ -1,0 +1,42 @@
+---
+import { range } from '@shared/lib/array'
+
+interface Props {
+  count: number
+  active: number
+  numbers?: boolean
+  /** steps-{color} — recolors the dots and connectors */
+  color?: string
+  /** steps-vertical — stacks the steps into a column */
+  vertical?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { count, active, numbers, color, vertical, class: className, ...rest } = Astro.props
+
+const classes = ['steps', color && `steps-${color}`, numbers && 'steps-counter', vertical && 'steps-vertical', className]
+
+const steps = range(1, count)
+---
+
+<ol class:list={classes} aria-label="Progress" {...rest}>
+  {
+    steps.map((i) => {
+      const isFuture = i > active
+      const isCurrent = i === active
+      const isDone = i < active
+      const Element = isFuture ? 'span' : 'a'
+      const itemClass = ['step-item', isCurrent ? 'active' : '']
+      const fallbackLabel = `Step ${i}${isCurrent ? ' (current)' : isDone ? ' (completed)' : ''}`
+      return (
+        <li class:list={itemClass}>
+          <Element href={isFuture ? undefined : '#'} aria-current={isCurrent ? 'step' : undefined}>
+            <span class="visually-hidden">{fallbackLabel}</span>
+          </Element>
+        </li>
+      )
+    })
+  }
+</ol>

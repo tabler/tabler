@@ -3,15 +3,25 @@
 .table {
   font: inherit;
 
+  @include media-print() {
+    thead {
+      display: table-header-group;
+    }
+
+    tr {
+      break-inside: avoid;
+    }
+  }
+
   thead {
     th {
-      background: $table-th-bg;
-      @include subheader;
       padding-top: $table-th-padding-y;
       padding-bottom: $table-th-padding-y;
       white-space: nowrap;
+      background: $table-th-bg;
+      @include subheader();
 
-      @include media-print {
+      @include media-print() {
         background: transparent;
       }
     }
@@ -32,6 +42,9 @@
   }
 }
 
+// Matches Bootstrap's own `.table > :not(caption) > * > *` idiom for targeting every
+// cell regardless of thead/tbody/tfoot wrapping.
+// stylelint-disable selector-max-universal
 .table-nowrap {
   > :not(caption) > * > * {
     white-space: nowrap;
@@ -49,10 +62,11 @@
     text-align: center;
   }
 }
+// stylelint-enable selector-max-universal
 
 .td-truncate {
-  max-width: 1px;
   width: 100%;
+  max-width: 1px;
 }
 
 .table-mobile {
@@ -74,20 +88,20 @@
         td {
           display: block;
           padding: $table-cell-padding-x $table-cell-padding-y !important;
+          color: var(--body-color) !important;
           border: none;
-          color: var(--#{$prefix}body-color) !important;
 
           &[data-label] {
-            &:before {
-              @include subheader;
-              content: attr(data-label);
+            &::before {
+              @include subheader();
               display: block;
+              content: attr(data-label);
             }
           }
         }
 
         tr {
-          border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $table-border-color;
+          border-bottom: var(--border-width) var(--border-style) $table-border-color;
         }
 
         .btn {
@@ -102,41 +116,44 @@
 Table sort
  */
 .table-sort {
-  font: inherit;
-  color: inherit;
-  text-transform: inherit;
-  letter-spacing: inherit;
-  border: 0;
-  background: inherit;
+  --table-sort-icon-size: #{$table-sort-icon-size};
+  --table-sort-icon-margin-start: #{$table-sort-icon-margin-start};
   display: block;
   width: 100%;
-  text-align: inherit;
-  margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
   padding: $table-th-padding-y $table-th-padding-x;
+  margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
+
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  background: inherit;
+  border: 0;
   @include transition(color $transition-time);
 
   &:hover,
   &.asc,
   &.desc {
-    color: var(--#{$prefix}body-color);
+    color: var(--body-color);
   }
 
-  &:after {
-    content: '';
+  &::after {
     display: inline-flex;
-    width: 1rem;
-    height: 1rem;
+    width: var(--table-sort-icon-size);
+    height: var(--table-sort-icon-size);
+    margin-inline-start: var(--table-sort-icon-margin-start);
     vertical-align: bottom;
-    mask-image: $table-sort-bg-image;
+    content: '';
     background: currentColor;
-    margin-inline-start: 0.25rem;
+    mask-image: $table-sort-bg-image;
   }
 
-  &.asc:after {
+  &.asc::after {
     mask-image: $table-sort-desc-bg-image;
   }
 
-  &.desc:after {
+  &.desc::after {
     mask-image: $table-sort-asc-bg-image;
   }
 }

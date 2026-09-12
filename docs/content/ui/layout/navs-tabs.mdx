@@ -1,0 +1,138 @@
+---
+title: Navs and tabs
+summary: "How to build navs and tabs: horizontal and vertical navs, tabs, pills, the underline style and tabs with a dropdown."
+description: "Nav styles: tabs, pills, underline, dropdowns and vertical navs."
+related: [/ui/components/tab]
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+A nav is a list of links, and the classes on this page change how that list looks: a horizontal row, a vertical column, tabs, pills or a line under the active link. All of them start from the same `.nav` markup, so you can switch between styles by changing one class.
+
+## Horizontal nav
+
+If you want to create a horizontal navigation bar, you can use the `.nav` class. The `.nav-item` class is used to style each item within the navigation bar, and `.nav-link` is applied to the links. The `.active` class highlights the current active link, while the `.disabled` class styles non-clickable links.
+
+<Example>
+<ul class="nav">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Vertical nav
+
+To create a vertical navigation bar, add the `.flex-column` class to the `.nav` element. This arranges the items in a column instead of a row, which is what you want in a sidebar.
+
+```html
+<ul class="nav flex-column">
+  ...
+</ul>
+```
+
+<Example>
+<ul class="nav flex-column">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Tabs
+
+To create a tabbed navigation interface, use the `.nav-tabs` class. Use it when each link switches a panel of content on the same page, so every tab stands for one section.
+
+```html
+<ul class="nav nav-tabs">
+  ...
+</ul>
+```
+
+<Example>
+<ul class="nav nav-tabs">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Pills
+
+For a pill-shaped navigation style, use the `.nav-pills` class. The active link gets a filled, rounded background instead of a border.
+
+<Example>
+<ul class="nav nav-pills">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Underline
+
+To create a navigation bar with an underline effect for active links, use the `.nav-underline` class. The active link is marked with a line under it and nothing else.
+
+<Example>
+<ul class="nav nav-underline">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Tabs with dropdown
+
+A tab can open a [dropdown menu](/ui/components/dropdown). Put the `.dropdown` markup inside a `.nav-item` of the `.nav-tabs` list. That's useful when one tab has several related options and you don't want a separate tab for each.
+
+```html
+<ul class="nav nav-tabs">
+  ...
+  <li class="nav-item dropdown">
+    <a
+      class="nav-link dropdown-toggle"
+      data-bs-toggle="dropdown"
+      href="#"
+      role="button"
+      aria-expanded="false"
+      >Dropdown</a
+    >
+    <ul class="dropdown-menu">
+      ...
+    </ul>
+  </li>
+  ...
+</ul>
+```
+
+<Example overflow="visible">
+<ul class="nav nav-tabs">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Active</a></li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"> Dropdown </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+      <li><hr class="dropdown-divider" /></li>
+      <li><a class="dropdown-item" href="#">Separated link</a></li>
+    </ul>
+  </li>
+  <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+</ul>
+</Example>
+
+## Accessibility
+
+- Use `nav` with an `aria-label` for navigation, and `role="tablist"` only when the links really switch panels on the same page.
+- Mark the current page with `aria-current="page"`, not with the `active` class alone.
+- A disabled nav link should be an `a` with no `href` plus `aria-disabled="true"`. Without `href` it cannot be focused, which is what you want.
+- Every link needs text. An icon-only link takes an `aria-label`.
+- Keep the DOM order the same as the visual order. `nav-fill` and `nav-justified` change the widths, not the order.
+
+## SCSS variables
+
+Use these SCSS variables to customize navs and tabs. The default values are:
+
+<CodeDocs name="nav-variables" file="core/scss/_variables.scss" />

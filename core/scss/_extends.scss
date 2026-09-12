@@ -55,7 +55,26 @@
 // Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
 .prose > table,
 .markdown > table {
-  @extend .table, .table-bordered, .table-sm;
+  @extend .table;
+  font-size: var(--body-font-size);
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+
+  tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  th {
+    --bg-surface-tertiary: transparent;
+  }
 }
 
 // Light-scoped subtrees inside a dark body inherit the dark styles
@@ -63,6 +82,18 @@
 @if $enable-dark-mode {
   body[data-bs-theme='dark'] [data-bs-theme='light'],
   body[data-theme='dark'] [data-theme='light'] {
+    @extend [data-bs-theme='dark'];
+  }
+
+  // Navbar theme chosen at runtime (data-bs-navbar-theme on <html>). It covers
+  // whichever navigation the page shows — the vertical sidebar is a .navbar
+  // too. Extending the dark color mode keeps this route identical to the
+  // static one, which sets data-bs-theme="dark" on the element itself; the
+  // primary variant is the dark palette on a primary background (see
+  // layout/_navbar.scss). The default value writes no attribute and means
+  // "follow the page", so there is no rule for it.
+  html[data-bs-navbar-theme='dark'] .page > .navbar,
+  html[data-bs-navbar-theme='primary'] .page > .navbar {
     @extend [data-bs-theme='dark'];
   }
 }

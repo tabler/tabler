@@ -1,0 +1,52 @@
+---
+import { iconSvg } from '@shared/lib/svg'
+import CaptureScript from '../components/CaptureScript.astro'
+import type { IconSize } from './Icon.astro'
+
+interface Props {
+  id: string
+  icon?: string
+  color?: string
+  size?: IconSize | undefined
+  value?: number
+}
+
+const { id, icon = 'star', color, size, value } = Astro.props
+
+const starClasses = ['icon', 'gl-star-full', color && `text-${color}`, size && `icon-${size}`].filter(Boolean).join(' ')
+
+const star = iconSvg(icon, { filled: true, classes: starClasses }) ?? ''
+
+const ratingSelector = `#rating-${id}`
+const ratingKey = `rating-${id}`
+---
+
+<select id={`rating-${id}`}>
+  <option value="">Select a rating</option>
+  <option value="5" selected={value === 5}>Excellent</option>
+  <option value="4" selected={value === 4}>Very Good</option>
+  <option value="3" selected={value === 3}>Average</option>
+  <option value="2" selected={value === 2}>Poor</option>
+  <option value="1" selected={value === 1}>Terrible</option>
+</select>
+<CaptureScript>
+  <!-- BEGIN RATING -->
+  <script is:inline define:vars={{ ratingSelector, ratingKey, star }}>
+    window.tabler_rating ??= {}
+
+    function initRating() {
+      const rating = new StarRating(ratingSelector, {
+        tooltip: false,
+        clearable: false,
+        stars: (el) => {
+          el.innerHTML = star
+        },
+        classNames: {},
+      })
+      window.tabler_rating[ratingKey] = rating
+    }
+
+    document.readyState !== 'loading' ? initRating() : document.addEventListener('DOMContentLoaded', initRating, { once: true })
+  </script>
+  <!-- END RATING -->
+</CaptureScript>

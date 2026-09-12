@@ -1,0 +1,33 @@
+---
+import MarkdownSource from './MarkdownSource.astro'
+import { markdownTable } from '@shared/lib/markdown-source'
+
+interface Props {
+  colors: Record<string, { prop: string; title: string; hex?: string }>
+}
+
+const { colors }: Props = Astro.props
+
+// The .md mirror gets the palette as a table; hex values are listed only when
+// the data has real ones (the gray scale points at a CSS variable instead).
+const list = Object.values(colors)
+const withHex = list.some((color) => color.hex?.startsWith('#'))
+const markdown = markdownTable(
+  ['Color', 'CSS variable', ...(withHex ? ['Hex'] : [])],
+  list.map((color) => [color.title, `\`${color.prop}\``, ...(withHex ? [color.hex?.startsWith('#') ? `\`${color.hex}\`` : ''] : [])]),
+)
+---
+
+<div class="row row-cols-4 row-cols-md-6 g-3 g-md-4">
+  {
+    list.map((color) => {
+      return (
+        <div class="text-center">
+          <div class="p-6 rounded border" style={{ backgroundColor: `var(${color.prop})` }} />
+          <div class="small">{color.title}</div>
+        </div>
+      )
+    })
+  }
+</div>
+<MarkdownSource name="Colors" markdown={markdown} />

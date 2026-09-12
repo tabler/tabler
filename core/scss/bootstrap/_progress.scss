@@ -6,7 +6,7 @@
 @if $enable-transitions {
   @keyframes progress-bar-stripes {
     0% {
-      background-position-x: var(--#{$prefix}progress-height);
+      background-position-x: var(--progress-height);
     }
   }
 }
@@ -15,23 +15,23 @@
 .progress,
 .progress-stacked {
   // scss-docs-start progress-css-vars
-  --#{$prefix}progress-height: #{$progress-height};
-  @include rfs($progress-font-size, --#{$prefix}progress-font-size);
-  --#{$prefix}progress-bg: #{$progress-bg};
-  --#{$prefix}progress-border-radius: #{$progress-border-radius};
-  --#{$prefix}progress-box-shadow: #{$progress-box-shadow};
-  --#{$prefix}progress-bar-color: #{$progress-bar-color};
-  --#{$prefix}progress-bar-bg: #{$progress-bar-bg};
-  --#{$prefix}progress-bar-transition: #{$progress-bar-transition};
+  --progress-height: #{$progress-height};
+  @include rfs($progress-font-size, --progress-font-size);
+  --progress-bg: #{$progress-bg};
+  --progress-border-radius: #{$progress-border-radius};
+  --progress-box-shadow: #{$progress-box-shadow};
+  --progress-bar-color: #{$progress-bar-color};
+  --progress-bar-bg: #{$progress-bar-bg};
+  --progress-bar-transition: #{$progress-bar-transition};
   // scss-docs-end progress-css-vars
 
   display: flex;
-  height: var(--#{$prefix}progress-height);
+  height: var(--progress-height);
   overflow: hidden; // force rounded corners by cropping it
-  @include font-size(var(--#{$prefix}progress-font-size));
-  background-color: var(--#{$prefix}progress-bg);
-  @include border-radius(var(--#{$prefix}progress-border-radius));
-  @include box-shadow(var(--#{$prefix}progress-box-shadow));
+  @include font-size(var(--progress-font-size));
+  background-color: var(--progress-bg);
+  @include border-radius(var(--progress-border-radius));
+  @include box-shadow(var(--progress-box-shadow));
 }
 
 .progress-bar {
@@ -39,16 +39,16 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  color: var(--#{$prefix}progress-bar-color);
+  color: var(--progress-bar-color);
   text-align: center;
   white-space: nowrap;
-  background-color: var(--#{$prefix}progress-bar-bg);
-  @include transition(var(--#{$prefix}progress-bar-transition));
+  background-color: var(--progress-bar-bg);
+  @include transition(var(--progress-bar-transition));
 }
 
 .progress-bar-striped {
   @include gradient-striped();
-  background-size: var(--#{$prefix}progress-height) var(--#{$prefix}progress-height);
+  background-size: var(--progress-height) var(--progress-height);
 }
 
 .progress-stacked > .progress {

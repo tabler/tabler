@@ -22,7 +22,10 @@ const toType = (object: unknown): string => {
     return `${object}`
   }
 
-  return Object.prototype.toString.call(object).match(/\s([a-z]+)/i)![1].toLowerCase()
+  return Object.prototype.toString
+    .call(object)
+    .match(/\s([a-z]+)/i)![1]
+    .toLowerCase()
 }
 
 const getUID = (prefix: string): string => {
@@ -203,21 +206,4 @@ const getNextActiveElement = <T>(list: T[], activeElement: T, shouldGetNext: boo
   return list[Math.max(0, Math.min(index, listLength - 1))]
 }
 
-export {
-  execute,
-  executeAfterTransition,
-  findShadowRoot,
-  getElement,
-  getNextActiveElement,
-  getTransitionDurationFromElement,
-  getUID,
-  isDisabled,
-  isElement,
-  isRTL,
-  isVisible,
-  noop,
-  parseSelector,
-  reflow,
-  triggerTransitionEnd,
-  toType
-}
+export { execute, executeAfterTransition, findShadowRoot, getElement, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, parseSelector, reflow, triggerTransitionEnd, toType }

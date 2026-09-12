@@ -1,5 +1,4 @@
 ---
-version: "3.3"
 services:
 
   tabler:
@@ -8,8 +7,14 @@ services:
     build: .
     ports:
       - 3000:3000
-      - 3001:3001
+      - 3010:3010
     volumes:
-      - ./src:/app/src
-      - ./_config.yml:/app/_config.yml
+      - ./core:/app/core
+      - ./preview:/app/preview
+      - ./docs:/app/docs
+      - ./shared:/app/shared
+      # keep the node_modules installed in the image (not overwritten by the mounts)
+      - /app/core/node_modules
+      - /app/preview/node_modules
+      - /app/docs/node_modules
     tty: true

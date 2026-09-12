@@ -7,8 +7,8 @@ vi.mock('@popperjs/core', () => ({
   createPopper: vi.fn(() => ({
     destroy: vi.fn(),
     update: vi.fn(),
-    setOptions: vi.fn()
-  }))
+    setOptions: vi.fn(),
+  })),
 }))
 
 describe('Popover', () => {
@@ -77,7 +77,7 @@ describe('Popover', () => {
 
   describe('show', () => {
     it('should show popover', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Popover title" data-bs-content="Content">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const popover = new Popover(el, { animation: false })
@@ -93,7 +93,7 @@ describe('Popover', () => {
     })
 
     it('should show popover with only content', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const popover = new Popover(el, { content: 'Only content', animation: false })
@@ -108,7 +108,7 @@ describe('Popover', () => {
     })
 
     it('should show popover with only title', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Only title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const popover = new Popover(el, { animation: false })
@@ -125,7 +125,7 @@ describe('Popover', () => {
 
   describe('hide', () => {
     it('should hide popover', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Popover" data-bs-content="Content">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const popover = new Popover(el, { animation: false })

@@ -1,0 +1,104 @@
+---
+import Icon from './Icon.astro';
+import { iconSvg, iconSourceComment } from '@shared/lib/svg';
+import CaptureScript from '../components/CaptureScript.astro';
+
+interface Props {
+	id?: string;
+	value?: string;
+	class?: string;
+	/** input-icon layout; omit for a plain input */
+	layout?: 'icon' | 'icon-prepend' | undefined;
+	inline?: boolean;
+}
+
+const {
+	id,
+	value,
+	class: className,
+	layout,
+	inline,
+} = Astro.props;
+
+const placeholder = 'Select a date';
+
+const chevronLeft = `${iconSourceComment('chevron-left')}\n\t${iconSvg('chevron-left') ?? ''}`;
+const chevronRight = `${iconSourceComment('chevron-right')}\n\t${iconSvg('chevron-right') ?? ''}`;
+
+const datepickerId = id ? `datepicker-${id}` : undefined;
+---
+
+{
+	id &&
+		(inline ? (
+			<div class="datepicker-inline" id={`datepicker-${id}`} />
+		) : layout === 'icon' ? (
+			<div class:list={['input-icon', className]}>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+			</div>
+		) : layout === 'icon-prepend' ? (
+			<div class:list={['input-icon', className]}>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+			</div>
+		) : (
+			<input
+				class:list={['form-control', className]}
+				placeholder={placeholder}
+				id={`datepicker-${id}`}
+				value={value}
+			/>
+		))
+}
+{
+	id && (
+		<CaptureScript>
+			<!-- BEGIN DATEPICKER -->
+			<script is:inline define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
+				function initDatepicker() {
+					window.tabler_datepicker ??= {};
+
+					if (!window.Litepicker) return;
+
+					const picker = new Litepicker({
+						element: document.getElementById(datepickerId),
+						buttonText: {
+							previousMonth: chevronLeft,
+							nextMonth: chevronRight,
+						},
+						...(inline ? { inlineMode: true } : {}),
+					});
+
+					// Litepicker sets buttonText as the buttons' innerHTML, and the icon SVGs are
+					// aria-hidden, so the generated month-nav buttons otherwise have no accessible
+					// name. Litepicker also re-renders these buttons (new DOM nodes) on every open
+					// and every month change, so re-apply the labels on each "render" event instead
+					// of labeling once at init.
+					// Litepicker builds the popover lazily, so label every calendar on the page, not only picker.ui.
+					const labelMonthButtons = () => {
+						for (const button of document.querySelectorAll('.litepicker .button-previous-month')) button.setAttribute('aria-label', 'Previous month');
+						for (const button of document.querySelectorAll('.litepicker .button-next-month')) button.setAttribute('aria-label', 'Next month');
+					};
+					picker.on('render', labelMonthButtons);
+					labelMonthButtons();
+
+					window.tabler_datepicker[datepickerId] = picker;
+				}
+
+				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
+			</script>
+			<!-- END DATEPICKER -->
+		</CaptureScript>
+	)
+}

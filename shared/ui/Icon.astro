@@ -1,0 +1,24 @@
+---
+import { iconSvg, iconSourceComment } from '@shared/lib/svg'
+
+/** core/scss/ui/_icons.scss `.icon-{size}` modifier classes */
+export type IconSize = 'sm' | 'md' | 'lg'
+
+interface Props {
+  name: string
+  /** filled icon variant (default: outline) */
+  filled?: boolean
+  class?: string | undefined
+  color?: string | undefined
+  size?: IconSize | undefined
+  inline?: boolean
+}
+
+const { name, filled, class: className, color, size, inline } = Astro.props
+
+const classes = ['icon', className, color && `text-${color}`, inline && 'icon-inline', size && `icon-${size}`].filter(Boolean).join(' ')
+
+const svg = iconSvg(name, { filled, classes })
+---
+
+{svg !== undefined && <Fragment set:html={`${iconSourceComment(name)}\n\t${svg}`} />}

@@ -1,0 +1,38 @@
+---
+import CardActions from '@ui/CardActions.astro'
+import Icon from '@ui/Icon.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import crmDashboard from '@data/crm-dashboard.json'
+
+const activity = crmDashboard.recent_activity
+---
+
+<div class="card" style="height: 28rem">
+  <div class="card-header">
+    <CardTitle>{activity.title}</CardTitle>
+    <CardActions>
+      <a href="#" class="small fw-medium text-primary">{activity.view_all_text}</a>
+    </CardActions>
+  </div>
+  <div class="card-body card-body-scrollable">
+    <div class="divide-y">
+      {
+        activity.items.map((item) => (
+          <div class="py-3">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class={`avatar bg-${item.icon_color}-lt`}>
+                  <Icon name={item.icon} color={item.icon_color} />
+                </span>
+              </div>
+              <div class="col">
+                <div class="fw-medium">{item.text}</div>
+                <div class="small text-secondary">{item.time}</div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

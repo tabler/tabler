@@ -1,0 +1,265 @@
+---
+import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
+import { site } from '@shared/lib/site'
+import PageModals from '@shared/components/PageModals.astro'
+import PageScripts from '@shared/components/PageScripts.astro'
+import libs from '@tabler/core/libs.json'
+import { themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys, themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
+
+interface Props {
+  title?: string | undefined
+  /** Third-party libs from libs.json, e.g. ['apexcharts', 'jsvectormap'] */
+  pageLibs?: string[] | undefined
+  /** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
+  bodyClass?: string | undefined
+  /** dir="rtl" + RTL variants of the tabler/plugin stylesheets */
+  rtl?: boolean | undefined
+  /** Relative asset base: '.' for root pages, '..' one level deep */
+  base?: string
+  /** <meta name="description"> — falls back to the site description */
+  description?: string | undefined
+  /** layout settings the page renders as data-bs-* on <html>; the switcher's stored choice still wins */
+  themeSettings?: Partial<Record<ThemeKey, string | undefined>> | undefined
+}
+
+const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description, themeSettings = {} } = Astro.props
+
+// The page's own layout, in the switcher's vocabulary: rendered before the theme
+// script runs, so a page keeps its variant until the visitor chooses otherwise.
+const themeAttributes = themeDataAttributes(themeSettings)
+
+// Development build: unminified assets, dev favicon.
+const environment = 'development'
+const min = environment === 'development' ? '' : '.min'
+// RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
+const rtlSuffix = rtl ? '.rtl' : ''
+
+type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean }
+const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
+const googleMapsKey = site.googleMapsDevKey
+// External URLs (http/https) are emitted verbatim (with the maps-key placeholder
+// replaced); local files as ./dist/libs/{npm}/{file}.
+const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file.replace('GOOGLE_MAPS_KEY', googleMapsKey) : `${base}/dist/libs/${lib.npm}/${file}`)
+const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((file) => libHref(lib, file)))
+const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean(lib.head) === head).flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
+---
+
+<!doctype html>
+<html lang="en" dir={rtl ? 'rtl' : undefined} {...themeAttributes}>
+  <head>
+    <!-- BEGIN META -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>{title ? `${title} - ` : ''}{site.title} - {site.descriptionShort}</title>
+    <meta name="description" content={description ?? site.descriptionShort} />
+
+    <link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
+    <link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
+    <!-- END META -->
+
+    {
+      libCssFiles.length > 0 && (
+        <Fragment>
+          <Fragment set:html={'<!-- BEGIN PAGE LEVEL STYLES -->'} />
+          {libCssFiles.map((href) => (
+            <link href={href} rel="stylesheet" />
+          ))}
+          <Fragment set:html={'<!-- END PAGE LEVEL STYLES -->'} />
+        </Fragment>
+      )
+    }
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href={`${base}/dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PLUGINS STYLES -->
+    {site.cssPlugins.map((plugin) => <link href={`${base}/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    <!-- END PLUGINS STYLES -->
+
+    <!-- BEGIN DEMO STYLES -->
+    <link href={`${base}/preview/css/demo${min}.css`} rel="stylesheet" />
+    <!-- END DEMO STYLES -->
+
+    {
+      libJsFiles(true).length > 0 && (
+        <Fragment>
+          <Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
+          {libJsFiles(true).map((src) => (
+            <script is:inline src={src} defer />
+          ))}
+          <Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
+        </Fragment>
+      )
+    }
+  </head>
+
+  <body class={bodyClass}>
+    <a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
+
+    <!-- BEGIN GLOBAL THEME SCRIPT -->
+    <script is:inline src={`${base}/dist/js/tabler-theme${min}.js`}></script>
+    <!-- END GLOBAL THEME SCRIPT -->
+
+    <slot />
+
+    <PageModals />
+
+    <ThemeSettings />
+
+    {
+      libJsFiles(false).length > 0 && (
+        <Fragment>
+          <Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
+          {libJsFiles(false).map((src) => (
+            <script is:inline src={src} defer />
+          ))}
+          <Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
+        </Fragment>
+      )
+    }
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <PageScripts />
+
+    <!-- BEGIN PAGE SCRIPTS -->
+    <script is:inline define:vars={{ themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys }}>
+      /*
+			This script handles the theme settings offcanvas functionality
+			It saves the selected settings to localStorage and applies them to the document
+			It also updates the URL with the selected settings as query parameters
+			It also has a reset button to clear all settings and revert to default
+
+			This is just a demo script to show how to implement theme settings. You can modify it as needed.
+			*/
+      document.addEventListener('DOMContentLoaded', function () {
+        var url = new URL(window.location)
+        var form = document.getElementById('offcanvas-settings')
+        var resetButton = document.getElementById('reset-changes')
+
+        // Same rule as the theme script: the default state is the absence of the
+        // attribute, so only a non-default value is written.
+        var applyValue = function (key, value) {
+          var applied = value
+
+          if (key === 'theme' && value === 'auto') {
+            applied = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          }
+
+          if (applied !== themeDefaults[key]) {
+            document.documentElement.setAttribute('data-bs-' + key, applied)
+          } else {
+            document.documentElement.removeAttribute('data-bs-' + key)
+          }
+        }
+
+        // Same precedence as the theme script: a stored choice wins, otherwise
+        // the attribute the page rendered for its own layout, otherwise the
+        // default. Reading the attribute matters on the layout demo pages,
+        // where the page states its variant and nothing is stored yet.
+        //
+        // Color mode is the exception: data-bs-theme holds the resolved value,
+        // so "auto" on a light system looks exactly like an explicit "light"
+        // and reading it back would silently turn the default into a choice.
+        var currentValue = function (key) {
+          var stored = window.localStorage['tabler-' + key]
+          var rendered = key === 'theme' ? null : document.documentElement.getAttribute('data-bs-' + key)
+
+          return stored || rendered || themeDefaults[key]
+        }
+
+        // Some settings only do something with one of the navigations on
+        // screen; the others are hidden rather than left to do nothing.
+        var toggleSidebarSettings = function () {
+          var vertical = currentValue('navbar-position') === 'vertical'
+          var setHidden = function (keys, hidden) {
+            keys.forEach(function (key) {
+              var fieldset = form.querySelector('[data-theme-setting="' + key + '"]')
+
+              if (fieldset) {
+                fieldset.hidden = hidden
+              }
+            })
+          }
+
+          setHidden(sidebarOnlyKeys, !vertical)
+          setHidden(navbarOnlyKeys, vertical)
+        }
+
+        var setValue = function (key, value) {
+          applyValue(key, value)
+          window.localStorage.setItem('tabler-' + key, value)
+          url.searchParams.set(key, value)
+        }
+
+        // A preset tile stands for several keys; it reads as checked only
+        // while every one of them holds the tile's value.
+        var presetMatches = function (values) {
+          return Object.keys(values).every(function (key) {
+            return currentValue(key) === values[key]
+          })
+        }
+
+        var checkItems = function () {
+          for (var key in themeDefaults) {
+            var value = currentValue(key)
+
+            form.querySelectorAll('[name="' + key + '"]').forEach(function (radio) {
+              radio.checked = radio.value === value
+            })
+          }
+
+          for (var name in themePresets) {
+            form.querySelectorAll('[name="' + name + '"]').forEach(function (radio) {
+              radio.checked = presetMatches(themePresets[name][radio.value])
+            })
+          }
+
+          toggleSidebarSettings()
+        }
+
+        form.addEventListener('change', function (event) {
+          var target = event.target,
+            name = target.name,
+            value = target.value
+
+          if (name in themePresets) {
+            var values = themePresets[name][value]
+
+            for (var presetKey in values) {
+              setValue(presetKey, values[presetKey])
+            }
+          } else if (name in themeDefaults) {
+            setValue(name, value)
+          }
+
+          toggleSidebarSettings()
+          // Plugins that measured the old width (charts, maps) need a nudge.
+          window.dispatchEvent(new Event('resize'))
+          window.history.pushState({}, '', url)
+        })
+
+        resetButton.addEventListener('click', function () {
+          for (var key in themeDefaults) {
+            applyValue(key, themeDefaults[key])
+            window.localStorage.removeItem('tabler-' + key)
+            url.searchParams.delete(key)
+          }
+
+          checkItems()
+
+          window.dispatchEvent(new Event('resize'))
+          window.history.pushState({}, '', url)
+        })
+
+        checkItems()
+      })
+    </script>
+    <!-- END PAGE SCRIPTS -->
+  </body>
+</html>

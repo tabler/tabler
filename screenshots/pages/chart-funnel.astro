@@ -1,0 +1,44 @@
+---
+// `funnel` — one of the chart types added in 1.5 (a bar chart with
+// `funnel: true` in charts.json), one color per stage.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import Subheader from '@ui/Subheader.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// First and last stage of the funnel data in charts.json, and their ratio.
+const figures = [
+  { label: 'Visitors', value: '1,380' },
+  { label: 'Customers', value: '190' },
+  { label: 'Conversion', value: '13.8%' },
+]
+---
+
+<ScreenshotLayout title="Funnel chart" columns={2} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader>
+      <div>
+        <CardTitle>Conversion funnel</CardTitle>
+        <CardSubtitle>From first visit to paying customer, this quarter</CardSubtitle>
+      </div>
+      <CardActions class="d-flex gap-4 text-end">
+        {
+          figures.map((figure) => (
+            <div>
+              <Subheader>{figure.label}</Subheader>
+              <div class="fw-semibold">{figure.value}</div>
+            </div>
+          ))
+        }
+      </CardActions>
+    </CardHeader>
+    <CardBody>
+      <Chart chartId="funnel" height={16} label="Visitors converted through sign-ups, trials and demos into customers" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

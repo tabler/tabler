@@ -1,0 +1,72 @@
+---
+import { personById } from '@shared/lib/people'
+import type { SparklineType } from '@ui/ChartSparkline.astro'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
+import ChartSparkline from '@ui/ChartSparkline.astro'
+
+interface Props {
+  icon?: string
+  color?: string
+  lt?: boolean
+  title?: string | number
+  description?: string
+  class?: string
+  id?: string
+  personId?: number
+  chartType?: SparklineType
+  chartPosition?: string
+  chartData?: string | number
+  smallIcon?: string
+  descriptionValue?: string
+  descriptionValueColor?: string
+}
+
+const { icon, color, lt, title, description, class: className, id, personId, chartType = 'line', chartPosition = 'right', chartData, smallIcon, descriptionValue, descriptionValueColor } = Astro.props
+
+const chartColor = color ?? 'primary'
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square']
+---
+
+<div class:list={['card card-sm', className]}>
+  <div class="card-body">
+    <div class="row align-items-center">
+      {
+        icon ? (
+          <div class="col-auto">
+            <span class:list={avatarClass}>
+              <Icon name={icon} />
+            </span>
+          </div>
+        ) : personId ? (
+          <div class="col-auto">
+            <Avatar person={personById(personId)} />
+          </div>
+        ) : chartData && chartPosition === 'left' ? (
+          <div class="col-auto">
+            <ChartSparkline id={id} data={chartData} type={chartType} color={color} />
+          </div>
+        ) : null
+      }
+
+      <div class="col">
+        <div class="fw-medium">
+          {title ?? 1700}
+          {smallIcon && <Icon name={smallIcon} color={color} class="icon-sm ms-1" />}
+          {descriptionValue && <span class={`float-end fw-medium text-${descriptionValueColor ?? 'green'}`}>{descriptionValue}</span>}
+        </div>
+        <div class="text-secondary">
+          {description ?? 'Users'}
+        </div>
+      </div>
+
+      {
+        chartData && chartPosition === 'right' && (
+          <div class="col-auto">
+            <ChartSparkline id={id} data={chartData} type={chartType} color={chartColor} />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>

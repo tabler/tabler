@@ -2,43 +2,39 @@
 
 @use '../config' as *;
 
-html {
-  scrollbar-gutter: stable;
-
-  @supports not (scrollbar-gutter: stable) {
-    overflow-y: scroll;
-  }
-}
-
 // stylelint-disable property-no-vendor-prefix
 body {
-  letter-spacing: $body-letter-spacing;
-  touch-action: manipulation;
-  text-rendering: optimizeLegibility;
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
   font-feature-settings:
     'liga' 0,
     'cv03',
     'cv04',
     'cv11';
-  position: relative;
-  min-height: 100%;
-  height: 100%;
-  padding: 0;
+  letter-spacing: $body-letter-spacing;
+  touch-action: manipulation;
+  text-rendering: optimizeLegibility;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @include media-print {
+  @include media-print() {
     background: transparent;
   }
 }
 
-@include scrollbar;
+@include scrollbar();
 
 //
 // Fluid container
 //
-.layout-fluid {
+// Two routes to the same state, like the folded sidebar: a class on the body
+// (static markup) or data-bs-layout on <html>, set pre-render from localStorage
+// by tabler-theme.js.
+.layout-fluid,
+html[data-bs-layout='fluid'] {
   .container,
   [class^='container-'],
   [class*=' container-'] {
@@ -49,30 +45,38 @@ body {
 //
 // Boxed container
 //
-.layout-boxed {
-  --#{$prefix}theme-boxed-border-radius: 0;
-  --#{$prefix}theme-boxed-width: #{map.get($container-max-widths, xxl)};
+.layout-boxed,
+html[data-bs-layout='boxed'] body {
+  --theme-boxed-border-radius: 0;
+  --theme-boxed-width: #{map.get($container-max-widths, xxl)};
 
   @include media-breakpoint-up(md) {
-    background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
     padding: 1rem;
-    --#{$prefix}theme-boxed-border-radius: #{$border-radius};
+    background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
+    --theme-boxed-border-radius: #{$border-radius};
   }
 
   .page {
+    // Makes the frame the containing block of the fixed vertical navbar, so a
+    // sidebar stays inside the boxed page instead of pinning to the viewport.
+    contain: layout;
+    max-width: var(--theme-boxed-width);
     margin: 0 auto;
-    max-width: var(--#{$prefix}theme-boxed-width);
-    @include border-radius(var(--#{$prefix}theme-boxed-border-radius));
-    color: var(--#{$prefix}body-color);
+    color: var(--body-color);
+    @include border-radius(var(--theme-boxed-border-radius));
 
     @include media-breakpoint-up(md) {
-      border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-      background: var(--#{$prefix}body-bg);
+      background: var(--body-bg);
+      border: var(--border-width) var(--border-style) var(--border-color);
     }
 
-    > .navbar:first-child {
-      border-start-start-radius: var(--#{$prefix}theme-boxed-border-radius);
-      border-start-end-radius: var(--#{$prefix}theme-boxed-border-radius);
+    // Whichever navbar opens the frame: the first child on a page that has one
+    // navbar, or the horizontal navbar on a page that renders the vertical
+    // sidebar before it.
+    > .navbar:first-child,
+    > .navbar:not(.navbar-vertical):first-of-type {
+      border-start-start-radius: var(--theme-boxed-border-radius);
+      border-start-end-radius: var(--theme-boxed-border-radius);
     }
   }
 }

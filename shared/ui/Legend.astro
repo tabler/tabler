@@ -1,0 +1,15 @@
+---
+// A single legend item: a colored .legend dot + label, e.g. the "This year" /
+// "Last year" chart legend in SalesOverview.astro.
+interface Props {
+  color?: string
+  class?: string
+}
+
+const { color = 'primary', class: className } = Astro.props
+---
+
+<div class:list={['d-flex align-items-center gap-2', className]}>
+  <span class={`legend bg-${color}`}></span>
+  <span class="text-secondary"><slot /></span>
+</div>

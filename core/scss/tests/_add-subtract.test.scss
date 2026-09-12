@@ -3,46 +3,46 @@
 // to a `calc()` expression when the operands are unit-incompatible, so the
 // branches around null-handling and the numeric-vs-calc path are what matter.
 
-@use "sass:meta";
-@use "sass:string";
-@use "../mixins/functions" as *;
+@use 'sass:meta';
+@use 'sass:string';
+@use '../mixins/functions' as *;
 
-@include describe("add") {
-  @include it("treats a null operand as the identity") {
+@include describe('add') {
+  @include it('treats a null operand as the identity') {
     @include assert-equal(add(null, 5px), 5px);
     @include assert-equal(add(5px, null), 5px);
   }
 
-  @include it("adds two compatible numbers directly") {
+  @include it('adds two compatible numbers directly') {
     @include assert-equal(add(2px, 3px), 5px);
   }
 
   // add() returns a real `calculation` here; two structurally-identical
   // calculations aren't `==` in Sass, so compare the rendered output instead.
-  @include it("falls back to calc() for incompatible units") {
-    @include assert-equal(meta.inspect(add(2px, 3%)), "calc(2px + 3%)");
+  @include it('falls back to calc() for incompatible units') {
+    @include assert-equal(meta.inspect(add(2px, 3%)), 'calc(2px + 3%)');
   }
 
-  @include it("builds a plain expression when calc is disabled") {
-    @include assert-equal(add(2px, 3%, false), string.unquote("2px + 3%"));
+  @include it('builds a plain expression when calc is disabled') {
+    @include assert-equal(add(2px, 3%, false), string.unquote('2px + 3%'));
   }
 }
 
-@include describe("subtract") {
-  @include it("returns null when both operands are null") {
+@include describe('subtract') {
+  @include it('returns null when both operands are null') {
     @include assert-equal(subtract(null, null), null);
   }
 
-  @include it("handles a single null operand") {
+  @include it('handles a single null operand') {
     @include assert-equal(subtract(5px, null), 5px);
     @include assert-equal(subtract(null, 5px), -5px);
   }
 
-  @include it("subtracts two compatible numbers directly") {
+  @include it('subtracts two compatible numbers directly') {
     @include assert-equal(subtract(5px, 2px), 3px);
   }
 
-  @include it("falls back to calc() for incompatible units") {
-    @include assert-equal(meta.inspect(subtract(5px, 2%)), "calc(5px - 2%)");
+  @include it('falls back to calc() for incompatible units') {
+    @include assert-equal(meta.inspect(subtract(5px, 2%)), 'calc(5px - 2%)');
   }
 }

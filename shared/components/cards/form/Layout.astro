@@ -1,0 +1,86 @@
+---
+import FormHint from '@ui/FormHint.astro'
+import CardTitle from '@ui/CardTitle.astro'
+
+interface Props {
+  horizontal?: boolean
+  title?: string
+}
+
+const { horizontal = false, title = 'Basic form' } = Astro.props
+
+const labelClass = horizontal ? 'col-3 col-form-label' : 'form-label'
+// The card renders twice on demo pages (basic + horizontal), so ids need a suffix
+const idSuffix = horizontal ? '-horizontal' : ''
+---
+
+<form class="card h-100">
+  <div class="card-header">
+    <CardTitle>{title}</CardTitle>
+  </div>
+  <div class="card-body">
+    <div class:list={['mb-3', horizontal && 'row']}>
+      <label class={`${labelClass} required`} for={`form-layout-email${idSuffix}`}>Email address</label>
+      <div class={horizontal ? 'col' : undefined}>
+        <input type="email" id={`form-layout-email${idSuffix}`} class="form-control" aria-describedby={`form-layout-email-hint${idSuffix}`} aria-required="true" placeholder="Enter email" autocomplete="email" />
+        <FormHint as="small" id={`form-layout-email-hint${idSuffix}`}>We'll never share your email with anyone else.</FormHint>
+      </div>
+    </div>
+
+    <div class:list={['mb-3', horizontal && 'row']}>
+      <label class={`${labelClass} required`} for={`form-layout-password${idSuffix}`}>Password</label>
+      <div class={horizontal ? 'col' : undefined}>
+        <input type="password" id={`form-layout-password${idSuffix}`} class="form-control" aria-describedby={`form-layout-password-hint${idSuffix}`} aria-required="true" placeholder="Password" />
+        <FormHint as="small" id={`form-layout-password-hint${idSuffix}`}> Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji. </FormHint>
+      </div>
+    </div>
+
+    <div class:list={['mb-3', horizontal && 'row']}>
+      <label class={labelClass} for={`form-layout-select${idSuffix}`}>Select</label>
+      <div class={horizontal ? 'col' : undefined}>
+        <select class="form-select" id={`form-layout-select${idSuffix}`}>
+          <option>Option 1</option>
+          <optgroup label="Optgroup 1">
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </optgroup>
+          <option>Option 2</option>
+          <optgroup label="Optgroup 2">
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </optgroup>
+          <optgroup label="Optgroup 3">
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </optgroup>
+          <option>Option 3</option>
+          <option>Option 4</option>
+        </select>
+      </div>
+    </div>
+
+    <div class={horizontal ? 'row' : 'mb-3'}>
+      <label class={horizontal ? 'col-3 col-form-label pt-0' : 'form-label'}>Checkboxes</label>
+      <fieldset class={horizontal ? 'col' : undefined}>
+        <legend class="visually-hidden">Checkboxes</legend>
+        <label class="form-check">
+          <input class="form-check-input" type="checkbox" checked />
+          <span class="form-check-label">Option 1</span>
+        </label>
+        <label class="form-check">
+          <input class="form-check-input" type="checkbox" />
+          <span class="form-check-label">Option 2</span>
+        </label>
+        <label class="form-check">
+          <input class="form-check-input" type="checkbox" disabled />
+          <span class="form-check-label">Option 3</span>
+        </label>
+      </fieldset>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>

@@ -1,10 +1,9 @@
 packages:
   - core
   - preview
-  - preview-astro
   - docs
-  - docs-astro
-  - 'shared/*'
+  - screenshots
+  - shared
 
 allowBuilds:
   '@parcel/watcher': false
@@ -14,3 +13,12 @@ allowBuilds:
   sharp: false
 
 minimumReleaseAge: 1440
+
+# Optional peers (like `next` behind `@vercel/analytics`) must not be installed just because they exist.
+autoInstallPeers: false
+
+# Patched versions the upstream ranges do not reach yet; all are build/CI-time tools.
+overrides:
+  'axios@<0.33.0': '^0.33.0'
+  'path-to-regexp@6.1.0': '6.3.0'
+  'svgo@<4.1.0': '^4.1.0'

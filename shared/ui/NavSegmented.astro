@@ -1,0 +1,60 @@
+---
+import { ucFirst } from '@shared/lib/string-format'
+import Icon from './Icon.astro'
+
+interface Props {
+  items?: string[]
+  icons?: string[]
+  disabled?: number[]
+  default?: number
+  vertical?: boolean
+  /** core/scss/ui/_segmented.scss `.nav-{size}` modifier classes */
+  size?: 'sm' | 'lg' | undefined
+  /** w-100 — stretch across the container */
+  block?: boolean
+  name?: string
+  class?: string
+}
+
+const { items, icons, disabled, default: defaultIndex = 1, vertical, size, block, name, class: className } = Astro.props
+
+const itemsArr = items ?? []
+const iconsArr = icons ?? []
+const count = Math.max(itemsArr.length, iconsArr.length)
+
+const navClasses = ['nav', 'nav-segmented', vertical && 'nav-segmented-vertical', size && `nav-${size}`, block && 'w-100', className]
+
+const rows = Array.from({ length: count }, (_, i) => {
+  const forloopIndex = i + 1
+  const index = String(forloopIndex)
+  const isDisabled = disabled?.includes(forloopIndex) ?? false
+  const isDefault = forloopIndex === defaultIndex
+  const linkClasses = ['nav-link', isDisabled && 'disabled', isDefault && !name && 'active']
+  return { forloopIndex, index, isDisabled, isDefault, linkClasses, icon: iconsArr[i], item: itemsArr[i] }
+})
+---
+
+<nav class:list={navClasses} role={name ? undefined : 'tablist'} aria-orientation={!name && vertical ? 'vertical' : undefined}>
+  {
+    rows.map((row) => {
+      const Element = name ? 'label' : 'button'
+      return (
+        <Fragment>
+          {name && <input type="radio" class="nav-link-input" name={name} id={`segmented-${name}-${row.index}`} checked={row.isDefault} />}
+          <Element
+            for={name ? `segmented-${name}-${row.index}` : undefined}
+            class:list={row.linkClasses}
+            role={name ? undefined : 'tab'}
+            data-bs-toggle={name ? undefined : 'tab'}
+            aria-selected={name ? undefined : row.isDefault ? 'true' : 'false'}
+            aria-disabled={row.isDisabled ? 'true' : undefined}
+            aria-label={row.item ? undefined : row.icon && ucFirst(row.icon)}
+          >
+            {row.icon && <Icon name={row.icon} class="nav-link-icon" />}
+            {row.item && row.item}
+          </Element>
+        </Fragment>
+      )
+    })
+  }
+</nav>

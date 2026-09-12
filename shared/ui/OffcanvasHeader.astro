@@ -1,0 +1,23 @@
+---
+// Offcanvas header (.offcanvas-header) with an optional h2.offcanvas-title; slot renders after the title.
+
+interface Props {
+  title?: string
+  /** id on the title heading, referenced by the offcanvas root's aria-labelledby */
+  titleId?: string
+  class?: string
+}
+
+const { title, titleId, class: className } = Astro.props
+---
+
+<div class:list={['offcanvas-header', className]}>
+  {
+    title && (
+      <h2 class="offcanvas-title" id={titleId}>
+        {title}
+      </h2>
+    )
+  }
+  <slot />
+</div>

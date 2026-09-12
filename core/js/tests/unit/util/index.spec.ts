@@ -1,22 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
-import {
-  execute,
-  executeAfterTransition,
-  findShadowRoot,
-  getElement,
-  getNextActiveElement,
-  getTransitionDurationFromElement,
-  getUID,
-  isDisabled,
-  isElement,
-  isRTL,
-  isVisible,
-  noop,
-  parseSelector,
-  reflow,
-  toType,
-  triggerTransitionEnd
-} from '../../../src/bootstrap/util/index'
+import { execute, executeAfterTransition, findShadowRoot, getElement, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, parseSelector, reflow, toType, triggerTransitionEnd } from '../../../src/bootstrap/util/index'
 import { clearFixture, getFixture } from '../../helpers/fixture'
 
 describe('util/index', () => {
@@ -44,7 +27,7 @@ describe('util/index', () => {
       const original = window.CSS
       Object.defineProperty(window, 'CSS', {
         value: { escape: vi.fn((s: string) => s) },
-        configurable: true
+        configurable: true,
       })
       parseSelector('#test-id')
       expect(window.CSS.escape).toHaveBeenCalledWith('test-id')
@@ -119,7 +102,7 @@ describe('util/index', () => {
       const div = fixtureEl.querySelector('div')!
       vi.spyOn(window, 'getComputedStyle').mockReturnValue({
         transitionDuration: '0.3s',
-        transitionDelay: '0.1s'
+        transitionDelay: '0.1s',
       } as CSSStyleDeclaration)
       expect(getTransitionDurationFromElement(div)).toBe(400)
       vi.restoreAllMocks()
@@ -130,7 +113,7 @@ describe('util/index', () => {
       const div = fixtureEl.querySelector('div')!
       vi.spyOn(window, 'getComputedStyle').mockReturnValue({
         transitionDuration: '0.5s, 0.2s',
-        transitionDelay: '0.1s, 0s'
+        transitionDelay: '0.1s, 0s',
       } as CSSStyleDeclaration)
       expect(getTransitionDurationFromElement(div)).toBe(600)
       vi.restoreAllMocks()

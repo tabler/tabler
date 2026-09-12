@@ -1,0 +1,51 @@
+---
+title: Colors
+summary: The Tabler color palette with base colors, light variants, the gray scale and social brand colors, each with background and text utilities.
+description: The Tabler color palette, with base and light shades, the gray scale and social brand colors.
+---
+
+import Colors from '@components/Colors.astro'
+import Example from '@components/Example.astro'
+import site from '@data/site.json'
+
+## Base colors
+
+These are the base colors. Each one has `bg-*` and `text-*` utilities, and the components use the same names for their color variants.
+
+<Colors colors={site.colors} />
+
+## Light colors
+
+Every base color also has a light shade with the `-lt` suffix. It works as a background for text or an icon in the base color.
+
+<Colors colors={site.lightColors} />
+
+## Gray palette
+
+The gray scale is used for backgrounds, borders and muted text. Tabler ships several gray palettes and switches between them with `data-bs-theme-base`; see [theme base colors](/ui/plugins/theme-base-colors).
+
+<Colors colors={site.grayColors} />
+
+### Gray utilities
+
+Every shade of the gray palette has a background and a text utility, from `50` to `950`. Use `bg-gray-*` for surfaces and `text-gray-*` for muted text, and pick a pair with enough contrast between them.
+
+<Example>
+<div class="bg-gray-100 text-gray-700 p-3 rounded mb-2">Light surface with dark text</div>
+<div class="bg-gray-800 text-gray-100 p-3 rounded mb-2">Dark surface with light text</div>
+<p class="text-gray-500 mb-0">Muted paragraph with text-gray-500</p>
+</Example>
+
+## Social colors
+
+The brand colors of popular services are available too, for social buttons and icons.
+
+<Colors colors={site.socialColors} />
+
+## Accessibility
+
+- A color name is not a meaning. `text-red` looks like an error to most users, but a screen reader announces nothing, so keep the meaning in the text.
+- Body text needs a contrast ratio of at least 4.5:1, and large text at least 3:1. The lighter `-lt` variants are backgrounds for dark text, not text colors.
+- Check both color modes. A pair that passes in light can fail in dark, and Tabler switches many tokens with `light-dark()`.
+- The social colors are brand colors. They are picked to be recognizable, not readable - do not use them for text on a white background without checking.
+- Never separate two states by hue alone. Add a label, an icon, or a shape.
