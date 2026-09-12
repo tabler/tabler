@@ -87,15 +87,16 @@ $theme-colors-border-subtle-dark: null !default;
 // Extends the default `$theme-colors` maps to help create our utilities.
 
 // Come v6, we'll de-dupe these variables. Until then, for backward compatibility, we keep them to reassign.
+// Only the keys matter: `rgba-css-var()` builds every value from `var(--<key>)`.
 
-$utilities-colors: $theme-colors-rgb !default;
+$utilities-colors: $theme-colors !default;
 
 $utilities-text: map.merge(
   $utilities-colors,
   (
-    'black': to-rgb($black),
-    'white': to-rgb($white),
-    'body': to-rgb($body-color),
+    'black': $black,
+    'white': $white,
+    'body': $body-color,
   )
 ) !default;
 $utilities-text-colors: map-loop($utilities-text, rgba-css-var, '$key', 'text') !default;
@@ -114,9 +115,9 @@ $utilities-text-emphasis-colors: (
 $utilities-bg: map.merge(
   $utilities-colors,
   (
-    'black': to-rgb($black),
-    'white': to-rgb($white),
-    'body': to-rgb($body-bg),
+    'black': $black,
+    'white': $white,
+    'body': $body-bg,
   )
 ) !default;
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, '$key', 'bg') !default;
@@ -135,8 +136,8 @@ $utilities-bg-subtle: (
 $utilities-border: map.merge(
   $utilities-colors,
   (
-    'black': to-rgb($black),
-    'white': to-rgb($white),
+    'black': $black,
+    'white': $white,
   )
 ) !default;
 $utilities-border-colors: map-loop($utilities-border, rgba-css-var, '$key', 'border') !default;

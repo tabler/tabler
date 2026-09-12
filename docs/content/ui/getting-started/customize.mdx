@@ -69,17 +69,26 @@ To change the primary color of Tabler you need to set the `--tblr-primary` varia
 </style>
 ```
 
-If you use `--tblr-primary` in `rgba()` contexts (or see inconsistent colors), also override `--tblr-primary-rgb` (as comma-separated RGB values) and optionally `--tblr-primary-fg` (text/icon color used on primary backgrounds):
+Every tint, shade and transparent variant of the primary color is derived from `--tblr-primary` at runtime with `color-mix()`, so this one variable is enough. Optionally override `--tblr-primary-fg` (text/icon color used on primary backgrounds):
 
 ```html
 <style>
   :root {
     --tblr-primary: #f11d46;
-    --tblr-primary-rgb: 241, 29, 70;
     --tblr-primary-fg: #fff;
   }
 </style>
 ```
+
+If you need a transparent version of a Tabler color in your own CSS, use `color-mix()` instead of `rgba(var(--tblr-primary-rgb), …)`:
+
+```css
+.my-highlight {
+  background-color: color-mix(in oklab, var(--tblr-primary) 20%, transparent);
+}
+```
+
+The `--tblr-*-rgb` variables (for example `--tblr-primary-rgb: 6, 111, 209`) are still emitted for backward compatibility, but Tabler no longer reads them and they are deprecated. They will be removed in Tabler 2.0.
 
 ## Other system colors
 
