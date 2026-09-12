@@ -2,6 +2,7 @@
 // Every modal is rendered inline via ModalInline (in place, unlike Modal.astro
 // which drains to <body>).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
@@ -195,17 +196,25 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
     </CardBody>
   </Card>
 
-  <script is:inline>
-    // Only opening a native <dialog> needs a script. Closing is handled by the
-    // <form method="dialog"> buttons inside it and by the Esc key.
-    const nativeDialog = document.getElementById('native-dialog')
+  <CaptureScript>
+    <!-- BEGIN NATIVE DIALOG SCRIPT -->
+    <script is:inline>
+      // Only opening a native <dialog> needs a script. Closing is handled by the
+      // <form method="dialog"> buttons inside it and by the Esc key.
+      function initNativeDialog() {
+        const nativeDialog = document.getElementById('native-dialog')
 
-    const openNativeDialog = (blur) => {
-      nativeDialog.classList.toggle('modal-blur', blur)
-      nativeDialog.showModal()
-    }
+        const openNativeDialog = (blur) => {
+          nativeDialog.classList.toggle('modal-blur', blur)
+          nativeDialog.showModal()
+        }
 
-    document.getElementById('native-dialog-open').addEventListener('click', () => openNativeDialog(false))
-    document.getElementById('native-dialog-open-blur').addEventListener('click', () => openNativeDialog(true))
-  </script>
+        document.getElementById('native-dialog-open').addEventListener('click', () => openNativeDialog(false))
+        document.getElementById('native-dialog-open-blur').addEventListener('click', () => openNativeDialog(true))
+      }
+
+      document.readyState !== 'loading' ? initNativeDialog() : document.addEventListener('DOMContentLoaded', initNativeDialog, { once: true })
+    </script>
+    <!-- END NATIVE DIALOG SCRIPT -->
+  </CaptureScript>
 </DefaultLayout>
