@@ -15,3 +15,7 @@ export * from './src/bootstrap'
 
 // Tabler's own components
 export { default as Autosize } from './src/autosize'
+export { default as CountUp } from './src/countup'
+export { default as InputMask } from './src/input-mask'
+export { default as Sortable } from './src/sortable'
+export { default as SwitchIcon } from './src/switch-icon'

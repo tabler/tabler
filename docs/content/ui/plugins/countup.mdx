@@ -1,15 +1,11 @@
 ---
 title: Countup
 summary: A countup animates a number from zero to its final value when it scrolls into view.
-docs-libs: [countup]
 description: Animate numbers with the countup component, for statistics on dashboards and landing pages.
 related: [/ui/plugins/chart]
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
-import TabsPackage from '@components/TabsPackage.astro';
-import { Code } from 'astro:components';
-import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
@@ -23,23 +19,7 @@ Write the final number as the text of the element and add `data-countup`. Tabler
 
 ## Installation
 
-Install countup.js with npm:
-
-<TabsPackage name="countup.js" />
-
-Or include it from a CDN:
-
-<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/countup.js/dist/countUp.umd.js"></script>`} />
-
-Tabler reads the library from the `countUp` global, so load the UMD build above before `tabler.js`. If you install with npm and bundle it yourself, assign it first:
-
-```js
-import * as countUp from 'countup.js';
-
-window.countUp = countUp;
-```
-
-For options beyond the ones below, see the [countUp.js website](https://inorganik.github.io/countUp.js/).
+The [countUp.js](https://inorganik.github.io/countUp.js/) library is bundled with `tabler.js`, so there is nothing extra to install or load. For options beyond the ones below, see its website.
 
 ## Usage
 
@@ -129,9 +109,33 @@ Grouping is on by default, so thousands get a separator. Set `"useGrouping": fal
 
 ## JavaScript
 
-Tabler automatically initializes all elements with `data-countup` on page load. This is the code that runs:
+Tabler wraps the library in a `CountUp` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-countup`. This is the code that runs:
 
 <CodeDocs name="countup-init" file="core/js/src/countup.ts" />
+
+Create the component yourself for an element added later. Options go in the `data-countup` attribute, in the config object, or both; the object wins.
+
+```js
+const countup = new tabler.CountUp(document.getElementById('total'), { duration: 4 });
+```
+
+By default the animation starts when the element scrolls into view. Set `autoAnimate` to `false` to start it right away, or to control it yourself:
+
+```js
+const countup = tabler.CountUp.getOrCreateInstance(element, { autoAnimate: false });
+countup.reset();
+countup.start();
+```
+
+| Method | Description |
+| --- | --- |
+| `start()` | Starts the animation. |
+| `reset()` | Sets the number back to the starting value, so the animation can run again. |
+| `update(value)` | Animates to a new final value. |
+| `pauseResume()` | Pauses a running animation, or resumes a paused one. |
+| `dispose()` | Stops the animation and removes the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
 
 ## Accessibility
 
