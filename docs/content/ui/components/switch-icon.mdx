@@ -101,13 +101,37 @@ You can also add a fancy animation to add variety to your button. See demo below
 
 ## JavaScript
 
-Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click. This is the code that runs:
+Tabler wraps the button in a `SwitchIcon` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-toggle="switch-icon"`, and a click toggles the `active` class and `aria-pressed`. This is the code that runs:
 
 <CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
 
+Create the component yourself for a button added later, or change the state from code:
+
+```js
+const favorite = tabler.SwitchIcon.getOrCreateInstance(document.getElementById('favorite'));
+favorite.toggle(); // flip
+favorite.toggle(true); // force on
+```
+
+Every change fires `change.bs.switch-icon` on the button, with the new state in `event.active`:
+
+```js
+document.getElementById('favorite').addEventListener('change.bs.switch-icon', (event) => {
+  console.log(event.active ? 'added to favorites' : 'removed from favorites');
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `toggle(force)` | Flips the state, or sets it when `force` is `true` or `false`. Updates `aria-pressed` and fires `change.bs.switch-icon`. |
+| `isActive` | Getter. `true` when the button has the `active` class. |
+| `dispose()` | Removes the click handler and the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element)` | Static. Returns the component for the element and creates it when needed. |
+
 ## Accessibility
 
-- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state - Tabler keeps `aria-pressed` in sync from the first click, but the initial value has to be in your markup.
+- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state. Tabler keeps `aria-pressed` in sync, and fills it in from the `active` class when the markup leaves it out.
 - The two icons are decoration. The state lives in `aria-pressed`, not in which icon is visible.
 - Colour alone should not carry the state. A filled red heart and an outlined gray one differ in shape too, which is what makes them readable.
 - The animations run on every toggle. Disable them under `prefers-reduced-motion` if you add your own.
