@@ -55,7 +55,7 @@
   }
 
   @each $breakpoint, $container-max-width in $container-max-widths {
-    > .container#{breakpoint-infix($breakpoint, $container-max-widths)} {
+    > .#{breakpoint-prefix($breakpoint, $container-max-widths)}container {
       @extend %container-flex-properties;
     }
   }
@@ -189,68 +189,65 @@
 // scss-docs-start navbar-expand-loop
 // Generate series of `.navbar-expand-*` responsive classes for configuring
 // where your navbar collapses.
-.navbar-expand {
-  @each $breakpoint in map.keys($grid-breakpoints) {
-    $next: breakpoint-next($breakpoint, $grid-breakpoints);
-    $infix: breakpoint-infix($next, $grid-breakpoints);
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint, $grid-breakpoints);
+  $prefix: breakpoint-prefix($next, $grid-breakpoints);
 
-    // stylelint-disable-next-line scss/selector-no-union-class-name
-    &#{$infix} {
-      @include media-breakpoint-up($next) {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
+  .#{$prefix}navbar-expand {
+    @include media-breakpoint-up($next) {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
 
-        .navbar-nav {
-          flex-direction: row;
+      .navbar-nav {
+        flex-direction: row;
 
-          .dropdown-menu {
-            position: absolute;
-          }
-
-          .nav-link {
-            padding-inline-end: var(--navbar-nav-link-padding-x);
-            padding-inline-start: var(--navbar-nav-link-padding-x);
-          }
+        .dropdown-menu {
+          position: absolute;
         }
 
-        .navbar-nav-scroll {
-          overflow: visible;
+        .nav-link {
+          padding-inline-end: var(--navbar-nav-link-padding-x);
+          padding-inline-start: var(--navbar-nav-link-padding-x);
         }
+      }
 
-        .navbar-collapse {
-          display: flex !important; // stylelint-disable-line declaration-no-important
-          flex-basis: auto;
-        }
+      .navbar-nav-scroll {
+        overflow: visible;
+      }
 
-        .navbar-toggler {
+      .navbar-collapse {
+        display: flex !important; // stylelint-disable-line declaration-no-important
+        flex-basis: auto;
+      }
+
+      .navbar-toggler {
+        display: none;
+      }
+
+      .offcanvas {
+        // stylelint-disable declaration-no-important
+        position: static;
+        z-index: auto;
+        flex-grow: 1;
+        width: auto !important;
+        height: auto !important;
+        visibility: visible !important;
+        background-color: transparent !important;
+        border: 0 !important;
+        transform: none !important;
+        @include box-shadow(none);
+        @include transition(none);
+        // stylelint-enable declaration-no-important
+
+        .offcanvas-header {
           display: none;
         }
 
-        .offcanvas {
-          // stylelint-disable declaration-no-important
-          position: static;
-          z-index: auto;
-          flex-grow: 1;
-          width: auto !important;
-          height: auto !important;
-          visibility: visible !important;
-          background-color: transparent !important;
-          border: 0 !important;
-          transform: none !important;
-          @include box-shadow(none);
-          @include transition(none);
-          // stylelint-enable declaration-no-important
-
-          .offcanvas-header {
-            display: none;
-          }
-
-          .offcanvas-body {
-            display: flex;
-            flex-grow: 0;
-            padding: 0;
-            overflow-y: visible;
-          }
+        .offcanvas-body {
+          display: flex;
+          flex-grow: 0;
+          padding: 0;
+          overflow-y: visible;
         }
       }
     }

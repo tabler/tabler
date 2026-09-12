@@ -172,10 +172,11 @@ wholesale port of v6. Against that, the upstream diff splits fairly cleanly.
 cascade layers · PostCSS prefixing (already shipped in 1.5) · one `focus-ring()` mixin ·
 logical properties · native `<dialog>` and `<details>` (removes JavaScript and fixes several
 findings from our a11y audit) · Floating UI (already in progress on
-`migrate-popper-to-floating-ui`) · the `$radii` scale · scroll-snap carousel.
+`migrate-popper-to-floating-ui`) · the `$radii` scale · scroll-snap carousel ·
+the `md:` prefix syntax (decided 2026-09-10, phase 8).
 
 **Skip or defer:**
-the `md:` prefix syntax · the `modal`→`dialog`, `offcanvas`→`drawer`, `dropdown`→`menu` renames
+the `modal`→`dialog`, `offcanvas`→`drawer`, `dropdown`→`menu` renames
 (take the implementations, keep the v5 names) · the `$spacers` and `.rounded-*` remapping ·
 `.text-*` → `.fg-*`.
 
@@ -401,20 +402,57 @@ The phase with the best effort-to-value ratio: less code, better accessibility, 
 `docs/content/**` form pages.
 **Risk:** medium-high, and the most visible to template users.
 
-### Phase 8 — Utilities and the responsive naming question
+### Phase 8 — Utilities and the responsive prefix
 
-Kept last because it is the most disruptive and the most optional.
+Kept late because it is the most disruptive phase and the only one that breaks templates on purpose.
 
 - Container-query utilities (`.contains-inline`, `.contains-size`) and grid utilities
-  (`.grid-cols-*`, `.place-items`, `.justify-items`) are pure additions — take them.
-- The `md:` prefix syntax is **not adopted in 2.0**. Adopting it would mean
-  rewriting roughly 1 800 class occurrences across ~200 files in `preview/`, `docs/` and `shared/`,
-  and breaking every third-party Tabler template. v5 infix names (`.col-md-6`, `.d-md-none`) stay.
-- Revisit for 3.0 at the earliest; if ever adopted, ship both spellings for one major and add a codemod.
-- Breakpoint value changes (`lg` 1024, `xl` 1280, `2xl` 1536) can be considered independently of the
-  naming, but they reflow every layout, so treat them as their own decision.
+  (`.grid-cols-*`, `.place-items`, `.justify-items`) are pure additions — take them (#2975).
+- **The `md:` prefix syntax is adopted in 2.0** (decided 2026-09-10). This reverses the earlier note
+  in this plan, which deferred it to 3.0 at the earliest. `breakpoint-infix()` becomes
+  `breakpoint-prefix()` and returns `"md\:"`; responsive classes move from `.col-md-6` / `.d-md-none`
+  to `.md\:col-6` / `.md\:d-none`.
+- Measured scope: **2 480 responsive classes across all bundles** (1 670 in `tabler.css`, 810 more in
+  `tabler-marketing.css`, which carries its own utilities map), **129 of them actually used in our own
+  markup, 4 866 occurrences across 353 files**: `docs/` 4 042 in 209 files (mostly copyable examples in
+  `.mdx`), `preview/` 582 in 78, `shared/` 191 in 50 (including class names inside `shared/data/*.json`),
+  and 40 across `core/js/tests/visual/`, `screenshots/` and `.agents/`. The earlier "~1 800 occurrences
+  in ~200 files" estimate in this plan was low by about 2.7×.
+- **Sass side done** (`breakpoint-prefix()`, all call sites, the compatibility plugin). `breakpoint-infix()`
+  survives as a deprecated alias so custom Sass written against 1.x still compiles.
+- Print keeps its 1.x middle position (`.d-print-none`) until question 18 is settled, so
+  `generate-utility()` now takes a `$prefix` (front) and an `$infix` (middle) separately.
+- The prefix sits at the **front of the whole class**, not in the middle, so the 19
+  `breakpoint-infix()` call sites in 13 files cannot be sed'ed: `.col#{$infix}-6` becomes
+  `.#{$prefix}col-6`. The four nested `&#{$infix}` blocks (`ui/_tables.scss`, `layout/_navbar.scss`
+  ×2, `bootstrap/_navbar.scss`) have to be unrolled into full selectors, because `&` cannot prepend.
+  This is the bulk of the SCSS work.
+- The markup sweep is no longer on the critical path: the compatibility plugin keeps every 1.x class
+  alive, so `preview/`, `docs/` and `shared/` can move page by page. The codemod still needs a
+  whitelist from the frozen list rather than a regex — parsing alone reads `btn-sm` as `sm:btn`.
+  Prettier does not run on `.mdx`, so the codemod owns formatting there.
+- `css-escape-ident()` from upstream is only needed if the breakpoints are renamed (question 10). It
+  exists to escape the leading digit of `2xl` (`.\32 xl\:`); with `xxl` kept, `xxl\:` needs no escape.
+- Hand-written `classnames` front matter (at least `page-layouts`, `navbars`, `modal`, `table`,
+  `offcanvas`, `list-group`, `dropdown`, `datagrid`, `carousel`) and the grid and utility prose do not
+  follow a codemod — that is separate work, and it is why phase 10 grows with this phase.
+- Upstream `.stylelintrc.json` gained a `selector-class-pattern` that allows the prefix; ours sets
+  that rule to `null`, so nothing breaks, but turning it on in the v6 form buys a syntax gate.
+- v6 also renamed breakpoint values (question 10) and moved `.navbar-expand` and `.table-responsive`
+  to container queries. Both are independent of the naming and stay their own decisions.
 
-**Gate:** `check-markup-classes` is the gate that makes any of this reviewable.
+**Gate:** `check-markup-classes` is the gate that makes any of this reviewable — and it could not
+read escaped selectors at all: its css reader stopped at the backslash, so every prefixed class
+would have been reported as undefined. Fixed ahead of the phase (#3028). It is not urgent while the
+compatibility layer is on — the gate reads the 1.x alias and our markup still uses it — but it blocks
+the codemod, since prefixed markup needs a parser that can read the prefixed selector.
+
+`html-diff` cannot prove this phase neutral, because the output changes by design. The proof used
+instead compares, for every class in every bundle, its `@media` context, selector shape and
+declarations before and after: 11 617 1.x classes preserved, none lost, none changed, and exactly
+the 2 480 expected prefixed classes added. That comparison is what caught the three real defects in
+the first pass — print utilities emitting `.-printd-inline`, five size modifiers wrongly on the
+frozen list, and 810 marketing-bundle classes missing from it.
 
 ### Phase 9 — Component namespace collisions
 
@@ -462,7 +500,7 @@ Phase 6  native components (per component, independently shippable)
    ↓
 Phase 7  forms
    ↓
-Phase 8  utilities / naming decision
+Phase 8  utilities + responsive prefix
    ↓
 Phase 9  component ownership
    ↓
@@ -487,6 +525,22 @@ Decided:
     soft `.badge.bg-{color}-lt` variant without a role of its own, and `.agents/rules/main.mdc`
     already forbade it. This is a deliberate exception to "every 1.x class stays": upgrade-guide
     line, no replacement class — markup moves to `.badge.bg-{color}-lt`.
+15. The `md:` responsive prefix is adopted in 2.0 (decided 2026-09-10, phase 8). This overrides the
+    earlier entry in this plan that deferred it to 3.0. It is a deliberate exception to "v5 class
+    names stay": every responsive class in every template changes, so it ships with a codemod and an
+    upgrade-guide entry. Question 18 is the part still open.
+16. The 1.x spelling survives, added back over the built css by a PostCSS plugin
+    (`.build/postcss-legacy-responsive.ts`, decided 2026-09-10): `.md\:d-block { … }` ships as
+    `.md\:d-block, .d-md-block { … }`. One authored spelling in Sass, one extra selector per rule
+    rather than a duplicated rule, both names at identical specificity and cascade position, and the
+    whole layer goes away by deleting the plugin and its frozen class list one major after 2.0. Cost
+    measured on `tabler.css`: +98 KB raw, +9 KB gzip (+11%). The alias list cannot be derived by
+    parsing — `btn-sm` reads as `sm:btn` — so it is a frozen list of the 2 480 classes 1.x released.
+17. The prefix is a **pure rename, with no change in behaviour** (decided 2026-09-10):
+    `md:navbar-expand` expands from `md` up, exactly as `.navbar-expand-md` does today, even though
+    it now reads like the opposite of `md:table-mobile`. Making the two read alike would change what
+    existing markup does, so it is a documentation problem, not a behavioural one. Revisit only with
+    the container-query rework of `.navbar-expand` and `.table-responsive`.
 
 Open:
 
@@ -501,6 +555,9 @@ Open:
 12. Datepicker library: upstream picked Vanilla Calendar Pro; do we follow?
 13. `data-bs-*` → `data-tblr-*`: does 2.0 switch docs and markup and drop `data-bs-*`, or only keep
     the alias?
+18. Does 2.0 also take the other v6 prefixes — `print:`, `dark:` and the state variants
+    (`hover:link-10`)? They share the same mechanism in `generate-utility()`. `dark:` has to agree
+    with our `_dark.scss` and `light-dark()` approach first.
 
 ## 6. Task board
 
@@ -528,6 +585,9 @@ PR #2966 is parked.
 | #2973 | 5 | ScrollSpy on `IntersectionObserver` with an activation line; drop the deprecated `offset` and `method` options | `core/js/src/bootstrap/scrollspy.ts`, its spec | vitest, preview smoke | M |
 | #2976 | 5 | ESM only: remove the UMD scripts from `core/package.json`, fix `exports`, document `<script type="module">` and the loss of `window.tabler` in the upgrade guide | `core/package.json`, `core/.build/vite.config.mts`, `docs/content/**` getting started | build, preview pages still initialise plugins | M |
 | #2975 | 8 | Additive utilities: `.contains-inline` / `.contains-size`, `.grid-cols-*`, `.place-items`, `.justify-items`, `.shadow-xs…xl`, `.border-keyline` | `core/scss/_utilities.scss`, docs utility pages, `classnames` front matter | `check-markup-classes` baseline extended | M |
+| ~~—~~ done | 8 | ~~`breakpoint-prefix()` and every call site moved to a leading prefix, the four nested `&#{$infix}` blocks unrolled, `breakpoint-infix()` removed, print split onto its own `$infix` argument, plus the compatibility plugin and its frozen class list~~ | `core/scss/mixins/**`, `bootstrap/**`, `ui/_tables.scss`, `layout/_navbar.scss`, `helpers/_helpers.scss`, `.build/postcss-legacy-responsive.ts`, `.build/legacy-responsive-classes.txt` | per-class behaviour comparison over every bundle, SCSS unit tests | L |
+| — | 8 | Codemod for our own markup: `preview/`, `docs/`, `shared/data/*.json`, `core/js/tests/visual/`, `screenshots/`. Not urgent — the compatibility layer keeps the current spelling working — but it needs #3028 merged first, so the gate can read prefixed classes | `preview/**`, `docs/**`, `shared/**` | `check-markup-classes` | M |
+| — | 8 | Hand-written `classnames` front matter and the grid/utility prose, which no codemod reaches | `docs/content/**` | docs build, link gate | M |
 | #2971 | 6 | Framework icons drawn with `mask-image` + `currentcolor`; close button, toggler and breadcrumb are already done, so the scope is the form-control, select, carousel and validation SVGs and dropping their `-dark` variants; `.btn-close-white` kept as an empty alias | `core/scss/bootstrap/forms/**`, `bootstrap/_navbar.scss`, `_carousel.scss`, `ui/forms/**`, `ui/_close.scss` | visual review light/dark, `check:css-vars` | S–M |
 | — | 0 | Lift the reusable parts of upstream `skills/bootstrap-v5-v6-migration/SKILL.md` into our notes; start the 2.0 section of `UPGRADE.md` with the browser baseline (oklch, color-mix) and the ESM-only note | `UPGRADE.md`, `.agents/` | none | S |
 | — | 2 | Colours on `oklch()` + `color-mix(in lab)`, `--theme-bg/fg/border/contrast` and `.theme-*`, remove the 52 `--tblr-*-rgb` sites; `.btn-primary` etc. keep emitting via the theme tokens | `_colors.scss`, `_theme.scss`, `_props.scss`, `core/scss/ui/**` | contrast gate, dark mode screenshots, hand-reviewed `html-diff` | L |
@@ -541,7 +601,8 @@ PR #2966 is parked.
 Dependencies: #2977 after #2969; the Sass split after #2977. #2972 and #2970 can land before the
 Sass split (in `_variables.scss`, moved later). oklch after the Sass split; #3016 (`@layer`, 3b) after oklch and before #2974; the component parity
 reworks after oklch (they use theme tokens). Modal → offcanvas → deleting the `util/*` helpers. The
-upgrade guide runs alongside everything.
+upgrade guide runs alongside everything. The phase 8 `breakpoint-prefix()` task needs #3028 (landed)
+and should go in before the codemod, so the gate can police the sweep.
 
 ### 6.2 Waiting on a decision (section 5)
 
@@ -550,8 +611,9 @@ upgrade guide runs alongside everything.
 | 4 `$spacers` | either nothing, or a remap PR plus a codemod for every template |
 | 6 navbar as drawer | prototype against the folded sidebar, then decide |
 | 8 classes removed by native components | accordion on `<details>` (phase 6, M, no issue yet) is blocked on this: it decides what happens to `.accordion-button` / `.accordion-collapse` (195 occurrences in 12 files) |
-| 10 breakpoint values | either nothing, or a reflow PR with screenshots of every preview page |
+| 10 breakpoint values | either nothing, or a reflow PR with screenshots of every preview page; also decides whether `css-escape-ident()` is needed for `2xl` |
 | 11 forms validation and `_form-check` split | phase 7 PRs |
 | 12 datepicker library | new component or nothing |
 | 13 `data-tblr-*` switch | docs and markup sweep, or nothing |
+| 18 `print:` / `dark:` / state prefixes | additional utility variants, or nothing |
 

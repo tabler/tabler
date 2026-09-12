@@ -90,9 +90,9 @@
 
 @each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
-    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    $prefix: breakpoint-prefix($breakpoint, $grid-breakpoints);
 
-    .dropdown-menu#{$infix}-start {
+    .#{$prefix}dropdown-menu-start {
       --bs-position: start;
 
       &[data-bs-popper],
@@ -102,7 +102,7 @@
       }
     }
 
-    .dropdown-menu#{$infix}-end {
+    .#{$prefix}dropdown-menu-end {
       --bs-position: end;
 
       &[data-bs-popper],

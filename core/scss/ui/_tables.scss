@@ -71,49 +71,47 @@
   max-width: 1px;
 }
 
-// Generate a series of `.table-mobile-*` classes for configuring the screen
-// size below which the table stacks into rows. Mirrors `.table-responsive-*`:
-// the infix names the breakpoint the layout applies *below*.
-.table-mobile {
-  @each $breakpoint in map.keys($grid-breakpoints) {
-    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+// Generate a series of `.{bp}\\:table-mobile` classes for configuring the screen
+// size below which the table stacks into rows. Mirrors `.table-responsive`:
+// the prefix names the breakpoint the layout applies *below*.
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $prefix: breakpoint-prefix($breakpoint, $grid-breakpoints);
 
-    &#{$infix} {
-      @include media-breakpoint-down($breakpoint) {
+  .#{$prefix}table-mobile {
+    @include media-breakpoint-down($breakpoint) {
+      display: block;
+
+      thead {
+        display: none;
+      }
+
+      tbody,
+      tr {
+        display: flex;
+        flex-direction: column;
+      }
+
+      td {
         display: block;
+        padding: $table-cell-padding-y $table-cell-padding-x !important;
+        color: var(--body-color) !important;
+        border: none;
 
-        thead {
-          display: none;
-        }
-
-        tbody,
-        tr {
-          display: flex;
-          flex-direction: column;
-        }
-
-        td {
-          display: block;
-          padding: $table-cell-padding-y $table-cell-padding-x !important;
-          color: var(--body-color) !important;
-          border: none;
-
-          &[data-label] {
-            &::before {
-              @include subheader();
-              display: block;
-              content: attr(data-label);
-            }
+        &[data-label] {
+          &::before {
+            @include subheader();
+            display: block;
+            content: attr(data-label);
           }
         }
+      }
 
-        tr {
-          border-bottom: var(--border-width) var(--border-style) $table-border-color;
-        }
+      tr {
+        border-bottom: var(--border-width) var(--border-style) $table-border-color;
+      }
 
-        .btn {
-          display: block;
-        }
+      .btn {
+        display: block;
       }
     }
   }
