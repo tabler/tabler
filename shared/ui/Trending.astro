@@ -4,12 +4,14 @@ import Icon from './Icon.astro'
 interface Props {
   value: number
   unit?: string | undefined
+  /** overrides the sign-based color, e.g. "red" for a rising error rate */
+  color?: string | undefined
   class?: string
 }
 
-const { value, unit = '%', class: className } = Astro.props
+const { value, unit = '%', color, class: className } = Astro.props
 
-const trendingColor = value > 0 ? 'green' : value === 0 ? 'muted' : 'red'
+const trendingColor = color ?? (value > 0 ? 'green' : value === 0 ? 'muted' : 'red')
 const trendingIcon = value > 0 ? 'arrow-up' : value === 0 ? 'minus' : 'arrow-down'
 
 const classes = [`text-${trendingColor} d-inline-flex align-items-center lh-1`, className]
