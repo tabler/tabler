@@ -26,30 +26,68 @@ description: >-
 | `vendor/` | overrides for third-party plugin CSS |
 | `tests/` | sass-true unit tests (see section 7) |
 
-Entry points: `tabler.scss` (which forwards `_core.scss`, then `_extends.scss` last), plus the standalone bundles `tabler-flags`, `tabler-marketing`, `tabler-payments`, `tabler-props`, `tabler-socials`, `tabler-themes`, `tabler-vendors`. A new partial is not compiled until it is `@forward`ed from `_core.scss` (or the bundle it belongs to).
+Entry points: `tabler.scss` (which forwards `_core.scss`, then `_extends.scss` last), plus the standalone bundles `tabler-flags`, `tabler-marketing`, `tabler-payments`, `tabler-props`, `tabler-socials`, `tabler-themes`, `tabler-vendors`.
+
+Each directory has a forward-only `_index.scss` barrel (`bootstrap/`, `layout/`, `ui/`, `utils/`, `helpers/`, `marketing/`, `vendor/`). `_core.scss` forwards the barrels, not individual partials. A new partial is not compiled until it is `@forward`ed from its directory's `_index.scss` (or, for a barrel-less path like `fonts/webfonts`, directly from `_core.scss` or the bundle it belongs to). Add the `@forward` in the position the load order requires — ordering constraints between partials are noted as comments in the barrels (`bootstrap/root` before `props`, `layout/dark` after `layout/root`, `ui/steps` before `ui/type`, `extends` last). `helpers/`'s rules live in `helpers/_helpers.scss`; its `_index.scss` only forwards that.
 
 The module graph uses `@use` / `@forward`: a partial starts with `@use '../config' as *`, which is the hub forwarding `settings`, `variables`, `variables-dark`, `maps`, `mixins` and `utilities`. Cross-module `@extend` rules must stay in `_extends.scss`, which loads last.
 
 ## 2. The component pattern
 
+Every themeable value is a **custom property on the component's root class**, seeded
+from a Sass variable so users can retheme without recompiling. Declarations below
+read `var(--badge-*)`, never the Sass variable directly.
+
+The root-class tokens come from **one per-component map**, declared in the partial and
+rendered with `tokens()` (both helpers live in `core/scss/mixins/`, forwarded through
+`config`):
+
 ```scss
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design
+// scss-docs-start badge-css-vars
+$badge-tokens: () !default;
+$badge-tokens: defaults(
+  (
+    --badge-padding-x: $badge-padding-x,
+    --badge-font-size: $badge-font-size,
+    --badge-line-height: 1,
+  ),
+  $badge-tokens
+);
+// scss-docs-end badge-css-vars
+// stylelint-enable custom-property-no-missing-var-function
+
 .badge {
-  --badge-padding-x: #{$badge-padding-x};
-  --badge-font-size: #{$badge-font-size};
-  --badge-line-height: 1;
+  @include tokens($badge-tokens);
   display: inline-flex;
   padding: var(--badge-padding-y) var(--badge-padding-x);
   font-size: var(--badge-font-size);
-  @include border-radius(var(--badge-border-radius));
 }
 ```
 
-- Every themeable value becomes a **custom property declared at the top of the component's root rule**, seeded from a Sass variable (`#{$badge-font-size}`). Declarations below read `var(--badge-*)`, never the Sass variable directly — that is what lets users retheme without recompiling.
+- `defaults($defaults, $overrides)` merges the two maps; `defaults()` and `tokens()` are
+  ported from Bootstrap v6. One mechanism now covers both override paths: compile-time
+  `@use 'tabler' with ($badge-tokens: (--badge-font-size: 1rem))` and runtime
+  `.badge { --badge-font-size: 1rem }`. Setting a key to `null` in the override removes the token.
+- Map values point at the existing `!default` Sass variables (`--badge-font-size: $badge-font-size`),
+  so `$badge-*` overrides keep working and the variables stay "used" for `lint:scss:vars`.
 - A value with no reason to be overridden can be a literal (`--badge-line-height: 1`).
-- Modifiers set custom properties rather than redeclaring properties: `.badge-sm { --badge-font-size: … }`.
+- The `custom-property-no-missing-var-function` lint fires on the map keys when the same
+  name is also declared literally in a modifier ruleset in the file — wrap the map in the
+  `stylelint-disable`/`enable` pair shown above.
+- **Only the root class gets a map.** Modifiers still set custom properties inline
+  (`.badge-sm { --badge-font-size: … }`), and so do one-off tokens on sub-elements.
+- Keep map entries in the exact order the properties were emitted before, so the compiled
+  block stays byte-identical. Converting a component is output-neutral: prove it with a
+  rebuild diff (`html-diff` only covers markup).
 - Sass variables go to `_variables.scss` with `!default`, dark-mode counterparts to `_variables-dark.scss`.
+- Most `ui/` components now use this pattern (`$<component>-tokens`). A few small ones still
+  declare one or two custom properties inline at the top of the root rule
+  (`--icon-size: #{$icon-size};`) — that is fine; reach for a map once there is a cluster.
+- Keep the map value bare (`--card-bg: $card-bg`); only wrap it in `#{…}` when it is a
+  function call or an interpolated expression (`--alert-bg: #{color-transparent(…)}`).
 
 ## 3. Custom properties are authored bare
 
@@ -111,7 +149,7 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 
 ## 9. Checklist
 
-- [ ] Partial in the right directory and `@forward`ed from `_core.scss` or its bundle
+- [ ] Partial in the right directory and `@forward`ed from that directory's `_index.scss` barrel (or `_core.scss` / its bundle for a barrel-less path)
 - [ ] Themeable values as custom properties at the top of the root rule, seeded from `!default` Sass variables
 - [ ] Custom properties written bare; new foreign names added to `cssVarIgnore`
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`

@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../config' as *;
 
 .table {
@@ -69,9 +71,14 @@
   max-width: 1px;
 }
 
+// Generate a series of `.table-mobile-*` classes for configuring the screen
+// size below which the table stacks into rows. Mirrors `.table-responsive-*`:
+// the infix names the breakpoint the layout applies *below*.
 .table-mobile {
-  @each $breakpoint, $breakpoint-max-widthin in $grid-breakpoints {
-    &#{breakpoint-infix($breakpoint)} {
+  @each $breakpoint in map.keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    &#{$infix} {
       @include media-breakpoint-down($breakpoint) {
         display: block;
 
@@ -87,7 +94,7 @@
 
         td {
           display: block;
-          padding: $table-cell-padding-x $table-cell-padding-y !important;
+          padding: $table-cell-padding-y $table-cell-padding-x !important;
           color: var(--body-color) !important;
           border: none;
 

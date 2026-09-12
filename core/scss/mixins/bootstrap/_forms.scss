@@ -4,6 +4,7 @@
 @use '../../settings' as *;
 @use '../../variables' as *;
 @use '../functions' as *;
+@use '../mixins' as *;
 @use 'breakpoints' as *;
 // This mixin uses an `if()` technique to be compatible with Dart Sass
 // See https://github.com/sass/sass/issues/1873#issuecomment-152293725 for more details
@@ -70,7 +71,7 @@
         @if $enable-shadows {
           @include box-shadow($input-box-shadow, $focus-box-shadow);
         } @else {
-          box-shadow: $focus-box-shadow;
+          @include focus-ring($shadow: $focus-box-shadow, $outline: null);
         }
       }
     }
@@ -105,7 +106,7 @@
         @if $enable-shadows {
           @include box-shadow($form-select-box-shadow, $focus-box-shadow);
         } @else {
-          box-shadow: $focus-box-shadow;
+          @include focus-ring($shadow: $focus-box-shadow, $outline: null);
         }
       }
     }
@@ -128,7 +129,7 @@
       }
 
       &:focus {
-        box-shadow: $focus-box-shadow;
+        @include focus-ring($shadow: $focus-box-shadow, $outline: null);
       }
 
       ~ .form-check-label {

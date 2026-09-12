@@ -25,7 +25,7 @@ interface Props {
 const { icon, color, lt, title, description, class: className, id, personId, chartType = 'line', chartPosition = 'right', chartData, smallIcon, descriptionValue, descriptionValueColor } = Astro.props
 
 const chartColor = color ?? 'primary'
-const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square']
+const avatarClass = [color ? (lt ? `bg-${color}-lt` : `bg-${color} text-${color}-fg`) : '', 'avatar', 'avatar-square']
 ---
 
 <div class:list={['card card-sm', className]}>
