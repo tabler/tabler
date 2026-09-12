@@ -24,7 +24,7 @@ That directory is Bootstrap's JavaScript rewritten in TypeScript, MIT headers ke
 
 - Fix bugs the way upstream did, and keep the file's structure recognisable against `twbs/bootstrap`. Gratuitous restructuring makes the next upstream sync expensive.
 - `js/src/bootstrap.ts` is the single source of truth for what is exported and for the `bootstrap` namespace object.
-- The package compiles with `strict: true`. Every component declares its own `ComponentConfig` type and `declare _element` / `declare _config` — the `bootstrap-component` skill has the pattern.
+- A new or reworked component class follows the `bootstrap-component` skill (file order, typed config, Data API).
 - Coverage is configured to measure exactly this directory (`js/src/bootstrap/**`), and `js/tests/unit/*.spec.ts` mirrors upstream's suite — a change here is expected to come with its test.
 
 ## 3. Tabler's own modules
