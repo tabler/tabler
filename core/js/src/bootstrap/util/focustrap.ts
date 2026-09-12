@@ -20,7 +20,7 @@ const TAB_KEY = 'Tab'
 const TAB_NAV_FORWARD = 'forward'
 const TAB_NAV_BACKWARD = 'backward'
 
-interface FocusTrapConfig {
+type FocusTrapConfig = {
   autofocus: boolean
   trapElement: HTMLElement | null
 }

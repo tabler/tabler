@@ -22,7 +22,7 @@ const POINTER_TYPE_PEN = 'pen'
 const CLASS_NAME_POINTER_EVENT = 'pointer-event'
 const SWIPE_THRESHOLD = 40
 
-interface SwipeConfig {
+type SwipeConfig = {
   endCallback: (() => void) | null
   leftCallback: (() => void) | null
   rightCallback: (() => void) | null

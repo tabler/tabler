@@ -5,7 +5,7 @@ const sortableElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTML
 
 if (sortableElements.length) {
   sortableElements.forEach(function (element: HTMLElement) {
-    let options: Record<string, any> = {}
+    let options: Record<string, unknown> = {}
 
     try {
       const rawOptions = element.getAttribute('data-sortable')

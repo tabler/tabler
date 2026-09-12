@@ -9,10 +9,11 @@ import EventHandler from '../dom/event-handler.js'
 import SelectorEngine from '../dom/selector-engine.js'
 import { isDisabled } from './index'
 
+type ComponentInstance = unknown
+
 interface PluginComponent {
   NAME: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getOrCreateInstance(element: HTMLElement | string | null): any
+  getOrCreateInstance(element: HTMLElement | string | null): ComponentInstance
 }
 
 interface EventActionData {
@@ -21,15 +22,21 @@ interface EventActionData {
 }
 
 interface PluginEventActionData extends EventActionData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  instances: any[]
+  instances: ComponentInstance[]
 }
 
 interface DismissibleComponent {
   EVENT_KEY: string
   NAME: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getOrCreateInstance(element: HTMLElement | string | null): any
+  getOrCreateInstance(element: HTMLElement | string | null): ComponentInstance
+}
+
+const callMethod = (instance: ComponentInstance, method: string): void => {
+  const callable = (instance as Record<string, unknown>)[method]
+
+  if (typeof callable === 'function') {
+    callable.call(instance)
+  }
 }
 
 const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'): void => {
@@ -46,9 +53,7 @@ const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'):
     }
 
     const target = SelectorEngine.getElementFromSelector(this) || this.closest(`.${name}`)
-    const instance = component.getOrCreateInstance(target)
-
-    instance[method]()
+    callMethod(component.getOrCreateInstance(target), method)
   })
 }
 
@@ -76,7 +81,7 @@ const eventActionOnPlugin = (Plugin: PluginComponent, onEvent: string, stringSel
     }
 
     for (const instance of instances) {
-      instance[method]()
+      callMethod(instance, method)
     }
   })
 }

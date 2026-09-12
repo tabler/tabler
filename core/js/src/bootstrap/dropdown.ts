@@ -28,6 +28,8 @@ type ComponentConfig = {
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
+type RelatedTarget = { relatedTarget: HTMLElement; clickEvent?: Event }
+
 const NAME = 'dropdown'
 const DATA_KEY = 'bs.dropdown'
 const EVENT_KEY = `.${DATA_KEY}`
@@ -179,7 +181,7 @@ class Dropdown extends BaseComponent {
     }
   }
 
-  _completeHide(relatedTarget: Record<string, any>): void {
+  _completeHide(relatedTarget: RelatedTarget): void {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE, relatedTarget)
     if (hideEvent?.defaultPrevented) {
       return
@@ -351,7 +353,7 @@ class Dropdown extends BaseComponent {
         continue
       }
 
-      const relatedTarget: Record<string, any> = { relatedTarget: context._element }
+      const relatedTarget: RelatedTarget = { relatedTarget: context._element }
 
       if (event.type === 'click') {
         relatedTarget.clickEvent = event

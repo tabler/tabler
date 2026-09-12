@@ -6,7 +6,7 @@
  */
 
 import Tooltip from './tooltip'
-import type { TooltipConfig, TooltipContent } from './tooltip'
+import type { TooltipConfig, TooltipContent, TooltipContentMap } from './tooltip'
 
 /**
  * Constants
@@ -65,7 +65,7 @@ class Popover extends Tooltip {
     return Boolean(this._getTitle() || this._getContent())
   }
 
-  _getContentForTemplate(): Record<string, any> {
+  _getContentForTemplate(): TooltipContentMap {
     return {
       [SELECTOR_TITLE]: this._getTitle(),
       [SELECTOR_CONTENT]: this._getContent(),

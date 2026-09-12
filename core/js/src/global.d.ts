@@ -4,12 +4,12 @@ interface Window {
     CountUp: new (
       target: HTMLElement,
       endVal: number,
-      options?: any,
+      options?: Record<string, unknown>,
     ) => {
       error: boolean
       start: () => void
     }
   }
-  IMask?: new (element: HTMLElement, options: { mask: string; lazy?: boolean }) => any
-  Sortable?: new (element: HTMLElement, options?: any) => any
+  IMask?: new (element: HTMLElement, options: { mask: string; lazy?: boolean }) => unknown
+  Sortable?: new (element: HTMLElement, options?: Record<string, unknown>) => unknown
 }

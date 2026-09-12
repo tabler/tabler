@@ -52,6 +52,8 @@ type PopperConfigFunction = (defaultConfig: Partial<Popper.Options>) => Partial<
 
 export type TooltipDelay = number | { show: number; hide: number }
 export type TooltipContent = string | HTMLElement | null | ((this: HTMLElement, element: HTMLElement) => string | HTMLElement | null)
+// Keys are selectors inside the template, values the content for that slot
+export type TooltipContentMap = Record<string, TooltipContent>
 export type TooltipPlacement = string | ((this: Tooltip, tip: HTMLElement, element: HTMLElement) => string)
 
 export type TooltipConfig = {
@@ -141,7 +143,7 @@ class Tooltip extends BaseComponent {
   _activeTrigger: Record<string, boolean>
   _popper: Popper.Instance | null
   _templateFactory: TemplateFactory | null
-  _newContent: Record<string, any> | null
+  _newContent: TooltipContentMap | null
   tip: HTMLElement | null
   _hideModalHandler: () => void
 
@@ -336,7 +338,7 @@ class Tooltip extends BaseComponent {
     return this.tip
   }
 
-  _createTipElement(content: Record<string, any>): HTMLElement | null {
+  _createTipElement(content: TooltipContentMap): HTMLElement | null {
     const tip = this._getTemplateFactory(content).toHtml() as HTMLElement
 
     if (!tip) {
@@ -357,7 +359,7 @@ class Tooltip extends BaseComponent {
     return tip
   }
 
-  setContent(content: Record<string, any>): void {
+  setContent(content: TooltipContentMap): void {
     this._newContent = content
     if (this._isShown()) {
       this._disposePopper()
@@ -365,7 +367,7 @@ class Tooltip extends BaseComponent {
     }
   }
 
-  _getTemplateFactory(content: Record<string, any>): TemplateFactory {
+  _getTemplateFactory(content: TooltipContentMap): TemplateFactory {
     if (this._templateFactory) {
       this._templateFactory.changeContent(content)
     } else {
@@ -379,7 +381,7 @@ class Tooltip extends BaseComponent {
     return this._templateFactory
   }
 
-  _getContentForTemplate(): Record<string, any> {
+  _getContentForTemplate(): TooltipContentMap {
     return {
       [SELECTOR_TOOLTIP_INNER]: this._getTitle(),
     }

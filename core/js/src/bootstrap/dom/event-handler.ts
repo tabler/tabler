@@ -5,10 +5,8 @@
  * --------------------------------------------------------------------------
  */
 
-// `this` is the element the handler was bound to (or the delegate target); it is
-// left open so handlers can declare `this: HTMLElement` when they need it.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type EventCallback<E extends Event = Event> = (this: any, event: E) => void
+// `this` is the element the handler was bound to, or the delegate target
+export type EventCallback<E extends Event = Event> = (this: HTMLElement, event: E) => void
 
 export type DelegatedEvent<E extends Event = Event> = E & { delegateTarget: HTMLElement }
 
@@ -104,7 +102,7 @@ function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHan
       EventHandler.off(element, event.type, fn)
     }
 
-    return fn.apply(element, [event])
+    return fn.apply(element as HTMLElement, [event])
   } as BootstrapHandler
 }
 
@@ -124,7 +122,7 @@ function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: 
           EventHandler.off(element, event.type, selector, fn)
         }
 
-        return fn.apply(target, [event])
+        return fn.apply(target as HTMLElement, [event])
       }
     }
   } as BootstrapHandler
@@ -158,7 +156,7 @@ function addHandler(element: EventTarget | null, originalTypeEvent: string, hand
       return function (this: EventTarget, event: Event) {
         const evt = event as DelegatedEvent<MouseEvent>
         if (!evt.relatedTarget || (evt.relatedTarget !== evt.delegateTarget && !evt.delegateTarget.contains(evt.relatedTarget as Node))) {
-          return fn.call(this, event)
+          return fn.call(this as HTMLElement, event)
         }
       }
     }
