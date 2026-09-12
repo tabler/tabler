@@ -1202,7 +1202,7 @@ $input-box-shadow: var(--shadow-input) !default;
 $input-plaintext-color: var(--body-color) !default;
 
 $input-focus-bg: $input-bg !default;
-$input-focus-border-color: tint-color($component-active-bg, 50%) !default;
+$input-focus-border-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $input-focus-color: var(--body-color) !default;
 $input-focus-width: $input-btn-focus-width !default;
 $input-focus-box-shadow: $input-btn-focus-box-shadow !default;
@@ -2005,7 +2005,8 @@ $form-switch-padding-start: $form-switch-width + 0.5rem !default;
 $form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color}'/></svg>") !default;
 $form-switch-border-radius: $form-switch-width !default;
 $form-switch-transition: background-position 0.15s ease-in-out !default;
-$form-switch-focus-color: $input-focus-border-color !default;
+// Compile-time tint on purpose: url-encoded into the svg below, where `var()` cannot resolve.
+$form-switch-focus-color: tint-color($component-active-bg, 50%) !default;
 $form-switch-focus-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-focus-color}'/></svg>") !default;
 $form-switch-checked-color: $white !default;
 $form-switch-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-checked-color}'/></svg>") !default;
@@ -2029,7 +2030,7 @@ $form-range-thumb-focus-box-shadow:
   0 0 0 1px $body-bg,
   $input-focus-box-shadow !default;
 $form-range-thumb-focus-box-shadow-width: 0.125rem !default;
-$form-range-thumb-active-bg: tint-color($component-active-bg, 70%) !default;
+$form-range-thumb-active-bg: mix-color-css(var(--white), var(--primary), 70%) !default;
 $form-range-thumb-disabled-bg: var(--secondary-color) !default;
 $form-range-thumb-transition:
   background-color 0.15s ease-in-out,
