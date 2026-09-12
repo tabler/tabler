@@ -9,15 +9,16 @@ import CardActions from '@ui/CardActions.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardTitle from '@ui/CardTitle.astro'
-import ChartSparkline from '@ui/ChartSparkline.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import Progress from '@ui/Progress.astro'
+import Subheader from '@ui/Subheader.astro'
+import Trending from '@ui/Trending.astro'
 
 const stats = [
-  { id: 'requests', label: 'Requests', value: '8.61M', delta: '+8.2%', color: 'success', data: '21,24,22,27,29,26,31' },
-  { id: 'visitors', label: 'Unique visitors', value: '142K', delta: '+3.1%', color: 'success', data: '12,14,13,15,14,16,17' },
-  { id: 'errors', label: 'Error rate', value: '0.42%', delta: '+0.09 pp', color: 'danger', data: '3,2,4,3,5,6,7' },
-  { id: 'latency', label: 'p95 latency', value: '212 ms', delta: '-14 ms', color: 'success', data: '9,8,8,7,7,6,6' },
+  { id: 'requests', label: 'Requests', value: '8.61M', trend: 8.2, unit: '%', chart: 'new-clients' },
+  { id: 'visitors', label: 'Unique visitors', value: '142K', trend: 3.1, unit: '%', chart: 'active-users' },
+  { id: 'errors', label: 'Error rate', value: '0.42%', trend: 0.09, unit: ' pp', color: 'red', chart: 'revenue-bg' },
+  { id: 'latency', label: 'p95 latency', value: '212 ms', trend: -14, unit: ' ms', color: 'green', chart: 'development-activity' },
 ]
 
 const routes = [
@@ -50,12 +51,14 @@ const statusCodes = [
         <div class="col-sm-6 col-lg-3">
           <Card>
             <CardBody>
-              <div class="d-flex align-items-center justify-content-between">
-                <div class="text-secondary">{stat.label}</div>
-                <span class:list={['small', 'fw-medium', `text-${stat.color}`]}>{stat.delta}</span>
+              <Subheader>{stat.label}</Subheader>
+              <div class="d-flex align-items-baseline">
+                <div class="h1 mb-3 me-2">{stat.value}</div>
+                <div class="me-auto">
+                  <Trending value={stat.trend} unit={stat.unit} color={stat.color} />
+                </div>
               </div>
-              <div class="h1 mb-2">{stat.value}</div>
-              <ChartSparkline id={`analytics-${stat.id}`} type="line" color={stat.color === 'danger' ? 'danger' : 'primary'} data={stat.data} size="sm" />
+              <Chart chartId={stat.chart} id={`analytics-${stat.id}`} size="sm" label={`${stat.label}, last 30 days`} />
             </CardBody>
           </Card>
         </div>
@@ -63,15 +66,15 @@ const statusCodes = [
     }
 
     <div class="col-lg-8">
-      <Card>
+      <Card class="h-100">
         <CardHeader>
           <CardTitle>Requests</CardTitle>
           <CardActions>
-            <span class="text-secondary">Last 7 days, per hour</span>
+            <span class="text-secondary">Last 90 days, per day</span>
           </CardActions>
         </CardHeader>
         <CardBody>
-          <Chart chartId="visitors" id="analytics-requests-chart" label="Requests per hour, last 7 days" />
+          <Chart chartId="project-requests" id="analytics-requests-chart" label="Requests per day, last 90 days" height={20} />
         </CardBody>
       </Card>
     </div>
@@ -100,8 +103,11 @@ const statusCodes = [
           </div>
         </CardBody>
         <CardBody>
-          <Chart chartId="uptime-incidents" id="analytics-errors-chart" label="Errors per day, last 7 days" size="sm" />
-          <div class="text-secondary mt-2">5xx responses per day</div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="fw-medium">5xx responses</span>
+            <span class="text-secondary">per day, last 7 days</span>
+          </div>
+          <Chart chartId="uptime-incidents" id="analytics-errors-chart" label="5xx responses per day, last 7 days" height={6} />
         </CardBody>
       </Card>
     </div>
