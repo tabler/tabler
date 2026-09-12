@@ -1,5 +1,17 @@
 # @tabler/preview
 
+## 1.6.0
+
+### Minor Changes
+
+- 64dd529: Added new billing page with plan usage, payment method, and invoices layout.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+
+### Patch Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 1dbabb5: Fixed a dev-server `ENOENT` race: preview's `watch:css` now writes to `tmp-assets/css` and `copy-assets` syncs it into `public/`.
+
 ## 1.5.1
 
 ### Patch Changes
