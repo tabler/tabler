@@ -54,7 +54,10 @@
  * @return {String} - The percentage representation of the value.
  */
 @function to-percentage($value) {
-  @return if(sass(math.is-unitless($value)): math.percentage($value); else: $value);
+  @if meta.type-of($value) == number and math.is-unitless($value) {
+    @return math.percentage($value);
+  }
+  @return $value;
 }
 
 /**
@@ -65,11 +68,10 @@
  * @return {Color} - The resulting color with the specified transparency.
  */
 @function color-transparent($color, $alpha: 1, $background: transparent) {
-  @if $alpha == 1 {
+  @if $alpha == 1 or $alpha == 100% {
     @return $color;
-  } @else {
-    @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
   }
+  @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
 }
 
 @function url-svg($svg) {
@@ -121,13 +123,12 @@
 // stylelint-disable scss/dollar-variable-pattern
 @function rgba-css-var($identifier, $target) {
   @if $identifier == 'body' and $target == 'bg' {
-    @return color-mix(in srgb, var(--#{$identifier}-bg) calc(var(--#{$target}-opacity) * 100%), transparent);
+    @return color-transparent(var(--#{$identifier}-bg), calc(var(--#{$target}-opacity) * 100%));
   }
   @if $identifier == 'body' and $target == 'text' {
-    @return color-mix(in srgb, var(--#{$identifier}-color) calc(var(--#{$target}-opacity) * 100%), transparent);
-  } @else {
-    @return color-mix(in srgb, var(--#{$identifier}) calc(var(--#{$target}-opacity) * 100%), transparent);
+    @return color-transparent(var(--#{$identifier}-color), calc(var(--#{$target}-opacity) * 100%));
   }
+  @return color-transparent(var(--#{$identifier}), calc(var(--#{$target}-opacity) * 100%));
 }
 
 @function map-loop($map, $func, $args...) {

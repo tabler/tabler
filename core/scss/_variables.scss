@@ -558,19 +558,19 @@ $text-secondary-dark: $gray-600 !default;
 
 $border-light-color: var(--gray-200) !default;
 $border-light-opacity: 4.7% !default;
-$border-light-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-light-opacity}, transparent) !default;
+$border-light-color-translucent: color-transparent(var(--gray-800), $border-light-opacity) !default;
 
 $border-color: var(--gray-200) !default;
 $border-opacity: 11.9% !default;
-$border-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-opacity}, transparent) !default;
+$border-color-translucent: color-transparent(var(--gray-800), $border-opacity) !default;
 
 $border-dark-color: var(--gray-300) !default;
 $border-dark-opacity: 20.7% !default;
-$border-dark-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-dark-opacity}, transparent) !default;
+$border-dark-color-translucent: color-transparent(var(--gray-800), $border-dark-opacity) !default;
 
 $border-active-color: var(--gray-400) !default;
 $border-active-opacity: 44.8% !default;
-$border-active-color-translucent: color-mix(in srgb, var(--gray-800) #{$border-active-opacity}, transparent) !default;
+$border-active-color-translucent: color-transparent(var(--gray-800), $border-active-opacity) !default;
 
 $active-bg: color-transparent(var(--primary), 0.04) !default;
 $active-color: var(--primary) !default;
@@ -728,8 +728,8 @@ $backdrop-opacity: 0.32 !default;
 $backdrop-blur: 4px !default;
 $backdrop-bg: light-dark(var(--gray-800), var(--black)) !default;
 $backdrops: (
-  dark: color-mix(in sRGB, var(--dark), transparent var(--backdrop-opacity)),
-  light: color-mix(in sRGB, var(--light), transparent var(--backdrop-opacity)),
+  dark: color-transparent(var(--dark), calc(var(--backdrop-opacity) * 100%)),
+  light: color-transparent(var(--light), calc(var(--backdrop-opacity) * 100%)),
 ) !default;
 
 // Gradient
@@ -1020,7 +1020,7 @@ $component-active-bg: $primary !default;
 // Focus (WCAG 2.2 SC 1.4.11)
 $focus-ring-width: 0.25rem !default;
 $focus-ring-opacity: 0.25 !default;
-$focus-ring-color: color-mix(in srgb, var(--primary) #{math.percentage($focus-ring-opacity)}, transparent) !default;
+$focus-ring-color: color-transparent(var(--primary), $focus-ring-opacity) !default;
 $focus-ring-blur: 0 !default;
 // Inner 2px solid ring keeps the indicator above the 3:1 non-text contrast minimum;
 // the translucent halo preserves the soft look
@@ -1808,7 +1808,7 @@ $table-active-bg: var(--active-bg) !default;
 
 $table-hover-color: $table-color !default;
 $table-hover-bg-factor: 0.075 !default;
-$table-hover-bg: color-mix(in srgb, var(--emphasis-color) #{math.percentage($table-hover-bg-factor)}, transparent) !default;
+$table-hover-bg: color-transparent(var(--emphasis-color), $table-hover-bg-factor) !default;
 
 $table-caption-color: var(--secondary-color) !default;
 
@@ -2091,7 +2091,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--success) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--success), $input-btn-focus-color-opacity),
     'border-color': var(--form-valid-border-color),
   ),
   'invalid': (
@@ -2099,7 +2099,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--danger) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--danger), $input-btn-focus-color-opacity),
     'border-color': var(--form-invalid-border-color),
   ),
 ) !default;

@@ -13,16 +13,16 @@
     )
 {
   .bg-#{'' + $color} {
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity, 1) * 100%), transparent) !important;
+    background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity, 1) * 100%)) !important;
   }
 
   .bg-#{'' + $color}-lt {
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity, 1) * 100%), transparent) !important;
-    background-color: color-mix(in srgb, var(--#{$color}-lt) calc(var(--bg-opacity, 1) * 100%), transparent) !important;
+    color: color-transparent(var(--#{$color}), calc(var(--text-opacity, 1) * 100%)) !important;
+    background-color: color-transparent(var(--#{$color}-lt), calc(var(--bg-opacity, 1) * 100%)) !important;
   }
 
   .border-#{'' + $color} {
-    border-color: color-mix(in srgb, var(--#{$color}) calc(var(--border-opacity, 1) * 100%), transparent) !important;
+    border-color: color-transparent(var(--#{$color}), calc(var(--border-opacity, 1) * 100%)) !important;
   }
 
   .bg-gradient-from-#{'' + $color} {
@@ -44,8 +44,8 @@
   }
 
   .link-#{'' + $color} {
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--link-opacity, 1) * 100%), transparent) !important;
-    text-decoration-color: color-mix(in srgb, var(--#{$color}) calc(var(--link-underline-opacity, 1) * 100%), transparent) !important;
+    color: color-transparent(var(--#{$color}), calc(var(--link-opacity, 1) * 100%)) !important;
+    text-decoration-color: color-transparent(var(--#{$color}), calc(var(--link-underline-opacity, 1) * 100%)) !important;
 
     @if $link-shade-percentage != 0 {
       &:hover,
@@ -61,7 +61,7 @@
 @each $color, $value in $theme-colors {
   .text-#{'' + $color} {
     --text-opacity: 1;
-    color: color-mix(in srgb, var(--#{$color}) calc(var(--text-opacity) * 100%), transparent) !important;
+    color: color-transparent(var(--#{$color}), calc(var(--text-opacity) * 100%)) !important;
   }
 
   .text-#{'' + $color}-fg {
@@ -72,7 +72,7 @@
 @each $color, $value in $gray-colors {
   .bg-#{'' + $color} {
     --bg-opacity: 1;
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent) !important;
+    background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity) * 100%)) !important;
   }
 
   .text-#{'' + $color}-fg {
@@ -87,7 +87,7 @@
 @each $color, $value in $social-colors {
   .bg-#{'' + $color} {
     --bg-opacity: 1;
-    background-color: color-mix(in srgb, var(--#{$color}) calc(var(--bg-opacity) * 100%), transparent) !important;
+    background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity) * 100%)) !important;
   }
 
   .text-#{'' + $color}-fg {
@@ -97,7 +97,7 @@
 
 .bg-inverted {
   --bg-opacity: 1;
-  background-color: color-mix(in sRGB, var(--bg-surface-inverted) calc(var(--bg-opacity) * 100%), transparent) !important;
+  background-color: color-transparent(var(--bg-surface-inverted), calc(var(--bg-opacity) * 100%)) !important;
 }
 .bg-surface {
   background-color: var(--bg-surface) !important;
