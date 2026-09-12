@@ -47,31 +47,31 @@ import Example from '@components/Example.astro';
 import Icon from '@ui/Icon.astro';
 import CodeDocs from '@components/CodeDocs.astro';
 
-Modals are built with HTML, CSS, and JavaScript. They're positioned over everything else in the document and remove scroll from the `<body>` so that modal content scrolls instead.
+Modals are built on the native `<dialog>` element. The browser positions them over everything else in the document, and opening one locks page scroll so modal content scrolls instead.
 
 ## Default markup
 
-To create a modal, you need to add a `.modal` element to the document. Inside the `.modal`, you need to add a `.modal-dialog` element, which contains a `.modal-content` element. The `.modal-content` element contains the modal's header, body, and footer.
+To create a modal, add a `.modal` class to a native `<dialog>` element. Inside it, add a `.modal-dialog` element, which contains a `.modal-content` element. The `.modal-content` element contains the modal's header, body, and footer. Bootstrap opens the dialog with the browser's own `showModal()`, so the backdrop, focus trap and Escape key all come from the browser, not from JavaScript.
 
 ```html
-<div class="modal" tabindex="-1">
-  <div class="modal-dialog" role="document">
+<dialog class="modal">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">...</div>
       <div class="modal-body">...</div>
       <div class="modal-footer">...</div>
     </div>
   </div>
-</div>
+</dialog>
 ```
 
 <Example centered>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>
-<div class="modal" id="exampleModal" tabindex="-1">
-  <div class="modal-dialog" role="document">
+<dialog class="modal" id="exampleModal" aria-labelledby="exampleModalTitle">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalTitle">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde. </div>
@@ -81,16 +81,17 @@ To create a modal, you need to add a `.modal` element to the document. Inside th
       </div>
     </div>
   </div>
-</div>
+</dialog>
 </Example>
 
 ## Prompt and alert
 
 A modal also works as a prompt or an alert: a short message with one or two buttons.
 
-<Example raw>
-<div class="modal" id="exampleModal2" tabindex="-1">
-  <div class="modal-dialog modal-sm" role="document">
+<Example centered>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2">Launch delete prompt</button>
+<dialog class="modal" id="exampleModal2" aria-labelledby="exampleModal2Title">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
@@ -100,7 +101,7 @@ A modal also works as a prompt or an alert: a short message with one or two butt
           <path d="M12 9v2m0 4v.01" />
           <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
         </svg>
-        <h3>Are you sure?</h3>
+        <h3 id="exampleModal2Title">Are you sure?</h3>
         <div class="text-secondary">Do you really want to remove 84 files? What you've done cannot be undone.</div>
       </div>
       <div class="modal-footer">
@@ -117,18 +118,19 @@ A modal also works as a prompt or an alert: a short message with one or two butt
       </div>
     </div>
   </div>
-</div>
+</dialog>
 </Example>
 
-<Example raw>
-<div class="modal" id="exampleModal3" tabindex="-1">
-  <div class="modal-dialog modal-sm" role="document">
+<Example centered>
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal3">Launch success prompt</button>
+<dialog class="modal" id="exampleModal3" aria-labelledby="exampleModal3Title">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-success"></div>
       <div class="modal-body text-center py-4">
         <Icon name="circle-check" class="mb-2 text-green icon-lg" />
-        <h3>Payment succeeded</h3>
+        <h3 id="exampleModal3Title">Payment succeeded</h3>
         <div class="text-secondary">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
       </div>
       <div class="modal-footer">
@@ -145,19 +147,20 @@ A modal also works as a prompt or an alert: a short message with one or two butt
       </div>
     </div>
   </div>
-</div>
+</dialog>
 </Example>
 
 ## Modal with form
 
 A form inside a modal keeps the user on the page. Put the fields in the body and the submit button in the footer.
 
-<Example raw class="px-5">
-<div class="modal" id="exampleModal4" tabindex="-1">
-  <div class="modal-dialog modal-lg" role="document">
+<Example centered>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal4">Launch report modal</button>
+<dialog class="modal" id="exampleModal4" aria-labelledby="exampleModal4Title">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New report</h5>
+        <h5 class="modal-title" id="exampleModal4Title">New report</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -242,7 +245,7 @@ A form inside a modal keeps the user on the page. Put the fields in the body and
       </div>
     </div>
   </div>
-</div>
+</dialog>
 </Example>
 
 ## Blurred backdrop
@@ -250,15 +253,9 @@ A form inside a modal keeps the user on the page. Put the fields in the body and
 Add `modal-blur` next to `modal` to blur the page behind the dialog instead of only dimming it.
 
 ```html
-<div
-  class="modal modal-blur fade"
-  id="modal-blurred"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
+<dialog class="modal modal-blur fade" id="modal-blurred">
   <!-- modal-dialog -->
-</div>
+</dialog>
 ```
 
 ## Full width modal
@@ -268,23 +265,31 @@ Add `modal-full-width` to the `modal-dialog` to let the dialog use the whole vie
 The Bootstrap size classes cover the smaller steps: `modal-sm`, `modal-lg` and `modal-xl`.
 
 ```html
-<div class="modal-dialog modal-full-width modal-dialog-centered" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">Full width modal</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<dialog class="modal">
+  <div class="modal-dialog modal-full-width modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Full width modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">Content</div>
     </div>
-    <div class="modal-body">Content</div>
   </div>
-</div>
+</dialog>
 ```
+
+## Upgrading from a `<div>` modal
+
+- The root element must be a `<dialog>`, not a `<div>` — `showModal()` throws on anything else. Everything below it (`.modal-dialog`, `.modal-content`, …) is unchanged.
+- `.modal-backdrop` no longer exists as an element. The dimmed/blurred layer is now the dialog's native `::backdrop`, styled through `.modal`'s own `--modal-backdrop-*` custom properties. Custom CSS targeting `.modal-backdrop` needs to target `.modal::backdrop` instead.
+- `data-bs-backdrop="false"` still skips closing the modal on an outside click, but it can no longer keep the backdrop from showing or leave the rest of the page interactive — a `showModal()` dialog is always in the browser's inert top layer.
 
 ## Accessibility
 
-- Set `tabindex="-1"` on the modal and point `aria-labelledby` at the title. Bootstrap then moves focus into the dialog, traps it while the dialog is open, and returns it to the trigger on close.
+- Point `aria-labelledby` at the title. The browser opens the dialog with `showModal()`, which moves focus into it, traps focus while it's open, and returns focus to the trigger on close — no `tabindex="-1"`, `role="dialog"` or manual focus handling needed.
 - Give every modal a visible title. A dialog with no accessible name is announced as just "dialog".
 - Keep the close button labelled. `btn-close` has no text of its own, so it needs `aria-label="Close"`.
-- Do not open a modal from inside another modal. Bootstrap supports one dialog at a time and the focus trap follows the last one opened.
+- Do not open a modal from inside another modal. Bootstrap closes the previously open dialog when a `data-bs-toggle="modal"` trigger opens a new one, but the browser itself allows several `<dialog>` elements to be modal at once, and the focus trap only follows the last one opened.
 - A modal that must not be dismissed by accident takes `data-bs-backdrop="static"`, but never remove the close control entirely - <kbd>Escape</kbd> is the only way out for many keyboard users.
 
 ## SCSS variables

@@ -72,10 +72,16 @@ const selectId = `select-${id}`;
 				return `<div>${escape(data.text)}</div>`;
 			};
 
+			const select = document.getElementById(selectId);
+
+			// A modal is a native <dialog> in the top layer: anything appended to <body>
+			// renders underneath it, so inside a modal the dropdown stays in its wrapper.
+			const inModal = Boolean(select.closest('.modal'));
+
 			window.TomSelect &&
-				(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
+				(window.tabler_select[selectId] = new TomSelect(select, {
 					copyClassesToDropdown: false,
-					dropdownParent: 'body',
+					...(inModal ? {} : { dropdownParent: 'body' }),
 					render: {
 						item: renderOption,
 						option: renderOption,

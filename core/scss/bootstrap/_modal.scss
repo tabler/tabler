@@ -2,13 +2,16 @@
 
 @use 'sass:map';
 
-// .modal-open      - body class for killing the scroll
-// .modal           - container to scroll within
+// .modal-open      - root class for killing the scroll
+// .modal           - the native <dialog> element: container to scroll within, top layer, ::backdrop
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and stuff
 
-// Container that the modal scrolls within
 @use '../config' as *;
+
+:root.modal-open {
+  overflow: hidden;
+}
 
 .modal {
   // scss-docs-start modal-css-vars
@@ -33,23 +36,67 @@
   --modal-footer-bg: #{$modal-footer-bg};
   --modal-footer-border-color: #{$modal-footer-border-color};
   --modal-footer-border-width: #{$modal-footer-border-width};
+  --modal-backdrop-zindex: #{$zindex-modal-backdrop};
+  --modal-backdrop-bg: #{$modal-backdrop-bg};
+  --modal-backdrop-opacity: #{$modal-backdrop-opacity};
+  --modal-backdrop-blur: #{$modal-backdrop-blur};
   // scss-docs-end modal-css-vars
 
   position: fixed;
   inset-inline-start: 0;
   top: 0;
   z-index: var(--modal-zindex);
-  display: none;
   width: 100%;
   height: 100%;
+  padding: 0;
+  margin: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  // `display` can't be transitioned, so override the UA's [open]-toggled
+  // display: none/block and use `visibility` for the hidden state instead.
+  display: block;
+  visibility: hidden;
   // Prevent Chrome on Windows from adding a focus outline. For details, see
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
   // We deliberately don't use `-webkit-overflow-scrolling: touch;` due to a
   // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
   // See also https://github.com/twbs/bootstrap/issues/17695
+
+  &[open] {
+    visibility: visible;
+  }
+
+  &::backdrop {
+    z-index: var(--modal-backdrop-zindex);
+    background-color: var(--modal-backdrop-bg);
+    opacity: 0;
+  }
+
+  &.fade::backdrop {
+    @include transition($transition-fade);
+  }
+
+  &.show::backdrop {
+    opacity: var(--modal-backdrop-opacity);
+  }
+
+  @starting-style {
+    &.show::backdrop {
+      opacity: 0;
+    }
+  }
+
+  @include media-print() {
+    display: none !important;
+  }
+}
+
+.modal-blur::backdrop {
+  backdrop-filter: blur(var(--modal-backdrop-blur));
 }
 
 // Shell div to position the modal with bottom padding
@@ -110,17 +157,6 @@
   @include box-shadow(var(--modal-box-shadow));
   // Remove focus outline from opened modal
   outline: 0;
-}
-
-// Modal background
-.modal-backdrop {
-  // scss-docs-start modal-backdrop-css-vars
-  --backdrop-zindex: #{$zindex-modal-backdrop};
-  --backdrop-bg: #{$modal-backdrop-bg};
-  --backdrop-opacity: #{$modal-backdrop-opacity};
-  // scss-docs-end modal-backdrop-css-vars
-
-  @include overlay-backdrop(var(--backdrop-zindex), var(--backdrop-bg), var(--backdrop-opacity));
 }
 
 // Modal header

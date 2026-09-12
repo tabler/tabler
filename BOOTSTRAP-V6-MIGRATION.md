@@ -487,6 +487,19 @@ Decided:
     soft `.badge.bg-{color}-lt` variant without a role of its own, and `.agents/rules/main.mdc`
     already forbade it. This is a deliberate exception to "every 1.x class stays": upgrade-guide
     line, no replacement class — markup moves to `.badge.bg-{color}-lt`.
+15. Modal on native `<dialog>` (phase 6, decided 2026-09-11): the `.modal-backdrop` DOM element is
+    dropped, not aliased — its styling (including the `--backdrop-*` custom properties, now
+    `--modal-backdrop-*`) moves to `.modal`'s native `::backdrop`, matching upstream's own removal
+    of `util/backdrop.js`. Anyone overriding `.modal-backdrop` in custom CSS must retarget
+    `.modal::backdrop`. The `focus` JS config option is dropped (native `showModal()` always moves
+    focus in; no in-repo usage found, and upstream v6 dropped it too). `data-bs-backdrop="false"`
+    keeps its meaning for click-to-dismiss but can no longer suppress the backdrop itself or keep
+    the rest of the page interactive — `showModal()`'s top layer is inert regardless of the config.
+    `.modal-open` moves from `<body>` to `<html>` to pair with `scrollbar-gutter: stable`.
+    Overlays appended to `<body>` (Tom Select's `dropdownParent: 'body'`, Litepicker's default
+    container, tooltips and popovers with `container: 'body'`) render underneath the top layer
+    while a modal is open — inside a modal they must stay in the modal's subtree. The shared
+    `Select` and `Datepicker` components detect `.closest('.modal')` and do that on their own.
 
 Open:
 

@@ -71,14 +71,31 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 
 					if (!window.Litepicker) return;
 
+					const element = document.getElementById(datepickerId);
+
+					// A modal is a native <dialog> in the top layer: a calendar appended to <body>
+					// renders underneath it, so inside a modal the calendar is appended to the modal
+					// and positioned relative to it (Litepicker only knows document coordinates).
+					const modal = element.closest('.modal');
+
 					const picker = new Litepicker({
-						element: document.getElementById(datepickerId),
+						element,
 						buttonText: {
 							previousMonth: chevronLeft,
 							nextMonth: chevronRight,
 						},
 						...(inline ? { inlineMode: true } : {}),
+						...(modal && !inline ? { parentEl: modal } : {}),
 					});
+
+					if (modal && !inline) {
+						picker.on('show', () => {
+							const input = picker.triggerElement.getBoundingClientRect();
+							const parent = modal.getBoundingClientRect();
+							picker.ui.style.top = `${input.bottom - parent.top + modal.scrollTop}px`;
+							picker.ui.style.left = `${input.left - parent.left + modal.scrollLeft}px`;
+						});
+					}
 
 					// Litepicker sets buttonText as the buttons' innerHTML, and the icon SVGs are
 					// aria-hidden, so the generated month-nav buttons otherwise have no accessible
