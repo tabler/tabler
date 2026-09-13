@@ -22,7 +22,7 @@ const POINTER_TYPE_PEN = 'pen'
 const CLASS_NAME_POINTER_EVENT = 'pointer-event'
 const SWIPE_THRESHOLD = 40
 
-interface SwipeConfig {
+type SwipeConfig = {
   endCallback: (() => void) | null
   leftCallback: (() => void) | null
   rightCallback: (() => void) | null
@@ -43,8 +43,8 @@ const DefaultType: ComponentConfigType = {
 class Swipe extends Config {
   declare _config: SwipeConfig & ComponentConfig
   _element: HTMLElement
-  _deltaX: number
-  _supportPointerEvents: boolean
+  declare _deltaX: number
+  declare _supportPointerEvents: boolean
 
   constructor(element: HTMLElement, config?: ComponentConfig) {
     super()

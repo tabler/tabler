@@ -16,7 +16,7 @@ interface Props {
   title: string
   /** dir="rtl" + the .rtl.css variant of tabler.css */
   rtl?: boolean
-  /** the Tabler logo above the card (+ balancing spacer below it) */
+  /** the Tabler logo at the bottom of the frame */
   showLogo?: boolean
   /** caps the [data-screenshot-target] width at columns * 320px */
   columns?: number
@@ -111,11 +111,13 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       }
 
       .screenshot-logo {
+        position: absolute;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        height: 8rem;
         padding: 0 5rem;
-        flex: 1;
       }
 
       /* fake mouse pointer, to make the static screenshot read as a live interaction */
@@ -135,8 +137,6 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
   <body>
     <div class="page page-center align-items-center">
       <div class="screenshot d-flex flex-column justify-content-center align-items-center px-12" id="screenshot">
-        {showLogo && <div class="screenshot-logo" />}
-
         <div class:list={['screenshot-wrapper', className]} style={targetStyle} data-screenshot-target>
           <slot />
         </div>

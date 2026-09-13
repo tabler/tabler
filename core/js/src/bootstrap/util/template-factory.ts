@@ -13,7 +13,7 @@ import type { AllowList, ComponentConfig, ComponentConfigType, SanitizeFn } from
 
 const NAME = 'TemplateFactory'
 
-interface TemplateFactoryConfig {
+type TemplateFactoryConfig = {
   allowList: AllowList
   content: Record<string, unknown>
   extraClass: string | (() => string)
@@ -104,7 +104,7 @@ class TemplateFactory extends Config {
 
   _typeCheckConfig(config: ComponentConfig): void {
     super._typeCheckConfig(config)
-    this._checkContent(config.content)
+    this._checkContent(config.content as Record<string, unknown>)
   }
 
   _checkContent(arg: Record<string, unknown>): void {

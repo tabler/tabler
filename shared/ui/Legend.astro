@@ -1,15 +1,36 @@
 ---
-// A single legend item: a colored .legend dot + label, e.g. the "This year" /
-// "Last year" chart legend in SalesOverview.astro.
+// Legend (.legend): marker + label, with an optional value.
+// Renders a link when `href` is given, a button when `button` is set, a span otherwise.
+
 interface Props {
-  color?: string
+  /** label text; the default slot is used instead when empty */
+  text?: string
+  /** legend-value next to the label */
+  value?: string | number | undefined
+  /** legend-{color} on the item, shared by the marker and the hover background */
+  color?: string | undefined
+  /** render a <button type="button"> (toggle control) */
+  button?: boolean | undefined
+  /** render an <a> with this target */
+  href?: string | undefined
+  /** active: keeps the hover background */
+  active?: boolean | undefined
+  /** legend-off: dims the item, for a hidden series */
+  off?: boolean | undefined
   class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { color = 'primary', class: className } = Astro.props
+const { text, value, color, button, href, active, off, class: className, ...rest } = Astro.props
+
+const Element = href ? 'a' : button ? 'button' : 'span'
+const typeAttr = !href && button ? 'button' : undefined
+const classes = ['legend', color && `legend-${color}`, active && 'active', off && 'legend-off', className]
 ---
 
-<div class:list={['d-flex align-items-center gap-2', className]}>
-  <span class={`legend bg-${color}`}></span>
-  <span class="text-secondary"><slot /></span>
-</div>
+<Element class:list={classes} href={href} type={typeAttr} {...rest}>
+  <span class="legend-dot"></span>
+  {text ?? <slot />}
+  {value !== undefined && <span class="legend-value">{value}</span>}
+</Element>

@@ -106,7 +106,7 @@ const repos = [
       <Card>
         <CardBody>
           <CardTitle>Wait for a request</CardTitle>
-          <CardSubtitle>Pass a promise to <code>event.detail.wait()</code> and the switch waits for it. The last one fails and stays as it was.</CardSubtitle>
+          <CardSubtitle>Pass a promise to <code>event.wait()</code> and the switch waits for it. The last one fails and stays as it was.</CardSubtitle>
           <ButtonList>
             <SwitchIcon icon="star" activeColor="yellow" variant="scale" data-request="ok" ariaLabel="Add to favorites" />
             <SwitchIcon icon="heart" activeColor="red" variant="scale" data-request="ok" ariaLabel="Like" />
@@ -121,9 +121,9 @@ const repos = [
               promise is pending, switches when it resolves and stays as it was when it rejects.
               */
               document.querySelectorAll('[data-request]').forEach((button) => {
-                button.addEventListener('tabler:switch-icon-toggle', (event) => {
+                button.addEventListener('toggle.bs.switch-icon', (event) => {
                   const fails = button.dataset.request === 'fail'
-                  event.detail.wait(new Promise((resolve, reject) => setTimeout(fails ? reject : resolve, 1500)))
+                  event.wait(new Promise((resolve, reject) => setTimeout(fails ? reject : resolve, 1500)))
                 })
               })
             </script>
@@ -158,14 +158,11 @@ const repos = [
             <!-- BEGIN SCRIPT OF STARRED COUNT -->
             <script is:inline>
               /*
-              Counts the active switches in the list after every toggle. The event fires before the
-              class changes, so the count is read on the next frame.
+              Counts the active switches in the list after every change.
               */
               const list = document.getElementById('starred-repos')
-              list.addEventListener('tabler:switch-icon-toggle', () => {
-                requestAnimationFrame(() => {
-                  document.getElementById('starred-count').textContent = list.querySelectorAll('.switch-icon.active').length
-                })
+              list.addEventListener('change.bs.switch-icon', () => {
+                document.getElementById('starred-count').textContent = list.querySelectorAll('.switch-icon.active').length
               })
             </script>
             <!-- END SCRIPT OF STARRED COUNT -->

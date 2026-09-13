@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  */
 
-export type ComponentConfig = Record<string, any>
+export type ComponentConfig = Record<string, unknown>
 
 export type ComponentConfigType = Record<string, string>
 

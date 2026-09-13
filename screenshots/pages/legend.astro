@@ -1,0 +1,45 @@
+---
+// Legend component: a request-volume card whose header carries an interactive
+// legend. Each item is a button — colored dot, series name, total in tabular
+// numerals — and the fake cursor rests on one of them so the tinted hover
+// background is part of the picture. `legend-requests` is a three-series stacked bar
+// chart in charts.json with the ApexCharts legend left off, since the card's
+// own legend replaces it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardBody from '@ui/CardBody.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// Series order and colors follow the `legend-requests` entry in charts.json.
+const series = [
+  { name: 'Allowed', color: 'blue', value: '339.0k' },
+  { name: 'Challenged', color: 'azure', value: '815' },
+  { name: 'Logged', color: 'green', value: '12.4k', active: true },
+  { name: 'Rate limited', color: 'red', value: '-', off: true },
+]
+---
+
+<ScreenshotLayout title="Legend" columns={2.6} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Requests</CardTitle>
+      <LegendList class="ms-auto">
+        {
+          series.map((item) => (
+            <Legend button color={item.color} value={item.value} active={item.active} off={item.off} class="position-relative">
+              {item.name}
+              {item.active && <span class="cursor" />}
+            </Legend>
+          ))
+        }
+      </LegendList>
+    </CardHeader>
+    <CardBody>
+      <Chart chartId="legend-requests" height={14} label="Requests per day, split by firewall action" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

@@ -20,7 +20,7 @@ const TAB_KEY = 'Tab'
 const TAB_NAV_FORWARD = 'forward'
 const TAB_NAV_BACKWARD = 'backward'
 
-interface FocusTrapConfig {
+type FocusTrapConfig = {
   autofocus: boolean
   trapElement: HTMLElement | null
 }
@@ -87,7 +87,7 @@ class FocusTrap extends Config {
   _handleFocusin(event: FocusEvent): void {
     const { trapElement } = this._config
 
-    if (event.target === document || event.target === trapElement || trapElement!.contains(event.target as Node)) {
+    if (!trapElement || event.target === document || event.target === trapElement || trapElement.contains(event.target as Node)) {
       return
     }
 

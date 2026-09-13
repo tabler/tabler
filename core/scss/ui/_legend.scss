@@ -1,14 +1,115 @@
 /**
 Legend
  */
+@use 'sass:map';
+
 @use '../config' as *;
 
-.legend {
+//
+// Legend dot
+//
+.legend-dot {
   --legend-size: #{$legend-size};
+  --legend-color: #{$legend-bg};
   display: inline-block;
+  flex-shrink: 0;
   width: var(--legend-size);
   height: var(--legend-size);
-  background: $legend-bg;
+  background: var(--legend-color);
   border: 1px solid var(--border-color-translucent);
   @include border-radius($legend-border-radius);
+}
+
+//
+// Legend
+//
+.legend {
+  --legend-color: #{$legend-bg};
+  --legend-gap: #{$legend-gap};
+  --legend-padding-y: #{$legend-padding-y};
+  --legend-padding-x: #{$legend-padding-x};
+  --legend-hover-bg: #{color-transparent(var(--legend-color), 0.1)};
+  display: inline-flex;
+  gap: var(--legend-gap);
+  align-items: center;
+  padding: var(--legend-padding-y) 0;
+  margin: 0;
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  color: var(--body-color);
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  transition:
+    background-color $transition-time,
+    opacity $transition-time;
+  @include border-radius(var(--border-radius-pill));
+
+  .legend-dot {
+    --legend-color: inherit;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+  }
+}
+
+a.legend,
+button.legend {
+  padding-inline: var(--legend-padding-x);
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    color: var(--body-color);
+    text-decoration: none;
+    background: var(--legend-hover-bg);
+  }
+}
+
+.legend-off {
+  opacity: 0.5;
+
+  .legend-dot {
+    --legend-color: #{$legend-bg};
+  }
+}
+
+.legend-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--secondary);
+}
+
+@each $name, $color in map.merge($theme-colors, $social-colors) {
+  .legend-#{$name} {
+    --legend-color: var(--#{$name});
+  }
+}
+
+//
+// Legend list
+//
+.legend-list {
+  --legend-list-gap: #{$legend-list-gap};
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--legend-list-gap);
+  align-items: center;
+
+  // Links and buttons carry their own horizontal padding, so the list can be tighter
+  &:has(> a.legend, > button.legend) {
+    --legend-list-gap: #{$legend-list-gap-interactive};
+  }
+}
+
+.legend-list-vertical {
+  flex-direction: column;
+  align-items: flex-start;
 }

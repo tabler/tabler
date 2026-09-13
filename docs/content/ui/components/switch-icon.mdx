@@ -148,7 +148,7 @@ Add `switch-icon-loading` to show a spinner in place of the icons, for example w
 
 ## Wait for a request
 
-Every click dispatches a `tabler:switch-icon-toggle` event on the button before the state changes. `event.detail.active` is the state the button is about to switch to. Pass a promise to `event.detail.wait()` and the button shows the loading state until it settles: it switches when the promise resolves and stays as it was when it rejects. Call `event.preventDefault()` to cancel the toggle.
+Every toggle fires `toggle.bs.switch-icon` on the button before the state changes. `event.active` is the state the button is about to switch to. Pass a promise to `event.wait()` and the button shows the loading state until it settles: it switches when the promise resolves and stays as it was when it rejects. Call `event.preventDefault()` to cancel the toggle.
 
 ```html
 <button type="button" class="switch-icon" data-bs-toggle="switch-icon" data-id="42" aria-pressed="false" aria-label="Star">
@@ -159,31 +159,54 @@ Every click dispatches a `tabler:switch-icon-toggle` event on the button before 
 
 ```js
 document.querySelectorAll('[data-bs-toggle="switch-icon"]').forEach((button) => {
-  button.addEventListener('tabler:switch-icon-toggle', (event) => {
-    const { active, wait } = event.detail
-    wait(fetch(`/api/items/${button.dataset.id}/star`, { method: active ? 'PUT' : 'DELETE' }))
-  })
-})
+  button.addEventListener('toggle.bs.switch-icon', (event) => {
+    event.wait(fetch(`/api/items/${button.dataset.id}/star`, { method: event.active ? 'PUT' : 'DELETE' }));
+  });
+});
 ```
 
 The event bubbles, so one listener on a list can serve all of its buttons.
 
 ## JavaScript
 
-Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click, or on the `switch-icon` inside it when the trigger is a wrapping button, after dispatching the `tabler:switch-icon-toggle` event described above. This is the code that runs:
+Tabler wraps the button in a `SwitchIcon` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-toggle="switch-icon"`, and a click toggles the `active` class and `aria-pressed`. This is the code that runs:
 
 <CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
 
+Create the component yourself for a button added later, or change the state from code:
+
+```js
+const favorite = tabler.SwitchIcon.getOrCreateInstance(document.getElementById('favorite'));
+favorite.toggle(); // flip
+favorite.toggle(true); // force on
+```
+
+Every toggle fires `toggle.bs.switch-icon` before the change (cancelable, see [Wait for a request](#wait-for-a-request)) and `change.bs.switch-icon` after it, both with the new state in `event.active`:
+
+```js
+document.getElementById('favorite').addEventListener('change.bs.switch-icon', (event) => {
+  console.log(event.active ? 'added to favorites' : 'removed from favorites');
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `toggle(force)` | Flips the state, or sets it when `force` is `true` or `false`. Fires `toggle.bs.switch-icon`, then updates `aria-pressed` and fires `change.bs.switch-icon`. Does nothing while loading. |
+| `isActive` | Getter. `true` when the switch icon has the `active` class. |
+| `isLoading` | Getter. `true` while a promise passed to `event.wait()` is pending. |
+| `dispose()` | Removes the click handler and the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element)` | Static. Returns the component for the element and creates it when needed. |
+
 ## Accessibility
 
-- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state - Tabler keeps `aria-pressed` in sync from the first click, but the initial value has to be in your markup.
+- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state. Tabler keeps `aria-pressed` in sync, and fills it in from the `active` class when the markup leaves it out.
 - The two icons are decoration. The state lives in `aria-pressed`, not in which icon is visible.
 - Colour alone should not carry the state. A filled red heart and an outlined gray one differ in shape too, which is what makes them readable.
 - The button box is at least 24×24px (`$switch-icon-min-size`) with the icon centered inside, to meet the WCAG target size. Set `--tblr-switch-icon-min-size` to change it.
 - To disable a switch icon use the `disabled` attribute, or `aria-disabled="true"` when it has to stay focusable. Tabler ignores clicks on both, and on the `disabled` class, which alone would still let Enter and Space toggle it.
 - While a request is pending, the button carries `aria-busy="true"` and ignores clicks, so a double click cannot send the request twice.
 - The spinner slows down under `prefers-reduced-motion`, and the icon transitions are switched off there.
-- The animations run on every toggle. Disable them under `prefers-reduced-motion` if you add your own.
 
 ## Variables
 

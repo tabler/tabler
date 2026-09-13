@@ -12,6 +12,7 @@ import Manipulator from './dom/manipulator'
 import { execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
 import { DefaultAllowlist } from './util/sanitizer'
 import TemplateFactory from './util/template-factory'
+import type { AllowList, SanitizeFn } from './types'
 
 /**
  * Constants
@@ -45,13 +46,41 @@ const EVENT_FOCUSOUT = 'focusout'
 const EVENT_MOUSEENTER = 'mouseenter'
 const EVENT_MOUSELEAVE = 'mouseleave'
 
-interface ComponentConfig {
-  [key: string]: any
+type PopperOffsetData = { placement: Popper.Placement; reference: Popper.Rect; popper: Popper.Rect }
+type PopperOffsetFunction = (popperData: PopperOffsetData) => number[]
+type PopperConfigFunction = (defaultConfig: Partial<Popper.Options>) => Partial<Popper.Options>
+
+export type TooltipDelay = number | { show: number; hide: number }
+export type TooltipContent = string | HTMLElement | null | ((this: HTMLElement, element: HTMLElement) => string | HTMLElement | null)
+// Keys are selectors inside the template, values the content for that slot
+export type TooltipContentMap = Record<string, TooltipContent>
+export type TooltipPlacement = string | ((this: Tooltip, tip: HTMLElement, element: HTMLElement) => string)
+
+export type TooltipConfig = {
+  allowList: AllowList
+  animation: boolean
+  boundary: Popper.Boundary
+  container: HTMLElement | string | false
+  customClass: string | ((this: HTMLElement, element: HTMLElement) => string)
+  delay: TooltipDelay
+  fallbackPlacements: string[]
+  html: boolean
+  offset: number[] | string | ((popperData: PopperOffsetData, element: HTMLElement) => number[])
+  placement: TooltipPlacement
+  popperConfig: Partial<Popper.Options> | PopperConfigFunction | null
+  sanitize: boolean
+  sanitizeFn: SanitizeFn | null
+  selector: string | false
+  template: string
+  title: TooltipContent
+  trigger: string
 }
 
-interface ComponentConfigType {
-  [key: string]: string
-}
+type ComponentConfig = TooltipConfig
+
+export type TooltipConfigInput = Partial<TooltipConfig> & Record<string, unknown>
+
+type ComponentConfigInput = TooltipConfigInput
 
 const AttachmentMap: Record<string, string> = {
   AUTO: 'auto',
@@ -81,7 +110,7 @@ const Default: ComponentConfig = {
   trigger: 'hover focus',
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   allowList: 'object',
   animation: 'boolean',
   boundary: '(string|element)',
@@ -106,17 +135,19 @@ const DefaultType: ComponentConfigType = {
  */
 
 class Tooltip extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _isEnabled: boolean
   _timeout: ReturnType<typeof setTimeout> | number
   _isHovered: boolean | null
   _activeTrigger: Record<string, boolean>
   _popper: Popper.Instance | null
   _templateFactory: TemplateFactory | null
-  _newContent: Record<string, any> | null
+  _newContent: TooltipContentMap | null
   tip: HTMLElement | null
-  _hideModalHandler: (() => void) | null
+  _hideModalHandler: () => void
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     if (typeof Popper === 'undefined') {
       throw new TypeError("Bootstrap's tooltips require Popper (https://popper.js.org/docs/v2/)")
     }
@@ -132,7 +163,11 @@ class Tooltip extends BaseComponent {
     this._newContent = null
 
     this.tip = null
-    this._hideModalHandler = null
+    this._hideModalHandler = () => {
+      if (this._element) {
+        this.hide()
+      }
+    }
 
     this._setListeners()
 
@@ -145,7 +180,7 @@ class Tooltip extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -204,29 +239,30 @@ class Tooltip extends BaseComponent {
     const shadowRoot = findShadowRoot(this._element)
     const isInTheDom = (shadowRoot || this._element.ownerDocument.documentElement).contains(this._element)
 
-    if (showEvent.defaultPrevented || !isInTheDom) {
+    if (showEvent?.defaultPrevented || !isInTheDom) {
       return
     }
 
     this._disposePopper()
 
-    const tip = this._getTipElement()
+    const tip = this._getTipElement()!
 
-    this._element.setAttribute('aria-describedby', tip!.getAttribute('id')!)
+    this._element.setAttribute('aria-describedby', tip.getAttribute('id')!)
 
     const { container } = this._config
 
     if (!this._element.ownerDocument.documentElement.contains(this.tip)) {
-      container.append(tip)
+      // `_configAfterMerge` resolved the container to an element
+      ;(container as HTMLElement).append(tip)
       EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_INSERTED))
     }
 
-    this._popper = this._createPopper(tip!)
+    this._popper = this._createPopper(tip)
 
     tip!.classList.add(CLASS_NAME_SHOW)
 
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...(document.body.children as any))) {
+      for (const element of Array.from(document.body.children)) {
         EventHandler.on(element, 'mouseover', noop)
       }
     }
@@ -250,7 +286,7 @@ class Tooltip extends BaseComponent {
     }
 
     const hideEvent = EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_HIDE))
-    if (hideEvent.defaultPrevented) {
+    if (hideEvent?.defaultPrevented) {
       return
     }
 
@@ -258,7 +294,7 @@ class Tooltip extends BaseComponent {
     tip!.classList.remove(CLASS_NAME_SHOW)
 
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...(document.body.children as any))) {
+      for (const element of Array.from(document.body.children)) {
         EventHandler.off(element, 'mouseover', noop)
       }
     }
@@ -302,7 +338,7 @@ class Tooltip extends BaseComponent {
     return this.tip
   }
 
-  _createTipElement(content: Record<string, any>): HTMLElement | null {
+  _createTipElement(content: TooltipContentMap): HTMLElement | null {
     const tip = this._getTemplateFactory(content).toHtml() as HTMLElement
 
     if (!tip) {
@@ -323,7 +359,7 @@ class Tooltip extends BaseComponent {
     return tip
   }
 
-  setContent(content: Record<string, any>): void {
+  setContent(content: TooltipContentMap): void {
     this._newContent = content
     if (this._isShown()) {
       this._disposePopper()
@@ -331,7 +367,7 @@ class Tooltip extends BaseComponent {
     }
   }
 
-  _getTemplateFactory(content: Record<string, any>): TemplateFactory {
+  _getTemplateFactory(content: TooltipContentMap): TemplateFactory {
     if (this._templateFactory) {
       this._templateFactory.changeContent(content)
     } else {
@@ -345,13 +381,13 @@ class Tooltip extends BaseComponent {
     return this._templateFactory
   }
 
-  _getContentForTemplate(): Record<string, any> {
+  _getContentForTemplate(): TooltipContentMap {
     return {
       [SELECTOR_TOOLTIP_INNER]: this._getTitle(),
     }
   }
 
-  _getTitle(): string {
+  _getTitle(): string | HTMLElement {
     return this._resolvePossibleFunction(this._config.title) || this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title') || ''
   }
 
@@ -373,7 +409,7 @@ class Tooltip extends BaseComponent {
     return Popper.createPopper(this._element, tip, this._getPopperConfig(attachment))
   }
 
-  _getOffset(): number[] | ((popperData: any) => number[]) {
+  _getOffset(): number[] | PopperOffsetFunction {
     const { offset } = this._config
 
     if (typeof offset === 'string') {
@@ -381,14 +417,14 @@ class Tooltip extends BaseComponent {
     }
 
     if (typeof offset === 'function') {
-      return (popperData: any) => (offset as Function)(popperData, this._element)
+      return (popperData: PopperOffsetData) => offset(popperData, this._element)
     }
 
-    return offset as number[]
+    return offset
   }
 
-  _resolvePossibleFunction(arg: any): any {
-    return execute(arg, [this._element, this._element])
+  _resolvePossibleFunction<T>(arg: T | ((this: HTMLElement, element: HTMLElement) => T)): T {
+    return execute(arg, [this._element, this._element]) as T
   }
 
   _getPopperConfig(attachment: string): Partial<Popper.Options> {
@@ -423,7 +459,7 @@ class Tooltip extends BaseComponent {
           name: 'preSetPlacement',
           enabled: true,
           phase: 'beforeMain',
-          fn: (data: any) => {
+          fn: (data: Popper.ModifierArguments<Record<string, unknown>>) => {
             this._getTipElement()!.setAttribute('data-popper-placement', data.state.placement)
           },
         },
@@ -465,12 +501,6 @@ class Tooltip extends BaseComponent {
       }
     }
 
-    this._hideModalHandler = () => {
-      if (this._element) {
-        this.hide()
-      }
-    }
-
     EventHandler.on(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler)
   }
 
@@ -501,7 +531,7 @@ class Tooltip extends BaseComponent {
       if (this._isHovered) {
         this.show()
       }
-    }, this._config.delay.show)
+    }, this._getDelay().show)
   }
 
   _leave(): void {
@@ -515,7 +545,12 @@ class Tooltip extends BaseComponent {
       if (!this._isHovered) {
         this.hide()
       }
-    }, this._config.delay.hide)
+    }, this._getDelay().hide)
+  }
+
+  _getDelay(): { show: number; hide: number } {
+    const { delay } = this._config
+    return typeof delay === 'number' ? { show: delay, hide: delay } : delay
   }
 
   _setTimeout(handler: () => void, timeout: number): void {
@@ -527,7 +562,7 @@ class Tooltip extends BaseComponent {
     return Object.values(this._activeTrigger).includes(true)
   }
 
-  _getConfig(config: Partial<ComponentConfig>): ComponentConfig {
+  _getConfig(config?: ComponentConfigInput): ComponentConfig {
     const dataAttributes = Manipulator.getDataAttributes(this._element)
 
     for (const dataAttribute of Object.keys(dataAttributes)) {
@@ -536,18 +571,18 @@ class Tooltip extends BaseComponent {
       }
     }
 
-    config = {
+    let merged: Record<string, unknown> = {
       ...dataAttributes,
       ...(typeof config === 'object' && config ? config : {}),
     }
-    config = this._mergeConfigObj(config)
-    config = this._configAfterMerge(config)
-    this._typeCheckConfig(config)
-    return config
+    merged = this._mergeConfigObj(merged)
+    merged = this._configAfterMerge(merged as ComponentConfig)
+    this._typeCheckConfig(merged)
+    return merged as ComponentConfig
   }
 
   _configAfterMerge(config: ComponentConfig): ComponentConfig {
-    config.container = config.container === false ? document.body : getElement(config.container)
+    config.container = config.container === false ? document.body : (getElement(config.container) as HTMLElement)
 
     if (typeof config.delay === 'number') {
       config.delay = {
@@ -556,22 +591,25 @@ class Tooltip extends BaseComponent {
       }
     }
 
-    if (typeof config.title === 'number') {
-      config.title = config.title.toString()
+    // Numbers are accepted at runtime (`data-bs-title="42"`) even though the type says string
+    const raw = config as Record<string, unknown>
+    if (typeof raw.title === 'number') {
+      raw.title = raw.title.toString()
     }
 
-    if (typeof config.content === 'number') {
-      config.content = config.content.toString()
+    if (typeof raw.content === 'number') {
+      raw.content = raw.content.toString()
     }
 
     return config
   }
 
-  _getDelegateConfig(): Partial<ComponentConfig> {
-    const config: Partial<ComponentConfig> = {}
+  _getDelegateConfig(): ComponentConfigInput {
+    const config: Record<string, unknown> = {}
+    const defaults = (this.constructor as typeof Tooltip).Default as Record<string, unknown>
 
     for (const [key, value] of Object.entries(this._config)) {
-      if ((this.constructor as typeof Tooltip).Default[key] !== value) {
+      if (defaults[key] !== value) {
         config[key] = value
       }
     }

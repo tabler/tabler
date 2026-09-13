@@ -9,6 +9,9 @@ import CardBody from '@ui/CardBody.astro'
 import chartsData from '@data/charts.json'
 import { capitalize } from '@shared/lib/string-format'
 import DocsLink from '@ui/DocsLink.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import LegendList from '@ui/LegendList.astro'
+import Legend from '@ui/Legend.astro'
 
 const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean; name?: string }>).filter(([, chart]) => chart && chart.demo)
 ---
@@ -18,6 +21,61 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
   <div class="row row-cards">
     <div class="col-lg-12">
       <Activity />
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardHeader title="Chart with legend">
+          <LegendList class="ms-auto" id="legend-demo-list">
+            <Legend button color="yellow" text="Total visits" value="6.7k" data-series="Total visits" />
+            <Legend button color="green" text="Unique visitors" value="4.7k" data-series="Unique visitors" />
+            <Legend button color="primary" text="New users" value="1.6k" data-series="New users" />
+          </LegendList>
+        </CardHeader>
+        <CardBody>
+          <Chart chartId="legend-demo" height={15} label="Site traffic" />
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF LEGEND -->
+            <script is:inline>
+              /*
+              Toggles a chart series when its legend item is clicked.
+              The chart is exposed by the demo Chart component as window.tabler_chart['chart-legend-demo'].
+              */
+              document.querySelectorAll('#legend-demo-list .legend').forEach((item) => {
+                item.addEventListener('click', () => {
+                  const chart = window.tabler_chart && window.tabler_chart['chart-legend-demo']
+                  if (!chart) return
+                  chart.toggleSeries(item.dataset.series)
+                  item.classList.toggle('legend-off')
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF LEGEND -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-4">
+      <Card>
+        <CardHeader title="Legend variants" />
+        <CardBody>
+          <LegendList class="mb-3">
+            <Legend color="blue" text="Allowed" value="339.0k" />
+            <Legend color="red" text="Denied" value="1.2k" />
+            <Legend color="orange" text="Challenged" value={815} />
+          </LegendList>
+          <LegendList class="mb-3">
+            <Legend href="#" color="purple" text="Logged" value="-" active />
+            <Legend href="#" color="teal" text="Rate limited" value="-" off />
+          </LegendList>
+          <LegendList vertical>
+            <Legend color="primary" text="This year" />
+            <Legend color="secondary" text="Last year" />
+            <Legend text="Free" />
+          </LegendList>
+        </CardBody>
+      </Card>
     </div>
 
     <div class="col-12">

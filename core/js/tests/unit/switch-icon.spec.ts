@@ -1,125 +1,223 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest'
-import { getFixture } from '../helpers/fixture'
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
+import { clearFixture, getFixture } from '../helpers/fixture'
+import SwitchIcon from '../../src/switch-icon'
 
-// The module wires every [data-bs-toggle="switch-icon"] present at import
-// time, so the fixture is mounted first and the module imported once after.
-const button = (id: string, extra = '') => `<button type="button" id="${id}" class="switch-icon ${extra}" data-bs-toggle="switch-icon" aria-pressed="false"><span class="switch-icon-a">a</span><span class="switch-icon-b">b</span></button>`
+type ToggleEvent = Event & { active: boolean; wait: (promise: Promise<unknown>) => void }
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0))
 
-describe('switch-icon', () => {
+describe('SwitchIcon', () => {
   let fixtureEl: HTMLElement
 
-  beforeAll(async () => {
+  beforeAll(() => {
     fixtureEl = getFixture()
-    fixtureEl.innerHTML = [
-      button('plain'),
-      button('cancelled'),
-      button('async'),
-      button('failing'),
-      button('loading', 'switch-icon-loading'),
-      button('disabled', 'disabled'),
-      '<button type="button" id="wrapped" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false"><span class="switch-icon"><span class="switch-icon-a">a</span><span class="switch-icon-b">b</span></span></button>',
-    ].join('')
-    await import('../../src/switch-icon')
   })
 
-  it('toggles the active class and aria-pressed on click', () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#plain')!
-
-    el.click()
-    expect(el.classList.contains('active')).toBe(true)
-    expect(el.getAttribute('aria-pressed')).toBe('true')
-
-    el.click()
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.getAttribute('aria-pressed')).toBe('false')
+  beforeEach(() => {
+    fixtureEl.innerHTML = '<div id="parent"><button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-pressed="false"></button></div>'
   })
 
-  it('dispatches tabler:switch-icon-toggle with the requested state and can be cancelled', () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#cancelled')!
-    const listener = vi.fn((event: Event) => event.preventDefault())
-    el.addEventListener('tabler:switch-icon-toggle', listener)
-
-    el.click()
-
-    expect(listener).toHaveBeenCalledTimes(1)
-    expect((listener.mock.calls[0]![0] as CustomEvent).detail.active).toBe(true)
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.getAttribute('aria-pressed')).toBe('false')
+  afterEach(() => {
+    clearFixture()
   })
 
-  it('shows the loading state until a promise passed to wait() resolves', async () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#async')!
-    let resolve!: () => void
-    el.addEventListener('tabler:switch-icon-toggle', (event) => {
-      ;(event as CustomEvent).detail.wait(new Promise<void>((r) => (resolve = r)))
+  const button = (): HTMLButtonElement => fixtureEl.querySelector('button')!
+
+  describe('NAME', () => {
+    it('should return plugin name', () => {
+      expect(SwitchIcon.NAME).toBe('switch-icon')
+    })
+  })
+
+  describe('constructor', () => {
+    it('should set aria-pressed from the active class when missing', () => {
+      fixtureEl.innerHTML = '<button type="button" class="switch-icon active" data-bs-toggle="switch-icon"></button>'
+
+      new SwitchIcon(button())
+
+      expect(button().getAttribute('aria-pressed')).toBe('true')
     })
 
-    el.click()
-    expect(el.classList.contains('switch-icon-loading')).toBe(true)
-    expect(el.getAttribute('aria-busy')).toBe('true')
-    expect(el.classList.contains('active')).toBe(false)
+    it('should keep an existing aria-pressed value', () => {
+      new SwitchIcon(button())
 
-    // a click while loading is ignored
-    el.click()
-    expect(el.classList.contains('switch-icon-loading')).toBe(true)
-
-    resolve()
-    await tick()
-    expect(el.classList.contains('switch-icon-loading')).toBe(false)
-    expect(el.hasAttribute('aria-busy')).toBe(false)
-    expect(el.classList.contains('active')).toBe(true)
-    expect(el.getAttribute('aria-pressed')).toBe('true')
+      expect(button().getAttribute('aria-pressed')).toBe('false')
+    })
   })
 
-  it('keeps the previous state when the promise rejects', async () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#failing')!
-    el.addEventListener('tabler:switch-icon-toggle', (event) => {
-      ;(event as CustomEvent).detail.wait(Promise.reject(new Error('nope')))
+  describe('toggle', () => {
+    it('should toggle the active class and aria-pressed', () => {
+      const instance = new SwitchIcon(button())
+
+      instance.toggle()
+      expect(button().classList.contains('active')).toBe(true)
+      expect(button().getAttribute('aria-pressed')).toBe('true')
+      expect(instance.isActive).toBe(true)
+
+      instance.toggle()
+      expect(button().classList.contains('active')).toBe(false)
+      expect(button().getAttribute('aria-pressed')).toBe('false')
     })
 
-    el.click()
-    expect(el.classList.contains('switch-icon-loading')).toBe(true)
+    it('should force the state with an argument', () => {
+      const instance = new SwitchIcon(button())
 
-    await tick()
-    expect(el.classList.contains('switch-icon-loading')).toBe(false)
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.getAttribute('aria-pressed')).toBe('false')
-  })
+      instance.toggle(true)
+      instance.toggle(true)
 
-  it('ignores clicks on a button rendered in the loading state', () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#loading')!
-
-    el.click()
-    expect(el.classList.contains('active')).toBe(false)
-  })
-
-  it('ignores clicks on a button with the disabled class (keyboard still fires click)', () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#disabled')!
-
-    el.click()
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.getAttribute('aria-pressed')).toBe('false')
-  })
-
-  it('toggles the switch-icon inside a wrapping button and keeps aria-pressed on the button', async () => {
-    const el = fixtureEl.querySelector<HTMLElement>('#wrapped')!
-    const icon = el.querySelector<HTMLElement>('.switch-icon')!
-    let resolve!: () => void
-    el.addEventListener('tabler:switch-icon-toggle', (event) => {
-      ;(event as CustomEvent).detail.wait(new Promise<void>((r) => (resolve = r)))
+      expect(instance.isActive).toBe(true)
     })
 
-    el.click()
-    expect(icon.classList.contains('switch-icon-loading')).toBe(true)
-    expect(el.getAttribute('aria-busy')).toBe('true')
-    expect(el.classList.contains('switch-icon-loading')).toBe(false)
+    it('should trigger toggle.bs.switch-icon before and change.bs.switch-icon after the change', () => {
+      const instance = new SwitchIcon(button())
+      const toggleSpy = vi.fn()
+      const changeSpy = vi.fn()
+      button().addEventListener('toggle.bs.switch-icon', toggleSpy)
+      button().addEventListener('change.bs.switch-icon', changeSpy)
 
-    resolve()
-    await tick()
-    expect(icon.classList.contains('active')).toBe(true)
-    expect(el.classList.contains('active')).toBe(false)
-    expect(el.getAttribute('aria-pressed')).toBe('true')
+      instance.toggle()
+
+      expect(toggleSpy).toHaveBeenCalledTimes(1)
+      expect((toggleSpy.mock.calls[0][0] as ToggleEvent).active).toBe(true)
+      expect(changeSpy).toHaveBeenCalledTimes(1)
+      expect((changeSpy.mock.calls[0][0] as Event & { active: boolean }).active).toBe(true)
+    })
+
+    it('should not change when toggle.bs.switch-icon is prevented', () => {
+      const instance = new SwitchIcon(button())
+      const changeSpy = vi.fn()
+      button().addEventListener('toggle.bs.switch-icon', (event) => event.preventDefault())
+      button().addEventListener('change.bs.switch-icon', changeSpy)
+
+      instance.toggle()
+
+      expect(instance.isActive).toBe(false)
+      expect(button().getAttribute('aria-pressed')).toBe('false')
+      expect(changeSpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('wait', () => {
+    it('should show the loading state until the promise resolves, then switch', async () => {
+      const instance = new SwitchIcon(button())
+      let resolve!: () => void
+      button().addEventListener('toggle.bs.switch-icon', (event) => {
+        ;(event as ToggleEvent).wait(new Promise<void>((r) => (resolve = r)))
+      })
+
+      instance.toggle()
+      expect(instance.isLoading).toBe(true)
+      expect(button().classList.contains('switch-icon-loading')).toBe(true)
+      expect(button().getAttribute('aria-busy')).toBe('true')
+      expect(instance.isActive).toBe(false)
+
+      // a toggle while loading is ignored
+      instance.toggle()
+      expect(instance.isLoading).toBe(true)
+
+      resolve()
+      await tick()
+      expect(instance.isLoading).toBe(false)
+      expect(button().hasAttribute('aria-busy')).toBe(false)
+      expect(instance.isActive).toBe(true)
+      expect(button().getAttribute('aria-pressed')).toBe('true')
+    })
+
+    it('should keep the previous state when the promise rejects', async () => {
+      const instance = new SwitchIcon(button())
+      button().addEventListener('toggle.bs.switch-icon', (event) => {
+        ;(event as ToggleEvent).wait(Promise.reject(new Error('nope')))
+      })
+
+      instance.toggle()
+      expect(instance.isLoading).toBe(true)
+
+      await tick()
+      expect(instance.isLoading).toBe(false)
+      expect(instance.isActive).toBe(false)
+      expect(button().getAttribute('aria-pressed')).toBe('false')
+    })
+
+    it('should ignore a toggle on a button rendered in the loading state', () => {
+      fixtureEl.innerHTML = '<button type="button" class="switch-icon switch-icon-loading" data-bs-toggle="switch-icon" aria-pressed="false"></button>'
+      const instance = new SwitchIcon(button())
+
+      instance.toggle()
+
+      expect(instance.isActive).toBe(false)
+    })
+  })
+
+  describe('wrapping button', () => {
+    beforeEach(() => {
+      fixtureEl.innerHTML = '<button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false"><span class="switch-icon"></span></button>'
+    })
+
+    const icon = (): HTMLElement => fixtureEl.querySelector('.switch-icon')!
+
+    it('should toggle the inner switch-icon and keep aria-pressed on the button', () => {
+      const instance = new SwitchIcon(button())
+
+      instance.toggle()
+
+      expect(icon().classList.contains('active')).toBe(true)
+      expect(button().classList.contains('active')).toBe(false)
+      expect(button().getAttribute('aria-pressed')).toBe('true')
+      expect(instance.isActive).toBe(true)
+    })
+
+    it('should put the loading class on the inner switch-icon and aria-busy on the button', async () => {
+      const instance = new SwitchIcon(button())
+      let resolve!: () => void
+      button().addEventListener('toggle.bs.switch-icon', (event) => {
+        ;(event as ToggleEvent).wait(new Promise<void>((r) => (resolve = r)))
+      })
+
+      instance.toggle()
+      expect(icon().classList.contains('switch-icon-loading')).toBe(true)
+      expect(button().classList.contains('switch-icon-loading')).toBe(false)
+      expect(button().getAttribute('aria-busy')).toBe('true')
+
+      resolve()
+      await tick()
+      expect(icon().classList.contains('active')).toBe(true)
+      expect(button().hasAttribute('aria-busy')).toBe(false)
+    })
+  })
+
+  describe('click', () => {
+    it('should toggle on click and stop propagation', () => {
+      new SwitchIcon(button())
+      const parentSpy = vi.fn()
+      fixtureEl.querySelector('#parent')!.addEventListener('click', parentSpy)
+
+      button().click()
+
+      expect(button().classList.contains('active')).toBe(true)
+      expect(parentSpy).not.toHaveBeenCalled()
+    })
+
+    it('should ignore clicks on a button with the disabled class or aria-disabled', () => {
+      fixtureEl.innerHTML = '<button type="button" class="switch-icon disabled" data-bs-toggle="switch-icon" aria-pressed="false"></button>'
+      new SwitchIcon(button())
+
+      button().click()
+      expect(button().classList.contains('active')).toBe(false)
+
+      button().classList.remove('disabled')
+      button().setAttribute('aria-disabled', 'true')
+      button().click()
+      expect(button().classList.contains('active')).toBe(false)
+    })
+
+    it('should stop toggling after dispose', () => {
+      const instance = new SwitchIcon(button())
+      instance.dispose()
+
+      button().click()
+
+      expect(button().classList.contains('active')).toBe(false)
+      expect(SwitchIcon.getInstance(button())).toBeNull()
+    })
   })
 })

@@ -14,10 +14,10 @@ Every page is captured in light and dark mode, and in normal and 2× size. That'
 
 ## How to use it
 
-Look at the pages in the browser:
+Look at the pages in the browser. The root `pnpm run dev` leaves this app out on purpose; this script starts only the screenshots server and expects the core assets from a running or earlier `pnpm run dev`:
 
 ```sh
-pnpm --dir screenshots run dev
+pnpm run dev-screenshots
 ```
 
 Make the pictures:

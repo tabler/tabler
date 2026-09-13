@@ -42,13 +42,13 @@ const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="offcanvas"], [data-tblr-toggle="offcanvas"]'
 
-interface ComponentConfig {
-  [key: string]: any
+type ComponentConfig = {
+  backdrop: boolean | 'static'
+  keyboard: boolean
+  scroll: boolean
 }
 
-interface ComponentConfigType {
-  [key: string]: string
-}
+type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 const Default: ComponentConfig = {
   backdrop: true,
@@ -56,7 +56,7 @@ const Default: ComponentConfig = {
   scroll: false,
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
   scroll: 'boolean',
@@ -67,11 +67,13 @@ const DefaultType: ComponentConfigType = {
  */
 
 class Offcanvas extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _isShown: boolean
   _backdrop: Backdrop
   _focustrap: FocusTrap
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isShown = false
@@ -84,7 +86,7 @@ class Offcanvas extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -103,7 +105,7 @@ class Offcanvas extends BaseComponent {
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, { relatedTarget })
 
-    if (showEvent.defaultPrevented) {
+    if (showEvent?.defaultPrevented) {
       return
     }
 
@@ -138,7 +140,7 @@ class Offcanvas extends BaseComponent {
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
-    if (hideEvent.defaultPrevented) {
+    if (hideEvent?.defaultPrevented) {
       return
     }
 
@@ -221,6 +223,10 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
   if (['A', 'AREA'].includes(this.tagName)) {
     event.preventDefault()
+  }
+
+  if (!target) {
+    return
   }
 
   if (isDisabled(this)) {

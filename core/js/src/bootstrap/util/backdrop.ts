@@ -15,7 +15,7 @@ const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 const EVENT_MOUSEDOWN = `mousedown.bs.${NAME}`
 
-interface BackdropConfig {
+type BackdropConfig = {
   className: string
   clickCallback: (() => void) | null
   isAnimated: boolean

@@ -1,7 +1,10 @@
 ---
 // shared by index.astro and layout-vertical.astro.
 import Chart from '@shared/components/demo/Chart.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
 import MapVectorCard from './cards/MapVectorCard.astro'
 import Welcome from './cards/Welcome.astro'
 import TotalUsers from './cards/charts/TotalUsers.astro'
@@ -72,8 +75,33 @@ const { rtl = false } = Astro.props
   <div class="col-lg-6">
     <div class="card">
       <div class="card-body">
-        <CardTitle>Traffic summary</CardTitle>
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+          <CardTitle class="mb-0">Traffic summary</CardTitle>
+          <LegendList id="traffic-summary-legend">
+            <Legend button text="Web" data-series="Web" style="--tblr-legend-color: var(--chart-mentions-color-0)" />
+            <Legend button text="Social" data-series="Social" style="--tblr-legend-color: var(--chart-mentions-color-1)" />
+            <Legend button text="Other" data-series="Other" style="--tblr-legend-color: var(--chart-mentions-color-2)" />
+          </LegendList>
+        </div>
         <Chart chartId="mentions" size="lg" label="Traffic summary" />
+        <CaptureScript>
+          <!-- BEGIN SCRIPT OF TRAFFIC SUMMARY LEGEND -->
+          <script is:inline>
+            /*
+            Toggles a chart series when its legend item is clicked.
+            The chart is exposed by the demo Chart component as window.tabler_chart['chart-mentions'].
+            */
+            document.querySelectorAll('#traffic-summary-legend .legend').forEach((item) => {
+              item.addEventListener('click', () => {
+                const chart = window.tabler_chart && window.tabler_chart['chart-mentions']
+                if (!chart) return
+                chart.toggleSeries(item.dataset.series)
+                item.classList.toggle('legend-off')
+              })
+            })
+          </script>
+          <!-- END SCRIPT OF TRAFFIC SUMMARY LEGEND -->
+        </CaptureScript>
       </div>
     </div>
   </div>
