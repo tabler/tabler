@@ -1,0 +1,109 @@
+---
+title: Legend
+summary: A legend labels the series of a chart or a progress bar with a colored marker, a name and an optional value.
+description: Label chart series with colored markers. Group legend items in a list, add values, and let users toggle series on click.
+related: [/ui/plugins/chart, /ui/components/status, /ui/components/progress]
+source: core/scss/ui/_legend.scss
+classnames:
+  component:
+    - class: legend-dot
+      desc: Small square marker in the series color
+    - class: legend
+      desc: A marker with a label, on a span, link or button
+    - class: legend-list
+      desc: Wraps legend items in a row
+  part:
+    - class: legend-value
+      desc: Muted value next to the label
+  style:
+    - class: legend-list-vertical
+      desc: Stacks the items in a column
+  state:
+    - class: active
+      desc: Keeps the hover background on a link or button
+    - class: legend-off
+      desc: Dims the item and greys the marker, for a hidden series
+  color:
+    - class: legend-{color}
+      desc: Any base color, for example legend-blue or legend-primary, on an item or on a marker
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Legend marker
+
+A `legend-dot` is a small square in the color of a series. Use it on its own next to a label. Set the color with a `legend-{color}` class. Full list of available colors can be found in the [Colors](/ui/base/colors) section.
+
+<Example centered>
+<span class="legend-dot legend-blue"></span>
+<span class="legend-dot legend-azure"></span>
+<span class="legend-dot legend-indigo"></span>
+<span class="legend-dot legend-purple"></span>
+<span class="legend-dot legend-pink"></span>
+<span class="legend-dot legend-red"></span>
+<span class="legend-dot legend-orange"></span>
+<span class="legend-dot legend-yellow"></span>
+<span class="legend-dot legend-lime"></span>
+<span class="legend-dot legend-green"></span>
+<span class="legend-dot legend-teal"></span>
+<span class="legend-dot legend-cyan"></span>
+</Example>
+
+## Legend item
+
+Wrap the marker and the label in a `legend`. Put the color class on the item, so the marker and the hover background share it. Add a `legend-value` for a number next to the label.
+
+<Example centered>
+<div class="legend-list">
+  <span class="legend legend-blue"><span class="legend-dot"></span> Allowed <span class="legend-value">339.0k</span></span>
+  <span class="legend legend-red"><span class="legend-dot"></span> Denied <span class="legend-value">1.2k</span></span>
+  <span class="legend legend-orange"><span class="legend-dot"></span> Challenged <span class="legend-value">815</span></span>
+</div>
+</Example>
+
+## Interactive legend
+
+Use a `button` or a link when clicking an item should toggle a series. The item gets a tinted background on hover, mixed from the series color. Add `active` to keep it, and `legend-off` to mark a hidden series.
+
+<Example centered>
+<div class="legend-list">
+  <button type="button" class="legend legend-blue"><span class="legend-dot"></span> Allowed <span class="legend-value">339.0k</span></button>
+  <button type="button" class="legend legend-purple active"><span class="legend-dot"></span> Logged <span class="legend-value">-</span></button>
+  <button type="button" class="legend legend-teal legend-off"><span class="legend-dot"></span> Rate limited <span class="legend-value">-</span></button>
+</div>
+</Example>
+
+With ApexCharts, hide the built-in legend and call `toggleSeries` with the series name:
+
+```html
+<button type="button" class="legend legend-blue" data-series="Allowed">
+  <span class="legend-dot"></span> Allowed
+</button>
+```
+
+```js
+document.querySelectorAll('.legend').forEach((item) => {
+  item.addEventListener('click', () => {
+    chart.toggleSeries(item.dataset.series)
+    item.classList.toggle('legend-off')
+  })
+})
+```
+
+## Vertical list
+
+Add `legend-list-vertical` to stack the items, for example next to a donut chart.
+
+<Example centered>
+<div class="legend-list legend-list-vertical">
+  <span class="legend legend-primary"><span class="legend-dot"></span> This year <span class="legend-value">$92,400</span></span>
+  <span class="legend legend-secondary"><span class="legend-dot"></span> Last year <span class="legend-value">$84,300</span></span>
+  <span class="legend"><span class="legend-dot"></span> Forecast <span class="legend-value">$98,000</span></span>
+</div>
+</Example>
+
+## Variables
+
+Use these SCSS variables to customize legends. The default values are:
+
+<CodeDocs name="legend-variables" file="core/scss/_variables.scss" />

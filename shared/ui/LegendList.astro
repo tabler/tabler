@@ -1,0 +1,17 @@
+---
+// Legend list container (.legend-list).
+
+interface Props {
+  /** legend-list-vertical (stacked items) */
+  vertical?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { vertical, class: className, ...rest } = Astro.props
+---
+
+<div class:list={['legend-list', vertical && 'legend-list-vertical', className]} {...rest}>
+  <slot />
+</div>
