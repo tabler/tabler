@@ -1,69 +1,46 @@
 ---
-// Sparkline component: a key-metrics card whose rows end with a tiny inline
-// SVG chart. The rows show every chart type — a filled line with the last
-// value marked, plain lines, bars and a circle — each colored by a text
-// utility, since the charts draw with currentColor.
+// Sparkline component on its own: a grid of the chart types — a plain line, a
+// filled line with the last value marked, bars and a circle — colored in
+// palette order (blue → green), since the charts draw with currentColor. The
+// charts are scaled up through the `--tblr-sparkline-*` custom properties so
+// the strokes read at picture size.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
-import Card from '@ui/Card.astro'
-import CardHeader from '@ui/CardHeader.astro'
-import CardTitle from '@ui/CardTitle.astro'
-import Badge from '@ui/Badge.astro'
 
-const metrics = [
-  { name: 'Revenue', value: '$48,210', change: '+12%', up: true, color: 'green', type: 'line', fill: 'auto', spot: 'last', values: '18,22,19,27,25,31,29,36' },
-  { name: 'Orders', value: '1,352', change: '+4%', up: true, color: 'blue', type: 'bar', values: '3,4,2,6,5,8,7,9' },
-  { name: 'New users', value: '864', change: '+21%', up: true, color: 'azure', type: 'line', spot: 'max', values: '12,14,9,18,16,22,20,27' },
-  { name: 'Refunds', value: '31', change: '-8%', up: false, color: 'red', type: 'bar', values: '9,7,8,5,6,4,3,2' },
-  { name: 'Bounce rate', value: '38%', change: '-3%', up: false, color: 'orange', type: 'line', fill: 'auto', values: '46,44,45,41,42,39,40,38' },
-  { name: 'Goal', value: '72%', change: '+6%', up: true, color: 'purple', type: 'circle', values: '72' },
+const charts = [
+  { color: 'blue', type: 'line', values: '14,9,17,11,22,8,19,13,24,16,10,21' },
+  { color: 'azure', type: 'line', fill: 'auto', spot: 'last', values: '7,15,11,23,9,18,26,14,20,12,29,33' },
+  { color: 'indigo', type: 'bar', values: '5,12,8,3,14,9,6,15,4,11' },
+  { color: 'purple', type: 'circle', values: '64' },
+  { color: 'pink', type: 'line', spot: 'max', values: '21,13,27,18,9,31,15,24,12,19,26,17' },
+  { color: 'orange', type: 'line', fill: 'auto', spot: 'min', values: '38,29,34,17,25,11,22,15,8,19,13,16' },
+  { color: 'teal', type: 'bar', values: '11,4,13,7,2,9,14,6,10,3' },
+  { color: 'green', type: 'circle', values: '27' },
 ]
+
+const isCircle = (type: string) => type === 'circle'
 ---
 
-<ScreenshotLayout title="Sparkline" columns={2.2}>
-  <Card>
-    <CardHeader>
-      <CardTitle>Key metrics</CardTitle>
-      <div class="ms-auto text-secondary">Last 8 weeks</div>
-    </CardHeader>
-    <div class="table-responsive">
-      <table class="table table-vcenter card-table">
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th class="text-end">Value</th>
-            <th class="text-end">Change</th>
-            <th class="text-end">Trend</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            metrics.map((metric) => (
-              <tr>
-                <td>{metric.name}</td>
-                <td class="text-end fw-medium">{metric.value}</td>
-                <td class="text-end">
-                  <Badge color={metric.up ? 'green' : 'red'} light text={metric.change} />
-                </td>
-                <td class="text-end">
-                  <span
-                    class:list={['sparkline', `text-${metric.color}`]}
-                    data-bs-toggle="sparkline"
-                    data-bs-type={metric.type}
-                    data-bs-fill={metric.fill}
-                    data-bs-spot={metric.spot}
-                    data-bs-values={metric.values}
-                    data-bs-max={metric.type === 'circle' ? 100 : undefined}
-                    data-bs-width={metric.type === 'circle' ? 24 : undefined}
-                    data-bs-height={metric.type === 'circle' ? 24 : undefined}
-                    style={metric.type === 'circle' ? '--tblr-sparkline-width: 1.5rem; --tblr-sparkline-stroke-width: 3' : undefined}
-                    aria-label={`${metric.name} trend`}
-                  />
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-  </Card>
+<ScreenshotLayout title="Sparkline" columns={2.4}>
+  <div class="d-flex flex-wrap align-items-center justify-content-center gap-6">
+    {
+      charts.map((chart) => (
+        <span
+          class:list={['sparkline', `text-${chart.color}`]}
+          style={isCircle(chart.type) ? '--tblr-sparkline-width: 3.5rem; --tblr-sparkline-height: 3.5rem; --tblr-sparkline-stroke-width: 4' : '--tblr-sparkline-width: 9rem; --tblr-sparkline-height: 3rem; --tblr-sparkline-stroke-width: 2.5; --tblr-sparkline-spot-size: 3'}
+          data-bs-toggle="sparkline"
+          data-bs-type={chart.type}
+          data-bs-fill={chart.fill}
+          data-bs-spot={chart.spot}
+          data-bs-values={chart.values}
+          data-bs-max={isCircle(chart.type) ? 100 : undefined}
+          data-bs-width={isCircle(chart.type) ? 40 : 120}
+          data-bs-height={isCircle(chart.type) ? 40 : 40}
+          data-bs-pad={isCircle(chart.type) ? undefined : 3}
+          data-bs-bar-gap={chart.type === 'bar' ? 4 : undefined}
+          data-bs-bar-radius={chart.type === 'bar' ? 3 : undefined}
+          aria-label={`${chart.type} sparkline`}
+        />
+      ))
+    }
+  </div>
 </ScreenshotLayout>
