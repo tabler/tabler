@@ -56,6 +56,32 @@ describe('Sparkline', () => {
       expect(el().querySelectorAll('rect').length).toBe(3)
     })
 
+    it('should draw negative bars below the zero line in the negative color', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="2,-2" data-bs-height="20" data-bs-bar-gap="0"></span>'
+
+      new Sparkline(el())
+
+      const [up, down] = Array.from(el().querySelectorAll('rect'))
+      expect(up.getAttribute('y')).toBe('0')
+      expect(up.getAttribute('height')).toBe('10')
+      expect(up.getAttribute('fill')).toBe('var(--tblr-sparkline-stroke)')
+      expect(down.getAttribute('y')).toBe('10')
+      expect(down.getAttribute('height')).toBe('10')
+      expect(down.getAttribute('fill')).toBe('var(--tblr-sparkline-negative)')
+
+      const zero = el().querySelector('line')!
+      expect(zero.getAttribute('y1')).toBe('10')
+      expect(zero.getAttribute('stroke')).toBe('var(--tblr-sparkline-zero)')
+    })
+
+    it('should not draw a zero line without negative values', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="1,2,3"></span>'
+
+      new Sparkline(el())
+
+      expect(el().querySelector('line')).toBeNull()
+    })
+
     it('should render a ring for the circle type', () => {
       fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="50" data-bs-width="32" data-bs-height="32"></span>'
 

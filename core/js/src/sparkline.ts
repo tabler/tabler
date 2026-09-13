@@ -331,17 +331,35 @@ class Sparkline extends BaseComponent {
 
     const count = cfg.values.length
     const barWidth = (cfg.width - cfg.barGap * (count - 1)) / count
+    // Bars grow from the zero line: upwards for positive values, downwards
+    // (in the "negative" color) for negative ones. With no negative values the
+    // zero line is the bottom edge; otherwise it is drawn as a hairline.
+    const zeroY = cfg.height - ((0 - min) / span) * cfg.height
+
+    if (min < 0) {
+      const zeroLine = svgEl('line')
+      setAttr(zeroLine, {
+        'x1': 0,
+        'x2': cfg.width,
+        'y1': zeroY,
+        'y2': zeroY,
+        'stroke': cssVar('zero'),
+        'stroke-width': 1,
+        'vector-effect': 'non-scaling-stroke',
+      })
+      svg.append(zeroLine)
+    }
 
     cfg.values.forEach((value, i) => {
-      const barHeight = ((value - min) / span) * cfg.height
+      const barHeight = (Math.abs(value) / span) * cfg.height
       const bar = svgEl('rect')
       setAttr(bar, {
         x: i * (barWidth + cfg.barGap),
-        y: cfg.height - barHeight,
+        y: value < 0 ? zeroY : zeroY - barHeight,
         width: barWidth,
         height: barHeight,
         rx: cfg.barRadius,
-        fill: cssVar('stroke'),
+        fill: cssVar(value < 0 ? 'negative' : 'stroke'),
       })
       svg.append(bar)
     })

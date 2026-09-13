@@ -1,7 +1,9 @@
 ---
 // Sparkline component on its own: a grid of the chart types — a plain line, a
-// filled line with the last value marked, bars and a circle — colored in
-// palette order (blue → green), since the charts draw with currentColor. The
+// filled line with the last value marked, bars (one set with negative
+// values below the zero line) and a circle, then a row with few and many
+// data points — colored in palette order, since the charts draw with
+// currentColor. The
 // charts use the `sparkline-lg` size (and `sparkline-square` for the circles)
 // with a thicker stroke so they read at picture size.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
@@ -13,15 +15,19 @@ const charts = [
   { color: 'purple', type: 'circle', values: '64' },
   { color: 'pink', type: 'line', spot: 'max', values: '21,13,27,18,9,31,15,24,12,19,26,17' },
   { color: 'orange', type: 'line', fill: 'auto', spot: 'min', values: '38,29,34,17,25,11,22,15,8,19,13,16' },
-  { color: 'teal', type: 'bar', values: '11,4,13,7,2,9,14,6,10,3' },
+  { color: 'teal', type: 'bar', values: '6,-3,8,-5,2,-7,9,-2,4,-6' },
   { color: 'green', type: 'circle', values: '27' },
+  { color: 'red', type: 'line', spot: 'last', values: '9,4,12,7,15' },
+  { color: 'yellow', type: 'line', fill: 'auto', values: '14,11,17,9,20,13,22,10,18,25,15,27,12,23,30,16,24,19,28,21,33,17,26,31,22,35,20,29,34,26' },
+  { color: 'lime', type: 'bar', values: '7,3,9,5,11' },
+  { color: 'cyan', type: 'bar', barGap: 1.5, values: '3,6,2,8,5,9,4,7,10,3,8,6,11,5,9,2,7,10,4,8,6,12,5,9' },
 ]
 
 const isCircle = (type: string) => type === 'circle'
 ---
 
 <ScreenshotLayout title="Sparkline" columns={2.4}>
-  <div class="d-grid gap-6 justify-content-center align-items-center" style="grid-template-columns: repeat(4, auto)">
+  <div class="d-grid gap-6 justify-content-center align-items-center" style="grid-template-columns: repeat(4, auto); justify-items: center">
     {
       charts.map((chart) => (
         <span
@@ -36,7 +42,7 @@ const isCircle = (type: string) => type === 'circle'
           data-bs-width={isCircle(chart.type) ? 40 : 120}
           data-bs-height={isCircle(chart.type) ? 40 : 40}
           data-bs-pad={isCircle(chart.type) ? undefined : 3}
-          data-bs-bar-gap={chart.type === 'bar' ? 4 : undefined}
+          data-bs-bar-gap={chart.type === 'bar' ? (chart.barGap ?? 4) : undefined}
           data-bs-bar-radius={chart.type === 'bar' ? 3 : undefined}
           aria-label={`${chart.type} sparkline`}
         />
