@@ -19,11 +19,11 @@ Write the final number as the text of the element and add `data-countup`. Tabler
 
 ## Installation
 
-The [countUp.js](https://inorganik.github.io/countUp.js/) library is bundled with `tabler.js`, so there is nothing extra to install or load. For options beyond the ones below, see its website.
+Countup is part of `tabler.js` and has no dependency, so there is nothing extra to install or load.
 
 ## Usage
 
-Add `data-countup` to any text element and write the target number inside it. The animation starts as soon as the number enters the viewport.
+Add `data-countup` to any text element and write the target number inside it. The animation starts as soon as the number enters the viewport. `data-tblr-countup` works the same way.
 
 ```html
 <h1 data-countup>30000</h1>
@@ -109,7 +109,7 @@ Grouping is on by default, so thousands get a separator. Set `"useGrouping": fal
 
 ## JavaScript
 
-Tabler wraps the library in a `CountUp` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-countup`. This is the code that runs:
+Tabler ships a `CountUp` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-countup`. This is the code that runs:
 
 <CodeDocs name="countup-init" file="core/js/src/countup.ts" />
 
@@ -137,17 +137,29 @@ countup.start();
 | `getInstance(element)` | Static. Returns the component for the element, or `null`. |
 | `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
 
+`start.bs.countup` fires on the element when an animation begins, and `complete.bs.countup` when the number reaches its final value:
+
+```js
+document.getElementById('total').addEventListener('complete.bs.countup', () => {
+  console.log('done counting');
+});
+```
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `autoAnimate` | `true` | Start when the element scrolls into view. `false` starts at once. |
+| `startVal` | `0` | The number to count from. |
+| `duration` | `2` | Length of the animation, in seconds. |
+| `decimalPlaces` | `0` | Decimals shown. |
+| `useEasing` | `true` | Slow down towards the end. `false` counts at a steady pace. |
+| `useGrouping` | `true` | Put a separator between thousands. |
+| `separator` | `,` | The thousands separator. |
+| `decimal` | `.` | The decimal separator. |
+| `prefix`, `suffix` | none | Text before and after the number. |
+
 ## Accessibility
 
 - Write the final number in the HTML, as the examples do. That is what a search engine indexes, what shows without JavaScript, and what a screen reader reads if it reaches the element before the animation starts.
 - Never put a countup inside an `aria-live` region. The text changes on every frame, so a live region would announce dozens of intermediate numbers.
 - The number on its own says nothing. Give it a visible label next to it, or an `aria-label` on the block that holds both.
-- Tabler does not check `prefers-reduced-motion`, so a countup animates even for users who asked for less motion. Skip the initialization for them:
-
-```js
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.querySelectorAll('[data-countup]').forEach((el) => el.removeAttribute('data-countup'));
-}
-```
-
-Run it before `tabler.js`, so the number simply stays at its final value.
+- Users who asked for reduced motion get the final number at once: the countup checks `prefers-reduced-motion` and skips the animation for them.
