@@ -199,6 +199,26 @@ describe('CountUp', () => {
     })
   })
 
+  describe('format', () => {
+    it('should count a time in minutes and print it as h:mm', async () => {
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time","suffix":" hrs"}\'>3:28</h1>'
+
+      const instance = new CountUp(element(), { autoAnimate: false, duration: 0.1 })
+      expect(instance._endVal).toBe(208)
+      expect(element().textContent).toBe('0:00 hrs')
+
+      await wait(300)
+      expect(element().textContent).toBe('3:28 hrs')
+    })
+
+    it('should use a formatter function from the config', async () => {
+      quick({ formatter: (value: number) => `${Math.round(value / 1000)}k` })
+      await wait(300)
+
+      expect(element().textContent).toBe('30k')
+    })
+  })
+
   describe('public API', () => {
     it('should animate to a new value with update()', async () => {
       const instance = quick()

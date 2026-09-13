@@ -19,6 +19,11 @@ describe('countupOptions', () => {
     expect(countupOptions('-12.5%')).toEqual({ suffix: '%', decimalPlaces: 1 })
   })
 
+  it('recognizes an h:mm time', () => {
+    expect(countupOptions('3:28 hrs')).toEqual({ format: 'time', suffix: ' hrs' })
+    expect(countupOptions('~12:05')).toEqual({ format: 'time', prefix: '~' })
+  })
+
   it('returns null when there is no number', () => {
     expect(countupOptions('soon')).toBeNull()
     expect(countupOptions('')).toBeNull()

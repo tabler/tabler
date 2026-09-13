@@ -4,15 +4,32 @@ export interface CountupOptions {
   prefix?: string
   suffix?: string
   decimalPlaces?: number
+  /** `time` for an h:mm value, counted in minutes */
+  format?: 'time'
 }
 
 /**
- * Splits a formatted stat like "$2,847", "42.7 hrs" or "18.4%" into the
- * countup options that reproduce it: the text before the number becomes the
- * prefix, the text after it the suffix, and the decimals are counted. Returns
- * null when the value holds no number, so the caller can skip the countup.
+ * Splits a formatted stat like "$2,847", "42.7 hrs", "18.4%" or "3:28 hrs"
+ * into the countup options that reproduce it: the text before the number
+ * becomes the prefix, the text after it the suffix, the decimals are counted
+ * and an h:mm value gets the `time` format. Returns null when the value holds
+ * no number, so the caller can skip the countup.
  */
 export function countupOptions(value: string): CountupOptions | null {
+  const time = /^([^\d-]*)(\d+:\d{2})(.*)$/.exec(value.trim())
+  if (time) {
+    const options: CountupOptions = { format: 'time' }
+    if (time[1]) {
+      options.prefix = time[1]
+    }
+
+    if (time[3]) {
+      options.suffix = time[3]
+    }
+
+    return options
+  }
+
   const match = /^([^\d-]*)(-?\d[\d,]*(?:\.\d+)?)(.*)$/.exec(value.trim())
   if (!match) {
     return null

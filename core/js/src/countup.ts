@@ -10,6 +10,8 @@ import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import type { ElementSelector } from './bootstrap/types'
 
+type CountUpFormat = 'number' | 'time'
+
 type ComponentConfig = {
   /** start when the element scrolls into view; off starts at once */
   autoAnimate: boolean
@@ -23,6 +25,10 @@ type ComponentConfig = {
   decimal: string
   prefix: string
   suffix: string
+  /** `number`, or `time` for a value in minutes shown as h:mm */
+  format: CountUpFormat
+  /** custom rendering of the number, from a JavaScript config only */
+  formatter: ((value: number) => string) | null
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -54,6 +60,8 @@ const Default: ComponentConfig = {
   decimal: '.',
   prefix: '',
   suffix: '',
+  format: 'number',
+  formatter: null,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
@@ -67,6 +75,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   decimal: 'string',
   prefix: 'string',
   suffix: 'string',
+  format: 'string',
+  formatter: '(function|null)',
 }
 
 /**
@@ -75,7 +85,19 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
 
 // Strips thousands separators, currency symbols and other non-numeric
 // characters, so formatted targets like "1,234", "1 234" or "$99.5" parse.
-const parseValue = (input: string | number): number => (typeof input === 'number' ? input : Number.parseFloat(input.replace(/[^0-9.-]/g, '')))
+// A `time` value like "3:28" is read as minutes.
+const parseValue = (input: string | number, format: CountUpFormat): number => {
+  if (typeof input === 'number') {
+    return input
+  }
+
+  if (format === 'time') {
+    const match = /(\d+):(\d{1,2})/.exec(input)
+    return match ? Number(match[1]) * 60 + Number(match[2]) : Number.NaN
+  }
+
+  return Number.parseFloat(input.replace(/[^0-9.-]/g, ''))
+}
 
 // easeOutExpo, the same curve countUp.js used
 const easeOut = (t: number): number => (t >= 1 ? 1 : ((1 - 2 ** (-10 * t)) * 1024) / 1023)
@@ -110,7 +132,7 @@ class CountUp extends BaseComponent {
       return
     }
 
-    const value = parseValue(this._element.textContent ?? '')
+    const value = parseValue(this._element.textContent ?? '', this._config.format)
     if (Number.isNaN(value)) {
       return
     }
@@ -165,7 +187,7 @@ class CountUp extends BaseComponent {
   }
 
   update(value: number | string): void {
-    const parsed = parseValue(value)
+    const parsed = parseValue(value, this._config.format)
     if (Number.isNaN(parsed)) {
       return
     }
@@ -266,7 +288,16 @@ class CountUp extends BaseComponent {
   }
 
   _format(value: number): string {
-    const { decimalPlaces, useGrouping, separator, decimal, prefix, suffix } = this._config
+    const { decimalPlaces, useGrouping, separator, decimal, prefix, suffix, format, formatter } = this._config
+    if (formatter) {
+      return formatter(value)
+    }
+
+    if (format === 'time') {
+      const minutes = Math.round(Math.abs(value))
+      return `${value < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
+    }
+
     const [integer, fraction] = Math.abs(value).toFixed(decimalPlaces).split('.') as [string, string | undefined]
     const grouped = useGrouping ? integer.replace(/\B(?=(\d{3})+(?!\d))/g, separator) : integer
 

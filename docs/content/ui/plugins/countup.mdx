@@ -107,6 +107,14 @@ Grouping is on by default, so thousands get a separator. Set `"useGrouping": fal
 <h1 data-countup='{"suffix":"%"}'>300</h1> <h1 data-countup='{"suffix":"‰"}'>300</h1>
 </Example>
 
+### Time
+
+Set `"format": "time"` for a value written as hours and minutes. The number counts in minutes and is printed as `h:mm`.
+
+<Example vertical separated>
+<h1 data-countup='{"format":"time"}'>3:28</h1> <h1 data-countup='{"format":"time","suffix":" hrs"}'>12:05</h1>
+</Example>
+
 ## JavaScript
 
 Tabler ships a `CountUp` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-countup`. This is the code that runs:
@@ -117,6 +125,14 @@ Create the component yourself for an element added later. Options go in the `dat
 
 ```js
 const countup = new tabler.CountUp(document.getElementById('total'), { duration: 4 });
+```
+
+For any format the options cannot express, pass a `formatter` function. It gets the current number on every frame and returns the text to show:
+
+```js
+new tabler.CountUp(document.getElementById('size'), {
+  formatter: (value) => `${(value / 1024).toFixed(1)} GB`,
+});
 ```
 
 By default the animation starts when the element scrolls into view. Set `autoAnimate` to `false` to start it right away, or to control it yourself:
@@ -156,6 +172,8 @@ document.getElementById('total').addEventListener('complete.bs.countup', () => {
 | `separator` | `,` | The thousands separator. |
 | `decimal` | `.` | The decimal separator. |
 | `prefix`, `suffix` | none | Text before and after the number. |
+| `format` | `number` | `time` reads and prints the value as `h:mm`, counting in minutes. |
+| `formatter` | none | A function that turns the current number into the text to show. Config object only. |
 
 ## Accessibility
 
