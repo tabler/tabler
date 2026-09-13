@@ -12,7 +12,15 @@ describe('switch-icon', () => {
 
   beforeAll(async () => {
     fixtureEl = getFixture()
-    fixtureEl.innerHTML = [button('plain'), button('cancelled'), button('async'), button('failing'), button('loading', 'switch-icon-loading'), button('disabled', 'disabled')].join('')
+    fixtureEl.innerHTML = [
+      button('plain'),
+      button('cancelled'),
+      button('async'),
+      button('failing'),
+      button('loading', 'switch-icon-loading'),
+      button('disabled', 'disabled'),
+      '<button type="button" id="wrapped" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false"><span class="switch-icon"><span class="switch-icon-a">a</span><span class="switch-icon-b">b</span></span></button>',
+    ].join('')
     await import('../../src/switch-icon')
   })
 
@@ -93,5 +101,25 @@ describe('switch-icon', () => {
     el.click()
     expect(el.classList.contains('active')).toBe(false)
     expect(el.getAttribute('aria-pressed')).toBe('false')
+  })
+
+  it('toggles the switch-icon inside a wrapping button and keeps aria-pressed on the button', async () => {
+    const el = fixtureEl.querySelector<HTMLElement>('#wrapped')!
+    const icon = el.querySelector<HTMLElement>('.switch-icon')!
+    let resolve!: () => void
+    el.addEventListener('tabler:switch-icon-toggle', (event) => {
+      ;(event as CustomEvent).detail.wait(new Promise<void>((r) => (resolve = r)))
+    })
+
+    el.click()
+    expect(icon.classList.contains('switch-icon-loading')).toBe(true)
+    expect(el.getAttribute('aria-busy')).toBe('true')
+    expect(el.classList.contains('switch-icon-loading')).toBe(false)
+
+    resolve()
+    await tick()
+    expect(icon.classList.contains('active')).toBe(true)
+    expect(el.classList.contains('active')).toBe(false)
+    expect(el.getAttribute('aria-pressed')).toBe('true')
   })
 })

@@ -91,6 +91,31 @@ const repos = [
     <div class="col-md-6 col-lg-4">
       <Card>
         <CardBody>
+          <CardTitle>In an action button</CardTitle>
+          <CardSubtitle>Put <code>data-bs-toggle</code> on a <code>btn-action</code> that wraps the <code>switch-icon</code>; the button carries <code>aria-pressed</code>.</CardSubtitle>
+          <div class="btn-actions">
+            {
+              icons.map((item) => (
+                <button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false" aria-label={item.label}>
+                  <span class="switch-icon switch-icon-scale">
+                    <span class="switch-icon-a">
+                      <Icon name={item.icon} />
+                    </span>
+                    <span class={`switch-icon-b text-${item.color}`}>
+                      <Icon name={item.icon} filled={item.icon === 'heart' || item.icon === 'star'} />
+                    </span>
+                  </span>
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
           <CardTitle>Loading</CardTitle>
           <CardSubtitle>Add <code>loading</code> to show a spinner in place of the icons; clicks are ignored.</CardSubtitle>
           <ButtonList>

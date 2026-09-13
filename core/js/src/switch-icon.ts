@@ -4,14 +4,17 @@ switchesTriggerList.map(function (switchTriggerEl: HTMLElement) {
   switchTriggerEl.addEventListener('click', (e: MouseEvent) => {
     e.stopPropagation()
 
+    // The trigger is the .switch-icon itself, or a button (e.g. .btn-action) wrapping one
+    const iconEl = switchTriggerEl.matches('.switch-icon') ? switchTriggerEl : (switchTriggerEl.querySelector<HTMLElement>('.switch-icon') ?? switchTriggerEl)
+
     // `.disabled` only blocks the pointer; Enter and Space still fire a click
-    if (switchTriggerEl.classList.contains('switch-icon-loading') || switchTriggerEl.classList.contains('disabled') || switchTriggerEl.getAttribute('aria-disabled') === 'true') {
+    if (iconEl.classList.contains('switch-icon-loading') || switchTriggerEl.classList.contains('disabled') || switchTriggerEl.getAttribute('aria-disabled') === 'true') {
       return
     }
 
-    const active = !switchTriggerEl.classList.contains('active')
+    const active = !iconEl.classList.contains('active')
     const setActive = (value: boolean) => {
-      switchTriggerEl.classList.toggle('active', value)
+      iconEl.classList.toggle('active', value)
       switchTriggerEl.setAttribute('aria-pressed', value ? 'true' : 'false')
     }
 
@@ -34,7 +37,7 @@ switchesTriggerList.map(function (switchTriggerEl: HTMLElement) {
       return
     }
 
-    switchTriggerEl.classList.add('switch-icon-loading')
+    iconEl.classList.add('switch-icon-loading')
     switchTriggerEl.setAttribute('aria-busy', 'true')
     pending
       .then(
@@ -42,7 +45,7 @@ switchesTriggerList.map(function (switchTriggerEl: HTMLElement) {
         () => undefined,
       )
       .finally(() => {
-        switchTriggerEl.classList.remove('switch-icon-loading')
+        iconEl.classList.remove('switch-icon-loading')
         switchTriggerEl.removeAttribute('aria-busy')
       })
   })

@@ -104,6 +104,33 @@ You can also add a fancy animation to add variety to your button. See demo below
 </button>
 </Example>
 
+## In an action button
+
+A switch icon can sit inside a button, for example a `btn-action` in a table row or a card header. Put `data-bs-toggle="switch-icon"` and `aria-pressed` on the button and the `switch-icon` inside it: Tabler toggles the icon and keeps the state on the button, which also provides the hover, focus and target size.
+
+<Example centered>
+<div class="btn-actions">
+  <button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Like">
+    <span class="switch-icon switch-icon-scale">
+      <span class="switch-icon-a"><Icon name="heart" /></span>
+      <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
+    </span>
+  </button>
+  <button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Add to favorites">
+    <span class="switch-icon switch-icon-scale">
+      <span class="switch-icon-a"><Icon name="star" /></span>
+      <span class="switch-icon-b text-yellow"><Icon name="star" filled /></span>
+    </span>
+  </button>
+  <button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Bookmark">
+    <span class="switch-icon switch-icon-flip">
+      <span class="switch-icon-a"><Icon name="bookmark" /></span>
+      <span class="switch-icon-b text-primary"><Icon name="bookmark" filled /></span>
+    </span>
+  </button>
+</div>
+</Example>
+
 ## Loading state
 
 Add `switch-icon-loading` to show a spinner in place of the icons, for example while a request is in flight. The button ignores clicks in this state. Set `aria-busy="true"` with it, so assistive technology knows the control is busy.
@@ -143,7 +170,7 @@ The event bubbles, so one listener on a list can serve all of its buttons.
 
 ## JavaScript
 
-Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click, after dispatching the `tabler:switch-icon-toggle` event described above. This is the code that runs:
+Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click, or on the `switch-icon` inside it when the trigger is a wrapping button, after dispatching the `tabler:switch-icon-toggle` event described above. This is the code that runs:
 
 <CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
 
