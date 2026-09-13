@@ -1,0 +1,219 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Subheader from '@ui/Subheader.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Chart from '@components/demo/Chart.astro'
+import site from '@data/site.json'
+import { ucFirst } from '@shared/lib/string-format'
+
+const colors = Object.keys(site.colors)
+
+const traffic = [
+  { name: 'Organic search', color: 'azure', value: '38%' },
+  { name: 'Direct', color: 'primary', value: '27%' },
+  { name: 'Social media', color: 'purple', value: '18%' },
+  { name: 'Referral', color: 'orange', value: '12%' },
+  { name: 'Email', color: 'green', value: '5%' },
+]
+
+const requests = [
+  { name: 'Allowed', color: 'blue', value: '339.0k' },
+  { name: 'Denied', color: 'red', value: '1.2k' },
+  { name: 'Challenged', color: 'orange', value: '815' },
+  { name: 'Logged', color: 'purple', value: '-' },
+  { name: 'Rate limited', color: 'teal', value: '-' },
+]
+
+const storage = [
+  { name: 'Documents', color: 'primary', value: '3.5 GB', width: 44 },
+  { name: 'Media', color: 'info', value: '1.5 GB', width: 19 },
+  { name: 'Shared', color: 'success', value: '0.7 GB', width: 9 },
+]
+---
+
+<DefaultLayout title="Legend" pageMenu="base.legend" pageLibs={['apexcharts']} description="Legends label the series of a chart or a progress bar with a colored marker, a name and an optional value.">
+  <DocsLink slot="page-header-actions" path="/ui/components/legend" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A <code>Legend</code> is a marker and a label. Set the series color with <code>color</code>.</CardSubtitle>
+          <LegendList>
+            <Legend color="primary" text="This year" />
+            <Legend color="secondary" text="Last year" />
+            <Legend text="Forecast" />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With values</CardTitle>
+          <CardSubtitle>Add <code>value</code> to show a number next to the label.</CardSubtitle>
+          <LegendList>
+            {requests.slice(0, 3).map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>States</CardTitle>
+          <CardSubtitle>Links and buttons get a tinted background on hover. Use <code>active</code> to keep it and <code>off</code> for a hidden series.</CardSubtitle>
+          <LegendList>
+            <Legend button color="blue" text="Default" />
+            <Legend button color="purple" text="Active" active />
+            <Legend button color="teal" text="Off" off />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Every palette color works with <code>legend-{'{color}'}</code>.</CardSubtitle>
+          <LegendList>
+            {colors.map((color) => <Legend color={color} text={ucFirst(color)} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Vertical</CardTitle>
+          <CardSubtitle>Add <code>vertical</code> to the list to stack the items.</CardSubtitle>
+          <LegendList vertical>
+            {traffic.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Marker only</CardTitle>
+          <CardSubtitle>Use a bare <code>legend-dot</code> when the label lives elsewhere.</CardSubtitle>
+          <div class="d-flex align-items-center gap-2">
+            {colors.map((color) => <span class:list={['legend-dot', `legend-${color}`]} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardHeader title="Interactive legend">
+          <LegendList class="ms-auto" id="legend-page-list">
+            <Legend button color="yellow" text="Total visits" value="6.7k" data-series="Total visits" />
+            <Legend button color="green" text="Unique visitors" value="4.7k" data-series="Unique visitors" />
+            <Legend button color="primary" text="New users" value="1.6k" data-series="New users" />
+          </LegendList>
+        </CardHeader>
+        <CardBody>
+          <CardSubtitle>Button items call <code>toggleSeries()</code> on the chart and toggle <code>legend-off</code>.</CardSubtitle>
+          <Chart chartId="legend-demo" id="legend-page-chart" height={15} label="Site traffic" />
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF LEGEND -->
+            <script is:inline>
+              /*
+              Toggles a chart series when its legend item is clicked.
+              The chart is exposed by the demo Chart component as window.tabler_chart['chart-legend-page-chart'].
+              */
+              document.querySelectorAll('#legend-page-list .legend').forEach((item) => {
+                item.addEventListener('click', () => {
+                  const chart = window.tabler_chart && window.tabler_chart['chart-legend-page-chart']
+                  if (!chart) return
+                  chart.toggleSeries(item.dataset.series)
+                  item.classList.toggle('legend-off')
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF LEGEND -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Next to a donut</CardTitle>
+          <CardSubtitle>A vertical list beside a chart with its own legend hidden.</CardSubtitle>
+          <div class="d-flex align-items-center gap-4">
+            <div class="w-50">
+              <Chart chartId="legend-donut" height={10} label="Traffic sources" />
+            </div>
+            <LegendList vertical>
+              {traffic.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+            </LegendList>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Under a stat</CardTitle>
+          <CardSubtitle>A legend row explains the split behind a single number.</CardSubtitle>
+          <Subheader>Requests</Subheader>
+          <div class="h1 mb-3">341.0k</div>
+          <LegendList class="border-top pt-3">
+            {requests.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With a progress bar</CardTitle>
+          <CardSubtitle>Label the segments of a <code>progress-separated</code> bar.</CardSubtitle>
+          <p class="mb-3">Using <strong>5.7 GB</strong> of 8 GB</p>
+          <div class="progress progress-separated mb-3">
+            {storage.map((item) => <div class:list={['progress-bar', `bg-${item.color}`]} role="progressbar" style={`width: ${item.width}%`} aria-label={item.name} />)}
+          </div>
+          <LegendList>
+            {storage.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+            <Legend text="Free" value="2.3 GB" />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Filter links</CardTitle>
+          <CardSubtitle>Link items with <code>href</code> work as filters. Mark the current one with <code>active</code>.</CardSubtitle>
+          <LegendList>
+            <Legend href="#" color="green" text="Passed" value={128} active />
+            <Legend href="#" color="red" text="Failed" value={4} />
+            <Legend href="#" color="yellow" text="Skipped" value={12} />
+            <Legend href="#" color="secondary" text="Pending" value={3} />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

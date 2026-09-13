@@ -32,7 +32,7 @@ Legend
   display: inline-flex;
   gap: var(--legend-gap);
   align-items: center;
-  padding: var(--legend-padding-y) var(--legend-padding-x);
+  padding: var(--legend-padding-y) 0;
   margin: 0;
   font: inherit;
   font-weight: var(--font-weight-medium);
@@ -63,11 +63,13 @@ Legend
 
 a.legend,
 button.legend {
+  padding-inline: var(--legend-padding-x);
   cursor: pointer;
 
   &:hover,
   &.active {
     color: var(--body-color);
+    text-decoration: none;
     background: var(--legend-hover-bg);
   }
 }
@@ -100,6 +102,11 @@ button.legend {
   flex-wrap: wrap;
   gap: var(--legend-list-gap);
   align-items: center;
+
+  // Links and buttons carry their own horizontal padding, so the list can be tighter
+  &:has(> a.legend, > button.legend) {
+    --legend-list-gap: #{$legend-list-gap-interactive};
+  }
 }
 
 .legend-list-vertical {
