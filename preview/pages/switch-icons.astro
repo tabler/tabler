@@ -6,7 +6,6 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
-import Icon from '@ui/Icon.astro'
 import SwitchIcon from '@ui/SwitchIcon.astro'
 import ButtonList from '@ui/ButtonList.astro'
 
@@ -69,20 +68,9 @@ const repos = [
       <Card>
         <CardBody>
           <CardTitle>Two icons</CardTitle>
-          <CardSubtitle>The <code>switch-icon-a</code> and <code>switch-icon-b</code> parts can hold any two icons.</CardSubtitle>
+          <CardSubtitle>Set <code>activeIcon</code> to switch to a different icon instead of the filled variant.</CardSubtitle>
           <ButtonList>
-            {
-              pairs.map((pair) => (
-                <button type="button" class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon" aria-pressed="false" aria-label={pair.label}>
-                  <span class="switch-icon-a text-secondary">
-                    <Icon name={pair.a} />
-                  </span>
-                  <span class={`switch-icon-b text-${pair.color}`}>
-                    <Icon name={pair.b} />
-                  </span>
-                </button>
-              ))
-            }
+            {pairs.map((pair) => <SwitchIcon icon={pair.a} activeIcon={pair.b} activeColor={pair.color} variant="flip" ariaLabel={pair.label} />)}
           </ButtonList>
         </CardBody>
       </Card>
@@ -92,22 +80,9 @@ const repos = [
       <Card>
         <CardBody>
           <CardTitle>In an action button</CardTitle>
-          <CardSubtitle>Put <code>data-bs-toggle</code> on a <code>btn-action</code> that wraps the <code>switch-icon</code>; the button carries <code>aria-pressed</code>.</CardSubtitle>
+          <CardSubtitle>Add <code>action</code> to wrap the switch in a <code>btn-action</code>, which then carries the toggle, hover and focus.</CardSubtitle>
           <div class="btn-actions">
-            {
-              icons.map((item) => (
-                <button type="button" class="btn btn-action" data-bs-toggle="switch-icon" aria-pressed="false" aria-label={item.label}>
-                  <span class="switch-icon switch-icon-scale">
-                    <span class="switch-icon-a">
-                      <Icon name={item.icon} />
-                    </span>
-                    <span class={`switch-icon-b text-${item.color}`}>
-                      <Icon name={item.icon} filled={item.icon === 'heart' || item.icon === 'star'} />
-                    </span>
-                  </span>
-                </button>
-              ))
-            }
+            {icons.map((item) => <SwitchIcon action icon={item.icon} activeColor={item.color} variant="scale" ariaLabel={item.label} />)}
           </div>
         </CardBody>
       </Card>
@@ -171,7 +146,7 @@ const repos = [
                     <div class="fw-medium">{repo.name}</div>
                     <div class="text-secondary">{repo.description}</div>
                   </div>
-                  <SwitchIcon icon="star" activeColor="yellow" variant="scale" class={repo.starred ? 'active' : undefined} aria-pressed={repo.starred ? 'true' : 'false'} ariaLabel={`Star ${repo.name}`} />
+                  <SwitchIcon icon="star" activeColor="yellow" variant="scale" active={repo.starred} ariaLabel={`Star ${repo.name}`} />
                 </div>
               ))
             }
