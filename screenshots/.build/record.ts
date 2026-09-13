@@ -11,7 +11,8 @@
 //
 // Steps: { "move": selector, "duration"?: ms } glides the cursor to the element
 // (the duration follows the distance when left out),
-// { "click": selector } clicks it, { "wait": ms } holds.
+// { "click": selector } moves there and clicks, { "click": true } clicks where the
+// cursor is, { "wait": ms } holds.
 
 import { chromium, type CDPSession, type Page } from 'playwright'
 import { execFileSync, spawn } from 'node:child_process'
@@ -31,7 +32,7 @@ const baseUrl = `http://localhost:${PORT}`
 const FPS = 30
 const SCALE = 2
 
-type Step = { move: string; duration?: number } | { click: string } | { wait: number }
+type Step = { move: string; duration?: number } | { click: string | true } | { wait: number }
 
 type Frame = { data: Buffer; time: number }
 
@@ -202,14 +203,15 @@ async function moveCursor(page: Page, to: { x: number; y: number }, duration?: n
   await page.mouse.move(to.x, to.y)
 }
 
-// A click: the sprite dips for a moment, the button is held for a beat.
-async function clickAt(page: Page, to: { x: number; y: number }): Promise<void> {
-  await moveCursor(page, to)
+// A click: the sprite dips for a moment, the button is held for a beat. With
+// no target it lands where the cursor already is, after a `move`.
+async function clickAt(page: Page, to?: { x: number; y: number }): Promise<void> {
+  if (to) await moveCursor(page, to)
   await sleep(120)
-  await page.evaluate(() => (document.getElementById('record-cursor')!.style.scale = '0.88'))
+  await page.evaluate(() => (document.querySelector<HTMLElement>('#record-cursor .cursor')!.style.scale = '0.88'))
   await page.mouse.down()
   await sleep(110)
-  await page.evaluate(() => (document.getElementById('record-cursor')!.style.scale = '1'))
+  await page.evaluate(() => (document.querySelector<HTMLElement>('#record-cursor .cursor')!.style.scale = '1'))
   await page.mouse.up()
 }
 
@@ -218,7 +220,7 @@ async function play(page: Page, steps: Step[]): Promise<void> {
     if ('move' in step) {
       await moveCursor(page, await centerOf(page, step.move), step.duration)
     } else if ('click' in step) {
-      await clickAt(page, await centerOf(page, step.click))
+      await clickAt(page, step.click === true ? undefined : await centerOf(page, step.click))
     } else {
       await sleep(step.wait)
     }
@@ -248,10 +250,15 @@ async function recordOne(page: Page, client: CDPSession, slug: string, theme: 'l
   // The layout's .cursor sprite, parked below the frame until the first move.
   await page.evaluate(
     ([w, h]) => {
+      // outer element carries the position, the sprite inside only the press dip —
+      // a `scale` on the same element would scale the translation with it
       const el = document.createElement('div')
       el.id = 'record-cursor'
-      el.className = 'cursor'
-      el.style.cssText = 'top: 0; left: 0; z-index: 10000; pointer-events: none'
+      el.style.cssText = 'position: absolute; top: 0; left: 0; z-index: 10000; pointer-events: none'
+      const sprite = document.createElement('div')
+      sprite.className = 'cursor'
+      sprite.style.cssText = 'position: static; transform-origin: 4px 2px'
+      el.append(sprite)
       document.getElementById('screenshot')!.append(el)
       el.dataset.x = String(w / 2)
       el.dataset.y = String(h + 40)
@@ -260,7 +267,6 @@ async function recordOne(page: Page, client: CDPSession, slug: string, theme: 'l
   )
   await page.addScriptTag({ content: cursorScript(SCALE) })
   await moveCursor(page, { x: width / 2, y: height + 40 }, 0)
-  await page.evaluate(() => (document.getElementById('record-cursor')!.style.transformOrigin = '4px 2px'))
 
   const frames: Frame[] = []
   const onFrame = async (event: { data: string; sessionId: number }) => {
