@@ -1,6 +1,7 @@
 /**
 Sparkline (inline SVG, rendered by js/src/sparkline.ts)
  */
+@use 'sass:map';
 @use '../config' as *;
 
 .sparkline {
@@ -14,6 +15,7 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
   --sparkline-spot-size: #{$sparkline-spot-size};
 
   display: inline-block;
+  flex-shrink: 0; // a fixed-size graphic: never squeezed by a flex row
   width: var(--sparkline-width);
   height: var(--sparkline-height);
   line-height: 0;
@@ -25,4 +27,16 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
     height: 100%;
     overflow: visible;
   }
+}
+
+@each $sparkline-size, $size in $sparkline-sizes {
+  .sparkline-#{$sparkline-size} {
+    --sparkline-width: #{map.get($size, width)};
+    --sparkline-height: #{map.get($size, height)};
+  }
+}
+
+// Same width as height, for the circle type
+.sparkline-square {
+  --sparkline-width: var(--sparkline-height);
 }

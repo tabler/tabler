@@ -2,8 +2,8 @@
 // Sparkline component on its own: a grid of the chart types — a plain line, a
 // filled line with the last value marked, bars and a circle — colored in
 // palette order (blue → green), since the charts draw with currentColor. The
-// charts are scaled up through the `--tblr-sparkline-*` custom properties so
-// the strokes read at picture size.
+// charts use the `sparkline-lg` size (and `sparkline-square` for the circles)
+// with a thicker stroke so they read at picture size.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
 
 const charts = [
@@ -21,12 +21,12 @@ const isCircle = (type: string) => type === 'circle'
 ---
 
 <ScreenshotLayout title="Sparkline" columns={2.4}>
-  <div class="d-flex flex-wrap align-items-center justify-content-center gap-6">
+  <div class="d-grid gap-6 justify-content-center align-items-center" style="grid-template-columns: repeat(4, auto)">
     {
       charts.map((chart) => (
         <span
-          class:list={['sparkline', `text-${chart.color}`]}
-          style={isCircle(chart.type) ? '--tblr-sparkline-width: 3.5rem; --tblr-sparkline-height: 3.5rem; --tblr-sparkline-stroke-width: 4' : '--tblr-sparkline-width: 9rem; --tblr-sparkline-height: 3rem; --tblr-sparkline-stroke-width: 2.5; --tblr-sparkline-spot-size: 3'}
+          class:list={['sparkline', 'sparkline-lg', isCircle(chart.type) && 'sparkline-square', `text-${chart.color}`]}
+          style={isCircle(chart.type) ? '--tblr-sparkline-stroke-width: 4' : '--tblr-sparkline-stroke-width: 2.5; --tblr-sparkline-spot-size: 3'}
           data-bs-toggle="sparkline"
           data-bs-type={chart.type}
           data-bs-fill={chart.fill}

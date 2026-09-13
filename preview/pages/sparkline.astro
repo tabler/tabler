@@ -69,23 +69,10 @@ const progress = [
       <Card>
         <CardBody>
           <CardTitle>Circle</CardTitle>
-          <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>.</CardSubtitle>
-          <div class="d-flex align-items-center gap-3">
-            {
-              progress.map((item) => (
-                <span
-                  class:list={['sparkline', `text-${item.color}`]}
-                  style="--tblr-sparkline-width: 2rem; --tblr-sparkline-height: 2rem; --tblr-sparkline-stroke-width: 3"
-                  data-bs-toggle="sparkline"
-                  data-bs-type="circle"
-                  data-bs-values={item.value}
-                  data-bs-max="100"
-                  data-bs-width="32"
-                  data-bs-height="32"
-                  aria-label={item.label}
-                />
-              ))
-            }
+          <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>, and <code>sparkline-square</code> for a round box.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            {progress.map((item) => <span class:list={['sparkline', 'sparkline-square', `text-${item.color}`]} data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values={item.value} data-bs-max="100" data-bs-width="24" data-bs-height="24" aria-label={item.label} />)}
+            <span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-max="100" data-bs-width="40" data-bs-height="40" aria-label="Completion 72%, large"></span>
           </div>
         </CardBody>
       </Card>
@@ -120,11 +107,11 @@ const progress = [
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <CardSubtitle>Override <code>--tblr-sparkline-width</code> and <code>--tblr-sparkline-height</code>; the SVG scales to fit.</CardSubtitle>
-          <div class="d-flex align-items-center gap-3">
-            <span class="sparkline text-info" style="--tblr-sparkline-width: 3rem; --tblr-sparkline-height: 1rem" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="2,3,2,4,3,5,4" aria-label="Small"></span>
+          <CardSubtitle>Add <code>sparkline-sm</code> or <code>sparkline-lg</code>; for a custom box override <code>--tblr-sparkline-width</code> and <code>--tblr-sparkline-height</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <span class="sparkline sparkline-sm text-info" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="2,3,2,4,3,5,4" aria-label="Small"></span>
             <span class="sparkline text-info" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="2,3,2,4,3,5,4" aria-label="Default"></span>
-            <span class="sparkline text-info" style="--tblr-sparkline-width: 9rem; --tblr-sparkline-height: 2rem" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="2,3,2,4,3,5,4" aria-label="Large"></span>
+            <span class="sparkline sparkline-lg text-info" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="2,3,2,4,3,5,4" aria-label="Large"></span>
           </div>
         </CardBody>
       </Card>
