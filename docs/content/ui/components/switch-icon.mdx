@@ -13,6 +13,11 @@ classnames:
       desc: Icon shown in the off state
     - class: switch-icon-b
       desc: Icon shown in the on state
+  state:
+    - class: active
+      desc: Switched on; Tabler toggles it on click
+    - class: switch-icon-loading
+      desc: Spinner instead of the icons, clicks ignored
   behavior:
     - class: switch-icon-fade
       desc: Crossfades between the icons
@@ -99,9 +104,46 @@ You can also add a fancy animation to add variety to your button. See demo below
 </button>
 </Example>
 
+## Loading state
+
+Add `switch-icon-loading` to show a spinner in place of the icons, for example while a request is in flight. The button ignores clicks in this state. Set `aria-busy="true"` with it, so assistive technology knows the control is busy.
+
+<Example centered>
+<button type="button" class="switch-icon switch-icon-loading" data-bs-toggle="switch-icon" aria-pressed="false" aria-busy="true" aria-label="Add to favorites">
+  <span class="switch-icon-a text-secondary"><Icon name="star" /></span>
+  <span class="switch-icon-b text-yellow"><Icon name="star" filled /></span>
+</button>
+<button type="button" class="switch-icon switch-icon-loading" data-bs-toggle="switch-icon" aria-pressed="false" aria-busy="true" aria-label="Like">
+  <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
+  <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
+</button>
+</Example>
+
+## Wait for a request
+
+Every click dispatches a `tabler:switch-icon-toggle` event on the button before the state changes. `event.detail.active` is the state the button is about to switch to. Pass a promise to `event.detail.wait()` and the button shows the loading state until it settles: it switches when the promise resolves and stays as it was when it rejects. Call `event.preventDefault()` to cancel the toggle.
+
+```html
+<button type="button" class="switch-icon" data-bs-toggle="switch-icon" data-id="42" aria-pressed="false" aria-label="Star">
+  <span class="switch-icon-a text-secondary">…</span>
+  <span class="switch-icon-b text-yellow">…</span>
+</button>
+```
+
+```js
+document.querySelectorAll('[data-bs-toggle="switch-icon"]').forEach((button) => {
+  button.addEventListener('tabler:switch-icon-toggle', (event) => {
+    const { active, wait } = event.detail
+    wait(fetch(`/api/items/${button.dataset.id}/star`, { method: active ? 'PUT' : 'DELETE' }))
+  })
+})
+```
+
+The event bubbles, so one listener on a list can serve all of its buttons.
+
 ## JavaScript
 
-Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click. This is the code that runs:
+Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click, after dispatching the `tabler:switch-icon-toggle` event described above. This is the code that runs:
 
 <CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
 
@@ -110,4 +152,14 @@ Tabler toggles the `active` class on every element with `data-bs-toggle="switch-
 - A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state - Tabler keeps `aria-pressed` in sync from the first click, but the initial value has to be in your markup.
 - The two icons are decoration. The state lives in `aria-pressed`, not in which icon is visible.
 - Colour alone should not carry the state. A filled red heart and an outlined gray one differ in shape too, which is what makes them readable.
+- The button box is at least 24×24px (`$switch-icon-min-size`) with the icon centered inside, to meet the WCAG target size. Set `--tblr-switch-icon-min-size` to change it.
+- To disable a switch icon use the `disabled` attribute, or `aria-disabled="true"` when it has to stay focusable. Tabler ignores clicks on both, and on the `disabled` class, which alone would still let Enter and Space toggle it.
+- While a request is pending, the button carries `aria-busy="true"` and ignores clicks, so a double click cannot send the request twice.
+- The spinner slows down under `prefers-reduced-motion`, and the icon transitions are switched off there.
 - The animations run on every toggle. Disable them under `prefers-reduced-motion` if you add your own.
+
+## Variables
+
+Use these SCSS variables to customize switch icons. The default values are:
+
+<CodeDocs name="switch-icon-variables" file="core/scss/_variables.scss" />

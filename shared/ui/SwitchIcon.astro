@@ -9,20 +9,27 @@ interface Props {
   /** text-{activeColor} on the switched-on icon */
   activeColor?: string
   variant?: SwitchIconVariant | undefined
-  class?: string
+  /** switch-icon-loading + aria-busy: spinner instead of the icons */
+  loading?: boolean | undefined
+  /** accessible name of the toggle; defaults to a label matching the icon */
+  ariaLabel?: string | undefined
+  class?: string | undefined
   /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { icon = 'heart', activeColor = 'red', variant, class: className, ...rest } = Astro.props
+const { icon = 'heart', activeColor = 'red', variant, loading, ariaLabel, class: className, ...rest } = Astro.props
+
+const defaultLabels: Record<string, string> = { 'heart': 'Like', 'star': 'Add to favorites', 'bookmark': 'Bookmark', 'bell': 'Notify me', 'thumb-up': 'Vote up' }
+const label = ariaLabel ?? defaultLabels[icon] ?? 'Toggle'
 
 // star/heart force the filled variant; otherwise no extra class.
 const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : undefined
 
-const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, className]
+const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, loading && 'switch-icon-loading', className]
 ---
 
-<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Favorite" {...rest}>
+<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed="false" aria-busy={loading ? 'true' : undefined} aria-label={label} {...rest}>
   <span class="switch-icon-a text-muted">
     <Icon name={icon} />
   </span>

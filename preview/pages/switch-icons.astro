@@ -1,0 +1,177 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
+import SwitchIcon from '@ui/SwitchIcon.astro'
+import ButtonList from '@ui/ButtonList.astro'
+
+const icons = [
+  { icon: 'heart', color: 'red', label: 'Like' },
+  { icon: 'star', color: 'yellow', label: 'Add to favorites' },
+  { icon: 'bookmark', color: 'primary', label: 'Bookmark' },
+  { icon: 'bell', color: 'orange', label: 'Notify me' },
+  { icon: 'thumb-up', color: 'blue', label: 'Vote up' },
+]
+
+/** core/scss/ui/_switch-icon.scss `.switch-icon-{variant}` */
+const variants = ['fade', 'scale', 'flip', 'slide-up', 'slide-down', 'slide-start', 'slide-end'] as const
+
+const pairs = [
+  { a: 'check', b: 'x', color: 'red', label: 'Toggle' },
+  { a: 'player-play', b: 'player-pause', color: 'primary', label: 'Play' },
+  { a: 'volume', b: 'volume-off', color: 'secondary', label: 'Mute' },
+  { a: 'eye', b: 'eye-off', color: 'secondary', label: 'Hide' },
+  { a: 'lock-open', b: 'lock', color: 'green', label: 'Lock' },
+]
+
+const repos = [
+  { name: 'tabler/tabler', description: 'Dashboard UI kit', starred: true },
+  { name: 'tabler/tabler-icons', description: '5900+ free SVG icons', starred: true },
+  { name: 'tabler/tabler-react', description: 'React components', starred: false },
+  { name: 'tabler/tabler-emails', description: 'Responsive email templates', starred: false },
+]
+---
+
+<DefaultLayout title="Switch icons" pageMenu="base.switch-icons" description="Switch icons animate the change between two icons, for likes, favorites and other on/off actions.">
+  <DocsLink slot="page-header-actions" path="/ui/components/switch-icon" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A <code>SwitchIcon</code> swaps the outline icon for the filled one in <code>activeColor</code>.</CardSubtitle>
+          <ButtonList>
+            {icons.map((item) => <SwitchIcon icon={item.icon} activeColor={item.color} ariaLabel={item.label} />)}
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Animations</CardTitle>
+          <CardSubtitle>Pick a transition with <code>variant</code>: fade, scale, flip or one of the slides.</CardSubtitle>
+          <ButtonList>
+            {variants.map((variant) => <SwitchIcon icon="heart" activeColor="red" variant={variant} ariaLabel={`Like (${variant})`} />)}
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Two icons</CardTitle>
+          <CardSubtitle>The <code>switch-icon-a</code> and <code>switch-icon-b</code> parts can hold any two icons.</CardSubtitle>
+          <ButtonList>
+            {
+              pairs.map((pair) => (
+                <button type="button" class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon" aria-pressed="false" aria-label={pair.label}>
+                  <span class="switch-icon-a text-secondary">
+                    <Icon name={pair.a} />
+                  </span>
+                  <span class={`switch-icon-b text-${pair.color}`}>
+                    <Icon name={pair.b} />
+                  </span>
+                </button>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Loading</CardTitle>
+          <CardSubtitle>Add <code>loading</code> to show a spinner in place of the icons; clicks are ignored.</CardSubtitle>
+          <ButtonList>
+            <SwitchIcon icon="star" activeColor="yellow" loading ariaLabel="Add to favorites" />
+            <SwitchIcon icon="heart" activeColor="red" loading ariaLabel="Like" />
+            <SwitchIcon icon="bookmark" activeColor="primary" loading ariaLabel="Bookmark" />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Wait for a request</CardTitle>
+          <CardSubtitle>Pass a promise to <code>event.detail.wait()</code> and the switch waits for it. The last one fails and stays as it was.</CardSubtitle>
+          <ButtonList>
+            <SwitchIcon icon="star" activeColor="yellow" variant="scale" data-request="ok" ariaLabel="Add to favorites" />
+            <SwitchIcon icon="heart" activeColor="red" variant="scale" data-request="ok" ariaLabel="Like" />
+            <SwitchIcon icon="bookmark" activeColor="primary" variant="scale" data-request="ok" ariaLabel="Bookmark" />
+            <SwitchIcon icon="bell" activeColor="orange" variant="scale" data-request="fail" ariaLabel="Notify me" />
+          </ButtonList>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF SWITCH ICON REQUEST -->
+            <script is:inline>
+              /*
+              Simulates a request behind a switch icon. The button shows a spinner while the
+              promise is pending, switches when it resolves and stays as it was when it rejects.
+              */
+              document.querySelectorAll('[data-request]').forEach((button) => {
+                button.addEventListener('tabler:switch-icon-toggle', (event) => {
+                  const fails = button.dataset.request === 'fail'
+                  event.detail.wait(new Promise((resolve, reject) => setTimeout(fails ? reject : resolve, 1500)))
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF SWITCH ICON REQUEST -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>In a list</CardTitle>
+          <CardSubtitle>The event bubbles, so one listener on the list keeps the count in sync.</CardSubtitle>
+          <div class="list-group list-group-flush" id="starred-repos">
+            {
+              repos.map((repo) => (
+                <div class="list-group-item d-flex align-items-center gap-3 px-0">
+                  <div class="flex-fill">
+                    <div class="fw-medium">{repo.name}</div>
+                    <div class="text-secondary">{repo.description}</div>
+                  </div>
+                  <SwitchIcon icon="star" activeColor="yellow" variant="scale" class={repo.starred ? 'active' : undefined} aria-pressed={repo.starred ? 'true' : 'false'} ariaLabel={`Star ${repo.name}`} />
+                </div>
+              ))
+            }
+          </div>
+          <div class="text-secondary mt-3">
+            <span id="starred-count">{repos.filter((repo) => repo.starred).length}</span> starred
+          </div>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF STARRED COUNT -->
+            <script is:inline>
+              /*
+              Counts the active switches in the list after every toggle. The event fires before the
+              class changes, so the count is read on the next frame.
+              */
+              const list = document.getElementById('starred-repos')
+              list.addEventListener('tabler:switch-icon-toggle', () => {
+                requestAnimationFrame(() => {
+                  document.getElementById('starred-count').textContent = list.querySelectorAll('.switch-icon.active').length
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF STARRED COUNT -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
