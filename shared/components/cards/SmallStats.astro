@@ -1,9 +1,9 @@
 ---
 import { personById } from '@shared/lib/people'
-import type { SparklineType } from '@ui/ChartSparkline.astro'
+import type { SparklineType } from '@ui/Sparkline.astro'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
-import ChartSparkline from '@ui/ChartSparkline.astro'
+import Sparkline from '@ui/Sparkline.astro'
 
 interface Props {
   icon?: string
@@ -14,6 +14,7 @@ interface Props {
   class?: string
   id?: string
   personId?: number
+  /** chart drawn next to the number; `circle` shows chartData as a share of 100 */
   chartType?: SparklineType
   chartPosition?: string
   chartData?: string | number
@@ -44,7 +45,7 @@ const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'a
           </div>
         ) : chartData && chartPosition === 'left' ? (
           <div class="col-auto">
-            <ChartSparkline id={id} data={chartData} type={chartType} color={color} />
+            <Sparkline id={id} values={String(chartData)} type={chartType} color={color} size={chartType === 'circle' ? 'lg' : undefined} fill={chartType === 'line'} label={chartType === 'circle' ? 'auto' : undefined} ariaLabel={String(description ?? 'Trend')} />
           </div>
         ) : null
       }
@@ -63,7 +64,7 @@ const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'a
       {
         chartData && chartPosition === 'right' && (
           <div class="col-auto">
-            <ChartSparkline id={id} data={chartData} type={chartType} color={chartColor} />
+            <Sparkline id={id} values={String(chartData)} type={chartType} color={chartColor} size={chartType === 'circle' ? 'lg' : undefined} fill={chartType === 'line'} label={chartType === 'circle' ? 'auto' : undefined} ariaLabel={String(description ?? 'Trend')} />
           </div>
         )
       }

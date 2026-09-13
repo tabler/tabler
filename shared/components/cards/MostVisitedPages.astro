@@ -1,6 +1,6 @@
 ---
 import Icon from '@ui/Icon.astro'
-import ChartSparkline from '@ui/ChartSparkline.astro'
+import Sparkline from '@ui/Sparkline.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import urls from '@data/urls.json'
 import { formatNumber } from '@shared/lib/string-format'
@@ -34,7 +34,7 @@ import { formatNumber } from '@shared/lib/string-format'
             <td class="text-secondary">{formatNumber(url.unique)}</td>
             <td class="text-secondary">{url.bounce}</td>
             <td class="text-end w-1">
-              <ChartSparkline type="line" data={url.data} id={`bounce-rate-${index + 1}`} size="sm" color="primary" />
+              <Sparkline values={url.data} id={`bounce-rate-${index + 1}`} size="sm" color="primary" ariaLabel={`Bounce rate trend for ${url.uri}`} />
             </td>
           </tr>
         ))

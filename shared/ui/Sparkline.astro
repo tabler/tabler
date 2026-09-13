@@ -1,0 +1,69 @@
+---
+// Sparkline (.sparkline): a tiny inline SVG chart drawn by core/js/src/sparkline.ts
+// from the data attributes this component emits. No chart library needed.
+
+/** core/js/src/sparkline.ts chart types */
+export type SparklineType = 'line' | 'bar' | 'tristate' | 'circle'
+/** core/scss/ui/_sparkline.scss `.sparkline-{size}` modifier classes */
+export type SparklineSize = 'sm' | 'lg'
+
+interface Props {
+  /** the numbers to draw, as an array or a comma-separated string */
+  values: number[] | string
+  type?: SparklineType
+  /** text-{color} on the element; the chart draws with currentColor */
+  color?: string | undefined
+  size?: SparklineSize | undefined
+  /** sparkline-square: width equal to the height, for the circle type */
+  square?: boolean | undefined
+  /** data-bs-fill="auto": tinted area under a line */
+  fill?: boolean | undefined
+  /** data-bs-spot: mark one value on a line with a dot */
+  spot?: 'last' | 'min' | 'max' | undefined
+  /** data-bs-min / data-bs-max: a fixed value range */
+  min?: number | undefined
+  max?: number | undefined
+  /** data-bs-threshold: a dashed guide line at this value */
+  threshold?: number | undefined
+  /** data-bs-label: text centered over the chart; `auto` derives it from the data */
+  label?: string | number | 'auto' | undefined
+  /** data-bs-bar-gap / data-bs-bar-radius, in SVG units */
+  barGap?: number | undefined
+  barRadius?: number | undefined
+  /** data-bs-animation: tween length of update() in ms; 0 turns it off */
+  animation?: number | undefined
+  /** sparkline-disabled: greys the chart out */
+  disabled?: boolean | undefined
+  /** accessible name; the SVG itself is hidden from assistive technology */
+  ariaLabel?: string | undefined
+  class?: string
+  /** remaining attributes (id, style, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { values, type = 'line', color, size, square, fill, spot, min, max, threshold, label, barGap, barRadius, animation, disabled, ariaLabel, class: className, ...rest } = Astro.props
+
+const serialized = Array.isArray(values) ? values.join(',') : values
+const isCircle = type === 'circle'
+
+const classes = ['sparkline', size && `sparkline-${size}`, (square || isCircle) && 'sparkline-square', disabled && 'sparkline-disabled', color && `text-${color}`, className]
+---
+
+<span
+  class:list={classes}
+  data-bs-toggle="sparkline"
+  data-bs-type={type === 'line' ? undefined : type}
+  data-bs-values={serialized}
+  data-bs-fill={fill ? 'auto' : undefined}
+  data-bs-spot={spot}
+  data-bs-min={min}
+  data-bs-max={max}
+  data-bs-threshold={threshold}
+  data-bs-label={label}
+  data-bs-bar-gap={barGap}
+  data-bs-bar-radius={barRadius}
+  data-bs-animation={animation}
+  data-bs-width={isCircle ? 40 : undefined}
+  data-bs-height={isCircle ? 40 : undefined}
+  aria-label={ariaLabel}
+  {...rest}></span>
