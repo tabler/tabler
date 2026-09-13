@@ -84,10 +84,49 @@ const progress = [
       <Card>
         <CardBody>
           <CardTitle>Circle</CardTitle>
-          <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>, and <code>sparkline-square</code> for a round box.</CardSubtitle>
+          <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>, <code>sparkline-square</code> for a round box and <code>data-bs-label="auto"</code> for the percentage in the middle.</CardSubtitle>
           <div class="d-flex flex-wrap align-items-center gap-3">
             {progress.map((item) => <span class:list={['sparkline', 'sparkline-square', `text-${item.color}`]} data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values={item.value} data-bs-max="100" data-bs-width="24" data-bs-height="24" aria-label={item.label} />)}
-            <span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-max="100" data-bs-width="40" data-bs-height="40" aria-label="Completion 72%, large"></span>
+            {
+              progress.map((item) => (
+                <span
+                  class:list={['sparkline', 'sparkline-lg', 'sparkline-square', `text-${item.color}`]}
+                  style="--tblr-sparkline-stroke-width: 3"
+                  data-bs-toggle="sparkline"
+                  data-bs-type="circle"
+                  data-bs-values={item.value}
+                  data-bs-max="100"
+                  data-bs-width="40"
+                  data-bs-height="40"
+                  data-bs-label="auto"
+                  aria-label={item.label}
+                />
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>Add <code>sparkline-disabled</code> to grey out a chart, for a series that is off or data that is stale.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <span class="sparkline sparkline-disabled text-primary" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-spot="last" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend, disabled"></span>
+            <span class="sparkline sparkline-disabled text-warning" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="3,-1,4,-2,5,-3,2" aria-label="Daily change, disabled"></span>
+            <span
+              class="sparkline sparkline-disabled sparkline-lg sparkline-square text-green"
+              style="--tblr-sparkline-stroke-width: 3"
+              data-bs-toggle="sparkline"
+              data-bs-type="circle"
+              data-bs-values="72"
+              data-bs-max="100"
+              data-bs-width="40"
+              data-bs-height="40"
+              data-bs-label="auto"
+              aria-label="Completion 72%, disabled"></span>
           </div>
         </CardBody>
       </Card>

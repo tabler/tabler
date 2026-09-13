@@ -12,6 +12,11 @@ classnames:
   part:
     - class: sparkline-svg
       desc: The rendered SVG, added by JavaScript
+    - class: sparkline-label
+      desc: Text centered over the chart, added by JavaScript for data-bs-label
+  state:
+    - class: sparkline-disabled
+      desc: Greys out the chart, the label and the area fill
   size:
     - class: sparkline-sm
       desc: Small chart, 3rem by 1rem
@@ -68,6 +73,15 @@ Set `data-bs-type="circle"` for a ring that shows one value as a share of `data-
 <span class="sparkline sparkline-square text-green" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="100" data-bs-width="24" data-bs-height="24" aria-label="100% done"></span>
 </Example>
 
+Add `data-bs-label="auto"` to print the percentage in the middle of the ring. Any other text is printed as is, for example `data-bs-label="3/4"`. The label is plain text in the page font, sized by `--tblr-sparkline-label-font-size`, so it needs a `sparkline-lg` box to be readable.
+
+<Example centered>
+<span class="sparkline sparkline-lg sparkline-square text-red" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="10" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="10% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-yellow" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="50" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="50% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="72% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="100" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="100% done"></span>
+</Example>
+
 ## Sizes
 
 Add `sparkline-sm` or `sparkline-lg`. The SVG scales to the box. For any other size, set `--tblr-sparkline-width` and `--tblr-sparkline-height` on the element.
@@ -77,6 +91,16 @@ Add `sparkline-sm` or `sparkline-lg`. The SVG scales to the box. For any other s
 <span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Default"></span>
 <span class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Large"></span>
 <span class="sparkline text-primary" style="--tblr-sparkline-width: 12rem; --tblr-sparkline-height: 2rem" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Custom size"></span>
+</Example>
+
+## Disabled
+
+Add `sparkline-disabled` to grey out a chart, for example for a series the user switched off or data that is stale. Every color, including negative bars and the label, becomes `--tblr-disabled-color`.
+
+<Example centered>
+<span class="sparkline sparkline-disabled text-primary" data-bs-toggle="sparkline" data-bs-fill="auto" data-bs-spot="last" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend, disabled"></span>
+<span class="sparkline sparkline-disabled text-orange" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="3,-1,4,-2,5,-3,2" aria-label="Daily change, disabled"></span>
+<span class="sparkline sparkline-disabled sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="72% done, disabled"></span>
 </Example>
 
 ## Fixed range
@@ -131,6 +155,7 @@ Every option is a `data-bs-*` attribute on the element, or a key in the config o
 | `pad` | `2` | Space above and below a line, in units, so the stroke and the dot are not cut off. |
 | `barGap` | `2` | Space between bars, in units. |
 | `barRadius` | `2` | Corner radius of a bar, in units. |
+| `label` | none | Text centered over the chart. `auto` prints the share of `max` for a circle and the last value for other types. |
 
 ## JavaScript
 
@@ -186,11 +211,13 @@ The chart reads its colors and stroke widths from custom properties on the eleme
 | `--tblr-sparkline-track` | 15% of `currentColor` | The unfilled part of a circle. |
 | `--tblr-sparkline-spot` | `currentColor` | The dot set with `spot`. |
 | `--tblr-sparkline-spot-size` | `2` | Radius of the dot, in SVG units. |
+| `--tblr-sparkline-label-font-size` | `0.625rem` | Font size of the label. |
+| `--tblr-sparkline-label-color` | `var(--tblr-body-color)` | Color of the label. |
 
 ## Accessibility
 
 - The SVG is hidden from assistive technology with `aria-hidden`. Give the element an `aria-label` that says what the chart shows, for example `aria-label="Revenue, last 7 days"`, or put the numbers in a visible cell next to it.
-- A sparkline shows a shape, not exact values. Keep the real number in the text nearby so the chart is a hint and not the only source.
+- A sparkline shows a shape, not exact values. Keep the real number in the text nearby, or in `data-bs-label` for a circle, so the chart is a hint and not the only source.
 - Color alone should not carry meaning. For signed bars the negative values also hang below the zero line, which is what makes them readable.
 
 ## Variables

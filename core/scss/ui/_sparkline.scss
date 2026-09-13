@@ -15,7 +15,10 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
   --sparkline-track: #{$sparkline-track};
   --sparkline-spot: #{$sparkline-spot};
   --sparkline-spot-size: #{$sparkline-spot-size};
+  --sparkline-label-font-size: #{$sparkline-label-font-size};
+  --sparkline-label-color: #{$sparkline-label-color};
 
+  position: relative;
   display: inline-block;
   flex-shrink: 0; // a fixed-size graphic: never squeezed by a flex row
   width: var(--sparkline-width);
@@ -29,6 +32,19 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
     height: 100%;
     overflow: visible;
   }
+
+  .sparkline-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--sparkline-label-font-size);
+    font-weight: $font-weight-medium;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--sparkline-label-color);
+  }
 }
 
 @each $sparkline-size, $size in $sparkline-sizes {
@@ -41,4 +57,14 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
 // Same width as height, for the circle type
 .sparkline-square {
   --sparkline-width: var(--sparkline-height);
+}
+
+// Greyed out, for a series that is off or data that is stale
+.sparkline-disabled {
+  --sparkline-stroke: #{$sparkline-disabled-color};
+  --sparkline-negative: #{$sparkline-disabled-color};
+  --sparkline-spot: #{$sparkline-disabled-color};
+  --sparkline-fill: color-mix(in oklab, #{$sparkline-disabled-color} 30%, transparent);
+  --sparkline-track: color-mix(in oklab, #{$sparkline-disabled-color} 40%, transparent);
+  --sparkline-label-color: #{$sparkline-disabled-color};
 }

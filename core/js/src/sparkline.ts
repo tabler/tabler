@@ -27,6 +27,7 @@ type ComponentConfig = {
   pad: number
   barGap: number
   barRadius: number
+  label: string | number | boolean | null
 }
 
 type ComponentConfigInput = Partial<Omit<ComponentConfig, 'values'>> & {
@@ -45,6 +46,7 @@ const EVENT_RENDERED = `rendered${EVENT_KEY}`
 const EVENT_UPDATED = `updated${EVENT_KEY}`
 
 const CLASS_NAME_SVG = 'sparkline-svg'
+const CLASS_NAME_LABEL = 'sparkline-label'
 
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 
@@ -65,6 +67,7 @@ const Default: ComponentConfig = {
   pad: 2,
   barGap: 2,
   barRadius: 2,
+  label: null,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
@@ -79,6 +82,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   pad: 'number',
   barGap: 'number',
   barRadius: 'number',
+  label: '(string|number|boolean|null)',
 }
 
 /**
@@ -244,6 +248,18 @@ class Sparkline extends BaseComponent {
     }
 
     this._element.append(svg)
+
+    // A text label centered over the chart, mainly for the circle type. Plain
+    // HTML rather than SVG text, so it keeps the page font and is not
+    // stretched with the viewBox.
+    const text = this._labelText()
+    if (text !== '') {
+      const label = document.createElement('span')
+      label.className = CLASS_NAME_LABEL
+      label.textContent = text
+      this._element.append(label)
+    }
+
     EventHandler.trigger(this._element, EVENT_RENDERED)
   }
 
@@ -256,6 +272,35 @@ class Sparkline extends BaseComponent {
   _configAfterMerge(config: BaseConfig): BaseConfig {
     config.values = toValues(config.values)
     return config
+  }
+
+  // `auto` (or `true`) derives the label from the data: the share of `max`
+  // for a circle, the last value otherwise. Anything else is printed as is.
+  _labelText(): string {
+    const { label, values, type } = this._config
+    if (label === null || label === false || label === '') {
+      return ''
+    }
+
+    if (label !== 'auto' && label !== true) {
+      return String(label)
+    }
+
+    if (type === 'circle') {
+      return `${Math.round(this._circleRatio() * 100)}%`
+    }
+
+    return String(values[values.length - 1])
+  }
+
+  // A single value is a share of `max` (default 100); a second value may be
+  // passed as the maximum instead: data-bs-values="72,100".
+  _circleRatio(): number {
+    const cfg = this._config
+    const value = cfg.values[0] ?? 0
+    const max = cfg.max ?? (cfg.values.length > 1 ? cfg.values[1] : 100)
+    const min = cfg.min ?? 0
+    return Math.max(0, Math.min(1, (value - min) / clampSpan(min, max)))
   }
 
   _createSvg(): SVGSVGElement {
@@ -376,12 +421,7 @@ class Sparkline extends BaseComponent {
     const cx = cfg.width / 2
     const cy = cfg.height / 2
 
-    // A single value is a share of `max` (default 100); a second value may be
-    // passed as the maximum instead: data-bs-values="72,100".
-    const value = cfg.values[0] ?? 0
-    const max = cfg.max ?? (cfg.values.length > 1 ? cfg.values[1] : 100)
-    const min = cfg.min ?? 0
-    const ratio = Math.max(0, Math.min(1, (value - min) / clampSpan(min, max)))
+    const ratio = this._circleRatio()
     const circumference = 2 * Math.PI * radius
 
     const track = svgEl('circle')

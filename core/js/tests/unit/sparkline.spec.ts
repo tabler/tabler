@@ -94,6 +94,26 @@ describe('Sparkline', () => {
       expect(offset).toBeCloseTo(dash / 2, 5)
     })
 
+    it('should derive an auto label from the data', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" id="ring" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="3" data-bs-max="4" data-bs-label="auto"></span>' + '<span class="sparkline" id="bars" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="1,2,7" data-bs-label="auto"></span>'
+
+      new Sparkline('#ring')
+      new Sparkline('#bars')
+
+      expect(fixtureEl.querySelector('#ring .sparkline-label')!.textContent).toBe('75%')
+      expect(fixtureEl.querySelector('#bars .sparkline-label')!.textContent).toBe('7')
+    })
+
+    it('should add a text label when asked', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-label="72%"></span>'
+
+      new Sparkline(el())
+
+      const label = el().querySelector('.sparkline-label')!
+      expect(label.textContent).toBe('72%')
+      expect(el().querySelector('svg')).not.toBeNull()
+    })
+
     it('should render nothing without values', () => {
       fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline"></span>'
 
