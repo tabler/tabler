@@ -9,6 +9,7 @@ import './src/switch-icon'
 import './src/tab'
 import './src/toast'
 import './src/sortable'
+import './src/sparkline'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
@@ -18,4 +19,5 @@ export { default as Autosize } from './src/autosize'
 export { default as CountUp } from './src/countup'
 export { default as InputMask } from './src/input-mask'
 export { default as Sortable } from './src/sortable'
+export { default as Sparkline } from './src/sparkline'
 export { default as SwitchIcon } from './src/switch-icon'
