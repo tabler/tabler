@@ -92,7 +92,9 @@ const parseValue = (input: string | number, format: CountUpFormat): number => {
   }
 
   if (format === 'time') {
-    const match = /(\d+):(\d{1,2})/.exec(input)
+    // Anchored and bounded on purpose: an unanchored `\d+` would scan from
+    // every position of a long digit string.
+    const match = /^\D{0,32}(\d{1,4}):(\d{1,2})/.exec(input)
     return match ? Number(match[1]) * 60 + Number(match[2]) : Number.NaN
   }
 

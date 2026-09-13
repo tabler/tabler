@@ -211,6 +211,15 @@ describe('CountUp', () => {
       expect(element().textContent).toBe('3:28 hrs')
     })
 
+    it('should read a time behind a prefix and reject one without minutes', () => {
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time"}\'>~12:05</h1>'
+      expect(new CountUp(element(), { autoAnimate: false, duration: 0 })._endVal).toBe(725)
+
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time"}\'>9999999999</h1>'
+      new CountUp(element(), { autoAnimate: false })
+      expect(element().textContent).toBe('9999999999')
+    })
+
     it('should use a formatter function from the config', async () => {
       quick({ formatter: (value: number) => `${Math.round(value / 1000)}k` })
       await wait(300)
