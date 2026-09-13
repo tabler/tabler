@@ -1,0 +1,69 @@
+---
+// Sparkline component: a key-metrics card whose rows end with a tiny inline
+// SVG chart. The rows show every chart type — a filled line with the last
+// value marked, plain lines, bars and a circle — each colored by a text
+// utility, since the charts draw with currentColor.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Badge from '@ui/Badge.astro'
+
+const metrics = [
+  { name: 'Revenue', value: '$48,210', change: '+12%', up: true, color: 'green', type: 'line', fill: 'auto', spot: 'last', values: '18,22,19,27,25,31,29,36' },
+  { name: 'Orders', value: '1,352', change: '+4%', up: true, color: 'blue', type: 'bar', values: '3,4,2,6,5,8,7,9' },
+  { name: 'New users', value: '864', change: '+21%', up: true, color: 'azure', type: 'line', spot: 'max', values: '12,14,9,18,16,22,20,27' },
+  { name: 'Refunds', value: '31', change: '-8%', up: false, color: 'red', type: 'bar', values: '9,7,8,5,6,4,3,2' },
+  { name: 'Bounce rate', value: '38%', change: '-3%', up: false, color: 'orange', type: 'line', fill: 'auto', values: '46,44,45,41,42,39,40,38' },
+  { name: 'Goal', value: '72%', change: '+6%', up: true, color: 'purple', type: 'circle', values: '72' },
+]
+---
+
+<ScreenshotLayout title="Sparkline" columns={2.2}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Key metrics</CardTitle>
+      <div class="ms-auto text-secondary">Last 8 weeks</div>
+    </CardHeader>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="text-end">Value</th>
+            <th class="text-end">Change</th>
+            <th class="text-end">Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            metrics.map((metric) => (
+              <tr>
+                <td>{metric.name}</td>
+                <td class="text-end fw-medium">{metric.value}</td>
+                <td class="text-end">
+                  <Badge color={metric.up ? 'green' : 'red'} light text={metric.change} />
+                </td>
+                <td class="text-end">
+                  <span
+                    class:list={['sparkline', `text-${metric.color}`]}
+                    data-bs-toggle="sparkline"
+                    data-bs-type={metric.type}
+                    data-bs-fill={metric.fill}
+                    data-bs-spot={metric.spot}
+                    data-bs-values={metric.values}
+                    data-bs-max={metric.type === 'circle' ? 100 : undefined}
+                    data-bs-width={metric.type === 'circle' ? 24 : undefined}
+                    data-bs-height={metric.type === 'circle' ? 24 : undefined}
+                    style={metric.type === 'circle' ? '--tblr-sparkline-width: 1.5rem; --tblr-sparkline-stroke-width: 3' : undefined}
+                    aria-label={`${metric.name} trend`}
+                  />
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</ScreenshotLayout>
