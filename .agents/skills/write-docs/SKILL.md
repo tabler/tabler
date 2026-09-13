@@ -102,6 +102,22 @@ Prose and example markup are only as accurate as their source. Before writing ex
 - **No trailing slash on `url`.** The menu compares it against the page url, which never has one, so a trailing slash silently breaks the active-item highlight for that page.
 - The `title` and `url` must match the new page's frontmatter `title` and its file path exactly, or the sidebar entry will point at the wrong place.
 
+## 7a. Linking a new page from the demo page
+
+Every component with a page in `preview/pages/**` shows a "Documentation" button in its page header, rendered by `DocsLink`. A new docs page is easy to forget here, and the demo page then looks undocumented even though the docs exist.
+
+- After creating `docs/content/ui/components/<name>.mdx` (or a plugin page), open `preview/pages/<name>.astro` and add, as a direct child of `<DefaultLayout>`:
+
+```astro
+import DocsLink from '@ui/DocsLink.astro'
+…
+<DocsLink slot="page-header-actions" path="/ui/components/<name>" />
+```
+
+- `path` is the docs path without the extension, the same string as the `url` in `docs.json`.
+- `pnpm run check:docs-links` resolves every `DocsLink` against `docs/content/**` and fails on a typo, so run it after adding one.
+- When there is no demo page yet, say so — the `demo-pages` skill covers building one.
+
 ## 8. Workflow for each request
 
 1. Identify target file(s) in `docs/content/**` (or determine none exist yet — see section 7).
@@ -110,9 +126,10 @@ Prose and example markup are only as accurate as their source. Before writing ex
 4. Apply the schema from section 4.
 5. Write/update the page directly in file(s).
 6. If the page is new, add its entry to `shared/data/docs.json` per section 7.
-7. Keep only required frontmatter by default.
-8. Ensure prose is in simple English.
-9. Verify heading hierarchy (`##` then `###`) and snippet validity.
+7. If the page is new, link it from the matching demo page in `preview/pages/<name>.astro` per section 7a.
+8. Keep only required frontmatter by default.
+9. Ensure prose is in simple English.
+10. Verify heading hierarchy (`##` then `###`) and snippet validity.
 
 ## 8a. Checking a page on the published site
 
@@ -142,4 +159,5 @@ Check a page's live url on `docs-dev.tabler.io`. Production still serves the pre
 - [ ] Examples use the `Example` component pattern where applicable.
 - [ ] Accessibility section exists for interactive UI docs.
 - [ ] New pages have a matching entry in `shared/data/docs.json` (section 7); edits to existing pages don't touch it.
+- [ ] New pages are linked from their demo page with `DocsLink` (section 7a), and `pnpm run check:docs-links` passes.
 - [ ] No mention of changeset reminders unless user asks.
