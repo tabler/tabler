@@ -1,8 +1,8 @@
 ---
 // Sparkline component on its own: a grid of the chart types — a plain line, a
 // filled line with the last value marked, bars (one set with negative
-// values below the zero line) and a circle, then a row with few and many
-// data points — colored in palette order, since the charts draw with
+// values below the zero line), a circle and a win/loss chart, then a row
+// with few and many data points — colored in palette order, since the charts draw with
 // currentColor. The
 // charts use the `sparkline-lg` size (and `sparkline-square` for the circles)
 // with a thicker stroke so they read at picture size.
@@ -19,7 +19,7 @@ const charts = [
   { color: 'green', type: 'circle', values: '27', label: 'auto' },
   { color: 'red', type: 'line', spot: 'last', values: '9,4,12,7,15' },
   { color: 'yellow', type: 'line', fill: 'auto', values: '14,11,17,9,20,13,22,10,18,25,15,27,12,23,30,16,24,19,28,21,33,17,26,31,22,35,20,29,34,26' },
-  { color: 'lime', type: 'bar', values: '7,3,9,5,11' },
+  { color: 'lime', type: 'tristate', barGap: 3, values: '3,-2,0,5,1,-1,-4,2,0,1' },
   { color: 'cyan', type: 'bar', barGap: 1.5, values: '3,6,2,8,5,9,4,7,10,3,8,6,11,5,9,2,7,10,4,8,6,12,5,9' },
 ]
 
@@ -43,8 +43,8 @@ const isCircle = (type: string) => type === 'circle'
           data-bs-width={isCircle(chart.type) ? 40 : 120}
           data-bs-height={isCircle(chart.type) ? 40 : 40}
           data-bs-pad={isCircle(chart.type) ? undefined : 3}
-          data-bs-bar-gap={chart.type === 'bar' ? (chart.barGap ?? 4) : undefined}
-          data-bs-bar-radius={chart.type === 'bar' ? 3 : undefined}
+          data-bs-bar-gap={chart.type === 'bar' || chart.type === 'tristate' ? (chart.barGap ?? 4) : undefined}
+          data-bs-bar-radius={chart.type === 'bar' || chart.type === 'tristate' ? 3 : undefined}
           aria-label={`${chart.type} sparkline`}
         />
       ))

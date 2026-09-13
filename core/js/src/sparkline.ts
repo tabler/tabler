@@ -10,7 +10,7 @@ import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
 
-type SparklineType = 'line' | 'bar' | 'circle'
+type SparklineType = 'line' | 'bar' | 'circle' | 'tristate'
 type SparklineFill = 'none' | 'auto'
 type SparklineSpot = 'none' | 'min' | 'max' | 'last'
 type SparklineValuesInput = number[] | number | string
@@ -28,6 +28,8 @@ type ComponentConfig = {
   barGap: number
   barRadius: number
   label: string | number | boolean | null
+  threshold: number | null
+  animation: number
 }
 
 type ComponentConfigInput = Partial<Omit<ComponentConfig, 'values'>> & {
@@ -68,6 +70,8 @@ const Default: ComponentConfig = {
   barGap: 2,
   barRadius: 2,
   label: null,
+  threshold: null,
+  animation: 300,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
@@ -83,6 +87,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   barGap: 'number',
   barRadius: 'number',
   label: '(string|number|boolean|null)',
+  threshold: '(number|null)',
+  animation: 'number',
 }
 
 /**
@@ -140,13 +146,36 @@ const toValues = (input: unknown): number[] => {
   return parseNumberList(input)
 }
 
-const scaleY = (values: number[], height: number, pad: number, minForced: number | null, maxForced: number | null): number[] => {
-  const min = minForced ?? Math.min(...values)
-  const max = maxForced ?? Math.max(...values)
-  const span = clampSpan(min, max)
-
-  return values.map((value) => pad + (1 - (value - min) / span) * (height - pad * 2))
+// The value range a chart is drawn in: forced by `min` / `max`, otherwise the
+// data itself, widened to include the threshold (and zero for bars) so those
+// lines are always inside the chart.
+const rangeOf = (values: number[], minForced: number | null, maxForced: number | null, ...include: number[]): { min: number; max: number; span: number } => {
+  const min = minForced ?? Math.min(...values, ...include)
+  const max = maxForced ?? Math.max(...values, ...include)
+  return { min, max, span: clampSpan(min, max) }
 }
+
+const NUMBER_RE = /-?\d*\.?\d+(?:e[-+]?\d+)?/g
+
+// Interpolates the numbers inside two attribute values with the same shape:
+// "0,20 40,10" → "0,10 40,20", or a path `d`. Falls back to the target when
+// the shapes differ.
+const lerpAttr = (from: string, to: string, t: number): string => {
+  const a = from.match(NUMBER_RE)
+  const b = to.match(NUMBER_RE)
+  if (!a || !b || a.length !== b.length || from.replace(NUMBER_RE, '#') !== to.replace(NUMBER_RE, '#')) {
+    return to
+  }
+
+  let i = 0
+  return to.replace(NUMBER_RE, () => {
+    const value = Number(a[i]) + (Number(b[i]) - Number(a[i])) * t
+    i++
+    return String(Math.round(value * 1000) / 1000)
+  })
+}
+
+const easeOut = (t: number): number => 1 - (1 - t) ** 3
 
 const findIndexByMode = (values: number[], mode: SparklineSpot): number => {
   if (values.length === 0 || mode === 'none') {
@@ -188,6 +217,7 @@ class Sparkline extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
   _userConfig: ComponentConfigInput = {}
+  _frame = 0
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -228,9 +258,11 @@ class Sparkline extends BaseComponent {
 
   render(): void {
     this._config = this._getConfig(this._userConfig) as ComponentConfig
-    this._element.innerHTML = ''
+    const previous = this._element.querySelector<SVGSVGElement>('svg')
+    this._element.querySelector(`.${CLASS_NAME_LABEL}`)?.remove()
 
     if (this._config.values.length === 0) {
+      this._element.innerHTML = ''
       return
     }
 
@@ -238,6 +270,9 @@ class Sparkline extends BaseComponent {
     switch (this._config.type) {
       case 'bar':
         svg = this._renderBars()
+        break
+      case 'tristate':
+        svg = this._renderTristate()
         break
       case 'circle':
         svg = this._renderCircle()
@@ -247,7 +282,15 @@ class Sparkline extends BaseComponent {
         break
     }
 
-    this._element.append(svg)
+    // On an update with the same shape (type and number of values) the old
+    // SVG stays in place and its attributes are tweened to the new ones.
+    if (previous && this._canAnimate(previous, svg)) {
+      this._animate(previous, svg)
+    } else {
+      cancelAnimationFrame(this._frame)
+      previous?.remove()
+      this._element.append(svg)
+    }
 
     // A text label centered over the chart, mainly for the circle type. Plain
     // HTML rather than SVG text, so it keeps the page font and is not
@@ -264,6 +307,7 @@ class Sparkline extends BaseComponent {
   }
 
   dispose(): void {
+    cancelAnimationFrame(this._frame)
     this._element.innerHTML = ''
     super.dispose()
   }
@@ -303,6 +347,70 @@ class Sparkline extends BaseComponent {
     return Math.max(0, Math.min(1, (value - min) / clampSpan(min, max)))
   }
 
+  _canAnimate(from: SVGSVGElement, to: SVGSVGElement): boolean {
+    if (this._config.animation <= 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return false
+    }
+
+    if (from.getAttribute('viewBox') !== to.getAttribute('viewBox') || from.children.length !== to.children.length) {
+      return false
+    }
+
+    return Array.from(from.children).every((child, i) => child.tagName === to.children[i].tagName)
+  }
+
+  _animate(from: SVGSVGElement, to: SVGSVGElement): void {
+    cancelAnimationFrame(this._frame)
+
+    const pairs = Array.from(to.children).map((target, i) => {
+      const source = from.children[i]
+      const tweens: [string, string, string][] = []
+      for (const { name, value } of Array.from(target.attributes)) {
+        const start = source.getAttribute(name)
+        if (start === null || start === value) {
+          source.setAttribute(name, value)
+        } else {
+          tweens.push([name, start, value])
+        }
+      }
+
+      return { source, tweens }
+    })
+
+    const duration = this._config.animation
+    const started = performance.now()
+    const step = (now: number): void => {
+      const t = easeOut(Math.min(1, (now - started) / duration))
+      for (const { source, tweens } of pairs) {
+        for (const [name, start, end] of tweens) {
+          source.setAttribute(name, t >= 1 ? end : lerpAttr(start, end, t))
+        }
+      }
+
+      if (t < 1) {
+        this._frame = requestAnimationFrame(step)
+      }
+    }
+
+    this._frame = requestAnimationFrame(step)
+  }
+
+  // A 1px horizontal guide: solid for the zero line, dashed for the threshold.
+  _hairline(svg: SVGSVGElement, y: number, color: string, dashed = false): void {
+    const line = svgEl('line')
+    setAttr(line, {
+      'x1': 0,
+      'x2': this._config.width,
+      'y1': y,
+      'y2': y,
+      'stroke': cssVar(color),
+      'stroke-width': 1,
+      'stroke-dasharray': dashed ? '3 2' : null,
+      'vector-effect': 'non-scaling-stroke',
+    })
+    svg.append(line)
+  }
+
   _createSvg(): SVGSVGElement {
     const { width, height } = this._config
     const svg = svgEl('svg')
@@ -321,8 +429,14 @@ class Sparkline extends BaseComponent {
     const cfg = this._config
     const svg = this._createSvg()
 
-    const ys = scaleY(cfg.values, cfg.height, cfg.pad, cfg.min, cfg.max)
+    const { min, span } = rangeOf(cfg.values, cfg.min, cfg.max, ...(cfg.threshold === null ? [] : [cfg.threshold]))
+    const yOf = (value: number): number => cfg.pad + (1 - (value - min) / span) * (cfg.height - cfg.pad * 2)
+    const ys = cfg.values.map(yOf)
     const step = ys.length > 1 ? cfg.width / (ys.length - 1) : cfg.width
+
+    if (cfg.threshold !== null) {
+      this._hairline(svg, yOf(cfg.threshold), 'threshold', true)
+    }
 
     if (cfg.fill === 'auto') {
       const area = svgEl('path')
@@ -370,41 +484,71 @@ class Sparkline extends BaseComponent {
     const cfg = this._config
     const svg = this._createSvg()
 
-    const min = cfg.min ?? Math.min(0, ...cfg.values)
-    const max = cfg.max ?? Math.max(0, ...cfg.values)
-    const span = clampSpan(min, max)
+    const { min, span } = rangeOf(cfg.values, cfg.min, cfg.max, 0, ...(cfg.threshold === null ? [] : [cfg.threshold]))
+    const yOf = (value: number): number => cfg.height - ((value - min) / span) * cfg.height
 
     const count = cfg.values.length
     const barWidth = (cfg.width - cfg.barGap * (count - 1)) / count
     // Bars grow from the zero line: upwards for positive values, downwards
     // (in the "negative" color) for negative ones. With no negative values the
     // zero line is the bottom edge; otherwise it is drawn as a hairline.
-    const zeroY = cfg.height - ((0 - min) / span) * cfg.height
+    const zeroY = yOf(0)
 
     if (min < 0) {
-      const zeroLine = svgEl('line')
-      setAttr(zeroLine, {
-        'x1': 0,
-        'x2': cfg.width,
-        'y1': zeroY,
-        'y2': zeroY,
-        'stroke': cssVar('zero'),
-        'stroke-width': 1,
-        'vector-effect': 'non-scaling-stroke',
-      })
-      svg.append(zeroLine)
+      this._hairline(svg, zeroY, 'zero')
     }
 
+    // With a threshold, the bars below it take the "negative" color instead.
+    if (cfg.threshold !== null) {
+      this._hairline(svg, yOf(cfg.threshold), 'threshold', true)
+    }
+
+    // A bar spans from the zero line to its value, clipped to the chart when a
+    // forced `min` / `max` puts part of it (or the zero line) outside.
+    const clip = (y: number): number => Math.max(0, Math.min(cfg.height, y))
+
     cfg.values.forEach((value, i) => {
-      const barHeight = (Math.abs(value) / span) * cfg.height
+      const top = clip(yOf(Math.max(value, 0)))
+      const bottom = clip(yOf(Math.min(value, 0)))
+      const below = cfg.threshold === null ? value < 0 : value < cfg.threshold
       const bar = svgEl('rect')
       setAttr(bar, {
         x: i * (barWidth + cfg.barGap),
-        y: value < 0 ? zeroY : zeroY - barHeight,
+        y: top,
         width: barWidth,
-        height: barHeight,
+        height: bottom - top,
         rx: cfg.barRadius,
-        fill: cssVar(value < 0 ? 'negative' : 'stroke'),
+        fill: cssVar(below ? 'negative' : 'stroke'),
+      })
+      svg.append(bar)
+    })
+
+    return svg
+  }
+
+  // Win/loss: every value is a full bar up (positive), down (negative) or a
+  // short tick on the zero line (zero), regardless of its size.
+  _renderTristate(): SVGSVGElement {
+    const cfg = this._config
+    const svg = this._createSvg()
+
+    const count = cfg.values.length
+    const barWidth = (cfg.width - cfg.barGap * (count - 1)) / count
+    const zeroY = cfg.height / 2
+    const tick = Math.min(2, zeroY)
+
+    this._hairline(svg, zeroY, 'zero')
+
+    cfg.values.forEach((value, i) => {
+      const bar = svgEl('rect')
+      const attrs = value > 0 ? { y: 0, height: zeroY, fill: 'stroke' } : value < 0 ? { y: zeroY, height: zeroY, fill: 'negative' } : { y: zeroY - tick / 2, height: tick, fill: 'track' }
+      setAttr(bar, {
+        x: i * (barWidth + cfg.barGap),
+        y: attrs.y,
+        width: barWidth,
+        height: attrs.height,
+        rx: cfg.barRadius,
+        fill: cssVar(attrs.fill),
       })
       svg.append(bar)
     })

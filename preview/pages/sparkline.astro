@@ -83,6 +83,32 @@ const progress = [
     <div class="col-md-6 col-lg-4">
       <Card>
         <CardBody>
+          <CardTitle>Win/loss</CardTitle>
+          <CardSubtitle>Set <code>data-bs-type="tristate"</code>: every value is a full bar up, down or a tick on the zero line, whatever its size.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-values="1,1,-1,1,0,-1,1,1,-1,1" aria-label="Match results"></span>
+            <span class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-bar-gap="3" data-bs-values="3,-2,0,5,1,-1,-4,2,0,1,6,-3" aria-label="Deployments, large"></span>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Threshold</CardTitle>
+          <CardSubtitle>Set <code>data-bs-threshold</code> to draw a guide line at a value. Bars below it take the negative color.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-threshold="80" data-bs-values="62,71,68,84,79,88,92,75" aria-label="CPU usage, 80% limit"></span>
+            <span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-threshold="99.5" data-bs-min="98" data-bs-max="100" data-bs-values="99.9,99.7,99.2,99.8,99.4,99.95,99.6" aria-label="Uptime, 99.5% target"></span>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
           <CardTitle>Circle</CardTitle>
           <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>, <code>sparkline-square</code> for a round box and <code>data-bs-label="auto"</code> for the percentage in the middle.</CardSubtitle>
           <div class="d-flex flex-wrap align-items-center gap-3">
@@ -189,9 +215,9 @@ const progress = [
       <Card>
         <CardBody>
           <CardTitle>Update from JavaScript</CardTitle>
-          <CardSubtitle>Call <code>update(values)</code> on the instance. It writes <code>data-bs-values</code> back and fires <code>updated.bs.sparkline</code>.</CardSubtitle>
+          <CardSubtitle>Call <code>update(values)</code> on the instance. It writes <code>data-bs-values</code> back, tweens the chart for <code>data-bs-animation</code> milliseconds and fires <code>updated.bs.sparkline</code>.</CardSubtitle>
           <div class="d-flex align-items-center gap-3">
-            <span id="sparkline-orders" class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-spot="last" data-bs-values="3,4,2,6,5,8,7" aria-label="Orders"></span>
+            <span id="sparkline-orders" class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-spot="last" data-bs-values="3,4,2,6,5,8,7,9,6,8" aria-label="Orders"></span>
             <button id="sparkline-update" type="button" class="btn btn-sm btn-outline-primary">Randomize</button>
             <Badge id="sparkline-updates" color="secondary" light text="0 updates" />
           </div>

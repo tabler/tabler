@@ -62,6 +62,24 @@ Negative values hang below a zero line. They use the `--tblr-sparkline-negative`
 <span class="sparkline text-primary" style="--tblr-sparkline-negative: var(--tblr-orange)" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="-2,4,-3,1,-1,5,-4,2" aria-label="Daily change, orange negatives"></span>
 </Example>
 
+## Win/loss
+
+Set `data-bs-type="tristate"` for a win/loss chart. Every value is a full bar: up for a positive number, down in the negative color for a negative one, and a short tick on the zero line for zero. The size of the number does not matter.
+
+<Example centered>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-values="1,1,-1,1,0,-1,1,1,-1,1" aria-label="Match results"></span>
+<span class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-bar-gap="3" data-bs-values="3,-2,0,5,1,-1,-4,2,0,1,6,-3" aria-label="Deployments"></span>
+</Example>
+
+## Threshold
+
+Set `data-bs-threshold` to a value to draw a dashed guide line there, in `--tblr-sparkline-threshold`. The range widens so the line is always inside the chart. On a bar chart the bars below the threshold take the negative color.
+
+<Example centered>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-fill="auto" data-bs-threshold="80" data-bs-values="62,71,68,84,79,88,92,75" aria-label="CPU usage, 80% limit"></span>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-threshold="99.5" data-bs-min="98" data-bs-max="100" data-bs-values="99.9,99.7,99.2,99.8,99.4,99.95,99.6" aria-label="Uptime, 99.5% target"></span>
+</Example>
+
 ## Circle
 
 Set `data-bs-type="circle"` for a ring that shows one value as a share of `data-bs-max`, 100 by default. Add `sparkline-square` so the box is as wide as it is tall. The ring is as thick as `--tblr-sparkline-stroke-width`.
@@ -147,7 +165,7 @@ Every option is a `data-bs-*` attribute on the element, or a key in the config o
 | Option | Default | Description |
 | --- | --- | --- |
 | `values` | `[]` | The numbers to draw. A comma-separated list or a JSON array, for example `3,4,2` or `[3,4,2]`. |
-| `type` | `line` | `line`, `bar` or `circle`. |
+| `type` | `line` | `line`, `bar`, `tristate` or `circle`. |
 | `fill` | `none` | `auto` fills the area under a line with `--tblr-sparkline-fill`. |
 | `spot` | `none` | Marks one value on a line with a dot: `last`, `min` or `max`. |
 | `min`, `max` | auto | The value range. Bars always include zero. For a circle, `max` is the full ring. |
@@ -156,6 +174,8 @@ Every option is a `data-bs-*` attribute on the element, or a key in the config o
 | `barGap` | `2` | Space between bars, in units. |
 | `barRadius` | `2` | Corner radius of a bar, in units. |
 | `label` | none | Text centered over the chart. `auto` prints the share of `max` for a circle and the last value for other types. |
+| `threshold` | none | Draws a guide line at this value. Bars below it use the negative color. |
+| `animation` | `300` | How long an `update()` tweens the chart, in milliseconds. `0` redraws at once. Off under `prefers-reduced-motion`. |
 
 ## JavaScript
 
@@ -172,7 +192,7 @@ const orders = tabler.Sparkline.getOrCreateInstance(document.getElementById('ord
 });
 ```
 
-Call `update()` with new values to redraw the chart. It writes the values back to `data-bs-values` and fires `updated.bs.sparkline`:
+Call `update()` with new values to redraw the chart. It writes the values back to `data-bs-values` and fires `updated.bs.sparkline`. When the type and the number of values stay the same, the chart tweens to the new shape over `animation` milliseconds:
 
 ```js
 orders.update([4, 2, 7, 5, 9, 6, 8]);
@@ -208,6 +228,7 @@ The chart reads its colors and stroke widths from custom properties on the eleme
 | `--tblr-sparkline-fill` | 10% of `currentColor` | Area under a filled line. |
 | `--tblr-sparkline-negative` | `var(--tblr-red)` | Bars for negative values. |
 | `--tblr-sparkline-zero` | `var(--tblr-border-color)` | The zero line under signed bars. |
+| `--tblr-sparkline-threshold` | `var(--tblr-secondary)` | The dashed guide line set with `threshold`. |
 | `--tblr-sparkline-track` | 15% of `currentColor` | The unfilled part of a circle. |
 | `--tblr-sparkline-spot` | `currentColor` | The dot set with `spot`. |
 | `--tblr-sparkline-spot-size` | `2` | Radius of the dot, in SVG units. |
@@ -218,7 +239,8 @@ The chart reads its colors and stroke widths from custom properties on the eleme
 
 - The SVG is hidden from assistive technology with `aria-hidden`. Give the element an `aria-label` that says what the chart shows, for example `aria-label="Revenue, last 7 days"`, or put the numbers in a visible cell next to it.
 - A sparkline shows a shape, not exact values. Keep the real number in the text nearby, or in `data-bs-label` for a circle, so the chart is a hint and not the only source.
-- Color alone should not carry meaning. For signed bars the negative values also hang below the zero line, which is what makes them readable.
+- Color alone should not carry meaning. For signed bars the negative values also hang below the zero line, and a threshold is a visible line, which is what makes them readable.
+- Updates animate for `animation` milliseconds. The tween is skipped when the user asks for reduced motion.
 
 ## Variables
 
