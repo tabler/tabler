@@ -9,7 +9,8 @@
 // and piped as MJPEG into Playwright's bundled ffmpeg, which writes a WebM
 // (VP8). A system ffmpeg, when present, also writes an MP4 and a GIF.
 //
-// Steps: { "move": selector, "duration"?: ms } glides the cursor to the element,
+// Steps: { "move": selector, "duration"?: ms } glides the cursor to the element
+// (the duration follows the distance when left out),
 // { "click": selector } clicks it, { "wait": ms } holds.
 
 import { chromium, type CDPSession, type Page } from 'playwright'
@@ -33,6 +34,39 @@ const SCALE = 2
 type Step = { move: string; duration?: number } | { click: string } | { wait: number }
 
 type Frame = { data: Buffer; time: number }
+
+type Point = { x: number; y: number }
+
+type RecordWindow = Window & { __recordMove: (from: Point, to: Point, ms: number) => Promise<void> }
+
+// Runs in the page. Kept as text: tsx wraps named functions passed to
+// page.evaluate() in its own helper, which does not exist in the browser.
+const cursorScript = (scale: number) => `
+  window.__recordMove = (from, to, ms) => new Promise((resolve) => {
+    const el = document.getElementById('record-cursor')
+    // control point off the straight line, so the path bends like a hand would
+    const dx = to.x - from.x
+    const dy = to.y - from.y
+    const len = Math.hypot(dx, dy) || 1
+    const bend = Math.min(0.18 * len, 60) * (dx >= 0 ? 1 : -1)
+    const cx = (from.x + to.x) / 2 - (dy / len) * bend
+    const cy = (from.y + to.y) / 2 + (dx / len) * bend
+    const start = performance.now()
+    const frame = (now) => {
+      const t = ms > 0 ? Math.min(1, (now - start) / ms) : 1
+      const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+      const x = (1 - e) * (1 - e) * from.x + 2 * (1 - e) * e * cx + e * e * to.x
+      const y = (1 - e) * (1 - e) * from.y + 2 * (1 - e) * e * cy + e * e * to.y
+      el.dataset.x = String(x)
+      el.dataset.y = String(y)
+      // viewport px → CSS px of the zoomed document
+      el.style.transform = 'translate(' + (x / ${scale} - 2) + 'px, ' + (y / ${scale} - 2) + 'px)'
+      if (t < 1) requestAnimationFrame(frame)
+      else resolve()
+    }
+    frame(start)
+  })
+`
 
 function discoverSlugs(): string[] {
   if (!existsSync(distDir)) {
@@ -136,44 +170,55 @@ async function centerOf(page: Page, selector: string): Promise<{ x: number; y: n
   return { x: box.x + box.width / 2, y: box.y + box.height / 2 }
 }
 
-// The fake cursor from the layout, moved by hand so the picture shows where the
-// click lands; the real mouse follows it so :hover styles apply.
-async function moveCursor(page: Page, to: { x: number; y: number }, duration: number): Promise<void> {
+// The fake cursor from the layout. The page animates it on requestAnimationFrame
+// — a slight arc, ease-in-out, a duration that grows with the distance — so the
+// motion is as smooth as the screencast frame rate. The real mouse follows it a
+// few times a second so :hover styles apply along the way.
+async function moveCursor(page: Page, to: { x: number; y: number }, duration?: number): Promise<void> {
   const from = await page.evaluate(() => {
     const el = document.getElementById('record-cursor')!
     return { x: Number(el.dataset.x), y: Number(el.dataset.y) }
   })
-  const steps = Math.max(1, Math.round((duration / 1000) * FPS))
-  for (let i = 1; i <= steps; i++) {
-    const t = i / steps
-    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
-    const x = from.x + (to.x - from.x) * ease
-    const y = from.y + (to.y - from.y) * ease
-    await page.evaluate(
-      ([x, y, scale]) => {
+  const distance = Math.hypot(to.x - from.x, to.y - from.y)
+  const ms = duration ?? Math.round(320 + Math.sqrt(distance) * 22)
+
+  const animation = page.evaluate(([from, to, ms]) => (window as unknown as RecordWindow).__recordMove(from, to, ms), [from, to, ms] as const)
+
+  // the real pointer trails the sprite, so hover states light up on the way
+  let done = false
+  const follow = (async () => {
+    while (!done) {
+      const at = await page.evaluate(() => {
         const el = document.getElementById('record-cursor')!
-        el.dataset.x = String(x)
-        el.dataset.y = String(y)
-        // viewport px → CSS px of the zoomed document
-        el.style.transform = `translate(${x / scale - 2}px, ${y / scale - 2}px)`
-      },
-      [x, y, SCALE],
-    )
-    await page.mouse.move(x, y)
-    await sleep(1000 / FPS)
-  }
+        return { x: Number(el.dataset.x), y: Number(el.dataset.y) }
+      })
+      await page.mouse.move(at.x, at.y)
+      await sleep(50)
+    }
+  })()
+  await animation
+  done = true
+  await follow
+  await page.mouse.move(to.x, to.y)
+}
+
+// A click: the sprite dips for a moment, the button is held for a beat.
+async function clickAt(page: Page, to: { x: number; y: number }): Promise<void> {
+  await moveCursor(page, to)
+  await sleep(120)
+  await page.evaluate(() => (document.getElementById('record-cursor')!.style.scale = '0.88'))
+  await page.mouse.down()
+  await sleep(110)
+  await page.evaluate(() => (document.getElementById('record-cursor')!.style.scale = '1'))
+  await page.mouse.up()
 }
 
 async function play(page: Page, steps: Step[]): Promise<void> {
   for (const step of steps) {
     if ('move' in step) {
-      await moveCursor(page, await centerOf(page, step.move), step.duration ?? 500)
+      await moveCursor(page, await centerOf(page, step.move), step.duration)
     } else if ('click' in step) {
-      const to = await centerOf(page, step.click)
-      await moveCursor(page, to, 150)
-      await page.mouse.down()
-      await sleep(80)
-      await page.mouse.up()
+      await clickAt(page, await centerOf(page, step.click))
     } else {
       await sleep(step.wait)
     }
@@ -213,7 +258,9 @@ async function recordOne(page: Page, client: CDPSession, slug: string, theme: 'l
     },
     [width, height],
   )
+  await page.addScriptTag({ content: cursorScript(SCALE) })
   await moveCursor(page, { x: width / 2, y: height + 40 }, 0)
+  await page.evaluate(() => (document.getElementById('record-cursor')!.style.transformOrigin = '4px 2px'))
 
   const frames: Frame[] = []
   const onFrame = async (event: { data: string; sessionId: number }) => {

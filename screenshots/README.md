@@ -37,10 +37,10 @@ pnpm --dir screenshots run capture chart-radar dashboard-crm
 Some pages can also be recorded: a short clip of the fake cursor moving, hovering and clicking, with the transitions and the loading states left on. A page is recordable when it has a script of steps in `steps/<name>.json`:
 
 ```json
-[{ "move": "#save", "duration": 600 }, { "wait": 400 }, { "click": "#save" }, { "wait": 2400 }]
+[{ "move": "#save" }, { "wait": 400 }, { "click": "#save" }, { "wait": 2400 }]
 ```
 
-`move` glides the cursor to an element, `click` clicks it, `wait` holds for the given milliseconds. Make the clips:
+`move` glides the cursor to an element along a slight arc, in a time that follows the distance unless `duration` says otherwise; `click` moves there and clicks; `wait` holds for the given milliseconds. Make the clips:
 
 ```sh
 pnpm --dir screenshots run record button
