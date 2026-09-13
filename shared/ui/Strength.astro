@@ -1,0 +1,36 @@
+---
+// Strength (.strength): a segmented password meter, filled by core/js/src/strength.ts
+// from the data attributes this component emits. Renders the meter and, unless
+// `showText` is off, the label element the component writes the level into.
+
+interface Props {
+  /** number of bars; they fill in proportion to the level */
+  segments?: number
+  /** data-bs-input: selector of the password field, when it is not a sibling */
+  input?: string | undefined
+  /** data-bs-min-length: the length the built-in scoring counts as long enough */
+  minLength?: number | undefined
+  /** data-bs-thresholds: score bounds for weak, fair and good */
+  thresholds?: number[] | undefined
+  /** data-bs-messages: the label for each level */
+  messages?: Record<string, string> | undefined
+  /** render the .strength-text label under the meter */
+  showText?: boolean
+  /** accessible name of the meter — translate it together with the messages */
+  ariaLabel?: string
+  class?: string
+  /** classes on the label element */
+  textClass?: string
+  /** remaining attributes (id, data-*, …) are forwarded to the meter */
+  [key: string]: unknown
+}
+
+const { segments = 4, input, minLength, thresholds, messages, showText = true, ariaLabel = 'Password strength', class: className, textClass, ...rest } = Astro.props
+
+const bars = Array.from({ length: segments }, (_, index) => index)
+---
+
+<div class:list={['strength', className]} data-bs-strength data-bs-input={input} data-bs-min-length={minLength} data-bs-thresholds={thresholds ? JSON.stringify(thresholds) : undefined} data-bs-messages={messages ? JSON.stringify(messages) : undefined} aria-label={ariaLabel} {...rest}>
+  {bars.map(() => <span class="strength-segment" />)}
+</div>
+{showText && <div class:list={['strength-text', textClass]} />}

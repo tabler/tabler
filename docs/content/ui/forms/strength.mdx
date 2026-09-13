@@ -1,0 +1,143 @@
+---
+title: Password strength
+seoTitle: Password strength meter
+order: 13
+summary: A strength meter rates the password as the user types and fills a segmented bar, so weak passwords are visible before the form is sent.
+description: Show how strong a password is with a segmented meter that rates it as the user types, with configurable scoring and labels.
+added-in: '1.6.0'
+related: [/ui/forms/elements, /ui/forms/validation]
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+A password field says nothing about the password it holds. The strength meter rates what the user typed and fills a segmented bar, from weak to strong, with a short label under it.
+
+The meter is a hint for the user, not a validation. Check the password on the server as well, and never let the meter decide whether a form can be sent.
+
+<Example column vertical>
+<label class="form-label" for="strength-overview">Password</label>
+<input type="password" id="strength-overview" class="form-control" placeholder="Type a password…" autocomplete="new-password" />
+<div class="strength mt-2" data-bs-strength aria-label="Password strength">
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+</div>
+<div class="strength-text mt-1"></div>
+</Example>
+
+## Usage
+
+Write the meter as a `strength` element with one `strength-segment` per bar, and add `data-bs-strength`. Tabler finds it on page load and rates the password field that sits in the same parent element. Add a `strength-text` next to the meter for the label; it stays hidden until the user types.
+
+```html
+<input type="password" class="form-control" autocomplete="new-password" />
+<div class="strength" data-bs-strength aria-label="Password strength">
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+</div>
+<div class="strength-text"></div>
+```
+
+### Pointing at a field
+
+A form with several password fields, or a meter that does not sit next to its input, needs `data-bs-input` with the selector of the field.
+
+```html
+<div class="strength" data-bs-strength data-bs-input="#password-new" aria-label="New password strength">…</div>
+```
+
+### Number of segments
+
+The segments are filled in proportion to the level, so a meter can have any number of them. Four segments give one per level; with three, two levels share the last segment.
+
+<Example column vertical>
+<label class="form-label" for="strength-segments">Password</label>
+<input type="password" id="strength-segments" class="form-control" value="abcdefghijkl" autocomplete="new-password" />
+<div class="strength mt-2" data-bs-strength aria-label="Password strength">
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+  <span class="strength-segment"></span>
+</div>
+</Example>
+
+## Options
+
+Pass options as data attributes on the meter, or in the config object.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `input` | none | Selector of the password field. Without it the meter uses the password field in its own parent. |
+| `minLength` | `8` | The length the built-in scoring counts as long enough. |
+| `messages` | `Weak`, `Fair`, `Good`, `Strong` | The label for each level. |
+| `weights` | `1` each | Points for each rule of the built-in scoring. |
+| `thresholds` | `[2, 4, 6]` | Score bounds: weak up to the first, fair to the second, good to the third, strong above it. |
+| `scorer` | none | A function that takes the password and returns a number, replacing the built-in scoring. Config object only. |
+
+The built-in scoring gives a point each for: reaching `minLength`, four characters more, sixteen characters, a lowercase letter, an uppercase letter, a digit, a special character, and a second special character.
+
+```html
+<div class="strength" data-bs-strength data-bs-min-length="12" data-bs-thresholds="[3,5,7]" aria-label="Password strength">…</div>
+```
+
+## JavaScript
+
+Tabler ships a `Strength` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-strength`. This is the code that runs:
+
+<CodeDocs name="strength-init" file="core/js/src/strength.ts" />
+
+Create the component yourself for a form added later, or to pass options the attributes cannot carry:
+
+```js
+const meter = tabler.Strength.getOrCreateInstance(document.getElementById('meter'), {
+  input: '#password-new',
+  scorer: (password) => zxcvbn(password).score * 2,
+});
+```
+
+Every change of level fires `change.bs.strength` on the meter. The event carries the level and the score, never the password:
+
+```js
+document.getElementById('meter').addEventListener('change.bs.strength', (event) => {
+  console.log(event.strength, event.score);
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `evaluate()` | Rates the field again, for example after the value was set from code. |
+| `level` | Getter. The current level, or `null` when the field is empty. |
+| `dispose()` | Stops listening and removes the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+## Accessibility
+
+- **Name the meter.** Write an `aria-label` (or `aria-labelledby`) on it, as every example here does. Tabler falls back to the English `Password strength` only when the markup names nothing, so a page in another language should always carry its own label.
+- The meter is a `progressbar`. Tabler keeps `aria-valuenow` on it and puts the current level in `aria-valuetext`. An empty field drops `aria-valuetext` and leaves the value at zero, so nothing untranslated is ever spoken.
+- The segments are marked `aria-hidden`, so a screen reader reads the level once instead of counting bars.
+- The label under the meter is announced politely, and only when the level changes, so typing does not flood a screen reader.
+- Colour alone does not carry the result: the label says the same thing in words, and the number of filled segments repeats it.
+- Keep the field's own requirements in a `form-hint` under it. A meter says how strong the password is, not which rules a form enforces.
+
+## Translations
+
+Every word the meter shows comes from your markup or your config, so there is nothing to patch in Tabler to run it in another language.
+
+Set the level labels with `data-bs-messages` and name the meter with an `aria-label` in the same language:
+
+```html
+<div class="strength" data-bs-strength aria-label="Siła hasła" data-bs-messages='{"weak":"Słabe","fair":"Średnie","good":"Dobre","strong":"Mocne"}'>…</div>
+```
+
+The labels are also what a screen reader announces through `aria-valuetext`, so translating `messages` covers the spoken output as well.
+
+## Variables
+
+Use these SCSS variables to customize the meter. The default values are:
+
+<CodeDocs name="strength-variables" file="core/scss/_variables.scss" />
