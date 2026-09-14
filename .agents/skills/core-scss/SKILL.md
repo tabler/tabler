@@ -55,7 +55,7 @@ The module graph uses `@use` / `@forward`: a partial starts with `@use '../confi
 
 Write `--badge-bg`, not `--tblr-badge-bg`. The public `--tblr-` prefix is added at build time by `.build/css-var-prefix.ts` (a postcss pass in `build-css.ts`).
 
-The consequence to remember: **names owned by third-party libraries must not be prefixed.** `cssVarIgnore` lists them (`--bs-`, `--fc-`, `--gl-`, `--litepicker-`, `--plyr-`, `--ts-`, …). Prefixing one detaches the theming with no error anywhere — the library keeps reading its own name and simply never sees the value. When a vendor override introduces a new foreign name, add it to `cssVarIgnore`; `core/scss/tests/css-var-prefix.test.mjs` snapshots every custom property of `tabler-vendors.scss`, so a missing entry shows up as a `--tblr-`-prefixed foreign name in the snapshot diff.
+The consequence to remember: **names owned by third-party libraries must not be prefixed.** `cssVarIgnore` lists them (`--bs-`, `--fc-`, `--gl-`, `--plyr-`, `--ts-`, …). Prefixing one detaches the theming with no error anywhere — the library keeps reading its own name and simply never sees the value. When a vendor override introduces a new foreign name, add it to `cssVarIgnore`; `core/scss/tests/css-var-prefix.test.mjs` snapshots every custom property of `tabler-vendors.scss`, so a missing entry shows up as a `--tblr-`-prefixed foreign name in the snapshot diff.
 
 Global properties (`--dir`, colours, fonts, spacing) live in `_props.scss`, which emits them on `:root, :host`.
 
