@@ -1,0 +1,31 @@
+name: Install Playwright Chromium
+description: Restore the browser download from the cache and install Chromium only when the cache misses
+
+runs:
+  using: composite
+  steps:
+    # The cache key follows the installed version, so a dependency bump pulls a
+    # fresh browser instead of reusing the one the old Playwright shipped with.
+    - name: Read the Playwright version
+      id: playwright
+      shell: bash
+      run: echo "version=$(node -p "require('playwright/package.json').version")" >> "$GITHUB_OUTPUT"
+
+    - name: Restore the browser download
+      id: cache
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ steps.playwright.outputs.version }}
+
+    - name: Install Chromium and its system packages
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: pnpm exec playwright install --with-deps chromium
+
+    # The browser comes from the cache, but its system packages live in the
+    # runner image and have to be there on every run.
+    - name: Install the system packages
+      if: steps.cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: pnpm exec playwright install-deps chromium

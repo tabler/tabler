@@ -21,8 +21,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
-        working-directory: core
+        uses: ./.github/actions/playwright
 
       - name: Run JS tests
         run: pnpm --filter @tabler/core test:js
