@@ -1,0 +1,60 @@
+---
+// The Datepicker plugin added in 1.6: a booking form field with the calendar
+// open under it, two months side by side and a stay already picked. The popup
+// is opened here rather than left to a focus the capture tool cannot make, and
+// the fake cursor rests on a day past the range so the hover tint is part of
+// the picture.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Datepicker from '@ui/Datepicker.astro'
+
+// The calendar opens on the month of the first date, so the picture is the
+// same whenever it is taken.
+const stay = ['2026-06-10', '2026-06-18']
+const hovered = '2026-06-25'
+---
+
+<ScreenshotLayout title="Date picker" columns={2} pageLibs={['vanilla-calendar-pro']}>
+  <Card>
+    <CardBody>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label" for="datepicker-stay">Stay</label>
+          <Datepicker id="stay" layout="icon" selectionMode="multiple-ranged" months={2} selectedDates={stay} placeholder="Select check-in and check-out" />
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+
+  <!-- The popup hangs below the card, so the card moves up to keep the pair
+  centred in the frame and the calendar clear of the logo. -->
+  <style is:inline>
+    [data-screenshot-target] {
+      margin-bottom: 20rem;
+    }
+  </style>
+
+  <script is:inline define:vars={{ hovered }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('datepicker-stay')
+      if (!input || !window.tabler?.Datepicker) return
+
+      const datepicker = window.tabler.Datepicker.getOrCreateInstance(input)
+      datepicker.show()
+
+      // The plugin builds and positions the popup in a timeout of its own, so
+      // the cursor and the hover tint go in one tick later, once the days exist.
+      setTimeout(() => {
+        const day = document.querySelector(`[data-vc-date="${hovered}"] [data-vc-date-btn]`)
+        if (!day) return
+
+        day.style.setProperty('--tblr-calendar-day-bg', 'var(--tblr-calendar-day-hover-bg)')
+        day.style.position = 'relative'
+        const cursor = document.createElement('span')
+        cursor.className = 'cursor'
+        day.append(cursor)
+      }, 50)
+    })
+  </script>
+</ScreenshotLayout>

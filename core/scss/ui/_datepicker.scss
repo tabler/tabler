@@ -398,8 +398,6 @@ button[data-vc-week-day] {
 [data-vc='calendar'][data-vc-input] {
   --datepicker-padding: #{$datepicker-padding};
   --datepicker-bg: #{$datepicker-bg};
-  --datepicker-border-color: #{$datepicker-border-color};
-  --datepicker-border-width: var(--border-width);
   --datepicker-border-radius: #{$datepicker-border-radius};
   --datepicker-box-shadow: #{$datepicker-box-shadow};
   --datepicker-min-width: #{$datepicker-min-width};
@@ -408,8 +406,9 @@ button[data-vc-week-day] {
   position: absolute;
   z-index: var(--datepicker-zindex);
   min-width: var(--datepicker-min-width);
+  // Same surface as `.dropdown-menu`: the edge is the 1px ring inside the
+  // dropdown shadow, so the popup has no border of its own.
   background-color: var(--datepicker-bg);
-  border: var(--datepicker-border-width) var(--border-style) var(--datepicker-border-color);
   box-shadow: var(--datepicker-box-shadow);
   @include border-radius(var(--datepicker-border-radius));
 
