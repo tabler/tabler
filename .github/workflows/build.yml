@@ -23,7 +23,7 @@ jobs:
         run: pnpm run build
 
       - name: Install Playwright
-        run: pnpm exec playwright install --with-deps chromium
+        uses: ./.github/actions/playwright
 
       - name: Check rendered html
         run: pnpm run check:html preview/dist docs/dist --quiet
