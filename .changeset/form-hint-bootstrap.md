@@ -1,5 +1,7 @@
 ---
 "@tabler/core": patch
+"@tabler/preview": patch
+"@tabler/docs": patch
 ---
 
-Made `.form-hint` match the Bootstrap `.form-text` rules: smaller text, a flat top margin, no negative offsets.
+Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
