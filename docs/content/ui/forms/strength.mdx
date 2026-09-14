@@ -16,21 +16,41 @@ A password field says nothing about the password it holds. The strength meter ra
 
 The meter is a hint for the user, not a validation. Check the password on the server as well, and never let the meter decide whether a form can be sent.
 
-<Example column vertical>
-<label class="form-label" for="strength-overview">Password</label>
-<input type="password" id="strength-overview" class="form-control" placeholder="Type a password…" autocomplete="new-password" />
-<div class="strength mt-2" data-bs-strength aria-label="Password strength">
-  <span class="strength-segment"></span>
-  <span class="strength-segment"></span>
-  <span class="strength-segment"></span>
-  <span class="strength-segment"></span>
+<Example column>
+<div>
+  <label class="form-label" for="strength-overview">Password</label>
+  <input type="password" id="strength-overview" class="form-control" placeholder="Type a password…" autocomplete="new-password" />
+  <div class="strength" data-bs-strength aria-label="Password strength">
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+  </div>
+  <div class="strength-text"></div>
 </div>
-<div class="strength-text mt-1"></div>
 </Example>
 
 ## Usage
 
 Write the meter as a `strength` element with one `strength-segment` per bar, and add `data-bs-strength`. Tabler finds it on page load and rates the password field that sits in the same parent element. Add a `strength-text` next to the meter for the label; it stays hidden until the user types.
+
+A meter that follows a control gets its own top margin, so it needs no margin utility.
+
+Text written inside `strength-text` shows while the field is empty and comes back when it is cleared, so the password rules can stand there until a level takes over.
+
+<Example column>
+<div>
+  <label class="form-label" for="strength-rules">Password</label>
+  <input type="password" id="strength-rules" class="form-control" placeholder="Type a password…" autocomplete="new-password" />
+  <div class="strength" data-bs-strength aria-label="Password strength">
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+  </div>
+  <div class="strength-text">Use 8 to 20 characters, with letters and numbers.</div>
+</div>
+</Example>
 
 ```html
 <input type="password" class="form-control" autocomplete="new-password" />
@@ -55,13 +75,15 @@ A form with several password fields, or a meter that does not sit next to its in
 
 The segments are filled in proportion to the level, so a meter can have any number of them. Four segments give one per level; with three, two levels share the last segment.
 
-<Example column vertical>
-<label class="form-label" for="strength-segments">Password</label>
-<input type="password" id="strength-segments" class="form-control" value="abcdefghijkl" autocomplete="new-password" />
-<div class="strength mt-2" data-bs-strength aria-label="Password strength">
-  <span class="strength-segment"></span>
-  <span class="strength-segment"></span>
-  <span class="strength-segment"></span>
+<Example column>
+<div>
+  <label class="form-label" for="strength-segments">Password</label>
+  <input type="password" id="strength-segments" class="form-control" value="abcdefghijkl" autocomplete="new-password" />
+  <div class="strength" data-bs-strength aria-label="Password strength">
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+    <span class="strength-segment"></span>
+  </div>
 </div>
 </Example>
 
@@ -122,7 +144,7 @@ document.getElementById('meter').addEventListener('change.bs.strength', (event) 
 - The segments are marked `aria-hidden`, so a screen reader reads the level once instead of counting bars.
 - The label under the meter is announced politely, and only when the level changes, so typing does not flood a screen reader.
 - Colour alone does not carry the result: the label says the same thing in words, and the number of filled segments repeats it.
-- Keep the field's own requirements in a `form-hint` under it. A meter says how strong the password is, not which rules a form enforces.
+- A meter says how strong the password is, not which rules a form enforces. Put the rules in `strength-text`, where they show until the first letter, or in a `form-hint` when they have to stay visible the whole time.
 
 ## Translations
 

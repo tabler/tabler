@@ -93,6 +93,19 @@ describe('Strength', () => {
       expect(filled()).toBe(4)
     })
 
+    it('should put the markup text back when the field is emptied', () => {
+      fixtureEl.innerHTML = METER.replace('<small class="strength-text"></small>', '<small class="strength-text">At least 8 characters</small>')
+
+      new Strength(meter())
+      expect(text().textContent).toBe('At least 8 characters')
+
+      type('abc')
+      expect(text().textContent).toBe('Weak')
+
+      type('')
+      expect(text().textContent).toBe('At least 8 characters')
+    })
+
     it('should keep the trigger attribute when the field is emptied', () => {
       new Strength(meter())
       type('Abcdefgh1!?x')

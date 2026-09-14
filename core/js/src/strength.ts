@@ -91,6 +91,9 @@ class Strength extends BaseComponent {
   _input: HTMLInputElement | null = null
   _segments: HTMLElement[] = []
   _text: HTMLElement | null = null
+  // What the markup put in the label element: shown while the field is empty,
+  // so a form can keep its password rules there until a level replaces them.
+  _emptyText = ''
   _level: StrengthLevel | null = null
   _onInput = (): void => this.evaluate()
 
@@ -104,6 +107,7 @@ class Strength extends BaseComponent {
     this._input = this._getInput()
     this._segments = SelectorEngine.find(SELECTOR_SEGMENT, this._element)
     this._text = this._getText()
+    this._emptyText = this._text?.textContent?.trim() ?? ''
 
     this._setUpAria()
 
@@ -255,7 +259,7 @@ class Strength extends BaseComponent {
     }
 
     if (this._text) {
-      this._text.textContent = level ? (this._config.messages[level] ?? '') : ''
+      this._text.textContent = level ? (this._config.messages[level] ?? '') : this._emptyText
       this._text.dataset.bsStrength = level ?? ''
     }
   }

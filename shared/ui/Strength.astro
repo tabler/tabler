@@ -14,7 +14,7 @@ interface Props {
   thresholds?: number[] | undefined
   /** data-bs-messages: the label for each level */
   messages?: Record<string, string> | undefined
-  /** render the .strength-text label under the meter */
+  /** render the .strength-text label under the meter; its slot content shows while the field is empty */
   showText?: boolean
   /** accessible name of the meter — translate it together with the messages */
   ariaLabel?: string
@@ -33,4 +33,10 @@ const bars = Array.from({ length: segments }, (_, index) => index)
 <div class:list={['strength', className]} data-bs-strength data-bs-input={input} data-bs-min-length={minLength} data-bs-thresholds={thresholds ? JSON.stringify(thresholds) : undefined} data-bs-messages={messages ? JSON.stringify(messages) : undefined} aria-label={ariaLabel} {...rest}>
   {bars.map(() => <span class="strength-segment" />)}
 </div>
-{showText && <div class:list={['strength-text', textClass]} />}
+{
+  showText && (
+    <div class:list={['strength-text', textClass]}>
+      <slot />
+    </div>
+  )
+}
