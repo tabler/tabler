@@ -47,6 +47,9 @@
   caret-color: transparent;
   background-color: transparent;
   border: 0;
+  // The base `.otp > input` rule sets this for the pre-render fallback look;
+  // the overlay itself must stay invisible, or its shadow spans every slot.
+  box-shadow: none;
 
   // The active slot draws its own focus ring; the native outline would
   // otherwise wrap the whole overlay input, spanning every slot at once.
@@ -86,6 +89,10 @@
 }
 
 .otp-slot-active {
+  // Bring the focused slot to the front so its ring isn't clipped by the
+  // next slot in `.otp-connected`, where slots overlap by their border width.
+  z-index: 1;
+
   @include focus-ring($show-border: true);
 
   &:not(.otp-slot-filled)::after {
