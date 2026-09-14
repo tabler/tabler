@@ -10,6 +10,7 @@ import FormElements6 from '@shared/components/forms/FormElements6.astro'
 import Layout from '@shared/components/cards/form/Layout.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputMask from '@ui/form/InputMask.astro'
+import OtpInput from '@ui/OtpInput.astro'
 import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
@@ -136,6 +137,24 @@ const rows = [
               <FormGroup label="Telephone"><InputMask mask="0000-0000" visible /></FormGroup>
               <FormGroup label="Telephone with Code Area"><InputMask mask="(00) 0000-0000" visible /></FormGroup>
               <FormGroup label="IP Address"><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></FormGroup>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12 col-lg-6">
+          <Card>
+            <CardHeader title="OTP input" />
+            <CardBody>
+              <FormGroup label="Basic"><OtpInput length={6} /></FormGroup>
+              <FormGroup label="Sizes">
+                <div class="space-y">
+                  <OtpInput length={4} size="sm" />
+                  <OtpInput length={4} size="lg" />
+                </div>
+              </FormGroup>
+              <FormGroup label="Groups & separator"><OtpInput length={6} groups={[3, 3]} /></FormGroup>
+              <FormGroup label="Alphanumeric & masked"><OtpInput length={6} type="alphanumeric" mask /></FormGroup>
+              <FormGroup label="Connected"><OtpInput length={6} connected /></FormGroup>
+              <FormGroup label="Disabled"><OtpInput length={6} value="123456" disabled /></FormGroup>
             </CardBody>
           </Card>
         </div>
