@@ -1,17 +1,3 @@
-// The `autosize` package ships no type definitions
-declare module 'autosize' {
-  type AutosizeTarget = Element | ArrayLike<Element>
-
-  interface Autosize {
-    (target: AutosizeTarget): AutosizeTarget
-    update(target: AutosizeTarget): AutosizeTarget
-    destroy(target: AutosizeTarget): AutosizeTarget
-  }
-
-  const autosize: Autosize
-  export default autosize
-}
-
 // IMask (https://imask.js.org) is loaded separately, not bundled
 interface IMaskInstance {
   value: string
