@@ -16,6 +16,11 @@
   gap: var(--otp-gap);
   align-items: center;
   min-height: var(--otp-size);
+  // `.otp` is the only content on its line, so its own baseline (derived from
+  // whichever slot the flex baseline algorithm picks) never has to matter -
+  // otherwise an empty vs. active slot resolve to different baselines and the
+  // line box around `.otp` grows or shrinks by a few pixels between them.
+  vertical-align: bottom;
 }
 
 // Before the script renders the slots, the input keeps a `.form-control`-like
