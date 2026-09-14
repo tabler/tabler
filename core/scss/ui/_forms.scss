@@ -35,30 +35,17 @@ Form label
 Form hint
  */
 .form-hint {
+  --form-hint-font-size: #{$form-hint-font-size};
   --form-hint-margin-top: #{$form-hint-margin-top};
-  --form-hint-label-offset: #{$form-hint-label-offset};
-  --form-hint-control-margin-top: #{$form-hint-control-margin-top};
 
   display: block;
+  margin-top: var(--form-hint-margin-top);
+  font-size: var(--form-hint-font-size);
   color: $form-secondary-color;
 
+  // A hint rendered as a paragraph would otherwise keep the reboot margin.
   &:last-child {
     margin-bottom: 0;
-  }
-
-  + .form-control {
-    margin-top: var(--form-hint-margin-top);
-  }
-
-  .form-label + & {
-    margin-top: var(--form-hint-label-offset);
-  }
-
-  .input-group + &,
-  .form-control + &,
-  .form-select + & {
-    margin-top: var(--form-hint-control-margin-top);
-    color: $form-secondary-color;
   }
 }
 
