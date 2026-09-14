@@ -2,8 +2,8 @@
 import FormFooter from '@ui/FormFooter.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
-import CaptureScript from '../CaptureScript.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import OtpInput from '@ui/OtpInput.astro'
 ---
 
 <form class="card card-md" action="#" method="get" autocomplete="off" novalidate>
@@ -14,22 +14,8 @@ import CardTitle from '@ui/CardTitle.astro'
       Please confirm your account by entering the authorization code sent to <strong>+1 856-672-8552</strong>.
     </p>
 
-    <div class="my-5">
-      <div class="row g-4">
-        {
-          Array.from({ length: 2 }).map(() => (
-            <div class="col">
-              <div class="row g-2">
-                {Array.from({ length: 3 }).map(() => (
-                  <div class="col">
-                    <input type="text" class="form-control form-control-lg text-center px-3 py-3" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-code-input />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))
-        }
-      </div>
+    <div class="my-5 d-flex justify-content-center">
+      <OtpInput length={6} groups={[3, 3]} size="lg" ariaLabel="Verification code" />
     </div>
 
     <div class="my-4">
@@ -47,27 +33,3 @@ import CardTitle from '@ui/CardTitle.astro'
     </FormFooter>
   </div>
 </form>
-
-<CaptureScript>
-  <!-- BEGIN CODE INPUT SCRIPT -->
-  <script is:inline>
-    const inputs = document.querySelectorAll('[data-code-input]')
-
-    inputs.forEach((input, i) => {
-      input.addEventListener('input', (e) => {
-        const target = e.target
-        if (target.value.length === target.maxLength && i + 1 < inputs.length) {
-          inputs[i + 1].focus()
-        }
-      })
-
-      input.addEventListener('keydown', (e) => {
-        const target = e.target
-        if (target.value.length === 0 && e.key === 'Backspace' && i > 0) {
-          inputs[i - 1].focus()
-        }
-      })
-    })
-  </script>
-  <!-- END CODE INPUT SCRIPT -->
-</CaptureScript>
