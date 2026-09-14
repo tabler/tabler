@@ -19,10 +19,10 @@
   --calendar-font-size: #{$datepicker-calendar-font-size};
   --calendar-header-font-weight: #{$datepicker-calendar-header-font-weight};
   --calendar-weekday-color: var(--secondary);
-  --calendar-day-hover-bg: var(--bg-surface-secondary);
+  --calendar-day-hover-bg: #{color-transparent(var(--body-color), 6%)};
   --calendar-day-selected-bg: var(--primary);
   --calendar-day-selected-color: var(--primary-fg);
-  --calendar-day-today-bg: var(--bg-surface-tertiary);
+  --calendar-day-today-bg: #{color-transparent(var(--body-color), 6%)};
   --calendar-day-today-color: var(--primary);
   --calendar-day-disabled-color: var(--disabled-color);
   --calendar-day-size: #{$datepicker-calendar-day-size};
@@ -76,7 +76,7 @@
     inset: 0.25rem;
     content: '';
     background-color: currentColor;
-    @include mask-icon(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 16c-.3 0-.5-.1-.7-.3l-6-6c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l5.3 5.3 5.3-5.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-6 6c-.2.2-.4.3-.7.3'/></svg>"), $size: null);
+    @include mask-icon(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 16c-.3 0-.5-.1-.7-.3l-6-6c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l5.3 5.3 5.3-5.3c.4-.4 1-.4 1.4 0s.4 1 0 1.4l-6 6c-.2.2-.4.3-.7.3'/></svg>"), $size: 1rem);
   }
 
   &:hover {
@@ -290,7 +290,12 @@ button[data-vc-week-day] {
   }
 }
 
+// A day paints its background from two variables: the colour a state picks
+// and the opacity it gets. States change the variables, never `opacity`, so
+// the date stays readable on a faded background.
 [data-vc-date-btn] {
+  --calendar-day-bg: transparent;
+  --calendar-day-bg-opacity: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,27 +309,28 @@ button[data-vc-week-day] {
   line-height: 1rem;
   color: var(--calendar-color);
   cursor: pointer;
-  background-color: transparent;
+  background-color: color-transparent(var(--calendar-day-bg), var(--calendar-day-bg-opacity));
   border: 0;
   border-radius: var(--calendar-border-radius);
   @include transition(color $transition-time, background-color $transition-time);
 
   &:hover {
-    background-color: var(--calendar-day-hover-bg);
+    --calendar-day-bg: var(--calendar-day-hover-bg);
   }
 }
 
 // Today
 [data-vc-date-today] [data-vc-date-btn] {
   font-weight: $font-weight-bold;
+  --calendar-day-bg: var(--calendar-day-today-bg);
   color: var(--calendar-day-today-color);
-  background-color: var(--calendar-day-today-bg);
 }
 
 // Days of the previous and next month
 [data-vc-date-month='next'] [data-vc-date-btn],
 [data-vc-date-month='prev'] [data-vc-date-btn] {
-  opacity: 0.5;
+  --calendar-day-bg-opacity: 50%;
+  color: var(--calendar-weekday-color);
 }
 
 [data-vc-date-disabled] [data-vc-date-btn] {
@@ -334,7 +340,7 @@ button[data-vc-week-day] {
 // Range selection: the hovered and selected runs join into one bar, so only the
 // outer corners keep their radius. Logical corners follow the writing direction.
 [data-vc-date-hover] [data-vc-date-btn] {
-  background-color: var(--calendar-day-hover-bg);
+  --calendar-day-bg: var(--calendar-day-hover-bg);
   border-radius: 0;
 }
 
@@ -352,14 +358,17 @@ button[data-vc-week-day] {
   border-radius: var(--calendar-border-radius);
 }
 
-[data-vc-date-selected='middle'] [data-vc-date-btn] {
-  border-radius: 0;
-  opacity: 0.8;
+[data-vc-date-selected] [data-vc-date-btn] {
+  --calendar-day-bg: var(--calendar-day-selected-bg);
+  color: var(--calendar-day-selected-color);
 }
 
-[data-vc-date-selected] [data-vc-date-btn] {
-  color: var(--calendar-day-selected-color);
-  background-color: var(--calendar-day-selected-bg);
+// Inside a range only the two ends are solid; the days between keep their own
+// text colour on a faint tint of the selected colour.
+[data-vc-date-selected='middle'] [data-vc-date-btn] {
+  --calendar-day-bg-opacity: #{$datepicker-calendar-range-bg-opacity};
+  color: var(--calendar-color);
+  border-radius: 0;
 }
 
 [data-vc-date-selected='first'] [data-vc-date-btn] {
