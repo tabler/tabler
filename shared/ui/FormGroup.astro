@@ -1,9 +1,9 @@
 ---
-// Form group: label (.form-label) + control slot + optional hint (.form-hint).
+// Form group: label (.form-label) + control slot + optional hint (.form-text).
 // When `for` is omitted and associate is true (default), the control is nested
 // inside the label for implicit association. Set associate={false} for groups
 // with multiple controls.
-import FormHint from './FormHint.astro'
+import FormText from './FormText.astro'
 
 interface Props {
   label?: string
@@ -11,7 +11,7 @@ interface Props {
   required?: boolean
   /** .form-label-description at the inline end of the label */
   description?: string
-  /** .form-hint under the control */
+  /** .form-text under the control */
   hint?: string
   /** for attribute of the label — must match the slotted control's id */
   for?: string
@@ -76,5 +76,5 @@ const wrapLabel = Boolean(label && !htmlFor && associate)
       </div>
     )
   }
-  {hint && <FormHint id={hintId}>{hint}</FormHint>}
+  {hint && <FormText id={hintId}>{hint}</FormText>}
 </div>

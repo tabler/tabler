@@ -6,7 +6,7 @@ summary: "Form helpers add information around a field: a help popover, a require
 description: Add help icons, hints, and required field markers to forms to give users extra guidance and reduce input errors.
 related: [/ui/forms/elements, /ui/components/popover]
 ---
-import FormHint from '@ui/FormHint.astro';
+import FormText from '@ui/FormText.astro';
 import Example from '@components/Example.astro';
 
 ## Input help
@@ -44,17 +44,17 @@ Use the `.required` class to indicate that a field is required. It will add a re
 
 ## Form hint
 
-Use a form hint to provide users with additional information about a form element. The text will appear below the input field. To add a form hint, use the `.form-hint` class. Give the hint an `id` and point the field at it with `aria-describedby`, so the hint is read together with the field.
+Use helper text to give the user more information about a form element. The text appears below the field. To add it, use the `.form-text` class. The older `.form-hint` class still works as a deprecated alias. Give the hint an `id` and point the field at it with `aria-describedby`, so the hint is read together with the field.
 
 ```html
-<div class="form-hint">We'll never share your email with anyone else.</div>
+<div class="form-text">We'll never share your email with anyone else.</div>
 ```
 
 <Example column>
 <div>
   <label class="form-label" for="helper-email">Email address</label>
   <input type="email" id="helper-email" class="form-control" placeholder="Enter your email address" aria-describedby="helper-email-hint" />
-  <FormHint id="helper-email-hint">We'll never share your email with anyone else.</FormHint>
+  <FormText id="helper-email-hint">We'll never share your email with anyone else.</FormText>
 </div>
 </Example>
 
