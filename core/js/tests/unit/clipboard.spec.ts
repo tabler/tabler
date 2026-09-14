@@ -41,6 +41,7 @@ describe('Clipboard', () => {
 
   const trigger = (): HTMLElement => fixtureEl.querySelector('button')!
   const label = (): HTMLElement => fixtureEl.querySelector('.clipboard-label')!
+  const hidden = (el: Element): boolean => el.hasAttribute('hidden')
   const feedback = (): HTMLElement => fixtureEl.querySelector('.clipboard-feedback')!
 
   describe('NAME', () => {
@@ -53,9 +54,9 @@ describe('Clipboard', () => {
     it('should hide the feedback and mark it as a status', () => {
       new Clipboard(trigger())
 
-      expect(feedback().hidden).toBe(true)
+      expect(hidden(feedback())).toBe(true)
       expect(feedback().getAttribute('role')).toBe('status')
-      expect(label().hidden).toBe(false)
+      expect(hidden(label())).toBe(false)
     })
   })
 
@@ -69,8 +70,8 @@ describe('Clipboard', () => {
 
       expect(written).toEqual(['sk_live_1234'])
       expect(trigger().classList.contains('copied')).toBe(true)
-      expect(label().hidden).toBe(true)
-      expect(feedback().hidden).toBe(false)
+      expect(hidden(label())).toBe(true)
+      expect(hidden(feedback())).toBe(false)
       expect(spy).toHaveBeenCalledTimes(1)
     })
 
@@ -100,11 +101,11 @@ describe('Clipboard', () => {
       const instance = new Clipboard(trigger(), { delay: 50 })
 
       await instance.copy()
-      expect(feedback().hidden).toBe(false)
+      expect(hidden(feedback())).toBe(false)
 
-      await vi.waitFor(() => expect(feedback().hidden).toBe(true))
+      await vi.waitFor(() => expect(hidden(feedback())).toBe(true))
       expect(trigger().classList.contains('copied')).toBe(false)
-      expect(label().hidden).toBe(false)
+      expect(hidden(label())).toBe(false)
     })
   })
 
@@ -132,6 +133,20 @@ describe('Clipboard', () => {
     })
   })
 
+  describe('svg children', () => {
+    it('should hide an icon with the attribute, not the DOM property', () => {
+      fixtureEl.innerHTML = '<div><button data-bs-toggle="clipboard" data-bs-text="x"><svg class="clipboard-label"></svg><svg class="clipboard-feedback"></svg><span class="clipboard-feedback">Copied</span></button></div>'
+
+      new Clipboard(trigger())
+      const icons = fixtureEl.querySelectorAll('.clipboard-feedback')
+
+      expect(icons.length).toBe(2)
+      for (const icon of icons) {
+        expect(icon.hasAttribute('hidden')).toBe(true)
+      }
+    })
+  })
+
   describe('dispose', () => {
     it('should stop the timer and remove the instance', async () => {
       const instance = new Clipboard(trigger(), { delay: 50 })
@@ -139,7 +154,7 @@ describe('Clipboard', () => {
       instance.dispose()
 
       expect(Clipboard.getInstance(trigger())).toBeNull()
-      expect(feedback().hidden).toBe(false)
+      expect(hidden(feedback())).toBe(false)
     })
   })
 })

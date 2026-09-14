@@ -1,0 +1,147 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Icon from '@ui/Icon.astro'
+import DocsLink from '@ui/DocsLink.astro'
+
+const apiKey = 'tblr_live_8f2c41d0a7'
+const inviteLink = 'https://tabler.io/invite/9fbc2e'
+---
+
+<DefaultLayout title="Clipboard" pageMenu="base.clipboard" description="A copy button puts the text of a field, a snippet or a literal string on the clipboard, and says so for a moment.">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/clipboard" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Button with a label</CardTitle>
+          <CardSubtitle>The button reads <code>data-bs-target</code> and swaps <code>clipboard-label</code> for <code>clipboard-feedback</code>.</CardSubtitle>
+          <FormGroup label="API key" for="clipboard-key" class="mb-0">
+            <div class="input-group">
+              <input type="text" id="clipboard-key" class="form-control" value={apiKey} readonly />
+              <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-target="#clipboard-key">
+                <span class="clipboard-label">Copy</span>
+                <span class="clipboard-feedback">Copied</span>
+              </button>
+            </div>
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Button with an icon</CardTitle>
+          <CardSubtitle>An icon-only button needs an <code>aria-label</code> and a hidden word for the announcement.</CardSubtitle>
+          <FormGroup label="API key" for="clipboard-key-icon" class="mb-0">
+            <div class="input-group">
+              <input type="text" id="clipboard-key-icon" class="form-control" value={apiKey} readonly />
+              <button type="button" class="btn btn-icon" data-bs-toggle="clipboard" data-bs-target="#clipboard-key-icon" aria-label="Copy the API key">
+                <Icon name="clipboard" class="clipboard-label" />
+                <Icon name="check" class="clipboard-feedback" />
+                <span class="clipboard-feedback visually-hidden">Copied</span>
+              </button>
+            </div>
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Icon inside the field</CardTitle>
+          <CardSubtitle>With <code>input-group-flat</code> the button sits in an <code>input-group-text</code>, so it looks like part of the field.</CardSubtitle>
+          <FormGroup label="Invite link" for="clipboard-invite" class="mb-0">
+            <div class="input-group input-group-flat">
+              <input type="text" id="clipboard-invite" class="form-control" value={inviteLink} readonly />
+              <span class="input-group-text">
+                <button type="button" class="link-secondary input-group-link border-0 bg-transparent p-0" data-bs-toggle="clipboard" data-bs-target="#clipboard-invite" aria-label="Copy the invite link">
+                  <Icon name="clipboard" class="clipboard-label" />
+                  <Icon name="check" class="clipboard-feedback" />
+                  <span class="clipboard-feedback visually-hidden">Copied</span>
+                </button>
+              </span>
+            </div>
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Green confirmation</CardTitle>
+          <CardSubtitle>The feedback element takes any utility, so a <code>text-green</code> check confirms the copy in colour.</CardSubtitle>
+          <FormGroup label="API key" for="clipboard-key-green" class="mb-0">
+            <div class="input-group input-group-flat">
+              <input type="text" id="clipboard-key-green" class="form-control" value={apiKey} readonly />
+              <span class="input-group-text">
+                <button type="button" class="link-secondary input-group-link border-0 bg-transparent p-0" data-bs-toggle="clipboard" data-bs-target="#clipboard-key-green" aria-label="Copy the API key">
+                  <Icon name="clipboard" class="clipboard-label" />
+                  <Icon name="check" class="clipboard-feedback text-green" />
+                  <span class="clipboard-feedback visually-hidden">Copied</span>
+                </button>
+              </span>
+            </div>
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>A literal string</CardTitle>
+          <CardSubtitle>Use <code>data-bs-text</code> when the text is not on the page.</CardSubtitle>
+          <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="https://tabler.io/">
+            <span class="clipboard-label"><Icon name="link" class="me-2" />Copy link</span>
+            <span class="clipboard-feedback"><Icon name="check" class="me-2" />Link copied</span>
+          </button>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Any element</CardTitle>
+          <CardSubtitle>A target that is not a field is copied from its text.</CardSubtitle>
+          <div class="d-flex align-items-center gap-2">
+            <code id="clipboard-command">npm install @tabler/core</code>
+            <button type="button" class="btn btn-sm btn-icon" data-bs-toggle="clipboard" data-bs-target="#clipboard-command" aria-label="Copy the install command">
+              <Icon name="clipboard" class="clipboard-label" />
+              <Icon name="check" class="clipboard-feedback" />
+              <span class="clipboard-feedback visually-hidden">Copied</span>
+            </button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>How long it lasts</CardTitle>
+          <CardSubtitle>Set <code>data-bs-delay</code> in milliseconds. The default is 2000.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="Tabler" data-bs-delay="500">
+              <span class="clipboard-label">Half a second</span>
+              <span class="clipboard-feedback">Copied</span>
+            </button>
+            <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="Tabler" data-bs-delay="6000">
+              <span class="clipboard-label">Six seconds</span>
+              <span class="clipboard-feedback">Copied</span>
+            </button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

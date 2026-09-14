@@ -77,13 +77,9 @@ const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? htm
     hasCode && (
       <div class:list={['docs-example-code position-relative', hasDemo && 'docs-example-code-attached']}>
         <button type="button" class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-bs-toggle="clipboard" data-bs-text={code ?? html} aria-label="Copy code">
-          <span class="clipboard-label">
-            <Icon name="clipboard" />
-          </span>
-          <span class="clipboard-feedback">
-            <Icon name="check" />
-            <span class="visually-hidden">Copied</span>
-          </span>
+          <Icon name="clipboard" class="clipboard-label" />
+          <Icon name="check" class="clipboard-feedback" />
+          <span class="clipboard-feedback visually-hidden">Copied</span>
         </button>
         <Fragment set:html={highlighted} />
       </div>

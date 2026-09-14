@@ -51,6 +51,20 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
 }
 
 /**
+ * Helpers
+ */
+
+// The `hidden` DOM property belongs to HTMLElement, so an `<svg>` ignores it.
+// The attribute works on any element.
+const toggleHidden = (element: Element, hidden: boolean): void => {
+  if (hidden) {
+    element.setAttribute('hidden', '')
+  } else {
+    element.removeAttribute('hidden')
+  }
+}
+
+/**
  * Class definition
  *
  * Copies text to the clipboard when the trigger is clicked, then shows the
@@ -65,8 +79,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
 class Clipboard extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
-  _label: HTMLElement | null = null
-  _feedback: HTMLElement | null = null
+  _labels: Element[] = []
+  _feedbacks: Element[] = []
   _timeout = 0
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
@@ -76,15 +90,17 @@ class Clipboard extends BaseComponent {
       return
     }
 
-    this._label = SelectorEngine.findOne(SELECTOR_LABEL, this._element)
-    this._feedback = SelectorEngine.findOne(SELECTOR_FEEDBACK, this._element)
+    // Several of each are allowed: an icon-only button pairs a check icon with
+    // a visually hidden word, and both switch together.
+    this._labels = SelectorEngine.find(SELECTOR_LABEL, this._element)
+    this._feedbacks = SelectorEngine.find(SELECTOR_FEEDBACK, this._element)
 
-    if (this._feedback) {
+    for (const feedback of this._feedbacks) {
       // Revealed rather than restyled, so a screen reader announces it.
-      this._feedback.hidden = true
+      toggleHidden(feedback, true)
 
-      if (!this._feedback.hasAttribute('role')) {
-        this._feedback.setAttribute('role', 'status')
+      if (!feedback.hasAttribute('role')) {
+        feedback.setAttribute('role', 'status')
       }
     }
 
@@ -159,12 +175,12 @@ class Clipboard extends BaseComponent {
   _toggleCopied(copied: boolean): void {
     this._element.classList.toggle(CLASS_NAME_COPIED, copied)
 
-    if (this._label) {
-      this._label.hidden = copied
+    for (const label of this._labels) {
+      toggleHidden(label, copied)
     }
 
-    if (this._feedback) {
-      this._feedback.hidden = !copied
+    for (const feedback of this._feedbacks) {
+      toggleHidden(feedback, !copied)
     }
   }
 }
