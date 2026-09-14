@@ -1,0 +1,249 @@
+---
+title: Sparkline
+summary: A sparkline is a tiny chart drawn inline with text, for a trend in a table cell or next to a number. Tabler renders it as an SVG from data attributes, with no chart library.
+description: Show a trend inline with a sparkline. Line, bar and circle charts rendered as SVG from data attributes, themed with text colors, sized with classes.
+added-in: '1.6.0'
+related: [/ui/plugins/chart, /ui/components/trending, /ui/components/progress]
+source: core/scss/ui/_sparkline.scss
+classnames:
+  component:
+    - class: sparkline
+      desc: Inline box that holds the chart, sized by --tblr-sparkline-width and --tblr-sparkline-height
+  part:
+    - class: sparkline-svg
+      desc: The rendered SVG, added by JavaScript
+    - class: sparkline-label
+      desc: Text centered over the chart, added by JavaScript for data-bs-label
+  state:
+    - class: sparkline-disabled
+      desc: Greys out the chart, the label and the area fill
+  size:
+    - class: sparkline-sm
+      desc: Small chart, 3rem by 1rem
+    - class: sparkline-lg
+      desc: Large chart, 8rem by 2.5rem
+    - class: sparkline-square
+      desc: Width equal to the height, for the circle type
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+Add `data-bs-toggle="sparkline"` and a comma-separated list of numbers in `data-bs-values`. Tabler draws the chart on page load. The chart uses `currentColor`, so a `text-{color}` utility sets its color. Put a short `aria-label` on the element, because the SVG itself is hidden from screen readers.
+
+<Example centered>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-values="3,4,2,6,5,8,7" aria-label="Weekly trend"></span>
+</Example>
+
+## Line
+
+The default type. Add `data-bs-fill="auto"` for a tinted area under the line. Use `data-bs-spot` to mark one value with a dot: `last`, `min` or `max`.
+
+<Example centered>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-type="line" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend"></span>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-spot="last" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend, last value marked"></span>
+<span class="sparkline text-red" data-bs-toggle="sparkline" data-bs-type="line" data-bs-fill="auto" data-bs-spot="min" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend, lowest value marked"></span>
+</Example>
+
+## Bar
+
+Set `data-bs-type="bar"`. Every value is a bar. Change the space between bars with `data-bs-bar-gap` and the corner rounding with `data-bs-bar-radius`, both in SVG units.
+
+<Example centered>
+<span class="sparkline text-orange" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="1,2,3,2,4,3,5" aria-label="Daily activity"></span>
+<span class="sparkline text-purple" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-bar-gap="4" data-bs-bar-radius="0" data-bs-values="1,2,3,2,4,3,5" aria-label="Daily activity, square bars"></span>
+</Example>
+
+Negative values hang below a zero line. They use the `--tblr-sparkline-negative` color, red by default, and the line uses `--tblr-sparkline-zero`, the border color by default.
+
+<Example centered>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="3,-1,4,-2,5,-3,2,-1" aria-label="Daily change"></span>
+<span class="sparkline text-primary" style="--tblr-sparkline-negative: var(--tblr-orange)" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="-2,4,-3,1,-1,5,-4,2" aria-label="Daily change, orange negatives"></span>
+</Example>
+
+## Win/loss
+
+Set `data-bs-type="tristate"` for a win/loss chart. Every value is a full bar: up for a positive number, down in the negative color for a negative one, and a short tick on the zero line for zero. The size of the number does not matter.
+
+<Example centered>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-values="1,1,-1,1,0,-1,1,1,-1,1" aria-label="Match results"></span>
+<span class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-type="tristate" data-bs-bar-gap="3" data-bs-values="3,-2,0,5,1,-1,-4,2,0,1,6,-3" aria-label="Deployments"></span>
+</Example>
+
+## Threshold
+
+Set `data-bs-threshold` to a value to draw a dashed guide line there, in `--tblr-sparkline-threshold`. The range widens so the line is always inside the chart. On a bar chart the bars below the threshold take the negative color.
+
+<Example centered>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-fill="auto" data-bs-threshold="80" data-bs-values="62,71,68,84,79,88,92,75" aria-label="CPU usage, 80% limit"></span>
+<span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-threshold="99.5" data-bs-min="98" data-bs-max="100" data-bs-values="99.9,99.7,99.2,99.8,99.4,99.95,99.6" aria-label="Uptime, 99.5% target"></span>
+</Example>
+
+## Circle
+
+Set `data-bs-type="circle"` for a ring that shows one value as a share of `data-bs-max`, 100 by default. Add `sparkline-square` so the box is as wide as it is tall. The ring is as thick as `--tblr-sparkline-stroke-width`.
+
+<Example centered>
+<span class="sparkline sparkline-square text-red" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="10" data-bs-width="24" data-bs-height="24" aria-label="10% done"></span>
+<span class="sparkline sparkline-square text-yellow" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="50" data-bs-width="24" data-bs-height="24" aria-label="50% done"></span>
+<span class="sparkline sparkline-square text-primary" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-width="24" data-bs-height="24" aria-label="72% done"></span>
+<span class="sparkline sparkline-square text-green" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="100" data-bs-width="24" data-bs-height="24" aria-label="100% done"></span>
+</Example>
+
+Add `data-bs-label="auto"` to print the percentage in the middle of the ring. Any other text is printed as is, for example `data-bs-label="3/4"`. The label is plain text in the page font, sized by `--tblr-sparkline-label-font-size`, so it needs a `sparkline-lg` box to be readable.
+
+<Example centered>
+<span class="sparkline sparkline-lg sparkline-square text-red" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="10" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="10% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-yellow" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="50" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="50% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="72% done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="100" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="100% done"></span>
+</Example>
+
+## Sizes
+
+Add `sparkline-sm` or `sparkline-lg`. The SVG scales to the box. For any other size, set `--tblr-sparkline-width` and `--tblr-sparkline-height` on the element.
+
+<Example centered>
+<span class="sparkline sparkline-sm text-primary" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Small"></span>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Default"></span>
+<span class="sparkline sparkline-lg text-primary" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Large"></span>
+<span class="sparkline text-primary" style="--tblr-sparkline-width: 12rem; --tblr-sparkline-height: 2rem" data-bs-toggle="sparkline" data-bs-values="2,3,2,4,3,5,4" aria-label="Custom size"></span>
+</Example>
+
+## Disabled
+
+Add `sparkline-disabled` to grey out a chart, for example for a series the user switched off or data that is stale. Every color, including negative bars and the label, becomes `--tblr-disabled-color`.
+
+<Example centered>
+<span class="sparkline sparkline-disabled text-primary" data-bs-toggle="sparkline" data-bs-fill="auto" data-bs-spot="last" data-bs-values="12,14,9,18,16,22,20" aria-label="Trend, disabled"></span>
+<span class="sparkline sparkline-disabled text-orange" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="3,-1,4,-2,5,-3,2" aria-label="Daily change, disabled"></span>
+<span class="sparkline sparkline-disabled sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="72" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="72% done, disabled"></span>
+</Example>
+
+## Fixed range
+
+By default the chart scales to its own lowest and highest value. Set `data-bs-min` and `data-bs-max` when several charts must share one scale, for example percentages.
+
+<Example centered>
+<span class="sparkline text-primary" data-bs-toggle="sparkline" data-bs-min="0" data-bs-max="100" data-bs-values="10,20,35,30,45,60,55" aria-label="Series A, 0 to 100"></span>
+<span class="sparkline text-red" data-bs-toggle="sparkline" data-bs-min="0" data-bs-max="100" data-bs-values="5,15,25,40,70,65,80" aria-label="Series B, 0 to 100"></span>
+</Example>
+
+## In a table
+
+A sparkline is an inline block aligned to the middle of the text, so it fits a table cell or a stat row without extra wrappers.
+
+<Example>
+<table class="table table-vcenter">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th class="text-end">Value</th>
+      <th class="text-end">Trend</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Revenue</td>
+      <td class="text-end">$12.4k</td>
+      <td class="text-end"><span class="sparkline text-green" data-bs-toggle="sparkline" data-bs-fill="auto" data-bs-values="5,6,7,6,8,9,10" aria-label="Revenue trend"></span></td>
+    </tr>
+    <tr>
+      <td>Errors</td>
+      <td class="text-end">31</td>
+      <td class="text-end"><span class="sparkline text-red" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="2,3,5,4,8,13,21" aria-label="Errors trend"></span></td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+## Options
+
+Every option is a `data-bs-*` attribute on the element, or a key in the config object passed to the constructor.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `values` | `[]` | The numbers to draw. A comma-separated list or a JSON array, for example `3,4,2` or `[3,4,2]`. |
+| `type` | `line` | `line`, `bar`, `tristate` or `circle`. |
+| `fill` | `none` | `auto` fills the area under a line with `--tblr-sparkline-fill`. |
+| `spot` | `none` | Marks one value on a line with a dot: `last`, `min` or `max`. |
+| `min`, `max` | auto | The value range. Bars always include zero. For a circle, `max` is the full ring. |
+| `width`, `height` | `80`, `24` | The SVG viewBox in units. Change the ratio for a very wide or a square chart. |
+| `pad` | `2` | Space above and below a line, in units, so the stroke and the dot are not cut off. |
+| `barGap` | `2` | Space between bars, in units. |
+| `barRadius` | `2` | Corner radius of a bar, in units. |
+| `label` | none | Text centered over the chart. `auto` prints the share of `max` for a circle and the last value for other types. |
+| `threshold` | none | Draws a guide line at this value. Bars below it use the negative color. |
+| `animation` | `300` | How long an `update()` tweens the chart, in milliseconds. `0` redraws at once. Off under `prefers-reduced-motion`. |
+
+## JavaScript
+
+Tabler wraps the element in a `Sparkline` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-toggle="sparkline"` and renders the chart. This is the code that runs:
+
+<CodeDocs name="sparkline-init" file="core/js/src/sparkline.ts" />
+
+Create the component yourself for an element added later, or pass the values from code:
+
+```js
+const orders = tabler.Sparkline.getOrCreateInstance(document.getElementById('orders'), {
+  type: 'bar',
+  values: [3, 4, 2, 6, 5, 8, 7],
+});
+```
+
+Call `update()` with new values to redraw the chart. It writes the values back to `data-bs-values` and fires `updated.bs.sparkline`. When the type and the number of values stay the same, the chart tweens to the new shape over `animation` milliseconds:
+
+```js
+orders.update([4, 2, 7, 5, 9, 6, 8]);
+
+document.getElementById('orders').addEventListener('updated.bs.sparkline', () => {
+  console.log('chart redrawn');
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `update(values)` | Redraws with new values, given as an array, a number or a string. Fires `updated.bs.sparkline`. |
+| `render()` | Reads the attributes again and redraws. Fires `rendered.bs.sparkline`. |
+| `dispose()` | Removes the SVG and the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+| Event | Description |
+| --- | --- |
+| `rendered.bs.sparkline` | Fired on the element after every render. |
+| `updated.bs.sparkline` | Fired on the element after `update()`. |
+
+## Custom properties
+
+The chart reads its colors and stroke widths from custom properties on the element, so you can change them per chart with a `style` attribute or per section with a class.
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--tblr-sparkline-width` | `5rem` | Width of the box. |
+| `--tblr-sparkline-height` | `1.5rem` | Height of the box. |
+| `--tblr-sparkline-stroke` | `currentColor` | Line, bar and ring color. |
+| `--tblr-sparkline-stroke-width` | `2` | Line and ring thickness, in SVG units. |
+| `--tblr-sparkline-fill` | 10% of `currentColor` | Area under a filled line. |
+| `--tblr-sparkline-negative` | `var(--tblr-red)` | Bars for negative values. |
+| `--tblr-sparkline-zero` | `var(--tblr-border-color)` | The zero line under signed bars. |
+| `--tblr-sparkline-threshold` | `var(--tblr-secondary)` | The dashed guide line set with `threshold`. |
+| `--tblr-sparkline-track` | 15% of `currentColor` | The unfilled part of a circle. |
+| `--tblr-sparkline-spot` | `currentColor` | The dot set with `spot`. |
+| `--tblr-sparkline-spot-size` | `2` | Radius of the dot, in SVG units. |
+| `--tblr-sparkline-label-font-size` | `0.625rem` | Font size of the label. |
+| `--tblr-sparkline-label-color` | `var(--tblr-body-color)` | Color of the label. |
+
+## Accessibility
+
+- The SVG is hidden from assistive technology with `aria-hidden`. Give the element an `aria-label` that says what the chart shows, for example `aria-label="Revenue, last 7 days"`, or put the numbers in a visible cell next to it.
+- A sparkline shows a shape, not exact values. Keep the real number in the text nearby, or in `data-bs-label` for a circle, so the chart is a hint and not the only source.
+- Color alone should not carry meaning. For signed bars the negative values also hang below the zero line, and a threshold is a visible line, which is what makes them readable.
+- Updates animate for `animation` milliseconds. The tween is skipped when the user asks for reduced motion.
+
+## Variables
+
+Use these SCSS variables to customize sparklines. The default values are:
+
+<CodeDocs name="sparkline-variables" file="core/scss/_variables.scss" />
