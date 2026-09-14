@@ -107,7 +107,7 @@ The `@tabler/core` package contains compiled and minified CSS and JavaScript, th
 │   ├── css/       tabler.css and the optional stylesheets (flags, marketing, payments, socials,
 │   │              themes, vendors), each with .min and .rtl versions
 │   ├── js/        tabler.js and tabler.esm.js, plus the standalone tabler-theme.js
-│   ├── libs/      bundled plugins: ApexCharts, Tom Select, Litepicker, FullCalendar and others
+│   ├── libs/      bundled plugins: ApexCharts, Tom Select, Vanilla Calendar Pro, FullCalendar and others
 │   ├── types/     TypeScript declarations
 │   ├── fonts/
 │   └── img/

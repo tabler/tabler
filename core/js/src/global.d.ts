@@ -16,6 +16,8 @@ interface SortableInstance {
 }
 
 interface Window {
+  // Vanilla Calendar Pro (https://vanilla-calendar.pro) is loaded separately, not bundled
+  VanillaCalendarPro?: typeof import('vanilla-calendar-pro')
   IMask?: new (element: HTMLElement, options: { mask: string; lazy?: boolean }) => IMaskInstance
   Sortable?: new (element: HTMLElement, options?: Record<string, unknown>) => SortableInstance
 }

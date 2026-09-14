@@ -2,13 +2,13 @@
 title: Date picker
 order: 10
 summary: A date picker lets users pick a date from a calendar instead of typing it, for booking forms, deadlines and other date fields.
-docs-libs: [litepicker]
-description: Let users pick a date from a calendar with the Litepicker plugin, as a plain input, an icon input, or an inline calendar.
-related: [/ui/forms/elements, /ui/plugins/color-picker]
+docs-libs: [vanilla-calendar-pro]
+description: Let users pick a date, a range or several dates with the Datepicker plugin, as a text input, a button or an inline calendar.
+related: [/ui/forms/elements, /ui/plugins/color-picker, /ui/plugins/fullcalendar]
 ---
 
 import Example from '@components/Example.astro';
-import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 import TabsPackage from '@components/TabsPackage.astro';
 import Icon from '@ui/Icon.astro';
 import { Code } from 'astro:components';
@@ -16,142 +16,266 @@ import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
-The date picker is a normal text input with the [Litepicker](https://litepicker.com/) plugin attached. Litepicker opens a calendar when the field is focused and writes the picked date back into the input, so the field still works in a form like any other text field.
+The date picker is Tabler's `Datepicker` plugin wrapped around [Vanilla Calendar Pro](https://vanilla-calendar.pro/). It is the same plugin, with the same options, methods and events, as the Datepicker in Bootstrap 6, so markup written for one works with the other. Tabler styles the calendar the plugin renders, so it follows your theme, your border radius and your dark mode.
+
+Add `data-bs-toggle="datepicker"` to a text input. The calendar opens when the field gets focus, and the picked date is written back into the field, so it works in a form like any other text field.
 
 <Example>
-<input type="text" class="form-control" id="datepicker-overview" placeholder="Select a date" />
+<label class="form-label" for="datepicker-overview">Date</label>
+<input type="text" class="form-control" id="datepicker-overview" data-bs-toggle="datepicker" autocomplete="off" placeholder="Select a date" />
 </Example>
 
 ## Installation
 
-Install Litepicker with npm:
+The plugin itself ships in `tabler.js`. The calendar it renders comes from Vanilla Calendar Pro, which you load separately. Install it with npm:
 
-<TabsPackage name="litepicker" />
+<TabsPackage name="vanilla-calendar-pro" />
 
-Or include it from a CDN:
+Or include it from a CDN, before `tabler.js`:
 
-<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/litepicker/dist/litepicker.js"></script>`} />
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/vanilla-calendar-pro/index.js"></script>`} />
 
-Tabler restyles the calendar to match the rest of the interface. Those styles live in the vendors plugin, so include `tabler-vendors.css` as well:
-
-<CdnImportPlugin plugins={['vendors']} />
+You do not need the library's own stylesheet. Tabler styles the calendar in `tabler.css`.
 
 ## Usage
 
 ### Basic input
 
-Add a text input with the `form-control` class, then attach Litepicker to it with its `element` option.
+Use `type="text"`, not `type="date"`, so the browser's own picker does not open too. Add `autocomplete="off"` so the browser does not cover the calendar with old values.
 
-<Example codeOnly>
-<input type="text" class="form-control" id="datepicker-basic" placeholder="Select a date" />
+<Example>
+<label class="form-label" for="datepicker-basic">Date</label>
+<input type="text" class="form-control" id="datepicker-basic" data-bs-toggle="datepicker" autocomplete="off" placeholder="Select a date" />
 </Example>
-
-```js
-const picker = new Litepicker({
-  element: document.getElementById('datepicker-basic'),
-});
-```
 
 ### Icon input
 
-Wrap the field in `.input-icon` and add a calendar icon, so users can see what the field is for at a glance. Use `.input-icon-addon` after the input to place the icon on the right, or before it to place the icon on the left.
+Wrap the field in `.input-icon` and add a calendar icon, so users can see what the field is for at a glance. The popup lines up with the wrapper, not with the input inside it.
 
 <Example>
+<label class="form-label" for="datepicker-icon">Date</label>
 <div class="input-icon">
-  <input type="text" class="form-control" id="datepicker-icon" placeholder="Select a date" />
+  <input type="text" class="form-control" id="datepicker-icon" data-bs-toggle="datepicker" autocomplete="off" placeholder="Select a date" />
   <span class="input-icon-addon"><Icon name="calendar" /></span>
 </div>
 </Example>
 
+### Initial value
+
+A `value` in `YYYY-MM-DD` format is shown on load and the calendar opens on that month. You can also preselect dates with `data-bs-selected-dates`, which takes a JSON array.
+
 <Example>
-<div class="input-icon">
-  <span class="input-icon-addon"><Icon name="calendar" /></span>
-  <input type="text" class="form-control" id="datepicker-icon-prepend" placeholder="Select a date" />
+<label class="form-label" for="datepicker-value">Birth date</label>
+<input type="text" class="form-control" id="datepicker-value" data-bs-toggle="datepicker" autocomplete="off" value="1990-06-20" />
+</Example>
+
+### Min and max dates
+
+Limit the pickable dates with `data-bs-date-min` and `data-bs-date-max`. Dates outside the range are shown but cannot be picked.
+
+<Example>
+<label class="form-label" for="datepicker-min-max">Event date (2026 only)</label>
+<input type="text" class="form-control" id="datepicker-min-max" data-bs-toggle="datepicker" autocomplete="off" data-bs-date-min="2026-01-01" data-bs-date-max="2026-12-31" placeholder="Select a date in 2026" />
+</Example>
+
+### Date range
+
+Set `data-bs-selection-mode="multiple-ranged"` to pick a start and an end date. The calendar closes after the second date. The field shows both dates with a dash between them.
+
+<Example>
+<label class="form-label" for="datepicker-range">Stay</label>
+<input type="text" class="form-control" id="datepicker-range" data-bs-toggle="datepicker" autocomplete="off" data-bs-selection-mode="multiple-ranged" data-bs-selected-dates='["2026-06-10", "2026-06-18"]' placeholder="Select start and end" />
+</Example>
+
+### Multiple dates
+
+Set `data-bs-selection-mode="multiple"` to pick any number of dates. The calendar stays open until focus leaves it. The field lists the dates with commas.
+
+<Example>
+<label class="form-label" for="datepicker-multiple">Days off</label>
+<input type="text" class="form-control" id="datepicker-multiple" data-bs-toggle="datepicker" autocomplete="off" data-bs-selection-mode="multiple" placeholder="Select dates" />
+</Example>
+
+### Two months
+
+Add `data-bs-display-months-count="2"` to show two months side by side. This helps with ranges that cross a month boundary.
+
+<Example>
+<label class="form-label" for="datepicker-two-months">Stay</label>
+<input type="text" class="form-control" id="datepicker-two-months" data-bs-toggle="datepicker" autocomplete="off" data-bs-selection-mode="multiple-ranged" data-bs-display-months-count="2" placeholder="Select start and end" />
+</Example>
+
+### First day of the week
+
+The week starts on Monday. Set `data-bs-first-weekday="0"` to start it on Sunday.
+
+<Example>
+<label class="form-label" for="datepicker-sunday">Date</label>
+<input type="text" class="form-control" id="datepicker-sunday" data-bs-toggle="datepicker" autocomplete="off" data-bs-first-weekday="0" placeholder="Select a date" />
+</Example>
+
+### Placement
+
+The popup lines up with the left edge of the field. Set `data-bs-placement` to `center`, `right` or `auto` to change that.
+
+<Example>
+<label class="form-label" for="datepicker-right">Right aligned</label>
+<input type="text" class="form-control" id="datepicker-right" data-bs-toggle="datepicker" autocomplete="off" data-bs-placement="right" placeholder="Select a date" />
+</Example>
+
+### Button trigger
+
+Any element can open the calendar, not only an input. A button shows the picked date as its text. Put the text in a child with `data-bs-datepicker-display` so an icon next to it stays.
+
+<Example>
+<div class="btn-list">
+  <button type="button" class="btn" data-bs-toggle="datepicker">
+    <Icon name="calendar" />
+    <span data-bs-datepicker-display>Select date</span>
+  </button>
+  <button type="button" class="btn" data-bs-toggle="datepicker" data-bs-selection-mode="multiple-ranged">
+    <Icon name="calendar-event" />
+    <span data-bs-datepicker-display>Select range</span>
+  </button>
 </div>
 </Example>
+
+To show the date somewhere else, pass the `displayElement` option when you create the picker in JavaScript.
 
 ### Inline calendar
 
-Give Litepicker an empty `div` instead of an input, and pass `inlineMode: true`. The calendar then renders directly on the page instead of opening in a popover. Use this when the date is the main thing on the screen, for example a booking or availability page.
+Add `data-bs-inline="true"` to render the calendar in place instead of a popup. Tabler creates inline calendars on page load, so they need no extra JavaScript. An inline calendar has no background or border of its own. Put it in a card to give it a surface.
 
 <Example>
-<div class="datepicker-inline" id="datepicker-inline"></div>
+<div class="card" style="width: fit-content">
+  <div class="card-body">
+    <div data-bs-toggle="datepicker" data-bs-inline="true"></div>
+  </div>
+</div>
 </Example>
 
-```js
-const picker = new Litepicker({
-  element: document.getElementById('datepicker-inline'),
-  inlineMode: true,
-});
-```
+Inline calendars take the same options as popups:
+
+<Example>
+<div data-bs-toggle="datepicker" data-bs-inline="true" data-bs-selection-mode="multiple-ranged" data-bs-display-months-count="2"></div>
+</Example>
+
+To submit the picked dates with a form, put a hidden input inside the calendar. Tabler writes the dates to it in `YYYY-MM-DD` format, separated by commas.
+
+<Example>
+<form onsubmit="return false">
+  <div data-bs-toggle="datepicker" data-bs-inline="true">
+    <input type="hidden" name="selected_date" />
+  </div>
+  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+</Example>
 
 ## JavaScript
 
-### Custom navigation icons
+### Via data attributes
 
-Litepicker's default previous/next month buttons are plain arrows. Tabler replaces them with [Tabler Icons](/icons) chevrons through the `buttonText` option, which accepts HTML for each button.
+Add `data-bs-toggle="datepicker"` and Tabler does the rest. Inputs open on focus, other elements open on click, and inline calendars and fields with a value or `data-bs-selected-dates` render on page load. Every option below can be set as a `data-bs-*` attribute, for example `data-bs-selection-mode="multiple"`.
+
+<CodeDocs name="datepicker-init" file="core/js/src/datepicker.ts" />
+
+### Via JavaScript
+
+Create the picker yourself when you need options that do not fit in an attribute, such as a date format or a callback:
 
 ```js
-const picker = new Litepicker({
-  element: document.getElementById('datepicker-basic'),
-  buttonText: {
-    previousMonth: '<svg class="icon" ...><!-- chevron-left --></svg>',
-    nextMonth: '<svg class="icon" ...><!-- chevron-right --></svg>',
+const datepicker = new tabler.Datepicker(document.getElementById('my-date'), {
+  selectionMode: 'multiple-ranged',
+  firstWeekday: 0,
+  dateFormat: { month: 'short', day: 'numeric', year: 'numeric' },
+});
+```
+
+### Options
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `dateMin` | string, number, Date | `null` | First pickable date, as `YYYY-MM-DD`. |
+| `dateMax` | string, number, Date | `null` | Last pickable date, as `YYYY-MM-DD`. |
+| `dateFormat` | object, function | `null` | How the date is shown in the field. Pass `Intl.DateTimeFormat` options or a `function(date, locale)` that returns a string. |
+| `displayElement` | string, element, boolean | `null` | Element that shows the picked date. A button uses itself or its `[data-bs-datepicker-display]` child. Set `false` to show nothing. |
+| `displayMonthsCount` | number | `1` | Months shown side by side. |
+| `firstWeekday` | number | `1` | First day of the week: 0 is Sunday, 1 is Monday. |
+| `inline` | boolean | `false` | Render the calendar in place instead of a popup. |
+| `locale` | string | `'default'` | Locale for month names and the date shown in the field, for example `'en-US'` or `'de-DE'`. |
+| `positionElement` | string, element | `null` | Element the popup lines up with. Defaults to the `.input-icon` or `.input-group` wrapper, or the field itself. |
+| `selectedDates` | array | `[]` | Preselected dates as `YYYY-MM-DD`. |
+| `selectionMode` | string | `'single'` | `'single'`, `'multiple'` or `'multiple-ranged'`. |
+| `placement` | string | `'left'` | Where the popup lines up with the field: `'left'`, `'center'`, `'right'` or `'auto'`. |
+| `datepickerTheme` | string | `null` | Force the popup's theme to `'light'`, `'dark'` or `'auto'`. By default it follows the nearest `[data-bs-theme]`. |
+| `vcpOptions` | object | `{}` | Any [Vanilla Calendar Pro option](https://vanilla-calendar.pro/docs/reference/settings), passed straight through. |
+
+Use `vcpOptions` for everything the plugin can do that Tabler does not expose, for example disabling weekends or adding a time picker:
+
+```js
+const datepicker = new tabler.Datepicker(element, {
+  vcpOptions: {
+    disableDatesPast: true,
+    disableWeekdays: [0, 6],
+    selectionTimeMode: 24,
   },
 });
 ```
 
-Litepicker uses `buttonText` as the buttons' `innerHTML`, and the icon SVGs are `aria-hidden`, so the generated buttons have no accessible name on their own. Litepicker also re-renders these buttons on every open and every month change, so re-apply the labels on each `render` event instead of once at init:
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `show()` | Opens the popup. Does nothing for an inline calendar. |
+| `hide()` | Closes the popup. |
+| `toggle()` | Opens or closes the popup. |
+| `getSelectedDates()` | Returns the picked dates as an array of `YYYY-MM-DD` strings. |
+| `setSelectedDates(dates)` | Sets the picked dates. Takes an array of `YYYY-MM-DD` strings. |
+| `dispose()` | Removes the calendar and the instance. |
+| `calendar` | The Vanilla Calendar Pro instance, for anything the methods above do not cover. |
+| `Datepicker.getInstance(element)` | Returns the instance for an element, or `null`. |
+| `Datepicker.getOrCreateInstance(element)` | Returns the instance, or creates one. |
+
+### Events
+
+| Event | Description |
+| --- | --- |
+| `show.bs.datepicker` | Fires before the popup opens. Call `preventDefault()` to keep it closed. |
+| `shown.bs.datepicker` | Fires once the popup is open. |
+| `hide.bs.datepicker` | Fires before the popup closes. Call `preventDefault()` to keep it open. |
+| `hidden.bs.datepicker` | Fires once the popup is closed. |
+| `change.bs.datepicker` | Fires when the user picks a date. The event has `dates`, an array of `YYYY-MM-DD` strings, and `event`, the click. |
 
 ```js
-picker.on('render', () => {
-  picker.ui?.querySelector('.button-previous-month')?.setAttribute('aria-label', 'Previous month');
-  picker.ui?.querySelector('.button-next-month')?.setAttribute('aria-label', 'Next month');
+document.getElementById('my-date').addEventListener('change.bs.datepicker', (event) => {
+  console.log(event.dates);
 });
 ```
 
-### Common options
-
-These are the options you will need most often. Litepicker has more, and they are listed in its [documentation](https://litepicker.com/#option).
-
-| Option | What it does |
-| --- | --- |
-| `element` | The input or element Litepicker attaches to. |
-| `inlineMode` | Renders the calendar on the page instead of in a popover. |
-| `singleMode` | `true` picks one date; `false` picks a date range. |
-| `format` | Format of the date shown in the field, for example `YYYY-MM-DD`. |
-| `minDate` / `maxDate` | Limits the range of selectable dates. |
-| `lockDays` | List of dates users cannot pick. |
-| `numberOfColumns` / `numberOfMonths` | Shows more than one month at a time. |
-| `buttonText` | HTML for the previous/next month and other buttons. |
-
 ## Accessibility
 
-- Always add a `<label>` linked to the input with `for` and `id`. The calendar icon alone does not say what the field is for.
-- Litepicker's month-navigation buttons carry no accessible name on their own - set `aria-label` on the `render` event, as shown above.
-- Keep the typed value working. Users can type a date directly into the input; the picker is a shortcut, not the only way to set the value.
-- The picker can be operated with the keyboard: focus the input to open it, use arrow keys to move between days, and <kbd>Enter</kbd> to pick a date.
+- Always add a `<label>` linked to the input with `for` and `id`. A calendar icon alone does not say what the field is for.
+- Vanilla Calendar Pro marks the calendar up as a grid with `role="grid"`, `role="row"` and `role="gridcell"`, labels every date and handles the arrow keys. Give an inline calendar an accessible name with `aria-label` when nothing around it names it.
+- The popup closes on <kbd>Escape</kbd>, on a click outside, and when focus moves to something outside the calendar, so keyboard users are never trapped in it.
+- Users can still type a date into the field. The picker is a shortcut, not the only way to set the value.
+- The calendar respects `prefers-reduced-motion` and drops its animations for users who ask for that.
 
-<script>{`
-window.addEventListener('load', function () {
-	if (typeof Litepicker === 'undefined') return;
+## Migration from Litepicker
 
-	function initPicker(el, options) {
-		if (!el) return;
-		var picker = new Litepicker(Object.assign({ element: el }, options));
-		picker.on('render', function () {
-			var prev = picker.ui && picker.ui.querySelector('.button-previous-month');
-			var next = picker.ui && picker.ui.querySelector('.button-next-month');
-			if (prev) prev.setAttribute('aria-label', 'Previous month');
-			if (next) next.setAttribute('aria-label', 'Next month');
-		});
-		return picker;
-	}
+Tabler 1.5 and older used [Litepicker](https://github.com/wakirin/Litepicker), which has been archived since 2023. It is no longer shipped in `dist/libs`, and its styles are gone from `tabler-vendors.css`. Load Vanilla Calendar Pro instead and switch the markup as shown below.
 
-	initPicker(document.getElementById('datepicker-overview'));
-	initPicker(document.getElementById('datepicker-basic'));
-	initPicker(document.getElementById('datepicker-icon'));
-	initPicker(document.getElementById('datepicker-icon-prepend'));
-	initPicker(document.getElementById('datepicker-inline'), { inlineMode: true });
-});
-`}</script>
+| Litepicker | Datepicker |
+| --- | --- |
+| `new Litepicker({ element })` | `data-bs-toggle="datepicker"` on the element |
+| `inlineMode: true` | `data-bs-inline="true"` |
+| `singleMode: false` | `data-bs-selection-mode="multiple-ranged"` |
+| `minDate` / `maxDate` | `data-bs-date-min` / `data-bs-date-max` |
+| `numberOfMonths: 2` | `data-bs-display-months-count="2"` |
+| `format` | `dateFormat` option, as `Intl.DateTimeFormat` options |
+| `picker.on('selected', …)` | `change.bs.datepicker` event |
+
+## SCSS variables
+
+The calendar grid and the popup surface have separate variables. Override the `--tblr-calendar-*` custom properties to restyle every calendar, inline or popup. The `--tblr-datepicker-*` ones only apply to the popup.
+
+<CodeDocs name="datepicker-variables" file="core/scss/_variables.scss" />
