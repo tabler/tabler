@@ -281,7 +281,15 @@ class Carousel extends BaseComponent {
       // items in between; pin the target so their transient crossings are
       // ignored until it actually arrives — see `_handleIntersection()`.
       this._pendingElement = nextElement
-      nextElement.scrollIntoView({ inline: 'start', block: 'nearest' })
+
+      // scrollBy() on the viewport itself, not scrollIntoView(): the latter
+      // walks up every scrollable ancestor, so on a page taller than the
+      // window it would also scroll the page to chase a carousel that isn't
+      // fully in view.
+      if (this._viewport) {
+        const delta = nextElement.getBoundingClientRect().left - this._viewport.getBoundingClientRect().left
+        this._viewport.scrollBy({ left: delta })
+      }
 
       // Safety net: don't wait on the observer forever if it never confirms
       // arrival (element removed, browser quirk).
