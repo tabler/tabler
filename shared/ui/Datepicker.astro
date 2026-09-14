@@ -1,104 +1,83 @@
 ---
-import Icon from './Icon.astro';
-import { iconSvg, iconSourceComment } from '@shared/lib/svg';
-import CaptureScript from '../components/CaptureScript.astro';
+import Icon from './Icon.astro'
 
+// A text field or inline block that Tabler's Datepicker plugin (in tabler.js)
+// turns into a calendar. The plugin wraps Vanilla Calendar Pro, which the page
+// loads through the vanilla-calendar-pro entry of pageLibs.
 interface Props {
-	id?: string;
-	value?: string;
-	class?: string;
-	/** input-icon layout; omit for a plain input */
-	layout?: 'icon' | 'icon-prepend' | undefined;
-	inline?: boolean;
+  id?: string
+  /** initial date as `YYYY-MM-DD` */
+  value?: string
+  class?: string
+  placeholder?: string
+  /** input-icon layout; omit for a plain input */
+  layout?: 'icon' | 'icon-prepend' | undefined
+  /** render the calendar in place instead of a popup */
+  inline?: boolean
+  /** picking one date, any number of dates, or a start and an end */
+  selectionMode?: 'single' | 'multiple' | 'multiple-ranged'
+  /** months shown side by side */
+  months?: number
+  /** preselected dates as `YYYY-MM-DD`; a range is its start and end */
+  selectedDates?: string[]
+  dateMin?: string
+  dateMax?: string
+  /** 0 = Sunday, 1 = Monday */
+  firstWeekday?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  placement?: 'left' | 'center' | 'right' | 'auto'
+  /** name of the hidden input an inline calendar submits with a form */
+  name?: string
 }
 
 const {
-	id,
-	value,
-	class: className,
-	layout,
-	inline,
-} = Astro.props;
+  id,
+  value,
+  class: className,
+  placeholder = 'Select a date',
+  layout,
+  inline = false,
+  selectionMode,
+  months,
+  selectedDates,
+  dateMin,
+  dateMax,
+  firstWeekday,
+  placement,
+  name,
+} = Astro.props
 
-const placeholder = 'Select a date';
+const datepickerId = id ? `datepicker-${id}` : undefined
 
-const chevronLeft = `${iconSourceComment('chevron-left')}\n\t${iconSvg('chevron-left') ?? ''}`;
-const chevronRight = `${iconSourceComment('chevron-right')}\n\t${iconSvg('chevron-right') ?? ''}`;
+const dataAttributes = {
+  'data-bs-toggle': 'datepicker',
+  'data-bs-inline': inline ? 'true' : undefined,
+  'data-bs-selection-mode': selectionMode,
+  'data-bs-display-months-count': months,
+  'data-bs-selected-dates': selectedDates ? JSON.stringify(selectedDates) : undefined,
+  'data-bs-date-min': dateMin,
+  'data-bs-date-max': dateMax,
+  'data-bs-first-weekday': firstWeekday,
+  'data-bs-placement': placement,
+}
 
-const datepickerId = id ? `datepicker-${id}` : undefined;
 ---
 
 {
-	id &&
-		(inline ? (
-			<div class="datepicker-inline" id={`datepicker-${id}`} />
-		) : layout === 'icon' ? (
-			<div class:list={['input-icon', className]}>
-				<input
-					class="form-control"
-					placeholder={placeholder}
-					id={`datepicker-${id}`}
-					value={value}
-				/>
-				<span class="input-icon-addon"><Icon name="calendar" /></span>
-			</div>
-		) : layout === 'icon-prepend' ? (
-			<div class:list={['input-icon', className]}>
-				<span class="input-icon-addon"><Icon name="calendar" /></span>
-				<input
-					class="form-control"
-					placeholder={placeholder}
-					id={`datepicker-${id}`}
-					value={value}
-				/>
-			</div>
-		) : (
-			<input
-				class:list={['form-control', className]}
-				placeholder={placeholder}
-				id={`datepicker-${id}`}
-				value={value}
-			/>
-		))
-}
-{
-	id && (
-		<CaptureScript>
-			<!-- BEGIN DATEPICKER -->
-			<script is:inline define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
-				function initDatepicker() {
-					window.tabler_datepicker ??= {};
-
-					if (!window.Litepicker) return;
-
-					const picker = new Litepicker({
-						element: document.getElementById(datepickerId),
-						buttonText: {
-							previousMonth: chevronLeft,
-							nextMonth: chevronRight,
-						},
-						...(inline ? { inlineMode: true } : {}),
-					});
-
-					// Litepicker sets buttonText as the buttons' innerHTML, and the icon SVGs are
-					// aria-hidden, so the generated month-nav buttons otherwise have no accessible
-					// name. Litepicker also re-renders these buttons (new DOM nodes) on every open
-					// and every month change, so re-apply the labels on each "render" event instead
-					// of labeling once at init.
-					// Litepicker builds the popover lazily, so label every calendar on the page, not only picker.ui.
-					const labelMonthButtons = () => {
-						for (const button of document.querySelectorAll('.litepicker .button-previous-month')) button.setAttribute('aria-label', 'Previous month');
-						for (const button of document.querySelectorAll('.litepicker .button-next-month')) button.setAttribute('aria-label', 'Next month');
-					};
-					picker.on('render', labelMonthButtons);
-					labelMonthButtons();
-
-					window.tabler_datepicker[datepickerId] = picker;
-				}
-
-				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
-			</script>
-			<!-- END DATEPICKER -->
-		</CaptureScript>
-	)
+  inline ? (
+    <div class={className} id={datepickerId} {...dataAttributes}>
+      {name && <input type="hidden" name={name} />}
+    </div>
+  ) : layout === 'icon' ? (
+    <div class:list={['input-icon', className]}>
+      <input type="text" class="form-control" id={datepickerId} value={value} placeholder={placeholder} autocomplete="off" {...dataAttributes} />
+      <span class="input-icon-addon"><Icon name="calendar" /></span>
+    </div>
+  ) : layout === 'icon-prepend' ? (
+    <div class:list={['input-icon', className]}>
+      <span class="input-icon-addon"><Icon name="calendar" /></span>
+      <input type="text" class="form-control" id={datepickerId} value={value} placeholder={placeholder} autocomplete="off" {...dataAttributes} />
+    </div>
+  ) : (
+    <input type="text" class:list={['form-control', className]} id={datepickerId} value={value} placeholder={placeholder} autocomplete="off" {...dataAttributes} />
+  )
 }
