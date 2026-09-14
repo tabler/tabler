@@ -15,6 +15,22 @@
   display: inline-flex;
   gap: var(--otp-gap);
   align-items: center;
+  min-height: var(--otp-size);
+}
+
+// Before the script renders the slots, the input keeps a `.form-control`-like
+// look and the `.otp` wrapper's `min-height` already matches it - no layout
+// shift once `.otp-rendered .otp-input` below takes over.
+.otp > input {
+  width: 100%;
+  height: var(--otp-size);
+  padding-inline: 0.75rem;
+  font-size: var(--otp-font-size);
+  color: var(--otp-slot-color);
+  background-color: var(--otp-slot-bg);
+  border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
+  box-shadow: var(--otp-slot-box-shadow);
+  @include border-radius(var(--otp-slot-border-radius));
 }
 
 // The real input is a transparent overlay on top of the rendered slots, so
