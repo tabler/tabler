@@ -1,7 +1,31 @@
-import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import Carousel from '../../src/bootstrap/carousel'
 import EventHandler from '../../src/bootstrap/dom/event-handler'
 import { clearFixture, createEvent, getFixture } from '../helpers/fixture'
+
+// The real IntersectionObserver needs actual CSS (scroll-snap, flex) to tell items
+// apart, which these unit tests don't load. Mock it out — same approach as
+// scrollspy.spec.ts — and drive arrival manually with `simulateArrival()`.
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null
+  readonly rootMargin: string = ''
+  readonly thresholds: ReadonlyArray<number> = []
+
+  constructor(_callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+    this.root = (options?.root as Element | null) ?? null
+    this.rootMargin = options?.rootMargin ?? ''
+    this.thresholds = Array.isArray(options?.threshold) ? options!.threshold : [options?.threshold ?? 0]
+  }
+
+  observe = vi.fn()
+  unobserve = vi.fn()
+  disconnect = vi.fn()
+  takeRecords = vi.fn().mockReturnValue([])
+}
+
+const simulateArrival = (carousel: Carousel, target: Element): void => {
+  carousel._handleIntersection([{ target, intersectionRatio: 1, isIntersecting: true } as unknown as IntersectionObserverEntry])
+}
 
 describe('Carousel', () => {
   let fixtureEl: HTMLElement
@@ -10,9 +34,14 @@ describe('Carousel', () => {
     fixtureEl = getFixture()
   })
 
+  beforeEach(() => {
+    vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
+  })
+
   afterEach(() => {
     clearFixture()
     vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 
   describe('VERSION', () => {
@@ -61,39 +90,33 @@ describe('Carousel', () => {
     })
 
     it('should go to next item on right arrow key', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const carousel = new Carousel(carouselEl, { keyboard: true })
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { keyboard: true })
+      const item2 = fixtureEl.querySelector('#item2')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('.active')).toBe(fixtureEl.querySelector('#item2'))
-          carousel.dispose()
-          resolve()
-        })
+      const keydown = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+      carouselEl.dispatchEvent(keydown)
+      simulateArrival(carousel, item2)
 
-        const keydown = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
-        carouselEl.dispatchEvent(keydown)
-      })
+      expect(fixtureEl.querySelector('.active')).toBe(item2)
+      carousel.dispose()
     })
 
     it('should go to previous item on left arrow key', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="item1" class="carousel-item">item 1</div>', '    <div class="carousel-item active">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="item1" class="carousel-item">item 1</div>', '    <div class="carousel-item active">item 2</div>', '    <div class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const carousel = new Carousel(carouselEl, { keyboard: true })
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { keyboard: true })
+      const item1 = fixtureEl.querySelector('#item1')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('.active')).toBe(fixtureEl.querySelector('#item1'))
-          carousel.dispose()
-          resolve()
-        })
+      const keydown = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+      carouselEl.dispatchEvent(keydown)
+      simulateArrival(carousel, item1)
 
-        const keydown = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
-        carouselEl.dispatchEvent(keydown)
-      })
+      expect(fixtureEl.querySelector('.active')).toBe(item1)
+      carousel.dispose()
     })
 
     it('should not prevent keydown for non-arrow keys', () => {
@@ -142,20 +165,17 @@ describe('Carousel', () => {
 
   describe('next', () => {
     it('should slide to next item', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '  </div>', '</div>'].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const carousel = new Carousel(carouselEl)
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+      const item2 = fixtureEl.querySelector('#item2')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('#item2')!.classList.contains('active')).toBe(true)
-          carousel.dispose()
-          resolve()
-        })
+      carousel.next()
+      simulateArrival(carousel, item2)
 
-        carousel.next()
-      })
+      expect(item2.classList.contains('active')).toBe(true)
+      carousel.dispose()
     })
   })
 
@@ -211,20 +231,17 @@ describe('Carousel', () => {
 
   describe('to', () => {
     it('should go to specific index', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div id="item3" class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div class="carousel-item active">item 1</div>', '    <div id="item2" class="carousel-item">item 2</div>', '    <div id="item3" class="carousel-item">item 3</div>', '  </div>', '</div>'].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const carousel = new Carousel(carouselEl)
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+      const item3 = fixtureEl.querySelector('#item3')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('#item3')!.classList.contains('active')).toBe(true)
-          carousel.dispose()
-          resolve()
-        })
+      carousel.to(2)
+      simulateArrival(carousel, item3)
 
-        carousel.to(2)
-      })
+      expect(item3.classList.contains('active')).toBe(true)
+      carousel.dispose()
     })
 
     it('should ignore invalid index', () => {
@@ -408,30 +425,21 @@ describe('Carousel', () => {
 
   describe('wrap', () => {
     it('should wrap from end to start', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel slide">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const carousel = new Carousel(carouselEl, { wrap: true })
-        let slidCount = 0
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { wrap: true })
+      const items = [...fixtureEl.querySelectorAll('.carousel-item')]
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          slidCount++
-          const activeId = carouselEl.querySelector('.carousel-item.active')!.id
-
-          if (slidCount < 3) {
-            carousel.next()
-            return
-          }
-
-          // wrapped back to first
-          expect(activeId).toBe('one')
-          carousel.dispose()
-          resolve()
-        })
-
+      let index = 0
+      for (let i = 0; i < 3; i++) {
         carousel.next()
-      })
+        index = (index + 1) % items.length
+        simulateArrival(carousel, items[index])
+      }
+
+      expect(carouselEl.querySelector('.carousel-item.active')!.id).toBe('one')
+      carousel.dispose()
     })
   })
 
@@ -469,78 +477,69 @@ describe('Carousel', () => {
     })
 
     it('should navigate via data-tblr-slide="next"', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div class="carousel-item active">item 1</div>',
-          '    <div id="item2" class="carousel-item">item 2</div>',
-          '  </div>',
-          '  <button data-tblr-slide="next" data-bs-target="#myCarousel">Next</button>',
-          '</div>',
-        ].join('')
+      fixtureEl.innerHTML = [
+        '<div id="myCarousel" class="carousel slide">',
+        '  <div class="carousel-inner">',
+        '    <div class="carousel-item active">item 1</div>',
+        '    <div id="item2" class="carousel-item">item 2</div>',
+        '  </div>',
+        '  <button data-tblr-slide="next" data-bs-target="#myCarousel">Next</button>',
+        '</div>',
+      ].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const nextBtn = fixtureEl.querySelector('[data-tblr-slide="next"]') as HTMLElement
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const nextBtn = fixtureEl.querySelector('[data-tblr-slide="next"]') as HTMLElement
+      const item2 = fixtureEl.querySelector('#item2')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('#item2')!.classList.contains('active')).toBe(true)
-          resolve()
-        })
+      nextBtn.click()
+      simulateArrival(Carousel.getInstance(carouselEl) as Carousel, item2)
 
-        nextBtn.click()
-      })
+      expect(item2.classList.contains('active')).toBe(true)
     })
 
     it('should navigate via data-tblr-slide="prev"', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-inner">',
-          '    <div id="item1" class="carousel-item">item 1</div>',
-          '    <div class="carousel-item active">item 2</div>',
-          '  </div>',
-          '  <button data-tblr-slide="prev" data-bs-target="#myCarousel">Prev</button>',
-          '</div>',
-        ].join('')
+      fixtureEl.innerHTML = [
+        '<div id="myCarousel" class="carousel slide">',
+        '  <div class="carousel-inner">',
+        '    <div id="item1" class="carousel-item">item 1</div>',
+        '    <div class="carousel-item active">item 2</div>',
+        '  </div>',
+        '  <button data-tblr-slide="prev" data-bs-target="#myCarousel">Prev</button>',
+        '</div>',
+      ].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const prevBtn = fixtureEl.querySelector('[data-tblr-slide="prev"]') as HTMLElement
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const prevBtn = fixtureEl.querySelector('[data-tblr-slide="prev"]') as HTMLElement
+      const item1 = fixtureEl.querySelector('#item1')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('#item1')!.classList.contains('active')).toBe(true)
-          resolve()
-        })
+      prevBtn.click()
+      simulateArrival(Carousel.getInstance(carouselEl) as Carousel, item1)
 
-        prevBtn.click()
-      })
+      expect(item1.classList.contains('active')).toBe(true)
     })
 
     it('should handle data-tblr-slide-to in indicators', () => {
-      return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = [
-          '<div id="myCarousel" class="carousel slide">',
-          '  <div class="carousel-indicators">',
-          '    <button class="active" data-tblr-slide-to="0" data-bs-target="#myCarousel" aria-current="true"></button>',
-          '    <button data-tblr-slide-to="1" data-bs-target="#myCarousel"></button>',
-          '  </div>',
-          '  <div class="carousel-inner">',
-          '    <div class="carousel-item active">item 1</div>',
-          '    <div id="item2" class="carousel-item">item 2</div>',
-          '  </div>',
-          '</div>',
-        ].join('')
+      fixtureEl.innerHTML = [
+        '<div id="myCarousel" class="carousel slide">',
+        '  <div class="carousel-indicators">',
+        '    <button class="active" data-tblr-slide-to="0" data-bs-target="#myCarousel" aria-current="true"></button>',
+        '    <button data-tblr-slide-to="1" data-bs-target="#myCarousel"></button>',
+        '  </div>',
+        '  <div class="carousel-inner">',
+        '    <div class="carousel-item active">item 1</div>',
+        '    <div id="item2" class="carousel-item">item 2</div>',
+        '  </div>',
+        '</div>',
+      ].join('')
 
-        const carouselEl = fixtureEl.querySelector('#myCarousel')!
-        const trigger = fixtureEl.querySelectorAll('[data-tblr-slide-to]')[1] as HTMLElement
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const trigger = fixtureEl.querySelectorAll('[data-tblr-slide-to]')[1] as HTMLElement
+      const item2 = fixtureEl.querySelector('#item2')!
 
-        carouselEl.addEventListener('slid.bs.carousel', () => {
-          expect(fixtureEl.querySelector('#item2')!.classList.contains('active')).toBe(true)
-          resolve()
-        })
+      trigger.click()
+      simulateArrival(Carousel.getInstance(carouselEl) as Carousel, item2)
 
-        trigger.click()
-      })
+      expect(item2.classList.contains('active')).toBe(true)
     })
   })
 })
