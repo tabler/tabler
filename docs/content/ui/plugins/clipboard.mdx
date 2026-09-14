@@ -1,0 +1,113 @@
+---
+title: Clipboard
+summary: A copy button puts the text of a field, a snippet or a literal string on the clipboard, and says so for a moment.
+description: Add copy to clipboard buttons that copy a field, an element or a literal string, with a copied state and events.
+added-in: '1.6.0'
+related: [/ui/forms/elements]
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+An API key, an invite link or an install command is there to be copied. Add `data-bs-toggle="clipboard"` to a button and point it at what to copy. Tabler writes the text with the browser's own clipboard API, so there is no library to load.
+
+<Example centered>
+<div class="input-group">
+  <input type="text" id="clipboard-key" class="form-control" value="tblr_live_8f2c41d0a7" readonly />
+  <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-target="#clipboard-key">
+    <span class="clipboard-label">Copy</span>
+    <span class="clipboard-feedback">Copied</span>
+  </button>
+</div>
+</Example>
+
+## Usage
+
+Put the two states in the markup: a `clipboard-label` for the resting button and a `clipboard-feedback` for the moment after a copy. Tabler hides one and shows the other, so both words stay in your own language.
+
+```html
+<button type="button" class="btn" data-bs-toggle="clipboard" data-bs-target="#api-key">
+  <span class="clipboard-label">Copy</span>
+  <span class="clipboard-feedback">Copied</span>
+</button>
+```
+
+`data-bs-target` takes any selector. A field is read from its value, anything else from its text.
+
+<Example centered>
+<code id="clipboard-snippet" class="me-2">npm install @tabler/core</code>
+<button type="button" class="btn btn-sm" data-bs-toggle="clipboard" data-bs-target="#clipboard-snippet">
+  <span class="clipboard-label">Copy command</span>
+  <span class="clipboard-feedback">Copied</span>
+</button>
+</Example>
+
+### A literal string
+
+Use `data-bs-text` when the text is not on the page.
+
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="https://tabler.io/">
+  <span class="clipboard-label">Copy link</span>
+  <span class="clipboard-feedback">Link copied</span>
+</button>
+</Example>
+
+### How long the copied state lasts
+
+`data-bs-delay` sets the milliseconds before the button goes back to its label. The default is 2000. Set it to `0` to keep the copied state until you reset it from code.
+
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="Tabler" data-bs-delay="6000">
+  <span class="clipboard-label">Copy, six seconds</span>
+  <span class="clipboard-feedback">Copied</span>
+</button>
+</Example>
+
+## Options
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `target` | none | Selector of the element to read. A field gives its value, anything else its text. |
+| `text` | none | A literal string to copy. Wins over `target`. |
+| `delay` | `2000` | How long the copied state lasts, in milliseconds. `0` keeps it. |
+
+## JavaScript
+
+Tabler ships a `Clipboard` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-bs-toggle="clipboard"`. This is the code that runs:
+
+<CodeDocs name="clipboard-init" file="core/js/src/clipboard.ts" />
+
+Copy from your own code, for example after building a string:
+
+```js
+const button = document.getElementById('share');
+tabler.Clipboard.getOrCreateInstance(button, { text: window.location.href }).copy();
+```
+
+A successful copy fires `copied.bs.clipboard`, a failed one `error.bs.clipboard`:
+
+```js
+button.addEventListener('error.bs.clipboard', () => {
+  console.log('nothing copied');
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `copy()` | Copies the text and shows the copied state. Returns a promise. |
+| `text` | Getter. The string the button would copy right now. |
+| `dispose()` | Stops the timer and removes the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+## Accessibility
+
+- Write both words in the markup. The feedback element is a `role="status"` and is revealed rather than restyled, so a screen reader announces the copy.
+- Keep the button a real `button` with `type="button"`, so it is reachable by keyboard and does not submit a form.
+- A button with only an icon needs an `aria-label` saying what it copies, for example `aria-label="Copy the API key"`.
+
+## Browser support
+
+The browser gives `navigator.clipboard` to secure contexts only: `https`, or `localhost` while you develop. On plain `http` the copy fails and `error.bs.clipboard` fires, so a page can say so instead of leaving the button silent.

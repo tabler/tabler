@@ -1,5 +1,5 @@
 ---
-// Example code from the `html` prop or the rendered slot; copy button uses data-clipboard-text.
+// Example code from the `html` prop or the rendered slot; the copy button carries it in data-bs-text.
 import Icon from '@ui/Icon.astro'
 import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-example'
 
@@ -76,9 +76,14 @@ const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? htm
   {
     hasCode && (
       <div class:list={['docs-example-code position-relative', hasDemo && 'docs-example-code-attached']}>
-        <button type="button" class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={code ?? html} aria-label="Copy code">
-          <Icon name="clipboard" />
-          <Icon name="check" class="d-none" />
+        <button type="button" class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-bs-toggle="clipboard" data-bs-text={code ?? html} aria-label="Copy code">
+          <span class="clipboard-label">
+            <Icon name="clipboard" />
+          </span>
+          <span class="clipboard-feedback">
+            <Icon name="check" />
+            <span class="visually-hidden">Copied</span>
+          </span>
         </button>
         <Fragment set:html={highlighted} />
       </div>

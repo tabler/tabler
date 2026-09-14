@@ -167,7 +167,7 @@ async function renderedPage(entry: CollectionEntry<'docs'>): Promise<RenderedPag
       .slice(1)
       .map((block) => {
         // the copy button, or the wrapper attribute when the example hides its code panel
-        const markup = block.match(/data-clipboard-text="([^"]*)"/) ?? block.match(/data-example-markup="([^"]*)"/)
+        const markup = block.match(/data-bs-text="([^"]*)"/) ?? block.match(/data-example-markup="([^"]*)"/)
         return markup ? beautifyHtml(decodeEntities(markup[1]!)) : null
       })
 
