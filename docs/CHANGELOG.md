@@ -1,5 +1,30 @@
 # @tabler/docs
 
+## 1.6.0
+
+### Minor Changes
+
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- be30919: Added `.legend` component with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus `Legend` Astro component.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+
+### Patch Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 62408b8: Replaced the `autosize` package with a dependency-free `Autosize` component that fires `resized.bs.autosize`.
+- 2129b0b: Added a `check:open-source` gate and the five missing attributions, including Popper, which ships inside `tabler.js`.
+- ea10f0e: Replaced the `countup.js` package with a dependency-free `CountUp` component that respects `prefers-reduced-motion`.
+- 86ac4f1: Fixed the unreadable "5" badge in the avatar status docs example by adding `text-gray-100`.
+- 6f96282: Fixed the "Card on a background pattern" docs example so the preview shows the `.bg-pattern-diagonal` background.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 57e213b: Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- 0fe02b3: Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+- 107e493: Updated the color palette to `oklch()`, masked the checkbox, switch, toggler and carousel icons, and removed the `tabler` JS namespace.
+- 0776b88: Added a `switch-icon-loading` state and a `tabler:switch-icon-toggle` event that waits for a promise before switching.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`, with countUp.js bundled.
+
 ## 1.5.1
 
 ### Patch Changes
