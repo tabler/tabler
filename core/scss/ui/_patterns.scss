@@ -1,8 +1,7 @@
-@use 'sass:map';
 @use '../config' as *;
 
 @mixin pattern-base($opacity: $pattern-opacity) {
-  --pattern-color: var(--body-color);
+  --pattern-color: var(--theme-bg, var(--body-color));
   --pattern-size: #{$pattern-size};
   --pattern-opacity: calc(var(--pattern-opacity-factor, #{$pattern-opacity-factor}) * #{$opacity});
   --pattern-fill: #{color-transparent(var(--pattern-color), var(--pattern-opacity))};
@@ -144,12 +143,9 @@
   background-position: -1px -1px;
 }
 
-// Color variants
-@each $color in map.keys($theme-colors) {
-  .bg-pattern-#{$color} {
-    --pattern-color: var(--#{$color});
-  }
-}
+// Color variants: `.bg-pattern-{color} { @extend .theme-{color}; }` lives in
+// _extends.scss — @extend only reaches modules this file loads, and it
+// doesn't load ui/_buttons.scss (where .theme-* is generated).
 
 // Sizes
 $sizes: (

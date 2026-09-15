@@ -1,4 +1,3 @@
-@use 'sass:map';
 @use '../config' as *;
 
 .toast {
@@ -21,8 +20,5 @@
   }
 }
 
-@each $state in map.keys($theme-colors) {
-  .toast-#{$state} {
-    @include theme-color-vars($state);
-  }
-}
+// `.toast-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+// its header comment: @extend only reaches modules this file loads).
