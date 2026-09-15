@@ -2,6 +2,7 @@
 @use '../config' as *;
 
 .toast {
+  --toast-color: var(--theme-bg);
   border: $alert-border-width var(--border-style) $alert-border-color;
 
   .toast-header {
@@ -22,6 +23,6 @@
 
 @each $state in map.keys($theme-colors) {
   .toast-#{$state} {
-    --toast-color: var(--#{$state});
+    @include theme-color-vars($state);
   }
 }

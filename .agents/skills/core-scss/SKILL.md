@@ -103,7 +103,7 @@ Global properties (`--dir`, colours, fonts, spacing) live in `_props.scss`, whic
 
 - Colour pairs are expressed with `light-dark()` where possible (`_variables.scss`, `layout/_root.scss`), so one declaration covers both modes.
 - What cannot be expressed that way goes to `_variables-dark.scss`, or to `layout/_dark.scss` for the visibility helpers.
-- Dark mode is keyed on `.theme-dark`, `[data-bs-theme='dark']` and `[data-theme='dark']` — match all three when you add a selector, and keep the whole block behind `@if $enable-dark-mode`.
+- Dark mode is keyed on `[data-bs-theme='dark']` and `[data-theme='dark']` — match both when you add a selector, and keep the whole block behind `@if $enable-dark-mode`. (The legacy `.theme-dark` toggle class was retired in favor of `.theme-{color}` — see `mixins/_theme.scss`.)
 
 ## 5. RTL
 
