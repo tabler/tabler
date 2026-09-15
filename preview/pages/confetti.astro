@@ -1,0 +1,150 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Badge from '@ui/Badge.astro'
+---
+
+<DefaultLayout title="Confetti" pageMenu="base.confetti" description="Confetti pours a short shower of colored pieces over the page to celebrate a finished task, a signup or a first success.">
+  <DocsLink slot="page-header-actions" path="/ui/components/confetti" />
+  <CaptureScript>
+    <!-- BEGIN SCRIPT OF CONFETTI ON LOAD -->
+    <script is:inline>
+      /*
+      One burst when the page opens. The instance lives on the body, so no element
+      on the page has to own it.
+      */
+      document.addEventListener('DOMContentLoaded', () => {
+        tabler.Confetti.getOrCreateInstance(document.body).burst()
+      })
+    </script>
+    <!-- END SCRIPT OF CONFETTI ON LOAD -->
+  </CaptureScript>
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="confetti"</code> to a button. A click pours the shower; it thins out and clears by itself.</CardSubtitle>
+          <Button text="Celebrate" data-bs-toggle="confetti" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Amount and length</CardTitle>
+          <CardSubtitle>Set <code>data-bs-count</code> for the number of pieces and <code>data-bs-duration</code> for how long they keep pouring, in milliseconds.</CardSubtitle>
+          <ButtonList>
+            <Button text="A few" data-bs-toggle="confetti" data-bs-count="60" data-bs-duration="800" />
+            <Button text="A lot" data-bs-toggle="confetti" data-bs-count="600" data-bs-duration="6000" />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>By default the pieces use the Tabler palette. Pass a comma-separated list in <code>data-bs-colors</code> to use your own.</CardSubtitle>
+          <ButtonList>
+            <Button text="Warm" data-bs-toggle="confetti" data-bs-colors="#f76707, #f59f00, #d63939, #d6336c" />
+            <Button text="Cool" data-bs-toggle="confetti" data-bs-colors="#066fd1, #4299e1, #4263eb, #17a2b8" />
+            <Button text="Mono" data-bs-toggle="confetti" data-bs-colors="#182433, #667382, #dce1e7" />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Speed</CardTitle>
+          <CardSubtitle>Set <code>data-bs-speed</code> to scale the fall. <code>1</code> is the default, a lower value floats, a higher one drops.</CardSubtitle>
+          <ButtonList>
+            <Button text="Float" data-bs-toggle="confetti" data-bs-speed="0.5" />
+            <Button text="Default" data-bs-toggle="confetti" />
+            <Button text="Drop" data-bs-toggle="confetti" data-bs-speed="2" />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Target and events</CardTitle>
+          <CardSubtitle>Point <code>data-bs-target</code> at another element. <code>start.bs.confetti</code> and <code>end.bs.confetti</code> fire on that element, not on the trigger.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Button text="Ship it" data-bs-toggle="confetti" data-bs-target="#confetti-shipped" data-bs-count="150" data-bs-duration="1500" />
+            <Badge id="confetti-shipped" light text="Idle" />
+          </div>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF CONFETTI EVENTS -->
+            <script is:inline>
+              /*
+              Shows the confetti events on the target element: "Pouring" while the shower
+              runs and "Done" once the last piece has landed.
+              */
+              document.addEventListener('DOMContentLoaded', () => {
+                const badge = document.getElementById('confetti-shipped')
+
+                badge.addEventListener('start.bs.confetti', () => {
+                  badge.textContent = 'Pouring…'
+                })
+
+                badge.addEventListener('end.bs.confetti', () => {
+                  badge.textContent = 'Done'
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF CONFETTI EVENTS -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>From JavaScript</CardTitle>
+          <CardSubtitle>Call <code>burst()</code> on a <code>tabler.Confetti</code> instance when something else finishes, for example a form that was saved.</CardSubtitle>
+          <form id="confetti-form" class="d-flex align-items-end gap-2">
+            <div class="flex-fill">
+              <label class="form-label" for="confetti-project">Project name</label>
+              <input type="text" id="confetti-project" class="form-control" value="Tabler" autocomplete="off" />
+            </div>
+            <Button type="submit" text="Create" />
+          </form>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF CONFETTI FORM -->
+            <script is:inline>
+              /*
+              Bursts confetti from code once the form is "saved". The instance lives on
+              the form, so the events fire there.
+              */
+              document.addEventListener('DOMContentLoaded', () => {
+                const form = document.getElementById('confetti-form')
+                const confetti = tabler.Confetti.getOrCreateInstance(form, { count: 150, duration: 1500 })
+
+                form.addEventListener('submit', (event) => {
+                  event.preventDefault()
+                  confetti.burst()
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF CONFETTI FORM -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

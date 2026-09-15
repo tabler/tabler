@@ -1,0 +1,102 @@
+---
+// Confetti frozen mid-shower over a success card. The component animates on a
+// canvas with requestAnimationFrame, which a screenshot cannot wait for, so the
+// inline script below takes over the clock before tabler.js runs: it queues
+// animation frames instead of scheduling them, seeds Math.random, bursts once
+// the component is loaded and then replays a fixed number of frames by hand.
+// The canvas keeps its last frame, and the clock is handed back so the
+// layout's ready signal (and a click on the button) still work.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Button from '@ui/Button.astro'
+---
+
+<ScreenshotLayout title="Confetti" columns={1}>
+  <Card class="card-gradient">
+    <CardBody class="p-4 text-center">
+      <div class="mb-3">
+        <img src="./static/illustrations/light/good-info.png" alt="" height="160" class="img-light" />
+        <img src="./static/illustrations/dark/good-info.png" alt="" height="160" class="img-dark" />
+      </div>
+      <h3 class="card-title mb-1">Your workspace is ready</h3>
+      <p class="text-secondary mb-4">Invite your team and start your first project.</p>
+      <Button text="Go to dashboard" color="primary" block id="shot-confetti" data-bs-toggle="confetti" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>
+
+<script is:inline>
+  ;(() => {
+    const FRAMES = 150
+    const FRAME_MS = 1000 / 60
+
+    const realFrame = window.requestAnimationFrame
+    const realCancel = window.cancelAnimationFrame
+    const realNow = performance.now.bind(performance)
+    const realRandom = Math.random
+
+    let now = 0
+    let queue = []
+    let seed = 20260915
+
+    window.requestAnimationFrame = (callback) => queue.push(callback)
+    window.cancelAnimationFrame = () => {}
+    performance.now = () => now
+    // Linear congruential generator: the same pieces in the same places on
+    // every capture, in light and dark mode alike.
+    Math.random = () => {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
+      return seed / 4294967296
+    }
+
+    const restore = () => {
+      window.requestAnimationFrame = realFrame
+      window.cancelAnimationFrame = realCancel
+      performance.now = realNow
+      Math.random = realRandom
+    }
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        const Confetti = window.tabler?.Confetti
+        if (!Confetti) {
+          restore()
+          return
+        }
+
+        Confetti.getOrCreateInstance('#shot-confetti', { count: 300 }).burst()
+
+        for (let frame = 0; frame < FRAMES; frame++) {
+          now += FRAME_MS
+          const callbacks = queue
+          queue = []
+          for (const callback of callbacks) {
+            callback(now)
+          }
+        }
+
+        // The pending frame stays unscheduled: the canvas holds this picture.
+        // A click on the button (for the human viewing the page) hands that
+        // frame to the real scheduler first, so the shower resumes and the
+        // new burst runs live.
+        const pending = queue
+        queue = []
+        restore()
+
+        document.getElementById('shot-confetti')?.addEventListener(
+          'click',
+          () => {
+            for (const callback of pending) {
+              realFrame(callback)
+            }
+            pending.length = 0
+          },
+          { capture: true, once: true },
+        )
+      },
+      { once: true },
+    )
+  })()
+</script>
