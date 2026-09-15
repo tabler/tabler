@@ -33,6 +33,15 @@
   .bg-pattern-#{$name} {
     @extend .theme-#{$name};
   }
+
+  // list-group-item's own alpha-blended border/hover-bg (bootstrap/_list-group.scss
+  // reads them as --list-group-border-tint/--list-group-hover-tint) — not part of
+  // the shared --theme-* contract, since the alpha values are list-group-specific.
+  .list-group-item-#{$name} {
+    @extend .theme-#{$name};
+    --list-group-border-tint: #{color-transparent(var(--theme-bg), $list-group-variant-border-alpha)};
+    --list-group-hover-tint: #{color-transparent(var(--theme-bg), $list-group-variant-hover-alpha)};
+  }
 }
 
 // Heading helpers (from `bootstrap/_type.scss`)
