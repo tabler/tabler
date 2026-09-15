@@ -1,10 +1,18 @@
 @use '../config' as *;
 
 .switch-icon {
+  --switch-icon-size: #{$switch-icon-size};
+  --switch-icon-min-size: #{$switch-icon-min-size};
+  --switch-icon-disabled-opacity: #{$switch-icon-disabled-opacity};
+  --switch-icon-loading-size: #{$switch-icon-loading-size};
+  --switch-icon-loading-border-width: #{$switch-icon-loading-border-width};
+  --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed};
   position: relative;
   display: inline-block;
-  width: $icon-size;
-  height: $icon-size;
+  width: var(--switch-icon-size);
+  min-width: var(--switch-icon-min-size);
+  height: var(--switch-icon-size);
+  min-height: var(--switch-icon-min-size);
   padding: 0;
   line-height: 1;
   vertical-align: bottom;
@@ -12,9 +20,15 @@
   background: transparent;
   border: 0;
 
-  &.disabled {
+  &.disabled,
+  &:disabled,
+  &[aria-disabled='true'] {
     pointer-events: none;
-    opacity: $btn-disabled-opacity;
+    opacity: var(--switch-icon-disabled-opacity);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed * 2};
   }
 
   &:focus:not(:focus-visible) {
@@ -32,11 +46,15 @@
     height: 100%;
   }
 
+  // Both icons sit centered in the (possibly larger) button box
   .switch-icon-a,
   .switch-icon-b {
+    position: absolute;
+    inset: 0;
     display: block;
-    width: 100%;
-    height: 100%;
+    width: var(--switch-icon-size);
+    height: var(--switch-icon-size);
+    margin: auto;
   }
 
   .switch-icon-a {
@@ -44,9 +62,6 @@
   }
 
   .switch-icon-b {
-    position: absolute;
-    inset-inline-start: 0;
-    top: 0;
     opacity: 0;
   }
 
@@ -58,6 +73,45 @@
     .switch-icon-b {
       opacity: 1;
     }
+  }
+
+  // Loading state: both icons hidden, a spinner drawn in their place
+  &.switch-icon-loading {
+    pointer-events: none;
+
+    .switch-icon-a,
+    .switch-icon-b {
+      opacity: 0;
+      transition: none;
+    }
+
+    &::after {
+      position: absolute;
+      inset-inline-start: calc(50% - var(--switch-icon-loading-size) / 2);
+      top: calc(50% - var(--switch-icon-loading-size) / 2);
+      width: var(--switch-icon-loading-size);
+      height: var(--switch-icon-loading-size);
+      content: '';
+      border: var(--switch-icon-loading-border-width) var(--border-style) currentColor;
+      border-inline-end-color: transparent;
+      animation: spinner-border var(--switch-icon-loading-animation-speed) linear infinite;
+      @include border-radius(var(--border-radius-pill));
+    }
+  }
+}
+
+// Inside a button (e.g. .btn-action) the button is the target and carries hover and focus
+.btn .switch-icon {
+  --switch-icon-min-size: var(--switch-icon-size);
+  vertical-align: middle;
+  pointer-events: none;
+
+  // the button's own icon sizing and margins would misplace the two stacked icons
+  .icon {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
   }
 }
 
