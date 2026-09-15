@@ -8,6 +8,11 @@
 
 .list-group {
   // scss-docs-start list-group-css-vars
+  // Theme fallback lives on .list-group-item below, not here: --list-group-*
+  // set on this container would only ever resolve against *this element's*
+  // --theme-*, and a plain custom property doesn't re-evaluate per descendant
+  // when inherited — so a per-item `.list-group-item-{color}` (which sets
+  // --theme-* on the ITEM) couldn't be picked up from here.
   --list-group-color: #{$list-group-color};
   --list-group-bg: #{$list-group-bg};
   --list-group-border-color: #{$list-group-border-color};
@@ -55,10 +60,13 @@
   position: relative;
   display: block;
   padding: var(--list-group-item-padding-y) var(--list-group-item-padding-x);
-  color: var(--list-group-color);
+  // `var(--theme-x, ...)` first: picks up this item's own `.list-group-item-{color}`
+  // (or an ancestor `.theme-{color}`, since --theme-* inherits) ahead of the
+  // container's own --list-group-* default.
+  color: var(--theme-bg, var(--list-group-color));
   text-decoration: if(sass($link-decoration == none): null; else: none);
-  background-color: var(--list-group-bg);
-  border: var(--list-group-border-width) solid var(--list-group-border-color);
+  background-color: var(--theme-lt, var(--list-group-bg));
+  border: var(--list-group-border-width) solid var(--list-group-border-tint, var(--list-group-border-color));
 
   &:first-child {
     @include border-top-radius(inherit);
@@ -78,9 +86,9 @@
   // Include both here for `<a>`s and `<button>`s
   &.active {
     z-index: 2; // Place active items above their siblings for proper border styling
-    color: var(--list-group-active-color);
-    background-color: var(--list-group-active-bg);
-    border-color: var(--list-group-active-border-color);
+    color: var(--theme-bg, var(--list-group-active-color));
+    background-color: var(--theme-lt, var(--list-group-active-bg));
+    border-color: var(--list-group-border-tint, var(--list-group-active-border-color));
   }
 
   // stylelint-disable-next-line scss/selector-no-redundant-nesting-selector
@@ -101,7 +109,7 @@
 
 .list-group-item-action {
   width: 100%; // For `<button>`s (anchors become 100% by default though)
-  color: var(--list-group-action-color);
+  color: var(--theme-bg, var(--list-group-action-color));
   text-align: inherit; // For `<button>`s (anchors inherit)
 
   &:not(.active) {
@@ -109,14 +117,14 @@
     &:hover,
     &:focus {
       z-index: 1; // Place hover/focus items above their siblings for proper border styling
-      color: var(--list-group-action-hover-color);
+      color: var(--theme-bg, var(--list-group-action-hover-color));
       text-decoration: none;
-      background-color: var(--list-group-action-hover-bg);
+      background-color: var(--list-group-hover-tint, var(--list-group-action-hover-bg));
     }
 
     &:active {
-      color: var(--list-group-action-active-color);
-      background-color: var(--list-group-action-active-bg);
+      color: var(--theme-fg, var(--list-group-action-active-color));
+      background-color: var(--theme-bg, var(--list-group-action-active-bg));
     }
   }
 }
@@ -190,22 +198,6 @@
 // and the subtle/emphasis maps only cover the latter, so upstream's version
 // left `.list-group-item-azure` and twelve more reading tokens nobody defines.
 // The tint also matches the `bg-{color}-lt` utilities used elsewhere.
-@each $state in map.keys($theme-colors) {
-  .list-group-item-#{$state} {
-    --list-group-color: var(--#{$state});
-    --list-group-bg: var(--#{$state}-lt);
-    --list-group-border-color: #{color-transparent(var(--#{$state}), $list-group-variant-border-alpha)};
-    --list-group-action-color: var(--#{$state});
-    --list-group-action-hover-color: var(--#{$state});
-    --list-group-action-hover-bg: #{color-transparent(var(--#{$state}), $list-group-variant-hover-alpha)};
-    --list-group-action-active-color: var(--#{$state}-fg);
-    --list-group-action-active-bg: var(--#{$state});
-    // The selected row keeps the tint: `.list-group-item.active` paints its own
-    // neutral highlight, so a solid fill here would only show through as text
-    // on a background it was never matched against.
-    --list-group-active-color: var(--#{$state});
-    --list-group-active-bg: var(--#{$state}-lt);
-    --list-group-active-border-color: #{color-transparent(var(--#{$state}), $list-group-variant-border-alpha)};
-  }
-}
+// `.list-group-item-{color}` (extend + its own border/hover tints) lives in
+// _extends.scss — @extend only reaches modules this file loads.
 // scss-docs-end list-group-modifiers
