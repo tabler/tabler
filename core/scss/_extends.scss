@@ -44,6 +44,20 @@
   }
 }
 
+@each $name, $color in $extra-colors {
+  .steps-#{$name} {
+    @extend .theme-#{$name};
+  }
+
+  // The -lt modifier swaps which theme property feeds --steps-color/-fg
+  // (ui/_steps.scss), so it can't just join the combined selector above.
+  .steps-#{$name}-lt {
+    @extend .theme-#{$name};
+    --steps-color: var(--theme-lt);
+    --steps-fg: var(--theme-bg);
+  }
+}
+
 // Heading helpers (from `bootstrap/_type.scss`)
 .h1 {
   @extend h1;
