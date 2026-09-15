@@ -1,0 +1,121 @@
+---
+title: Confetti
+summary: Confetti pours a short shower of colored pieces over the page. Use it once, for a moment worth celebrating, like a finished setup, a first order or a signup.
+description: Celebrate a success with a confetti shower triggered from a button or from JavaScript, with the amount, length, speed and colors set by data attributes.
+added-in: '1.6.0'
+related: [/ui/components/toast, /ui/components/modal, /ui/components/empty]
+source: core/js/src/confetti.ts
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+Confetti is a small reward for the user. The pieces pour from the top edge like a bucket emptied over the page, dense at first and thinning out, then fall, tumble and fade out near the bottom. The whole shower takes a few seconds and clears by itself.
+
+The pieces are drawn on one canvas that covers the page and ignores the mouse, so nothing under it stops working. The canvas is added on the first burst and removed once the last piece has landed.
+
+<Example centered>
+<button type="button" class="btn btn-primary" data-bs-toggle="confetti">Celebrate</button>
+</Example>
+
+## Usage
+
+Add `data-bs-toggle="confetti"` to a button or a link. A click pours one shower. A second click while the first one is still pouring starts over; the pieces already in the air keep falling.
+
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="confetti">Celebrate</button>
+<a href="#" class="btn btn-link" data-bs-toggle="confetti">Celebrate</a>
+</Example>
+
+Use confetti for a moment, not for a page. One burst when a setup is finished or an order is placed feels earned; a burst on every click does not. Prefer one trigger per screen, and never pour on page load without a reason the user can see.
+
+### Amount and length
+
+Set `data-bs-count` for the number of pieces and `data-bs-duration` for how long they keep pouring, in milliseconds. The pour is always dense at the start and thins out towards the end, whatever its length.
+
+<Example centered>
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="confetti" data-bs-count="60" data-bs-duration="800">A few</button>
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="confetti" data-bs-count="600" data-bs-duration="6000">A lot</button>
+</Example>
+
+### Colors
+
+By default the pieces use the Tabler palette, read from the `--tblr-blue`, `--tblr-red` and the other color custom properties at the time of the burst, so a changed theme is picked up. Pass a comma-separated list in `data-bs-colors` to use your own colors.
+
+<Example centered>
+<button type="button" class="btn btn-orange" data-bs-toggle="confetti" data-bs-colors="#f76707, #f59f00, #d63939, #d6336c">Warm</button>
+<button type="button" class="btn btn-azure" data-bs-toggle="confetti" data-bs-colors="#066fd1, #4299e1, #4263eb, #17a2b8">Cool</button>
+</Example>
+
+### Speed
+
+Set `data-bs-speed` to scale how fast the pieces fall. `1` is the default. A lower value floats, a higher one drops. The fall is scaled to the height of the window as well, so it takes about the same time on a phone and on a large screen.
+
+<Example centered>
+<button type="button" class="btn btn-ghost-primary" data-bs-toggle="confetti" data-bs-speed="0.5">Float</button>
+<button type="button" class="btn btn-ghost-primary" data-bs-toggle="confetti" data-bs-speed="2">Drop</button>
+</Example>
+
+### Target
+
+Point `data-bs-target` at another element to run the shower from there. The element does not change how the shower looks; it is where the events fire and where the instance is stored, so a page can listen in one place.
+
+<Example centered>
+<button type="button" class="btn btn-green" data-bs-toggle="confetti" data-bs-target="#confetti-order">Place order</button>
+<span id="confetti-order" class="badge bg-green-lt">Order #1042</span>
+</Example>
+
+## Options
+
+Every option is a `data-bs-*` attribute on the element, or a key in the config object passed to the constructor.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `count` | `220` | How many pieces one burst pours out. |
+| `duration` | `3500` | How long the pieces keep pouring, in milliseconds. The fall adds a few seconds after that. |
+| `decay` | `3.5` | How fast the pour thins out. A higher value gives a sharper splash at the start and a longer thin tail. |
+| `fade` | `0.15` | The share of the window height at the bottom where the pieces fade out. |
+| `speed` | `1` | Multiplier for the fall speed. |
+| `colors` | Tabler palette | The colors of the pieces. A comma-separated list or an array of CSS colors. |
+
+## JavaScript
+
+Tabler wraps the element in a `Confetti` component that works like the Bootstrap components: it is created once per element and stored on it. The data API creates one for the trigger, or for its `data-bs-target`, on the first click.
+
+Create the component yourself to burst from code, for example once a form has been saved. Any element can hold it, the body included:
+
+```js
+const confetti = tabler.Confetti.getOrCreateInstance(document.body, { count: 150 });
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  await save(form);
+  confetti.burst();
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `burst()` | Pours one shower. Fires `start.bs.confetti` first; cancel it with `preventDefault()` to stop the burst. |
+| `stop()` | Stops pouring. The pieces already in the air keep falling. |
+| `dispose()` | Stops pouring and removes the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+| Event | Description |
+| --- | --- |
+| `start.bs.confetti` | Fired on the element before a burst. Cancelable. |
+| `end.bs.confetti` | Fired on the element once the last piece of that burst has landed. |
+
+```js
+document.getElementById('order').addEventListener('end.bs.confetti', () => {
+  window.location.href = '/orders/1042';
+});
+```
+
+## Accessibility
+
+- The canvas is hidden from assistive technology with `aria-hidden` and ignores the mouse, so the page stays usable while the pieces fall.
+- The shower is decoration. Say what happened in text as well, in a toast, an alert or a heading, so users who do not see the animation get the same message.
+- When the user asks for reduced motion, nothing is drawn. The `start` and `end` events still fire, so code that waits for the end keeps working.
+- Keep the shower short and rare. A few seconds after a real success is a reward; frequent or long showers get in the way.

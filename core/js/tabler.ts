@@ -1,4 +1,5 @@
 import './src/autosize'
+import './src/confetti'
 import './src/countup'
 import './src/input-mask'
 import './src/dropdown'
@@ -17,6 +18,7 @@ export * from './src/bootstrap'
 
 // Tabler's own components
 export { default as Autosize } from './src/autosize'
+export { default as Confetti } from './src/confetti'
 export { default as CountUp } from './src/countup'
 export { default as InputMask } from './src/input-mask'
 export { default as Sortable } from './src/sortable'
