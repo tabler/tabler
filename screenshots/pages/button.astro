@@ -1,0 +1,69 @@
+---
+// Buttons for the video recorder (`pnpm run record button`): a row of buttons
+// and a scripted "Save changes" flow — hover, click, `.btn-loading` for a
+// moment, then a success state — driven by steps/button.json. The page works
+// as a still too; the recorder only adds the cursor and the clicks.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+---
+
+<ScreenshotLayout title="Button" columns={2}>
+  <Card>
+    <CardBody>
+      <CardTitle>Notification settings</CardTitle>
+      <CardSubtitle>Choose how you want to hear from us. Changes apply to all your devices.</CardSubtitle>
+      <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column mb-4">
+        <label class="form-selectgroup-item flex-fill">
+          <input type="checkbox" class="form-selectgroup-input" checked />
+          <div class="form-selectgroup-label d-flex align-items-center p-3">
+            <div class="me-3"><span class="form-selectgroup-check"></span></div>
+            <div>
+              <span class="form-selectgroup-title strong mb-1">Email</span>
+              <span class="d-block text-secondary">Weekly summary and account alerts</span>
+            </div>
+          </div>
+        </label>
+        <label class="form-selectgroup-item flex-fill">
+          <input type="checkbox" class="form-selectgroup-input" />
+          <div class="form-selectgroup-label d-flex align-items-center p-3">
+            <div class="me-3"><span class="form-selectgroup-check"></span></div>
+            <div>
+              <span class="form-selectgroup-title strong mb-1">Push</span>
+              <span class="d-block text-secondary">Mentions and direct messages</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      <ButtonList class="justify-content-end">
+        <Button text="Cancel" variant="ghost" color="secondary" />
+        <Button id="save" text="Save changes" color="primary" icon="device-floppy" />
+      </ButtonList>
+      <CaptureScript>
+        <!-- BEGIN SCRIPT OF SAVE BUTTON -->
+        <script is:inline>
+          /*
+          Fakes a request behind the save button: 1.5 s of .btn-loading, then a success state.
+          */
+          const save = document.getElementById('save')
+          save.addEventListener('click', () => {
+            save.classList.add('btn-loading')
+            setTimeout(() => {
+              save.classList.remove('btn-loading')
+              save.classList.replace('btn-primary', 'btn-success')
+              save.querySelector('.icon')?.remove()
+              save.insertAdjacentHTML('afterbegin', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"><path d="M5 12l5 5l10 -10" /></svg>')
+              save.lastChild.textContent = 'Saved'
+            }, 1500)
+          })
+        </script>
+        <!-- END SCRIPT OF SAVE BUTTON -->
+      </CaptureScript>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>
