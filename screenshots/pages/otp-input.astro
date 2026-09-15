@@ -1,0 +1,48 @@
+---
+// OTP input on its own, caught mid-entry: one large 6-slot field with three
+// digits typed, the fourth slot active, and the fake cursor resting under it.
+// `authenticate-your-account` already shows the component inside a card, so
+// this capture stays on the component and its interaction state.
+//
+// The active slot is class-driven (`.otp-slot-active`, applied by tabler.js
+// only while the overlay input holds focus), so the state has to be set up in
+// the script below rather than in markup — a capture tool cannot click it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import OtpInput from '@ui/OtpInput.astro'
+---
+
+<ScreenshotLayout title="OTP input" zoom={1.5} class="text-center">
+  <OtpInput id="shot-otp" length={6} size="lg" value="142" ariaLabel="One-time password" />
+
+  <!-- The active slot lifts itself to z-index 1 so its ring isn't clipped by a
+  neighbour; the pointer has to clear that to stay on top of the slot it points at. -->
+  <style is:inline>
+    .otp > .cursor {
+      z-index: 2;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('shot-otp')?.closest('.otp')
+      if (!el || !window.tabler?.OtpInput) return
+
+      // focus() puts the caret on the first empty slot — index 3, after the
+      // three digits in `value` — which is what marks it active.
+      window.tabler.OtpInput.getOrCreateInstance(el).focus()
+
+      // The pointer goes on `.otp` (the positioned ancestor), not inside the
+      // slot: _render() rewrites each slot's textContent, so a child there
+      // would be dropped by the next re-render.
+      const slot = el.querySelector('.otp-slot-active')
+      if (!slot) return
+
+      const cursor = document.createElement('span')
+      cursor.className = 'cursor'
+      // .cursor's own `left` centers it on its ancestor; override it to sit
+      // under the active slot, keeping the -10px tip offset of that default.
+      cursor.style.left = `${slot.offsetLeft + slot.offsetWidth / 2 - 10}px`
+      el.append(cursor)
+    })
+  </script>
+</ScreenshotLayout>

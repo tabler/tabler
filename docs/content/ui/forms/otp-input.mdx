@@ -1,0 +1,172 @@
+---
+title: OTP input
+seoTitle: OTP input field
+order: 13
+summary: A single input rendered as separate character slots, so a one-time password stays one real field for autofill, password managers and screen readers.
+description: Add a one-time password (OTP) input with grouped slots, masking, and keyboard, paste and SMS autofill support.
+related: [/ui/forms/elements, /ui/forms/validation]
+source: core/scss/ui/forms/_form-otp.scss
+classnames:
+  component:
+    - class: otp
+      desc: Wrapper; holds the real input and the rendered slots
+  part:
+    - class: otp-slots
+      desc: Container for the rendered, decorative slots
+    - class: otp-slot
+      desc: One character slot
+    - class: otp-separator
+      desc: Divider shown between groups
+  modifier:
+    - class: otp-connected
+      desc: Merges the slots into one bar with shared borders and no gap
+  size:
+    - class: otp-sm
+      desc: Smaller slots
+    - class: otp-lg
+      desc: Larger slots
+---
+
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+An OTP input looks like several boxes, but it is one real `<input>`. JavaScript renders one `.otp-slot` per character on top of it and turns the field itself into a transparent overlay, so screen readers, password managers and SMS autofill still see a single ordinary text field.
+
+Add `data-bs-toggle="otp"` to a wrapper with a text input inside, and Tabler renders the slots for you.
+
+<Example column>
+<div class="otp" data-bs-toggle="otp" data-bs-length="6">
+  <input type="text" aria-label="Verification code" />
+</div>
+</Example>
+
+## Usage
+
+### Connected slots
+
+Add `.otp-connected` to merge the slots into one bar with shared borders and no gap between them.
+
+<Example column>
+<div class="otp otp-connected" data-bs-toggle="otp" data-bs-length="6">
+  <input type="text" aria-label="Verification code" />
+</div>
+</Example>
+
+### Groups and a separator
+
+Use `data-bs-groups` to split the slots into visual groups, for example `[3,3]` for a "123 456" layout. `data-bs-separator` sets the character shown between groups; it defaults to `·`.
+
+<Example column>
+<div class="otp" data-bs-toggle="otp" data-bs-length="6" data-bs-groups="[3,3]">
+  <input type="text" aria-label="Verification code" />
+</div>
+</Example>
+
+### Sizes
+
+Add `.otp-sm` or `.otp-lg` for a smaller or larger control.
+
+<Example column>
+<div class="otp otp-sm" data-bs-toggle="otp" data-bs-length="4">
+  <input type="text" aria-label="PIN" />
+</div>
+<div class="otp otp-lg" data-bs-toggle="otp" data-bs-length="4">
+  <input type="text" aria-label="PIN" />
+</div>
+</Example>
+
+### Alphanumeric and masked
+
+Set `data-bs-type` to `alphanumeric` or `alpha` to accept letters as well as digits. Add `data-bs-mask="true"` to show a mask character instead of the typed value - `getValue()` still returns the real value.
+
+<Example column>
+<div class="otp" data-bs-toggle="otp" data-bs-length="6" data-bs-type="alphanumeric" data-bs-mask="true">
+  <input type="text" aria-label="Recovery code" />
+</div>
+</Example>
+
+### Disabled
+
+Add `disabled` to the inner input.
+
+<Example column>
+<div class="otp" data-bs-toggle="otp" data-bs-length="6">
+  <input type="text" value="123456" disabled aria-label="Verification code" />
+</div>
+</Example>
+
+### Validation
+
+Add `.is-valid` or `.is-invalid` to the `.otp` wrapper, the same way you would on a `.form-control`.
+
+<Example column>
+<div class="otp is-invalid" data-bs-toggle="otp" data-bs-length="6">
+  <input type="text" aria-label="Verification code" />
+</div>
+</Example>
+
+## Options
+
+Options are read from `data-bs-*` attributes on the `.otp` element (the `data-tblr-*` alias also works), or passed to the constructor.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `length` | number | `null` | Number of slots. When `null`, it is read from the input's `maxlength`, or `6`. |
+| `type` | string | `'numeric'` | `numeric`, `alphanumeric`, or `alpha` - which characters each slot accepts. |
+| `mask` | boolean | `false` | Shows a mask character in filled slots instead of the real value. |
+| `groups` | array or null | `null` | Slot counts per visual group, for example `[3, 3]`. |
+| `separator` | string | `'·'` | Character shown between groups. |
+
+## JavaScript
+
+Tabler creates an `OtpInput` for every element matching `[data-bs-toggle="otp"]` (or `[data-tblr-toggle="otp"]`):
+
+<CodeDocs name="otp-init" file="core/js/src/otp-input.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('.otp')
+const otp = tabler.OtpInput.getOrCreateInstance(el, { length: 6, type: 'numeric' })
+```
+
+Listen for `complete.bs.otpInput` to know when every slot is filled:
+
+```javascript
+el.addEventListener('complete.bs.otpInput', (event) => {
+  console.log(event.value)
+})
+```
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `getValue()` | Returns the current value. |
+| `setValue(value)` | Sets the value and re-renders the slots. |
+| `clear()` | Empties the value and focuses the input. |
+| `focus()` | Focuses the input and selects the first empty slot. |
+| `dispose()` | Removes the rendered slots and the instance. |
+| `getInstance(element)` | Static. Returns the instance bound to the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the existing instance, or creates one. |
+
+### Events
+
+| Event | Description |
+| --- | --- |
+| `input.bs.otpInput` | Fires on every change from typing, backspace, paste, or autofill. `event.value` holds the current value. |
+| `complete.bs.otpInput` | Fires once the value fills every slot, including from `setValue()`. `event.value` holds the full value. |
+
+## Accessibility
+
+- The visible slots are decoration (`aria-hidden`); a screen reader only ever sees the one real input, so label it like any other field with `aria-label` or a `<label for>`.
+- The input keeps its native `autocomplete="one-time-code"` by default, so browsers and password managers can offer SMS autofill.
+- `inputmode` and a `pattern` matching the `type` option are set automatically, so mobile keyboards show the right layout.
+- The mask option only hides the value visually - the input is never switched to `type="password"`, so assistive tech still reads it as plain text.
+- Keyboard focus lands on the first empty slot, and typing overwrites the active slot rather than inserting, so screen reader and switch-access users always land where they expect.
+
+## SCSS variables
+
+<CodeDocs name="otp-variables" file="core/scss/_variables.scss" />
