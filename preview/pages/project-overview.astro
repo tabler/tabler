@@ -1,0 +1,218 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import ProjectHeader from '@shared/components/parts/ProjectHeader.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import Icon from '@ui/Icon.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import StatusDot from '@ui/StatusDot.astro'
+
+const stats = [
+  { label: 'Requests, 24h', value: '1.24M', hint: '+8% vs. yesterday', color: 'success' },
+  { label: 'Error rate', value: '0.42%', hint: '5,208 errors', color: 'warning' },
+  { label: 'p95 latency', value: '212 ms', hint: '-14 ms vs. yesterday', color: 'success' },
+  { label: 'Uptime, 30d', value: '99.98%', hint: '1 incident, 9 min', color: 'success' },
+]
+
+type Deployment = {
+  status: 'success' | 'danger' | 'warning'
+  statusText: string
+  message: string
+  branch: string
+  commit: string
+  environment: 'Production' | 'Preview'
+  time: string
+  href?: string
+}
+
+const deployments: Deployment[] = [
+  { status: 'danger', statusText: 'Error', message: 'Migrate rate limiter to Redis', branch: 'feat/redis-limiter', commit: '2e77b09', environment: 'Preview', time: '1 day ago', href: './deployment-failed.html' },
+  { status: 'success', statusText: 'Ready', message: 'Add request id to access logs', branch: 'main', commit: 'a91c3f2', environment: 'Production', time: '3 hours ago' },
+  { status: 'success', statusText: 'Ready', message: 'Bump Node.js to 22.x', branch: 'main', commit: '7d0e4b1', environment: 'Production', time: '2 days ago' },
+  { status: 'warning', statusText: 'Building', message: 'Cache webhook signatures', branch: 'feat/webhook-cache', commit: 'c58a2d7', environment: 'Preview', time: 'just now' },
+]
+
+const domains = [
+  { host: 'api.pulsehq.dev', status: 'success', text: 'Valid configuration' },
+  { host: 'pulse-api.relay.app', status: 'success', text: 'Auto-assigned' },
+  { host: 'staging-api.pulsehq.dev', status: 'warning', text: 'DNS pending' },
+]
+
+const activity = [
+  { icon: 'rocket', color: 'success', text: 'Deployed a91c3f2 to production', time: '3 hours ago' },
+  { icon: 'alert-triangle', color: 'danger', text: 'Preview build failed on feat/redis-limiter', time: '1 day ago' },
+  { icon: 'key', color: 'primary', text: 'k.adamski updated REDIS_URL in Production', time: '1 day ago' },
+  { icon: 'world', color: 'secondary', text: 'Added domain staging-api.pulsehq.dev', time: '2 days ago' },
+]
+---
+
+<DefaultLayout title="Project overview" pageHeader={false} pageMenu="extra.project-overview" description="Project overview with the production deployment, key metrics, latest deployments, domains and activity.">
+  <ProjectHeader name="pulse-api" section="Overview" badge="Production" badgeColor="success" active="overview">
+    <ButtonList>
+      <Button text="Visit" icon="external-link" href="#" />
+      <Button text="Deploy" color="primary" icon="rocket" />
+    </ButtonList>
+  </ProjectHeader>
+
+  <div class="row row-cards">
+    <div class="col-lg-8">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Production deployment</CardTitle>
+              <CardActions>
+                <Button text="Redeploy" size="sm" icon="refresh" />
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <Datagrid>
+                <DatagridItem title="Status">
+                  <span class="d-inline-flex align-items-center gap-2">
+                    <StatusDot color="success" animated />
+                    Ready
+                  </span>
+                  <span class="text-secondary ms-1">since 3 hours ago</span>
+                </DatagridItem>
+                <DatagridItem title="Source">
+                  <a href="#" class="text-reset">
+                    <Icon name="git-branch" class="icon-inline" />
+                    main
+                  </a>
+                  <span class="text-secondary ms-1"><code>a91c3f2</code> Add request id to access logs</span>
+                </DatagridItem>
+                <DatagridItem title="Domain">
+                  <a href="#">api.pulsehq.dev</a>
+                </DatagridItem>
+                <DatagridItem title="Runtime">Node.js 22.x, fra1</DatagridItem>
+              </Datagrid>
+            </CardBody>
+            <CardBody>
+              <div class="row g-4">
+                {
+                  stats.map((stat) => (
+                    <div class="col-6 col-md-3">
+                      <div class="text-secondary">{stat.label}</div>
+                      <div class="h2 mb-1">{stat.value}</div>
+                      <div class:list={['small', `text-${stat.color}`]}>{stat.hint}</div>
+                    </div>
+                  ))
+                }
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Latest deployments</CardTitle>
+              <CardActions>
+                <Button text="View all" size="sm" href="./deployment-failed.html" />
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group" hoverable>
+              {
+                deployments.map((deployment) => (
+                  <ListGroupItem>
+                    <div class="row align-items-center g-3">
+                      <div class="col-auto">
+                        <StatusDot color={deployment.status} animated={deployment.status === 'warning'} ariaLabel={deployment.statusText} />
+                      </div>
+                      <div class="col">
+                        <div class="fw-medium">
+                          {deployment.href ? (
+                            <a href={deployment.href} class="text-reset">
+                              {deployment.message}
+                            </a>
+                          ) : (
+                            deployment.message
+                          )}
+                        </div>
+                        <div class="text-secondary">
+                          <Icon name="git-branch" class="icon-inline" />
+                          {deployment.branch} <code>{deployment.commit}</code>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <Badge text={deployment.environment} color={deployment.environment === 'Production' ? 'primary' : 'secondary'} light />
+                      </div>
+                      <div class="col-auto text-secondary">{deployment.time}</div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Domains</CardTitle>
+              <CardActions>
+                <Button text="Manage" size="sm" href="./project-settings.html" />
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group">
+              {
+                domains.map((domain) => (
+                  <ListGroupItem>
+                    <div class="d-flex align-items-center gap-2">
+                      <StatusDot color={domain.status} />
+                      <div>
+                        <div class="fw-medium">{domain.host}</div>
+                        <div class="text-secondary">{domain.text}</div>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Activity</CardTitle>
+              <CardActions>
+                <Button text="View logs" size="sm" href="./project-logs.html" />
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group">
+              {
+                activity.map((item) => (
+                  <ListGroupItem>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class:list={['avatar', 'avatar-sm', `bg-${item.color}-lt`]}>
+                        <Icon name={item.icon} color={item.color} />
+                      </span>
+                      <div>
+                        <div>{item.text}</div>
+                        <div class="text-secondary">{item.time}</div>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

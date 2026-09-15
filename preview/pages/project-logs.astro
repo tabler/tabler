@@ -1,0 +1,125 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import ProjectHeader from '@shared/components/parts/ProjectHeader.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardFooter from '@ui/CardFooter.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import InputIcon from '@ui/form/InputIcon.astro'
+import NavSegmented from '@ui/NavSegmented.astro'
+import StatusDot from '@ui/StatusDot.astro'
+
+type Level = 'info' | 'warn' | 'error'
+
+const levels: Record<Level, { text: string; color: string }> = {
+  info: { text: 'INFO', color: 'secondary' },
+  warn: { text: 'WARN', color: 'warning' },
+  error: { text: 'ERROR', color: 'danger' },
+}
+
+const statusColor = (status: number) => (status >= 500 ? 'danger' : status >= 400 ? 'warning' : 'success')
+
+const logs: { time: string; level: Level; status: number; method: string; path: string; duration: string; message: string }[] = [
+  { time: '09:41:52.114', level: 'info', status: 200, method: 'POST', path: '/v1/events', duration: '48 ms', message: 'Accepted 240 events for workspace ws_8f2a' },
+  { time: '09:41:51.907', level: 'info', status: 200, method: 'GET', path: '/v1/users/u_1042', duration: '12 ms', message: 'Cache hit' },
+  { time: '09:41:51.640', level: 'warn', status: 429, method: 'POST', path: '/v1/auth/token', duration: '3 ms', message: 'Rate limit exceeded for client c_77e1, retry after 12 s' },
+  { time: '09:41:50.982', level: 'error', status: 502, method: 'GET', path: '/v1/search', duration: '2,004 ms', message: 'Upstream search cluster timed out after 2,000 ms' },
+  { time: '09:41:50.311', level: 'info', status: 201, method: 'POST', path: '/v1/webhooks', duration: '96 ms', message: 'Registered webhook wh_5c31 for order.created' },
+  { time: '09:41:49.870', level: 'info', status: 304, method: 'GET', path: '/v1/users/u_2210', duration: '9 ms', message: 'Not modified' },
+  { time: '09:41:49.204', level: 'warn', status: 401, method: 'GET', path: '/v1/events', duration: '4 ms', message: 'Expired token for client c_09aa' },
+  { time: '09:41:48.556', level: 'error', status: 500, method: 'POST', path: '/v1/events', duration: '311 ms', message: 'Redis connection reset by peer, retrying' },
+  { time: '09:41:48.020', level: 'info', status: 200, method: 'GET', path: '/v1/health', duration: '1 ms', message: 'OK' },
+  { time: '09:41:47.402', level: 'info', status: 200, method: 'DELETE', path: '/v1/webhooks/wh_11ab', duration: '38 ms', message: 'Webhook removed' },
+]
+---
+
+<DefaultLayout title="Project logs" pageHeader={false} pageMenu="extra.project-logs" description="Runtime logs with a filter toolbar, request status, level badges and live tail.">
+  <ProjectHeader name="pulse-api" section="Logs" badge="Production" badgeColor="success" active="logs">
+    <ButtonList>
+      <Button text="Pause" icon="player-pause" />
+      <Button text="Download" icon="download" />
+    </ButtonList>
+  </ProjectHeader>
+
+  <Card>
+    <CardHeader>
+      <CardTitle>Runtime logs</CardTitle>
+      <CardActions>
+        <span class="d-inline-flex align-items-center gap-2 text-secondary">
+          <StatusDot color="success" animated />
+          Live
+        </span>
+      </CardActions>
+    </CardHeader>
+    <CardBody>
+      <div class="row g-2 align-items-center">
+        <div class="col-12 col-md">
+          <InputIcon icon="search" placeholder="Search messages, paths or request ids" ariaLabel="Search logs" />
+        </div>
+        <div class="col-6 col-md-auto">
+          <select class="form-select" aria-label="Log level">
+            <option value="all" selected>All levels</option>
+            <option value="info">Info</option>
+            <option value="warn">Warn</option>
+            <option value="error">Error</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-auto">
+          <select class="form-select" aria-label="Environment">
+            <option value="production" selected>Production</option>
+            <option value="preview">Preview</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-auto">
+          <NavSegmented items={['Live', '1h', '24h']} default={0} name="logs-range" />
+        </div>
+      </div>
+    </CardBody>
+    <div class="table-responsive">
+      <table class="table card-table table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Level</th>
+            <th>Status</th>
+            <th>Request</th>
+            <th>Duration</th>
+            <th class="w-100">Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            logs.map((log) => (
+              <tr class:list={{ 'bg-danger-lt': log.level === 'error' }}>
+                <td class="text-secondary font-monospace">{log.time}</td>
+                <td>
+                  <Badge text={levels[log.level].text} color={levels[log.level].color} light />
+                </td>
+                <td>
+                  <span class="d-inline-flex align-items-center gap-2">
+                    <StatusDot color={statusColor(log.status)} />
+                    {log.status}
+                  </span>
+                </td>
+                <td class="font-monospace">
+                  <span class="text-secondary">{log.method}</span> {log.path}
+                </td>
+                <td class:list={['text-secondary', { 'text-danger': log.duration.includes(',') }]}>{log.duration}</td>
+                <td class="text-wrap">{log.message}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <CardFooter class="d-flex align-items-center">
+      <span class="text-secondary">Showing the latest 10 of 1,284 lines</span>
+      <Button text="Load older" size="sm" class="ms-auto" />
+    </CardFooter>
+  </Card>
+</DefaultLayout>

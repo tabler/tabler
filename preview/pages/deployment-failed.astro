@@ -1,0 +1,194 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import ProjectHeader from '@shared/components/parts/ProjectHeader.astro'
+import Alert from '@ui/Alert.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardFooter from '@ui/CardFooter.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import Icon from '@ui/Icon.astro'
+import StatusDot from '@ui/StatusDot.astro'
+
+type BuildStep = {
+  status: 'success' | 'danger' | 'secondary'
+  icon?: string
+  name: string
+  time: string
+  detail: string
+  error?: string
+}
+
+const buildSteps: BuildStep[] = [
+  { status: 'success', icon: 'check', name: 'Clone', time: '2s', detail: 'Checked out <code>feat/redis-limiter</code> at <code>2e77b09</code>' },
+  { status: 'success', icon: 'check', name: 'Install', time: '38s', detail: 'Installed 412 packages with pnpm, cache hit' },
+  { status: 'success', icon: 'check', name: 'Build', time: '24s', detail: 'Bundled 128 routes, 3.2 MB output' },
+  {
+    status: 'danger',
+    icon: 'x',
+    name: 'Compile',
+    time: '8s',
+    detail: '<code>tsc</code> exited with code 2, 2 errors in 1 file',
+    error: `src/lib/rate-limit.ts:47:12 - error TS2345:
+Argument of type 'RedisClient' is not assignable to
+parameter of type 'RateLimiterStore'.
+  Property 'incr' is missing in type 'RedisClient'.
+
+src/lib/rate-limit.ts:61:5 - error TS2322:
+Type 'Promise<number | null>' is not assignable to
+type 'Promise<number>'.
+
+Found 2 errors in 1 file.`,
+  },
+  { status: 'secondary', icon: 'player-skip-forward', name: 'Deploy', time: '-', detail: 'Skipped because Compile failed' },
+]
+
+const nextSteps = [
+  { title: 'Fix the type errors in <code>rate-limit.ts</code>', description: 'Add the missing <code>incr</code> method to <code>RedisClient</code> and return <code>Promise&lt;number&gt;</code> from it.' },
+  { title: 'Push the fix to <a href="#">feat/redis-limiter</a>', description: 'Every push starts a new preview build for this branch.' },
+  { title: 'Or retry this deployment', description: 'Runs the same commit again. Use it only if you think the failure was temporary.' },
+]
+---
+
+<DefaultLayout title="Deployment failed" pageHeader={false} pageMenu="extra.deployment-failed" description="Failed deployment details with build steps, error log, failure summary and next steps.">
+  <ProjectHeader name="pulse-api" section="Deployments" badge="Failed" badgeColor="danger" active="deployments">
+    <ButtonList>
+      <Button text="View full logs" />
+      <Button text="Retry deployment" color="primary" icon="refresh" />
+    </ButtonList>
+  </ProjectHeader>
+
+  <Alert color="danger" title="Build failed at Compile" description="The preview build stopped after 1m 12s with 2 TypeScript errors in <code>src/lib/rate-limit.ts</code>. Production on <a href='#'>api.pulsehq.dev</a> is not affected." class="mb-3" />
+
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <CardTitle>Deployment</CardTitle>
+          <CardActions>
+            <span class="text-secondary">Started 1 day ago</span>
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <Datagrid>
+            <DatagridItem title="Status">
+              <span class="d-inline-flex align-items-center gap-2">
+                <StatusDot color="danger" />
+                Error
+              </span>
+              <span class="text-secondary ms-1">failed at Compile after 1m 12s</span>
+            </DatagridItem>
+            <DatagridItem title="Source">
+              <a href="#" class="text-reset">
+                <Icon name="git-branch" class="icon-inline" />
+                feat/redis-limiter
+              </a>
+              <span class="text-secondary ms-1"><code>2e77b09</code> Migrate rate limiter to Redis</span>
+            </DatagridItem>
+            <DatagridItem title="Created">
+              Jul 28, 2026 at 09:41
+              <span class="text-secondary">by k.adamski</span>
+            </DatagridItem>
+            <DatagridItem title="Environment">
+              <Badge text="Preview" color="secondary" light />
+            </DatagridItem>
+            <DatagridItem title="Preview URL">
+              <span class="text-secondary">pulse-api-2e77b09.relay.app, not deployed</span>
+            </DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-7">
+      <Card>
+        <CardHeader>
+          <CardTitle>Build steps</CardTitle>
+          <CardActions>
+            <span class="text-secondary">3 passed, 1 failed, 1 skipped</span>
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <ul class="timeline mb-0">
+            {
+              buildSteps.map((step) => (
+                <li class="timeline-event">
+                  <div class:list={['timeline-event-icon', `bg-${step.status}-lt`, `text-${step.status}`]}>{step.icon && <Icon name={step.icon} />}</div>
+                  <Card class="timeline-event-card">
+                    <CardBody class:list={{ 'text-secondary': step.status === 'secondary' }}>
+                      <div class="d-flex justify-content-between gap-2">
+                        <strong class:list={{ 'text-danger': step.status === 'danger' }}>{step.name}</strong>
+                        <span class="text-secondary">{step.time}</span>
+                      </div>
+                      <div class="text-secondary" set:html={step.detail} />
+                      {step.error && (
+                        <>
+                          {/* prettier-ignore */}
+                          <pre class="mt-2 mb-2"><code set:text={step.error} /></pre>
+                          <a href="#">Open the full Compile log</a>
+                        </>
+                      )}
+                    </CardBody>
+                  </Card>
+                </li>
+              ))
+            }
+          </ul>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Failure summary" />
+            <CardBody>
+              <Datagrid style="--tblr-datagrid-item-width: 10rem">
+                <DatagridItem title="Exit code"><code>2</code></DatagridItem>
+                <DatagridItem title="Failed step">Compile</DatagridItem>
+                <DatagridItem title="Errors">2 TypeScript errors</DatagridItem>
+                <DatagridItem title="File"><code>src/lib/rate-limit.ts</code></DatagridItem>
+                <DatagridItem title="Duration">1m 12s</DatagridItem>
+                <DatagridItem title="Region"><code>fra1</code></DatagridItem>
+              </Datagrid>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Next steps" />
+            <CardBody>
+              <ol class="list-unstyled space-y mb-0">
+                {
+                  nextSteps.map((step, index) => (
+                    <li class="d-flex gap-3">
+                      <Avatar placeholder={String(index + 1)} size="sm" />
+                      <div>
+                        <div set:html={step.title} />
+                        <div class="text-secondary" set:html={step.description} />
+                      </div>
+                    </li>
+                  ))
+                }
+              </ol>
+            </CardBody>
+            <CardFooter>
+              <ButtonList class="flex-column">
+                <Button text="Retry deployment" color="primary" icon="refresh" block />
+                <Button text="View full logs" block />
+              </ButtonList>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>
