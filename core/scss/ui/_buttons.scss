@@ -5,11 +5,6 @@
 //
 @use '../config' as *;
 
-// Generic --theme-* custom properties (mixins/_theme.scss), modeled on
-// Bootstrap v6's `.theme-*` generator — reused as-is once other components
-// (alert, badge, …) adopt the same contract.
-@include generate-theme-classes();
-
 // stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
 // scss-docs-start btn-css-vars
@@ -113,11 +108,9 @@ $btn-tokens: defaults(
   --btn-hover-color: var(--body-color);
 }
 
+// `.btn-{color} { @extend .theme-{color}; }` lives in _extends.scss (see its
+// header comment: @extend only reaches modules this file loads).
 @each $color, $value in map.merge($theme-colors, $social-colors) {
-  .btn-#{$color} {
-    @extend .theme-#{$color};
-  }
-
   .btn-outline-#{$color},
   .btn-outline.btn-#{$color} {
     --btn-color: var(--#{$color});

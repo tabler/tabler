@@ -110,8 +110,5 @@ $alert-tokens: defaults(
   border-color: var(--border-color);
 }
 
-@each $name, $color in $theme-colors {
-  .alert-#{$name} {
-    @include theme-color-vars($name);
-  }
-}
+// `.alert-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+// its header comment: @extend only reaches modules this file loads).

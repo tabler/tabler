@@ -10,8 +10,30 @@
 // Rules containing only `@extend` emit no CSS of their own, so placing them
 // here does not change the compiled output — each extension is applied
 // in-place to the rules it extends.
+@use 'sass:map';
 @use 'config' as *;
 @use 'core';
+
+// Generic .theme-{color} classes (mixins/_theme.scss) plus every component's
+// own `.component-{color}` hook onto them — cross-module for the same reason
+// as everything else in this file: @extend can't reach ui/_buttons.scss (or
+// any sibling module) from ui/_alerts.scss etc.
+@include generate-theme-classes();
+
+@each $color, $value in map.merge($theme-colors, $social-colors) {
+  .btn-#{$color},
+  .status-#{$color} {
+    @extend .theme-#{$color};
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .alert-#{$name},
+  .toast-#{$name},
+  .bg-pattern-#{$name} {
+    @extend .theme-#{$name};
+  }
+}
 
 // Heading helpers (from `bootstrap/_type.scss`)
 .h1 {
