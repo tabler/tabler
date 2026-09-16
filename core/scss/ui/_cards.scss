@@ -423,33 +423,34 @@ Card optinos
 /**
 Card status
  */
-.card-status-top {
+// The strip is a full-size overlay with the card's own radius, masked down to
+// a band along one edge, so the colored edge follows the card's rounded
+// corners exactly instead of a separate box whose radius never matches.
+.card-status-top,
+.card-status-start,
+.card-status-bottom {
+  --card-status-size: #{$card-status-size};
+  --card-status-offset: #{$card-status-offset};
   position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: $card-status-offset;
-  top: $card-status-offset;
-  height: $card-status-size;
-  @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
+  inset: var(--card-status-offset);
+  pointer-events: none;
+  @include border-radius(var(--card-border-radius));
+}
+
+.card-status-top {
+  mask-image: linear-gradient(to bottom, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 .card-status-start {
-  position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: auto;
-  top: $card-status-offset;
-  bottom: $card-status-offset;
-  width: $card-status-size;
-  @include border-radius(var(--card-border-radius) 0 0 var(--card-border-radius));
+  mask-image: linear-gradient(to right, #000 var(--card-status-size), transparent var(--card-status-size));
+
+  [dir="rtl"] & {
+    mask-image: linear-gradient(to left, #000 var(--card-status-size), transparent var(--card-status-size));
+  }
 }
 
 .card-status-bottom {
-  position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: $card-status-offset;
-  top: initial;
-  bottom: $card-status-offset;
-  height: $card-status-size;
-  @include border-radius(0 0 var(--card-border-radius) var(--card-border-radius));
+  mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 /**
