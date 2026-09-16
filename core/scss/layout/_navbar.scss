@@ -29,6 +29,11 @@
     .nav-link {
       justify-content: start;
       padding: var(--sidebar-nav-padding-y) var(--sidebar-nav-padding-x);
+
+      // In a vertical list the badge sits at the end of the row.
+      .badge:not(:empty) {
+        margin-inline-start: auto;
+      }
     }
 
     // One line, ellipsized — a title never wraps, so rows keep their height
@@ -344,13 +349,23 @@ Navbar
       min-height: 2.5rem;
       @include border-radius(var(--border-radius));
 
+      // A badge with text is part of the link's row, after the title. Only an
+      // empty badge is a notification dot pinned to the link's corner, so the
+      // absolute positioning is limited to `:empty` — a text badge positioned
+      // that way overlapped the title and, in a stacked list, hung past the
+      // link's edge and made the page scroll sideways.
       .badge {
-        position: absolute;
-        inset-inline-end: 0.5rem;
-        top: 0.5rem;
+        margin-inline-start: $spacer-2;
 
-        /* rtl:ignore */
-        transform: translate(calc(var(--dir) * 50%), -50%);
+        &:empty {
+          position: absolute;
+          inset-inline-end: 0.5rem;
+          top: 0.5rem;
+          margin-inline-start: 0;
+
+          /* rtl:ignore */
+          transform: translate(calc(var(--dir) * 50%), -50%);
+        }
       }
     }
   }
