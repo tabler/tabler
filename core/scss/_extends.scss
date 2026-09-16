@@ -58,6 +58,18 @@
   }
 }
 
+// .table-{color} (bootstrap/_tables.scss, table-variant() mixin) computes its
+// own row/stripe/hover/active shades in Sass at compile time — a different
+// mechanism from --theme-*, kept as-is to not change how the 8 existing
+// variants already look. Extending .theme-{color} here only adds the shared
+// contract on top, so something nested inside a colored row (a .btn, a
+// .badge) can still pick up the same color via inheritance.
+@each $name in map.keys($table-variants) {
+  .table-#{$name} {
+    @extend .theme-#{$name};
+  }
+}
+
 // Heading helpers (from `bootstrap/_type.scss`)
 .h1 {
   @extend h1;
