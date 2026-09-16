@@ -2,8 +2,15 @@
 
 :root {
   --gl-star-size: auto;
-  --gl-star-color: var(--yellow);
   --gl-star-color-inactive: var(--border-color);
+}
+
+// --gl-star-color lives on .gl-star-rating (the widget's actual rendered
+// root), not :root: a var(--theme-x, …) fallback evaluated at :root freezes
+// on the fallback forever, since <html> never has an ambient .theme-* of its
+// own to pick up — the same lesson as bootstrap/_list-group.scss.
+.gl-star-rating {
+  --gl-star-color: var(--theme-bg, var(--yellow));
 }
 
 [data-star-rating] {

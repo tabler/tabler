@@ -70,6 +70,18 @@ $badge-tokens: defaults(
 // `.badge-outline` was removed in 2.0 — use a soft `.badge.bg-{color}-lt` badge instead.
 
 //
+// Light badge
+//
+// Same soft look as `.bg-{color}-lt` (the raw color as text, on its own light
+// tint), but ambient — reads --theme-* instead of needing a color utility
+// per instance. Falls back to the same neutral defaults as a plain .badge
+// when nothing wraps it in a .theme-{color}.
+.badge-lt {
+  --badge-color: var(--theme-bg, #{$badge-color});
+  --badge-bg: var(--theme-lt, #{$badge-bg-color});
+}
+
+//
 // Pill badge
 //
 .badge-pill {
