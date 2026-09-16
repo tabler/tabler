@@ -69,6 +69,17 @@ A short prompt is usually enough:
 Read https://docs.tabler.io/ui/components/card.md and build a card with a header, a footer and a table inside.
 ```
 
+## Agent skill
+
+Coding agents that support [Agent Skills](https://agentskills.io) can load a ready-made Tabler skill instead of a prompt. It tells the agent how to install Tabler, how a page is structured, where to read the markup of a component and which rules keep the output consistent.
+
+- `https://docs.tabler.io/.well-known/agent-skills/index.json` - the discovery index, per the [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc).
+- `https://docs.tabler.io/.well-known/agent-skills/tabler/SKILL.md` - the skill itself.
+
+To use it in a project, copy `SKILL.md` into your agent's skills directory, for example `.claude/skills/tabler/SKILL.md` for Claude Code. The index carries a `sha256` digest of the file, so a tool can check the copy is intact.
+
+The same resources are also listed in `https://docs.tabler.io/.well-known/ai-catalog.json`, an [Agentic Resource Discovery](https://agenticresourcediscovery.org) manifest that registries use to index a site.
+
 ## Where the markup comes from
 
 The examples are taken from the rendered page, not from the documentation source. A `.md` file gives you the same markup as the copy button on the html page, with every icon and helper already expanded to plain html.
