@@ -423,25 +423,18 @@ Card optinos
 /**
 Card status
  */
-// ::before carries the actual corner radius so it isn't clamped down by the strip's own thinness.
 .card-status-top {
   position: absolute;
   inset-inline-start: $card-status-offset;
   inset-inline-end: $card-status-offset;
   top: $card-status-offset;
   height: $card-status-size;
-  overflow: hidden;
+  @include border-radius(var(--border-radius-pill) var(--border-radius-pill) 0 0);
+}
 
-  &::before {
-    position: absolute;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    top: 0;
-    height: var(--card-border-radius);
-    content: '';
-    background: inherit;
-    @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
-  }
+.card:has(> .card-status-top) {
+  border-start-start-radius: $card-status-size;
+  border-start-end-radius: $card-status-size;
 }
 
 .card-status-start {
@@ -451,18 +444,12 @@ Card status
   top: $card-status-offset;
   bottom: $card-status-offset;
   width: $card-status-size;
-  overflow: hidden;
+  @include border-radius(var(--border-radius-pill) 0 0 var(--border-radius-pill));
+}
 
-  &::before {
-    position: absolute;
-    inset-inline-start: 0;
-    top: 0;
-    bottom: 0;
-    width: var(--card-border-radius);
-    content: '';
-    background: inherit;
-    @include border-radius(var(--card-border-radius) 0 0 var(--card-border-radius));
-  }
+.card:has(> .card-status-start) {
+  border-start-start-radius: $card-status-size;
+  border-end-start-radius: $card-status-size;
 }
 
 .card-status-bottom {
@@ -472,18 +459,12 @@ Card status
   top: initial;
   bottom: $card-status-offset;
   height: $card-status-size;
-  overflow: hidden;
+  @include border-radius(0 0 var(--border-radius-pill) var(--border-radius-pill));
+}
 
-  &::before {
-    position: absolute;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    bottom: 0;
-    height: var(--card-border-radius);
-    content: '';
-    background: inherit;
-    @include border-radius(0 0 var(--card-border-radius) var(--card-border-radius));
-  }
+.card:has(> .card-status-bottom) {
+  border-end-start-radius: $card-status-size;
+  border-end-end-radius: $card-status-size;
 }
 
 /**
