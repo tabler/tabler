@@ -1,0 +1,65 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Range from '@ui/Range.astro'
+---
+
+<DefaultLayout title="Range" pageMenu="form.range" description="A native range input for picking a single value or a min/max pair.">
+  <DocsLink slot="page-header-actions" path="/ui/forms/range" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A plain <code>.form-range</code> input, unchanged from a native <code>&lt;input type="range"&gt;</code>.</CardSubtitle>
+          <Range value={40} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Filled track</CardTitle>
+          <CardSubtitle>Add <code>connect</code> (<code>data-bs-toggle="range"</code>) for a filled track and a value tooltip.</CardSubtitle>
+          <Range value={40} connect />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Dual handle</CardTitle>
+          <CardSubtitle>Pass a <code>[min, max]</code> value for two handles sharing one track.</CardSubtitle>
+          <Range value={[20, 80]} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>The <code>disabled</code> attribute works the same as any other native input.</CardSubtitle>
+          <Range value={40} connect disabled />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Invalid</CardTitle>
+          <CardSubtitle>Add <code>.is-invalid</code> to flag the value, same as other form controls.</CardSubtitle>
+          <Range value={40} connect class="is-invalid" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

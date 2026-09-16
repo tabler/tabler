@@ -34,7 +34,11 @@ export const redirects: Record<string, Redirect> = {
     ].map(([from, to]): [string, Redirect] => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
   ),
   // Components that need a third-party library moved to /ui/plugins/.
-  ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+  ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+  // Range dropped noUiSlider for a native <input type="range">, so it's a forms
+  // component again rather than a plugin.
+  '/ui/components/range-slider': { status: 301, destination: '/ui/forms/range' },
+  '/ui/plugins/range-slider': { status: 301, destination: '/ui/forms/range' },
   // Pre-Astro plural urls for two of those pages, sent straight to the new home.
   '/ui/components/charts': { status: 301, destination: '/ui/plugins/chart' },
   '/ui/components/vector-maps': { status: 301, destination: '/ui/plugins/vector-map' },

@@ -1,59 +1,37 @@
 ---
-// With an id → a noUiSlider div + init script; without an id → a native <input type=range>.
-import CaptureScript from '../components/CaptureScript.astro';
+// A native <input type="range">. A plain `value` renders unenhanced; passing
+// `connect` or a `[min, max]` value opts into the `Range` component for a
+// filled track, a value tooltip and (for a `[min, max]` value) dual handles.
 interface Props {
 	min?: number;
 	max?: number;
-	/** single handle, or an array for a multi-handle slider */
+	/** single handle, or a [min, max] pair for a dual-handle range */
 	value?: number | number[];
 	id?: string;
 	connect?: boolean;
 	class?: string;
+	/** remaining attributes (disabled, name, aria-*, data-*, …) are forwarded to the input(s) */
+	[key: string]: unknown;
 }
 
-const { min = 0, max = 100, value = 50, id, connect = false, class: className } = Astro.props;
+const { min = 0, max = 100, value = 50, id, connect = false, class: className, ...rest } = Astro.props;
 const step = 10;
 
-const numericValues = Array.isArray(value) ? value : [value];
-const size = numericValues.length;
-const startValue = size > 1 ? numericValues : numericValues[0];
-
-// Connect array: alternate false/true for mid segments, then true, false.
-let connectValue;
-if (size > 1 || connect) {
-	const parts: boolean[] = [];
-	for (let i = 2; i <= size; i++) parts.push((i - 2) % 2 !== 0);
-	connectValue = [...parts, true, false];
-}
-
-const rangeId = `range-${id}`;
+const values = Array.isArray(value) ? value : [value];
+const isDual = values.length > 1;
+// `id` used to select the noUiSlider target, which only ever rendered the
+// enhanced (filled/tooltip) look — keep that the same for existing callers.
+const enhanced = isDual || connect || Boolean(id);
 ---
 
 {
-	id ? (
-		<div class:list={['form-range mb-2', className]} id={rangeId} />
+	isDual ? (
+		<div class:list={['form-range mb-2', className]} id={id} data-bs-toggle="range">
+			{values.map((v) => (
+				<input type="range" class="form-range-input" value={v} min={min} max={max} step={step} {...rest} />
+			))}
+		</div>
 	) : (
-		<input type="range" class:list={['form-range mb-2', className]} value={Array.isArray(value) ? value[0] : value} min={min} max={max} step={step} />
-	)
-}
-{
-	id && (
-		<CaptureScript>
-			<!-- BEGIN RANGE -->
-			<script is:inline define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
-				function initRange() {
-					window.noUiSlider &&
-						noUiSlider.create(document.getElementById(rangeId), {
-							start: startValue,
-							...(connectValue ? { connect: connectValue } : {}),
-							step,
-							range: { min, max },
-						});
-				}
-
-				document.readyState !== 'loading' ? initRange() : document.addEventListener('DOMContentLoaded', initRange, { once: true });
-			</script>
-			<!-- END RANGE -->
-		</CaptureScript>
+		<input type="range" class:list={['form-range mb-2', className]} id={id} value={values[0]} min={min} max={max} step={step} data-bs-toggle={enhanced ? 'range' : undefined} {...rest} />
 	)
 }
