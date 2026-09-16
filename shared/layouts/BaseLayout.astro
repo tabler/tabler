@@ -28,9 +28,10 @@ const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description, t
 // script runs, so a page keeps its variant until the visitor chooses otherwise.
 const themeAttributes = themeDataAttributes(themeSettings)
 
-// Development build: unminified assets, dev favicon.
-const environment = 'development'
-const min = environment === 'development' ? '' : '.min'
+// Development build: unminified assets, dev favicon (same rule as DocsLayout).
+const environment = process.env.NODE_ENV || 'production'
+const isDevelopment = environment === 'development'
+const min = isDevelopment ? '' : '.min'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
 
@@ -55,8 +56,8 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <title>{title ? `${title} - ` : ''}{site.title} - {site.descriptionShort}</title>
     <meta name="description" content={description ?? site.descriptionShort} />
 
-    <link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
-    <link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
+    <link rel="icon" href={`${base}/favicon${isDevelopment ? '-dev' : ''}.ico`} type="image/x-icon" />
+    <link rel="shortcut icon" href={`${base}/favicon${isDevelopment ? '-dev' : ''}.ico`} type="image/x-icon" />
     <!-- END META -->
 
     {
