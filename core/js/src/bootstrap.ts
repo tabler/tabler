@@ -12,6 +12,7 @@ export { default as Dropdown } from './bootstrap/dropdown'
 export { default as Modal } from './bootstrap/modal'
 export { default as Offcanvas } from './bootstrap/offcanvas'
 export { default as Popover } from './bootstrap/popover'
+export { default as Range } from './bootstrap/range'
 export { default as ScrollSpy } from './bootstrap/scrollspy'
 export { default as Tab } from './bootstrap/tab'
 export { default as Toast } from './bootstrap/toast'
@@ -25,6 +26,7 @@ import Dropdown from './bootstrap/dropdown'
 import Modal from './bootstrap/modal'
 import Offcanvas from './bootstrap/offcanvas'
 import Popover from './bootstrap/popover'
+import Range from './bootstrap/range'
 import ScrollSpy from './bootstrap/scrollspy'
 import Tab from './bootstrap/tab'
 import Toast from './bootstrap/toast'
@@ -39,6 +41,7 @@ export const bootstrap = {
   Modal,
   Offcanvas,
   Popover,
+  Range,
   ScrollSpy,
   Tab,
   Toast,

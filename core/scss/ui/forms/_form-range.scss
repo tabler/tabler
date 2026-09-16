@@ -1,0 +1,141 @@
+@use '../../config' as *;
+
+// The `Range` component (`data-bs-toggle="range"`) wraps `.form-range` into a
+// container so a filled track and a value tooltip can render on top of the
+// native input(s). A dual-handle range stacks two `.form-range-input`s inside it.
+
+div.form-range {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  // `::before` is the always-visible base track; `::after` is the colored fill
+  // segment painted on top of it (an input's own track is see-through — see
+  // `.form-range-input` below — so without `::before` nothing would show past
+  // the handle).
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    height: var(--range-track-height);
+    pointer-events: none;
+    content: '';
+    transform: translateY(-50%);
+    @include border-radius(var(--range-track-border-radius));
+  }
+
+  &::before {
+    inset-inline: 0;
+    background-color: var(--range-track-bg);
+  }
+
+  &::after {
+    inset-inline-start: var(--range-fill-start, 0%);
+    inset-inline-end: calc(100% - var(--range-fill-end, 0%));
+    background-color: var(--range-thumb-bg);
+  }
+
+  .form-range-input {
+    position: relative;
+    z-index: 1; // `::after`, generated last, would otherwise paint over the thumb.
+    background-color: transparent;
+
+    &::-webkit-slider-runnable-track {
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    &::-moz-range-track {
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  // Dual handle: two inputs share the same track. Only the thumbs stay
+  // clickable/draggable, so a click on the track can't be captured by the
+  // wrong input; the most recently grabbed thumb is raised above the other.
+  &:has(.form-range-input ~ .form-range-input) {
+    .form-range-input {
+      position: absolute;
+      inset-inline-start: 0;
+      width: 100%;
+      pointer-events: none;
+
+      &::-webkit-slider-runnable-track {
+        pointer-events: none;
+      }
+
+      &::-moz-range-track {
+        pointer-events: none;
+      }
+
+      &::-webkit-slider-thumb {
+        pointer-events: auto;
+      }
+
+      &::-moz-range-thumb {
+        pointer-events: auto;
+      }
+
+      &.active {
+        z-index: 2;
+      }
+    }
+  }
+
+  &:has(.form-range-input:disabled)::after {
+    background-color: var(--range-thumb-disabled-bg);
+  }
+}
+
+// `:user-invalid` needs no `.was-validated` gate: unlike text inputs, a range
+// always carries a value, so there's nothing to validate until the user acts.
+// `.is-invalid` covers server-side/manually-flagged validation, same as the
+// other form controls. Overriding `--range-thumb-bg` (rather than `color`)
+// recolors both the thumb and the fill: `background-color: currentcolor`
+// silently fails to inherit into `::-webkit-slider-thumb`/`::-moz-range-thumb`
+// in every browser tested, so the thumb needs a real custom property.
+.form-range:user-invalid,
+.form-range-input:user-invalid,
+.form-range.is-invalid,
+.form-range-input.is-invalid {
+  --range-thumb-bg: var(--danger);
+}
+
+// A wrapped input's own token declaration otherwise wins over an inherited
+// value, so `.is-invalid` on the wrapper needs to reach the child directly to
+// recolor its thumb too.
+.form-range.is-invalid .form-range-input {
+  --range-thumb-bg: var(--danger);
+}
+
+// A dual-handle wrapper's fill still needs to react when only one child input
+// carries the invalid state.
+div.form-range:has(.form-range-input:user-invalid),
+div.form-range:has(.form-range-input.is-invalid) {
+  --range-thumb-bg: var(--danger);
+}
+
+.form-range-tooltip {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline-start: var(--range-tooltip-position, 0%);
+  z-index: 3;
+  padding: var(--range-tooltip-padding-y) var(--range-tooltip-padding-x);
+  margin-bottom: 0.375rem;
+  color: var(--range-tooltip-color);
+  white-space: nowrap;
+  pointer-events: none;
+  background-color: var(--range-tooltip-bg);
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+  transform: translateX(-50%);
+  @include font-size(var(--range-tooltip-font-size));
+  @include border-radius(var(--range-tooltip-border-radius));
+}
+
+.form-range-input:hover + .form-range-tooltip,
+.form-range-input:focus-visible + .form-range-tooltip,
+.form-range-input.active + .form-range-tooltip {
+  opacity: 1;
+}
