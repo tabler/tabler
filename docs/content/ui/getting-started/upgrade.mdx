@@ -292,6 +292,16 @@ The `*.rtl.css` files are still published, so nothing breaks if you keep them. S
 
 - **ApexCharts** moved from 3.54 to 7.0. If you install ApexCharts yourself, update it too and read the [ApexCharts changelog](https://github.com/apexcharts/apexcharts.js/releases) - the major versions renamed several options. Charts also read `--chart-{id}-color-{index}` variables now.
 - **Tabler Icons** moved to 3.46, and **Tabler Illustrations** to 1.16.
+- **Tom Select** cannot be compiled from its Sass sources against Tabler anymore. Its `tom-select.bootstrap5.scss` reads Bootstrap variables such as `$border-color` and passes them to `color.adjust()`, but in Tabler these are now CSS variables like `var(--gray-200)`, which is not a color to Sass. Use the compiled `tom-select.bootstrap5.css` instead, or set the two variables Tom Select adjusts to plain colors before importing it:
+
+  ```scss
+  // `as *` keeps Tabler's variables visible to the @import below
+  @use '@tabler/core/scss/tabler' as *;
+
+  $select-color-text: #182433;
+  $select-color-item-border: #e6e7e9;
+  @import 'tom-select/dist/scss/tom-select.bootstrap5';
+  ```
 
 ## Browser support
 
