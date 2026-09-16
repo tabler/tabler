@@ -429,26 +429,28 @@ Card status
 .card-status-top,
 .card-status-start,
 .card-status-bottom {
+  --card-status-size: #{$card-status-size};
+  --card-status-offset: #{$card-status-offset};
   position: absolute;
-  inset: $card-status-offset;
+  inset: var(--card-status-offset);
   pointer-events: none;
   @include border-radius(var(--card-border-radius));
 }
 
 .card-status-top {
-  mask-image: linear-gradient(to bottom, #000 $card-status-size, transparent $card-status-size);
+  mask-image: linear-gradient(to bottom, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 .card-status-start {
-  mask-image: linear-gradient(to right, #000 $card-status-size, transparent $card-status-size);
+  mask-image: linear-gradient(to right, #000 var(--card-status-size), transparent var(--card-status-size));
 
   [dir="rtl"] & {
-    mask-image: linear-gradient(to left, #000 $card-status-size, transparent $card-status-size);
+    mask-image: linear-gradient(to left, #000 var(--card-status-size), transparent var(--card-status-size));
   }
 }
 
 .card-status-bottom {
-  mask-image: linear-gradient(to top, #000 $card-status-size, transparent $card-status-size);
+  mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 /**
