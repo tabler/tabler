@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../config' as *;
 
 $input-border-width: 1px;
@@ -50,6 +51,23 @@ $input-border-width: 1px;
     &,
     &:not(.single) {
       background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
+    }
+  }
+
+  // The same preset also colours the wrapper border and the focused
+  // `.ts-control` with `var(--bs-form-valid-color)` / `--bs-form-invalid-color`.
+  // Those variables do not exist in Tabler, so the border falls back to
+  // `currentColor` and the focus ring disappears. Repeat Tabler's own
+  // validation colours; `!important` for the same reason as `.ts-dropdown`
+  // below.
+  @each $state, $data in $form-validation-states {
+    &.is-#{$state} {
+      border-color: map.get($data, 'border-color') !important;
+
+      &.focus .ts-control {
+        border-color: map.get($data, 'border-color') !important;
+        box-shadow: map.get($data, 'focus-box-shadow') !important;
+      }
     }
   }
 }
