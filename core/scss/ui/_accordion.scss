@@ -94,17 +94,14 @@
     color: var(--accordion-active-color);
     transform: rotate(-180deg);
   }
-
-  path {
-    transition: $transition-time opacity;
-  }
 }
 
+// A plus turns into a close icon by rotating a quarter turn. Rotating the
+// toggle instead of hiding an svg path works with every icon source — inline
+// svg, a sprite `<use>`, an icon font (#2606).
 .accordion-button-toggle-plus {
   .accordion-button:not(.collapsed) & {
-    path:first-child {
-      opacity: 0;
-    }
+    transform: rotate(45deg);
   }
 }
 
