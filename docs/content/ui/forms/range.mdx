@@ -1,0 +1,74 @@
+---
+title: Range
+order: 8
+summary: A native range input for picking a single value, with an optional filled track, value tooltip, and a two-handle min/max variant.
+description: Let users pick a value, or a min/max pair, by dragging a native range input. Add a filled track and a value tooltip with the Range component.
+related: [/ui/forms/elements, /ui/forms/validation]
+---
+
+import Example from '@components/Example.astro';
+
+## Overview
+
+A range input lets users pick a value by dragging a handle instead of typing it. Use it when the rough position matters more than the exact number, for example a volume level or a price range.
+
+`.form-range` is a plain native `<input type="range">`, styled to match the rest of the interface. It works with no JavaScript.
+
+<Example>
+<input type="range" class="form-range" min="0" max="100" value="40" />
+</Example>
+
+## Filled track and tooltip
+
+Add `data-bs-toggle="range"` to turn on the `Range` component. It fills the track up to the current value and shows the value in a tooltip while the handle is hovered, focused, or dragged.
+
+<Example>
+<input type="range" class="form-range" min="0" max="100" value="40" data-bs-toggle="range" />
+</Example>
+
+```html
+<input type="range" class="form-range" min="0" max="100" value="40" data-bs-toggle="range" />
+```
+
+## Two handles
+
+For a min/max range, wrap two inputs in a `.form-range` container with `data-bs-toggle="range"`. The component keeps the two values from crossing: dragging one past the other pushes it along instead.
+
+<Example>
+<div class="form-range" data-bs-toggle="range">
+  <input type="range" class="form-range-input" min="0" max="100" value="20" />
+  <input type="range" class="form-range-input" min="0" max="100" value="80" />
+</div>
+</Example>
+
+```html
+<div class="form-range" data-bs-toggle="range">
+  <input type="range" class="form-range-input" min="0" max="100" value="20" />
+  <input type="range" class="form-range-input" min="0" max="100" value="80" />
+</div>
+```
+
+## Disabled and invalid
+
+The native `disabled` attribute works the same as on any other input. Add `.is-invalid` to flag the value, the same as other form controls.
+
+<Example>
+<input type="range" class="form-range mb-3" min="0" max="100" value="40" data-bs-toggle="range" disabled />
+<input type="range" class="form-range" min="0" max="100" value="40" data-bs-toggle="range" />
+</Example>
+
+## Reading the value
+
+A range input is a normal form field: it submits with the form under its `name`, and it fires the usual `input` and `change` events. Once the `Range` component is on, it also fires `change.bs.range` on the input (or, for a two-handle range, on the wrapper) with the current values:
+
+```js
+document.querySelector('[data-bs-toggle="range"]').addEventListener('change.bs.range', (event) => {
+  console.log(event.values); // e.g. [20, 80]
+});
+```
+
+## Accessibility
+
+- A native range input gets keyboard support (arrow keys, Home, End, Page Up/Down) and screen reader announcements for free.
+- Give each input a `name` and, for a two-handle range, a distinct `aria-label` (for example "Minimum price" and "Maximum price") so the two handles are told apart.
+- Keep a visible label. `Range` does not add one.

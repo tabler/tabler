@@ -61,6 +61,7 @@ const nativeEvents = new Set([
   'focus',
   'blur',
   'change',
+  'input',
   'reset',
   'select',
   'submit',
