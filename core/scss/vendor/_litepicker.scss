@@ -4,22 +4,23 @@
   --litepicker-month-weekday-color: #{var(--secondary)};
   --litepicker-button-prev-month-color: #{var(--secondary)};
   --litepicker-button-next-month-color: #{var(--secondary)};
-  --litepicker-button-prev-month-color-hover: #{var(--primary)};
-  --litepicker-button-next-month-color-hover: #{var(--primary)};
+  --litepicker-button-prev-month-color-hover: #{var(--theme-bg, var(--primary))};
+  --litepicker-button-next-month-color-hover: #{var(--theme-bg, var(--primary))};
   --litepicker-day-color: var(--body-color);
-  --litepicker-day-color-hover: #{var(--primary)};
-  --litepicker-is-start-color-bg: #{var(--primary)};
-  --litepicker-is-end-color-bg: #{var(--primary)};
-  --litepicker-is-in-range-color: #{var(--info)};
-  --litepicker-is-today-color: #{var(--primary)};
+  --litepicker-day-color-hover: #{var(--theme-bg, var(--primary))};
+  --litepicker-is-start-color-bg: #{var(--theme-bg, var(--primary))};
+  --litepicker-is-end-color-bg: #{var(--theme-bg, var(--primary))};
+  --litepicker-is-in-range-color: #{var(--theme-lt, var(--info))};
+  --litepicker-is-today-color: #{var(--theme-bg, var(--primary))};
   --litepicker-month-header-color: var(--body-color);
   --litepicker-container-months-color-bg: var(--bg-surface);
   font: inherit;
   user-select: none;
 
-  .day-item.is-in-range {
-    --litepicker-day-color: var(--light);
-  }
+  // No .is-in-range text-color override anymore: it used to force white for
+  // contrast against a saturated --info fill. The fill above is now a subtle
+  // --theme-lt tint, so the default --litepicker-day-color (--body-color)
+  // already reads correctly — forcing white here would go invisible on it.
 
   svg {
     fill: none !important;
