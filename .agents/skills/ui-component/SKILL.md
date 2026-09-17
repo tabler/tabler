@@ -84,7 +84,7 @@ Props are camelCase. Booleans default to `false` — never `showClose = true`.
 - Use `class:list={[...]}` with falsy entries for conditionals; it drops them and merges the caller's `className` for you. `.filter(Boolean).join(' ')` is only for a string you have to pass to a helper (`iconSvg`).
 - Put `className` last so the caller wins.
 - Do not emit a class for a default (`size !== 'md' && \`btn-${size}\``).
-- No `<style>` blocks and no CSS imports in the frontmatter. Styling is `core/scss/`.
+- No `<style>` blocks and no CSS imports in the frontmatter. Styling is `core/scss/`. A `<style>` makes Astro stamp `data-astro-cid-*` on every element the component renders, and its custom properties skip the `--tblr-` prefixing in `build-css.ts`.
 
 ## 5. Slots and containers
 
@@ -117,7 +117,7 @@ Heading components pick their own level (`CardTitle` renders `h2`, `as="h3"` for
 - Content that may contain markup or entities (`&hellip;`) → `set:html` / `<Fragment set:html={…} />`. Entities in attribute strings must be passed as an expression (`title={"…&hellip;"}`), because JSX decodes them inside string literals.
 - Boolean attributes are inconsistent: `selected={true}` renders bare, but some (e.g. `multiple`) render `="true"`. Use `multiple ? '' : undefined` when a bare attribute is required, and check the rendered HTML.
 - Client-side behaviour (plugin init, event wiring) does **not** go in an ad-hoc `<script>` — see the `astro-scripts` skill.
-- Icons always through `<Icon name="…" />`, never inline SVG.
+- Icons always through `<Icon name="…" />`, never inline SVG. An unknown name renders nothing and only warns in the build log (`[svg] unknown Tabler icon`), so the page looks fine with a blank button. Check the name in `shared/data/icons.json` before using it: it is `player-play`, not `play`.
 
 ## 7. Logic belongs in `shared/lib`
 
