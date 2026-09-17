@@ -20,7 +20,7 @@ import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sync } from 'glob'
 import GithubSlugger from 'github-slugger'
-import { redirects } from '../docs/lib/redirects.ts'
+import { redirects } from '../docs/lib/redirects.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
