@@ -20,7 +20,6 @@ export const cssVarIgnore = [
   /^--apx-/, // apexcharts
   /^--bs-/, // bootstrap
   /^--fc-/, // fullcalendar
-  /^--gl-/, // star-rating.js
   /^--plyr-/, // plyr
   /^--ts-/, // tom-select
   '--section-bg', // marketing sections, unprefixed since it was introduced
