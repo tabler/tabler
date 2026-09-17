@@ -1,5 +1,6 @@
 // stylelint-disable declaration-no-important
 
+@use 'sass:map';
 @use '../config' as *;
 
 .ribbon {
@@ -50,15 +51,13 @@
     border-top-color: transparent;
   }
 
-  @if $enable-extra-colors {
-    @each $color, $value in $extra-colors {
-      &.bg-#{$color} {
-        border-color: var(--#{$color});
-      }
+  @each $color, $value in map.merge($theme-colors, if(sass($enable-extra-colors): $extra-colors; else: ())) {
+    &.bg-#{$color} {
+      border-color: var(--#{$color});
+    }
 
-      &.bg-#{$color}-lt {
-        border-color: color-transparent(var(--#{$color}), 0.1) !important;
-      }
+    &.bg-#{$color}-lt {
+      border-color: color-transparent(var(--#{$color}), 0.1) !important;
     }
   }
 

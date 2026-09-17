@@ -377,35 +377,39 @@ Navbar
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-        @include navbar-vertical-nav();
+      // `.navbar-expand` (no infix) is always expanded: `$next` is null there, and
+      // media-breakpoint-down(null) would emit the mobile rules unconditionally.
+      @if $next {
+        @include media-breakpoint-down($next) {
+          @include navbar-vertical-nav();
 
-        // Below the breakpoint the vertical navbar is a top bar row: toggler,
-        // brand, and whatever trails them (a user block, or nothing). Auto
-        // margins keep the brand centered either way — space-between alone
-        // would push it to the far edge when nothing follows it.
-        &.navbar-vertical .navbar-brand {
-          margin-inline: auto;
-        }
-
-        // In the stacked mobile menu nothing pins the trailing group to the
-        // bottom, so a small gap marks it as a separate part of the menu.
-        &.navbar-vertical .navbar-side {
-          margin-top: $sidebar-inset;
-        }
-
-        // Below the breakpoint the navbar-footer sits in the top bar row:
-        // the avatar alone, with its menu dropping down instead of up.
-        .navbar-footer {
-          .nav-link-title {
-            display: none;
+          // Below the breakpoint the vertical navbar is a top bar row: toggler,
+          // brand, and whatever trails them (a user block, or nothing). Auto
+          // margins keep the brand centered either way — space-between alone
+          // would push it to the far edge when nothing follows it.
+          &.navbar-vertical .navbar-brand {
+            margin-inline: auto;
           }
 
-          .dropup .dropdown-menu {
-            inset-inline-start: auto;
-            inset-inline-end: 0;
-            top: 100%;
-            bottom: auto;
+          // In the stacked mobile menu nothing pins the trailing group to the
+          // bottom, so a small gap marks it as a separate part of the menu.
+          &.navbar-vertical .navbar-side {
+            margin-top: $sidebar-inset;
+          }
+
+          // Below the breakpoint the navbar-footer sits in the top bar row:
+          // the avatar alone, with its menu dropping down instead of up.
+          .navbar-footer {
+            .nav-link-title {
+              display: none;
+            }
+
+            .dropup .dropdown-menu {
+              inset-inline-start: auto;
+              inset-inline-end: 0;
+              top: 100%;
+              bottom: auto;
+            }
           }
         }
       }
