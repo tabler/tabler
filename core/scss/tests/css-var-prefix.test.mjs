@@ -44,18 +44,26 @@ describe('css custom-property prefixing', () => {
     await expect(buildCustomPropertyNames('tabler-vendors.scss')).resolves.toMatchSnapshot()
   })
 
-  it('has no dead entries in the ignore list', async () => {
-    // A pattern matching nothing means the vendor it protected is gone, or the
-    // name drifted — either way the entry no longer guards anything.
-    // Every entry point, since foreign names are spread across the bundles.
-    const entries = readdirSync(scssDir).filter((file) => file.endsWith('.scss') && !file.startsWith('_'))
-    const perEntry = await Promise.all(entries.map(buildCustomPropertyNames))
-    const all = [...new Set(perEntry.flat())]
+  // Compiles every top-level entry point (~13 full Sass builds) — comfortably
+  // under a second locally, but tight against the 5s default on a loaded CI
+  // runner as the framework's total SCSS surface grows.
+  const deadEntriesTimeout = 15000
 
-    for (const pattern of cssVarIgnore) {
-      const matches =
-        pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
-      expect(matches, `unused cssVarIgnore entry: ${pattern}`).toBe(true)
-    }
-  })
+  it(
+    'has no dead entries in the ignore list',
+    async () => {
+      // A pattern matching nothing means the vendor it protected is gone, or the
+      // name drifted — either way the entry no longer guards anything.
+      // Every entry point, since foreign names are spread across the bundles.
+      const entries = readdirSync(scssDir).filter((file) => file.endsWith('.scss') && !file.startsWith('_'))
+      const perEntry = await Promise.all(entries.map(buildCustomPropertyNames))
+      const all = [...new Set(perEntry.flat())]
+
+      for (const pattern of cssVarIgnore) {
+        const matches = pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
+        expect(matches, `unused cssVarIgnore entry: ${pattern}`).toBe(true)
+      }
+    },
+    deadEntriesTimeout,
+  )
 })
