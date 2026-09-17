@@ -23,6 +23,7 @@ import { site } from '@shared/lib/site'
 import { callouts } from '@components/callouts/index.ts'
 import docs from '@data/docs.json'
 import packageManagers from '@data/package-managers.json'
+import payments from '@data/payments.json'
 import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
 
 // Lazy raw imports, same as CodeDocs.astro — node:fs paths break once this is
@@ -38,12 +39,30 @@ const fence = (code: string, lang = 'html') => `\`\`\`${lang}\n${code.trim()}\n\
  */
 function resolveCodeTokens(snippet: string): string {
   const tokens: Record<string, () => string> = {
-    '${site.cdnUrl}': () => site.cdnUrl,
     '${cdnCssTag()}': cdnCssTag,
     '${cdnJsTag()}': cdnJsTag,
   }
 
-  return Object.entries(tokens).reduce((text, [token, resolve]) => text.replaceAll(token, resolve()), snippet)
+  return Object.entries(tokens)
+    .reduce((text, [token, resolve]) => text.replaceAll(token, resolve()), snippet)
+    .replace(/\$\{site\.(\w+)\}/g, (match, key: string) => siteValue(key) ?? match)
+}
+
+/** A string or number field of `site`, as the MDX pages read it; undefined for anything else. */
+function siteValue(key: string): string | undefined {
+  const value = (site as Record<string, unknown>)[key]
+  return typeof value === 'string' || typeof value === 'number' ? String(value) : undefined
+}
+
+/**
+ * JSX expressions the pages use in prose — `{ site.iconsCount }`,
+ * `{ payments.length }` — and `${site.…}` inside template literals. MDX
+ * evaluates them in the browser; the markdown mirror has to do it here.
+ */
+function resolveExpressions(text: string): string {
+  return resolveCodeTokens(text)
+    .replace(/\{\s*site\.(\w+)\s*\}/g, (match, key: string) => siteValue(key) ?? match)
+    .replace(/\{\s*payments\.length\s*\}/g, String(payments.length))
 }
 
 /** Strip the common leading indentation from a block and trim blank edges. */
@@ -199,12 +218,14 @@ export async function mdxToMarkdown(body: string, examples: (string | null)[] = 
   // top-level imports are wiring, not content
   text = text.replace(/^import\s+.+?from\s+['"][^'"]+['"];?[ \t]*$/gm, '')
 
-  // <Example> slots hold the markup the page is actually documenting
-  const examplePattern = /<Example\b[^>]*>([\s\S]*?)<\/Example>/g
+  // <Example> slots hold the markup the page is actually documenting: either
+  // wrapped in the tag, or passed as `html={\`…\`}` on a self-closing one (that
+  // template literal may contain `>`, so it is matched before the attribute scan)
+  const examplePattern = /<Example\b(?:[^>]*?html=\{`([\s\S]*?)`\})?[^>]*?(?:\/>|>([\s\S]*?)<\/Example>)/g
   const useRendered = examples.length === (text.match(examplePattern)?.length ?? 0)
   let exampleIndex = 0
-  text = text.replace(examplePattern, (_match, inner: string) => {
-    const snippet = (useRendered ? examples[exampleIndex++] : null) ?? dedent(inner)
+  text = text.replace(examplePattern, (_match, html: string | undefined, inner: string | undefined) => {
+    const snippet = (useRendered ? examples[exampleIndex++] : null) ?? dedent(html ?? inner ?? '')
     return snippet ? `\n${fence(snippet)}\n` : ''
   })
 
@@ -244,7 +265,7 @@ export async function mdxToMarkdown(body: string, examples: (string | null)[] = 
   // MDX comments and leftover JSX expressions
   text = text.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 
-  return restoreCode(text, code)
+  return resolveExpressions(restoreCode(text, code))
     .replace(/\n{3,}/g, '\n\n')
     .trim()
 }
