@@ -92,17 +92,28 @@ Never add a `<style>` block to a preview page or a shared component, and never i
 
 If a demo needs a look the framework does not have, either use existing utilities in the markup or add the class to `core/scss/` (`core-scss` skill). If neither fits, keep the plain markup; a demo page never justifies a one-off rule.
 
-## 7. Data and repetition
+## 7. Accessible demo markup
+
+Demo markup is copied as-is, so a shortcut here becomes a shortcut in every user's app. The four that keep coming back:
+
+- An action with no destination is `<button type="button" class="btn">`, never `<a class="btn">` without `href`. An anchor without `href` is not focusable, so keyboard users cannot reach it. An anchor that really links keeps `href`, and `href="#"` is fine for a demo link.
+- Every control has a name. A search box, a table-row `<select>`, a switch in a card footer: give it a `<label for>` or an `aria-label`. `placeholder` is not a name.
+- A `<label>` wraps exactly one control or points at one with `for`. A label wrapping a radio *and* an unrelated dropdown toggle selects the radio when the toggle is clicked.
+- A link or button whose only content is an icon or a logo gets `aria-label`. `<Icon>` renders `aria-hidden`, so without the label the control has no name at all.
+
+Dropdown toggles are `<button type="button" data-bs-toggle="dropdown">`, or `<a href="#" role="button" …>` inside a nav; never a `<label>`. One `.dropdown-menu` per toggle — Bootstrap shows only the first sibling.
+
+## 8. Data and repetition
 
 - Loop over `shared/data/*.json` (`site.json` colors, `people.json`, `flags.json`) instead of pasting 20 near-identical blocks.
 - Cast JSON entries to a named type in the frontmatter when you index into them; `astro check` is part of the quality gates.
 
-## 8. Registering the page
+## 9. Registering the page
 
 - Add the page to `shared/data/menu.json` so it is reachable, and use the same key in `pageMenu`.
 - A new `shared/ui` component usually needs both a demo page and a docs page. After finishing here, check `docs/content/**` and consult the `write-docs` skill if it is missing.
 
-## 9. Verify in the browser
+## 10. Verify in the browser
 
 Never hand the page to the user unchecked.
 
@@ -116,7 +127,7 @@ curl -s http://localhost:3000/badges | grep -o '<h[1-6]' | sort | uniq -c
 
 A demo page should show exactly one `h1` and then `h2`s — no `h3` in the card grid.
 
-## 10. Quality checklist
+## 11. Quality checklist
 
 - [ ] `title` and `description` set; no `pageHeader` repeating the title
 - [ ] `DocsLink` present when a docs page exists; `pnpm run check:docs-links` passes
@@ -124,6 +135,8 @@ A demo page should show exactly one `h1` and then `h2`s — no `h3` in the card 
 - [ ] No raw `card-title` / `card-subtitle` / `page-title` markup
 - [ ] List wrappers instead of per-item margins
 - [ ] No `<style>` block and no CSS import; new looks go to `core/scss/`
+- [ ] Actions are `<button type="button">`, controls and icon-only links have a name, every `<label>` matches one control
+- [ ] Every `<Icon name>` exists in `shared/data/icons.json` (`play` does not; `player-play` does)
 - [ ] `pnpm run format:prettier` and `pnpm run type-check` clean (repo root, not a tail-filtered subset)
 - [ ] Page opened in the browser, console clean, heading order checked
 - [ ] Changeset written with the `generate-changeset` skill

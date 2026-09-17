@@ -57,6 +57,8 @@ Write `--badge-bg`, not `--tblr-badge-bg`. The public `--tblr-` prefix is added 
 
 The consequence to remember: **names owned by third-party libraries must not be prefixed.** `cssVarIgnore` lists them (`--bs-`, `--fc-`, `--gl-`, `--litepicker-`, `--plyr-`, `--ts-`, …). Prefixing one detaches the theming with no error anywhere — the library keeps reading its own name and simply never sees the value. When a vendor override introduces a new foreign name, add it to `cssVarIgnore`; `core/scss/tests/css-var-prefix.test.mjs` snapshots every custom property of `tabler-vendors.scss`, so a missing entry shows up as a `--tblr-`-prefixed foreign name in the snapshot diff.
 
+The snapshot moves in the other direction too. A vendor override that starts reading a Tabler name (`var(--success)`, `var(--form-valid-border-color)`) adds a correctly prefixed `--tblr-*` entry, and the test fails until the snapshot is refreshed. Read the diff: every new name is one Tabler owns → `pnpm --dir core exec vitest run --config vitest.scss.config.mjs -u` and commit the `.snap`; a name a library owns → `cssVarIgnore`, never `-u`.
+
 Global properties (`--dir`, colours, fonts, spacing) live in `_props.scss`, which emits them on `:root, :host`.
 
 ## 4. Dark mode

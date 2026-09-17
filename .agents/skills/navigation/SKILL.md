@@ -3,7 +3,7 @@ name: navigation
 description: >-
   Make a page reachable and keep its links valid — the preview sidebar/navbar
   menu in `shared/data/menu.json`, the docs menu in `shared/data/docs.json`,
-  and the redirects in `docs/astro.config.mjs`. Use whenever a page is added,
+  and the redirects in `docs/lib/redirects.ts`. Use whenever a page is added,
   renamed, moved or removed in `preview/pages/` or `docs/content/`, whenever a
   `pageMenu` key does not highlight the right entry, and whenever a docs URL
   changes. Covers both menu formats, the `pageMenu` key rules and the link
@@ -56,7 +56,7 @@ An array-based tree (`menu`) plus a `links` list for the external links in the d
 
 ## 3. Renamed or removed docs URLs
 
-Add an entry to `redirects` in `docs/astro.config.mjs`, next to the existing ones:
+Add an entry to `redirects` in `docs/lib/redirects.ts`, next to the existing ones. That one table feeds `docs/astro.config.mjs` (real HTTP redirects), `docs/middleware.ts` (which must not rewrite these urls to `.md`) and the link gate, so it is the only place a redirect is written:
 
 ```js
 '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
@@ -72,7 +72,7 @@ Update in the same pass: `shared/data/docs.json`, any `related:` front matter po
 pnpm run check:docs-links
 ```
 
-It resolves, from source and without a build: markdown links and `related:` in `docs/content/**/*.mdx`, menu and link URLs in `shared/data/docs.json`, redirect destinations from `docs/astro.config.mjs`, `href` literals in docs components, `<DocsLink path="…">` and `getDocsUrl('…')` in the demo site, plus asset paths that really render. Anchors are checked against real heading slugs.
+It resolves, from source and without a build: markdown links and `related:` in `docs/content/**/*.mdx`, menu and link URLs in `shared/data/docs.json`, redirect sources and destinations from `docs/lib/redirects.ts`, `href` literals in docs components, `<DocsLink path="…">` and `getDocsUrl('…')` in the demo site, plus asset paths that really render. Anchors are checked against real heading slugs.
 
 It does **not** check `menu.json`: a wrong preview URL or a `pageMenu` key that matches nothing shows up only in the browser. Open the page and confirm the menu entry is highlighted (`astro-dev` skill).
 
@@ -80,7 +80,7 @@ It does **not** check `menu.json`: a wrong preview URL or a `pageMenu` key that 
 
 - [ ] New preview page added to `menu.json` with a `.html` url, and its `pageMenu` prop equals the dot-path of the keys
 - [ ] New docs page added to `docs.json` at the right depth, url absolute and extension-free
-- [ ] Renamed or removed docs URL has a 301 in `docs/astro.config.mjs`
+- [ ] Renamed or removed docs URL has a 301 in `docs/lib/redirects.ts`
 - [ ] `related:` entries and `<DocsLink path="…">` updated to the new path
 - [ ] `pnpm run check:docs-links` clean
 - [ ] Menu highlighting checked in the browser

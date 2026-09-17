@@ -117,7 +117,7 @@ Heading components pick their own level (`CardTitle` renders `h2`, `as="h3"` for
 - Content that may contain markup or entities (`&hellip;`) → `set:html` / `<Fragment set:html={…} />`. Entities in attribute strings must be passed as an expression (`title={"…&hellip;"}`), because JSX decodes them inside string literals.
 - Boolean attributes are inconsistent: `selected={true}` renders bare, but some (e.g. `multiple`) render `="true"`. Use `multiple ? '' : undefined` when a bare attribute is required, and check the rendered HTML.
 - Client-side behaviour (plugin init, event wiring) does **not** go in an ad-hoc `<script>` — see the `astro-scripts` skill.
-- Icons always through `<Icon name="…" />`, never inline SVG.
+- Icons always through `<Icon name="…" />`, never inline SVG. An unknown name renders nothing and only warns in the build log (`[svg] unknown Tabler icon`), so the page looks fine with a blank button. Check the name in `shared/data/icons.json` before using it: it is `player-play`, not `play`.
 
 ## 7. Logic belongs in `shared/lib`
 
