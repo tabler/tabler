@@ -72,6 +72,54 @@ $input-border-width: 1px;
   }
 }
 
+// The bootstrap5 preset hardcodes Bootstrap's own input metrics on
+// `.ts-control` (0.375rem 0.75rem padding, 1.5 line-height), so a Tom Select
+// came out 5px shorter than a `.form-control` next to it (#2567). Use Tabler's
+// input tokens instead, in every size. The multi-value control follows the
+// preset's formula: take the item's 1px padding, 1px border and 3px bottom
+// margin out of the control's padding so the chips fill the same height.
+.ts-wrapper.form-control,
+.ts-wrapper.form-select {
+  .ts-control {
+    padding: $input-padding-y $input-padding-x;
+    font-size: $input-font-size;
+    line-height: $input-line-height;
+  }
+
+  &.multi.has-items .ts-control {
+    padding-top: calc(#{$input-padding-y} - 2px) !important;
+    padding-bottom: calc(#{$input-padding-y} - 5px);
+  }
+
+  &.form-control-sm,
+  &.form-select-sm {
+    .ts-control {
+      padding: $input-padding-y-sm $input-padding-x-sm;
+      font-size: $input-font-size-sm;
+      line-height: $input-line-height-sm;
+    }
+
+    &.multi.has-items .ts-control {
+      padding-top: calc(#{$input-padding-y-sm} - 2px) !important;
+      padding-bottom: calc(#{$input-padding-y-sm} - 5px);
+    }
+  }
+
+  &.form-control-lg,
+  &.form-select-lg {
+    .ts-control {
+      padding: $input-padding-y-lg $input-padding-x-lg;
+      font-size: $input-font-size-lg;
+      line-height: $input-line-height-lg;
+    }
+
+    &.multi.has-items .ts-control {
+      padding-top: calc(#{$input-padding-y-lg} - 2px) !important;
+      padding-bottom: calc(#{$input-padding-y-lg} - 5px);
+    }
+  }
+}
+
 // Every declaration below is `!important`: the bootstrap5 preset CSS targets
 // these same selectors at equal specificity, and whichever stylesheet is
 // included last otherwise wins outright (not just for z-index — the preset's

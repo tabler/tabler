@@ -1331,6 +1331,7 @@ $accordion-body-padding-y: $accordion-padding-y !default;
 $accordion-body-padding-x: $accordion-padding-x !default;
 
 $accordion-button-padding-y: $accordion-padding-y !default;
+$accordion-button-line-height: 1.25rem !default;
 $accordion-button-bg: transparent !default;
 $accordion-button-active-color: inherit !default;
 $accordion-btn-gap: 0.75rem !default;
@@ -1808,6 +1809,8 @@ $table-striped-bg-factor: 0.05 !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--bg-surface-tertiary) !default;
 $table-striped-columns-order: even !default;
+// Rows and cells matching this selector keep their own background instead of the stripe.
+$table-striped-exclude-selector: '[class^="bg-"], [class*=" bg-"], [class^="table-"], [class*=" table-"], [class^="text-bg-"], [class*=" text-bg-"], [style*="background"]' !default;
 
 $table-group-separator-color: var(--border-color-translucent) !default;
 
@@ -2025,7 +2028,7 @@ $form-select-font-size-lg: $input-font-size-lg !default;
 $form-select-border-radius-lg: $input-border-radius-lg !default;
 $form-select-transition: $input-transition !default;
 
-$form-switch-color: var(--gray-200) !default;
+$form-switch-color: light-dark(var(--gray-200), #{color-transparent(var(--white), 0.25)}) !default;
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
 $form-switch-padding-start: $form-switch-width + 0.5rem !default;
@@ -2036,6 +2039,8 @@ $form-switch-transition:
 $form-switch-knob-transition: inset-inline-start 0.15s ease-in-out !default;
 $form-switch-focus-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $form-switch-checked-color: var(--white) !default;
+$form-switch-disabled-bg: $input-disabled-bg !default;
+$form-switch-disabled-color: light-dark(var(--gray-400), var(--gray-600)) !default;
 
 // Form range
 $form-range-track-width: 100% !default;

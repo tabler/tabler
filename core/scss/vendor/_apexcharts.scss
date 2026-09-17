@@ -45,6 +45,15 @@
   box-shadow: none !important;
 }
 
+// Paint the arrow directly as well: it reads its colour through two levels of
+// custom properties (--apx-tt-arrow-bg → --apx-tt-bg), and some browsers drop a
+// light-dark() value on the way, leaving a transparent arrow with a border in
+// the text colour — a white arrow on the dark tooltip.
+.apexcharts-tooltip-arrow {
+  background: $tooltip-bg !important;
+  border-color: $tooltip-bg !important;
+}
+
 .apexcharts-tooltip-title {
   padding: 0.25rem 0.5rem !important;
   margin: 0 !important;

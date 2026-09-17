@@ -21,7 +21,7 @@ classnames:
     - class: accordion-button-toggle
       desc: Chevron indicator on the toggle
     - class: accordion-button-toggle-plus
-      desc: Plus and minus indicator instead of a chevron
+      desc: Plus indicator that turns into a close icon when open
   modifier:
     - class: accordion-flush
       desc: Removes the outer border and rounding, to sit flush in a parent
@@ -44,26 +44,26 @@ This preview shows the base structure with one expanded section.
 
 <Example>
 <div class="accordion" id="accordion-overview">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-1" aria-expanded="true" aria-controls="overview-item-1"> Account details <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="overview-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-overview">
       <div class="accordion-body">Update profile fields, contact details, and team role settings in this section.</div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-2" aria-expanded="false" aria-controls="overview-item-2"> Security settings <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="overview-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-overview">
       <div class="accordion-body">Configure password policy, two-factor requirements, and active device sessions.</div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-3" aria-expanded="false" aria-controls="overview-item-3"> Notification preferences <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="overview-item-3" class="accordion-collapse collapse" data-bs-parent="#accordion-overview">
       <div class="accordion-body"> Choose which updates to receive by email, browser push, and weekly digest. You can set separate rules for account alerts and product announcements. </div>
     </div>
@@ -75,14 +75,14 @@ This preview shows the base structure with one expanded section.
 
 ### Plus toggle icon
 
-Use `.accordion-button-toggle-plus` to hide the first SVG path when expanded. This pattern is useful for plus-to-minus toggles.
+Use `.accordion-button-toggle-plus` with a `plus` icon. When the section opens, the toggle rotates a quarter turn and the plus becomes a close icon. It rotates the whole toggle, so it works with an inline SVG, a sprite `<use>` or an icon font.
 
 <Example>
 <div class="accordion" id="accordion-plus">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#plus-item-1" aria-expanded="true" aria-controls="plus-item-1"> Billing details <span class="accordion-button-toggle accordion-button-toggle-plus"> <Icon name="plus" /> </span> </button>
-    </h2>
+    </h3>
     <div id="plus-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-plus">
       <div class="accordion-body">View invoices, payment method status, and tax details.</div>
     </div>
@@ -96,13 +96,13 @@ Use `.accordion-button-icon` when a row needs a small icon before the label. The
 
 <Example>
 <div class="accordion" id="accordion-icon">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#icon-item-1" aria-expanded="true" aria-controls="icon-item-1">
         <span class="accordion-button-icon"><Icon name="user" /></span> Team profile
         <span class="accordion-button-toggle"><Icon name="chevron-down" /></span>
       </button>
-    </h2>
+    </h3>
     <div id="icon-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-icon">
       <div class="accordion-body">Manage member names, avatars, and workspace profile details.</div>
     </div>
@@ -116,18 +116,18 @@ Use `.accordion-flush` to remove side borders and border radius. The first and l
 
 <Example>
 <div class="accordion accordion-flush" id="accordion-flush">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-item-1" aria-expanded="true" aria-controls="flush-item-1"> API access <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="flush-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-flush">
       <div class="accordion-body">Generate tokens and control access scopes.</div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-item-2" aria-expanded="false" aria-controls="flush-item-2"> Webhooks <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="flush-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-flush">
       <div class="accordion-body">Manage delivery URLs, retry policy, and event subscriptions.</div>
     </div>
@@ -143,18 +143,18 @@ Use `.accordion-tabs` to add a gap between items and keep full borders around ea
 
 <Example>
 <div class="accordion accordion-tabs" id="accordion-tabs">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tabs-item-1" aria-expanded="true" aria-controls="tabs-item-1"> Workspace <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="tabs-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-tabs">
       <div class="accordion-body">Configure workspace name, slug, and timezone.</div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tabs-item-2" aria-expanded="false" aria-controls="tabs-item-2"> Notifications <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="tabs-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-tabs">
       <div class="accordion-body">Control email, push, and digest notification preferences.</div>
     </div>
@@ -168,10 +168,10 @@ Use `.accordion-inverted` to move the toggle to the start of the button row. Thi
 
 <Example>
 <div class="accordion accordion-inverted" id="accordion-inverted">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
+  <div class="accordion-item bg-surface">
+    <h3 class="accordion-header">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#inverted-item-1" aria-expanded="true" aria-controls="inverted-item-1"> Access policy <span class="accordion-button-toggle"><Icon name="chevron-down" /></span> </button>
-    </h2>
+    </h3>
     <div id="inverted-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-inverted">
       <div class="accordion-body">Set default policy, invite flow, and sign-in restrictions.</div>
     </div>

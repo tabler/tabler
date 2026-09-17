@@ -109,7 +109,9 @@ const pageSection = inSection('/ui')
 			? 'Illustrations'
 			: inSection('/emails')
 				? 'Emails'
-				: '';
+				: inSection('/payments')
+					? 'Payments'
+					: '';
 const metaTitle = seoTitle ?? title;
 const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
@@ -149,13 +151,15 @@ const linkedinUrl = 'https://www.linkedin.com/company/tabler-io';
 
 const year = new Date().getFullYear();
 
-// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree;
-// top-level sections are not in the menu, so they get explicit names.
+// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree, except
+// the top-level sections: the menu labels their index pages "Introduction",
+// so they get explicit names that win over the menu.
 const sectionNames: Record<string, string> = {
 	'/ui': 'Tabler UI',
 	'/icons': 'Tabler Icons',
 	'/illustrations': 'Tabler Illustrations',
 	'/emails': 'Tabler Emails',
+	'/payments': 'Tabler Payments',
 };
 type MenuNode = { title?: string; url?: string; children?: MenuNode[] };
 const menuTitleByUrl = new Map<string, string>();
@@ -190,7 +194,7 @@ const breadcrumbs = (() => {
 	segments.forEach((segment, index) => {
 		path += `/${segment}`;
 		const isLast = index === segments.length - 1;
-		const name = isLast ? title : (menuTitleByUrl.get(path) ?? sectionNames[path] ?? segment);
+		const name = isLast ? title : (sectionNames[path] ?? menuTitleByUrl.get(path) ?? segment);
 		items.push({ name, path });
 	});
 	return items;
