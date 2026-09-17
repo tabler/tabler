@@ -4,8 +4,9 @@
 // @tabler/core version, never from a local build: a local dist is not the file the browser
 // downloads, so its hash would make the browser block the stylesheet or the script.
 //
-// Run: pnpm run generate-sri   (after `changeset publish`, once the version is on npm)
-//      pnpm run check:sri      (verifies the committed hashes still match the CDN)
+// Run: pnpm run generate-sri          (after `changeset publish`, once the version is on npm)
+//      pnpm run generate-sri --wait   (same, but waits for the release to reach npm and the CDN)
+//      pnpm run check:sri             (verifies the committed hashes still match the CDN)
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -19,6 +20,7 @@ interface SriData {
 }
 
 const algorithm = 'sha384'
+const waitMinutes = 10
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
@@ -109,12 +111,39 @@ async function check(): Promise<void> {
   console.log(`check:sri: ${files.length} hashes match @tabler/core v${current.version}`)
 }
 
-async function generate(): Promise<void> {
-  if (!(await isPublished())) {
+/**
+ * `--wait`, used by the release workflow: `changeset publish` returns before npm and the CDN have
+ * the new version everywhere, so poll instead of failing on the first 404.
+ */
+async function collectWhenPublished(): Promise<SriData> {
+  const deadline = Date.now() + waitMinutes * 60_000
+
+  for (let attempt = 1; ; attempt++) {
+    try {
+      if (await isPublished()) {
+        return await collectHashes()
+      }
+    } catch (error: unknown) {
+      if (Date.now() >= deadline) {
+        throw error
+      }
+    }
+
+    if (Date.now() >= deadline) {
+      throw new Error(`generate-sri: @tabler/core v${site.version} did not show up on the CDN within ${waitMinutes} minutes`)
+    }
+
+    console.log(`generate-sri: waiting for @tabler/core v${site.version} on the CDN (attempt ${attempt})`)
+    await new Promise((resolve) => setTimeout(resolve, 15_000))
+  }
+}
+
+async function generate(wait: boolean): Promise<void> {
+  if (!wait && !(await isPublished())) {
     throw new Error(`generate-sri: @tabler/core v${site.version} is not on npm yet - run this after \`changeset publish\``)
   }
 
-  const data = await collectHashes()
+  const data = wait ? await collectWhenPublished() : await collectHashes()
 
   writeFileSync(dataFile, `${JSON.stringify(data, null, 2)}\n`)
 
@@ -123,7 +152,9 @@ async function generate(): Promise<void> {
 
 // Wrapped in main() because the root package is CJS (no top-level await).
 const main = async () => {
-  await (process.argv[2] === 'check' ? check() : generate())
+  const args = process.argv.slice(2)
+
+  await (args.includes('check') ? check() : generate(args.includes('--wait')))
 }
 
 main().catch((error: unknown) => {

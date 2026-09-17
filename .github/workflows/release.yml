@@ -77,6 +77,39 @@ jobs:
           version=$(node -p "require('./core/package.json').version")
           gh release upload "@tabler/core@${version}" "packages-zip/tabler-${version}.zip" --clobber
 
+      # The integrity hashes in shared/data/sri.json can only be read from the files the CDN
+      # serves, so they are refreshed once the new version is published. The `dev` ruleset does not
+      # let this job push there, so the refreshed file comes back as a small pull request.
+      - name: Refresh the SRI hashes
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # The release notes step above may have left the checkout detached on the version branch.
+          git checkout --force "${GITHUB_SHA}"
+
+          version=$(node -p "require('./core/package.json').version")
+          pnpm run generate-sri --wait
+
+          if git diff --quiet -- shared/data/sri.json; then
+            echo "The SRI hashes already match @tabler/core@${version}."
+            exit 0
+          fi
+
+          branch="chore/sri-${version}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${branch}"
+          git commit -m "chore: update SRI hashes for v${version}" -- shared/data/sri.json
+          git push --force origin "${branch}"
+
+          gh pr create \
+            --base dev \
+            --head "${branch}" \
+            --title "chore: update SRI hashes for v${version}" \
+            --body "The CDN snippets in the docs carry the \`integrity\` hash of each published file. \`@tabler/core@${version}\` is on npm now, so these are its hashes, read from the CDN by \`pnpm run generate-sri\`. Until this is merged, the SRI check fails on every pull request." \
+            || gh pr edit "${branch}" --title "chore: update SRI hashes for v${version}"
+
       # `changesets/action` names the release `@tabler/core@1.5.0` and fills it with
       # the raw changelog entry. Rename it to `Tabler v1.5.0` and replace the body with
       # the intro from `.github/release-notes/<version>.md` followed by the changes
