@@ -126,10 +126,8 @@
   &:last-of-type {
     @include border-bottom-radius(var(--accordion-border-radius));
 
-    > .accordion-header {
-      &.collapsed {
-        @include border-bottom-radius(var(--accordion-inner-border-radius));
-      }
+    > .accordion-header:has(> .accordion-button.collapsed) {
+      @include border-bottom-radius(var(--accordion-inner-border-radius));
     }
 
     > .accordion-collapse {
