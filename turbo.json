@@ -4,24 +4,25 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.build/**", "$TURBO_ROOT$/.browserslistrc", "$TURBO_ROOT$/shared/banner/**"],
       "outputs": ["dist/**"],
       "cache": true
     },
     "@tabler/preview#build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/shared/**"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.build/**", "$TURBO_ROOT$/.browserslistrc", "$TURBO_ROOT$/shared/**", "!$TURBO_ROOT$/shared/.turbo/**", "!$TURBO_ROOT$/shared/.astro/**", "!$TURBO_ROOT$/shared/**/node_modules/**"],
       "outputs": ["dist/**", "tmp-assets/**"],
       "cache": true
     },
     "@tabler/docs#build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/shared/**"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.build/**", "$TURBO_ROOT$/.browserslistrc", "$TURBO_ROOT$/shared/**", "!$TURBO_ROOT$/shared/.turbo/**", "!$TURBO_ROOT$/shared/.astro/**", "!$TURBO_ROOT$/shared/**/node_modules/**"],
       "outputs": ["dist/**", "tmp-assets/**"],
       "cache": true
     },
     "@tabler/screenshots#build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/shared/**"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.build/**", "$TURBO_ROOT$/.browserslistrc", "$TURBO_ROOT$/shared/**", "!$TURBO_ROOT$/shared/.turbo/**", "!$TURBO_ROOT$/shared/.astro/**", "!$TURBO_ROOT$/shared/**/node_modules/**"],
       "outputs": ["dist/**"],
       "cache": true
     },
@@ -66,6 +67,7 @@
     },
     "type-check": {
       "dependsOn": ["^type-check"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/shared/**", "!$TURBO_ROOT$/shared/.turbo/**", "!$TURBO_ROOT$/shared/.astro/**", "!$TURBO_ROOT$/shared/**/node_modules/**"],
       "cache": true
     },
     "test": {
