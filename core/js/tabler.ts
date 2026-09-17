@@ -9,9 +9,11 @@ import './src/switch-icon'
 import './src/tab'
 import './src/toast'
 import './src/sortable'
+import './src/rating'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
 
 // Tabler's own helpers as named exports (prefix, hexToRgba, getColor)
 export * from './src/tabler'
+export { default as Rating } from './src/rating'
