@@ -24,8 +24,13 @@ const FILLER_PATH = /<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/
  * aria-hidden="true" focusable="false" and the given classes.
  */
 export function iconSvg(name: string, { filled = false, classes = 'icon' }: { filled?: boolean | undefined; classes?: string | undefined } = {}): string | undefined {
-  const icon = (icons as unknown as Record<string, IconRecord>)[name]
-  if (!icon) return undefined
+  const icon = (icons as unknown as Record<string, IconRecord | undefined>)[name]
+  if (!icon) {
+    // Icon.astro renders nothing for an unknown name, which is invisible in the
+    // page; say so in the build log instead of failing silently.
+    console.warn(`[svg] unknown Tabler icon "${name}"`)
+    return undefined
+  }
   let svg = icon.svg?.[filled ? 'filled' : 'outline'] ?? ''
   svg = svg.replace(FILLER_PATH, '')
   svg = svg.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${classes}"`)
