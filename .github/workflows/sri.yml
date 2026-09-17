@@ -1,0 +1,31 @@
+name: SRI
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - dev
+  # A release makes the committed hashes stale without anyone touching the repo,
+  # so check once a week too, not only when a pull request comes in.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch: null
+
+permissions:
+  contents: read
+
+jobs:
+  sri:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v7
+
+      - name: Set up the workspace
+        uses: ./.github/actions/setup
+
+      # Compares shared/data/sri.json with the files the CDN serves for the version in
+      # core/package.json. Fix a failure with `pnpm run generate-sri`. Kept out of `pnpm run lint`
+      # because it needs network access.
+      - name: Check SRI hashes
+        run: pnpm run check:sri
