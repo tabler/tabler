@@ -84,7 +84,7 @@ Props are camelCase. Booleans default to `false` — never `showClose = true`.
 - Use `class:list={[...]}` with falsy entries for conditionals; it drops them and merges the caller's `className` for you. `.filter(Boolean).join(' ')` is only for a string you have to pass to a helper (`iconSvg`).
 - Put `className` last so the caller wins.
 - Do not emit a class for a default (`size !== 'md' && \`btn-${size}\``).
-- No `<style>` blocks and no CSS imports in the frontmatter. Styling is `core/scss/`.
+- No `<style>` blocks and no CSS imports in the frontmatter. Styling is `core/scss/`. A `<style>` makes Astro stamp `data-astro-cid-*` on every element the component renders, and its custom properties skip the `--tblr-` prefixing in `build-css.ts`.
 
 ## 5. Slots and containers
 
