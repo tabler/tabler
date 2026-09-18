@@ -1,0 +1,163 @@
+---
+title: Signal
+summary: A small row of stepped bars that shows a level, such as priority, strength or coverage.
+description: Show priority, strength or any other level with the signal component - a compact row of stepped bars that sits next to a label.
+related: [/ui/components/status, /ui/components/tracking]
+source: core/scss/ui/_signal.scss
+classnames:
+  component:
+    - class: signal
+      desc: Container element
+  part:
+    - class: signal-bar
+      desc: One bar; from two to five bars are supported
+  state:
+    - class: active
+      desc: Lights a bar, set on signal-bar
+  color:
+    - class: signal-{color}
+      desc: Colors the bars with a theme color
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Basic example
+
+Build a signal from a `.signal` wrapper with three `.signal-bar` elements. Add `.active` to each bar that should be lit. The bars grow in even steps, and the unlit ones stay visible in a lighter tone.
+
+<Example centered>
+<span class="signal" role="img" aria-label="Level 2 of 3">
+  <span class="signal-bar active"></span>
+  <span class="signal-bar active"></span>
+  <span class="signal-bar"></span>
+</span>
+</Example>
+
+## With a label
+
+Put the signal next to a text label. When the label already names the level, hide the signal from assistive technology with `aria-hidden="true"`.
+
+<Example centered>
+<div class="d-flex flex-column gap-2">
+  <div class="d-flex align-items-center gap-2">
+    <span class="signal signal-orange" aria-hidden="true">
+      <span class="signal-bar active"></span>
+      <span class="signal-bar active"></span>
+      <span class="signal-bar active"></span>
+    </span>
+    Urgent
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <span class="signal signal-blue" aria-hidden="true">
+      <span class="signal-bar active"></span>
+      <span class="signal-bar active"></span>
+      <span class="signal-bar"></span>
+    </span>
+    Normal
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <span class="signal signal-green" aria-hidden="true">
+      <span class="signal-bar active"></span>
+      <span class="signal-bar"></span>
+      <span class="signal-bar"></span>
+    </span>
+    Low
+  </div>
+</div>
+</Example>
+
+## Colors
+
+Add a `.signal-{color}` class to color the bars. Without it, the signal uses the secondary text color.
+
+<Example centered>
+<div class="d-flex gap-3">
+  <span class="signal" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-green" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-red" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+</div>
+</Example>
+
+## Number of bars
+
+Use from two to five bars. The component counts them and keeps the steps even, so no extra class is needed.
+
+<Example centered>
+<div class="d-flex gap-3">
+  <span class="signal signal-primary" role="img" aria-label="Level 1 of 2">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" role="img" aria-label="Level 3 of 4">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" role="img" aria-label="Level 4 of 5">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+</div>
+</Example>
+
+## Size
+
+A signal is a `1.25rem` square, the same as an extra small [avatar](/ui/components/avatar). Set `--tblr-signal-size` on the signal to resize it.
+
+<Example centered>
+<div class="d-flex align-items-end gap-3">
+  <span class="signal signal-primary" style="--tblr-signal-size: 1rem" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" style="--tblr-signal-size: 1.5rem" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+  <span class="signal signal-primary" style="--tblr-signal-size: 2rem" role="img" aria-label="Level 2 of 3">
+    <span class="signal-bar active"></span>
+    <span class="signal-bar active"></span>
+    <span class="signal-bar"></span>
+  </span>
+</div>
+</Example>
+
+## Accessibility
+
+- Show the level with the number of lit bars, not with color alone. An orange and a green signal with the same bars look identical to many users.
+- A signal without a text label needs `role="img"` and an `aria-label` that states the level, for example "Priority: urgent".
+- A signal next to a label that already names the level is decoration. Hide it with `aria-hidden="true"`.
+
+## SCSS variables
+
+Use these SCSS variables to customize the signal component. The default values are:
+
+<CodeDocs name="signal-variables" file="core/scss/_variables.scss" />
