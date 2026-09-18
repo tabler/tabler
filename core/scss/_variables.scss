@@ -982,16 +982,11 @@ $component-active-color: $white !default;
 $component-active-bg: $primary !default;
 
 // Focus (WCAG 2.2 SC 1.4.11)
-$focus-ring-width: 0.25rem !default;
-$focus-ring-opacity: 0.25 !default;
-$focus-ring-color: color-transparent(var(--primary), $focus-ring-opacity) !default;
-$focus-ring-blur: 0 !default;
-$focus-ring-inner-width: 2px !default;
-// The literal, emitted once as `--focus-ring-box-shadow` (`bootstrap/_root.scss`).
-$focus-ring-box-shadow-value:
-  0 0 0 var(--focus-ring-inner-width) var(--primary),
-  0 0 $focus-ring-blur var(--focus-ring-width) var(--focus-ring-color) !default;
-$focus-ring-box-shadow: var(--focus-ring-box-shadow) !default;
+$focus-ring-width: 3px !default;
+$focus-ring-offset: 1px !default;
+// Used by the `.focus-ring-*` colour utilities.
+$focus-ring-opacity: 0.5 !default;
+$focus-ring-color: light-dark(color-mix(in oklab, var(--primary) 50%, var(--body-bg)), color-mix(in oklab, var(--primary) 75%, var(--body-bg))) !default;
 
 // Transitions
 $transition-base: all 0.2s ease-in-out !default;
@@ -1062,11 +1057,6 @@ $badge-padding-x-lg: 0.5rem !default;
 // Buttons + Forms
 $input-btn-border-width: var(--border-width) !default;
 $input-btn-font-family: var(--body-font-family) !default;
-$input-btn-focus-width: 0.25rem !default;
-$input-btn-focus-color-opacity: $focus-ring-opacity !default;
-$input-btn-focus-color: $focus-ring-color !default;
-$input-btn-focus-blur: $focus-ring-blur !default;
-$input-btn-focus-box-shadow: $focus-ring-box-shadow !default;
 
 $input-btn-padding-y-sm: 0.3125rem !default;
 $input-btn-padding-x-sm: 0.5rem !default;
@@ -1097,7 +1087,6 @@ $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
-$btn-focus-box-shadow: $focus-ring-box-shadow !default;
 $btn-disabled-opacity: 0.4 !default;
 $btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
@@ -1170,8 +1159,6 @@ $input-plaintext-color: var(--body-color) !default;
 $input-focus-bg: $input-bg !default;
 $input-focus-border-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $input-focus-color: var(--body-color) !default;
-$input-focus-width: $input-btn-focus-width !default;
-$input-focus-box-shadow: $input-btn-focus-box-shadow !default;
 $input-transition:
   border-color 0.15s ease-in-out,
   box-shadow 0.15s ease-in-out !default;
@@ -1304,7 +1291,6 @@ $accordion-button-active-color: inherit !default;
 $accordion-btn-gap: 0.75rem !default;
 $accordion-header-gap: 1rem !default;
 $accordion-tabs-gap: 0.75rem !default;
-$accordion-btn-focus-box-shadow: $focus-ring-box-shadow !default;
 // scss-docs-end accordion-variables
 
 // Carousel
@@ -1352,7 +1338,6 @@ $btn-close-padding-x: 0.875em !default;
 $btn-close-padding-y: $btn-close-padding-x !default;
 $btn-close-color: $body-color !default;
 $btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/></svg>") !default;
-$btn-close-focus-shadow: $focus-ring-box-shadow !default;
 $btn-close-opacity: 0.4 !default;
 $btn-close-hover-opacity: 0.75 !default;
 $btn-close-focus-opacity: 1 !default;
@@ -1523,7 +1508,6 @@ $nav-link-transition:
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out !default;
 $nav-link-disabled-color: var(--disabled-color) !default;
-$nav-link-focus-box-shadow: $focus-ring-box-shadow !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: color-transparent(var(--nav-link-color), 0.5) !default;
 $nav-link-hover-icon-color: color-transparent(var(--nav-link-color), 0.8) !default;
@@ -1682,8 +1666,6 @@ $pagination-border-color: transparent !default;
 
 $pagination-focus-color: var(--link-hover-color) !default;
 $pagination-focus-bg: var(--secondary-bg) !default;
-$pagination-focus-box-shadow: $focus-ring-box-shadow !default;
-$pagination-focus-outline: 0 !default;
 
 $pagination-hover-color: var(--link-hover-color) !default;
 $pagination-hover-bg: var(--active-bg) !default;
@@ -1939,7 +1921,6 @@ $form-check-input-border: var(--border-width) var(--border-style) $input-border-
 $form-check-input-border-radius: var(--border-radius) !default;
 $form-check-radio-border-radius: 50% !default;
 $form-check-input-focus-border: $input-focus-border-color !default;
-$form-check-input-focus-box-shadow: $focus-ring-box-shadow !default;
 $form-check-input-box-shadow: $input-box-shadow !default;
 
 $form-check-input-checked-bg-size: 1.25rem !default;
@@ -1985,8 +1966,6 @@ $form-select-border-color: $input-border-color !default;
 $form-select-border-radius: $input-border-radius !default;
 $form-select-box-shadow: var(--shadow-input) !default;
 $form-select-focus-border-color: $input-focus-border-color !default;
-$form-select-focus-width: $input-focus-width !default;
-$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-color !default;
 $form-select-padding-y-sm: $input-padding-y-sm !default;
 $form-select-padding-x-sm: $input-padding-x-sm !default;
 $form-select-font-size-sm: $input-font-size-sm !default;
@@ -2025,9 +2004,6 @@ $form-range-thumb-bg: var(--primary) !default;
 $form-range-thumb-border: 2px var(--border-style) $white !default;
 $form-range-thumb-border-radius: 1rem !default;
 $form-range-thumb-box-shadow: 0 0.1rem 0.25rem color-transparent(var(--black), 0.1) !default;
-$form-range-thumb-focus-box-shadow:
-  0 0 0 1px $body-bg,
-  $input-focus-box-shadow !default;
 $form-range-thumb-focus-box-shadow-width: 0.125rem !default;
 $form-range-thumb-active-bg: mix-color-css(var(--white), var(--primary), 70%) !default;
 $form-range-thumb-disabled-bg: var(--secondary-color) !default;
@@ -2091,7 +2067,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--success), $input-btn-focus-color-opacity),
+    'focus-ring-color': color-mix(in oklab, var(--success) 50%, var(--body-bg)),
     'border-color': var(--form-valid-border-color),
   ),
   'invalid': (
@@ -2099,7 +2075,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--danger), $input-btn-focus-color-opacity),
+    'focus-ring-color': color-mix(in oklab, var(--danger) 50%, var(--body-bg)),
     'border-color': var(--form-invalid-border-color),
   ),
 ) !default;
