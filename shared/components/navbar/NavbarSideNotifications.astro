@@ -99,11 +99,13 @@ import CaptureScript from '../CaptureScript.astro'
 <CaptureScript>
   <!-- BEGIN NAVBAR NOTIFICATIONS CLOSE -->
   <script is:inline>
+    // onclick, not addEventListener: a page with several navbars runs this once per navbar,
+    // and assigning the property keeps it at one handler per button.
     for (const close of document.querySelectorAll('[data-navbar-notifications-close]')) {
-      close.addEventListener('click', () => {
+      close.onclick = () => {
         const toggle = close.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]')
         window.tabler.bootstrap.Dropdown.getOrCreateInstance(toggle).hide()
-      })
+      }
     }
   </script>
   <!-- END NAVBAR NOTIFICATIONS CLOSE -->

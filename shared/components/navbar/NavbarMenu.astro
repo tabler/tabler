@@ -1,6 +1,6 @@
 ---
 import Icon from '@ui/Icon.astro'
-import NavbarMenuItem from './NavbarMenuItem.astro'
+import NavbarMenuItem, { type Level2 } from './NavbarMenuItem.astro'
 import menu from '@data/menu.json'
 import menuSample from '@data/menu-sample.json'
 
@@ -16,7 +16,7 @@ interface Level1 {
   'columns'?: number
   /** section label rendered before this item (sidebar only, needs the `sections` prop) */
   'section'?: string
-  'children'?: Record<string, Record<string, unknown>>
+  'children'?: Record<string, Level2>
 }
 
 interface Props {
@@ -84,13 +84,13 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
                     {columns.map((column) => (
                       <div class="dropdown-menu-column">
                         {column.map(([childKey, child]) => (
-                          <NavbarMenuItem level1Key={key} itemKey={childKey} item={child as any} currentPage={currentPage} keepOpen={keepOpen} />
+                          <NavbarMenuItem level1Key={key} itemKey={childKey} item={child} currentPage={currentPage} keepOpen={keepOpen} />
                         ))}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  children.map(([childKey, child]) => <NavbarMenuItem level1Key={key} itemKey={childKey} item={child as any} currentPage={currentPage} keepOpen={keepOpen} />)
+                  children.map(([childKey, child]) => <NavbarMenuItem level1Key={key} itemKey={childKey} item={child} currentPage={currentPage} keepOpen={keepOpen} />)
                 )}
               </div>
             )}

@@ -1,8 +1,8 @@
 ---
-// Marketing pages live one level deep, so the avatar asset base is "..", passed to Avatar via `base`.
 import testimonials from '@data/testimonials.json'
 import { people } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
+import { relativeBase } from '@shared/lib/url'
 
 interface Props {
   class?: string
@@ -12,12 +12,15 @@ interface Props {
 
 const { class: className, limit = 99, hideHeader } = Astro.props
 
+const base = relativeBase(Astro.url.pathname)
+
 const sectionClass = ['section', className]
 
 // Slice testimonials and split into 3 columns.
 const list = (testimonials as string[]).slice(0, limit)
 const n = 3
-const chunkSize = Math.round(list.length / n)
+// At least 1, or a limit below 2 would never advance the loop below.
+const chunkSize = Math.max(1, Math.round(list.length / n))
 const groups: string[][] = []
 for (let i = 0; i < list.length; i += chunkSize) {
   groups.push(list.slice(i, i + chunkSize))
@@ -56,7 +59,7 @@ const cards = groups.map((group) =>
                     <div class="card-body">
                       <div class="row mb-3">
                         <div class="col-auto">
-                          <Avatar person={person} size="md" base=".." />
+                          <Avatar person={person} size="md" base={base} />
                         </div>
                         <div class="col">
                           <h3 class="h3 m-0">{person.full_name}</h3>

@@ -444,7 +444,8 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
         show: true,
         position: 'bottom',
         offsetY: 12,
-        markers: { width: 10, height: 10, radius: 100 },
+        // v7 sizes the legend dot as (size + strokeWidth) * 2 — a 10px circle.
+        markers: { size: 5, strokeWidth: 0, shape: 'circle' },
         itemMargin: { horizontal: 8, vertical: 8 },
       }
     : { show: false }
@@ -458,7 +459,8 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
   }
 
   if (data['hide-points']) {
-    config.point = { show: false }
+    // hover.size 0 counts as unset in v7, so the hover dot is removed through sizeOffset.
+    config.markers = { size: 0, hover: { sizeOffset: 0 } }
   }
 
   if (data['show-markers']) {
