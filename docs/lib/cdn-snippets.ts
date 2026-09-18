@@ -6,7 +6,7 @@ import sri from '@data/sri.json'
 
 /**
  * `integrity` and `crossorigin` for a file of the published core package, so the browser can
- * verify what the CDN sent. The hashes in shared/data/sri.json come from `pnpm run generate-sri`;
+ * verify what the CDN sent. The hashes in shared/data/sri.json come from `pnpm run generate:sri`;
  * until that runs for the current version the tags are rendered without them, rather than with a
  * hash that would make the browser block the file.
  */

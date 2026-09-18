@@ -6,8 +6,8 @@
 //
 // Run it after a release, before merging `dev` into `main` (docs.tabler.io is built from `main`):
 //
-//      pnpm run generate-sri            (once the new version is on npm)
-//      pnpm run generate-sri --wait     (same, but waits for the release to reach npm and the CDN)
+//      pnpm run generate:sri            (once the new version is on npm)
+//      pnpm run generate:sri --wait     (same, but waits for the release to reach npm and the CDN)
 //      pnpm run check:sri               (the committed hashes still match the CDN)
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -40,12 +40,12 @@ async function get(url: string): Promise<Response> {
       if (response.ok || response.status === 404 || attempt === 2) {
         return response
       }
-      console.warn(`generate-sri: ${url} returned ${response.status}, retrying`)
+      console.warn(`generate:sri: ${url} returned ${response.status}, retrying`)
     } catch (error: unknown) {
       if (attempt === 2) {
         throw error
       }
-      console.warn(`generate-sri: ${url} failed (${error instanceof Error ? error.message : String(error)}), retrying`)
+      console.warn(`generate:sri: ${url} failed (${error instanceof Error ? error.message : String(error)}), retrying`)
     }
   }
 }
@@ -61,7 +61,7 @@ async function hashFile(file: string): Promise<string> {
   const response = await get(url)
 
   if (!response.ok) {
-    throw new Error(`generate-sri: ${url} returned ${response.status}`)
+    throw new Error(`generate:sri: ${url} returned ${response.status}`)
   }
 
   const body = Buffer.from(await response.arrayBuffer())
@@ -79,11 +79,11 @@ async function collectHashes(): Promise<SriData> {
  * `pnpm run check:sri` - the committed hashes have to match what the CDN serves today.
  *
  * Hashes for an older version are a safe state: the docs render the tags without `integrity`
- * until `generate-sri` runs. So they only warn.
+ * until `generate:sri` runs. So they only warn.
  */
 async function check(): Promise<void> {
   if (!existsSync(dataFile)) {
-    throw new Error('check:sri: shared/data/sri.json is missing - run `pnpm run generate-sri` and commit the result')
+    throw new Error('check:sri: shared/data/sri.json is missing - run `pnpm run generate:sri` and commit the result')
   }
 
   const committed: SriData = JSON.parse(readFileSync(dataFile, 'utf8'))
@@ -97,7 +97,7 @@ async function check(): Promise<void> {
   }
 
   if (committed.version !== site.version) {
-    console.warn(`check:sri: shared/data/sri.json has hashes for v${committed.version}, but @tabler/core is v${site.version} - the docs render the CDN tags without \`integrity\` until you run \`pnpm run generate-sri\``)
+    console.warn(`check:sri: shared/data/sri.json has hashes for v${committed.version}, but @tabler/core is v${site.version} - the docs render the CDN tags without \`integrity\` until you run \`pnpm run generate:sri\``)
     return
   }
 
@@ -111,7 +111,7 @@ async function check(): Promise<void> {
   }
 
   if (problems.length > 0) {
-    console.error(`check:sri: shared/data/sri.json is out of date, run \`pnpm run generate-sri\`:\n  ${problems.join('\n  ')}`)
+    console.error(`check:sri: shared/data/sri.json is out of date, run \`pnpm run generate:sri\`:\n  ${problems.join('\n  ')}`)
     process.exitCode = 1
     return
   }
@@ -138,24 +138,24 @@ async function collectWhenPublished(): Promise<SriData> {
     }
 
     if (Date.now() >= deadline) {
-      throw new Error(`generate-sri: @tabler/core v${site.version} did not show up on the CDN within ${waitMinutes} minutes`)
+      throw new Error(`generate:sri: @tabler/core v${site.version} did not show up on the CDN within ${waitMinutes} minutes`)
     }
 
-    console.log(`generate-sri: waiting for @tabler/core v${site.version} on the CDN (attempt ${attempt})`)
+    console.log(`generate:sri: waiting for @tabler/core v${site.version} on the CDN (attempt ${attempt})`)
     await new Promise((resolve) => setTimeout(resolve, 15_000))
   }
 }
 
 async function generate(wait: boolean): Promise<void> {
   if (!wait && !(await isPublished())) {
-    throw new Error(`generate-sri: @tabler/core v${site.version} is not on npm yet - run this after \`changeset publish\``)
+    throw new Error(`generate:sri: @tabler/core v${site.version} is not on npm yet - run this after \`changeset publish\``)
   }
 
   const data = wait ? await collectWhenPublished() : await collectHashes()
 
   writeFileSync(dataFile, `${JSON.stringify(data, null, 2)}\n`)
 
-  console.log(`generate-sri: wrote ${files.length} ${algorithm} hashes for @tabler/core v${data.version}`)
+  console.log(`generate:sri: wrote ${files.length} ${algorithm} hashes for @tabler/core v${data.version}`)
 }
 
 // Wrapped in main() because the root package is CJS (no top-level await).
