@@ -4,9 +4,12 @@
 // @tabler/core version, never from a local build: a local dist is not the file the browser
 // downloads, so its hash would make the browser block the stylesheet or the script.
 //
-// Run: pnpm run generate-sri          (after `changeset publish`, once the version is on npm)
-//      pnpm run generate-sri --wait   (same, but waits for the release to reach npm and the CDN)
-//      pnpm run check:sri             (verifies the committed hashes still match the CDN)
+// Run it after a release, before merging `dev` into `main` (docs.tabler.io is built from `main`):
+//
+//      pnpm run generate-sri            (once the new version is on npm)
+//      pnpm run generate-sri --wait     (same, but waits for the release to reach npm and the CDN)
+//      pnpm run check:sri               (the committed hashes still match the CDN)
+//      pnpm run check:sri --strict      (same, and hashes for an older version fail too - on `main`)
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -73,8 +76,14 @@ async function collectHashes(): Promise<SriData> {
   return { version: site.version, algorithm, files: Object.fromEntries(hashes) }
 }
 
-/** `pnpm run check:sri` - the committed hashes have to match what the CDN serves today. */
-async function check(): Promise<void> {
+/**
+ * `pnpm run check:sri` - the committed hashes have to match what the CDN serves today.
+ *
+ * Hashes for an older version are a safe state: the docs render the tags without `integrity`
+ * until `generate-sri` runs. So they only warn, and fail with `--strict`, which the SRI workflow
+ * passes on `main` - the branch docs.tabler.io is built from.
+ */
+async function check(strict: boolean): Promise<void> {
   if (!existsSync(dataFile)) {
     throw new Error('check:sri: shared/data/sri.json is missing - run `pnpm run generate-sri` and commit the result')
   }
@@ -89,12 +98,21 @@ async function check(): Promise<void> {
     return
   }
 
+  if (committed.version !== site.version) {
+    const message = `shared/data/sri.json has hashes for v${committed.version}, but @tabler/core is v${site.version} - the docs render the CDN tags without \`integrity\` until you run \`pnpm run generate-sri\``
+
+    if (strict) {
+      console.error(`check:sri: ${message}`)
+      process.exitCode = 1
+    } else {
+      // A GitHub Actions annotation, so the reminder shows on the run without failing it.
+      console.log(`::warning title=SRI hashes::${message}`)
+    }
+    return
+  }
+
   const current = await collectHashes()
   const problems: string[] = []
-
-  if (committed.version !== current.version) {
-    problems.push(`version: ${committed.version} committed, ${current.version} in @tabler/core`)
-  }
 
   for (const file of files) {
     if (committed.files[file] !== current.files[file]) {
@@ -112,8 +130,8 @@ async function check(): Promise<void> {
 }
 
 /**
- * `--wait`, used by the release workflow: `changeset publish` returns before npm and the CDN have
- * the new version everywhere, so poll instead of failing on the first 404.
+ * `--wait`, for running it right after a release: `changeset publish` returns before npm and the
+ * CDN have the new version everywhere, so poll instead of failing on the first 404.
  */
 async function collectWhenPublished(): Promise<SriData> {
   const deadline = Date.now() + waitMinutes * 60_000
@@ -154,7 +172,7 @@ async function generate(wait: boolean): Promise<void> {
 const main = async () => {
   const args = process.argv.slice(2)
 
-  await (args.includes('check') ? check() : generate(args.includes('--wait')))
+  await (args.includes('check') ? check(args.includes('--strict')) : generate(args.includes('--wait')))
 }
 
 main().catch((error: unknown) => {

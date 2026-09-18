@@ -51,6 +51,20 @@ pick:
 `pnpm run release-notes` prints the body to stdout, so you can read it before
 the release goes out. Pass a path to write it to a file instead.
 
+## After the release
+
+The CDN snippets in the docs carry an `integrity` hash for each file of the
+published version. The hashes can only be read once the version is on npm, so
+refresh them after the release, before you merge `dev` into `main`:
+
+```shell
+pnpm run generate-sri --wait
+```
+
+Commit the updated `shared/data/sri.json`. docs.tabler.io is built from `main`,
+so it gets the hashes with that merge. Until then the docs show the tags without
+`integrity`, and the SRI check fails on `main`.
+
 ## Fixing a published release
 
 Edit the release on GitHub. The workflow only writes the body once, right after
