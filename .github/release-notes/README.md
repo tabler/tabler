@@ -53,17 +53,21 @@ the release goes out. Pass a path to write it to a file instead.
 
 ## After the release
 
-The CDN snippets in the docs carry an `integrity` hash for each file of the
-published version. The hashes can only be read once the version is on npm, so
-refresh them after the release, before you merge `dev` into `main`:
+docs.tabler.io is built from `main`. Once the release workflow has published
+the new version, run this on `dev`:
 
 ```shell
-pnpm run generate-sri --wait
+pnpm run release:main
 ```
 
-Commit the updated `shared/data/sri.json`. docs.tabler.io is built from `main`,
-so it gets the hashes with that merge. Until then the docs show the tags without
-`integrity`, and the SRI check fails on `main`.
+It refreshes the `integrity` hashes of the CDN snippets in
+`shared/data/sri.json` (they can only be read once the version is on npm),
+commits them, pushes `dev`, then merges `dev` into `main` and pushes `main`. The
+merge runs in a temporary worktree, so your checkout stays on `dev`. Add
+`--dry-run` to stop after the local commit.
+
+Until the hashes are refreshed the docs show the CDN tags without `integrity`,
+and the SRI check fails on `main`.
 
 ## Fixing a published release
 
