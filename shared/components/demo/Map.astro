@@ -1,7 +1,8 @@
 ---
 // Mapbox GL map. Access token from the MAPBOX_KEY environment variable (.env or
 // the host's settings), never from the source. Renders nothing unless
-// maps[mapId] exists.
+// maps[mapId] exists; without a token the container renders but the map is not
+// initialised (Mapbox GL throws on a missing token).
 import maps from '@data/maps.json';
 import CaptureScript from '../CaptureScript.astro';
 
@@ -46,7 +47,7 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	)
 }
 {
-	data && (
+	data && mapboxKey && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
 			<script is:inline define:vars={{ mapboxKey, mapContainerId, style, zoom, center, markers }}>
