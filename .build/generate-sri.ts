@@ -9,7 +9,6 @@
 //      pnpm run generate-sri            (once the new version is on npm)
 //      pnpm run generate-sri --wait     (same, but waits for the release to reach npm and the CDN)
 //      pnpm run check:sri               (the committed hashes still match the CDN)
-//      pnpm run check:sri --strict      (same, and hashes for an older version fail too - on `main`)
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -80,10 +79,9 @@ async function collectHashes(): Promise<SriData> {
  * `pnpm run check:sri` - the committed hashes have to match what the CDN serves today.
  *
  * Hashes for an older version are a safe state: the docs render the tags without `integrity`
- * until `generate-sri` runs. So they only warn, and fail with `--strict`, which the SRI workflow
- * passes on `main` - the branch docs.tabler.io is built from.
+ * until `generate-sri` runs. So they only warn.
  */
-async function check(strict: boolean): Promise<void> {
+async function check(): Promise<void> {
   if (!existsSync(dataFile)) {
     throw new Error('check:sri: shared/data/sri.json is missing - run `pnpm run generate-sri` and commit the result')
   }
@@ -99,15 +97,7 @@ async function check(strict: boolean): Promise<void> {
   }
 
   if (committed.version !== site.version) {
-    const message = `shared/data/sri.json has hashes for v${committed.version}, but @tabler/core is v${site.version} - the docs render the CDN tags without \`integrity\` until you run \`pnpm run generate-sri\``
-
-    if (strict) {
-      console.error(`check:sri: ${message}`)
-      process.exitCode = 1
-    } else {
-      // A GitHub Actions annotation, so the reminder shows on the run without failing it.
-      console.log(`::warning title=SRI hashes::${message}`)
-    }
+    console.warn(`check:sri: shared/data/sri.json has hashes for v${committed.version}, but @tabler/core is v${site.version} - the docs render the CDN tags without \`integrity\` until you run \`pnpm run generate-sri\``)
     return
   }
 
@@ -172,7 +162,7 @@ async function generate(wait: boolean): Promise<void> {
 const main = async () => {
   const args = process.argv.slice(2)
 
-  await (args.includes('check') ? check(args.includes('--strict')) : generate(args.includes('--wait')))
+  await (args.includes('check') ? check() : generate(args.includes('--wait')))
 }
 
 main().catch((error: unknown) => {

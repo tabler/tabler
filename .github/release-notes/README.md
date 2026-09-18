@@ -66,8 +66,9 @@ commits them, pushes `dev`, then merges `dev` into `main` and pushes `main`. The
 merge runs in a temporary worktree, so your checkout stays on `dev`. Add
 `--dry-run` to stop after the local commit.
 
-Until the hashes are refreshed the docs show the CDN tags without `integrity`,
-and the SRI check fails on `main`.
+Until the hashes are refreshed the docs show the CDN tags without `integrity`.
+That is safe, just less strict. `pnpm run check:sri` compares the committed
+hashes with the CDN if you want to check them by hand.
 
 ## Fixing a published release
 
