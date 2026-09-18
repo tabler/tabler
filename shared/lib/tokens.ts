@@ -1,5 +1,5 @@
 // Generated from the core SCSS maps by .build/generate-tokens.ts — DO NOT EDIT.
-// Regenerate with: pnpm run generate-tokens
+// Regenerate with: pnpm run generate:tokens
 
 /** Keys of `$theme-colors` (core/scss/_variables.scss). */
 export const themeColors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'muted', 'blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan'] as const

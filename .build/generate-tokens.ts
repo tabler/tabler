@@ -3,8 +3,8 @@
 // unions used by components can never drift from the stylesheet source of
 // truth. Values are read through the real Sass compiler (after every merge and
 // !default), not by parsing the source text.
-// Run: pnpm run generate-tokens        — (re)write the file
-//      pnpm run check:tokens  — fail when the committed file is stale
+// Run: pnpm run generate:tokens  — (re)write the file
+//      pnpm run check:tokens     — fail when the committed file is stale
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -60,7 +60,7 @@ compileString(entry, {
 })
 
 let output = `// Generated from the core SCSS maps by .build/generate-tokens.ts — DO NOT EDIT.
-// Regenerate with: pnpm run generate-tokens
+// Regenerate with: pnpm run generate:tokens
 `
 for (const token of TOKENS) {
   const keys = keysByName.get(token.name)
@@ -84,7 +84,7 @@ const main = async () => {
   if (mode === 'check') {
     const current = existsSync(outFile) ? readFileSync(outFile, 'utf8') : ''
     if (current !== formatted) {
-      console.error(`✖ ${relative(repoRoot, outFile)} is stale — run "pnpm run generate-tokens" and commit the result.`)
+      console.error(`✖ ${relative(repoRoot, outFile)} is stale — run "pnpm run generate:tokens" and commit the result.`)
       process.exit(1)
     }
     console.log(`✓ ${relative(repoRoot, outFile)} is up to date.`)

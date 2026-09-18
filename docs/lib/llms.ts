@@ -24,7 +24,7 @@ import { callouts } from '@components/callouts/index.ts'
 import docs from '@data/docs.json'
 import packageManagers from '@data/package-managers.json'
 import payments from '@data/payments.json'
-import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
+import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet, cdnThemeJsTag } from './cdn-snippets.ts'
 
 // Lazy raw imports, same as CodeDocs.astro — node:fs paths break once this is
 // bundled into dist/.prerender.
@@ -41,6 +41,7 @@ function resolveCodeTokens(snippet: string): string {
   const tokens: Record<string, () => string> = {
     '${cdnCssTag()}': cdnCssTag,
     '${cdnJsTag()}': cdnJsTag,
+    '${cdnThemeJsTag()}': cdnThemeJsTag,
   }
 
   return Object.entries(tokens)
