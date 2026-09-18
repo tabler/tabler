@@ -5,6 +5,14 @@
 export const themeColors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'muted', 'blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan'] as const
 export type ThemeColor = (typeof themeColors)[number]
 
+/** Keys of `$theme-colors` without the `$extra-colors` keys (core/scss/_variables.scss). */
+export const semanticColors = ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'muted'] as const
+export type SemanticColor = (typeof semanticColors)[number]
+
+/** Keys of `$extra-colors` (core/scss/_variables.scss). */
+export const extraColors = ['blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan'] as const
+export type ExtraColor = (typeof extraColors)[number]
+
 /** Keys of `$social-colors` (core/scss/_variables.scss). */
 export const socialColors = ['x', 'facebook', 'twitter', 'linkedin', 'google', 'youtube', 'vimeo', 'dribbble', 'github', 'instagram', 'pinterest', 'vk', 'rss', 'flickr', 'bitbucket', 'tabler'] as const
 export type SocialColor = (typeof socialColors)[number]
