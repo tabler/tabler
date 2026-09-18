@@ -6,14 +6,15 @@ interface Props {
   services?: string[]
   days?: number
   seed?: number
+  class?: string
 }
 
-const { id, services = ['API', 'Dashboard', 'Webhooks', 'Email delivery'], days = 60, seed = 18 } = Astro.props
+const { id, services = ['API', 'Dashboard', 'Webhooks', 'Email delivery'], days = 60, seed = 18, class: className } = Astro.props
 
 const cardId = `system-status-${id}`
 ---
 
-<div class="card" id={cardId}>
+<div class:list={['card', className]} id={cardId}>
   <div class="card-header">
     <h3 class="card-title">System status</h3>
     <div class="card-actions">
@@ -39,7 +40,7 @@ const cardId = `system-status-${id}`
     }
   </div>
   <div class="card-footer">
-    <div class="d-flex align-items-center text-secondary small">
+    <div class="d-flex align-items-center text-secondary">
       <div>{days} days ago</div>
       <div class="legend-list mx-auto">
         <span class="legend legend-green"><span class="legend-dot"></span>Operational</span>

@@ -1,62 +1,102 @@
 ---
-import Subheader from '@ui/Subheader.astro'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Chart from '@components/demo/Chart.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import StatusDot from '@ui/StatusDot.astro'
+import StatCard from '@components/cards/StatCard.astro'
 import SystemStatus from '@components/cards/SystemStatus.astro'
+
+const incidents = [
+  { color: 'red', title: 'Email delivery outage', date: 'Aug 24, 2026', duration: '42 minutes', resolved: true },
+  { color: 'yellow', title: 'Slow webhook deliveries', date: 'Aug 12, 2026', duration: '1 hour 8 minutes', resolved: true },
+  { color: 'yellow', title: 'Dashboard loading slowly', date: 'Aug 3, 2026', duration: '17 minutes', resolved: true },
+  { color: 'red', title: 'Email delivery outage', date: 'Jul 21, 2026', duration: '2 hours 5 minutes', resolved: true },
+]
+
+const periods = [
+  { period: 'Today', availability: '100%', downtime: 'none', incidents: 0, longest: '–', average: '–' },
+  { period: 'Last 7 days', availability: '100%', downtime: 'none', incidents: 0, longest: '–', average: '–' },
+  { period: 'Last 30 days', availability: '99.9028%', downtime: '42 minutes', incidents: 1, longest: '42 minutes', average: '42 minutes' },
+  { period: 'Last 365 days', availability: '99.9414%', downtime: '5 hours 8 minutes', incidents: 9, longest: '2 hours 5 minutes', average: '34 minutes' },
+  { period: 'All time', availability: '99.9533%', downtime: '11 hours 40 minutes', incidents: 23, longest: '2 hours 5 minutes', average: '30 minutes' },
+]
 ---
 
 <DefaultLayout title="Uptime" pageHeaderFile="uptime" pageMenu="extra.uptime" pageLibs={['apexcharts']}>
   <div class="row row-cards">
-    <div class="col-md-4">
+    <div class="col-sm-6 col-lg-3">
+      <StatCard title="30-day uptime" value="99.9%" icon="activity" />
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <StatCard title="Currently up for" value="14d 2h 54m" icon="clock" />
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <StatCard title="Avg. response time" value="142 ms" icon="bolt" />
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <StatCard title="30-day incidents" value="1" icon="alert-triangle" />
+    </div>
+    <div class="col-lg-8">
+      <SystemStatus id="services" class="h-100" />
+    </div>
+    <div class="col-lg-4">
+      <Card class="h-100">
+        <CardHeader>
+          <CardTitle>Recent incidents</CardTitle>
+        </CardHeader>
+        <div class="list-group list-group-flush">
+          {
+            incidents.map((incident) => (
+              <div class="list-group-item">
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    <StatusDot color={incident.color} />
+                  </div>
+                  <div class="col text-truncate">
+                    <div class="fw-medium text-truncate">{incident.title}</div>
+                    <div class="text-secondary text-truncate">
+                      {incident.date} · {incident.duration}
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <span class="badge bg-green-lt">Resolved</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <div class="card-footer mt-auto">
+          <a href="#">View all incidents</a>
+        </div>
+      </Card>
+    </div>
+    <div class="col-lg-8">
       <Card>
         <CardBody>
-          <Subheader>Currently up for</Subheader>
-          <div class="h3 m-0">14 days 2 hours 54 mins 34 seconds</div>
+          <CardTitle>Response time in the last 4 months (ms)</CardTitle>
+          <Chart chartId="uptime" height={15} label="Response time in the last 4 months" />
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-4">
+    <div class="col-lg-4">
       <Card>
         <CardBody>
-          <Subheader>Last checked at</Subheader>
-          <div class="h3 m-0">27 seconds ago</div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-4">
-      <Card>
-        <CardBody>
-          <Subheader>Incidents</Subheader>
-          <div class="h3 m-0">3</div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-8">
-      <Card>
-        <CardBody>
-          <CardTitle>Response times across regions in the last day</CardTitle>
-          <Chart chartId="uptime" height={15} label="Response times across regions in the last day" />
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-4">
-      <Card>
-        <CardBody>
-          <CardTitle>Uptime incidents per day</CardTitle>
-          <Chart chartId="uptime-incidents" height={15} label="Uptime incidents per day" />
+          <CardTitle>Incidents per day</CardTitle>
+          <Chart chartId="uptime-incidents" height={15} label="Incidents per day" />
         </CardBody>
       </Card>
     </div>
     <div class="col-12">
-      <SystemStatus id="services" />
-    </div>
-    <div class="col-12">
       <Card>
+        <CardHeader>
+          <CardTitle>Availability</CardTitle>
+        </CardHeader>
         <div class="card-table table-responsive">
-          <table class="table">
+          <table class="table table-vcenter">
             <thead>
               <tr>
                 <th>Time period</th>
@@ -67,47 +107,19 @@ import SystemStatus from '@components/cards/SystemStatus.astro'
                 <th>Avg. incident</th>
               </tr>
             </thead>
-            <tbody
-              ><tr>
-                <td>Today</td>
-                <td>98.9533%</td>
-                <td>1 minute</td>
-                <td>1</td>
-                <td>1 minute</td>
-                <td>1 minute</td>
-              </tr>
-              <tr>
-                <td>Last 7 days</td>
-                <td>98.9533%</td>
-                <td>1 minute</td>
-                <td>1</td>
-                <td>1 minute</td>
-                <td>1 minute</td>
-              </tr>
-              <tr>
-                <td>Last 30 days</td>
-                <td>98.9533%</td>
-                <td>1 minute</td>
-                <td>1</td>
-                <td>1 minute</td>
-                <td>1 minute</td>
-              </tr>
-              <tr>
-                <td>Last 365 days</td>
-                <td>98.9533%</td>
-                <td>1 minute</td>
-                <td>1</td>
-                <td>1 minute</td>
-                <td>1 minute</td>
-              </tr>
-              <tr>
-                <td>All time</td>
-                <td>98.9533%</td>
-                <td>1 minute</td>
-                <td>1</td>
-                <td>1 minute</td>
-                <td>1 minute</td>
-              </tr>
+            <tbody>
+              {
+                periods.map((row) => (
+                  <tr>
+                    <td>{row.period}</td>
+                    <td class="fw-medium">{row.availability}</td>
+                    <td class="text-secondary">{row.downtime}</td>
+                    <td class="text-secondary">{row.incidents}</td>
+                    <td class="text-secondary">{row.longest}</td>
+                    <td class="text-secondary">{row.average}</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>
