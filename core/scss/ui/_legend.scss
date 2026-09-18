@@ -42,9 +42,7 @@ Legend
   white-space: nowrap;
   background: transparent;
   border: 0;
-  transition:
-    background-color $transition-time,
-    opacity $transition-time;
+  @include focus-ring-transition(background-color $transition-time, opacity $transition-time);
   @include border-radius(var(--border-radius-pill));
 
   .legend-dot {
@@ -56,8 +54,8 @@ Legend
   }
 
   &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: -2px;
+    @include focus-ring();
+    outline-offset: calc(var(--focus-ring-width) * -1);
   }
 }
 

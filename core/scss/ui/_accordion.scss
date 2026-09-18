@@ -19,7 +19,6 @@
   --accordion-body-padding-y: #{$accordion-body-padding-y};
   --accordion-btn-gap: #{$accordion-btn-gap};
   --accordion-header-gap: #{$accordion-header-gap};
-  --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
 
   display: flex;
   flex-direction: column;
@@ -40,7 +39,7 @@
   text-align: inherit;
   background-color: var(--accordion-btn-bg);
   border: 0;
-  transition: transform $transition-time;
+  @include focus-ring-transition(transform $transition-time);
   overflow-anchor: none;
 
   &:not(.collapsed) {
@@ -53,15 +52,10 @@
     z-index: 2;
   }
 
-  &:focus {
+  &:focus-visible {
     z-index: 3;
-    outline: 0;
-    box-shadow: var(--accordion-btn-focus-box-shadow);
-
-    &:not(:focus-visible) {
-      outline: none;
-      box-shadow: none;
-    }
+    @include focus-ring(true);
+    outline-offset: -1px;
   }
 }
 

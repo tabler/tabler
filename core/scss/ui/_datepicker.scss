@@ -49,12 +49,13 @@
 
   button {
     font-family: inherit;
+    @include focus-ring-transition();
   }
 
   button:focus-visible {
     position: relative;
     z-index: 1;
-    @include focus-ring();
+    @include focus-ring(true);
   }
 }
 
@@ -312,7 +313,7 @@ button[data-vc-week-day] {
   background-color: color-transparent(var(--calendar-day-bg), var(--calendar-day-bg-opacity));
   border: 0;
   border-radius: var(--calendar-border-radius);
-  @include transition(color $transition-time, background-color $transition-time);
+  @include focus-ring-transition(color $transition-time, background-color $transition-time);
 
   &:hover {
     --calendar-day-bg: var(--calendar-day-hover-bg);

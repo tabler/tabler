@@ -60,7 +60,7 @@
     border: var(--border-width) var(--border-style) transparent;
     @include border-radius(var(--border-radius-pill));
     outline: 0;
-    @include transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
+    @include focus-ring-transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
 
     &:hover {
       color: var(--primary);
@@ -70,8 +70,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
+      @include focus-ring(true);
     }
   }
 
