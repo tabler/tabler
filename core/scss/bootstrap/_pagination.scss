@@ -15,7 +15,6 @@
   --pagination-hover-border-color: #{$pagination-hover-border-color};
   --pagination-focus-color: #{$pagination-focus-color};
   --pagination-focus-bg: #{$pagination-focus-bg};
-  --pagination-focus-box-shadow: #{$pagination-focus-box-shadow};
   --pagination-active-color: #{$pagination-active-color};
   --pagination-active-bg: #{$pagination-active-bg};
   --pagination-active-border-color: #{$pagination-active-border-color};
@@ -51,8 +50,11 @@
     z-index: 3;
     color: var(--pagination-focus-color);
     background-color: var(--pagination-focus-bg);
-    outline: $pagination-focus-outline;
-    box-shadow: var(--pagination-focus-box-shadow);
+    outline: 0;
+  }
+
+  &:focus-visible {
+    @include focus-ring(true);
   }
 
   &.active,

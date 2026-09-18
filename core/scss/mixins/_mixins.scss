@@ -65,15 +65,14 @@
   gap: var(--list-gap);
 }
 
-@mixin focus-ring($shadow: $focus-ring-box-shadow, $show-border: false, $outline: 0) {
-  @if $outline != null {
-    outline: $outline;
+@mixin focus-ring($offset: false, $color: null) {
+  @if $color != null {
+    outline: var(--focus-ring-width) solid #{$color};
+  } @else {
+    outline: var(--focus-ring);
   }
-
-  box-shadow: $shadow;
-
-  @if $show-border {
-    border-color: var(--focus-ring-color);
+  @if $offset {
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
