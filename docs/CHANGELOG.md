@@ -1,5 +1,40 @@
 # @tabler/docs
 
+## 1.6.0
+
+### Minor Changes
+
+- 0e2faa0: Added a `Clipboard` copy button and dropped the `clipboard` package; the browser API does the work.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- be30919: Added `.legend` component with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus `Legend` Astro component.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+
+### Patch Changes
+
+- b295d84: Fixed `.accordion-button-toggle-plus` with sprite icons by rotating the plus into a close icon instead of hiding a path.
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 62408b8: Replaced the `autosize` package with a dependency-free `Autosize` component that fires `resized.bs.autosize`.
+- 2129b0b: Added a `check:open-source` gate and the five missing attributions, including Popper, which ships inside `tabler.js`.
+- ea10f0e: Replaced the `countup.js` package with a dependency-free `CountUp` component that respects `prefers-reduced-motion`.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page, and removed Litepicker from `dist/libs`.
+- 0905918: Updated the default gray scale (`$gray-50`…`$gray-950`) to `neutral`; the old one stays as `data-bs-theme-base="gray"`.
+- da79879: Updated accordion docs examples to use `.bg-surface` on each `.accordion-item`.
+- 364ccf8: Fixed keyboard access and accessible names across preview pages, `Alert`, `Avatar`, `Rating`, `Tag` and `Wysiwyg` components.
+- 86ac4f1: Fixed the unreadable "5" badge in the avatar status docs example by adding `text-gray-100`.
+- 6f96282: Fixed the "Card on a background pattern" docs example so the preview shows the `.bg-pattern-diagonal` background.
+- 084d202: Fixed docs breadcrumbs showing "Introduction", unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 0d39308: Fixed heading order, form `autocomplete` and accessible names on preview pages, `Alert`, `Button`, `Dropzone` and `Avatar`.
+- 8636174: Fixed `Trending` signs, ApexCharts 7 legend markers, marketing asset paths, `pageLibs` checks and the notifications close button.
+- 57e213b: Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- cc7afaf: Fixed a disabled off `.form-switch` looking the same as an enabled one by filling its track and darkening the knob.
+- 0fe02b3: Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+- 107e493: Updated the color palette to `oklch()`, masked the checkbox, switch, toggler and carousel icons, and removed the `tabler` JS namespace.
+- 0776b88: Added a `switch-icon-loading` state and a `tabler:switch-icon-toggle` event that waits for a promise before switching.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`, with countUp.js bundled.
+
 ## 1.5.1
 
 ### Patch Changes

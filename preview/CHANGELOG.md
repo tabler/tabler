@@ -1,5 +1,36 @@
 # @tabler/preview
 
+## 1.6.0
+
+### Minor Changes
+
+- 64dd529: Added new billing page with plan usage, payment method, and invoices layout.
+- 0e2faa0: Added a `Clipboard` copy button and dropped the `clipboard` package; the browser API does the work.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page, and removed Litepicker from `dist/libs`.
+- be30919: Added `.legend` component with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus `Legend` Astro component.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+- 0776b88: Added a `switch-icon-loading` state and a `tabler:switch-icon-toggle` event that waits for a promise before switching.
+- 3f767ee: Added a System status panel with 60-day uptime history bars to the Uptime preview page.
+- 3f767ee: Added ApexCharts gauge cards to the Widgets preview page.
+
+### Patch Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 364ccf8: Fixed keyboard access and accessible names across preview pages, `Alert`, `Avatar`, `Rating`, `Tag` and `Wysiwyg` components.
+- 3f767ee: Fixed the "Card with code" widget rendering its code as plain text instead of a `pre` block.
+- 084d202: Fixed docs breadcrumbs showing "Introduction", unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.
+- 084d202: Fixed `robots.txt`, minified assets in `BaseLayout`, the marketing menu link and the `markdown.html` redirect in the preview build.
+- 0d39308: Fixed heading order, form `autocomplete` and accessible names on preview pages, `Alert`, `Button`, `Dropzone` and `Avatar`.
+- 8636174: Fixed `Trending` signs, ApexCharts 7 legend markers, marketing asset paths, `pageLibs` checks and the notifications close button.
+- 57e213b: Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- 4cfa9f3: Removed the hardcoded Google Maps and Mapbox keys; map demos now read `GOOGLE_MAPS_KEY` and `MAPBOX_KEY` from the environment.
+- bf576f1: Fixed page modals leaking between pages and made the change-password and confirm-delete modal scripts plain inline JS.
+- 1dbabb5: Fixed a dev-server `ENOENT` race: preview's `watch:css` now writes to `tmp-assets/css` and `copy-assets` syncs it into `public/`.
+
 ## 1.5.1
 
 ### Patch Changes

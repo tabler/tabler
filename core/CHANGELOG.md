@@ -1,5 +1,44 @@
 # @tabler/core
 
+## 1.6.0
+
+### Minor Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+- 0e2faa0: Added a `Clipboard` copy button and dropped the `clipboard` package; the browser API does the work.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page, and removed Litepicker from `dist/libs`.
+- 0905918: Updated the default gray scale (`$gray-50`…`$gray-950`) to `neutral`; the old one stays as `data-bs-theme-base="gray"`.
+- be30919: Added `.legend` component with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus `Legend` Astro component.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+- 0fe02b3: Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- 107e493: Updated the color palette to `oklch()`, masked the checkbox, switch, toggler and carousel icons, and removed the `tabler` JS namespace.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+- 0776b88: Added a `switch-icon-loading` state and a `tabler:switch-icon-toggle` event that waits for a promise before switching.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`, with countUp.js bundled.
+
+### Patch Changes
+
+- da79879: Updated `.accordion-button` line height to `1.25rem` via the `--tblr-accordion-btn-line-height` variable.
+- b295d84: Fixed `.accordion-button-toggle-plus` with sprite icons by rotating the plus into a close icon instead of hiding a path.
+- 62408b8: Replaced the `autosize` package with a dependency-free `Autosize` component that fires `resized.bs.autosize`.
+- ea10f0e: Replaced the `countup.js` package with a dependency-free `CountUp` component that respects `prefers-reduced-motion`.
+- cac3179: Fixed the ApexCharts tooltip arrow staying white in Safari by painting `.apexcharts-tooltip-arrow` directly.
+- db903c3: Fixed `.card-status-*` strip corners not matching the card's `border-radius`.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 64dd529: Fixed the `.form-selectgroup-label` icon-only margin applying to icons nested deeper inside the label.
+- 61b492e: Fixed `.table-striped` and `.table-striped-columns` overriding a row or cell that sets its own background. A `<tr>` or `<td>` carrying `.bg-*`, `.table-*`, `.text-bg-*` or an inline `background` now keeps that background instead of being repainted by the stripe.
+- c99a436: Fixed `.is-valid` and `.is-invalid` border colors and focus ring on Tom Select `.form-select` fields.
+- 57e213b: Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- cc7afaf: Fixed a disabled off `.form-switch` looking the same as an enabled one by filling its track and darkening the knob.
+- 03985e3: Fixed text badges in navbar `.nav-link` overlapping the title and causing horizontal scroll in the stacked menu.
+- 2b99ed5: Fix invisible text selection inside `pre` blocks in light mode
+- c1786b5: Added `overscroll-behavior: contain` to `.modal`, `.modal-body`, `.offcanvas-body` and `.dropdown-menu-scrollable`.
+- 1ffbeec: Updated the Bootstrap component port to strict TypeScript with typed `ComponentConfig` types and added `eventActionOnPlugin`.
+- 8db40cd: Fixed Tom Select controls being shorter than `.form-control` by using Tabler input metrics in all sizes.
+
 ## 1.5.1
 
 ### Patch Changes
