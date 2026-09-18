@@ -12,9 +12,10 @@ import ProjectSummary from '@shared/components/cards/ProjectSummary.astro'
 import ProjectKanban from '@shared/components/cards/ProjectKanban.astro'
 import UserInfo from '@shared/components/cards/UserInfo.astro'
 import Configuration from '@shared/components/cards/Configuration.astro'
+import Gauge from '@shared/components/cards/Gauge.astro'
 ---
 
-<DefaultLayout title="Widgets" pageMenu="extra.widgets">
+<DefaultLayout title="Widgets" pageMenu="extra.widgets" pageLibs={['apexcharts']}>
   <div class="row row-cards">
     <div class="col-12 col-md-6 col-xxl-3 mb-4 mb-xxl-0">
       <StatCard title="Earned" value="$2,847" icon="credit-card" countup />
@@ -29,6 +30,15 @@ import Configuration from '@shared/components/cards/Configuration.astro'
       <StatCard title="Weekly growth" value="18.4%" icon="discount" countup />
     </div>
 
+    <div class="col-md-4">
+      <Gauge id="deliverability" title="Deliverability" value={96} label="delivered" count={48210} total={50219} color="green" description="Share of sent emails accepted by the receiving server. Anything above 95% is healthy." />
+    </div>
+    <div class="col-md-4">
+      <Gauge id="storage" title="Storage used" value={82} label="used" count={410} total={500} color="yellow" description="Disk space taken by uploads and backups, in GB. Consider an upgrade once it passes 80%." />
+    </div>
+    <div class="col-md-4">
+      <Gauge id="onboarding" title="Onboarding" value={58} label="completed" count={1392} total={2400} description="New accounts that finished every setup step. There is no target for this metric yet." />
+    </div>
     <div class="col-lg-6">
       <ProjectProgress />
     </div>
