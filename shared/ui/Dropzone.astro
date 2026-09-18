@@ -1,4 +1,5 @@
 ---
+import type { HTMLTag } from 'astro/types'
 import CaptureScript from '../components/CaptureScript.astro'
 interface Props {
   id: string
@@ -6,9 +7,11 @@ interface Props {
   custom?: boolean
   text?: string
   description?: string
+  /** heading level for the custom message title; match it to the surrounding context */
+  titleAs?: HTMLTag
 }
 
-const { id, multiple, custom, text, description } = Astro.props
+const { id, multiple, custom, text, description, titleAs: Title = 'h3' } = Astro.props
 const label = 'Upload file'
 
 const dropzoneId = `dropzone-${id}`
@@ -16,7 +19,7 @@ const dropzoneSelector = `#dropzone-${id}`
 const fileInputId = `${dropzoneId}-file`
 ---
 
-<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate tabindex="0" role="button" aria-label="Click or drag files to upload">
+<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate>
   <div class="fallback">
     <label class="visually-hidden" for={fileInputId}>{label}</label>
     <input id={fileInputId} name="file" type="file" multiple={multiple ? '' : undefined} />
@@ -24,7 +27,7 @@ const fileInputId = `${dropzoneId}-file`
   {
     custom && (
       <div class="dz-message">
-        <h3>{text}</h3>
+        <Title>{text}</Title>
         <span>{description}</span>
       </div>
     )
@@ -40,12 +43,18 @@ const fileInputId = `${dropzoneId}-file`
       const instance = new Dropzone(dropzoneSelector)
       window.tabler_dropzone[dropzoneId] = instance
 
-      // Dropzone.js is click/drag-only by default: it binds a click handler on the whole
-      // element but never wires a keyboard equivalent. Since the element is now focusable
-      // (role="button" + tabindex="0"), forward Enter/Space to a programmatic click on
-      // Dropzone's own hidden file input so keyboard users can open the file picker too.
+      // Dropzone.js hides the .fallback label/input once it initializes, which is why
+      // role="button" + tabindex only get added here rather than in the static markup —
+      // adding them upfront would nest one focusable control (the fallback input) inside
+      // another (this "button"). Dropzone.js is also click/drag-only by default: it binds
+      // a click handler on the whole element but never wires a keyboard equivalent, so
+      // forward Enter/Space to a programmatic click on Dropzone's own hidden file input.
       // Note: that input is appended to <body> (hiddenInputContainer default), not inside
       // dropzoneEl, so it must be reached via the instance rather than a DOM query here.
+      dropzoneEl?.setAttribute('role', 'button')
+      dropzoneEl?.setAttribute('tabindex', '0')
+      dropzoneEl?.setAttribute('aria-label', 'Click or drag files to upload')
+
       dropzoneEl?.addEventListener('keydown', (event) => {
         if (event.target !== dropzoneEl) return
         if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return
