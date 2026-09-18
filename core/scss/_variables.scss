@@ -983,6 +983,7 @@ $component-active-bg: $primary !default;
 // Focus (WCAG 2.2 SC 1.4.11)
 $focus-ring-width: 3px !default;
 $focus-ring-offset: 1px !default;
+$focus-ring-transition: outline-color 0.15s ease-in-out !default;
 // Used by the `.focus-ring-*` colour utilities.
 $focus-ring-opacity: 0.5 !default;
 $focus-ring-color: light-dark(color-mix(in oklab, var(--primary) 50%, var(--body-bg)), color-mix(in oklab, var(--primary) 75%, var(--body-bg))) !default;
@@ -1104,7 +1105,7 @@ $btn-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
-  outline-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $btn-hover-bg-shade-amount: 15% !default;
@@ -1161,7 +1162,7 @@ $input-focus-border-color: mix-color-css(var(--white), var(--primary), 50%) !def
 $input-focus-color: var(--body-color) !default;
 $input-transition:
   border-color 0.15s ease-in-out,
-  outline-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $input-border-width: $input-btn-border-width !default;
@@ -1507,7 +1508,8 @@ $nav-link-hover-color: var(--link-hover-color) !default;
 $nav-link-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out !default;
+  border-color 0.15s ease-in-out,
+  $focus-ring-transition !default;
 $nav-link-disabled-color: var(--disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: color-transparent(var(--nav-link-color), 0.5) !default;
@@ -1682,7 +1684,7 @@ $pagination-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
-  outline-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $pagination-border-radius-sm: var(--border-radius-sm) !default;
@@ -1911,7 +1913,7 @@ $form-check-margin-bottom: 0.75rem !default;
 $form-check-padding-start: 2rem !default;
 $form-check-label-color: null !default;
 $form-check-label-cursor: null !default;
-$form-check-transition: outline-color 0.15s ease-in-out !default;
+$form-check-transition: $focus-ring-transition !default;
 
 $form-check-input-width: 1.25rem !default;
 $form-check-min-height: $font-size-base * $line-height-base !default;
@@ -1984,7 +1986,7 @@ $form-switch-border-radius: $form-switch-width !default;
 $form-switch-transition:
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
-  outline-color 0.15s ease-in-out !default;
+  $focus-ring-transition !default;
 $form-switch-knob-transition: inset-inline-start 0.15s ease-in-out !default;
 $form-switch-focus-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $form-switch-checked-color: var(--white) !default;
@@ -2011,6 +2013,7 @@ $form-range-thumb-disabled-bg: var(--secondary-color) !default;
 $form-range-thumb-transition:
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 // Form floating

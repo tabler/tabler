@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
@@ -74,6 +75,14 @@
   @if $offset {
     outline-offset: var(--focus-ring-offset);
   }
+}
+
+// Fades the focus ring in: `outline-color` starts from transparent instead of
+// `currentcolor`. `transition` is one property, so pass the element's other
+// transitions here instead of a second `transition()` call.
+@mixin focus-ring-transition($transitions...) {
+  outline-color: transparent;
+  @include transition(list.append($transitions, $focus-ring-transition, comma)...);
 }
 
 //
