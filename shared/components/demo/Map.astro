@@ -1,8 +1,8 @@
 ---
-// Mapbox GL map. Access token from site.mapboxKey. Renders nothing unless
+// Mapbox GL map. Access token from the MAPBOX_KEY environment variable (.env or
+// the host's settings), never from the source. Renders nothing unless
 // maps[mapId] exists.
 import maps from '@data/maps.json';
-import site from '@data/site.json';
 import CaptureScript from '../CaptureScript.astro';
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const { mapId, ratio } = Astro.props;
+
+const mapboxKey = import.meta.env.MAPBOX_KEY ?? process.env.MAPBOX_KEY ?? '';
 
 type MapData = {
 	title?: string;
@@ -47,7 +49,7 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapboxKey: site.mapboxKey, mapContainerId, style, zoom, center, markers }}>
+			<script is:inline define:vars={{ mapboxKey, mapContainerId, style, zoom, center, markers }}>
 				window.tabler_map ??= {};
 
 				function initMap() {
