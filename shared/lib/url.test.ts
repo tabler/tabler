@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isExternal } from './url'
+import { isExternal, relativeBase } from './url'
 
 describe('isExternal', () => {
   it('is true for absolute http(s) urls', () => {
@@ -22,5 +22,20 @@ describe('isExternal', () => {
 describe('isExternal (anchored)', () => {
   it('is false when http(s) appears mid-string', () => {
     expect(isExternal('/redirect?to=https://example.com')).toBe(false)
+  })
+})
+
+describe('relativeBase', () => {
+  it('is "." for top-level pages, including a folder index built as a root file', () => {
+    expect(relativeBase('/')).toBe('.')
+    expect(relativeBase('/marketing')).toBe('.')
+    expect(relativeBase('/marketing/')).toBe('.')
+    expect(relativeBase('/marketing.html')).toBe('.')
+  })
+
+  it('climbs one level per folder', () => {
+    expect(relativeBase('/marketing/about')).toBe('..')
+    expect(relativeBase('/marketing/about.html')).toBe('..')
+    expect(relativeBase('/a/b/c.html')).toBe('../..')
   })
 })

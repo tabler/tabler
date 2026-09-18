@@ -31,8 +31,16 @@ const {
 } = Astro.props;
 
 const id = idProp ?? keyProp;
+if (!id) {
+	throw new Error('DataSelect: pass an `id` or a `key` — the select needs one for its id');
+}
 const key = keyProp ?? 'people';
-const data = (selects as Record<string, any>)[key] ?? {};
+let data = (selects as Record<string, any>)[key];
+if (!data && !values) {
+	throw new Error(`DataSelect: unknown key "${key}" — not in @data/selects.json`);
+}
+// `values` alone needs no selects.json entry.
+data ??= {};
 
 const isMultiple = Boolean(data.multiple);
 
@@ -77,4 +85,4 @@ if (values) {
 }
 ---
 
-{id && <Select id={id} class={className} state={state} placeholder={placeholder} multiple={isMultiple} options={options} optgroups={optgroups} />}
+<Select id={id} class={className} state={state} placeholder={placeholder} multiple={isMultiple} options={options} optgroups={optgroups} />

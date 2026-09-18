@@ -36,6 +36,10 @@ const min = isDevelopment ? '' : '.min'
 const rtlSuffix = rtl ? '.rtl' : ''
 
 type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean }
+const unknownLibs = pageLibs.filter((name) => !(name in libs))
+if (unknownLibs.length > 0) {
+  throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
+}
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
 const googleMapsKey = site.googleMapsDevKey
 // External URLs (http/https) are emitted verbatim (with the maps-key placeholder
