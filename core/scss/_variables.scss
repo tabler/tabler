@@ -984,9 +984,8 @@ $component-active-bg: $primary !default;
 $focus-ring-width: 2px !default;
 $focus-ring-offset: 2px !default;
 $focus-ring-transition: outline-color 0.15s ease-in-out !default;
-// Used by the `.focus-ring-*` colour utilities.
 $focus-ring-opacity: 0.5 !default;
-$focus-ring-color: light-dark(color-mix(in oklab, var(--primary) 50%, var(--body-bg)), color-mix(in oklab, var(--primary) 75%, var(--body-bg))) !default;
+$focus-ring-color: color-transparent(var(--primary), calc(var(--focus-ring-opacity) * 100%)) !default;
 
 // Transitions
 $transition-base: all 0.2s ease-in-out !default;
@@ -2071,7 +2070,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--success),
-    'focus-ring-color': color-mix(in oklab, var(--success) 50%, var(--body-bg)),
+    'focus-ring-color': color-transparent(var(--success), calc(var(--focus-ring-opacity) * 100%)),
     'border-color': var(--form-valid-border-color),
   ),
   'invalid': (
@@ -2079,7 +2078,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--danger),
-    'focus-ring-color': color-mix(in oklab, var(--danger) 50%, var(--body-bg)),
+    'focus-ring-color': color-transparent(var(--danger), calc(var(--focus-ring-opacity) * 100%)),
     'border-color': var(--form-invalid-border-color),
   ),
 ) !default;
