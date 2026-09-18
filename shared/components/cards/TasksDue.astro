@@ -25,14 +25,14 @@ const tasks = crmDashboard.tasks_due
 
   <ListGroup flush hoverable>
     {
-      tasks.items.map((item) => (
-        <ListGroupItem as="label">
+      tasks.items.map((item, index) => (
+        <ListGroupItem>
           <div class="row align-items-center g-2">
             <div class="col-auto">
-              <input type="checkbox" class="form-check-input m-0" />
+              <input type="checkbox" class="form-check-input m-0" id={`task-due-${index}`} />
             </div>
             <div class="col">
-              <div>{item.text}</div>
+              <label for={`task-due-${index}`}>{item.text}</label>
             </div>
             <div class="col-auto d-flex align-items-center gap-2">
               <span class={`legend-dot bg-${item.color}`} />
