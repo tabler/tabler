@@ -40,7 +40,7 @@ describe('navbar position', () => {
   })
 
   it('drops the sidebar offset from the page with no sidebar on it', () => {
-    expect(flat).toMatch(/html:not\(\[data-bs-navbar-position=vertical\]\) \.page:has\(> \[class\*=navbar-expand\]:not\(\.navbar-vertical\)\) > \.navbar,[^{]*> \.page-wrapper \{ --sidebar-width: 0px; \}/)
+    expect(flat).toMatch(/html:not\(\[data-bs-navbar-position=vertical\]\) \.page:has\(> \[class\*=navbar-expand\]:not\(\.navbar-vertical\)\) > \.navbar,[^{]*> \.page-wrapper \{ --sidebar-width: 0px; --sidebar-gap: var\(--navbar-margin, 0px\); \}/)
   })
 
   it('hides the horizontal navbar in the vertical position', () => {

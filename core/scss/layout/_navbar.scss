@@ -446,7 +446,7 @@ Navbar
         &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-inline-start: var(--sidebar-width);
+            margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
 
@@ -455,7 +455,7 @@ Navbar
           ~ .navbar,
           ~ .page-wrapper {
             margin-inline-start: 0;
-            margin-inline-end: var(--sidebar-width);
+            margin-inline-end: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
       }
@@ -683,10 +683,12 @@ Navbar vertical
     // The hidden aside must leave no gap: its siblings offset themselves by
     // --sidebar-width, and this declaration sits on the same elements as the
     // folded copy above, so it wins by coming later.
-    // A length, not a bare 0: .navbar-floating adds it up in calc().
+    // A length, not a bare 0: the offset is added up in calc(). A floating
+    // navbar keeps its own gap from the viewport edge.
     > .navbar,
     > .page-wrapper {
       --sidebar-width: 0px;
+      --sidebar-gap: var(--navbar-margin, 0px);
     }
   }
 
@@ -911,24 +913,18 @@ $navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
       --navbar-margin: #{$navbar-floating-margin};
       --navbar-border-radius: #{$navbar-floating-border-radius};
       --navbar-outline-width: var(--navbar-border-width);
-
-      // The sidebar gives up its margins, so the page next to it stays put.
-      &.navbar-vertical {
-        width: calc(var(--sidebar-width) - 2 * var(--navbar-margin));
-      }
-    }
-
-    // A floating navbar next to a sidebar keeps its own gap: from the sidebar
-    // when there is one, from the viewport edge when it is hidden.
-    .navbar-vertical.navbar-expand#{$infix} ~ .navbar-floating,
-    #{$navbar-floating-attr} .navbar-vertical.navbar-expand#{$infix} ~ .navbar {
-      margin-inline-start: calc(var(--sidebar-width) + var(--navbar-margin, 0px));
-    }
-
-    .navbar-vertical.navbar-expand#{$infix}:is(.navbar-right, .navbar-end) ~ .navbar-floating,
-    #{$navbar-floating-attr} .navbar-vertical.navbar-expand#{$infix}:is(.navbar-right, .navbar-end) ~ .navbar {
-      margin-inline-start: var(--navbar-margin, 0);
-      margin-inline-end: calc(var(--sidebar-width) + var(--navbar-margin, 0px));
     }
   }
+}
+
+// The page next to a floating sidebar moves over by the sidebar's two margins,
+// and a floating navbar next to any sidebar keeps its own gap from it. The
+// sibling offsets read --sidebar-gap only from the sidebar's breakpoint up.
+.navbar-vertical ~ .navbar-floating {
+  --sidebar-gap: var(--navbar-margin, 0px);
+}
+
+.navbar-floating.navbar-vertical ~ :is(.navbar, .page-wrapper),
+#{$navbar-floating-attr} .navbar-vertical ~ :is(.navbar, .page-wrapper) {
+  --sidebar-gap: calc(2 * #{$navbar-floating-margin});
 }
