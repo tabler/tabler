@@ -416,7 +416,7 @@ You can also add tooltips with the link title to icon-only links, so users see t
 
 ## Layout options
 
-Beyond the sidebar, four more layout choices are available as attributes on `<html>`, applied before the page renders by [`tabler-theme.js`](/ui/getting-started/color-modes). Every one of them has a static route too, so you can hard-code a layout without any JavaScript.
+Beyond the sidebar, six more layout choices are available as attributes on `<html>`, applied before the page renders by [`tabler-theme.js`](/ui/getting-started/color-modes). Every one of them has a static route too, so you can hard-code a layout without any JavaScript.
 
 ### Container width
 
@@ -443,6 +443,30 @@ Use one route or the other, not both. The boxed frame is the containing block of
 ```
 
 Only the navbar that is a direct child of `.page` sticks. On the two-row navbar the menu row scrolls away underneath, so the sticky strip stays one row high. Without the attribute you can still wrap a navbar in your own `.sticky-top` element.
+
+### Floating navigation
+
+`data-bs-navbar-style="floating"` keeps a gap between the navigation and the edges around it, and gives it a border and rounded corners:
+
+```html
+<html data-bs-navbar-style="floating">
+```
+
+The attribute covers whichever navigation the page shows. The sidebar gives up its own width for the gap, so the page next to it stays in place. On the two-row navbar both rows float. The navigation floats only from its `navbar-expand-*` breakpoint up. Without the attribute, add the [`navbar-floating`](/ui/layout/navbars#floating-navbar) class to a navbar in your markup:
+
+```html
+<header class="navbar navbar-expand-md navbar-floating">...</header>
+```
+
+### Floating offcanvas
+
+`data-bs-offcanvas-style="floating"` does the same for every [offcanvas](/ui/components/offcanvas#floating-panel) on the page:
+
+```html
+<html data-bs-offcanvas-style="floating">
+```
+
+Without the attribute, add the `offcanvas-floating` class to a single panel.
 
 ### Navigation position
 

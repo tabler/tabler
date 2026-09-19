@@ -82,6 +82,40 @@ Inside it, a `container-xl` keeps the content aligned with the page. The full ma
 </header>
 </Example>
 
+## Floating navbar
+
+Add `navbar-floating` to keep a gap between the navbar and the edges around it. The navbar gets a border on every side and rounded corners. It floats only from its `navbar-expand-*` breakpoint up. Below the breakpoint it stays attached to the edges, like a regular navbar.
+
+<Example code={`<header class="navbar navbar-expand-md navbar-floating d-print-none">...</header>`}>
+<header class="navbar navbar-expand navbar-floating d-print-none">
+  <div class="container-xl">
+    <Logo class="me-3" />
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#" aria-current="page">
+          <span class="nav-link-title">Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span class="nav-link-title">Profile</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+</Example>
+
+The class works on the vertical sidebar too. The sidebar gives up its own width for the gap, so the page content next to it stays in place.
+
+```html
+<aside class="navbar navbar-vertical navbar-expand-lg navbar-floating">...</aside>
+```
+
+The gap is `0.5rem` by default. Change it with `$navbar-floating-margin` in SCSS.
+
+To float the navigation of the whole page without touching the markup, set [`data-bs-navbar-style="floating"`](/ui/layout/page-layouts#floating-navigation) on `<html>`.
+
 ## Language selector
 
 Add a language selector to the navbar as a dropdown. The toggle shows the current language code and the menu lists the languages with a `data-lang` attribute, so a script can switch the locale. Give the toggle an `aria-label`, because the code alone does not say what the control does.
