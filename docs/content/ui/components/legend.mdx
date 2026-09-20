@@ -4,6 +4,7 @@ summary: A legend labels the series of a chart or a progress bar with a colored 
 description: Label chart series with colored markers. Group legend items in a list, add values, and let users toggle series on click.
 related: [/ui/plugins/chart, /ui/components/status, /ui/components/progress]
 source: core/scss/ui/_legend.scss
+docs-libs: [apexcharts]
 classnames:
   component:
     - class: legend-dot
@@ -15,9 +16,16 @@ classnames:
   part:
     - class: legend-value
       desc: Muted value next to the label
+    - class: legend-unit
+      desc: Small unit after the value, for example ms or GB
+  size:
+    - class: legend-lg
+      desc: Label on the first line and a big value below
   style:
     - class: legend-list-vertical
       desc: Stacks the items in a column
+    - class: legend-list-divided
+      desc: Draws a line between the items, for large legends
   state:
     - class: active
       desc: Keeps the hover background on a link or button
@@ -29,6 +37,7 @@ classnames:
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
+import Chart from '@shared/components/demo/Chart.astro';
 
 ## Legend marker
 
@@ -99,6 +108,50 @@ Add `legend-list-vertical` to stack the items, for example next to a donut chart
   <span class="legend legend-primary"><span class="legend-dot"></span> This year <span class="legend-value">$92,400</span></span>
   <span class="legend legend-secondary"><span class="legend-dot"></span> Last year <span class="legend-value">$84,300</span></span>
   <span class="legend"><span class="legend-dot"></span> Forecast <span class="legend-value">$98,000</span></span>
+</div>
+</Example>
+
+## Large legend
+
+Add `legend-lg` to put the label on the first line and a big value below it. Wrap the unit in a `legend-unit`. Add `legend-list-divided` to the list to draw a line between the items. This size works well above a chart, where the legend also shows the key numbers.
+
+<Example centered>
+<div class="legend-list legend-list-divided">
+  <span class="legend legend-lg legend-primary"><span class="legend-dot"></span> P99 <span class="legend-value">124 <span class="legend-unit">ms</span></span></span>
+  <span class="legend legend-lg legend-azure"><span class="legend-dot"></span> P95 <span class="legend-value">76 <span class="legend-unit">ms</span></span></span>
+  <span class="legend legend-lg legend-green"><span class="legend-dot"></span> P75 <span class="legend-value">32 <span class="legend-unit">ms</span></span></span>
+  <span class="legend legend-lg legend-yellow legend-off"><span class="legend-dot"></span> Requests <span class="legend-value">1,234</span></span>
+</div>
+</Example>
+
+### Above a chart
+
+Put the large items above a chart to show the latest value of each series. Turn off the chart's own legend, because the items already name the series.
+
+<Example>
+<div class="card">
+  <div class="card-body">
+    <div class="legend-list legend-list-divided mb-3">
+      <span class="legend legend-lg legend-primary"><span class="legend-dot"></span> P99 <span class="legend-value">124 <span class="legend-unit">ms</span></span></span>
+      <span class="legend legend-lg legend-azure"><span class="legend-dot"></span> P95 <span class="legend-value">76 <span class="legend-unit">ms</span></span></span>
+      <span class="legend legend-lg legend-green"><span class="legend-dot"></span> P75 <span class="legend-value">32 <span class="legend-unit">ms</span></span></span>
+      <span class="legend legend-lg legend-yellow"><span class="legend-dot"></span> P50 <span class="legend-value">10 <span class="legend-unit">ms</span></span></span>
+    </div>
+    <Chart chartId="legend-latency" id="legend-latency-docs" label="Read latency by percentile" height={12} />
+  </div>
+</div>
+</Example>
+
+### Large links
+
+Large items work as links and buttons too, for example as filters above a list. Add `active` to mark the current item and `legend-off` for a hidden one.
+
+<Example centered>
+<div class="legend-list legend-list-divided">
+  <a href="#" class="legend legend-lg legend-green active"><span class="legend-dot"></span> Passed <span class="legend-value">128</span></a>
+  <a href="#" class="legend legend-lg legend-red"><span class="legend-dot"></span> Failed <span class="legend-value">4</span></a>
+  <a href="#" class="legend legend-lg legend-yellow"><span class="legend-dot"></span> Skipped <span class="legend-value">12</span></a>
+  <a href="#" class="legend legend-lg legend-secondary legend-off"><span class="legend-dot"></span> Pending <span class="legend-value">3</span></a>
 </div>
 </Example>
 

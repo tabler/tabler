@@ -1,0 +1,38 @@
+---
+// Large legend next to a donut: a traffic-sources card with the chart on the
+// left and a `vertical` list of `size="lg"` items on the right, each showing a
+// source and its share. `legend-donut` is the traffic donut from charts.json
+// with the ApexCharts legend left off, since the list replaces it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// Order and colors follow the `traffic-sources-donut` entry in charts.json.
+const sources = [
+  { name: 'Organic search', color: 'azure', value: 38 },
+  { name: 'Direct', color: 'primary', value: 27 },
+  { name: 'Social media', color: 'purple', value: 18 },
+  { name: 'Referral', color: 'orange', value: 12 },
+  { name: 'Email', color: 'green', value: 5 },
+]
+---
+
+<ScreenshotLayout title="Large vertical legend" columns={1.6} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader title="Traffic sources" />
+    <CardBody>
+      <div class="d-flex align-items-center gap-4">
+        <div class="flex-fill">
+          <Chart chartId="legend-donut" height={14} label="Traffic sources" />
+        </div>
+        <LegendList vertical>
+          {sources.map((item) => <Legend size="lg" color={item.color} text={item.name} value={`${item.value}%`} />)}
+        </LegendList>
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>
