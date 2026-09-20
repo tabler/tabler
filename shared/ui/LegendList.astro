@@ -4,14 +4,16 @@
 interface Props {
   /** legend-list-vertical (stacked items) */
   vertical?: boolean
+  /** legend-list-divided (a line between the items, for large legends) */
+  divided?: boolean
   class?: string
   /** remaining attributes (id, data-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { vertical, class: className, ...rest } = Astro.props
+const { vertical, divided, class: className, ...rest } = Astro.props
 ---
 
-<div class:list={['legend-list', vertical && 'legend-list-vertical', className]} {...rest}>
+<div class:list={['legend-list', vertical && 'legend-list-vertical', divided && 'legend-list-divided', className]} {...rest}>
   <slot />
 </div>

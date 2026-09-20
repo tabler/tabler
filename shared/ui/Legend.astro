@@ -7,6 +7,10 @@ interface Props {
   text?: string
   /** legend-value next to the label */
   value?: string | number | undefined
+  /** legend-unit after the value, e.g. "ms" or "GB" */
+  unit?: string | undefined
+  /** lg: legend-lg, the label on top and a big value below */
+  size?: 'lg' | undefined
   /** legend-{color} on the item, shared by the marker and the hover background */
   color?: string | undefined
   /** render a <button type="button"> (toggle control) */
@@ -22,15 +26,22 @@ interface Props {
   [key: string]: unknown
 }
 
-const { text, value, color, button, href, active, off, class: className, ...rest } = Astro.props
+const { text, value, unit, size, color, button, href, active, off, class: className, ...rest } = Astro.props
 
 const Element = href ? 'a' : button ? 'button' : 'span'
 const typeAttr = !href && button ? 'button' : undefined
-const classes = ['legend', color && `legend-${color}`, active && 'active', off && 'legend-off', className]
+const classes = ['legend', size && `legend-${size}`, color && `legend-${color}`, active && 'active', off && 'legend-off', className]
 ---
 
 <Element class:list={classes} href={href} type={typeAttr} {...rest}>
   <span class="legend-dot"></span>
   {text ?? <slot />}
-  {value !== undefined && <span class="legend-value">{value}</span>}
+  {
+    value !== undefined && (
+      <span class="legend-value">
+        {value}
+        {unit && <span class="legend-unit">{unit}</span>}
+      </span>
+    )
+  }
 </Element>

@@ -32,6 +32,13 @@ const requests = [
   { name: 'Rate limited', color: 'teal', value: '-' },
 ]
 
+const latency = [
+  { name: 'P99', color: 'primary', value: 124 },
+  { name: 'P95', color: 'azure', value: 76 },
+  { name: 'P75', color: 'green', value: 32 },
+  { name: 'P50', color: 'yellow', value: 10 },
+]
+
 const storage = [
   { name: 'Documents', color: 'primary', value: '3.5 GB', width: 44 },
   { name: 'Media', color: 'info', value: '1.5 GB', width: 19 },
@@ -121,6 +128,121 @@ const storage = [
 
     <div class="col-lg-8">
       <Card>
+        <CardBody>
+          <CardTitle>Large</CardTitle>
+          <CardSubtitle>Set <code>size="lg"</code> to put a big value under the label. Add <code>unit</code> for the unit and <code>divided</code> on the list for the lines.</CardSubtitle>
+          <LegendList divided>
+            <Legend size="lg" color="primary" text="P99" value={124} unit="ms" />
+            <Legend size="lg" color="azure" text="P95" value={76} unit="ms" />
+            <Legend size="lg" color="green" text="P75" value={32} unit="ms" />
+            <Legend size="lg" color="yellow" text="Requests" value="1,234" off />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Under a stat</CardTitle>
+          <CardSubtitle>A legend row explains the split behind a single number.</CardSubtitle>
+          <Subheader>Requests</Subheader>
+          <div class="h1 mb-3">341.0k</div>
+          <LegendList class="border-top pt-3">
+            {requests.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Above a chart</CardTitle>
+          <CardSubtitle>Large items show the latest value of each series, so the chart needs no legend of its own.</CardSubtitle>
+          <LegendList divided class="mb-3">
+            {latency.map((item) => <Legend size="lg" color={item.color} text={item.name} value={item.value} unit="ms" />)}
+          </LegendList>
+          <Chart chartId="legend-latency" height={12} label="Read latency by percentile" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Large vertical</CardTitle>
+          <CardSubtitle>Combine <code>size="lg"</code> with a <code>vertical</code> list for a side panel.</CardSubtitle>
+          <LegendList vertical>
+            {storage.map((item) => <Legend size="lg" color={item.color} text={item.name} value={item.value.replace(' GB', '')} unit="GB" />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Large links</CardTitle>
+          <CardSubtitle>Large items work as links and buttons too. Mark the current one with <code>active</code> and a hidden series with <code>off</code>.</CardSubtitle>
+          <LegendList divided>
+            <Legend href="#" size="lg" color="green" text="Passed" value={128} active />
+            <Legend href="#" size="lg" color="red" text="Failed" value={4} />
+            <Legend href="#" size="lg" color="yellow" text="Skipped" value={12} />
+            <Legend href="#" size="lg" color="secondary" text="Pending" value={3} off />
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With units</CardTitle>
+          <CardSubtitle>Add <code>unit</code> to a regular item to show the unit after the value.</CardSubtitle>
+          <LegendList>
+            {latency.slice(0, 3).map((item) => <Legend color={item.color} text={item.name} value={item.value} unit="ms" />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Without lines</CardTitle>
+          <CardSubtitle>Leave out <code>divided</code> when the items sit in a tight space or wrap to more rows.</CardSubtitle>
+          <LegendList>
+            {traffic.map((item) => <Legend size="lg" color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Loading</CardTitle>
+          <CardSubtitle>Use <code>placeholder</code> blocks for the label and the value while the data loads.</CardSubtitle>
+          <div class="legend-list legend-list-divided placeholder-glow" aria-hidden="true">
+            {
+              [1, 2].map(() => (
+                <span class="legend legend-lg">
+                  <span class="legend-dot" />
+                  <span class="placeholder col-9" />
+                  <span class="legend-value">
+                    <span class="placeholder col-6" />
+                  </span>
+                </span>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
         <CardHeader title="Interactive legend">
           <LegendList class="ms-auto" id="legend-page-list">
             <Legend button color="yellow" text="Total visits" value="6.7k" data-series="Total visits" />
@@ -166,20 +288,6 @@ const storage = [
               {traffic.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
             </LegendList>
           </div>
-        </CardBody>
-      </Card>
-    </div>
-
-    <div class="col-md-6 col-lg-4">
-      <Card>
-        <CardBody>
-          <CardTitle>Under a stat</CardTitle>
-          <CardSubtitle>A legend row explains the split behind a single number.</CardSubtitle>
-          <Subheader>Requests</Subheader>
-          <div class="h1 mb-3">341.0k</div>
-          <LegendList class="border-top pt-3">
-            {requests.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
-          </LegendList>
         </CardBody>
       </Card>
     </div>
