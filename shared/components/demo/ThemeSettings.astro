@@ -68,6 +68,16 @@ const tileSvg = (key: string, value: string): string => {
       return value === 'sticky'
         ? svg(frame(page) + lines(12, 4, [46, 72, 30, 60], border) + thumb(44) + `<rect x="0.5" y="19.5" width="95" height="5" fill="var(--tblr-gray-900)" opacity="0.18" />` + topBar(primary) + outline)
         : svg(frame(page) + topBar(primary) + lines(12, 30, [46, 72, 30], border) + thumb(24) + outline)
+    case 'navbar-style':
+      // Floating: the bar keeps a gap from the edges and gets its own corners.
+      return value === 'floating'
+        ? svg(frame(page) + `<rect x="5" y="5" width="86" height="14" rx="4" fill="${primary}" />` + [11, 29, 47].map((x) => `<rect x="${x}" y="10" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(12, 30, [46, 72, 30], border) + outline)
+        : svg(frame(page) + topBar(primary) + [8, 26, 44].map((x) => `<rect x="${x}" y="8" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(12, 30, [46, 72, 30], border) + outline)
+    case 'offcanvas-style':
+      // A panel open on the end side, over the dimmed page: flush with the edges, or a card with a gap.
+      return value === 'floating'
+        ? svg(frame(page) + lines(10, 12, [40, 48, 28], border) + `<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="var(--tblr-gray-900)" opacity="0.18" /><rect x="53" y="5" width="38" height="54" rx="4" fill="${surface}" stroke="${border}" />` + lines(59, 12, [20, 26, 14], border) + outline)
+        : svg(frame(page) + lines(10, 12, [40, 48, 28], border) + `<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="var(--tblr-gray-900)" opacity="0.18" /><path d="M58 0.5h31.5a6 6 0 0 1 6 6v51a6 6 0 0 1 -6 6h-31.5z" fill="${surface}" /><rect x="57.5" y="0.5" width="0.5" height="63" fill="${border}" />` + lines(64, 12, [20, 26, 14], border) + outline)
     case 'sidebar':
       if (value === 'folded') return svg(frame(page) + rail(16, primary) + dots(8, 12, 4, onAccent) + lines(26, 12, [50, 60, 34], border) + outline)
       if (value === 'folded-hover') return svg(frame(page) + rail(16, primary) + dots(8, 12, 4, onAccent) + lines(26, 12, [50, 60, 34], border) + `<rect x="16" y="0.5" width="4" height="63" fill="var(--tblr-gray-900)" opacity="0.12" /><rect x="16.5" y="0.5" width="28" height="63" fill="${surface}" stroke="${border}" />` + lines(21, 9.5, [18, 18, 18, 18], border, 11) + outline)
@@ -93,7 +103,7 @@ const tileSvg = (key: string, value: string): string => {
     <Icon name="brush" />
   </button>
 
-  <form class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-settings" role="dialog" aria-modal="true" aria-labelledby="offcanvas-settings-title">
+  <form class="offcanvas offcanvas-start offcanvas-floating" tabindex="-1" id="offcanvas-settings" role="dialog" aria-modal="true" aria-labelledby="offcanvas-settings-title">
     <button type="button" class="btn-close position-absolute top-0 end-0 m-3 z-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 
     {/* The body is the only scrolling area, so the actions below stay reachable. */}

@@ -14,7 +14,9 @@ export const themeDefaults = {
   'layout': 'default',
   'navbar': 'default',
   'navbar-position': 'horizontal',
+  'navbar-style': 'default',
   'navbar-theme': 'default',
+  'offcanvas-style': 'default',
   'sidebar': 'default',
 } as const
 
