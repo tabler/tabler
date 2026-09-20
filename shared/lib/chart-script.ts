@@ -70,6 +70,7 @@ export type ChartData = {
   'hide-grid'?: boolean
   'show-x'?: boolean
   'x-formatter'?: string
+  'y-formatter'?: string
   'y-max'?: number
   'y-title'?: string
   'y-tooltip'?: boolean
@@ -173,14 +174,14 @@ export function chartStyle(opts: { id: string; data: ChartData }): string {
 /**
  * The ApexCharts config, as a real JSON-serializable object (rendered via
  * <script define:vars> — no string-built script). The one exception is
- * `x-formatter`: a handful of charts.json entries carry a raw JS expression for
- * the x-axis label formatter (e.g. `val + "K"`), which can't be represented as
- * data. It comes back as `xFormatterExpr` instead of being embedded in `config`,
+ * `x-formatter` / `y-formatter`: a handful of charts.json entries carry a raw JS
+ * expression for an axis label formatter (e.g. `val + "K"`), which can't be represented
+ * as data. It comes back as `xFormatterExpr` / `yFormatterExpr` instead of being embedded in `config`,
  * for the caller to turn into a real function with `new Function` — see
  * Chart.astro. This is data-driven (from our own charts.json, not user input),
  * same trust level as everything else here.
  */
-export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string | undefined } {
+export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string | undefined; yFormatterExpr?: string | undefined } {
   const { id, data, height } = opts
   const type = data.type ?? 'bar'
   const series = data.series ?? []
@@ -467,5 +468,5 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     config.markers = { size: 2 }
   }
 
-  return { config, xFormatterExpr: data['x-formatter'] }
+  return { config, xFormatterExpr: data['x-formatter'], yFormatterExpr: data['y-formatter'] }
 }
