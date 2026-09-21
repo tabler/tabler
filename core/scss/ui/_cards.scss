@@ -51,7 +51,7 @@ $card-tokens: defaults(
 }
 
 @layer components {
-.card {
+  .card {
   @include tokens($card-tokens);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
@@ -73,31 +73,31 @@ $card-tokens: defaults(
   .card {
     box-shadow: none;
   }
-}
+  }
 
-// Card borderless
-.card-borderless {
+  // Card borderless
+  .card-borderless {
   &,
   .card-header,
   .card-footer {
     border-color: transparent;
   }
-}
+  }
 
-// Card dashed
-.card-dashed {
+  // Card dashed
+  .card-dashed {
   border: var(--border-width) dashed var(--border-color);
-}
+  }
 
-// Card transparent
-.card-transparent {
+  // Card transparent
+  .card-transparent {
   background: transparent;
   border: var(--border-width) dashed var(--border-color);
   box-shadow: none;
-}
+  }
 
-// Card stamp
-.card-stamp {
+  // Card stamp
+  .card-stamp {
   --stamp-size: #{$card-stamp-size};
   position: absolute;
   inset-inline-end: 0;
@@ -109,13 +109,13 @@ $card-tokens: defaults(
   pointer-events: none;
   border-start-end-radius: var(--card-border-radius);
   opacity: $card-stamp-opacity;
-}
+  }
 
-.card-stamp-lg {
+  .card-stamp-lg {
   --stamp-size: #{$card-stamp-size-lg};
-}
+  }
 
-.card-stamp-icon {
+  .card-stamp-icon {
   position: relative;
   inset-inline-end: calc(var(--stamp-size) * -0.25);
   top: calc(var(--stamp-size) * -0.25);
@@ -135,44 +135,44 @@ $card-tokens: defaults(
     height: calc(var(--stamp-size) * 0.75);
     stroke-width: 1;
   }
-}
+  }
 
-// Card image
-.card-img,
-.card-img-start {
+  // Card image
+  .card-img,
+  .card-img-start {
   @include border-start-radius($card-inner-border-radius);
-}
+  }
 
-.card-img,
-.card-img-end {
+  .card-img,
+  .card-img-end {
   @include border-end-radius($card-inner-border-radius);
-}
+  }
 
-.card-img-overlay {
+  .card-img-overlay {
   display: flex;
   flex-direction: column;
   justify-content: end;
-}
+  }
 
-.card-img-overlay-dark {
+  .card-img-overlay-dark {
   background-image: $overlay-gradient;
-}
+  }
 
-.card-inactive {
+  .card-inactive {
   pointer-events: none;
   box-shadow: none;
 
   .card-body {
     opacity: 0.64;
   }
-}
+  }
 
 .card-active {
   --card-border-color: var(--theme-bg, var(--primary));
   --card-bg: var(--active-bg);
-}
+  }
 
-.card-btn {
+  .card-btn {
   display: flex;
   flex: 1;
   align-items: center;
@@ -192,12 +192,12 @@ $card-tokens: defaults(
   & + & {
     border-inline-start: var(--border-width) var(--border-style) var(--border-color);
   }
-}
+  }
 
-/**
+  /**
 Stacked card
  */
-.card-stacked {
+  .card-stacked {
   --card-stacked-offset: #{$card-stacked-offset};
   position: relative;
 
@@ -212,9 +212,9 @@ Stacked card
     border: var(--border-width) var(--border-style) var(--card-border-color);
     @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
   }
-}
+  }
 
-.card-cover {
+  .card-cover {
   position: relative;
   padding: var(--card-spacer-y) var(--card-spacer-x);
   background: #666 no-repeat center/cover;
@@ -233,15 +233,15 @@ Stacked card
   &:first-child::before {
     @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
   }
-}
+  }
 
-.card-cover-blurred {
+  .card-cover-blurred {
   &::before {
     backdrop-filter: blur(2px);
   }
-}
+  }
 
-.card-actions {
+  .card-actions {
   --card-actions-gutter: #{$card-actions-gutter};
   padding-inline-start: var(--card-actions-gutter);
   margin-block: calc(-1 * var(--card-actions-gutter));
@@ -250,10 +250,10 @@ Stacked card
   a {
     text-decoration: none;
   }
-}
+  }
 
-// Card header
-.card-header {
+  // Card header
+  .card-header {
   display: flex;
   align-items: center;
   color: inherit;
@@ -262,41 +262,41 @@ Stacked card
   &:first-child {
     @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
   }
-}
+  }
 
-.card-header-light {
+  .card-header-light {
   background: var(--bg-surface-tertiary);
   border-bottom-color: transparent;
-}
+  }
 
-.card-header-tabs {
+  .card-header-tabs {
   flex: 1;
   padding: calc(var(--card-cap-padding-y) * 0.5) calc(var(--card-cap-padding-x) * 0.5) 0;
   margin: calc(var(--card-cap-padding-y) * -1) calc(var(--card-cap-padding-x) * -1);
   background: $card-header-tabs-bg;
   @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
-}
+  }
 
-.card-header-pills {
+  .card-header-pills {
   --card-header-pills-margin: #{$card-header-pills-margin};
   flex: 1;
   margin-top: calc(-1 * var(--card-header-pills-margin));
   margin-bottom: calc(-1 * var(--card-header-pills-margin));
-}
+  }
 
-// Card rotate
-.card-rotate-left,
-.card-rotate-start {
+  // Card rotate
+  .card-rotate-left,
+  .card-rotate-start {
   transform: rotate(-1.5deg);
-}
+  }
 
-.card-rotate-right,
-.card-rotate-end {
+  .card-rotate-right,
+  .card-rotate-end {
   transform: rotate(1.5deg);
-}
+  }
 
-// Card link
-.card-link {
+  // Card link
+  .card-link {
   color: inherit;
 
   &:hover {
@@ -304,39 +304,39 @@ Stacked card
     text-decoration: none;
     box-shadow: var(--shadow-card-hover);
   }
-}
+  }
 
-.card-link-rotate:hover {
+  .card-link-rotate:hover {
   opacity: 1;
   transform: rotate(1.5deg);
-}
+  }
 
-.card-link-pop:hover {
+  .card-link-pop:hover {
   opacity: 1;
   transform: translateY(-2px);
-}
+  }
 
-// Card footer
-.card-footer {
+  // Card footer
+  .card-footer {
   margin-top: auto;
 
   &:last-child {
     @include border-radius(0 0 var(--card-border-radius) var(--card-border-radius));
   }
-}
+  }
 
-.card-footer-transparent {
+  .card-footer-transparent {
   padding-top: 0;
   background: transparent;
   border-color: transparent;
-}
+  }
 
-.card-footer-borderless {
+  .card-footer-borderless {
   border-top: none;
-}
+  }
 
-// Card progress
-.card-progress {
+  // Card progress
+  .card-progress {
   --card-progress-height: #{$card-progress-height};
   height: var(--card-progress-height);
 
@@ -347,13 +347,13 @@ Stacked card
   &:first-child {
     @include border-radius(var(--border-radius-xs) var(--border-radius-xs) 0 0);
   }
-}
+  }
 
-.card-meta {
+  .card-meta {
   color: var(--secondary);
-}
+  }
 
-.card-title {
+  .card-title {
   --card-title-margin-bottom: #{$card-title-margin-bottom};
   --card-title-line-height: #{$card-title-line-height};
   display: block;
@@ -370,9 +370,9 @@ Stacked card
   .card-header & {
     margin: 0;
   }
-}
+  }
 
-.card-subtitle {
+  .card-subtitle {
   --card-subtitle-margin-start: #{$card-subtitle-margin-start};
   margin-bottom: $card-title-spacer-y;
   font-weight: var(--font-weight-normal);
@@ -387,9 +387,9 @@ Stacked card
     margin-inline: var(--card-subtitle-margin-start) 0;
     font-size: $h4-font-size;
   }
-}
+  }
 
-.card-body {
+  .card-body {
   --card-body-padding-sm: #{$card-body-padding-sm};
   --card-body-padding-md: #{$card-body-padding-md};
   --card-body-padding-lg: #{$card-body-padding-lg};
@@ -427,65 +427,65 @@ Stacked card
   & + & {
     border-top: var(--border-width) var(--border-style) var(--border-color);
   }
-}
+  }
 
-.card-body-scrollable {
+  .card-body-scrollable {
   overflow: auto;
-}
+  }
 
-/**
+  /**
 Card optinos
  */
-.card-options {
+  .card-options {
   --card-options-top: #{$card-options-top};
   --card-options-inset: #{$card-options-inset};
   display: flex;
   margin-inline-start: auto;
-}
+  }
 
-.card-options-link {
+  .card-options-link {
   --card-options-link-min-width: #{$card-options-link-min-width};
   --card-options-link-margin-start: #{$card-options-link-margin-start};
   display: inline-block;
   min-width: var(--card-options-link-min-width);
   margin-inline-start: var(--card-options-link-margin-start);
   color: var(--secondary);
-}
+  }
 
-/**
+  /**
 Card status
  */
-.card-status-top,
-.card-status-start,
-.card-status-bottom {
+  .card-status-top,
+  .card-status-start,
+  .card-status-bottom {
   --card-status-size: #{$card-status-size};
   --card-status-offset: #{$card-status-offset};
   position: absolute;
   inset: var(--card-status-offset);
   pointer-events: none;
   @include border-radius(var(--card-border-radius));
-}
+  }
 
-.card-status-top {
+  .card-status-top {
   mask-image: linear-gradient(to bottom, #000 var(--card-status-size), transparent var(--card-status-size));
-}
+  }
 
-.card-status-start {
+  .card-status-start {
   mask-image: linear-gradient(to right, #000 var(--card-status-size), transparent var(--card-status-size));
 
   [dir='rtl'] & {
     mask-image: linear-gradient(to left, #000 var(--card-status-size), transparent var(--card-status-size));
   }
-}
+  }
 
-.card-status-bottom {
+  .card-status-bottom {
   mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
-}
+  }
 
-/**
+  /**
 Card table
  */
-.card-table {
+  .card-table {
     margin-bottom: 0;
 
   tr {
@@ -558,12 +558,12 @@ Card table
   .card-body + & {
     border-top: var(--border-width) var(--border-style) var(--table-border-color);
   }
-}
+  }
 
-/*
+  /*
 Card code
  */
-.card-code {
+  .card-code {
   padding: 0;
   overflow: hidden;
 
@@ -587,33 +587,33 @@ Card code
       border: 0;
     @include border-radius(0);
   }
-}
+  }
 
-/*
+  /*
 Card chart
  */
-.card-chart {
+  .card-chart {
   --card-avatar-height: #{$card-avatar-height};
   position: relative;
   z-index: 1;
   height: var(--card-avatar-height);
-}
+  }
 
-/**
+  /**
 Card avatar
  */
-.card-avatar {
+  .card-avatar {
   --card-avatar-ring-width: #{$card-avatar-ring-width};
   margin-inline-start: auto;
   margin-inline-end: auto;
   margin-top: calc(-1 * calc(var(--avatar-size) * 0.5));
   box-shadow: 0 0 0 var(--card-avatar-ring-width) var(--card-bg, var(--bg-surface));
-}
+  }
 
-/*
+  /*
 Card list group
  */
-.card-list-group {
+  .card-list-group {
   .card-body + & {
     border-top: var(--border-width) var(--border-style) var(--border-color);
   }
@@ -633,10 +633,10 @@ Card list group
       border-top: 0;
     }
   }
-}
+  }
 
-// Card tabs
-.card-tabs {
+  // Card tabs
+  .card-tabs {
   .nav-tabs {
     position: relative;
     z-index: 1;
@@ -722,15 +722,15 @@ Card list group
     border-start-start-radius: var(--card-border-radius);
       border-end-start-radius: 0;
   }
-}
+  }
 
-/**
+  /**
 Card note
 */
-.card-note {
+  .card-note {
   --card-bg: #{mix-color-css(var(--yellow), var(--bg-surface), 12%)};
   --card-border-color: #{mix-color-css(var(--yellow), var(--bg-surface), 20%)};
-}
+  }
 }
 
 /**
@@ -747,69 +747,69 @@ Card gradient
 }
 
 @layer components {
-.card-gradient {
+  .card-gradient {
   --card-gradient-direction: 180deg;
   --card-gradient-opacity: 86%;
   --card-gradient: var(--theme-bg, var(--primary)), var(--theme-bg, var(--primary));
 
   @include card-gradient-background();
-}
+  }
 
-@each $name, $color in map.merge($colors, $theme-colors) {
+  @each $name, $color in map.merge($colors, $theme-colors) {
   .card-gradient-#{$name} {
     --card-gradient: var(--#{$name}), var(--#{$name});
   }
-}
+  }
 
-.card-gradient-rainbow {
+  .card-gradient-rainbow {
   --card-gradient: #78c5d6, #459ba8, #79c267, #c5d647, #f5d63d, #f08b33, #e868a2, #be61a5;
-}
+  }
 
-.card-gradient-sun {
+  .card-gradient-sun {
   --card-gradient: #fd1d1d, #fcb045;
-}
+  }
 
-.card-gradient-snow {
+  .card-gradient-snow {
   --card-gradient: #333, #e9ecef;
-}
+  }
 
-.card-gradient-ocean {
+  .card-gradient-ocean {
   --card-gradient: #1cb5e0, #000851;
-}
+  }
 
-.card-gradient-mellow {
+  .card-gradient-mellow {
   --card-gradient: #f8ff00, #3ad59f;
-}
+  }
 
-.card-gradient-disco {
+  .card-gradient-disco {
   --card-gradient: #fc466b, #3f5efb;
-}
+  }
 
-.card-gradient-psychedelic {
+  .card-gradient-psychedelic {
   --card-gradient: #fcc5e4, #fda34b, #ff7882, #c8699e, #7046aa, #0c1db8, #020f75;
-}
+  }
 
-.card-gradient-love {
+  .card-gradient-love {
   --card-gradient: #f235e6, #bc0707;
-}
+  }
 
-.card-gradient-gold {
+  .card-gradient-gold {
   --card-gradient: #9d4100, #bf7122, #f59f00, #ffd700;
-}
+  }
 
-.card-gradient-animated {
+  .card-gradient-animated {
   animation: gradient-animation 15s linear infinite;
-}
+  }
 
-.card-gradient-bottom {
+  .card-gradient-bottom {
   --card-gradient-direction: 0deg;
-}
+  }
 
-.card-gradient-end {
+  .card-gradient-end {
   --card-gradient-direction: 270deg;
-}
+  }
 
-.card-gradient-start {
+  .card-gradient-start {
   --card-gradient-direction: 90deg;
-}
+  }
 }

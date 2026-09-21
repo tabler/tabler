@@ -8,13 +8,13 @@
 @use '../config' as *;
 
 @layer components {
-// stylelint-disable selector-max-attribute, selector-no-qualifying-type -- the plugin marks everything with data attributes
+  // stylelint-disable selector-max-attribute, selector-no-qualifying-type -- the plugin marks everything with data attributes
 
-//
-// Calendar grid
-//
+  //
+  // Calendar grid
+  //
 
-[data-vc='calendar'] {
+  [data-vc='calendar'] {
   --calendar-padding: #{$datepicker-calendar-padding};
   --calendar-color: var(--body-color);
   --calendar-font-size: #{$datepicker-calendar-font-size};
@@ -49,10 +49,10 @@
     z-index: 1;
     @include focus-ring(true);
   }
-}
+  }
 
-// Month navigation
-[data-vc-arrow] {
+  // Month navigation
+  [data-vc-arrow] {
   position: relative;
   display: block;
   width: 2rem;
@@ -75,19 +75,19 @@
   &:hover {
     background-color: var(--calendar-day-hover-bg);
   }
-}
+  }
 
-[data-vc-arrow='prev']::before {
+  [data-vc-arrow='prev']::before {
   transform: rotate(90deg);
-}
+  }
 
-[data-vc-arrow='next']::before {
+  [data-vc-arrow='next']::before {
   transform: rotate(-90deg);
-}
+  }
 
-// The controls overlay the header, so they repeat the calendar's own inset to
-// keep the arrows aligned with the content below.
-[data-vc='controls'] {
+  // The controls overlay the header, so they repeat the calendar's own inset to
+  // keep the arrows aligned with the content below.
+  [data-vc='controls'] {
   position: absolute;
   top: 0;
   right: 0;
@@ -99,40 +99,40 @@
   padding-block-start: var(--calendar-padding);
   padding-inline: var(--calendar-padding);
   pointer-events: none;
-}
+  }
 
-[data-vc='grid'] {
+  [data-vc='grid'] {
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
   gap: 1.75rem;
-}
+  }
 
-[data-vc='column'] {
+  [data-vc='column'] {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   min-width: 240px;
-}
+  }
 
-// Header: month and year
-[data-vc='header'] {
+  // Header: month and year
+  [data-vc='header'] {
   position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 0.75rem;
-}
+  }
 
-[data-vc-header='content'] {
+  [data-vc-header='content'] {
   display: inline-flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
   white-space: pre-wrap;
-}
+  }
 
-[data-vc='month'],
-[data-vc='year'] {
+  [data-vc='month'],
+  [data-vc='year'] {
   padding: 0.25rem 0.5rem;
   margin-inline: -0.125rem;
   font-size: var(--font-size-base, 1rem);
@@ -150,43 +150,43 @@
   &:hover:not(:disabled) {
     background-color: var(--calendar-day-hover-bg);
   }
-}
+  }
 
-[data-vc='content'] {
+  [data-vc='content'] {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-}
+  }
 
-// Month and year views. The plugin wraps each set in role="row" and
-// role="gridcell" elements, so the column grid goes on the row.
-[data-vc='months'],
-[data-vc='years'] {
+  // Month and year views. The plugin wraps each set in role="row" and
+  // role="gridcell" elements, so the column grid goes on the row.
+  [data-vc='months'],
+  [data-vc='years'] {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   row-gap: 1rem;
-}
+  }
 
-[data-vc-months='row'],
-[data-vc-years='row'] {
+  [data-vc-months='row'],
+  [data-vc-years='row'] {
   display: grid;
   grid-template-columns: repeat(var(--calendar-columns, 4), minmax(0, 1fr));
   column-gap: 0.25rem;
   align-items: center;
-}
+  }
 
-[data-vc='years'] {
+  [data-vc='years'] {
   --calendar-columns: 5;
-}
+  }
 
-[data-vc-months='cell'],
-[data-vc-years='cell'] {
+  [data-vc-months='cell'],
+  [data-vc-years='cell'] {
   display: flex;
-}
+  }
 
-[data-vc-months-month],
-[data-vc-years-year] {
+  [data-vc-months-month],
+  [data-vc-years-year] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -223,17 +223,17 @@
       background-color: var(--calendar-day-selected-bg);
     }
   }
-}
+  }
 
-// Weekday header
-[data-vc='week'] {
+  // Weekday header
+  [data-vc='week'] {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   justify-items: center;
   margin-bottom: 0.5rem;
-}
+  }
 
-[data-vc-week-day] {
+  [data-vc-week-day] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,26 +247,26 @@
   color: var(--calendar-weekday-color);
   background-color: transparent;
   border: 0;
-}
+  }
 
-button[data-vc-week-day] {
+  button[data-vc-week-day] {
   cursor: pointer;
-}
+  }
 
-// Dates grid
-[data-vc='dates'] {
+  // Dates grid
+  [data-vc='dates'] {
   pointer-events: none;
-}
+  }
 
-[data-vc-dates='row'] {
+  [data-vc-dates='row'] {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   align-items: center;
   justify-items: center;
   width: 100%;
-}
+  }
 
-[data-vc-date] {
+  [data-vc-date] {
   position: relative;
   display: flex;
   align-items: center;
@@ -281,12 +281,12 @@ button[data-vc-week-day] {
   &[data-vc-date-disabled] [data-vc-date-btn] {
     pointer-events: none;
   }
-}
+  }
 
-// A day paints its background from two variables: the colour a state picks
-// and the opacity it gets. States change the variables, never `opacity`, so
-// the date stays readable on a faded background.
-[data-vc-date-btn] {
+  // A day paints its background from two variables: the colour a state picks
+  // and the opacity it gets. States change the variables, never `opacity`, so
+  // the date stays readable on a faded background.
+  [data-vc-date-btn] {
   --calendar-day-bg: transparent;
   --calendar-day-bg-opacity: 100%;
   display: flex;
@@ -310,85 +310,85 @@ button[data-vc-week-day] {
   &:hover {
     --calendar-day-bg: var(--calendar-day-hover-bg);
   }
-}
+  }
 
-// Today
-[data-vc-date-today] [data-vc-date-btn] {
+  // Today
+  [data-vc-date-today] [data-vc-date-btn] {
   font-weight: $font-weight-bold;
   --calendar-day-bg: var(--calendar-day-today-bg);
   color: var(--calendar-day-today-color);
-}
+  }
 
-// Days of the previous and next month
-[data-vc-date-month='next'] [data-vc-date-btn],
-[data-vc-date-month='prev'] [data-vc-date-btn] {
+  // Days of the previous and next month
+  [data-vc-date-month='next'] [data-vc-date-btn],
+  [data-vc-date-month='prev'] [data-vc-date-btn] {
   --calendar-day-bg-opacity: 50%;
   color: var(--calendar-weekday-color);
-}
+  }
 
-[data-vc-date-disabled] [data-vc-date-btn] {
+  [data-vc-date-disabled] [data-vc-date-btn] {
   color: var(--calendar-day-disabled-color);
-}
+  }
 
-// Range selection: the hovered and selected runs join into one bar, so only the
-// outer corners keep their radius. Logical corners follow the writing direction.
-[data-vc-date-hover] [data-vc-date-btn] {
+  // Range selection: the hovered and selected runs join into one bar, so only the
+  // outer corners keep their radius. Logical corners follow the writing direction.
+  [data-vc-date-hover] [data-vc-date-btn] {
   --calendar-day-bg: var(--calendar-day-hover-bg);
   border-radius: 0;
-}
+  }
 
-[data-vc-date-hover='first'] [data-vc-date-btn] {
+  [data-vc-date-hover='first'] [data-vc-date-btn] {
   border-start-start-radius: var(--calendar-border-radius);
   border-end-start-radius: var(--calendar-border-radius);
-}
+  }
 
-[data-vc-date-hover='last'] [data-vc-date-btn] {
+  [data-vc-date-hover='last'] [data-vc-date-btn] {
   border-start-end-radius: var(--calendar-border-radius);
   border-end-end-radius: var(--calendar-border-radius);
-}
+  }
 
-[data-vc-date-hover='first-and-last'] [data-vc-date-btn] {
+  [data-vc-date-hover='first-and-last'] [data-vc-date-btn] {
   border-radius: var(--calendar-border-radius);
-}
+  }
 
-[data-vc-date-selected] [data-vc-date-btn] {
+  [data-vc-date-selected] [data-vc-date-btn] {
   --calendar-day-bg: var(--calendar-day-selected-bg);
   color: var(--calendar-day-selected-color);
-}
+  }
 
-// Inside a range only the two ends are solid; the days between keep their own
-// text colour on a faint tint of the selected colour.
-[data-vc-date-selected='middle'] [data-vc-date-btn] {
+  // Inside a range only the two ends are solid; the days between keep their own
+  // text colour on a faint tint of the selected colour.
+  [data-vc-date-selected='middle'] [data-vc-date-btn] {
   --calendar-day-bg-opacity: #{$datepicker-calendar-range-bg-opacity};
   color: var(--calendar-color);
   border-radius: 0;
-}
+  }
 
-[data-vc-date-selected='first'] [data-vc-date-btn] {
+  [data-vc-date-selected='first'] [data-vc-date-btn] {
   border-start-start-radius: var(--calendar-border-radius);
   border-start-end-radius: 0;
   border-end-start-radius: var(--calendar-border-radius);
   border-end-end-radius: 0;
-}
+  }
 
-[data-vc-date-selected='last'] [data-vc-date-btn] {
+  [data-vc-date-selected='last'] [data-vc-date-btn] {
   border-start-start-radius: 0;
   border-start-end-radius: var(--calendar-border-radius);
   border-end-start-radius: 0;
   border-end-end-radius: var(--calendar-border-radius);
-}
+  }
 
-[data-vc-date-selected='first-and-last'] [data-vc-date-btn] {
+  [data-vc-date-selected='first-and-last'] [data-vc-date-btn] {
   border-radius: var(--calendar-border-radius);
-}
+  }
 
-//
-// Popup surface
-//
-// The plugin adds `[data-vc-input]` only when it owns a popup, so inline
-// calendars keep the bare grid styling above.
+  //
+  // Popup surface
+  //
+  // The plugin adds `[data-vc-input]` only when it owns a popup, so inline
+  // calendars keep the bare grid styling above.
 
-[data-vc='calendar'][data-vc-input] {
+  [data-vc='calendar'][data-vc-input] {
   --datepicker-padding: #{$datepicker-padding};
   --datepicker-bg: #{$datepicker-bg};
   --datepicker-border-radius: #{$datepicker-border-radius};
@@ -413,15 +413,15 @@ button[data-vc-week-day] {
     pointer-events: none;
     opacity: 0;
   }
-}
+  }
 
-[data-vc-position='bottom'] {
+  [data-vc-position='bottom'] {
   margin-block-start: 0.25rem;
-}
+  }
 
-[data-vc-position='top'] {
+  [data-vc-position='top'] {
   margin-block-end: -0.25rem;
-}
+  }
 
-// stylelint-enable selector-max-attribute, selector-no-qualifying-type
+  // stylelint-enable selector-max-attribute, selector-no-qualifying-type
 }

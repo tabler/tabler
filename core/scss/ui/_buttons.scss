@@ -30,7 +30,7 @@ $btn-tokens: defaults(
 // stylelint-enable custom-property-no-missing-var-function
 
 @layer components {
-.btn {
+  .btn {
   @include tokens($btn-tokens);
   position: relative;
 
@@ -74,9 +74,9 @@ $btn-tokens: defaults(
     background-color: var(--btn-hover-bg);
     border-color: var(--btn-hover-border-color);
   }
-}
+  }
 
-.btn-link {
+  .btn-link {
   // Tokens, not just the plain properties below: the disabled state reads
   // `--btn-bg` and `--btn-border-color`, so setting only `background-color`
   // here would leave a disabled link button with the default surface and border.
@@ -95,19 +95,19 @@ $btn-tokens: defaults(
     color: var(--link-hover-color);
     border-color: transparent;
   }
-}
+  }
 
-//
-// Button color variations
-//
-.btn-ghost {
+  //
+  // Button color variations
+  //
+  .btn-ghost {
   --btn-bg: transparent;
   --btn-border-color: transparent;
   --btn-box-shadow: none;
   --btn-hover-bg: var(--bg-surface-secondary);
   --btn-hover-border-color: transparent;
   --btn-hover-color: var(--body-color);
-}
+  }
 
 // `.btn-{color} { @extend .theme-{color}; }` lives in _extends.scss (see its
 // header comment: @extend only reaches modules this file loads).
@@ -145,36 +145,36 @@ $btn-tokens: defaults(
     --gradient: none;
     --btn-box-shadow: none;
   }
-}
+  }
 
-//
-// Button sizes
-//
-.btn-sm,
-.btn-group-sm > .btn {
+  //
+  // Button sizes
+  //
+  .btn-sm,
+  .btn-group-sm > .btn {
   --btn-line-height: #{$input-btn-line-height-sm};
   --btn-icon-size: #{$input-btn-icon-size-sm};
-}
+  }
 
-.btn-lg,
-.btn-group-lg > .btn {
+  .btn-lg,
+  .btn-group-lg > .btn {
   --btn-line-height: #{$input-btn-line-height-lg};
   --btn-icon-size: #{$input-btn-icon-size-lg};
-}
+  }
 
-.btn-xl,
-.btn-group-xl > .btn {
+  .btn-xl,
+  .btn-group-xl > .btn {
   --btn-line-height: #{$input-btn-line-height-xl};
   --btn-icon-size: #{$input-btn-icon-size-xl};
   --btn-padding-y: #{$input-btn-padding-y-xl};
   --btn-padding-x: #{$input-btn-padding-x-xl};
   --btn-font-size: #{$input-btn-font-size-xl};
-}
+  }
 
-//
-// Button shapes
-//
-.btn-pill {
+  //
+  // Button shapes
+  //
+  .btn-pill {
   padding-inline-start: 1.5em;
   padding-inline-end: 1.5em;
   @include border-radius(var(--border-radius-pill));
@@ -184,17 +184,17 @@ $btn-tokens: defaults(
     --btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
     padding: var(--btn-pill-icon-padding-y) var(--btn-pill-icon-padding-x);
   }
-}
+  }
 
-.btn-square {
+  .btn-square {
   border-radius: 0;
-}
+  }
 
-//
-// Icon button
-//
-.btn-icon,
-.btn-action {
+  //
+  // Icon button
+  //
+  .btn-icon,
+  .btn-action {
   @include focus-ring-transition();
   //[BUG] btn-sm and btn-xl with an icon looks broken
   //issue #2470 fixed
@@ -205,23 +205,23 @@ $btn-tokens: defaults(
   .icon {
     margin: calc(-1 * var(--btn-padding-x));
   }
-}
+  }
 
-//
-// Button list
-//
-.btn-list {
+  //
+  // Button list
+  //
+  .btn-list {
   @include elements-list();
-}
+  }
 
-.btn-list-center {
+  .btn-list-center {
   justify-content: center;
-}
+  }
 
-//
-// Button floating
-//
-.btn-floating {
+  //
+  // Button floating
+  //
+  .btn-floating {
   --btn-floating-offset: #{$btn-floating-offset};
   position: fixed;
   // End side, Material-FAB style — the start side belongs to the sidebar.
@@ -233,11 +233,11 @@ $btn-tokens: defaults(
   @include media-print() {
     display: none;
   }
-}
+  }
 
-//
-// Button loading
-//
+  //
+  // Button loading
+  //
   // The state selectors match the specificity of `.btn:focus-visible`,
   // `.btn.active` and `.btn:disabled`, which would otherwise restore the label
   // colour. Hover and active cannot happen behind `pointer-events: none`.
@@ -273,12 +273,12 @@ $btn-tokens: defaults(
     animation: spinner-border 0.75s linear infinite;
     @include border-radius(var(--border-radius-pill));
   }
-}
+  }
 
-//
-// Action button
-//
-.btn-action {
+  //
+  // Action button
+  //
+  .btn-action {
   --btn-border-color: transparent;
   --btn-bg: transparent;
   --btn-disabled-color: var(--secondary);
@@ -316,17 +316,17 @@ $btn-tokens: defaults(
   @include media-print() {
     display: none;
   }
-}
+  }
 
-.btn-actions {
+  .btn-actions {
   display: flex;
 
   @include media-print() {
     display: none;
   }
-}
+  }
 
-.btn-animate-icon {
+  .btn-animate-icon {
   .icon {
     transition: transform $transition-time ease;
   }
@@ -387,5 +387,5 @@ $btn-tokens: defaults(
       }
     }
   }
-}
+  }
 }

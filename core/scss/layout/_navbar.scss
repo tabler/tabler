@@ -303,7 +303,7 @@
 Navbar
  */
 @layer components {
-.navbar {
+  .navbar {
   --navbar-bg: var(--bg-surface);
   --navbar-border-width: #{$navbar-border-width};
   --navbar-active-border-color: var(--theme-bg, #{$navbar-active-border-color});
@@ -370,9 +370,9 @@ Navbar
       }
     }
   }
-}
+  }
 
-.navbar-expand {
+  .navbar-expand {
   @each $breakpoint in map.keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
     $infix: breakpoint-infix($next, $grid-breakpoints);
@@ -476,34 +476,34 @@ Navbar
       }
     }
   }
-}
+  }
 
-/**
+  /**
 Navbar brand
  */
-.navbar-brand {
+  .navbar-brand {
   display: inline-flex;
   gap: $spacer-2;
   align-items: center;
   margin: 0;
   font-weight: $navbar-brand-font-weight;
   line-height: 1;
-}
+  }
 
-.navbar-brand-image {
+  .navbar-brand-image {
   width: auto;
   height: $navbar-brand-image-height;
-}
+  }
 
-.navbar-brand-gray {
+  .navbar-brand-gray {
   --navbar-logo-color: var(--tertiary);
   opacity: 0.5;
-}
+  }
 
-/**
+  /**
 Navbar toggler
  */
-.navbar-toggler {
+  .navbar-toggler {
   position: relative;
   display: flex;
   align-items: center;
@@ -511,9 +511,9 @@ Navbar toggler
   width: $navbar-brand-image-height;
   height: $navbar-brand-image-height;
   border: 0;
-}
+  }
 
-.navbar-toggler-icon {
+  .navbar-toggler-icon {
   position: relative;
   // The button's padding leaves less room than the bar is wide — without
   // this the middle bar gets flex-squeezed while the pseudo bars keep their
@@ -561,20 +561,20 @@ Navbar toggler
       opacity: 0;
     }
   }
-}
+  }
 
-/**
+  /**
 Navbar transparent
  */
-.navbar-transparent {
+  .navbar-transparent {
     --navbar-border-color: transparent;
     background: transparent;
-}
+  }
 
-/**
+  /**
 Navbar nav
  */
-.navbar-nav {
+  .navbar-nav {
   --nav-link-hover-bg: #{$navbar-nav-link-hover-bg};
   --nav-link-icon-color: #{$nav-link-icon-color};
   --nav-link-hover-icon-color: #{$nav-link-hover-icon-color};
@@ -587,56 +587,56 @@ Navbar nav
     flex-direction: column;
     justify-content: center;
   }
-}
+  }
 
-/**
+  /**
 Navbar side
  */
-// The group at the end of a navbar: a row on the end side of a horizontal
-// navbar. In a vertical navbar the same class pins the group to the bottom
-// of the menu — see navbar-vertical-nav().
-.navbar-side {
+  // The group at the end of a navbar: a row on the end side of a horizontal
+  // navbar. In a vertical navbar the same class pins the group to the bottom
+  // of the menu — see navbar-vertical-nav().
+  .navbar-side {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   margin: 0;
-}
+  }
 
-/**
+  /**
 Navbar sticky
  */
-// Runtime route only (data-bs-navbar="sticky" on <html>); static markup wraps
-// the navbar in its own .sticky-top. Just the top bar sticks — on the two-row
-// navbar the menu row scrolls away, so the sticky strip stays one row high.
-html[data-bs-navbar='sticky'] .page > .navbar:not(.navbar-vertical) {
+  // Runtime route only (data-bs-navbar="sticky" on <html>); static markup wraps
+  // the navbar in its own .sticky-top. Just the top bar sticks — on the two-row
+  // navbar the menu row scrolls away, so the sticky strip stays one row high.
+  html[data-bs-navbar='sticky'] .page > .navbar:not(.navbar-vertical) {
   position: sticky;
   top: 0;
   z-index: $zindex-sticky;
-}
+  }
 
-/**
+  /**
 Navbar primary
  */
-// Runtime route only (data-bs-navbar-theme="primary" on <html>): the primary
-// color as the navbar surface. The text palette comes from the dark color
-// mode, which _extends.scss applies to the same selector; static markup gets
-// the same look from .bg-primary with data-bs-theme="dark" on the navbar.
-html[data-bs-navbar-theme='primary'] .page > .navbar {
+  // Runtime route only (data-bs-navbar-theme="primary" on <html>): the primary
+  // color as the navbar surface. The text palette comes from the dark color
+  // mode, which _extends.scss applies to the same selector; static markup gets
+  // the same look from .bg-primary with data-bs-theme="dark" on the navbar.
+  html[data-bs-navbar-theme='primary'] .page > .navbar {
   --navbar-bg: var(--primary);
   --navbar-border-color: transparent;
-}
+  }
 
-// The menu row of the two-row navbar, which is not a direct child of .page.
-html[data-bs-navbar-theme='primary'] .page > [class*='navbar-expand'] .navbar {
+  // The menu row of the two-row navbar, which is not a direct child of .page.
+  html[data-bs-navbar-theme='primary'] .page > [class*='navbar-expand'] .navbar {
   --navbar-bg: var(--primary);
   --navbar-border-color: transparent;
-}
+  }
 
-/**
+  /**
 Navbar vertical
  */
-@if $enable-navbar-vertical {
+  @if $enable-navbar-vertical {
   // Folded sidebar: every geometry consumer (aside width, page paddings,
   // page-wrapper/navbar margins) reads --sidebar-width, so flipping this one
   // variable re-lays-out the whole page. Two routes to the same state:
@@ -861,9 +861,9 @@ Navbar vertical
       padding-inline-end: 0;
     }
   }
-}
+  }
 
-.navbar-overlap {
+  .navbar-overlap {
   &::after {
     position: absolute;
     inset-inline-start: 0;
@@ -875,38 +875,38 @@ Navbar vertical
     background: inherit;
     box-shadow: inherit;
   }
-}
+  }
 
-/**
+  /**
 Navbar floating
  */
-// The navbar keeps a gap from the edges around it, like .offcanvas-floating,
-// with an outline on every side instead of the single border line.
-//
-// Two routes to the same state: the .navbar-floating class on the navbar
-// (static markup), or data-bs-navbar-style="floating" on <html> (the theme
-// settings), which covers whichever navigation the page shows — the menu row
-// of the two-row navbar included, which inherits the variables from its
-// navbar-expand-* wrapper.
-//
-// The variables exist only from the navbar-expand-* breakpoint up, so below it
-// every fallback applies and the navbar stays attached.
-$navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
+  // The navbar keeps a gap from the edges around it, like .offcanvas-floating,
+  // with an outline on every side instead of the single border line.
+  //
+  // Two routes to the same state: the .navbar-floating class on the navbar
+  // (static markup), or data-bs-navbar-style="floating" on <html> (the theme
+  // settings), which covers whichever navigation the page shows — the menu row
+  // of the two-row navbar included, which inherits the variables from its
+  // navbar-expand-* wrapper.
+  //
+  // The variables exist only from the navbar-expand-* breakpoint up, so below it
+  // every fallback applies and the navbar stays attached.
+  $navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
 
-.navbar-floating,
-#{$navbar-floating-attr} .navbar,
-#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  .navbar-floating,
+  #{$navbar-floating-attr} .navbar,
+  #{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
   margin: var(--navbar-margin, 0);
   outline: var(--navbar-outline-width, 0) solid var(--navbar-border-color);
   outline-offset: calc(-1 * var(--navbar-outline-width, 0px));
   @include border-radius(var(--navbar-border-radius, 0));
-}
+  }
 
-#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  #{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
   margin-top: 0;
-}
+  }
 
-@each $breakpoint in map.keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
   $next: breakpoint-next($breakpoint, $grid-breakpoints);
   $infix: breakpoint-infix($next, $grid-breakpoints);
 
@@ -918,17 +918,17 @@ $navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
       --navbar-outline-width: var(--navbar-border-width);
     }
   }
-}
+  }
 
-// The page next to a floating sidebar moves over by the sidebar's two margins,
-// and a floating navbar next to any sidebar keeps its own gap from it. The
-// sibling offsets read --sidebar-gap only from the sidebar's breakpoint up.
-.navbar-vertical ~ .navbar-floating {
+  // The page next to a floating sidebar moves over by the sidebar's two margins,
+  // and a floating navbar next to any sidebar keeps its own gap from it. The
+  // sibling offsets read --sidebar-gap only from the sidebar's breakpoint up.
+  .navbar-vertical ~ .navbar-floating {
   --sidebar-gap: var(--navbar-margin, 0px);
-}
+  }
 
-.navbar-floating.navbar-vertical ~ :is(.navbar, .page-wrapper),
-#{$navbar-floating-attr} .navbar-vertical ~ :is(.navbar, .page-wrapper) {
+  .navbar-floating.navbar-vertical ~ :is(.navbar, .page-wrapper),
+  #{$navbar-floating-attr} .navbar-vertical ~ :is(.navbar, .page-wrapper) {
   --sidebar-gap: calc(2 * #{$navbar-floating-margin});
-}
+  }
 }
