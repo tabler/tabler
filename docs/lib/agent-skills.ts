@@ -4,6 +4,7 @@
 // here so the skill and the rest of the docs quote the same urls and cdn version.
 import { createHash } from 'node:crypto'
 import { site } from '@shared/lib/site'
+import { cdnPackageSnippet } from './cdn-snippets.ts'
 import tablerSource from './agent-skills/tabler/SKILL.md?raw'
 
 export const AGENT_SKILLS_SCHEMA = 'https://schemas.agentskills.io/discovery/0.2.0/schema.json'
@@ -12,6 +13,8 @@ const tokens: Record<string, string> = {
   '${site.docsUrl}': site.docsUrl,
   '${site.cdnUrl}': site.cdnUrl,
   '${site.previewUrl}': site.previewUrl,
+  // same tags as the docs and llms.txt, with the SRI attributes when the hashes are current
+  '${cdnPackageSnippet()}': cdnPackageSnippet(),
 }
 
 const resolveTokens = (text: string) => Object.entries(tokens).reduce((result, [token, value]) => result.replaceAll(token, value), text)

@@ -22,11 +22,10 @@ Before writing markup for a component, fetch its `.md` page and copy the example
 Plain HTML, from the CDN:
 
 ```html
-<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />
-<script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>
+${cdnPackageSnippet()}
 ```
 
-Put the stylesheet in `<head>` and the script at the end of `<body>`. In a project with a bundler install the package and import the same files:
+Put the stylesheet in `<head>` and the script at the end of `<body>`. When the tags carry `integrity` and `crossorigin` attributes, keep them unchanged; the hashes belong to this exact version. In a project with a bundler install the package and import the same files:
 
 ```shell
 npm install @tabler/core
