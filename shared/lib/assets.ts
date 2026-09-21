@@ -15,3 +15,12 @@ export const staticPath = (file: string): string => `${base}/${file.replace(/^\/
  * relative default, "" when the base is absolute) — see Avatar's `base` prop.
  */
 export const assetRoot = base.replace(/\/static$/, '')
+
+const min = (process.env.NODE_ENV || 'production') === 'development' ? '' : '.min'
+
+/**
+ * Url of the tabler.js ES module, for a demo script that imports a component
+ * from it. It has to be the very url the layout loads: a module is cached by
+ * url, so a different spelling would load and initialise tabler.js twice.
+ */
+export const tablerJsPath = (root = '.'): string => `${root}/dist/js/tabler${min}.js`
