@@ -87,6 +87,7 @@ Prefer a small dependency-free implementation over pulling a package in: every k
 
 - [ ] New module imported from `js/tabler.ts` (or deliberately kept out of the bundle)
 - [ ] `data-bs-*` attribute API unchanged; accessible state updated with the class
+- [ ] No export, option or event removed or renamed, and no new throw on input that used to work (`backward-compat`)
 - [ ] Bootstrap-port changes stay close to upstream and come with a `js/tests/unit` spec
 - [ ] `js-docs-*` markers intact and self-contained
 - [ ] `pnpm --filter @tabler/core test` (js + scss) clean
