@@ -19,8 +19,9 @@ jobs:
       - name: Set up the workspace
         uses: ./.github/actions/setup
 
+      # turbo directly: `pnpm run build` also zips the package, which only the release needs
       - name: Build
-        run: pnpm run build
+        run: pnpm exec turbo build
 
       - name: Install Playwright
         uses: ./.github/actions/playwright
