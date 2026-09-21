@@ -31,13 +31,16 @@ const board = (tasks.columns as Column[]).map((column) => ({
   tasks: column.tasks.slice(0, 4),
 }))
 
+const selectedTopics = ['Design', 'Development', 'Marketing']
+const availableTopics = ['Sales', 'Support', 'Analytics', 'Legal', 'Finance', 'Research', 'Security', 'Hiring']
+
 const team = people.slice(0, 5)
 const gallery = people.slice(5, 11)
 
 const sections = [
   { title: 'Basics', description: 'Add data-sortable with SortableJS options as JSON to any list to make its children draggable.' },
   { title: 'Handles and tables', description: 'Limit dragging to a grip icon, or reorder the rows of a table.' },
-  { title: 'Boards', description: 'Connect several lists to build a kanban board or a pick list.' },
+  { title: 'Boards', description: 'Connect several lists to build a kanban board, a pick list or a nested tree.' },
   { title: 'Selection and swapping', description: 'The bundled SortableJS build also ships the MultiDrag and Swap plugins.' },
 ]
 ---
@@ -98,17 +101,19 @@ const sections = [
       <Card class="h-100">
         <CardHeader>
           <div>
-            <CardTitle as="h3">Drag preview</CardTitle>
-            <CardSubtitle>Set <code>forceFallback</code> to <code>true</code> to drag a styled copy of the item, with a shadow, instead of the browser preview.</CardSubtitle>
+            <CardTitle as="h3">Horizontal lists</CardTitle>
+            <CardSubtitle>Set <code>direction</code> to <code>horizontal</code> for rows of tags, and drag them between the two rows.</CardSubtitle>
           </div>
         </CardHeader>
         <CardBody>
-          <ListGroup as="ul" data-sortable='{"animation":150,"forceFallback":true}'>
-            <ListGroupItem as="li">Write the release notes</ListGroupItem>
-            <ListGroupItem as="li">Review open pull requests</ListGroupItem>
-            <ListGroupItem as="li">Update the changelog</ListGroupItem>
-            <ListGroupItem as="li">Publish the packages</ListGroupItem>
-          </ListGroup>
+          <div class="subheader mb-2">Selected</div>
+          <div class="tag-list mb-4" data-sortable='{"group":"topics","animation":150,"direction":"horizontal","emptyInsertThreshold":40}'>
+            {selectedTopics.map((topic) => <span class="tag cursor-move">{topic}</span>)}
+          </div>
+          <div class="subheader mb-2">Available</div>
+          <div class="tag-list" data-sortable='{"group":"topics","animation":150,"direction":"horizontal","emptyInsertThreshold":40}'>
+            {availableTopics.map((topic) => <span class="tag cursor-move">{topic}</span>)}
+          </div>
         </CardBody>
       </Card>
     </div>
@@ -271,7 +276,7 @@ const sections = [
         <CardHeader>
           <div>
             <CardTitle as="h3">Kanban board</CardTitle>
-            <CardSubtitle>Drag tasks between columns that share one <code>group</code>.</CardSubtitle>
+            <CardSubtitle>Drag tasks between columns that share one <code>group</code>. Set <code>forceFallback</code> to <code>true</code> to drag a styled copy with a shadow instead of the browser preview.</CardSubtitle>
           </div>
         </CardHeader>
         <CardBody>
@@ -300,7 +305,7 @@ const sections = [
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-xl-4">
       <Card class="h-100">
         <CardHeader>
           <div>
@@ -329,7 +334,7 @@ const sections = [
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-xl-4">
       <Card class="h-100">
         <CardHeader>
           <div>
@@ -355,6 +360,41 @@ const sections = [
               </ListGroup>
             </div>
           </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12 col-xl-4">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Nested lists</CardTitle>
+            <CardSubtitle>Put a sortable list inside an item and give all lists one <code>group</code> to move items between levels.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"group":"nested","animation":150,"fallbackOnBody":true,"swapThreshold":0.65}'>
+            <ListGroupItem as="li">
+              <div>Design</div>
+              <ListGroup as="ul" class="mt-2" data-sortable='{"group":"nested","animation":150,"fallbackOnBody":true,"swapThreshold":0.65}'>
+                <ListGroupItem as="li">Wireframes</ListGroupItem>
+                <ListGroupItem as="li">Prototype</ListGroupItem>
+              </ListGroup>
+            </ListGroupItem>
+            <ListGroupItem as="li">
+              <div>Development</div>
+              <ListGroup as="ul" class="mt-2" data-sortable='{"group":"nested","animation":150,"fallbackOnBody":true,"swapThreshold":0.65}'>
+                <ListGroupItem as="li">Frontend</ListGroupItem>
+                <ListGroupItem as="li">Backend</ListGroupItem>
+                <ListGroupItem as="li">Tests</ListGroupItem>
+              </ListGroup>
+            </ListGroupItem>
+            <ListGroupItem as="li">
+              <div>Launch</div>
+              <ListGroup as="ul" class="mt-2" data-sortable='{"group":"nested","animation":150,"fallbackOnBody":true,"swapThreshold":0.65}'>
+                <ListGroupItem as="li">Release notes</ListGroupItem>
+              </ListGroup>
+            </ListGroupItem>
+          </ListGroup>
         </CardBody>
       </Card>
     </div>
