@@ -15,6 +15,7 @@ import './src/sortable'
 import './src/otp-input'
 import './src/sparkline'
 import './src/strength'
+import './src/tree'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
@@ -31,3 +32,4 @@ export { default as Sortable } from './src/sortable'
 export { default as Sparkline } from './src/sparkline'
 export { default as Strength } from './src/strength'
 export { default as SwitchIcon } from './src/switch-icon'
+export { default as Tree } from './src/tree'

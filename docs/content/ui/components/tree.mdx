@@ -1,0 +1,216 @@
+---
+title: Tree
+summary: A list of nested items, such as folders and files, that can be expanded, linked or checked.
+description: Show nested items with the tree component - expandable folders built on native details elements, with links, icons and checkboxes.
+related: [/ui/components/list-group, /ui/forms/elements]
+source: core/scss/ui/_tree.scss
+classnames:
+  component:
+    - class: tree
+      desc: Root list
+    - class: tree-children
+      desc: Nested list inside a details element, with a guide line
+  part:
+    - class: tree-node
+      desc: One row - a summary, a link or a label
+    - class: tree-icon
+      desc: Icon before the label of a row
+  state:
+    - class: active
+      desc: Highlights the current row, set on tree-node
+    - class: disabled
+      desc: Dims a row and blocks the pointer, set on tree-node
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+A tree shows nested items, such as folders and files. Folders are native `<details>` elements, so they open and close without JavaScript. You can add links, icons and checkboxes. Checkboxes need a small script, which starts on its own.
+
+## Basic example
+
+Build a tree from nested lists. A folder is a `<details>` element with a `<summary class="tree-node">` and a `<ul class="tree-children">`, so it opens and closes without JavaScript. Add `open` to expand a folder. A leaf is a `<span class="tree-node">`.
+
+<Example>
+<ul class="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">Documents</summary>
+      <ul class="tree-children">
+        <li>
+          <details>
+            <summary class="tree-node">Invoices</summary>
+            <ul class="tree-children">
+              <li><span class="tree-node">january.pdf</span></li>
+              <li><span class="tree-node">february.pdf</span></li>
+            </ul>
+          </details>
+        </li>
+        <li><span class="tree-node">notes.txt</span></li>
+      </ul>
+    </details>
+  </li>
+  <li><span class="tree-node">readme.md</span></li>
+</ul>
+</Example>
+
+## Icons
+
+Put an icon with `.tree-icon` before the label of any row. Use a different icon for folders, files or an open folder.
+
+The examples use [Tabler Icons](https://tabler.io/icons) as inline SVG with `stroke="currentColor"`, so the icon follows the text color in light and dark mode. Any other icon works too, as long as it is an element with the `.tree-icon` class.
+
+<Example>
+<ul class="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">
+        <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" /></svg>
+        Documents
+      </summary>
+      <ul class="tree-children">
+        <li>
+          <span class="tree-node">
+            <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /></svg>
+            notes.txt
+          </span>
+        </li>
+      </ul>
+    </details>
+  </li>
+</ul>
+</Example>
+
+## Links
+
+Use `<a class="tree-node">` for a row that goes somewhere. Add `.active` and `aria-current="page"` to the current one.
+
+<Example>
+<ul class="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">Getting started</summary>
+      <ul class="tree-children">
+        <li><a class="tree-node" href="#">Installation</a></li>
+        <li><a class="tree-node active" href="#" aria-current="page">Quick start</a></li>
+      </ul>
+    </details>
+  </li>
+  <li><a class="tree-node" href="#">Changelog</a></li>
+</ul>
+</Example>
+
+## Checkboxes
+
+Add `data-bs-toggle="tree"` to the root list and put a `.form-check-input` in each row. Checking a folder checks everything inside it, and a folder with only some children checked becomes indeterminate. The initial state is read from the checked leaves, so mark only the leaves as `checked`.
+
+A leaf row is a `<label>` so its text toggles the checkbox. In a folder the checkbox needs its own `aria-label`, because a click on the folder text opens or closes the folder.
+
+<Example>
+<ul class="tree" data-bs-toggle="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">
+        <input class="form-check-input" type="checkbox" aria-label="Projects" />
+        Projects
+      </summary>
+      <ul class="tree-children">
+        <li><label class="tree-node"><input class="form-check-input" type="checkbox" checked /> Read</label></li>
+        <li><label class="tree-node"><input class="form-check-input" type="checkbox" checked /> Write</label></li>
+        <li><label class="tree-node"><input class="form-check-input" type="checkbox" /> Delete</label></li>
+      </ul>
+    </details>
+  </li>
+</ul>
+</Example>
+
+## Checkboxes with icons
+
+Put the checkbox first and the `.tree-icon` after it. The row lays out the toggle, the checkbox, the icon and the label in one line.
+
+<Example>
+<ul class="tree" data-bs-toggle="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">
+        <input class="form-check-input" type="checkbox" aria-label="Documents" />
+        <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" /></svg>
+        Documents
+      </summary>
+      <ul class="tree-children">
+        <li>
+          <label class="tree-node">
+            <input class="form-check-input" type="checkbox" checked />
+            <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /></svg>
+            january.pdf
+          </label>
+        </li>
+        <li>
+          <label class="tree-node">
+            <input class="form-check-input" type="checkbox" />
+            <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /></svg>
+            notes.txt
+          </label>
+        </li>
+      </ul>
+    </details>
+  </li>
+  <li>
+    <details>
+      <summary class="tree-node">
+        <input class="form-check-input" type="checkbox" aria-label="Photos" />
+        <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" /></svg>
+        Photos
+      </summary>
+      <ul class="tree-children">
+        <li>
+          <label class="tree-node">
+            <input class="form-check-input" type="checkbox" />
+            <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /></svg>
+            beach.jpg
+          </label>
+        </li>
+      </ul>
+    </details>
+  </li>
+</ul>
+</Example>
+
+## Checkboxes on items only
+
+Leave the checkbox out of the folder rows to let users select single items only. The folders then only open and close.
+
+<Example>
+<ul class="tree" data-bs-toggle="tree">
+  <li>
+    <details open>
+      <summary class="tree-node">Design</summary>
+      <ul class="tree-children">
+        <li><label class="tree-node"><input class="form-check-input" type="checkbox" checked /> Figma files</label></li>
+        <li><label class="tree-node"><input class="form-check-input" type="checkbox" /> Brand assets</label></li>
+      </ul>
+    </details>
+  </li>
+</ul>
+</Example>
+
+## Usage
+
+The tree starts on its own for every `[data-bs-toggle="tree"]` element:
+
+<CodeDocs name="tree-init" file="core/js/src/tree.ts" />
+
+To create it from code, call `Tree.getOrCreateInstance(element)`. The `checked` getter returns the checked inputs, and each change fires the native `change` event on the input.
+
+## Accessibility
+
+- The tree is made of plain nested lists and `<details>`, so screen readers announce the nesting and the expanded state without extra roles.
+- Give every checkbox a name: a wrapping `<label>` for a leaf, an `aria-label` for a folder.
+- Mark the current link with `aria-current="page"`, not only with `.active`.
+
+## SCSS variables
+
+Use these SCSS variables to customize the tree component. The default values are:
+
+<CodeDocs name="tree-variables" file="core/scss/_variables.scss" />

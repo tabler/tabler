@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro'
+import Tree from './Tree.astro'
+
+export interface TreeItem {
+  label: string
+  /** a folder when it has children, otherwise a leaf */
+  children?: TreeItem[]
+  /** icon name shown before the label */
+  icon?: string
+  /** turns a leaf into a link */
+  href?: string
+  /** expands a folder */
+  open?: boolean
+  /** checks the item; only read when the tree has checkboxes */
+  checked?: boolean
+  /** highlights the item as the current one */
+  active?: boolean
+  disabled?: boolean
+}
+
+interface Props {
+  items: TreeItem[]
+  /** adds a checkbox to every item; `leaves` adds them to items without children only */
+  checkboxes?: boolean | 'leaves'
+  /** icon of a folder, and of an open folder */
+  folderIcon?: string | undefined
+  folderOpenIcon?: string | undefined
+  /** icon of a leaf */
+  fileIcon?: string | undefined
+  /** set on the nested lists only */
+  nested?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root list */
+  [key: string]: unknown
+}
+
+const { items, checkboxes = false, folderIcon, folderOpenIcon, fileIcon, nested = false, class: className, ...rest } = Astro.props
+
+const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
+---
+
+<ul class:list={[nested ? 'tree-children' : 'tree', className]} {...nested ? {} : toggle} {...rest}>
+  {
+    items.map((item) => {
+      const isFolder = Boolean(item.children?.length)
+      const hasCheckbox = checkboxes === true || (checkboxes === 'leaves' && !isFolder)
+      const nodeClasses = ['tree-node', item.active && 'active', item.disabled && 'disabled']
+      const icon = item.icon ?? (isFolder ? (item.open ? (folderOpenIcon ?? folderIcon) : folderIcon) : fileIcon)
+      const content = (
+        <>
+          {hasCheckbox && <input class="form-check-input" type="checkbox" checked={item.checked} disabled={item.disabled} aria-label={isFolder ? item.label : undefined} />}
+          {icon && <Icon name={icon} class="tree-icon" />}
+          {item.label}
+        </>
+      )
+
+      return (
+        <li>
+          {isFolder ? (
+            <details open={item.open}>
+              <summary class:list={nodeClasses}>{content}</summary>
+              <Tree items={item.children ?? []} checkboxes={checkboxes} folderIcon={folderIcon} folderOpenIcon={folderOpenIcon} fileIcon={fileIcon} nested />
+            </details>
+          ) : item.href ? (
+            <a class:list={nodeClasses} href={item.href} aria-current={item.active ? 'page' : undefined}>
+              {content}
+            </a>
+          ) : hasCheckbox ? (
+            <label class:list={nodeClasses}>{content}</label>
+          ) : (
+            <span class:list={nodeClasses}>{content}</span>
+          )}
+        </li>
+      )
+    })
+  }
+</ul>

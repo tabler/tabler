@@ -1,0 +1,156 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Tree from '@ui/Tree.astro'
+import type { TreeItem } from '@ui/Tree.astro'
+
+const files: TreeItem[] = [
+  {
+    label: 'Documents',
+    open: true,
+    children: [{ label: 'Invoices', children: [{ label: 'january.pdf' }, { label: 'february.pdf' }] }, { label: 'Contracts', children: [{ label: 'nda.pdf' }, { label: 'service-agreement.pdf' }] }, { label: 'notes.txt' }],
+  },
+  {
+    label: 'Photos',
+    children: [{ label: 'beach.jpg' }, { label: 'mountains.jpg' }],
+  },
+  { label: 'readme.md' },
+]
+
+const links: TreeItem[] = [
+  {
+    label: 'Getting started',
+    open: true,
+    children: [
+      { label: 'Installation', href: '#' },
+      { label: 'Quick start', href: '#', active: true },
+    ],
+  },
+  {
+    label: 'Components',
+    children: [
+      { label: 'Alerts', href: '#' },
+      { label: 'Badges', href: '#' },
+      { label: 'Cards', href: '#' },
+    ],
+  },
+  { label: 'Changelog', href: '#' },
+]
+
+const permissions: TreeItem[] = [
+  {
+    label: 'Projects',
+    open: true,
+    children: [{ label: 'Read', checked: true }, { label: 'Write', checked: true }, { label: 'Delete' }],
+  },
+  {
+    label: 'Billing',
+    open: true,
+    children: [{ label: 'View invoices', checked: true }, { label: 'Change plan' }],
+  },
+  { label: 'Audit log' },
+]
+
+const shared: TreeItem[] = [
+  {
+    label: 'Documents',
+    open: true,
+    children: [
+      {
+        label: 'Invoices',
+        open: true,
+        children: [
+          { label: 'january.pdf', checked: true },
+          { label: 'february.pdf', checked: true },
+        ],
+      },
+      { label: 'Contracts', children: [{ label: 'nda.pdf' }, { label: 'service-agreement.pdf' }] },
+      { label: 'notes.txt' },
+    ],
+  },
+  { label: 'Photos', children: [{ label: 'beach.jpg' }, { label: 'mountains.jpg' }] },
+]
+
+const leafOnly: TreeItem[] = [
+  {
+    label: 'Design',
+    open: true,
+    children: [{ label: 'Figma files', checked: true }, { label: 'Brand assets' }],
+  },
+  {
+    label: 'Engineering',
+    open: true,
+    children: [{ label: 'Repositories' }, { label: 'Runbooks', checked: true }],
+  },
+]
+---
+
+<DefaultLayout title="Tree" pageMenu="base.tree" description="A tree shows nested items, such as folders and files, that can be expanded, linked or checked.">
+  <DocsLink slot="page-header-actions" path="/ui/components/tree" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Nest <code>.tree-children</code> lists inside <code>&lt;details&gt;</code>, so folders open without JavaScript.</CardSubtitle>
+          <Tree items={files} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With icons</CardTitle>
+          <CardSubtitle>Put an icon with <code>.tree-icon</code> before the label of any item.</CardSubtitle>
+          <Tree items={files} folderIcon="folder" folderOpenIcon="folder-open" fileIcon="file" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Links</CardTitle>
+          <CardSubtitle>Use <code>&lt;a class="tree-node"&gt;</code> for a destination and <code>.active</code> for the current one.</CardSubtitle>
+          <Tree items={links} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Checkboxes</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="tree"</code>. Checking a folder checks its children, and a partly checked folder is indeterminate.</CardSubtitle>
+          <Tree items={permissions} checkboxes />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Checkboxes with icons</CardTitle>
+          <CardSubtitle>Combine a checkbox with <code>.tree-icon</code>. The icon sits between the checkbox and the label.</CardSubtitle>
+          <Tree items={shared} checkboxes folderIcon="folder" folderOpenIcon="folder-open" fileIcon="file" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Checkboxes on items only</CardTitle>
+          <CardSubtitle>Leave the checkbox off the folders to let users pick single items.</CardSubtitle>
+          <Tree items={leafOnly} checkboxes="leaves" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

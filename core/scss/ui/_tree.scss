@@ -1,0 +1,99 @@
+@use '../config' as *;
+
+.tree,
+.tree-children {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tree {
+  --tree-node-padding-y: #{$tree-node-padding-y};
+  --tree-node-padding-x: #{$tree-node-padding-x};
+  --tree-node-gap: #{$tree-node-gap};
+  --tree-node-color: #{$tree-node-color};
+  --tree-node-hover-bg: #{$tree-node-hover-bg};
+  --tree-node-active-color: #{$tree-node-active-color};
+  --tree-node-active-bg: #{$tree-node-active-bg};
+  --tree-node-border-radius: #{$tree-node-border-radius};
+  --tree-toggle-size: #{$tree-toggle-size};
+  --tree-toggle-color: #{$tree-toggle-color};
+  --tree-indent: #{$tree-indent};
+  --tree-guide-color: #{$tree-guide-color};
+}
+
+.tree-children {
+  padding-inline-start: calc(var(--tree-indent) - var(--tree-toggle-size) / 2);
+  margin-inline-start: calc(var(--tree-node-padding-x) + var(--tree-toggle-size) / 2);
+  border-inline-start: var(--border-width) var(--border-style) var(--tree-guide-color);
+}
+
+.tree-node {
+  display: flex;
+  gap: var(--tree-node-gap);
+  align-items: center;
+  padding: var(--tree-node-padding-y) var(--tree-node-padding-x);
+  color: var(--tree-node-color);
+  text-decoration: none;
+  list-style: none;
+  cursor: pointer;
+  @include border-radius(var(--tree-node-border-radius));
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::before {
+    flex-shrink: 0;
+    width: var(--tree-toggle-size);
+    height: var(--tree-toggle-size);
+    content: '';
+  }
+
+  &:is(summary)::before {
+    box-sizing: border-box;
+    width: calc(var(--tree-toggle-size) / 2);
+    height: calc(var(--tree-toggle-size) / 2);
+    margin-inline: calc(var(--tree-toggle-size) / 4);
+    border-block-end: 2px solid var(--tree-toggle-color);
+    border-inline-end: 2px solid var(--tree-toggle-color);
+    transition: transform $transition-time;
+
+    /* rtl:ignore */
+    transform: rotate(calc(var(--dir) * -45deg));
+  }
+
+  details[open] > &::before {
+    transform: rotate(45deg);
+  }
+
+  &:hover {
+    color: var(--tree-node-color);
+    background: var(--tree-node-hover-bg);
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
+  &.active {
+    color: var(--tree-node-active-color);
+    background: var(--tree-node-active-bg);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .form-check-input {
+    flex-shrink: 0;
+    margin: 0;
+  }
+}
+
+.tree-icon {
+  flex-shrink: 0;
+  color: var(--tree-toggle-color);
+}
