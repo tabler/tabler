@@ -45,6 +45,19 @@ describe('Sortable', () => {
       expect(instance.sortable).toBe(plugin.mock.instances[0])
     })
 
+    it('should drag a styled copy by default', () => {
+      new Sortable(list())
+
+      expect(plugin.mock.calls[0][1]).toMatchObject({ forceFallback: true })
+    })
+
+    it('should let data-sortable turn the styled copy off', () => {
+      fixtureEl.innerHTML = '<ul data-sortable=\'{"forceFallback":false}\'><li>a</li></ul>'
+      new Sortable(list())
+
+      expect(plugin.mock.calls[0][1]).toMatchObject({ forceFallback: false })
+    })
+
     it('should let the config object win over the attribute', () => {
       new Sortable(list(), { animation: 0, group: 'shared' })
 
