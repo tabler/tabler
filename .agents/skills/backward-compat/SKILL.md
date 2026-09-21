@@ -38,8 +38,8 @@ Everything kept only for old projects goes into files named `deprecated`, so tha
 
 | File | Holds | Why it is separate |
 | --- | --- | --- |
-| `core/scss/_variables-deprecated.scss` | old `$variables`, each `!default` | `@use … with ($x: …)` on a variable that does not exist is a compile error, so the variable has to stay declared. Forwarded from `_config.scss` **before** `variables`, so a new variable can default to the old one: `$focus-ring-width: $input-btn-focus-width !default;` |
-| `core/scss/mixins/_deprecated.scss` | old functions and mixins as thin wrappers around the new ones | emits no CSS; forwarded from `_mixins.scss`. Each one calls `@include deprecate('<name>', '<since>', '<removed in>')` from `mixins/bootstrap/_deprecate.scss`, so the user gets a warning when compiling |
+| `core/scss/_variables-deprecated.scss` | old `$variables`, each `!default`, with the default they had when they were removed | `@use … with ($x: …)` on a variable that does not exist is a compile error, and so is reading one, so the variable has to stay declared. Forwarded from `_config.scss` **after** `variables`, because old defaults are built from current ones. Nothing in Tabler reads these; `_deprecated.scss` compares each with its default and, when a project changed it, emits the matching new token. The file is excluded from `lint:scss:vars` |
+| `core/scss/mixins/_deprecated.scss` | old functions and mixins as thin wrappers around the new ones | emits no CSS; forwarded from `_mixins.scss`. A mixin calls `@include deprecate('<name>', '<since>', '<removed in>')` from `mixins/bootstrap/_deprecate.scss`; a function cannot include a mixin, so it calls the private `-deprecated()` helper in the same file. Either way the user gets a warning when compiling |
 | `core/scss/_deprecated.scss` | everything that emits CSS: class aliases (`.form-hint`, `.legend:empty`), old custom properties such as `--tblr-*-rgb`, hooks like `box-shadow: var(--btn-focus-box-shadow, none)` | loaded last from `tabler.scss`, next to `_extends.scss`: an alias built with `@extend` needs the whole `core` upstream. The whole file sits inside `@if $enable-deprecated { … }` |
 | `core/js/src/deprecated.ts` | old exports and globals, such as the `tabler` namespace with `getColor()` | one import to delete in the next major |
 
@@ -61,7 +61,7 @@ Ship both names. The old one becomes an alias that nobody has to touch.
 
 - **Class**: add the alias to `core/scss/_deprecated.scss` with `@extend`. Start the comment with `` `<old>` is deprecated, use `<new>` instead ``.
 - **Custom property**: keep reading the old name as a fallback — `var(--new, var(--old, <default>))` — or keep emitting the old one with the same value.
-- **Sass variable**: keep the old variable in `_variables-deprecated.scss` and default the new one to it: `$new: $old !default;`. For a map key, accept both keys.
+- **Sass variable**: move the old variable to `_variables-deprecated.scss` with its old default. If it maps onto a new token, feed it from `_deprecated.scss`: `@if $input-btn-focus-width != 0.25rem { :root { --focus-ring-width: #{$input-btn-focus-width}; } }`. For a map key, accept both keys.
 - **Mixin or function**: a removed one comes back in `mixins/_deprecated.scss` as a wrapper. For parameters, add new ones at the end, with defaults. Never rename or move an old parameter: callers pass arguments by position and by keyword, so it keeps both its name and its place.
 - **Data attribute, option, JS export, event**: accept or fire both. The `data-bs-*` / `data-tblr-*` pair in `core/js/src/bootstrap/dom/manipulator.ts` is the pattern.
 

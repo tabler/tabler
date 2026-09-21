@@ -1,0 +1,110 @@
+// Functions and mixins kept only so that projects written for an older 1.x
+// release still compile. Nothing in Tabler calls them. Each one warns once when
+// it is used; set `$enable-deprecation-messages: false` to silence that.
+//
+// Removed in 2.0, together with this file.
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use '../settings' as *;
+@use '../variables' as *;
+@use 'functions' as *;
+@use 'bootstrap/breakpoints' as *;
+@use 'bootstrap/deprecate' as *;
+
+@function -deprecated($name, $instead) {
+  @if $enable-deprecation-messages != false {
+    @warn '#{$name} has been deprecated as of 1.6. It will be removed entirely in 2.0. #{$instead}';
+  }
+  @return null;
+}
+
+// deprecated(2.0): use `mix-color($color, $background, 10%)`
+@function theme-color-lighter($color, $background: #fff) {
+  $warned: -deprecated('theme-color-lighter()', 'Use mix-color() instead.');
+  @return color.mix($color, $background, 10%);
+}
+
+// deprecated(2.0): use `shade-color($color, 10%)`
+@function theme-color-darker($color) {
+  $warned: -deprecated('theme-color-darker()', 'Use shade-color() instead.');
+  @return shade-color($color, 10%);
+}
+
+// deprecated(2.0): use `escape-svg(url("data:image/svg+xml,…"))`
+@function url-svg($svg) {
+  $warned: -deprecated('url-svg()', 'Use escape-svg() instead.');
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+
+  @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
+}
+
+// deprecated(2.0): write the `var()` list by hand
+@function varify($list) {
+  $warned: -deprecated('varify()', 'Write the var() values by hand.');
+  $result: null;
+  @each $entry in $list {
+    $result: list.append($result, var(--#{$entry}), space);
+  }
+  @return $result;
+}
+
+// deprecated(2.0): filter the map with `map.get()` in a loop
+@function map-get-multiple($map, $values) {
+  $warned: -deprecated('map-get-multiple()', 'Use map.get() from sass:map.');
+  $result: ();
+  @each $key, $value in $map {
+    @if (list.index($values, $key) != null) {
+      $result: map.merge(
+        $result,
+        (
+          $key: $value,
+        )
+      );
+    }
+  }
+  @return $result;
+}
+
+// deprecated(2.0): use `map.merge()` from `sass:map`, it takes any number of maps
+@function map-merge-multiple($maps...) {
+  $warned: -deprecated('map-merge-multiple()', 'Use map.merge() from sass:map.');
+  $merged-maps: ();
+
+  @each $map in $maps {
+    $merged-maps: map.merge($merged-maps, $map);
+  }
+  @return $merged-maps;
+}
+
+// deprecated(2.0): only `media-breakpoint-down-than()` needed it
+@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map.keys($breakpoints)) {
+  $warned: -deprecated('breakpoint-prev()', '');
+  $n: list.index($breakpoint-names, $name);
+  @if not $n {
+    @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
+  }
+  @return if(sass($n > 1): list.nth($breakpoint-names, $n - 1); else: null);
+}
+
+// deprecated(2.0): use `media-breakpoint-down()` with the breakpoint one step down
+@mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
+  @include deprecate('media-breakpoint-down-than()', '1.6', '2.0');
+  $n: list.index(map.keys($breakpoints), $name);
+  $prev: if(sass($n and $n > 1): list.nth(map.keys($breakpoints), $n - 1); else: null);
+
+  @if $prev == null {
+    @content;
+  } @else {
+    $max: breakpoint-max($prev, $breakpoints);
+
+    @if $max {
+      @media (max-width: $max) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}
