@@ -72,4 +72,20 @@ Save the file and open it in your browser. You should see your first page styled
 
 </Steps>
 
+## Bootstrap is already included
+
+Tabler's JavaScript file contains Bootstrap's JavaScript. Do not load `bootstrap.bundle.js` or `import 'bootstrap'` next to it.
+
+<Warning title="Load Bootstrap only once">
+  With two copies on the page, every `data-bs-toggle` element gets two handlers. One click then opens two backdrops for a modal or an offcanvas, and dropdowns and tooltips open twice.
+</Warning>
+
+Use the components that Tabler exposes instead. With the script tag they are on the `tabler` global, for example `tabler.Modal` or `tabler.Offcanvas`. With a bundler, import them from the package:
+
+```js
+import { Modal, Offcanvas } from '@tabler/core'
+```
+
+If you need your own copy of Bootstrap's JavaScript, load only Tabler's CSS and leave `tabler.js` out.
+
 If you want to see what's possible, the demo pages at [preview.tabler.io](https://preview.tabler.io) show every layout and component in use. The rest of this documentation covers each of them in detail.
