@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import BaseComponent from '../../../src/bootstrap/base-component'
-import { enableDismissTrigger, eventActionOnPlugin } from '../../../src/bootstrap/util/component-functions'
+import { enableDismissTrigger, eventActionOnPlugin, initAll } from '../../../src/bootstrap/util/component-functions'
 import { clearFixture, createEvent, getFixture } from '../../helpers/fixture'
 
 class DummyClass extends BaseComponent {
@@ -143,6 +143,49 @@ describe('Component Functions', () => {
       expect(preventSpy).toHaveBeenCalled()
 
       vi.restoreAllMocks()
+    })
+  })
+  describe('initAll', () => {
+    it('should create an instance for every matching element', () => {
+      fixtureEl.innerHTML = '<div class="init-all"></div><div class="init-all"></div>'
+
+      initAll('.init-all', DummyClass)
+
+      for (const element of fixtureEl.querySelectorAll<HTMLElement>('.init-all')) {
+        expect(DummyClass.getInstance(element)).toBeInstanceOf(DummyClass)
+      }
+    })
+
+    it('should skip the elements the filter rejects', () => {
+      fixtureEl.innerHTML = '<div class="init-all" id="skip"></div><div class="init-all" id="keep"></div>'
+
+      initAll('.init-all', DummyClass, (element) => element.id === 'keep')
+
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#skip'))).toBeNull()
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#keep'))).toBeInstanceOf(DummyClass)
+    })
+
+    it('should log the error and go on when one element throws', () => {
+      fixtureEl.innerHTML = '<div class="init-all" id="broken"></div><div class="init-all" id="fine"></div>'
+
+      const error = new TypeError('TEST: bad option')
+      const spyError = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const Throwing = {
+        NAME: 'test',
+        getOrCreateInstance(element: HTMLElement | string | null) {
+          if ((element as HTMLElement).id === 'broken') {
+            throw error
+          }
+
+          return DummyClass.getOrCreateInstance(element as HTMLElement)
+        },
+      }
+
+      expect(() => initAll('.init-all', Throwing)).not.toThrow()
+      expect(spyError).toHaveBeenCalledWith(error)
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#fine'))).toBeInstanceOf(DummyClass)
+
+      spyError.mockRestore()
     })
   })
 })

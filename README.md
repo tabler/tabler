@@ -146,7 +146,7 @@ The full documentation is at [docs.tabler.io](https://docs.tabler.io/). It cover
 
 To see what changed in each release, check the [changelog](core/CHANGELOG.md) and the [GitHub releases](https://github.com/tabler/tabler/releases). Updating from an older version? Read the [upgrade guide](https://docs.tabler.io/ui/getting-started/upgrade/) first. It lists every breaking change with a before-and-after example.
 
-Tabler follows [Semantic Versioning](https://semver.org/). Breaking changes only land in major releases, and every release comes with a changelog generated from changesets.
+Patch releases never contain breaking changes. Minor releases can, while the 1.x line moves toward 2.0: each one is listed with a before-and-after example in the [upgrade guide](https://docs.tabler.io/ui/getting-started/upgrade/), and a deprecated alias is kept wherever one is possible. Every release comes with a changelog generated from changesets.
 
 ## 🌐 Browser support
 

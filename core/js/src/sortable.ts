@@ -6,8 +6,16 @@
  */
 
 import BaseComponent from './bootstrap/base-component'
-import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
+
+// The part of a SortableJS instance the component uses
+interface SortableInstance {
+  option(name: string, value?: unknown): unknown
+  toArray(): string[]
+  sort(order: string[], useAnimation?: boolean): void
+  destroy(): void
+}
 
 type ComponentConfig = Record<string, unknown>
 
@@ -108,9 +116,8 @@ class Sortable extends BaseComponent {
  */
 
 // js-docs-start sortable-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_SORTABLE)) {
-  Sortable.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_SORTABLE, Sortable)
 // js-docs-end sortable-init
 
 export default Sortable
+export type { SortableInstance }

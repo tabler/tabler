@@ -6,8 +6,17 @@
  */
 
 import BaseComponent from './bootstrap/base-component'
-import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
+
+// The part of an IMask instance the component uses
+interface IMaskInstance {
+  value: string
+  unmaskedValue: string
+  updateValue(): void
+  updateOptions(options: Record<string, unknown>): void
+  destroy(): void
+}
 
 type ComponentConfig = {
   mask: string
@@ -114,9 +123,8 @@ class InputMask extends BaseComponent {
  */
 
 // js-docs-start input-mask-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_MASK)) {
-  InputMask.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_MASK, InputMask)
 // js-docs-end input-mask-init
 
 export default InputMask
+export type { IMaskInstance }
