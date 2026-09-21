@@ -22,10 +22,12 @@ const alternate = (path: string, type: string) => `<${path}>; rel="alternate"; t
 
 export default function middleware(request: Request) {
   const url = new URL(request.url)
+  // redirect keys have no trailing slash, so "/ui/base/markdown/" must match "/ui/base/markdown"
+  const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : url.pathname
 
   // renamed pages fall through to their 301; negotiation reruns on the target
   // not Object.hasOwn — Vercel's middleware type-check runs with a pre-es2022 lib
-  if (Object.prototype.hasOwnProperty.call(redirects, url.pathname)) return next()
+  if (Object.prototype.hasOwnProperty.call(redirects, path)) return next()
 
   const format = preferredFormat(request.headers.get('accept'))
 

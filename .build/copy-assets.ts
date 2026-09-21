@@ -145,8 +145,19 @@ export function copyAssets({ repo, publicDir, copies, syncDirs = [] }: CopyAsset
             return
           }
         }
+        // A file deleted from a source dir (a renamed bundle, a cleaned dist) must
+        // leave public/ too, or the dev server keeps serving it until a restart.
+        const remove = (file: string) => {
+          for (const { from, to } of syncDirs) {
+            if (!file.startsWith(from + sep)) continue
+            rmSync(join(to, relative(from, file)), { force: true })
+            scheduleReload(file)
+            return
+          }
+        }
         server.watcher.on('add', sync)
         server.watcher.on('change', sync)
+        server.watcher.on('unlink', remove)
       },
     },
   }

@@ -446,7 +446,7 @@ Navbar
         &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-inline-start: var(--sidebar-width);
+            margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
 
@@ -455,7 +455,7 @@ Navbar
           ~ .navbar,
           ~ .page-wrapper {
             margin-inline-start: 0;
-            margin-inline-end: var(--sidebar-width);
+            margin-inline-end: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
       }
@@ -624,6 +624,12 @@ html[data-bs-navbar-theme='primary'] .page > .navbar {
   --navbar-border-color: transparent;
 }
 
+// The menu row of the two-row navbar, which is not a direct child of .page.
+html[data-bs-navbar-theme='primary'] .page > [class*='navbar-expand'] .navbar {
+  --navbar-bg: var(--primary);
+  --navbar-border-color: transparent;
+}
+
 /**
 Navbar vertical
  */
@@ -677,9 +683,12 @@ Navbar vertical
     // The hidden aside must leave no gap: its siblings offset themselves by
     // --sidebar-width, and this declaration sits on the same elements as the
     // folded copy above, so it wins by coming later.
+    // A length, not a bare 0: the offset is added up in calc(). A floating
+    // navbar keeps its own gap from the viewport edge.
     > .navbar,
     > .page-wrapper {
-      --sidebar-width: 0;
+      --sidebar-width: 0px;
+      --sidebar-gap: var(--navbar-margin, 0px);
     }
   }
 
@@ -863,4 +872,59 @@ Navbar vertical
     background: inherit;
     box-shadow: inherit;
   }
+}
+
+/**
+Navbar floating
+ */
+// The navbar keeps a gap from the edges around it, like .offcanvas-floating,
+// with an outline on every side instead of the single border line.
+//
+// Two routes to the same state: the .navbar-floating class on the navbar
+// (static markup), or data-bs-navbar-style="floating" on <html> (the theme
+// settings), which covers whichever navigation the page shows — the menu row
+// of the two-row navbar included, which inherits the variables from its
+// navbar-expand-* wrapper.
+//
+// The variables exist only from the navbar-expand-* breakpoint up, so below it
+// every fallback applies and the navbar stays attached.
+$navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
+
+.navbar-floating,
+#{$navbar-floating-attr} .navbar,
+#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  margin: var(--navbar-margin, 0);
+  outline: var(--navbar-outline-width, 0) solid var(--navbar-border-color);
+  outline-offset: calc(-1 * var(--navbar-outline-width, 0px));
+  @include border-radius(var(--navbar-border-radius, 0));
+}
+
+#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  margin-top: 0;
+}
+
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint, $grid-breakpoints);
+  $infix: breakpoint-infix($next, $grid-breakpoints);
+
+  @include media-breakpoint-up($next) {
+    .navbar-floating.navbar-expand#{$infix},
+    #{$navbar-floating-attr} .navbar-expand#{$infix} {
+      --navbar-margin: #{$navbar-floating-margin};
+      --navbar-border-radius: #{$navbar-floating-border-radius};
+      --navbar-outline-width: var(--navbar-border-width);
+    }
+  }
+}
+
+// The page next to a floating sidebar moves over by the sidebar's two margins,
+// and a floating navbar next to any sidebar keeps its own gap from it. The
+// sibling offsets read --sidebar-gap only from the sidebar's breakpoint up.
+.navbar-vertical ~ .navbar-floating {
+  --sidebar-gap: var(--navbar-margin, 0px);
+}
+
+.navbar-floating.navbar-vertical ~ :is(.navbar, .page-wrapper),
+#{$navbar-floating-attr} .navbar-vertical ~ :is(.navbar, .page-wrapper) {
+  --sidebar-gap: calc(2 * #{$navbar-floating-margin});
 }

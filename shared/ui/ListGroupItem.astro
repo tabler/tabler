@@ -18,6 +18,6 @@ interface Props extends PolymorphicProps {
 const { as: Element = 'div', action, active, disabled, class: className, ...rest }: Props = Astro.props
 ---
 
-<Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} {...rest}>
+<Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} aria-disabled={disabled ? 'true' : undefined} tabindex={Element === 'a' && disabled ? -1 : undefined} {...rest}>
   <slot />
 </Element>

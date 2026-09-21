@@ -1,8 +1,8 @@
 ---
-// Relative base is "../" for one-level-deep marketing pages.
 import Logo from '../navbar/Logo.astro'
+import { relativeBase } from '@shared/lib/url'
 
-const base = '..'
+const base = relativeBase(Astro.url.pathname)
 ---
 
 <!-- BEGIN MARKETING NAVBAR -->
@@ -16,7 +16,7 @@ const base = '..'
       <nav aria-label="Primary">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active" href={`${base}/marketing`}><span class="nav-link-title">Home</span></a>
+            <a class="nav-link active" href={`${base}/marketing.html`}><span class="nav-link-title">Home</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href={`${base}/marketing/testimonials.html`}><span class="nav-link-title">Testimonials</span></a>

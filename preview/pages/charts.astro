@@ -6,6 +6,8 @@ import Chart from '@components/demo/Chart.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import chartsData from '@data/charts.json'
 import { capitalize } from '@shared/lib/string-format'
 import DocsLink from '@ui/DocsLink.astro'
@@ -13,7 +15,99 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
 import LegendList from '@ui/LegendList.astro'
 import Legend from '@ui/Legend.astro'
 
-const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean; name?: string }>).filter(([, chart]) => chart && chart.demo)
+type DemoChart = { name?: string; extend?: string; type?: string; series?: { name?: string; color?: string }[] }
+
+const charts = chartsData as Record<string, DemoChart>
+
+// Legend rules: one serie needs no legend, two to four series get a <Legend> list above the
+// chart, and only circular charts or charts with five and more series keep the legend below.
+const circular = ['pie', 'donut', 'radialBar', 'polarArea', 'radar']
+
+function topLegend(chartId: string) {
+  const own = charts[chartId]
+  const chart = own?.extend ? { ...charts[own.extend], ...own } : own
+  const series = chart?.series ?? []
+  if (circular.includes(chart?.type ?? 'bar') || series.length < 2 || series.length > 4) return undefined
+  return series.map((serie) => ({ text: serie.name ?? '', color: serie.color ?? 'primary' }))
+}
+
+const third = 'col-md-6 col-lg-4'
+const half = 'col-lg-6'
+const wide = 'col-lg-8'
+
+// Every chart is placed by hand, section by section and row by row (each row adds up to
+// 12 columns). Charts with many points, several series or long labels get a wider column.
+const sections: { title: string; description: string; charts: [chartId: string, col: string, subtitle: string][] }[] = [
+  {
+    title: 'Line charts',
+    description: 'Trends over time, where the change between points matters more than single values.',
+    charts: [
+      ['completion-tasks-2', third, 'Tickets solved per day with a smooth curve, the default.'],
+      ['completion-tasks-4', third, 'The same tickets drawn with straight segments.'],
+      ['completion-tasks-5', third, 'A stepped line for values that change in jumps.'],
+
+      ['completion-tasks-7', third, 'Tickets solved per day, labeled with values.'],
+      ['tasks', wide, 'Issues opened, closed and reopened per day over the last 17 days.'],
+
+      ['line', third, 'Monthly revenue of each plan, January to June.'],
+      ['line-stroke', third, 'Monthly signups, dashed for paid and referral.'],
+      ['spline', third, 'CPU load of web servers and workers in one day.'],
+
+      ['temperature', half, 'Monthly average temperature in Tokyo and London.'],
+      ['stepline', half, 'Number of running instances during the day.'],
+    ],
+  },
+  {
+    title: 'Area charts',
+    description: 'Lines with a filled area, to stress volume or to show how parts add up to a total.',
+    charts: [
+      ['completion-tasks-3', third, 'Tickets solved per day as a filled area.'],
+      ['completion-tasks-10', third, 'Solved and reopened tickets as two overlapping areas.'],
+      ['completion-tasks-11', third, 'Solved and reopened tickets stacked on top of each other.'],
+
+      ['area', third, 'Monthly sessions on mobile and desktop.'],
+      ['area-spline', third, 'Monthly egress and ingress traffic.'],
+      ['area-spline-stacked', third, 'Storage used by media and backups, stacked.'],
+    ],
+  },
+  {
+    title: 'Bar charts',
+    description: 'Comparison of separate categories, side by side or stacked.',
+    charts: [
+      ['completion-tasks', third, 'Tickets solved per day, last week.'],
+      ['completion-tasks-6', third, 'The same tickets as horizontal bars.'],
+      ['completion-tasks-8', third, 'Solved and reopened tickets side by side.'],
+
+      ['completion-tasks-9', third, 'Solved and reopened tickets in one stacked bar per day.'],
+      ['cache-status', third, 'Cache status of requests per day, colored by meaning.'],
+      ['funnel', third, 'Visitors left at each step from first visit to customer.'],
+    ],
+  },
+  {
+    title: 'Circular charts',
+    description: 'Parts of a whole and progress toward a goal, best with a few values.',
+    charts: [
+      ['demo-pie', third, 'Share of visits by source.'],
+      ['campaigns', third, 'Delivery, open and click rates of one campaign.'],
+      ['polar-area', third, 'Sales volume of each region.'],
+    ],
+  },
+  {
+    title: 'Other charts',
+    description: 'Mixed series, distributions, schedules and hierarchies.',
+    charts: [
+      ['combination', wide, 'Monthly spend as columns with leads and trials as lines.'],
+      ['radar', third, 'Pro and Enterprise plans rated in six areas.'],
+
+      ['scatter', third, 'Page load time samples on desktop and mobile.'],
+      ['timeline', wide, 'Planned duration of each release phase.'],
+
+      ['bubble', third, 'Search and social campaigns on three metrics.'],
+      ['treemap', third, 'Disk space taken by each folder.'],
+      ['box-plot', third, 'Spread of API response times in each month.'],
+    ],
+  },
+]
 ---
 
 <DefaultLayout title="Charts" pageMenu="plugins.charts" pageLibs={['apexcharts']}>
@@ -23,16 +117,15 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
       <Activity />
     </div>
 
-    <div class="col-lg-8">
+    <div class="col-12">
       <Card>
-        <CardHeader title="Chart with legend">
-          <LegendList class="ms-auto" id="legend-demo-list">
-            <Legend button color="yellow" text="Total visits" value="6.7k" data-series="Total visits" />
-            <Legend button color="green" text="Unique visitors" value="4.7k" data-series="Unique visitors" />
-            <Legend button color="primary" text="New users" value="1.6k" data-series="New users" />
-          </LegendList>
-        </CardHeader>
+        <CardHeader title="Chart with legend" />
         <CardBody>
+          <LegendList divided class="mb-3" id="legend-demo-list">
+            <Legend button size="lg" color="yellow" text="Total visits" value="63.0k" data-series="Total visits" />
+            <Legend button size="lg" color="green" text="Unique visitors" value="43.0k" data-series="Unique visitors" />
+            <Legend button size="lg" color="primary" text="New users" value="13.5k" data-series="New users" />
+          </LegendList>
           <Chart chartId="legend-demo" height={15} label="Site traffic" />
           <CaptureScript>
             <!-- BEGIN SCRIPT OF LEGEND -->
@@ -56,28 +149,6 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
       </Card>
     </div>
 
-    <div class="col-lg-4">
-      <Card>
-        <CardHeader title="Legend variants" />
-        <CardBody>
-          <LegendList class="mb-3">
-            <Legend color="blue" text="Allowed" value="339.0k" />
-            <Legend color="red" text="Denied" value="1.2k" />
-            <Legend color="orange" text="Challenged" value={815} />
-          </LegendList>
-          <LegendList class="mb-3">
-            <Legend href="#" color="purple" text="Logged" value="-" active />
-            <Legend href="#" color="teal" text="Rate limited" value="-" off />
-          </LegendList>
-          <LegendList vertical>
-            <Legend color="primary" text="This year" />
-            <Legend color="secondary" text="Last year" />
-            <Legend text="Free" />
-          </LegendList>
-        </CardBody>
-      </Card>
-    </div>
-
     <div class="col-12">
       <SocialReferrals />
     </div>
@@ -92,15 +163,35 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
     </div>
 
     {
-      demoCharts.map(([chartId, chart]) => (
-        <div class="col-lg-6 col-xl-4">
-          <Card>
-            {chart.name && <CardHeader title={chart.name} />}
-            <CardBody>
-              <Chart chartId={chartId} height={15} label={chart.name ?? capitalize(chartId.replace(/-/g, ' '))} />
-            </CardBody>
-          </Card>
-        </div>
+      sections.map((section) => (
+        <Fragment>
+          <div class="col-12">
+            <h2 class="page-section-title">{section.title}</h2>
+            <p class="page-section-description">{section.description}</p>
+          </div>
+          {section.charts.map(([chartId, col, subtitle]) => (
+            <div class={col}>
+              <Card class="h-100">
+                <CardHeader>
+                  <div>
+                    <CardTitle as="h3">{charts[chartId]?.name ?? capitalize(chartId.replace(/-/g, ' '))}</CardTitle>
+                    <CardSubtitle>{subtitle}</CardSubtitle>
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  {topLegend(chartId) && (
+                    <LegendList class="justify-content-end mb-3">
+                      {topLegend(chartId)?.map((item) => (
+                        <Legend color={item.color} text={item.text} />
+                      ))}
+                    </LegendList>
+                  )}
+                  <Chart chartId={chartId} height={15} label={charts[chartId]?.name ?? capitalize(chartId.replace(/-/g, ' '))} legend={topLegend(chartId) ? false : undefined} />
+                </CardBody>
+              </Card>
+            </div>
+          ))}
+        </Fragment>
       ))
     }
   </div>

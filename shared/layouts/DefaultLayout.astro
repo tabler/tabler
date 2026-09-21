@@ -46,13 +46,13 @@ interface Props {
   navbarCondensed?: boolean
   /** dark navbar */
   navbarDark?: boolean
-  /** navbar overlapping the page header */
-  navbarOverlap?: boolean
+  /** floating navigation: the navbar and the sidebar keep a gap from the edges */
+  navbarFloating?: boolean
   /** sticky navbar */
   navbarSticky?: boolean
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } = Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarSticky, navbarFloating } = Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
@@ -66,6 +66,7 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
   'navbar-position': navbarPosition,
   'layout': layout,
   'navbar': navbarSticky ? 'sticky' : undefined,
+  'navbar-style': navbarFloating ? 'floating' : undefined,
   'navbar-theme': navbarDark ? 'dark' : undefined,
   'sidebar': sidebarMode,
 }
@@ -78,12 +79,12 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
     <!--  END SIDEBAR  -->
 
     <!-- BEGIN NAVBAR  -->
-    <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} overlap={navbarOverlap} />
+    <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} />
     <!-- END NAVBAR  -->
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
       <!-- BEGIN PAGE HEADER -->
-      <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark}>
+      <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile}>
         <slot name="page-header-actions" slot="actions" />
       </PageHeader>
       <!-- END PAGE HEADER -->

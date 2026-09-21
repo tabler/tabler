@@ -8,7 +8,7 @@ import CardTitle from '@ui/CardTitle.astro'
 
 <form class="card card-md" action="./" method="get" novalidate>
   <div class="card-body">
-    <CardTitle class="text-center mb-4">Create new account</CardTitle>
+    <CardTitle as="h1" class="text-center mb-4">Create new account</CardTitle>
 
     <FormGroup label="Name" for="signup-name">
       <input type="text" class="form-control" placeholder="Enter name" id="signup-name" autocomplete="name" required />
@@ -20,11 +20,10 @@ import CardTitle from '@ui/CardTitle.astro'
       <InputGroup type="password" appendButton={[{ icon: 'eye', description: 'Show password' }]} flat placeholder="Password" id="signup-password" autocomplete="new-password" required />
       <Strength />
     </FormGroup>
-    <div class="mb-3">
-      <label class="form-check">
-        <input type="checkbox" class="form-check-input" />
-        <span class="form-check-label">Agree the <a href="./terms-of-service.html">terms and policy</a>.</span>
-      </label>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="signup-terms" required />
+      <label class="form-check-label d-inline" for="signup-terms">Agree the</label>
+      <a href="./terms-of-service.html">terms and policy</a>.
     </div>
 
     <FormFooter>

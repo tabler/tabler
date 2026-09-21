@@ -1,12 +1,11 @@
-// Demo data date formatting quirks:
-// - unix seconds are shifted by local timezone offset (not the true epoch)
-// - long-date format uses UTC wall-clock components
+// Demo data is rendered at build time, so every formatter reads UTC components
+// and never the local timezone — output must match between CI and local builds.
 const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-/** Unix seconds shifted by the local timezone offset (not the true epoch). */
+/** Unix epoch seconds, independent of the build machine's timezone. */
 export function toUnixSeconds(date: Date): number {
-  return Math.floor(date.getTime() / 1000) + date.getTimezoneOffset() * 60
+  return Math.floor(date.getTime() / 1000)
 }
 
 /** Formats a date as "Month DD, YYYY" using its UTC components. */

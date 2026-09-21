@@ -36,11 +36,17 @@ const min = isDevelopment ? '' : '.min'
 const rtlSuffix = rtl ? '.rtl' : ''
 
 type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean }
+const unknownLibs = pageLibs.filter((name) => !(name in libs))
+if (unknownLibs.length > 0) {
+  throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
+}
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
-const googleMapsKey = site.googleMapsDevKey
+// Google Maps API key comes from the environment (GOOGLE_MAPS_KEY in .env or the
+// host's settings), never from the source. Without it the script loads keyless.
+const googleMapsKey = import.meta.env.GOOGLE_MAPS_KEY ?? process.env.GOOGLE_MAPS_KEY ?? ''
 // External URLs (http/https) are emitted verbatim (with the maps-key placeholder
 // replaced); local files as ./dist/libs/{npm}/{file}.
-const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file.replace('GOOGLE_MAPS_KEY', googleMapsKey) : `${base}/dist/libs/${lib.npm}/${file}`)
+const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file.replace(googleMapsKey ? 'GOOGLE_MAPS_KEY' : '?key=GOOGLE_MAPS_KEY', googleMapsKey) : `${base}/dist/libs/${lib.npm}/${file}`)
 const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((file) => libHref(lib, file)))
 const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean(lib.head) === head).flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
 ---

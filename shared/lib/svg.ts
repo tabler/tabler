@@ -11,7 +11,10 @@ export type IllustrationImage = FreeIllustration | `${FreeIllustration}.svg`
 
 /** Source SVG of a bundled illustration, in its auto-dark variant. */
 export function freeIllustrationSource(image: IllustrationImage): string {
-  return freeIllustrations.autodark[image.replaceAll('.svg', '') as FreeIllustration] ?? ''
+  const name = image.replace(/\.svg$/, '')
+  const source = (freeIllustrations.autodark as Record<string, string | undefined>)[name]
+  if (!source) throw new Error(`Unknown illustration "${image}" — not in @data/free-illustrations.json`)
+  return source
 }
 
 type IconRecord = { svg: Record<string, string | null | undefined> }

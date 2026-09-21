@@ -51,5 +51,7 @@ const classes = ['avatar', size && `avatar-${size}`, className, shape && `avatar
 ---
 
 <El {...linkAttrs} class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />}</El
+  >{status && <span class={`badge bg-${status}`} role={statusLabel ? 'img' : undefined} aria-label={statusLabel} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
+    src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />
+  }</El
 >
