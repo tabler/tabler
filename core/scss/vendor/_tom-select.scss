@@ -135,9 +135,16 @@ $input-border-width: 1px;
     padding: $dropdown-item-padding-y $dropdown-item-padding-x;
   }
 
-  .active {
+  // Tom Select marks the highlighted row with .active; match the row only, so an
+  // .active element inside an option (a lit .signal-bar) keeps its own background
+  [data-selectable].active {
     color: var(--body-color) !important;
     background-color: var(--active-bg) !important;
+  }
+
+  // The library's own `.ts-dropdown .active` also hits a lit bar and clears its background
+  .signal-bar.active {
+    background-color: var(--signal-color);
   }
 
   .active.create {
@@ -153,6 +160,12 @@ $input-border-width: 1px;
 .ts-control,
 .ts-control input {
   color: var(--body-color);
+}
+
+// An item rendered with an indicator reuses `.dropdown-item`, whose `width: 100%` fills the
+// control and pushes the search input to a second line on focus
+.ts-control > .dropdown-item {
+  width: auto;
 }
 
 .ts-control input {

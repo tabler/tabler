@@ -1,19 +1,39 @@
 name: Set up the workspace
 description: Restore the turbo cache, install pnpm and Node.js, install the dependencies
 
+inputs:
+  turbo-cache:
+    description: Restore and save the turbo cache. The release job turns it off so a cache written by another run cannot end up in a published package.
+    default: 'true'
+
 runs:
   using: composite
   steps:
-    - name: Cache turbo build setup
+    # The key carries the workflow name: cache keys are write-once, so with one
+    # key per commit the quickest workflow (lint) saved its near-empty cache and
+    # the build never got to store its outputs.
+    #
+    # A push starts from an empty cache and saves only what this build produced,
+    # which keeps the entry at the size of one build. Pull requests restore the
+    # latest entry of the base branch and save nothing.
+    - name: Save the turbo cache
+      if: inputs.turbo-cache == 'true' && github.event_name == 'push'
       uses: actions/cache@v6
       with:
-        path: .turbo
-        key: ${{ runner.os }}-turbo-${{ github.sha }}
+        path: .turbo/cache
+        key: ${{ runner.os }}-turbo-${{ github.workflow }}-${{ github.sha }}
+
+    - name: Restore the turbo cache
+      if: inputs.turbo-cache == 'true' && github.event_name != 'push'
+      uses: actions/cache/restore@v6
+      with:
+        path: .turbo/cache
+        key: ${{ runner.os }}-turbo-${{ github.workflow }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-turbo-
+          ${{ runner.os }}-turbo-${{ github.workflow }}-
 
     - name: Install PNPM
-      uses: pnpm/action-setup@v6
+      uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
 
     - name: Set up Node.js
       uses: actions/setup-node@v7
@@ -22,5 +42,5 @@ runs:
         cache: 'pnpm'
 
     - name: Install pnpm dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
       shell: bash

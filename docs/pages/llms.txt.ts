@@ -89,6 +89,8 @@ Every page is available as markdown by appending \`.md\` to its url, for example
 
 The markup is taken from the rendered pages, so every example is plain html — the same markup the copy button on the page gives you.
 
+An agent skill for building with Tabler is published at \`${site.docsUrl}/.well-known/agent-skills/tabler/SKILL.md\` (index: \`${site.docsUrl}/.well-known/agent-skills/index.json\`).
+
 ${sections.join('\n\n')}
 
 ${classReference}
