@@ -92,7 +92,7 @@ $nav-tokens: defaults(
 .nav-link {
   display: flex;
   align-items: center;
-  @include transition(color $transition-time, background-color $transition-time);
+  @include transition(color $transition-time, background-color $transition-time, $focus-ring-transition);
 
   &:hover,
   &:focus {
@@ -128,7 +128,7 @@ $nav-tokens: defaults(
   }
 
   .nav-link:hover & {
-    color: var(--nav-link-hover-icon-color);
+    color: var(--nav-link-hover-icon-color, #{$nav-link-hover-icon-color});
   }
 }
 

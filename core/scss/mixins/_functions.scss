@@ -66,6 +66,13 @@
   @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
+// Focus ring colour of `$color`, as in Bootstrap v6: mixed with the page background
+// instead of made transparent, so the ring is opaque and looks the same on any
+// surface, and stronger in dark mode, where a 50% mix is too faint.
+@function focus-ring-color($color) {
+  @return light-dark(color-transparent($color, calc(var(--focus-ring-opacity) * 100%), var(--body-bg)), color-transparent($color, calc(var(--focus-ring-opacity-dark) * 100%), var(--body-bg)));
+}
+
 // Paints a monochrome svg data uri (authored with `black`) in a Sass colour, for
 // the few places that cannot use `mask-icon()`: a pseudo-element that already
 // carries a background, or a form control without pseudo-elements. Pass a Sass

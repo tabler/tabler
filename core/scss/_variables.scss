@@ -505,7 +505,7 @@ $lead-font-weight: var(--font-weight-normal) !default;
 
 $blockquote-margin-y: $spacer !default;
 $blockquote-font-size: $font-size-base !default;
-$blockquote-footer-color: $gray-600 !default;
+$blockquote-footer-color: light-dark(var(--gray-600), var(--gray-400)) !default;
 $blockquote-footer-font-size: $small-font-size !default;
 
 $initialism-font-size: $small-font-size !default;
@@ -728,6 +728,8 @@ $border-radiuses: (
   sm: $border-radius-sm,
   md: $border-radius,
   lg: $border-radius-lg,
+  xl: $border-radius-xl,
+  xxl: $border-radius-xxl,
   pill: $border-radius-pill,
   null: var(--border-radius-md),
 ) !default;
@@ -975,17 +977,13 @@ $box-shadow-inset: inset 0 1px 2px color-transparent(var(--shadow-color), 0.1875
 // Component active
 $component-active-color: $white !default;
 
-// Focus (WCAG 2.2 SC 1.4.11)
-$focus-ring-width: 0.25rem !default;
-$focus-ring-opacity: 0.25 !default;
-$focus-ring-color: color-transparent(var(--primary), $focus-ring-opacity) !default;
-$focus-ring-blur: 0 !default;
-$focus-ring-inner-width: 2px !default;
-// The literal, emitted once as `--focus-ring-box-shadow` (`bootstrap/_root.scss`).
-$focus-ring-box-shadow-value:
-  0 0 0 var(--focus-ring-inner-width) var(--primary),
-  0 0 $focus-ring-blur var(--focus-ring-width) var(--focus-ring-color) !default;
-$focus-ring-box-shadow: var(--focus-ring-box-shadow) !default;
+// Focus
+$focus-ring-width: 2px !default;
+$focus-ring-offset: 2px !default;
+$focus-ring-transition: outline-color 0.15s ease-in-out !default;
+$focus-ring-opacity: 0.5 !default;
+$focus-ring-opacity-dark: 0.75 !default;
+$focus-ring-color: focus-ring-color(var(--primary)) !default;
 
 // Transitions
 $transition-base: all 0.2s ease-in-out !default;
@@ -1056,11 +1054,6 @@ $badge-padding-x-lg: 0.5rem !default;
 // Buttons + Forms
 $input-btn-border-width: var(--border-width) !default;
 $input-btn-font-family: var(--body-font-family) !default;
-$input-btn-focus-width: 0.25rem !default;
-$input-btn-focus-color-opacity: $focus-ring-opacity !default;
-$input-btn-focus-color: $focus-ring-color !default;
-$input-btn-focus-blur: $focus-ring-blur !default;
-$input-btn-focus-box-shadow: $focus-ring-box-shadow !default;
 
 $input-btn-padding-y-sm: 0.3125rem !default;
 $input-btn-padding-x-sm: 0.5rem !default;
@@ -1091,13 +1084,12 @@ $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
-$btn-focus-box-shadow: $focus-ring-box-shadow !default;
 $btn-disabled-opacity: 0.4 !default;
 $btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
 $btn-link-color: var(--link-color) !default;
 $btn-link-hover-color: var(--link-hover-color) !default;
-$btn-link-disabled-color: $gray-600 !default;
+$btn-link-disabled-color: light-dark(var(--gray-600), var(--gray-400)) !default;
 
 $btn-border-radius: var(--border-radius) !default;
 $btn-border-radius-sm: var(--border-radius-sm) !default;
@@ -1110,6 +1102,7 @@ $btn-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $btn-hover-bg-shade-amount: 15% !default;
@@ -1164,10 +1157,9 @@ $input-plaintext-color: var(--body-color) !default;
 $input-focus-bg: $input-bg !default;
 $input-focus-border-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $input-focus-color: var(--body-color) !default;
-$input-focus-width: $input-btn-focus-width !default;
-$input-focus-box-shadow: $input-btn-focus-box-shadow !default;
 $input-transition:
   border-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $input-border-width: $input-btn-border-width !default;
@@ -1298,7 +1290,6 @@ $accordion-button-active-color: inherit !default;
 $accordion-btn-gap: 0.75rem !default;
 $accordion-header-gap: 1rem !default;
 $accordion-tabs-gap: 0.75rem !default;
-$accordion-btn-focus-box-shadow: $focus-ring-box-shadow !default;
 // scss-docs-end accordion-variables
 
 // Carousel
@@ -1346,7 +1337,6 @@ $btn-close-padding-x: 0.875em !default;
 $btn-close-padding-y: $btn-close-padding-x !default;
 $btn-close-color: $body-color !default;
 $btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/></svg>") !default;
-$btn-close-focus-shadow: $focus-ring-box-shadow !default;
 $btn-close-opacity: 0.4 !default;
 $btn-close-hover-opacity: 0.75 !default;
 $btn-close-focus-opacity: 1 !default;
@@ -1401,7 +1391,7 @@ $dropdown-link-disabled-color: var(--tertiary-color) !default;
 $dropdown-item-padding-y: 0.5rem !default;
 $dropdown-item-padding-x: 0.75rem !default;
 
-$dropdown-header-color: $gray-600 !default;
+$dropdown-header-color: light-dark(var(--gray-600), var(--gray-400)) !default;
 $dropdown-header-padding-x: $dropdown-item-padding-x !default;
 $dropdown-header-padding-y: $dropdown-padding-y !default;
 
@@ -1516,9 +1506,9 @@ $nav-link-hover-color: var(--link-hover-color) !default;
 $nav-link-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out !default;
+  border-color 0.15s ease-in-out,
+  $focus-ring-transition !default;
 $nav-link-disabled-color: var(--disabled-color) !default;
-$nav-link-focus-box-shadow: $focus-ring-box-shadow !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: color-transparent(var(--nav-link-color), 0.5) !default;
 $nav-link-hover-icon-color: color-transparent(var(--nav-link-color), 0.8) !default;
@@ -1677,8 +1667,6 @@ $pagination-border-color: transparent !default;
 
 $pagination-focus-color: var(--link-hover-color) !default;
 $pagination-focus-bg: var(--secondary-bg) !default;
-$pagination-focus-box-shadow: $focus-ring-box-shadow !default;
-$pagination-focus-outline: 0 !default;
 
 $pagination-hover-color: var(--link-hover-color) !default;
 $pagination-hover-bg: $hover-bg !default;
@@ -1696,6 +1684,7 @@ $pagination-transition:
   color 0.15s ease-in-out,
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 $pagination-border-radius-sm: var(--border-radius-sm) !default;
@@ -1718,6 +1707,16 @@ $status-gap: 0.5rem !default;
 $status-indicator-size: 2.5rem !default;
 $status-circle-size: 0.75rem !default;
 // scss-docs-end status-variables
+
+// scss-docs-start signal-variables
+$signal-size: map.get(map.get($avatar-sizes, 'xs'), size) !default;
+$signal-gap-ratio: 0.1 !default;
+$signal-padding-y-ratio: 0.2 !default;
+$signal-padding-x-ratio: 0.1 !default;
+$signal-bar-border-radius: 1px !default;
+$signal-bar-inactive-opacity: 0.24 !default;
+$signal-max-bars: 5 !default;
+// scss-docs-end signal-variables
 
 // Steps
 // scss-docs-start steps-variables
@@ -1802,8 +1801,8 @@ $table-variants: (
 ) !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
-$table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
-$table-sort-desc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 10l3 -3l3 3'/></svg>") !default;
+$table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 10l3 -3l3 3'/></svg>") !default;
+$table-sort-desc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
 $table-sort-icon-size: 1rem !default;
 $table-sort-icon-margin-start: 0.25rem !default;
 // scss-docs-end table-variables
@@ -1834,6 +1833,18 @@ $tracking-gap-width: 0.125rem !default;
 $tracking-border-radius: var(--border-radius) !default;
 $tracking-block-min-width: 0.25rem !default;
 // scss-docs-end tracking-variables
+
+// Sortable
+// scss-docs-start sortable-variables
+$sortable-ghost-bg: var(--primary-lt) !default;
+$sortable-ghost-border-color: var(--primary) !default;
+$sortable-ghost-opacity: 0.6 !default;
+$sortable-outline-width: 1px !default;
+$sortable-selected-bg: var(--primary-lt) !default;
+$sortable-drag-bg: var(--bg-surface) !default;
+$sortable-drag-rotate: 1.5deg !default;
+$sortable-drag-box-shadow: $box-shadow-lg !default;
+// scss-docs-end sortable-variables
 
 // Progress
 // scss-docs-start progress-variables
@@ -1924,7 +1935,7 @@ $form-check-margin-bottom: 0.75rem !default;
 $form-check-padding-start: 2rem !default;
 $form-check-label-color: null !default;
 $form-check-label-cursor: null !default;
-$form-check-transition: null !default;
+$form-check-transition: $focus-ring-transition !default;
 
 $form-check-input-width: 1.25rem !default;
 $form-check-min-height: $font-size-base * $line-height-base !default;
@@ -1934,7 +1945,6 @@ $form-check-input-border: var(--border-width) var(--border-style) $input-border-
 $form-check-input-border-radius: var(--border-radius) !default;
 $form-check-radio-border-radius: 50% !default;
 $form-check-input-focus-border: $input-focus-border-color !default;
-$form-check-input-focus-box-shadow: $focus-ring-box-shadow !default;
 $form-check-input-box-shadow: $input-box-shadow !default;
 
 $form-check-input-checked-bg-size: 1.25rem !default;
@@ -1980,8 +1990,6 @@ $form-select-border-color: $input-border-color !default;
 $form-select-border-radius: $input-border-radius !default;
 $form-select-box-shadow: var(--shadow-input) !default;
 $form-select-focus-border-color: $input-focus-border-color !default;
-$form-select-focus-width: $input-focus-width !default;
-$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-color !default;
 $form-select-padding-y-sm: $input-padding-y-sm !default;
 $form-select-padding-x-sm: $input-padding-x-sm !default;
 $form-select-font-size-sm: $input-font-size-sm !default;
@@ -1999,7 +2007,8 @@ $form-switch-padding-start: $form-switch-width + 0.5rem !default;
 $form-switch-border-radius: $form-switch-width !default;
 $form-switch-transition:
   background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out !default;
+  border-color 0.15s ease-in-out,
+  $focus-ring-transition !default;
 $form-switch-knob-transition: inset-inline-start 0.15s ease-in-out !default;
 $form-switch-focus-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $form-switch-checked-color: var(--white) !default;
@@ -2020,15 +2029,13 @@ $form-range-thumb-bg: var(--primary) !default;
 $form-range-thumb-border: 2px var(--border-style) $white !default;
 $form-range-thumb-border-radius: 1rem !default;
 $form-range-thumb-box-shadow: 0 0.1rem 0.25rem color-transparent(var(--black), 0.1) !default;
-$form-range-thumb-focus-box-shadow:
-  0 0 0 1px $body-bg,
-  $input-focus-box-shadow !default;
 $form-range-thumb-focus-box-shadow-width: 0.125rem !default;
 $form-range-thumb-active-bg: mix-color-css(var(--white), var(--primary), 70%) !default;
 $form-range-thumb-disabled-bg: var(--secondary-color) !default;
 $form-range-thumb-transition:
   background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out,
+  $focus-ring-transition,
   box-shadow 0.15s ease-in-out !default;
 
 // Form floating
@@ -2041,7 +2048,7 @@ $form-floating-input-padding-b: 0.625rem !default;
 $form-floating-label-height: 1.5em !default;
 $form-floating-label-opacity: 0.65 !default;
 $form-floating-label-transform: scale(0.85) translateY(-0.5rem) translateX(calc(var(--dir) * 0.15rem)) #{'/*rtl:ignore*/'} !default;
-$form-floating-label-disabled-color: $gray-600 !default;
+$form-floating-label-disabled-color: light-dark(var(--gray-600), var(--gray-400)) !default;
 $form-floating-transition:
   opacity 0.1s ease-in-out,
   transform 0.1s ease-in-out !default;
@@ -2068,16 +2075,8 @@ $form-feedback-font-style: $form-text-font-style !default;
 $form-feedback-valid-color: $success !default;
 $form-feedback-invalid-color: $danger !default;
 
-$form-feedback-icon-valid: str-replace(
-  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>"),
-  '#',
-  '%23'
-) !default;
-$form-feedback-icon-invalid: str-replace(
-  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"),
-  '#',
-  '%23'
-) !default;
+$form-feedback-icon-valid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>") !default;
+$form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>") !default;
 // Form validation states
 // scss-docs-start form-validation-variables
 $form-validation-states: (
@@ -2086,7 +2085,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--success), $input-btn-focus-color-opacity),
+    'focus-ring-color': focus-ring-color(var(--success)),
     'border-color': var(--form-valid-border-color),
   ),
   'invalid': (
@@ -2094,7 +2093,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-transparent(var(--danger), $input-btn-focus-color-opacity),
+    'focus-ring-color': focus-ring-color(var(--danger)),
     'border-color': var(--form-invalid-border-color),
   ),
 ) !default;

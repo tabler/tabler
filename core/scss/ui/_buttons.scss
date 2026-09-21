@@ -213,6 +213,7 @@ $btn-tokens: defaults(
 //
 .btn-icon,
 .btn-action {
+  @include focus-ring-transition();
   //[BUG] btn-sm and btn-xl with an icon looks broken
   //issue #2470 fixed
   min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
@@ -304,8 +305,8 @@ $btn-tokens: defaults(
   }
 
   &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: -2px;
+    @include focus-ring();
+    outline-offset: calc(var(--focus-ring-width) * -1);
     box-shadow: none;
   }
 

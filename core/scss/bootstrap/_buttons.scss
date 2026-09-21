@@ -17,6 +17,8 @@
   --btn-border-width: #{$btn-border-width};
   --btn-border-color: transparent;
   --btn-border-radius: #{$btn-border-radius};
+  --btn-hover-color: var(--btn-color);
+  --btn-active-color: var(--btn-color);
   --btn-hover-border-color: transparent;
   --btn-box-shadow: #{$btn-box-shadow};
   --btn-disabled-opacity: #{$btn-disabled-opacity};
@@ -29,7 +31,6 @@
   // Zero-size shadow, not `none`: the active state is combined with the focus
   // ring in one `box-shadow` list, where `none` would negate every other shadow
   --btn-active-shadow: 0 0 0 #000;
-  --btn-focus-box-shadow: #{$btn-focus-box-shadow};
   // scss-docs-end btn-css-vars
 
   display: inline-block;
@@ -50,6 +51,8 @@
   @include gradient-bg(var(--btn-bg));
   @include box-shadow(var(--btn-box-shadow));
   @include transition($btn-transition);
+  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
+  outline-color: transparent;
 
   &:hover {
     color: var(--btn-hover-color);
@@ -69,24 +72,12 @@
     color: var(--btn-hover-color);
     @include gradient-bg(var(--btn-hover-bg));
     border-color: var(--btn-hover-border-color);
-    outline: 0;
-    // Avoid using mixin so we can pass custom focus shadow properly
-    @if $enable-shadows {
-      box-shadow: var(--btn-box-shadow), var(--btn-focus-box-shadow);
-    } @else {
-      box-shadow: var(--btn-focus-box-shadow);
-    }
+    @include focus-ring(true);
   }
 
   .btn-check:focus-visible + & {
     border-color: var(--btn-hover-border-color);
-    outline: 0;
-    // Avoid using mixin so we can pass custom focus shadow properly
-    @if $enable-shadows {
-      box-shadow: var(--btn-box-shadow), var(--btn-focus-box-shadow);
-    } @else {
-      box-shadow: var(--btn-focus-box-shadow);
-    }
+    @include focus-ring(true);
   }
 
   .btn-check:checked + &,
@@ -100,24 +91,6 @@
     background-image: if(sass($enable-gradients): none; else: null);
     border-color: var(--btn-active-border-color);
     @include box-shadow(var(--btn-active-shadow));
-
-    &:focus-visible {
-      // Avoid using mixin so we can pass custom focus shadow properly
-      @if $enable-shadows {
-        box-shadow: var(--btn-active-shadow), var(--btn-focus-box-shadow);
-      } @else {
-        box-shadow: var(--btn-focus-box-shadow);
-      }
-    }
-  }
-
-  .btn-check:checked:focus-visible + & {
-    // Avoid using mixin so we can pass custom focus shadow properly
-    @if $enable-shadows {
-      box-shadow: var(--btn-active-shadow), var(--btn-focus-box-shadow);
-    } @else {
-      box-shadow: var(--btn-focus-box-shadow);
-    }
   }
 
   &:disabled,

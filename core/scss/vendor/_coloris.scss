@@ -11,13 +11,16 @@
 }
 
 input.clr-color {
+  @include focus-ring-transition();
   @include border-radius(var(--border-radius));
   color: var(--body-color);
   background: transparent;
   border-color: var(--border-color);
 
   &:focus {
-    @include focus-ring($show-border: true);
+    --focus-ring-offset: -1px;
+    border-color: $input-focus-border-color;
+    @include focus-ring(true);
   }
 }
 
@@ -25,9 +28,10 @@ input.clr-color {
   button {
     @include border-radius(var(--border-radius));
     padding: 0 2px 4px;
+    @include focus-ring-transition();
 
     &:focus {
-      @include focus-ring();
+      @include focus-ring(true);
     }
   }
 }
@@ -43,8 +47,10 @@ input.clr-color {
   }
 
   button {
+    @include focus-ring-transition();
+
     &:focus {
-      @include focus-ring();
+      @include focus-ring(true);
     }
   }
 }
@@ -58,13 +64,14 @@ input.clr-color {
     width: 1.5rem;
     height: 1.5rem;
     @include border-radius(var(--border-radius));
+    @include focus-ring-transition();
 
     &::after {
       box-shadow: inset 0 0 0 1px var(--border-color-translucent);
     }
 
     &:focus {
-      @include focus-ring();
+      @include focus-ring(true);
     }
   }
 

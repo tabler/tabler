@@ -1,15 +1,17 @@
 @use 'sass:map';
 @use '../config' as *;
 
-$input-border-width: 1px;
-
 :root {
   --ts-pr-clear-button: 0rem;
   --ts-pr-caret: 0rem;
 }
 
 .focus .ts-control {
+  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
+  --focus-ring-offset: -1px;
+  box-shadow: $input-box-shadow;
   @include border-radius(var(--border-radius));
+  @include focus-ring(true);
 }
 
 .ts-control {
@@ -62,7 +64,7 @@ $input-border-width: 1px;
 
       &.focus .ts-control {
         border-color: map.get($data, 'border-color') !important;
-        box-shadow: map.get($data, 'focus-box-shadow') !important;
+        outline-color: map.get($data, 'focus-ring-color');
       }
     }
   }
@@ -135,9 +137,16 @@ $input-border-width: 1px;
     padding: $dropdown-item-padding-y $dropdown-item-padding-x;
   }
 
-  .active {
+  // Tom Select marks the highlighted row with .active; match the row only, so an
+  // .active element inside an option (a lit .signal-bar) keeps its own background
+  [data-selectable].active {
     color: var(--body-color) !important;
     background-color: var(--active-bg) !important;
+  }
+
+  // The library's own `.ts-dropdown .active` also hits a lit bar and clears its background
+  .signal-bar.active {
+    background-color: var(--signal-color);
   }
 
   .active.create {
@@ -153,6 +162,12 @@ $input-border-width: 1px;
 .ts-control,
 .ts-control input {
   color: var(--body-color);
+}
+
+// An item rendered with an indicator reuses `.dropdown-item`, whose `width: 100%` fills the
+// control and pushes the search input to a second line on focus
+.ts-control > .dropdown-item {
+  width: auto;
 }
 
 .ts-control input {

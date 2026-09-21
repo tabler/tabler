@@ -104,7 +104,7 @@
 }
 
 @include describe('focus-ring mixin') {
-  @include it('outputs the ring token without a border by default') {
+  @include it('outputs the `--focus-ring` outline by default') {
     @include assert() {
       @include output() {
         .t {
@@ -113,40 +113,38 @@
       }
       @include expect() {
         .t {
-          outline: 0;
-          box-shadow: var(--focus-ring-box-shadow);
+          outline: var(--focus-ring);
         }
       }
     }
   }
 
-  @include it('adds a border colour when requested') {
+  @include it('adds the offset when requested') {
     @include assert() {
       @include output() {
         .t {
-          @include focus-ring($show-border: true);
+          @include focus-ring(true);
         }
       }
       @include expect() {
         .t {
-          outline: 0;
-          box-shadow: var(--focus-ring-box-shadow);
-          border-color: var(--focus-ring-color);
+          outline: var(--focus-ring);
+          outline-offset: var(--focus-ring-offset);
         }
       }
     }
   }
 
-  @include it('passes $shadow through and skips the outline reset with $outline: null') {
+  @include it('takes a custom colour') {
     @include assert() {
       @include output() {
         .t {
-          @include focus-ring($shadow: 0 0 0 1px red, $outline: null);
+          @include focus-ring($color: red);
         }
       }
       @include expect() {
         .t {
-          box-shadow: 0 0 0 1px red;
+          outline: var(--focus-ring-width) solid red;
         }
       }
     }

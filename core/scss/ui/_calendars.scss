@@ -64,7 +64,7 @@ $calendar-tokens: defaults(
     width: var(--calendar-date-size);
     height: var(--calendar-date-size);
     line-height: var(--calendar-date-size);
-    color: #66758c;
+    color: var(--secondary-color);
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
@@ -74,18 +74,17 @@ $calendar-tokens: defaults(
     border: var(--border-width) var(--border-style) transparent;
     @include border-radius(var(--border-radius-pill));
     outline: 0;
-    @include transition(background $transition-time, border $transition-time, box-shadow $transition-time, color $transition-time);
+    @include focus-ring-transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
 
     &:hover {
       color: var(--primary);
       text-decoration: none;
-      background: #fefeff;
+      background: var(--bg-surface);
       border-color: var(--border-active-color);
     }
 
     &:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
+      @include focus-ring(true);
     }
   }
 

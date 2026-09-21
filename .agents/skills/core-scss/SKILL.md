@@ -145,7 +145,7 @@ pnpm run lint:prettier                     # formatting
 pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tabler.min.css 75 kB)
 ```
 
-- A new entry in `$theme-colors`, `$avatar-sizes` and friends must be regenerated into `shared/lib/tokens.ts` with `pnpm run generate-tokens` — the check gate fails otherwise.
+- A new entry in `$theme-colors`, `$avatar-sizes` and friends must be regenerated into `shared/lib/tokens.ts` with `pnpm run generate:tokens` — the check gate fails otherwise.
 - An unused Sass variable fails `lint:scss`; delete it or use it.
 - Growth past a bundlewatch limit is a decision, not an accident: raise the number in `core/package.json` deliberately and say so in the PR.
 

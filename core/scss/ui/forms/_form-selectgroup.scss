@@ -49,7 +49,7 @@ Select group
   border: var(--border-width) var(--border-style) $input-border-color;
   box-shadow: $input-box-shadow;
   @include border-radius(var(--border-radius));
-  @include transition(border-color $transition-time, background $transition-time, color $transition-time);
+  @include focus-ring-transition(border-color $transition-time, background $transition-time, color $transition-time);
 
   > .icon:only-child {
     margin: 0 var(--form-selectgroup-icon-margin-x);
@@ -111,7 +111,7 @@ Select group
   z-index: 2;
   color: var(--primary);
   border-color: var(--primary);
-  @include focus-ring($shadow: $input-btn-focus-box-shadow, $outline: null);
+  @include focus-ring(true);
 }
 
 /**
@@ -119,7 +119,7 @@ Alternate version of form select group
  */
 .form-selectgroup-boxes {
   .form-selectgroup-label {
-    padding: var(--card-spacer-y) var(--card-spacer-x);
+    padding: $card-spacer-y $card-spacer-x;
     color: inherit;
     text-align: start;
   }

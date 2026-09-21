@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
@@ -77,16 +78,23 @@
   gap: var(--list-gap);
 }
 
-@mixin focus-ring($shadow: $focus-ring-box-shadow, $show-border: false, $outline: 0) {
-  @if $outline != null {
-    outline: $outline;
+@mixin focus-ring($offset: false, $color: null) {
+  @if $color != null {
+    outline: var(--focus-ring-width) solid #{$color};
+  } @else {
+    outline: var(--focus-ring);
   }
-
-  box-shadow: $shadow;
-
-  @if $show-border {
-    border-color: var(--focus-ring-color);
+  @if $offset {
+    outline-offset: var(--focus-ring-offset);
   }
+}
+
+// Fades the focus ring in: `outline-color` starts from transparent instead of
+// `currentcolor`. `transition` is one property, so pass the element's other
+// transitions here instead of a second `transition()` call.
+@mixin focus-ring-transition($transitions...) {
+  outline-color: transparent;
+  @include transition(list.append($transitions, $focus-ring-transition, comma)...);
 }
 
 //

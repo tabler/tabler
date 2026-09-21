@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../config' as *;
 
 textarea {
@@ -133,6 +134,8 @@ Form help
   justify-content: center;
   width: var(--form-help-size);
   height: var(--form-help-size);
+  // `.form-help` is often a `<button>`: drop the user agent's padding and border
+  padding: 0;
   font-size: var(--form-help-font-size);
   font-weight: var(--font-weight-semibold);
   color: $form-secondary-color;
@@ -141,6 +144,7 @@ Form help
   cursor: pointer;
   user-select: none;
   background: var(--bg-surface-secondary);
+  border: 0;
   @include border-radius(var(--border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
 
@@ -175,8 +179,10 @@ Input group
 }
 
 .input-group-flat {
+  @include focus-ring-transition();
   &:focus-within {
-    @include focus-ring($shadow: $input-focus-box-shadow, $outline: null);
+    --focus-ring-offset: -1px;
+    @include focus-ring(true);
     @include border-radius($input-border-radius);
 
     .form-control,
@@ -188,6 +194,7 @@ Input group
   .form-control {
     &:focus {
       border-color: $input-border-color;
+      outline: 0;
       box-shadow: none;
     }
 
@@ -215,6 +222,27 @@ Input group
       border-inline-start: 0;
     }
   }
+
+  @each $state, $data in $form-validation-states {
+    $border-color: map.get($data, 'border-color');
+    $focus-ring-color: map.get($data, 'focus-ring-color');
+
+    &:has(.form-control.is-#{$state}),
+    .was-validated &:has(.form-control:#{$state}) {
+      .input-group-text {
+        border-color: $border-color;
+      }
+
+      &:focus-within {
+        outline-color: $focus-ring-color;
+
+        .form-control,
+        .input-group-text {
+          border-color: $border-color !important;
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -223,17 +251,6 @@ Upload files
 .form-file-button {
   margin-inline-start: 0;
   border-inline-start: 0;
-}
-
-/**
-Floating inputs
- */
-// Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
-label[for='floating-input'] {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /**
