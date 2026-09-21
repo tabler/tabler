@@ -1,0 +1,33 @@
+name: HTML checks
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  html-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v7
+
+      - name: Set up the workspace
+        uses: ./.github/actions/setup
+
+      # only the two sites the checks read; the Build workflow covers the rest
+      - name: Build the preview and the docs
+        run: pnpm exec turbo build --filter=@tabler/preview --filter=@tabler/docs
+
+      - name: Install Playwright
+        uses: ./.github/actions/playwright
+
+      - name: Check rendered html
+        run: pnpm run check:html preview/dist docs/dist --quiet
+
+      - name: Check markup classes
+        run: pnpm run check:markup-classes --html preview/dist --html docs/dist --css preview/dist/dist/css --css preview/dist/dist/libs --css preview/dist/preview/css --css docs/dist/css --css docs/dist/preview/css
