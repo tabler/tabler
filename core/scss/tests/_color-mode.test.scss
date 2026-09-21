@@ -8,7 +8,7 @@
 @use '../mixins/bootstrap/color-mode' as *;
 
 @include describe('color-mode') {
-  @include it('scopes content under the theme attribute selectors') {
+  @include it('scopes dark content under the theme class and attribute selectors') {
     @include assert() {
       @include output() {
         @include color-mode(dark) {
@@ -18,8 +18,27 @@
         }
       }
       @include expect() {
+        .theme-dark .x,
         [data-bs-theme='dark'] .x,
         [data-theme='dark'] .x {
+          color: red;
+        }
+      }
+    }
+  }
+
+  @include it('scopes light content under the theme attribute selectors only') {
+    @include assert() {
+      @include output() {
+        @include color-mode(light) {
+          .x {
+            color: red;
+          }
+        }
+      }
+      @include expect() {
+        [data-bs-theme='light'] .x,
+        [data-theme='light'] .x {
           color: red;
         }
       }
