@@ -41,6 +41,15 @@ tr.sortable-selected {
   outline-offset: calc(var(--sortable-outline-width) * -1);
 }
 
+.list-group-item {
+  &.sortable-ghost,
+  &.sortable-swap-highlight,
+  &.sortable-selected,
+  &.sortable-drag {
+    @include border-radius(var(--list-group-border-radius));
+  }
+}
+
 .sortable-chosen {
   cursor: grabbing;
 }
@@ -52,4 +61,5 @@ tr.sortable-selected {
   outline-offset: calc(var(--sortable-outline-width) * -1);
   box-shadow: var(--sortable-drag-box-shadow);
   opacity: 1 !important; // stylelint-disable-line declaration-no-important
+  transition: none;
 }
