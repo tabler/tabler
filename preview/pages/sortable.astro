@@ -1,21 +1,58 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
+import Icon from '@ui/Icon.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
+import { people, personById } from '@shared/lib/people'
+import tasks from '@data/tasks.json'
+
+interface Task {
+  name: string
+  assigned_to: number
+  priority: string
+}
+
+interface Column {
+  name: string
+  tasks: Task[]
+}
+
+const priorityColors: Record<string, string> = { High: 'red', Medium: 'orange', Low: 'blue' }
+
+const board = (tasks.columns as Column[]).map((column) => ({
+  name: column.name,
+  tasks: column.tasks.slice(0, 4),
+}))
+
+const team = people.slice(0, 5)
+const gallery = people.slice(5, 11)
+
+const sections = [
+  { title: 'Basics', description: 'Add data-sortable with SortableJS options as JSON to any list to make its children draggable.' },
+  { title: 'Handles and tables', description: 'Limit dragging to a grip icon, or reorder the rows of a table.' },
+  { title: 'Boards', description: 'Connect several lists to build a kanban board or a pick list.' },
+  { title: 'Selection and swapping', description: 'The bundled SortableJS build also ships the MultiDrag and Swap plugins.' },
+]
 ---
 
-<DefaultLayout title="Sortable" pageHeader="SortableJS" pageMenu="plugins.sortable" pageLibs={['sortablejs']}>
+<DefaultLayout title="Sortable" pageMenu="plugins.sortable" pageLibs={['sortablejs']} description="Drag and drop to reorder lists, table rows, grids and kanban boards with SortableJS.">
   <div class="row row-cards">
+    <div class="col-12">
+      <h2 class="page-section-title">{sections[0]!.title}</h2>
+      <p class="page-section-description">{sections[0]!.description}</p>
+    </div>
     <div class="col-md-6">
-      <Card>
+      <Card class="h-100">
         <CardHeader>
           <div>
-            <CardTitle>Basic usage</CardTitle>
+            <CardTitle as="h3">Basic usage</CardTitle>
             <CardSubtitle>Drag to reorder items within a single list.</CardSubtitle>
           </div>
         </CardHeader>
@@ -30,11 +67,11 @@ import ListGroupItem from '@ui/ListGroupItem.astro'
       </Card>
     </div>
     <div class="col-md-6">
-      <Card>
+      <Card class="h-100">
         <CardHeader>
           <div>
-            <CardTitle>Two lists with drag and drop</CardTitle>
-            <CardSubtitle>Move items between two connected lists.</CardSubtitle>
+            <CardTitle as="h3">Two lists with drag and drop</CardTitle>
+            <CardSubtitle>Give lists the same <code>group</code> to move items between them.</CardSubtitle>
           </div>
         </CardHeader>
         <CardBody>
@@ -54,6 +91,312 @@ import ListGroupItem from '@ui/ListGroupItem.astro'
               </ListGroup>
             </div>
           </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Drag preview</CardTitle>
+            <CardSubtitle>Set <code>forceFallback</code> to <code>true</code> to drag a styled copy of the item, with a shadow, instead of the browser preview.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"animation":150,"forceFallback":true}'>
+            <ListGroupItem as="li">Write the release notes</ListGroupItem>
+            <ListGroupItem as="li">Review open pull requests</ListGroupItem>
+            <ListGroupItem as="li">Update the changelog</ListGroupItem>
+            <ListGroupItem as="li">Publish the packages</ListGroupItem>
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Fixed items</CardTitle>
+            <CardSubtitle>Set <code>filter</code> to a selector to make matching items impossible to drag.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"animation":150,"filter":".sortable-fixed"}'>
+            <ListGroupItem as="li" class="sortable-fixed text-secondary d-flex align-items-center gap-2">
+              <Icon name="lock" /> Inbox (pinned)
+            </ListGroupItem>
+            <ListGroupItem as="li">Projects</ListGroupItem>
+            <ListGroupItem as="li">Reports</ListGroupItem>
+            <ListGroupItem as="li">Archive</ListGroupItem>
+            <ListGroupItem as="li" class="sortable-fixed text-secondary d-flex align-items-center gap-2">
+              <Icon name="lock" /> Trash (pinned)
+            </ListGroupItem>
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <h2 class="page-section-title">{sections[1]!.title}</h2>
+      <p class="page-section-description">{sections[1]!.description}</p>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Drag handle</CardTitle>
+            <CardSubtitle>Set <code>handle</code> so only the grip starts a drag, and the rest of the row stays clickable.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"animation":150,"handle":".sortable-handle"}'>
+            {
+              team.map((person) => (
+                <ListGroupItem as="li">
+                  <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                      <span class="sortable-handle cursor-move text-secondary" aria-hidden="true">
+                        <Icon name="grip-vertical" />
+                      </span>
+                    </div>
+                    <div class="col-auto">
+                      <Avatar person={person} />
+                    </div>
+                    <div class="col text-truncate">
+                      <a href="#" class="text-reset d-block text-truncate">
+                        {person.full_name}
+                      </a>
+                      <div class="text-secondary text-truncate">{person.job_title}</div>
+                    </div>
+                  </div>
+                </ListGroupItem>
+              ))
+            }
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Sortable table</CardTitle>
+            <CardSubtitle>Put <code>data-sortable</code> on the <code>tbody</code> to reorder rows.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th class="w-1"><span class="visually-hidden">Drag</span></th>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Country</th>
+              </tr>
+            </thead>
+            <tbody data-sortable='{"animation":150,"handle":".sortable-handle"}'>
+              {
+                team.map((person) => (
+                  <tr>
+                    <td>
+                      <span class="sortable-handle cursor-move text-secondary" aria-hidden="true">
+                        <Icon name="grip-vertical" />
+                      </span>
+                    </td>
+                    <td>{person.full_name}</td>
+                    <td class="text-secondary">{person.job_title}</td>
+                    <td class="text-secondary">{person.country}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Grid of avatars</CardTitle>
+            <CardSubtitle>Sortable also works on a wrapping layout, not just on vertical lists.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <div class="d-flex flex-wrap gap-3" data-sortable='{"animation":150}'>
+            {
+              gallery.map((person) => (
+                <div class="card card-sm cursor-move flex-fill">
+                  <div class="card-body text-center">
+                    <Avatar person={person} size="lg" class="mb-2" />
+                    <div class="text-truncate">{person.first_name}</div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Disabled list</CardTitle>
+            <CardSubtitle>Set <code>disabled</code> to <code>true</code> to lock a list, for example while the user has no edit rights.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"animation":150,"disabled":true}'>
+            <ListGroupItem as="li" class="d-flex align-items-center gap-2">
+              <Icon name="lock" class="text-secondary" /> Read-only item 1
+            </ListGroupItem>
+            <ListGroupItem as="li" class="d-flex align-items-center gap-2">
+              <Icon name="lock" class="text-secondary" /> Read-only item 2
+            </ListGroupItem>
+            <ListGroupItem as="li" class="d-flex align-items-center gap-2">
+              <Icon name="lock" class="text-secondary" /> Read-only item 3
+            </ListGroupItem>
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <h2 class="page-section-title">{sections[2]!.title}</h2>
+      <p class="page-section-description">{sections[2]!.description}</p>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Kanban board</CardTitle>
+            <CardSubtitle>Drag tasks between columns that share one <code>group</code>.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <div class="row g-3">
+            {
+              board.map((column) => (
+                <div class="col-md-4">
+                  <h4 class="mb-2">{column.name}</h4>
+                  <div class="d-flex flex-column gap-2" data-sortable='{"group":"kanban","animation":150,"forceFallback":true,"emptyInsertThreshold":40}'>
+                    {column.tasks.map((task) => (
+                      <div class="card card-sm cursor-move">
+                        <div class="card-body">
+                          <div class="mb-3">{task.name}</div>
+                          <div class="d-flex align-items-center justify-content-between">
+                            <Badge text={task.priority} color={priorityColors[task.priority] ?? 'secondary'} light />
+                            <Avatar person={personById(task.assigned_to)} size="xs" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Clone from a list</CardTitle>
+            <CardSubtitle>Use <code>pull: "clone"</code> and <code>put: false</code> on the source so items are copied, not moved.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="subheader mb-2">Templates</div>
+              <ListGroup as="ul" data-sortable='{"group":{"name":"clone","pull":"clone","put":false},"sort":false,"animation":150}'>
+                <ListGroupItem as="li">Heading</ListGroupItem>
+                <ListGroupItem as="li">Paragraph</ListGroupItem>
+                <ListGroupItem as="li">Image</ListGroupItem>
+                <ListGroupItem as="li">Button</ListGroupItem>
+              </ListGroup>
+            </div>
+            <div class="col-sm-6">
+              <div class="subheader mb-2">Page</div>
+              <ListGroup as="ul" data-sortable='{"group":"clone","animation":150}'>
+                <ListGroupItem as="li">Paragraph</ListGroupItem>
+              </ListGroup>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">One-way transfer</CardTitle>
+            <CardSubtitle>Set <code>put: false</code> on a list to make it a source only, and use it to build a pick list.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="subheader mb-2">Available</div>
+              <ListGroup as="ul" data-sortable='{"group":{"name":"transfer","put":false},"sort":false,"animation":150}'>
+                <ListGroupItem as="li">Email alerts</ListGroupItem>
+                <ListGroupItem as="li">SMS alerts</ListGroupItem>
+                <ListGroupItem as="li">Weekly digest</ListGroupItem>
+                <ListGroupItem as="li">Push notifications</ListGroupItem>
+              </ListGroup>
+            </div>
+            <div class="col-sm-6">
+              <div class="subheader mb-2">Selected</div>
+              <ListGroup as="ul" data-sortable='{"group":"transfer","animation":150}'>
+                <ListGroupItem as="li">In-app messages</ListGroupItem>
+              </ListGroup>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <h2 class="page-section-title">{sections[3]!.title}</h2>
+      <p class="page-section-description">{sections[3]!.description}</p>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Multiple selection</CardTitle>
+            <CardSubtitle>Set <code>multiDrag</code> to <code>true</code>. Hold <kbd>Ctrl</kbd> or <kbd>⌘</kbd> and click to select items, then drag them together.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"multiDrag":true,"animation":150}'>
+            <ListGroupItem as="li">Invoice #1001</ListGroupItem>
+            <ListGroupItem as="li">Invoice #1002</ListGroupItem>
+            <ListGroupItem as="li">Invoice #1003</ListGroupItem>
+            <ListGroupItem as="li">Invoice #1004</ListGroupItem>
+            <ListGroupItem as="li">Invoice #1005</ListGroupItem>
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card class="h-100">
+        <CardHeader>
+          <div>
+            <CardTitle as="h3">Swap</CardTitle>
+            <CardSubtitle>Set <code>swap</code> to <code>true</code> to exchange two items instead of shifting the rest.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <ListGroup as="ul" data-sortable='{"swap":true,"animation":150}'>
+            <ListGroupItem as="li">First place</ListGroupItem>
+            <ListGroupItem as="li">Second place</ListGroupItem>
+            <ListGroupItem as="li">Third place</ListGroupItem>
+            <ListGroupItem as="li">Fourth place</ListGroupItem>
+          </ListGroup>
         </CardBody>
       </Card>
     </div>
