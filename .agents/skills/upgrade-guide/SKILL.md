@@ -16,7 +16,7 @@ docs/content/ui/getting-started/upgrade/
   1-6.mdx     # "Upgrade to 1.6", order: 1
 ```
 
-A release with no breaking change gets no page. Say so in the changelog instead.
+A patch or minor release must not break anything (see the `backward-compat` skill), so its guide lists **deprecations**: what still works, what replaces it, and when it goes away. Say "deprecated" and "the old name still works", never "removed" or "gone", and check each claim with `pnpm run check:compat`. Breaking changes, with "you need to", belong to the guide of a major release. A release with nothing deprecated and nothing visible gets no page. Say so in the changelog instead.
 
 ## 1. Collect the facts first
 

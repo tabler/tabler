@@ -30,9 +30,9 @@ const DATA_ATTRIBUTE = `data-${NAME}`
 
 const SELECTOR_DATA_SORTABLE = `[${DATA_ATTRIBUTE}]`
 
-const Default: ComponentConfig = {
-  forceFallback: true,
-}
+// SortableJS defaults apply. Set `forceFallback: true` to drag an HTML copy that
+// `.sortable-drag` can style, instead of the browser's drag image.
+const Default: ComponentConfig = {}
 
 const DefaultType: Record<string, string> = {}
 
@@ -42,7 +42,7 @@ const DefaultType: Record<string, string> = {}
  * Wraps SortableJS (https://sortablejs.github.io/Sortable/), loaded separately
  * as `window.Sortable`. Without the plugin the component is inert. Options come
  * from the `data-sortable` attribute as JSON, or from the config object.
- * `forceFallback` is on by default so the dragged copy can be styled with `.sortable-drag`.
+ * Turn `forceFallback` on so the dragged copy can be styled with `.sortable-drag`.
  */
 
 class Sortable extends BaseComponent {
