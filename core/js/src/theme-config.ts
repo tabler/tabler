@@ -7,7 +7,7 @@
  */
 export const themeDefaults = {
   'theme': 'auto',
-  'theme-base': 'gray',
+  'theme-base': 'neutral',
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',
