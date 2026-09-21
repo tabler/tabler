@@ -9,6 +9,8 @@
 //
 //   css      classes and custom properties of every dist/css/*.css
 //   sass     `$variables`, and `@function` / `@mixin` names and parameters, in scss/
+//   sass-type  a variable that was a Sass colour and is now a string: `darken($x, 5%)`
+//            in a project stops compiling, and no alias can fix a type
 //   js       top-level exports of dist/js/tabler.esm.js
 //   file     every path under dist/ (libs, images, types), and scss/ partials
 //
@@ -24,6 +26,7 @@
 // Usage: tsx .build/check-compat.ts [--strict]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
+import { compileString } from 'sass'
 import { pkgName, releasedPackage } from './released-package'
 
 const coreDir = 'core'
@@ -137,6 +140,27 @@ function sassBreaks(released: string, current: string): string[] {
   return breaks
 }
 
+// --- sass types ------------------------------------------------------------
+
+// The type of every variable the config module exposes, read by Sass itself.
+function sassTypes(root: string): Map<string, string> {
+  const source = `
+    @use 'sass:meta';
+    @use 'scss/config' as config;
+    a {
+      @each $name, $value in meta.module-variables('config') {
+        --#{$name}: #{meta.type-of($value)};
+      }
+    }`
+  const { css } = compileString(source, { loadPaths: [root, 'node_modules'], logger: { warn() {}, debug() {} } })
+  return new Map([...css.matchAll(/--([\w-]+): (\w+);/g)].map((match) => [match[1]!, match[2]!]))
+}
+
+function sassTypeBreaks(released: string, current: string): string[] {
+  const after = sassTypes(current)
+  return [...sassTypes(released)].filter(([name, type]) => type === 'color' && after.has(name) && after.get(name) !== 'color').map(([name]) => `sass-type:$${name}`)
+}
+
 // --- js --------------------------------------------------------------------
 
 function esmExports(file: string): Set<string> {
@@ -184,7 +208,7 @@ async function main() {
   }
 
   const { dir: released, version } = await releasedPackage()
-  const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
+  const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...sassTypeBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
 
   const baseline = new Map<string, boolean>() // key → accepted
   for (const line of readFileSync(baselineFile, 'utf8').split('\n')) {

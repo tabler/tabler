@@ -25,12 +25,24 @@ Anything a user can write in their own project. If it is in the list, it cannot 
 | Events | `change.bs.switch-icon` | renamed, no longer fired, fired at a different moment |
 | Files in the package | `dist/libs/litepicker/…`, `dist/css/tabler.rtl.css` | the path 404s after an update |
 | Dependencies | `dependencies`, `peerDependencies` | a user must install or uninstall something for the update to work |
-| Defaults | the gray scale, `forceFallback`, the color mode | an untouched project looks or behaves differently in a way the user did not ask for |
+| Behaviour defaults | `forceFallback`, the color mode, when a component starts | an untouched project behaves differently in a way the user did not ask for. How it **looks** is a separate rule, see below |
 | Browser support | `.browserslistrc` | the minimum version of any browser goes up |
 
 Not public: anything under `preview/`, `docs/`, `shared/`, `.build/`, file layout inside `core/scss/` that is not reachable through `@use`, private `_underscore` members of JS classes, and the exact bytes of the compiled CSS.
 
-Bug fixes are fine even when they change rendering, as long as the old behaviour was clearly wrong (a knob that did not move in RTL). When a fix changes how a correct page looks, treat it as a default change.
+Bug fixes are fine even when they change rendering, as long as the old behaviour was clearly wrong (a knob that did not move in RTL).
+
+### Visual changes are allowed in a minor release
+
+How Tabler looks is not frozen by semver. A minor release may change a color, a shadow, a spacing, a font, the shape of the focus ring or the default gray palette, the same way 1.5 moved to system fonts. The maintainers decided this on 2026-09-21. It holds as long as all of these are true:
+
+- **Nothing the user wrote stops working.** The markup, the classes, the custom properties and the Sass variables they use still exist and still do their job. A redesign that renames or removes one is a rename or a removal, and needs an alias.
+- **An old token that the user set is still honoured.** When the focus ring became an outline, `--tblr-btn-focus-box-shadow` stopped being read. That part was a break, and `_deprecated.scss` draws the shadow again. Changing the default look is fine; ignoring the user's override is not.
+- **No layout a project depends on moves.** A different gray is visual. A component that is suddenly taller, or `position: absolute` where it was in the flow, breaks the pages built around it.
+- **Behaviour is not "visual".** What a click does, when an animation starts, which drag image the browser uses: those are behaviour defaults, and stay opt-in until the next major.
+- **It is listed.** Every visible change gets a bullet under "Visual changes" in the upgrade guide and a changeset that names it, so a user who sees a difference after updating can find out why. When the old look is cheap to keep, say how: a variable to set, or a theme in `tabler-themes.css`.
+
+`check:compat` and `check:compat-fixture` do not look at pixels, so this rule is on the author and the reviewer.
 
 ## 2. Where compatibility code lives
 
@@ -82,7 +94,7 @@ Adding is safe, with one trap: a name that fits an existing pattern may already 
 
 ### Change a default
 
-Keep the old default and make the new behaviour opt-in: a class, an attribute, an option or a Sass variable. The new default can flip in the next major.
+For behaviour, keep the old default and make the new one opt-in: a class, an attribute, an option or a Sass variable. The new default can flip in the next major. A default that only changes how things look may change in a minor release, under the rule in section 1.
 
 ### Drop a bundled library or a file
 
@@ -138,3 +150,13 @@ git diff "@tabler/core@$(npm view @tabler/core version)"..HEAD -- core/scss/_var
 ## 6. When a break cannot be avoided
 
 Some changes have no alias: dropping a whole color model, raising the browser floor, removing a dependency users import. Those belong to the next major release, not to `dev`. Say so in the PR, and do not split the change to sneak half of it into a minor. If you are unsure whether something is a break, assume it is and ask.
+
+### A documented exception
+
+Only the maintainers can decide to ship a break in a minor release, and it takes all three of these:
+
+1. a line per item in `.build/compat-baseline.txt` with `# accepted: <why>`, under a comment that says who decided and when,
+2. a section in the upgrade guide that says plainly what stops working and shows the fix,
+3. a check that keeps the exception from growing.
+
+1.6 has one. Moving color mixing to the browser turned 69 Sass variables from colors into `color-mix()` strings: the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families with their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark border colors and a few navbar, dropdown and switch colors. `darken($primary-bg-subtle, 5%)` in a project no longer compiles, and no alias can change a type back. The theme colors, the grays, `$body-color`, `$body-bg` and `$link-color` are still colors. `check:compat` lists each one as `sass-type:$name`, and fails when another color variable stops being one. Do not add to that list: a new variable that needs a runtime value gets a new name, and the old one keeps its color.
