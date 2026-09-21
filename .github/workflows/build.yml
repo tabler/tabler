@@ -23,9 +23,9 @@ jobs:
       - name: Build
         run: pnpm exec turbo build
 
-      # Nothing the last release shipped may disappear in a minor release. The
-      # versions pull request runs it with --strict, so a release cannot be
-      # merged while compat-baseline.txt still lists a break nobody accepted.
+      # Nothing the last release shipped may disappear in a minor release. On the
+      # versions pull request it runs with --strict, but workflows there wait for
+      # a manual approval, so the Release workflow runs --strict too.
       - name: Check backward compatibility
         env:
           STRICT: ${{ github.head_ref == 'changeset-release/dev' && '--strict' || '' }}
