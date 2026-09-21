@@ -22,7 +22,7 @@
 // deprecated(2.0): use `mix-color($color, $background, 10%)`
 @function theme-color-lighter($color, $background: #fff) {
   $warned: -deprecated('theme-color-lighter()', 'Use mix-color() instead.');
-  @return color.mix($color, $background, 10%);
+  @return color.to-gamut(color.mix($color, $background, 10%, $method: rgb), $space: rgb, $method: clip);
 }
 
 // deprecated(2.0): use `shade-color($color, 10%)`

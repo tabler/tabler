@@ -1,0 +1,70 @@
+@use '../config' as *;
+
+.litepicker {
+  --litepicker-month-weekday-color: #{var(--secondary)};
+  --litepicker-button-prev-month-color: #{var(--secondary)};
+  --litepicker-button-next-month-color: #{var(--secondary)};
+  --litepicker-button-prev-month-color-hover: #{var(--primary)};
+  --litepicker-button-next-month-color-hover: #{var(--primary)};
+  --litepicker-day-color: var(--body-color);
+  --litepicker-day-color-hover: #{var(--primary)};
+  --litepicker-is-start-color-bg: #{var(--primary)};
+  --litepicker-is-end-color-bg: #{var(--primary)};
+  --litepicker-is-in-range-color: #{var(--info)};
+  --litepicker-is-today-color: #{var(--primary)};
+  --litepicker-month-header-color: var(--body-color);
+  --litepicker-container-months-color-bg: var(--bg-surface);
+  font: inherit;
+  user-select: none;
+
+  .day-item.is-in-range {
+    --litepicker-day-color: var(--light);
+  }
+
+  svg {
+    fill: none !important;
+  }
+
+  .container__main {
+    border: var(--border-width) var(--border-style) var(--border-color);
+    @include border-radius(var(--border-radius));
+    box-shadow: none;
+  }
+
+  .container__months {
+    .month-item-name,
+    .month-item-year {
+      font-weight: var(--font-weight-medium) !important;
+    }
+
+    .button-next-month,
+    .button-previous-month {
+      cursor: pointer !important;
+    }
+
+    .month-item-weekdays-row {
+      > div {
+        padding: 0.5rem 0 !important;
+        font-size: $h5-font-size;
+      }
+    }
+  }
+
+  .container__days {
+    .day-item {
+      padding: 0.5rem 0 !important;
+      cursor: pointer !important;
+      @include transition(color $transition-time, background-color $transition-time, border-color $transition-time);
+    }
+  }
+
+  .datepicker-inline & {
+    box-shadow: $input-box-shadow;
+
+    .container__months {
+      background-color: var(--bg-forms);
+      box-shadow: none;
+      @include border-radius(calc(var(--border-radius) - 1px));
+    }
+  }
+}

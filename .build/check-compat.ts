@@ -7,7 +7,7 @@
 // release of `@tabler/core` from npm and compares its public surface with the
 // working tree:
 //
-//   css      classes and `--tblr-*` custom properties of every dist/css/*.css
+//   css      classes and custom properties of every dist/css/*.css
 //   sass     `$variables`, and `@function` / `@mixin` names and parameters, in scss/
 //   js       top-level exports of dist/js/tabler.esm.js
 //   file     every path under dist/ (libs, images, types), and scss/ partials
@@ -72,7 +72,9 @@ const matches = (source: string, pattern: RegExp): Set<string> => new Set([...so
 
 // A class is a dot followed by an identifier; `1.5rem` and `url(a.svg)` are not.
 const cssClass = /(?<![\w)\]"'-])\.(-?[a-zA-Z_][\w-]*)/g
-const cssProperty = /(--tblr-[\w-]+)/g
+// Every custom property, not only `--tblr-*`: a vendor name that gained the
+// prefix (`--litepicker-*`) is as broken as one that disappeared.
+const cssProperty = /(?<![\w-])(--[a-zA-Z][\w-]*)/g
 
 const stripCssNoise = (css: string): string => css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/url\([^)]*\)/g, 'url()')
 

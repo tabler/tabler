@@ -40,10 +40,13 @@ Everything kept only for old projects goes into files named `deprecated`, so tha
 | --- | --- | --- |
 | `core/scss/_variables-deprecated.scss` | old `$variables`, each `!default`, with the default they had when they were removed | `@use … with ($x: …)` on a variable that does not exist is a compile error, and so is reading one, so the variable has to stay declared. Forwarded from `_config.scss` **after** `variables`, because old defaults are built from current ones. Nothing in Tabler reads these; `_deprecated.scss` compares each with its default and, when a project changed it, emits the matching new token. The file is excluded from `lint:scss:vars` |
 | `core/scss/mixins/_deprecated.scss` | old functions and mixins as thin wrappers around the new ones | emits no CSS; forwarded from `_mixins.scss`. A mixin calls `@include deprecate('<name>', '<since>', '<removed in>')` from `mixins/bootstrap/_deprecate.scss`; a function cannot include a mixin, so it calls the private `-deprecated()` helper in the same file. Either way the user gets a warning when compiling |
-| `core/scss/_deprecated.scss` | everything that emits CSS: class aliases (`.form-hint`, `.legend:empty`), old custom properties such as `--tblr-*-rgb`, hooks like `box-shadow: var(--btn-focus-box-shadow, none)` | loaded last from `tabler.scss`, next to `_extends.scss`: an alias built with `@extend` needs the whole `core` upstream. The whole file sits inside `@if $enable-deprecated { … }` |
+| `core/scss/_deprecated.scss` | everything that emits CSS: class aliases (`.form-hint`, `.legend:empty`), old custom properties, hooks like `box-shadow: var(--btn-focus-box-shadow, var(--btn-box-shadow))`, and the wiring from a customised old Sass variable to its new token | forwarded last from `tabler.scss`, after `_extends.scss`. It `@use`s `core`, because an alias built with `@extend` only reaches modules upstream of it. The whole file sits inside `@if $enable-deprecated { … }` |
+| `core/scss/_deprecated-props.scss` | the `--tblr-*-rgb` triplets, as mixins | three bundles emit them (`tabler.css`, `tabler-props.css`, `tabler-themes.css`), and a module that `@use`s `core` cannot be loaded from the small ones. This module emits nothing by itself |
 | `core/js/src/deprecated.ts` | old exports and globals, such as the `tabler` namespace with `getColor()` | one import to delete in the next major |
 
-Create a file the first time you need it. `$enable-deprecated: true !default` lives in `_variables.scss`, next to `$enable-deprecation-messages`. A project that has migrated sets it to `false` and gets the bytes back; the next major flips the default, and the one after deletes the files.
+`$enable-deprecated: true !default` lives in `_variables.scss`, next to `$enable-deprecation-messages`. A project that has migrated sets it to `false` and gets about 1.4 kB (gzip) back; the next major flips the default, and the one after deletes the files.
+
+A hook must not change a project that never used the old token. Give `var()` the value the element has anyway as its fallback, not `none`, and check it in the browser: `.btn:focus-visible { box-shadow: var(--btn-focus-box-shadow, none) }` would strip the shadow from every focused button.
 
 Some compatibility cannot move into those files: a fallback inside a component rule (`mask-image: var(--form-check-bg-image, <default>)`), an old parameter in a mixin signature, a default value that was put back. Mark each of those where it is, with one fixed comment:
 
@@ -51,7 +54,7 @@ Some compatibility cannot move into those files: a fallback inside a component r
 // deprecated(2.0): `$show-border` is the old name of `$offset`
 ```
 
-`grep -rn "deprecated(2.0)" core/` plus the four files is then the full list of what the next major removes.
+`grep -rn "deprecated(2.0)" core/ .build/` plus the five files is then the full list of what the next major removes.
 
 ## 3. How to make the change compatible
 
