@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { compile as compileSass } from 'sass'
 
 const scssDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const { css } = compileSass(path.join(scssDir, 'tabler.scss'), { loadPaths: ['node_modules'], style: 'expanded' })
+const { css } = compileSass(path.join(scssDir, 'ui', '_forms.scss'), { loadPaths: ['node_modules'], style: 'expanded' })
 const flat = css.replace(/\s+/g, ' ')
 
 describe('input-group-flat validation', () => {
