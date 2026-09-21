@@ -7,9 +7,9 @@
 // The fake cursor rests on the floating card.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
 import Avatar from '@ui/Avatar.astro'
-import Badge from '@ui/Badge.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import Signal from '@ui/Signal.astro'
 import { personById } from '@shared/lib/people'
 import tasks from '@data/tasks.json'
 
@@ -25,7 +25,11 @@ interface Column {
 }
 
 const [upcoming, progress, completed] = tasks.columns as Column[] as [Column, Column, Column]
-const priorityColors: Record<string, string> = { High: 'red', Medium: 'orange', Low: 'blue' }
+const priorities: Record<string, { value: number; color: string }> = {
+  High: { value: 3, color: 'red' },
+  Medium: { value: 2, color: 'orange' },
+  Low: { value: 1, color: 'blue' },
+}
 
 const moving = upcoming.tasks[2]!
 
@@ -50,7 +54,10 @@ const columns = [
                     <CardBody>
                       <div class="mb-3">{task.name}</div>
                       <div class="d-flex align-items-center justify-content-between">
-                        <Badge text={task.priority} color={priorityColors[task.priority] ?? 'secondary'} light />
+                        <span class="d-flex align-items-center gap-2 text-secondary">
+                          <Signal value={priorities[task.priority]?.value ?? 0} color={priorities[task.priority]?.color} />
+                          {task.priority}
+                        </span>
                         <Avatar person={personById(task.assigned_to)} size="xs" />
                       </div>
                     </CardBody>
@@ -66,7 +73,10 @@ const columns = [
         <div class="card-body">
           <div class="mb-3">{moving.name}</div>
           <div class="d-flex align-items-center justify-content-between">
-            <Badge text={moving.priority} color={priorityColors[moving.priority] ?? 'secondary'} light />
+            <span class="d-flex align-items-center gap-2 text-secondary">
+              <Signal value={priorities[moving.priority]?.value ?? 0} color={priorities[moving.priority]?.color} />
+              {moving.priority}
+            </span>
             <Avatar person={personById(moving.assigned_to)} size="xs" />
           </div>
         </div>
