@@ -1,0 +1,136 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Signal from '@ui/Signal.astro'
+import { semanticColors, extraColors } from '@shared/lib/tokens'
+
+const priorities = [
+  { label: 'Urgent', value: 3, color: 'orange' },
+  { label: 'Normal', value: 2, color: 'blue' },
+  { label: 'Low', value: 1, color: 'green' },
+  { label: 'None', value: 0, color: undefined },
+]
+
+// `light` is left out: its bars are invisible on a card
+const colorGroups = [
+  { title: 'Semantic colors', colors: semanticColors.filter((color) => color !== 'light') },
+  { title: 'Extra colors', colors: extraColors },
+]
+
+const tasks = [
+  { name: 'Payment page returns 500 on submit', priority: 'Urgent', value: 3, color: 'red' },
+  { name: 'Update the onboarding copy', priority: 'Normal', value: 2, color: 'blue' },
+  { name: 'Export invoices to CSV', priority: 'Normal', value: 2, color: 'blue' },
+  { name: 'Refresh the team page photos', priority: 'Low', value: 1, color: 'green' },
+]
+---
+
+<DefaultLayout title="Signal" pageMenu="base.signal" description="Signals show a level, such as priority or strength, as a small row of stepped bars.">
+  <DocsLink slot="page-header-actions" path="/ui/components/signal" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>By priority</CardTitle>
+          <CardSubtitle>The number of lit bars carries the level, the color only supports it.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              priorities.map((item) => (
+                <div class="d-flex align-items-center gap-2">
+                  <Signal value={item.value} color={item.color} />
+                  {item.label}
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Number of bars</CardTitle>
+          <CardSubtitle>Use from two to five <code>.signal-bar</code> elements; the steps stay even.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              [2, 3, 4, 5].map((max) => (
+                <div class="d-flex align-items-center gap-2">
+                  <Signal value={max - 1} max={max} color="primary" />
+                  {max - 1} of {max}
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>A signal is a <code>1.25rem</code> square, like an extra small avatar. Set <code>--tblr-signal-size</code> to resize it.</CardSubtitle>
+          <div class="d-flex align-items-end gap-4">
+            {['1rem', '1.25rem', '1.5rem', '2rem', '2.5rem'].map((size) => <Signal value={2} color="primary" ariaLabel="2 of 3" style={`--tblr-signal-size: ${size}`} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Add <code>.signal-&#123;color&#125;</code> to color the bars.</CardSubtitle>
+          <div class="d-flex flex-column gap-3">
+            {
+              colorGroups.map((group) => (
+                <div>
+                  <div class="subheader mb-2">{group.title}</div>
+                  <div class="d-flex flex-wrap gap-3">
+                    {group.colors.map((color) => (
+                      <Signal value={2} color={color} ariaLabel={`2 of 3, ${color}`} />
+                    ))}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                tasks.map((task) => (
+                  <tr>
+                    <td>{task.name}</td>
+                    <td class="text-nowrap">
+                      <Signal value={task.value} color={task.color} class="me-1" /> {task.priority}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
