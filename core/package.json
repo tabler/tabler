@@ -14,7 +14,7 @@
     "lint": "pnpm run lint:scss && pnpm run lint:scss:vars",
     "lint:scss": "stylelint \"scss/**/*.scss\" --config ../stylelint.config.mjs",
     "lint:scss:fix": "pnpm run lint:scss --fix",
-    "lint:scss:vars": "find-unused-sass-variables scss/",
+    "lint:scss:vars": "find-unused-sass-variables scss/ --ignoreFiles scss/_variables-deprecated.scss",
     "js": "pnpm run js:build && pnpm run js:min && pnpm run js:types",
     "js:types": "tsc -p tsconfig.types.json",
     "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\"",
