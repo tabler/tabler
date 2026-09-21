@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../config' as *;
 
 textarea {
@@ -209,6 +210,27 @@ Input group
     &:last-child {
       padding-inline-start: 0;
       border-inline-start: 0;
+    }
+  }
+
+  @each $state, $data in $form-validation-states {
+    $border-color: map.get($data, 'border-color');
+    $focus-ring-color: map.get($data, 'focus-ring-color');
+
+    &:has(.form-control.is-#{$state}),
+    .was-validated &:has(.form-control:#{$state}) {
+      .input-group-text {
+        border-color: $border-color;
+      }
+
+      &:focus-within {
+        outline-color: $focus-ring-color;
+
+        .form-control,
+        .input-group-text {
+          border-color: $border-color !important;
+        }
+      }
     }
   }
 }
