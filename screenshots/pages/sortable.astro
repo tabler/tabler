@@ -1,0 +1,77 @@
+---
+// Sortable on a kanban board, drawn in the middle of a drag. The card being
+// moved has left the Upcoming column and shows twice, as SortableJS renders it:
+// a dashed slot in In Progress where it will land, and the copy that follows the
+// pointer, lifted with a shadow and an outline. Both carry the real state classes
+// (`.sortable-ghost`, `.sortable-drag`), so the picture shows the shipped styles.
+// The fake cursor rests on the floating card.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import { personById } from '@shared/lib/people'
+import tasks from '@data/tasks.json'
+
+interface Task {
+  name: string
+  assigned_to: number
+  priority: string
+}
+
+interface Column {
+  name: string
+  tasks: Task[]
+}
+
+const [upcoming, progress, completed] = tasks.columns as Column[] as [Column, Column, Column]
+const priorityColors: Record<string, string> = { High: 'red', Medium: 'orange', Low: 'blue' }
+
+const moving = upcoming.tasks[2]!
+
+const columns = [
+  { name: upcoming.name, cards: [upcoming.tasks[0]!, upcoming.tasks[1]!] },
+  { name: progress.name, cards: [progress.tasks[0]!, moving, progress.tasks[1]!] },
+  { name: completed.name, cards: [completed.tasks[0]!, completed.tasks[1]!, completed.tasks[2]!] },
+]
+---
+
+<ScreenshotLayout title="Sortable" columns={3}>
+  <Card>
+    <CardBody class="p-4 position-relative">
+      <div class="row g-3">
+        {
+          columns.map((column) => (
+            <div class="col-4">
+              <h4 class="mb-2">{column.name}</h4>
+              <div class="d-flex flex-column gap-2">
+                {column.cards.map((task) => (
+                  <Card size="sm" class:list={['cursor-move', task === moving && 'sortable-chosen sortable-ghost']}>
+                    <CardBody>
+                      <div class="mb-3">{task.name}</div>
+                      <div class="d-flex align-items-center justify-content-between">
+                        <Badge text={task.priority} color={priorityColors[task.priority] ?? 'secondary'} light />
+                        <Avatar person={personById(task.assigned_to)} size="xs" />
+                      </div>
+                    </CardBody>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="card card-sm sortable-chosen sortable-fallback sortable-drag" style="position: absolute; top: 11rem; left: 39.5%; width: 28.5%">
+        <div class="card-body">
+          <div class="mb-3">{moving.name}</div>
+          <div class="d-flex align-items-center justify-content-between">
+            <Badge text={moving.priority} color={priorityColors[moving.priority] ?? 'secondary'} light />
+            <Avatar person={personById(moving.assigned_to)} size="xs" />
+          </div>
+        </div>
+        <span class="cursor" style="top: 55%; left: 55%"></span>
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>
