@@ -83,6 +83,27 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
  * Helpers
  */
 
+// deprecated(2.0): countUp.js took `"duration":"3"` or `"useGrouping":"false"`
+// from `data-countup` without complaint. The typed config would reject them, so
+// attribute values that are plainly a number or a boolean are read as one.
+const coerceOptions = (options: Record<string, unknown>): Record<string, unknown> => {
+  const result: Record<string, unknown> = { ...options }
+
+  for (const [key, value] of Object.entries(options)) {
+    const expected = DefaultType[key as keyof ComponentConfig]
+
+    if (typeof value === 'string' && expected === 'number' && value.trim() !== '' && !Number.isNaN(Number(value))) {
+      result[key] = Number(value)
+    } else if (typeof value === 'string' && expected === 'boolean' && (value === 'true' || value === 'false')) {
+      result[key] = value === 'true'
+    } else if (typeof value === 'number' && expected === 'string') {
+      result[key] = String(value)
+    }
+  }
+
+  return result
+}
+
 // Strips thousands separators, currency symbols and other non-numeric
 // characters, so formatted targets like "1,234", "1 234" or "$99.5" parse.
 // A `time` value like "3:28" is read as minutes.
@@ -229,7 +250,7 @@ class CountUp extends BaseComponent {
       }
     }
 
-    return super._mergeConfigObj({ ...dataOptions, ...config }, element)
+    return super._mergeConfigObj({ ...coerceOptions(dataOptions), ...config }, element)
   }
 
   _animate(from: number, to: number): void {

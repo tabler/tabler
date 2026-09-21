@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Replaced the `countup.js` package with a dependency-free `CountUp` component that respects `prefers-reduced-motion`.
+Added a dependency-free `CountUp` component that respects `prefers-reduced-motion`; `dist/libs/countup.js` is deprecated.
