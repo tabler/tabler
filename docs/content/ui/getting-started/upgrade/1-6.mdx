@@ -7,7 +7,7 @@ order: 1
 related: [/ui/getting-started/upgrade/1-5, /ui/getting-started/customize]
 ---
 
-Tabler 1.6 is a much smaller step than 1.5 was. If you only load the compiled files from `dist/`, the upgrade usually takes a few minutes. There are three things that can bite you, and they all live in your own code, not in Tabler's: any `rgba(var(--tblr-*-rgb), …)` in your CSS, any call to the old `autosize()`, `countUp` or `ClipboardJS` globals, and any use of `tabler.tabler.getColor()`.
+Tabler 1.6 is a much smaller step than 1.5 was. If you only load the compiled files from `dist/`, the upgrade usually takes a few minutes. There are four things that can bite you, and they all live in your own code, not in Tabler's: any `rgba(var(--tblr-*-rgb), …)` in your CSS, any call to the old `autosize()`, `countUp`, `ClipboardJS` or `Litepicker` globals, any use of `tabler.tabler.getColor()`, and any `.legend` used as a colored dot.
 
 Projects that compile Tabler from the Sass sources should also read [Sass changes](#sass-changes).
 
@@ -23,6 +23,10 @@ Use `--tblr-primary-rgb` or any `--tblr-*-rgb` variable|Replace it with `color-m
 Load `dist/libs/autosize` or `dist/libs/countup.js`|Remove the script tags, both are part of `tabler.js` now
 Call `autosize(el)` or `new countUp.CountUp(...)` yourself|Switch to `tabler.Autosize` and `tabler.CountUp`
 Load `dist/libs/clipboard` or call `new ClipboardJS(...)`|Switch to the `Clipboard` component, see [Clipboard](#clipboard-is-built-in)
+Load `dist/libs/litepicker` or call `new Litepicker(...)`|Switch to the `Datepicker` plugin, see [Litepicker is replaced by Datepicker](#litepicker-is-replaced-by-datepicker)
+Use `<span class="legend">` as a colored dot|Rename to `.legend-dot` (the old markup still works), see [Legend is a component now](#legend-is-a-component-now)
+Want the 1.5 grays back|Load `tabler-themes.css` and set `data-bs-theme-base="gray"`, see [The default gray is neutral](#the-default-gray-is-neutral)
+Use `data-sortable`|Dragging looks different, see [Sortable drags a styled copy](#sortable-drags-a-styled-copy)
 Hide `path:first-child` in `.accordion-button-toggle-plus` from your own CSS|Drop that rule, see [Visual changes](#visual-changes)
 Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable yourself, see [Removed JavaScript helpers](#removed-javascript-helpers)
 Use `.form-hint`|Rename to `.form-text` (the old name still works)
@@ -100,7 +104,7 @@ Component|Attribute|Docs
 `tabler.Autosize`|`data-bs-toggle="autosize"`|[Autosize](/ui/plugins/autosize)
 `tabler.CountUp`|`data-countup`|[Countup](/ui/plugins/countup)
 `tabler.InputMask`|`data-mask`|[Input mask](/ui/plugins/input-mask)
-`tabler.Sortable`|`data-sortable`|[Table](/ui/components/table)
+`tabler.Sortable`|`data-sortable`|[Sortable](/ui/plugins/sortable)
 `tabler.SwitchIcon`|`data-bs-toggle="switch-icon"`|[Switch icon](/ui/components/switch-icon)
 
 Markup with data attributes keeps working as it did. Tabler still finds every element on page load and creates the component for it. What changes is the JavaScript side.
@@ -140,7 +144,16 @@ Options you passed to countUp.js in `data-countup` keep their names: `startVal`,
 
 ### IMask and SortableJS stay external
 
-`InputMask` and `Sortable` are thin wrappers, so you still install [IMask](/ui/plugins/input-mask) and [SortableJS](/ui/components/table) yourself and load them before `tabler.js`. Nothing changes there. What's new is that the component keeps a reference to the library instance, so you can reach it from `getInstance()` instead of keeping your own.
+`InputMask` and `Sortable` are thin wrappers, so you still install [IMask](/ui/plugins/input-mask) and [SortableJS](/ui/plugins/sortable) yourself and load them before `tabler.js`. Nothing changes there. What's new is that the component keeps a reference to the library instance, so you can reach it from `getInstance()` instead of keeping your own.
+
+#### Sortable drags a styled copy
+
+The `Sortable` component now turns on the SortableJS `forceFallback` option. A dragged item is an HTML copy that Tabler styles with `.sortable-drag`, instead of the browser's own drag image. Turn the option off on a list to get the 1.5 behavior back:
+
+```diff
+- <ul class="list-group" data-sortable>
++ <ul class="list-group" data-sortable='{"forceFallback":false}'>
+```
 
 ### Clipboard is built in
 
@@ -178,6 +191,35 @@ If you created the library yourself, switch to the component and its events:
 
 The browser API works in secure contexts only, so on plain `http` the copy fails and `error.bs.clipboard` fires. `localhost` counts as secure.
 
+### Litepicker is replaced by Datepicker
+
+[Litepicker](https://github.com/wakirin/Litepicker) has been archived since 2023, so Tabler dropped it. The package is gone from the dependencies and from `dist/libs`, and its styles are gone from `tabler-vendors.css`. A page that loads `dist/libs/litepicker/dist/litepicker.js` gets a 404 after the upgrade.
+
+The new [Datepicker](/ui/plugins/date-picker) plugin is part of `tabler.js`. It renders its calendar with [Vanilla Calendar Pro](https://vanilla-calendar.pro), which you load in place of Litepicker:
+
+```diff
+- <script src="/dist/libs/litepicker/dist/litepicker.js"></script>
++ <script src="/dist/libs/vanilla-calendar-pro/index.js"></script>
+  <script src="/dist/js/tabler.min.js"></script>
+```
+
+```sh
+npm uninstall litepicker
+npm install vanilla-calendar-pro
+```
+
+Then replace the script that created the picker with a data attribute:
+
+```diff
+- <input class="form-control" id="date" />
+- <script>
+-   new Litepicker({ element: document.getElementById('date') });
+- </script>
++ <input type="text" class="form-control" id="date" data-bs-toggle="datepicker" autocomplete="off" />
+```
+
+The Datepicker page has a [table that maps every Litepicker option](/ui/plugins/date-picker#migration-from-litepicker) to its new name. Tabler only removed its own copy and styles, so a project that installs Litepicker on its own keeps working, but without Tabler's look.
+
 ### New events
 
 Every component fires events on its element. If you used to poll or wrap the library callbacks, these are the ones to listen for:
@@ -207,6 +249,17 @@ const primaryHalf = `color-mix(in oklab, ${primary} 50%, transparent)`;
 ```
 
 Every place that accepts a CSS color, including canvas and most chart libraries that render to SVG, takes the `oklch()` string as it is. A library that parses colors itself and only understands hex or `rgb()` needs the value converted first. For ApexCharts you don't have to do anything, its theme reads the `--tblr-chart-*` variables since 1.5.
+
+## Legend is a component now
+
+In 1.5 `.legend` was a small colored dot. In 1.6 `.legend` is a whole legend item with a dot, a label and an optional value, and the dot is `.legend-dot`:
+
+```diff
+- <span class="legend bg-primary"></span>
++ <span class="legend-dot bg-primary"></span>
+```
+
+An empty `.legend` still renders as a dot, so nothing breaks today. It is deprecated, so rename it when you touch that markup. See [Legend](/ui/components/legend) for the new item, the list and the interactive states.
 
 ## Form hint is form text
 
@@ -321,6 +374,22 @@ A lot of Bootstrap variables that were plain Sass colors are now `color-mix()` e
 
 You can still override them with anything Sass accepts. Just be aware that a Sass color function such as `darken()` or `rgba()` won't work on their default values any more, because the default isn't a color, it's a string with `var()` inside.
 
+## The default gray is neutral
+
+Every gray in Tabler comes from the `--tblr-gray-50` … `--tblr-gray-950` scale. In 1.5 that scale had a blue tint. In 1.6 the default is `neutral`, a pure gray, so backgrounds, borders and muted text look slightly different. The Sass defaults `$gray-50` … `$gray-950` changed the same way.
+
+The old scale ships in `tabler-themes.css` as `gray`. To keep the 1.5 look, load that stylesheet and set the base on `<html>`:
+
+```diff
+- <html>
++ <html data-bs-theme-base="gray">
+    <head>
+      <link rel="stylesheet" href="/dist/css/tabler.min.css" />
++     <link rel="stylesheet" href="/dist/css/tabler-themes.min.css" />
+```
+
+`tabler-theme.js` also treats `neutral` as the default now. A visitor who picked `gray` in the theme settings keeps it. See [Theme base colors](/ui/plugins/theme-base-colors) for the other palettes.
+
 ## Visual changes
 
 None of these break markup, but they change how a page looks or scrolls. Worth a quick look at your screens after the upgrade.
@@ -338,7 +407,9 @@ None of these break markup, but they change how a page looks or scrolls. Worth a
 
 Besides the changes above, 1.6 adds:
 
+- [Datepicker](/ui/plugins/date-picker), a calendar popup or inline calendar with single, multiple and range selection, see above.
 - [Legend](/ui/components/legend), a colored marker plus label for chart series, with an interactive mode that toggles series on click.
+- [Signal](/ui/components/signal), a row of bars that shows a level, such as priority or signal strength.
 - [Sparkline](/ui/components/sparkline), inline SVG line, bar and circle charts rendered from `data-bs-values`, with no chart library.
 - [Password strength](/ui/forms/strength), a segmented meter that scores the password as the user types and fires `change.bs.strength`.
 - [OTP input](/ui/forms/otp-input), grouped single-character slots for one-time codes, with masking and validation states.
@@ -347,6 +418,8 @@ Besides the changes above, 1.6 adds:
 - A `switch-icon-loading` state for [Switch icon](/ui/components/switch-icon). Pass a promise to `event.wait()` in `toggle.bs.switch-icon` and the button shows a spinner until it settles.
 - `Autosize`, `CountUp`, `InputMask`, `Sortable` and `SwitchIcon` as real components with instances, methods and events, see above.
 - `data-tblr-countup` as an alias of `data-countup`.
+- `.navbar-floating` for [navbars](/ui/layout/navbars) and `.offcanvas-floating` for [offcanvas](/ui/components/offcanvas), which detach the element from the edge of the screen.
+- Drag styles for [Sortable](/ui/plugins/sortable): `.sortable-ghost`, `.sortable-chosen` and `.sortable-drag`.
 - A billing page in the preview, with plan usage, payment method and invoices.
 - The Bootstrap component port is compiled with strict TypeScript, so the type declarations in the package are tighter. Configs are typed per component.
 

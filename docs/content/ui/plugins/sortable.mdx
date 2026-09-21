@@ -1,0 +1,141 @@
+---
+title: Sortable
+summary: Sortable lets users reorder the items of a list, a table or a grid by dragging them. It wraps SortableJS in a Tabler component and styles the dragged item.
+description: Make lists, table rows and cards draggable with the data-sortable attribute, SortableJS options as JSON and the Sortable component.
+docs-libs: [sortablejs]
+added-in: '1.6.0'
+related: [/ui/components/list-group, /ui/components/table]
+---
+
+import Example from '@components/Example.astro'
+import TabsPackage from '@components/TabsPackage.astro'
+import CodeDocs from '@components/CodeDocs.astro';
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
+
+## Overview
+
+Use Sortable where the order is up to the user, such as a task list, table rows or dashboard cards. The component is part of `tabler.js`. The dragging itself comes from [SortableJS](https://sortablejs.github.io/Sortable/), which you load separately.
+
+## Installation
+
+Install the SortableJS library:
+
+<TabsPackage name="sortablejs" />
+
+If you use a bundler, put the library on `window` before Tabler loads. The component reads `window.Sortable` and does nothing without it. Imports run before the rest of a file, so do it in a file of its own and import that one first:
+
+```javascript
+// sortable-global.js
+import Sortable from 'sortablejs'
+
+window.Sortable = Sortable
+```
+
+```javascript
+import './sortable-global.js'
+import '@tabler/core'
+```
+
+Or include it from a CDN, before `tabler.js`:
+
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/sortablejs/Sortable.min.js"></script>`} />
+
+## Usage
+
+### Basic list
+
+Add `data-sortable` to the parent element. Its direct children become draggable.
+
+<Example column>
+<ul class="list-group" data-sortable>
+<li class="list-group-item">Design the landing page</li>
+<li class="list-group-item">Write the release notes</li>
+<li class="list-group-item">Review open pull requests</li>
+</ul>
+</Example>
+
+### Options
+
+Pass [SortableJS options](https://github.com/SortableJS/Sortable#options) as JSON in the attribute. This list animates the items as they move.
+
+<Example column>
+<ul class="list-group" data-sortable='{"animation":150}'>
+<li class="list-group-item">First</li>
+<li class="list-group-item">Second</li>
+<li class="list-group-item">Third</li>
+</ul>
+</Example>
+
+### Drag handle
+
+Set `handle` to a selector to start the drag only from that element. The rest of the item stays clickable.
+
+```html
+<ul class="list-group" data-sortable='{"animation":150,"handle":".sortable-handle"}'>
+  <li class="list-group-item d-flex gap-2">
+    <span class="sortable-handle cursor-move">⋮⋮</span>
+    Design the landing page
+  </li>
+</ul>
+```
+
+### Table rows
+
+Put `data-sortable` on the `tbody` to reorder the rows of a table.
+
+```html
+<table class="table">
+  <tbody data-sortable='{"animation":150}'>
+    <tr><td>First row</td></tr>
+    <tr><td>Second row</td></tr>
+  </tbody>
+</table>
+```
+
+### Drag styles
+
+Tabler styles the classes SortableJS adds while dragging: `.sortable-ghost` marks the drop position, `.sortable-chosen` the picked item and `.sortable-drag` the copy that follows the pointer.
+
+The component turns on the `forceFallback` option by default. SortableJS then drags an HTML copy of the item instead of the browser's drag image, so `.sortable-drag` can style it. To get the browser's drag image back, turn the option off:
+
+```html
+<ul class="list-group" data-sortable='{"forceFallback":false}'>
+  …
+</ul>
+```
+
+## JavaScript
+
+Tabler wraps the plugin in a `Sortable` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-sortable`. This is the code that runs:
+
+<CodeDocs name="sortable-init" file="core/js/src/sortable.ts" />
+
+Create the component yourself for a list added later. Options come from `data-sortable`, from the config object, or both. The object wins.
+
+```js
+const list = new tabler.Sortable(document.getElementById('tasks'), { animation: 150 });
+```
+
+Method|Description
+---|---
+`toArray()`|Returns the `data-id` of every item, in the current order.
+`sort(order, useAnimation)`|Reorders the items to match an array of ids.
+`dispose()`|Destroys the SortableJS instance and removes the component.
+
+The `sortable` getter returns the SortableJS instance, so everything from the [SortableJS API](https://github.com/SortableJS/Sortable#methods) is available:
+
+```js
+const list = tabler.Sortable.getOrCreateInstance(document.getElementById('tasks'));
+list.sortable.option('disabled', true);
+```
+
+## Accessibility
+
+- Dragging needs a pointer. SortableJS has no keyboard support, so give keyboard users another way to change the order, such as "Move up" and "Move down" buttons.
+- Use a drag handle when the items contain links or buttons, so a click on them does not start a drag.
+- Save the new order only after the drop, and tell the user when saving fails.
+
+## SCSS variables
+
+<CodeDocs name="sortable-variables" file="core/scss/_variables.scss" />

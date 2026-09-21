@@ -31,6 +31,20 @@ The plugin itself ships in `tabler.js`. The calendar it renders comes from Vanil
 
 <TabsPackage name="vanilla-calendar-pro" />
 
+If you use a bundler, put the library on `window` before Tabler loads. The plugin reads `window.VanillaCalendarPro` and does nothing without it. Imports run before the rest of a file, so do it in a file of its own and import that one first:
+
+```javascript
+// vanilla-calendar-global.js
+import * as VanillaCalendarPro from 'vanilla-calendar-pro'
+
+window.VanillaCalendarPro = VanillaCalendarPro
+```
+
+```javascript
+import './vanilla-calendar-global.js'
+import '@tabler/core'
+```
+
 Or include it from a CDN, before `tabler.js`:
 
 <Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/vanilla-calendar-pro/index.js"></script>`} />

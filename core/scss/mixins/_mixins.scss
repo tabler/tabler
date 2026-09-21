@@ -66,11 +66,14 @@
   gap: var(--list-gap);
 }
 
+// `--focus-ring` is not set by default: composed on `:root` it would freeze the
+// width and the colour there, and an override on a component would not reach
+// the ring. Set it to replace the whole outline at once.
 @mixin focus-ring($offset: false, $color: null) {
   @if $color != null {
     outline: var(--focus-ring-width) solid #{$color};
   } @else {
-    outline: var(--focus-ring);
+    outline: var(--focus-ring, var(--focus-ring-width) solid var(--focus-ring-color));
   }
   @if $offset {
     outline-offset: var(--focus-ring-offset);

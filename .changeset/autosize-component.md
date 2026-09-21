@@ -4,4 +4,4 @@
 "@tabler/preview": patch
 ---
 
-Added `Autosize` component to `tabler.js` with the `autosize` plugin bundled, plus `update()` and `dispose()` methods.
+Added `Autosize` component to `tabler.js`, with `update()` and `dispose()` methods.
