@@ -88,9 +88,7 @@
   border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
   box-shadow: var(--otp-slot-box-shadow);
   @include border-radius(var(--otp-slot-border-radius));
-  transition:
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
 }
 
 .otp-slot-active {
@@ -98,7 +96,9 @@
   // next slot in `.otp-connected`, where slots overlap by their border width.
   z-index: 1;
 
-  @include focus-ring($show-border: true);
+  --focus-ring-offset: -1px;
+  border-color: $input-focus-border-color;
+  @include focus-ring(true);
 
   &:not(.otp-slot-filled)::after {
     display: block;

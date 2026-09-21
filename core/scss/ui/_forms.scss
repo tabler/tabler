@@ -168,8 +168,10 @@ Input group
 }
 
 .input-group-flat {
+  @include focus-ring-transition();
   &:focus-within {
-    box-shadow: $input-focus-box-shadow;
+    --focus-ring-offset: -1px;
+    @include focus-ring(true);
     @include border-radius($input-border-radius);
 
     .form-control,
@@ -181,6 +183,7 @@ Input group
   .form-control {
     &:focus {
       border-color: $input-border-color;
+      outline: 0;
       box-shadow: none;
     }
 

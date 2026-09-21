@@ -9,7 +9,11 @@ $input-border-width: 1px;
 }
 
 .focus .ts-control {
+  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
+  --focus-ring-offset: -1px;
+  box-shadow: $input-box-shadow;
   @include border-radius(var(--border-radius));
+  @include focus-ring(true);
 }
 
 .ts-control {
@@ -62,7 +66,7 @@ $input-border-width: 1px;
 
       &.focus .ts-control {
         border-color: map.get($data, 'border-color') !important;
-        box-shadow: map.get($data, 'focus-box-shadow') !important;
+        outline-color: map.get($data, 'focus-ring-color');
       }
     }
   }
