@@ -13,6 +13,7 @@
   --sortable-outline-width: #{$sortable-outline-width};
   --sortable-selected-bg: #{$sortable-selected-bg};
   --sortable-drag-bg: #{$sortable-drag-bg};
+  --sortable-drag-rotate: #{$sortable-drag-rotate};
   --sortable-drag-box-shadow: #{$sortable-drag-box-shadow};
 }
 
@@ -62,4 +63,11 @@ tr.sortable-selected {
   box-shadow: var(--sortable-drag-box-shadow);
   opacity: 1 !important; // stylelint-disable-line declaration-no-important
   transition: none;
+
+  /* rtl:ignore */
+  rotate: calc(var(--sortable-drag-rotate) * var(--dir));
+}
+
+.card.sortable-drag {
+  box-shadow: var(--sortable-drag-box-shadow);
 }

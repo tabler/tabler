@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Added default styles for SortableJS drag states: `.sortable-ghost`, `.sortable-drag`, `.sortable-selected`.
+Added SortableJS drag styles and turned on `forceFallback` by default so `data-sortable` lists drag a styled, tilted copy.
