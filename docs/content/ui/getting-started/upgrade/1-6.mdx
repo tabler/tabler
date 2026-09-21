@@ -1,38 +1,38 @@
 ---
 title: Upgrade to 1.6
-summary: Move a project from Tabler 1.5 to 1.6. The breaking changes are listed with a before and after example for CSS, JavaScript and Sass.
-description: Upgrade guide from Tabler 1.5 to 1.6 with all breaking changes, removed color variables, the new JavaScript components and Sass updates.
+summary: Move a project from Tabler 1.5 to 1.6. Nothing breaks. The page lists what is deprecated, with a before and after example for CSS, JavaScript and Sass.
+description: Upgrade guide from Tabler 1.5 to 1.6 with every deprecated class, color variable, Sass variable and JavaScript helper, and what to use instead.
 added-in: '1.6.0'
 order: 1
 related: [/ui/getting-started/upgrade/1-5, /ui/getting-started/customize]
 ---
 
-Tabler 1.6 is a much smaller step than 1.5 was. If you only load the compiled files from `dist/`, the upgrade usually takes a few minutes. There are four things that can bite you, and they all live in your own code, not in Tabler's: any `rgba(var(--tblr-*-rgb), …)` in your CSS, any call to the old `autosize()`, `countUp`, `ClipboardJS` or `Litepicker` globals, any use of `tabler.tabler.getColor()`, and any `.legend` used as a colored dot.
+Tabler 1.6 is a drop-in update. A project that works on 1.5 works on 1.6 without a change: every class, custom property, Sass variable, function and file that 1.5 had is still there.
 
-Projects that compile Tabler from the Sass sources should also read [Sass changes](#sass-changes).
+Some of them are **deprecated**. They keep working in every 1.x release and go away in 2.0. This page lists them with the replacement, so you can move over when it suits you. Sass warns about a deprecated function when you compile; set `$enable-deprecation-messages: false` to silence it.
+
+There is one thing to check if you compile Tabler from the Sass sources and run Sass color functions on Tabler's variables: see [Variables that turned into color-mix()](#variables-that-turned-into-color-mix).
 
 If you're coming from 1.4 or older, do the [1.5 upgrade](/ui/getting-started/upgrade/1-5) first.
 
 ## Overview
 
-Use this table to find the changes that affect you.
+Nothing in this table is required. Use it to find what you can modernize.
 
-If you…|You need to…
+If you…|You can…
 ---|---
-Use `--tblr-primary-rgb` or any `--tblr-*-rgb` variable|Replace it with `color-mix()`, see [Color variables](#rgb-color-variables-are-gone)
+Use `--tblr-primary-rgb` or any `--tblr-*-rgb` variable|Switch to `color-mix()`, see [RGB color variables](#rgb-color-variables-are-deprecated)
 Load `dist/libs/autosize` or `dist/libs/countup.js`|Remove the script tags, both are part of `tabler.js` now
 Call `autosize(el)` or `new countUp.CountUp(...)` yourself|Switch to `tabler.Autosize` and `tabler.CountUp`
 Load `dist/libs/clipboard` or call `new ClipboardJS(...)`|Switch to the `Clipboard` component, see [Clipboard](#clipboard-is-built-in)
-Load `dist/libs/litepicker` or call `new Litepicker(...)`|Switch to the `Datepicker` plugin, see [Litepicker is replaced by Datepicker](#litepicker-is-replaced-by-datepicker)
-Use `<span class="legend">` as a colored dot|Rename to `.legend-dot` (the old markup still works), see [Legend is a component now](#legend-is-a-component-now)
-Hide `path:first-child` in `.accordion-button-toggle-plus` from your own CSS|Drop that rule, see [Visual changes](#visual-changes)
-Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable yourself, see [Removed JavaScript helpers](#removed-javascript-helpers)
-Use `.form-hint`|Rename to `.form-text` (the old name still works)
+Load `dist/libs/litepicker` or call `new Litepicker(...)`|Switch to the `Datepicker` plugin, see [Datepicker replaces Litepicker](#datepicker-replaces-litepicker)
+Use `<span class="legend">` as a colored dot|Rename to `.legend-dot`, see [Legend is a component now](#legend-is-a-component-now)
+Use `.form-hint`|Rename to `.form-text`, see [Form hint is form text](#form-hint-is-form-text)
+Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable yourself, see [Deprecated JavaScript helpers](#deprecated-javascript-helpers)
 Override `$form-switch-bg-image` or the toggler icon variables|See [Masked icons](#masked-icons)
 Override `$input-btn-focus-*`, a `$*-focus-box-shadow` variable or `--tblr-btn-focus-box-shadow`|Use the focus ring tokens, see [The focus ring is an outline](#the-focus-ring-is-an-outline)
-Override `$theme-colors-rgb` or use `theme-color-lighter()`|See [Sass changes](#sass-changes)
-Rely on the empty gutter next to the scrollbar|See [Visual changes](#visual-changes)
-Set `data-mask` or `data-countup` from code after page load|Create the component instead, see [Plugins are components now](#plugins-are-components-now)
+Use `theme-color-lighter()` or another function from the [list below](#deprecated-functions)|Switch to the replacement
+Ship your own build and want the smallest CSS|Set `$enable-deprecated: false`, see [Dropping the deprecated layer](#dropping-the-deprecated-layer)
 
 ## Update the package
 
@@ -52,31 +52,29 @@ Or update the CDN links:
 <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.0/dist/js/tabler.min.js"></script>
 ```
 
-## RGB color variables are gone
+## RGB color variables are deprecated
 
-This is the change most likely to affect a custom stylesheet.
-
-Tabler used to emit an RGB triplet next to every color, so you could build a transparent version with `rgba()`:
+Tabler emits an RGB triplet next to every color, so you can build a transparent version with `rgba()`:
 
 ```css
-/* 1.5 */
+/* works in 1.5 and 1.6 */
 .my-highlight {
   background-color: rgba(var(--tblr-primary-rgb), 0.2);
 }
 ```
 
-Those `--tblr-*-rgb` variables (and `--tblr-*-lt-rgb`) aren't emitted any more. Tabler mixes its own tints, shades and translucent surfaces at runtime with `color-mix()`, and your CSS can do the same:
+Tabler itself no longer reads the `--tblr-*-rgb` and `--tblr-*-lt-rgb` variables. It mixes its tints, shades and translucent surfaces at runtime with `color-mix()`, and your CSS can do the same:
 
 ```css
-/* 1.6 */
+/* 1.6 and later */
 .my-highlight {
   background-color: color-mix(in oklab, var(--tblr-primary) 20%, transparent);
 }
 ```
 
-A quick way to find every place that needs a change is to grep your project for `-rgb)`.
+The triplets are still emitted, with the same values, and are removed in 2.0. To find every place to move over, grep your project for `-rgb)`.
 
-There's a nice side effect. Because everything is derived from `--tblr-primary` at runtime, overriding that one variable is enough to recolor the whole theme. In 1.5 you also had to set `--tblr-primary-rgb` by hand, or hover states and focus rings would keep the old color. That step is gone:
+There's a good reason to switch. The triplets are static: overriding `--tblr-primary` does not change `--tblr-primary-rgb`, so in 1.5 you had to set both. Everything Tabler derives from `--tblr-primary` now follows it, so one variable recolors the whole theme:
 
 ```diff
   :root {
@@ -85,11 +83,11 @@ There's a nice side effect. Because everything is derived from `--tblr-primary` 
   }
 ```
 
-`--tblr-primary-lt`, `--tblr-primary-darken` and the other derived variables still exist, they're just computed with `color-mix()` now.
+`--tblr-primary-lt`, `--tblr-primary-darken` and the other derived variables still exist, they're computed with `color-mix()` now.
 
 ### The palette is defined in oklch
 
-The color values themselves moved from hex to `oklch()`. `--tblr-primary` used to resolve to `#066fd1`, now it resolves to `oklch(54.6% 0.1724 254.2deg)`. The colors look the same. It only matters if you read a variable from JavaScript and expect a hex string, see [Removed JavaScript helpers](#removed-javascript-helpers) below.
+The color values themselves moved from hex to `oklch()`. `--tblr-primary` used to resolve to `#066fd1`, now it resolves to `oklch(54.6% 0.1724 254.2deg)`. The colors look the same. It only matters if you read a variable from JavaScript and expect a hex string, see [Deprecated JavaScript helpers](#deprecated-javascript-helpers) below.
 
 Every browser that could run Tabler 1.5 supports `oklch()`, so the [minimum versions](/ui/getting-started/browser-support) don't change.
 
@@ -105,11 +103,11 @@ Component|Attribute|Docs
 `tabler.Sortable`|`data-sortable`|[Sortable](/ui/plugins/sortable)
 `tabler.SwitchIcon`|`data-bs-toggle="switch-icon"`|[Switch icon](/ui/components/switch-icon)
 
-Markup with data attributes keeps working as it did. Tabler still finds every element on page load and creates the component for it. What changes is the JavaScript side.
+Markup with data attributes keeps working as it did. Tabler still finds every element on page load and creates the component for it.
 
-### Autosize and countUp.js are bundled
+### Autosize and countUp.js are built in
 
-Tabler no longer depends on the `autosize` and `countup.js` packages. Both were rewritten inside `tabler.js`, so they don't need a separate script and don't exist in `dist/libs` any more. Remove them from your pages:
+Both were rewritten inside `tabler.js`, so they don't need a separate script. The old files stay in `dist/libs` until 2.0, so a page that loads them keeps working, but you can remove them:
 
 ```diff
 - <script src="/dist/libs/autosize/dist/autosize.min.js"></script>
@@ -123,7 +121,7 @@ And from your dependencies, if you installed them for Tabler:
 npm uninstall autosize countup.js
 ```
 
-If you called the libraries directly for elements added later, switch to the components:
+If you called the libraries directly for elements added later, the components do the same:
 
 ```diff
 - autosize(document.getElementById('message'));
@@ -138,7 +136,7 @@ If you called the libraries directly for elements added later, switch to the com
 
 The `CountUp` component reads the target number from the element's text, like the `data-countup` attribute always did. It respects `prefers-reduced-motion` on its own, so you can drop the workaround from the 1.5 docs that removed `data-countup` for those users.
 
-Options you passed to countUp.js in `data-countup` keep their names: `startVal`, `duration`, `decimalPlaces`, `useEasing`, `useGrouping`, `separator`, `decimal`, `prefix` and `suffix`. Anything outside that list is ignored.
+Options you passed to countUp.js in `data-countup` keep their names: `startVal`, `duration`, `decimalPlaces`, `useEasing`, `useGrouping`, `separator`, `decimal`, `prefix` and `suffix`. A number or a boolean written as a string, such as `"duration":"3"`, is still read. Anything outside that list is ignored.
 
 ### IMask and SortableJS stay external
 
@@ -146,7 +144,7 @@ Options you passed to countUp.js in `data-countup` keep their names: `startVal`,
 
 ### Clipboard is built in
 
-The `clipboard` package is gone from the dependencies and from `dist/libs`. A page that loads `dist/libs/clipboard/dist/clipboard.min.js` gets a 404 after the upgrade. Tabler has its own [Clipboard](/ui/plugins/clipboard) component now, written on top of the browser's `navigator.clipboard` API, so there is nothing to load:
+Tabler has its own [Clipboard](/ui/plugins/clipboard) component, written on top of the browser's `navigator.clipboard` API. `dist/libs/clipboard` stays in the package until 2.0, so code that uses ClipboardJS keeps working. To move over, drop the script:
 
 ```diff
 - <script src="/dist/libs/clipboard/dist/clipboard.min.js"></script>
@@ -157,7 +155,7 @@ The `clipboard` package is gone from the dependencies and from `dist/libs`. A pa
 npm uninstall clipboard
 ```
 
-The markup changes too. A copy button carries `data-bs-toggle="clipboard"` and points at its source with `data-bs-target` or `data-bs-text`, and the two states live in the button:
+A copy button carries `data-bs-toggle="clipboard"` and points at its source with `data-bs-target` or `data-bs-text`, and the two states live in the button:
 
 ```diff
 - <button type="button" class="btn" data-clipboard-target="#api-key">Copy</button>
@@ -180,11 +178,11 @@ If you created the library yourself, switch to the component and its events:
 
 The browser API works in secure contexts only, so on plain `http` the copy fails and `error.bs.clipboard` fires. `localhost` counts as secure.
 
-### Litepicker is replaced by Datepicker
+### Datepicker replaces Litepicker
 
-[Litepicker](https://github.com/wakirin/Litepicker) has been archived since 2023, so Tabler dropped it. The package is gone from the dependencies and from `dist/libs`, and its styles are gone from `tabler-vendors.css`. A page that loads `dist/libs/litepicker/dist/litepicker.js` gets a 404 after the upgrade.
+[Litepicker](https://github.com/wakirin/Litepicker) has been archived since 2023, so Tabler's own pages moved to the new [Datepicker](/ui/plugins/date-picker) plugin. Litepicker is deprecated: `dist/libs/litepicker` and its styles in `tabler-vendors.css` stay until 2.0, so a page that uses it keeps working.
 
-The new [Datepicker](/ui/plugins/date-picker) plugin is part of `tabler.js`. It renders its calendar with [Vanilla Calendar Pro](https://vanilla-calendar.pro), which you load in place of Litepicker:
+Datepicker is part of `tabler.js`. It renders its calendar with [Vanilla Calendar Pro](https://vanilla-calendar.pro), which you load in place of Litepicker:
 
 ```diff
 - <script src="/dist/libs/litepicker/dist/litepicker.js"></script>
@@ -207,7 +205,7 @@ Then replace the script that created the picker with a data attribute:
 + <input type="text" class="form-control" id="date" data-bs-toggle="datepicker" autocomplete="off" />
 ```
 
-The Datepicker page has a [table that maps every Litepicker option](/ui/plugins/date-picker#migration-from-litepicker) to its new name. Tabler only removed its own copy and styles, so a project that installs Litepicker on its own keeps working, but without Tabler's look.
+The Datepicker page has a [table that maps every Litepicker option](/ui/plugins/date-picker#migration-from-litepicker) to its new name.
 
 ### New events
 
@@ -220,19 +218,19 @@ Component|Events
 `CountUp`|`start.bs.countup`, `complete.bs.countup`
 `SwitchIcon`|`toggle.bs.switch-icon` before the state changes, cancelable with `event.preventDefault()`, then `change.bs.switch-icon`. Both carry the new state in `event.active`.
 
-## Removed JavaScript helpers
+## Deprecated JavaScript helpers
 
-`tabler.js` used to expose a small `tabler` namespace next to the components, with `prefix`, `getColor()` and `hexToRgba()`. It was never documented, but it was easy to find in the source, so some projects picked it up for chart colors:
+`tabler.js` exposes a small `tabler` namespace next to the components, with `prefix`, `getColor()` and `hexToRgba()`. It was never documented, but it was easy to find in the source, so some projects picked it up for chart colors:
 
 ```js
-/* 1.5 */
+/* works in 1.5 and 1.6 */
 const color = tabler.tabler.getColor('primary', 0.5);
 ```
 
-The namespace was removed, together with the `prefix` and `hexToRgba` exports. The helper only worked while colors were hex strings, and the palette is `oklch()` now. Read the variable yourself, and use `color-mix()` when you need transparency:
+The namespace is deprecated and goes away in 2.0. `hexToRgba()` only understands hex strings, and the palette is `oklch()` now, so `getColor()` with an opacity returns a `color-mix()` expression instead of `rgba()`. Read the variable yourself, and use `color-mix()` when you need transparency:
 
 ```js
-/* 1.6 */
+/* 1.6 and later */
 const primary = getComputedStyle(document.body).getPropertyValue('--tblr-primary').trim();
 const primaryHalf = `color-mix(in oklab, ${primary} 50%, transparent)`;
 ```
@@ -248,34 +246,35 @@ In 1.5 `.legend` was a small colored dot. In 1.6 `.legend` is a whole legend ite
 + <span class="legend-dot bg-primary"></span>
 ```
 
-An empty `.legend` still renders as a dot, so nothing breaks today. It is deprecated, so rename it when you touch that markup. See [Legend](/ui/components/legend) for the new item, the list and the interactive states.
+An empty `.legend` still renders as a dot, so the old markup still works. It is deprecated, so rename it when you touch that markup. See [Legend](/ui/components/legend) for the new item, the list and the interactive states.
 
 ## Form hint is form text
 
-Tabler had its own `.form-hint` class for the helper text under a field, while Bootstrap calls the same thing `.form-text`. 1.6 uses the Bootstrap class and keeps `.form-hint` as a deprecated alias, so nothing breaks. Rename when you touch the markup anyway:
+Tabler had its own `.form-hint` class for the helper text under a field, while Bootstrap calls the same thing `.form-text`. 1.6 uses the Bootstrap class and keeps `.form-hint` as a deprecated alias with the same spacing as before, so the old name still works. Rename when you touch the markup anyway:
 
 ```diff
 - <small class="form-hint">We'll never share your email.</small>
 + <div class="form-text">We'll never share your email.</div>
 ```
 
-The three `$form-hint-*` Sass variables are gone. `.form-text` uses Bootstrap's `$form-text-margin-top`, `$form-text-font-size` and `$form-text-color`.
+The three `$form-hint-*` Sass variables and `--tblr-form-hint-*` properties only apply to `.form-hint`. `.form-text` uses Bootstrap's `$form-text-margin-top`, `$form-text-font-size` and `$form-text-color`.
 
 ## Masked icons
 
 The check mark in a checkbox, the dot in a radio, the knob of a switch, the navbar toggler and the carousel arrows used to be SVG background images with the color baked into the SVG. They are CSS masks now, painted with `background-color`. That's what lets them follow the color variables at runtime, and it's why the same checkbox looks right in every theme without a dark variant of the image.
 
-For most projects this is invisible. It matters if you customized those icons in Sass:
+For most projects this is invisible. It matters if you customized those icons:
 
-- `$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position` and `$form-switch-focus-bg-image` are gone. The switch knob is a plain circle drawn with CSS. Its color comes from `$form-switch-color`, its size from `--tblr-form-switch-knob-size`.
-- `$form-check-input-checked-bg-image-dark` is gone, because one image now works for both modes. The icon color is `$form-check-input-checked-color`, or `--tblr-form-check-icon-color` at runtime.
-- `$navbar-light-toggler-icon-bg` and `$navbar-dark-toggler-icon-bg` were merged into `$navbar-toggler-icon-bg`. The color comes from `--tblr-navbar-toggler-icon-color`.
+- `$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position` and `$form-switch-focus-bg-image` are deprecated and no longer change the switch. The knob is a plain circle drawn with CSS. Its color comes from `$form-switch-color`, its size from `--tblr-form-switch-knob-size`.
+- `$form-check-input-checked-bg-image-dark` is deprecated, because one image now works for both modes. The icon color is `$form-check-input-checked-color`, or `--tblr-form-check-icon-color` at runtime.
+- `$navbar-light-toggler-icon-bg` and `$navbar-dark-toggler-icon-bg` are deprecated in favor of `$navbar-toggler-icon-bg`. The color comes from `--tblr-navbar-toggler-icon-color`.
+- An image set at runtime through `--tblr-form-check-bg-image` or `--tblr-form-switch-bg` is still painted, under the new icon. Both can show, so move to the color variables when you can.
 
 If you replaced one of the SVGs with your own, keep the shape but drop the `fill` and `stroke` colors from it. The mask only looks at the alpha channel, so any color inside the SVG is ignored.
 
 ## The focus ring is an outline
 
-In 1.5 the focus indicator was a `box-shadow`, a solid 2px ring with a soft `0.25rem` halo around it. In 1.6 it's an `outline`, the way Bootstrap 6 draws it. Every component uses the same three variables on `:root`:
+In 1.5 the focus indicator was a `box-shadow`, a solid 2px ring with a soft `0.25rem` halo around it. In 1.6 it's an `outline`, the way Bootstrap 6 draws it. Every component uses the same three variables:
 
 ```css
 :root {
@@ -287,7 +286,7 @@ In 1.5 the focus indicator was a `box-shadow`, a solid 2px ring with a soft `0.2
 
 The color is `--tblr-primary` mixed with `--tblr-body-bg`, at `--tblr-focus-ring-opacity` (`0.5`) in light mode and `--tblr-focus-ring-opacity-dark` (`0.75`) in dark mode. It follows `--tblr-primary`, so a recolored theme gets a matching ring for free.
 
-The per-component shadow variables are gone. If you changed the ring of one component, set the ring variables on it instead:
+The per-component shadow variables are deprecated. A shadow you set through one of them is still drawn, next to the outline. To restyle the ring itself, set the ring variables on the component:
 
 ```diff
   .btn {
@@ -297,11 +296,11 @@ The per-component shadow variables are gone. If you changed the ring of one comp
   }
 ```
 
-The same goes for `--tblr-pagination-focus-box-shadow`, `--tblr-accordion-btn-focus-box-shadow` and `--tblr-btn-close-focus-shadow`.
+The same goes for `--tblr-pagination-focus-box-shadow`, `--tblr-accordion-btn-focus-box-shadow`, `--tblr-btn-close-focus-shadow`, and for `--tblr-focus-ring-x`, `--tblr-focus-ring-y` and `--tblr-focus-ring-blur` on the `.focus-ring` helper.
 
 Form controls draw the ring over their border with `--tblr-focus-ring-offset: -1px`. Buttons and everything else draw it `2px` outside.
 
-If you write your own components, the `focus-ring()` mixin gives them the same ring. Pass `true` to apply the offset, and a color as the second argument to override it:
+If you write your own components, the `focus-ring()` mixin gives them the same ring. Pass `true` to draw it over the border, and a color as the second argument to override it:
 
 ```scss
 .my-control:focus-visible {
@@ -309,29 +308,31 @@ If you write your own components, the `focus-ring()` mixin gives them the same r
 }
 ```
 
+`focus-ring($show-border: true)` from 1.5 still compiles and means the same thing.
+
 The `.focus-ring` helper is fixed along the way. It now shows on `:focus-visible` instead of `:focus`, so a mouse click no longer draws it.
 
 ## Sass changes
 
 Only relevant if you compile `scss/tabler.scss` yourself.
 
-### Removed variables
+### Deprecated variables
 
-Variable|What to do instead
+These still exist, so `@use … with (…)` and your own code that reads them keep compiling. They live in `scss/_variables-deprecated.scss` and are removed in 2.0.
+
+Variable|What to use instead
 ---|---
-`$theme-colors-rgb`|Nothing. Tabler doesn't emit RGB triplets, and neither should your code.
-`$form-hint-margin-top`, `$form-hint-label-offset`, `$form-hint-control-margin-top`|Use `$form-text-margin-top` and friends.
-`$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position`, `$form-switch-focus-bg-image`|See [Masked icons](#masked-icons).
-`$form-check-input-checked-bg-image-dark`|See [Masked icons](#masked-icons).
-`$navbar-light-toggler-icon-bg`, `$navbar-dark-toggler-icon-bg`|Use `$navbar-toggler-icon-bg`.
-`$focus-ring-blur`, `$focus-ring-box-shadow`|Use `$focus-ring-width`, `$focus-ring-offset` and `$focus-ring-color`. See [The focus ring is an outline](#the-focus-ring-is-an-outline).
-`$input-btn-focus-width`, `$input-btn-focus-color-opacity`, `$input-btn-focus-color`, `$input-btn-focus-blur`, `$input-btn-focus-box-shadow`|Same as above.
-`$input-focus-width`, `$input-focus-box-shadow`, `$btn-focus-box-shadow`, `$form-select-focus-width`, `$form-select-focus-box-shadow`, `$form-check-input-focus-box-shadow`, `$form-range-thumb-focus-box-shadow`|Same as above.
-`$nav-link-focus-box-shadow`, `$pagination-focus-box-shadow`, `$pagination-focus-outline`, `$accordion-btn-focus-box-shadow`, `$btn-close-focus-shadow`|Same as above.
+`$theme-colors-rgb`|Nothing. Use `color-mix()` on the color itself.
+`$form-hint-margin-top`, `$form-hint-label-offset`, `$form-hint-control-margin-top`|`$form-text-margin-top` and friends. The old ones still style `.form-hint`.
+`$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position`, `$form-switch-focus-bg-image`, `$form-switch-color-dark`|See [Masked icons](#masked-icons). No effect any more.
+`$form-check-input-checked-bg-image-dark`|See [Masked icons](#masked-icons). No effect any more.
+`$navbar-light-toggler-icon-bg`, `$navbar-dark-toggler-icon-bg`|`$navbar-toggler-icon-bg`. No effect any more.
+`$input-btn-focus-width`|`$focus-ring-width`. A changed value still sets the ring width.
+`$input-btn-focus-color`|`$focus-ring-color`. A changed value still sets the ring color.
+`$btn-focus-box-shadow`, `$btn-close-focus-shadow`, `$pagination-focus-box-shadow`, `$accordion-btn-focus-box-shadow`|The ring variables. A changed value is still drawn as a shadow, next to the outline.
+`$focus-ring-blur`, `$focus-ring-box-shadow`, `$input-btn-focus-color-opacity`, `$input-btn-focus-blur`, `$input-btn-focus-box-shadow`, `$input-focus-width`, `$input-focus-box-shadow`, `$form-select-focus-width`, `$form-select-focus-box-shadow`, `$form-check-input-focus-box-shadow`, `$form-range-thumb-focus-box-shadow`, `$nav-link-focus-box-shadow`, `$pagination-focus-outline`|`$focus-ring-width`, `$focus-ring-offset` and `$focus-ring-color`. See [The focus ring is an outline](#the-focus-ring-is-an-outline). No effect any more.
 
-Setting a removed variable in `@use … with (…)` is a compile error in Sass, so you'll notice right away.
-
-In `$form-validation-states` the `focus-box-shadow` key is now `focus-ring-color`, and it takes a color instead of a shadow:
+In `$form-validation-states` the new key is `focus-ring-color`, and it takes a color. A `focus-box-shadow` key from 1.5 is still drawn:
 
 ```diff
   'invalid': (
@@ -341,11 +342,22 @@ In `$form-validation-states` the `focus-box-shadow` key is now `focus-ring-color
   ),
 ```
 
-Two defaults changed too: `$focus-ring-width` went from `0.25rem` to `2px`, and `$focus-ring-opacity` from `0.25` to `0.5`.
+Two defaults changed with the outline: `$focus-ring-width` went from `0.25rem` to `2px`, and `$focus-ring-opacity` from `0.25` to `0.5`.
 
-### Removed functions
+### Deprecated functions
 
-`theme-color-lighter()` and `theme-color-darker()` computed a tint and a shade at compile time. They were removed with the RGB variables. Two pairs of functions replace them:
+These still work and warn when you compile. They live in `scss/mixins/_deprecated.scss` and are removed in 2.0.
+
+Function or mixin|What to use instead
+---|---
+`theme-color-lighter($color)`|`mix-color($color, #fff, 10%)`, or `mix-color-css()` for a value that follows `--tblr-*` overrides
+`theme-color-darker($color)`|`shade-color($color, 10%)`, or `adjust-lightness-css(var(--primary), -6%)`
+`url-svg($svg)`|`escape-svg(url("data:image/svg+xml,…"))`
+`varify($list)`|Write the `var()` values by hand
+`map-get-multiple()`, `map-merge-multiple()`|`map.get()` and `map.merge()` from `sass:map`
+`breakpoint-prev()`, `media-breakpoint-down-than()`|`media-breakpoint-down()` with the breakpoint one step down
+
+Two pairs of functions are new:
 
 - `mix-color($a, $b, $weight)` and `adjust-lightness($color, $amount)` work at compile time on Sass colors and return an sRGB color, so the result can still feed `color-contrast()` or `luminance()`.
 - `mix-color-css($a, $b, $weight)` and `adjust-lightness-css($color, $amount)` return a `color-mix()` or a relative `oklch()` expression, so the result follows `--tblr-*` overrides in the browser. Use these where the value is emitted as it is.
@@ -355,13 +367,28 @@ Two defaults changed too: `$focus-ring-width` went from `0.25rem` to `2px`, and 
 + $my-hover: adjust-lightness-css(var(--primary), -10%);
 ```
 
-`url-svg()`, `varify()`, `map-get-multiple()`, `map-merge-multiple()`, `breakpoint-prev()` and the `media-breakpoint-down-than` mixin were unused inside Tabler and were removed too. If you called one of them, copy it into your own project from the 1.5 sources.
-
 ### Variables that turned into color-mix()
 
-A lot of Bootstrap variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-text-emphasis`, `*-border-subtle`, `$focus-ring-color`, `$input-focus-border-color` and most `rgba($black, …)` shadows.
+This is the one change in 1.6 that can stop a Sass build, and the one exception to "nothing breaks". 69 variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property, so that they follow `--tblr-*` overrides in the browser. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families and their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark mode border colors, and a few navbar, dropdown and switch colors. The theme colors such as `$primary`, the grays, `$body-color`, `$body-bg` and `$link-color` are still Sass colors.
 
-You can still override them with anything Sass accepts. Just be aware that a Sass color function such as `darken()` or `rgba()` won't work on their default values any more, because the default isn't a color, it's a string with `var()` inside.
+You can still override them with anything Sass accepts. But a Sass color function such as `darken()` or `rgba()` fails on their default values, because the default isn't a color, it's a string with `var()` inside. Build the value from the base color instead, with Tabler's own functions:
+
+```diff
+- $my-subtle-hover: darken($primary-bg-subtle, 5%);
++ $my-subtle-hover: shade-color(tint-color($primary, 80%), 5%);
+```
+
+### Dropping the deprecated layer
+
+Everything on this page that is kept for older projects sits behind one flag. Once your project no longer uses any of it, turn the flag off and the CSS gets about 1.4 kB (gzip) smaller:
+
+```scss
+@use '@tabler/core/scss/tabler' with (
+  $enable-deprecated: false
+);
+```
+
+That is also a good test before 2.0: if the project still looks right with the flag off, the CSS side of the upgrade is done.
 
 ## Visual changes
 
