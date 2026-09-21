@@ -15,3 +15,10 @@ export const staticPath = (file: string): string => `${base}/${file.replace(/^\/
  * relative default, "" when the base is absolute) — see Avatar's `base` prop.
  */
 export const assetRoot = base.replace(/\/static$/, '')
+
+/**
+ * Url of a core bundle in dist/js — unminified in development, like the
+ * layouts. A page script that imports from tabler.js must use this exact url:
+ * a different one makes the browser evaluate the module a second time.
+ */
+export const distJsPath = (name: string, base = '.'): string => `${base}/dist/js/${name}${(process.env.NODE_ENV || 'production') === 'development' ? '' : '.min'}.js`

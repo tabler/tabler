@@ -11,6 +11,9 @@ import Sparkline from '@ui/Sparkline.astro'
 import type { SparklineType } from '@ui/Sparkline.astro'
 import site from '@data/site.json'
 import { ucFirst } from '@shared/lib/string-format'
+import { distJsPath } from '@shared/lib/assets'
+
+const tablerJs = distJsPath('tabler')
 
 const colors = Object.keys(site.colors)
 
@@ -200,14 +203,14 @@ const progress = [
           </div>
           <CaptureScript>
             <!-- BEGIN SCRIPT OF SPARKLINE -->
-            <script is:inline>
+            <script is:inline type="module" define:vars={{ tablerJs }}>
               /*
               Pushes random data into a sparkline and counts the updated.bs.sparkline events.
-              tabler.js is deferred, so the instance is looked up once the DOM is ready.
+              Tabler ships as an ES module, so the class is imported from the bundle.
               */
-              document.addEventListener('DOMContentLoaded', () => {
+              import(tablerJs).then(({ Sparkline }) => {
                 const element = document.getElementById('sparkline-orders')
-                const sparkline = tabler.Sparkline.getOrCreateInstance(element)
+                const sparkline = Sparkline.getOrCreateInstance(element)
                 let updates = 0
 
                 document.getElementById('sparkline-update').addEventListener('click', () => {

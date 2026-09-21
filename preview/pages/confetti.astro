@@ -9,19 +9,23 @@ import DocsLink from '@ui/DocsLink.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Badge from '@ui/Badge.astro'
+import { distJsPath } from '@shared/lib/assets'
+
+const tablerJs = distJsPath('tabler')
 ---
 
 <DefaultLayout title="Confetti" pageMenu="base.confetti" description="Confetti pours a short shower of colored pieces over the page to celebrate a finished task, a signup or a first success.">
   <DocsLink slot="page-header-actions" path="/ui/components/confetti" />
   <CaptureScript>
     <!-- BEGIN SCRIPT OF CONFETTI ON LOAD -->
-    <script is:inline>
+    <script is:inline type="module" define:vars={{ tablerJs }}>
       /*
       One burst when the page opens. The instance lives on the body, so no element
-      on the page has to own it.
+      on the page has to own it. Tabler ships as an ES module, so the class is
+      imported from the bundle.
       */
-      document.addEventListener('DOMContentLoaded', () => {
-        tabler.Confetti.getOrCreateInstance(document.body).burst()
+      import(tablerJs).then(({ Confetti }) => {
+        Confetti.getOrCreateInstance(document.body).burst()
       })
     </script>
     <!-- END SCRIPT OF CONFETTI ON LOAD -->
@@ -116,7 +120,7 @@ import Badge from '@ui/Badge.astro'
       <Card>
         <CardBody>
           <CardTitle>From JavaScript</CardTitle>
-          <CardSubtitle>Call <code>burst()</code> on a <code>tabler.Confetti</code> instance when something else finishes, for example a form that was saved.</CardSubtitle>
+          <CardSubtitle>Call <code>burst()</code> on a <code>Confetti</code> instance when something else finishes, for example a form that was saved.</CardSubtitle>
           <form id="confetti-form" class="d-flex align-items-end gap-2">
             <div class="flex-fill">
               <label class="form-label" for="confetti-project">Project name</label>
@@ -126,14 +130,14 @@ import Badge from '@ui/Badge.astro'
           </form>
           <CaptureScript>
             <!-- BEGIN SCRIPT OF CONFETTI FORM -->
-            <script is:inline>
+            <script is:inline type="module" define:vars={{ tablerJs }}>
               /*
               Bursts confetti from code once the form is "saved". The instance lives on
               the form, so the events fire there.
               */
-              document.addEventListener('DOMContentLoaded', () => {
+              import(tablerJs).then(({ Confetti }) => {
                 const form = document.getElementById('confetti-form')
-                const confetti = tabler.Confetti.getOrCreateInstance(form, { count: 150, duration: 1500 })
+                const confetti = Confetti.getOrCreateInstance(form, { count: 150, duration: 1500 })
 
                 form.addEventListener('submit', (event) => {
                   event.preventDefault()
