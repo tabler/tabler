@@ -25,8 +25,6 @@ Call `autosize(el)` or `new countUp.CountUp(...)` yourself|Switch to `tabler.Aut
 Load `dist/libs/clipboard` or call `new ClipboardJS(...)`|Switch to the `Clipboard` component, see [Clipboard](#clipboard-is-built-in)
 Load `dist/libs/litepicker` or call `new Litepicker(...)`|Switch to the `Datepicker` plugin, see [Litepicker is replaced by Datepicker](#litepicker-is-replaced-by-datepicker)
 Use `<span class="legend">` as a colored dot|Rename to `.legend-dot` (the old markup still works), see [Legend is a component now](#legend-is-a-component-now)
-Want the 1.5 grays back|Load `tabler-themes.css` and set `data-bs-theme-base="gray"`, see [The default gray is neutral](#the-default-gray-is-neutral)
-Use `data-sortable`|Dragging looks different, see [Sortable drags a styled copy](#sortable-drags-a-styled-copy)
 Hide `path:first-child` in `.accordion-button-toggle-plus` from your own CSS|Drop that rule, see [Visual changes](#visual-changes)
 Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable yourself, see [Removed JavaScript helpers](#removed-javascript-helpers)
 Use `.form-hint`|Rename to `.form-text` (the old name still works)
@@ -145,15 +143,6 @@ Options you passed to countUp.js in `data-countup` keep their names: `startVal`,
 ### IMask and SortableJS stay external
 
 `InputMask` and `Sortable` are thin wrappers, so you still install [IMask](/ui/plugins/input-mask) and [SortableJS](/ui/plugins/sortable) yourself and load them before `tabler.js`. Nothing changes there. What's new is that the component keeps a reference to the library instance, so you can reach it from `getInstance()` instead of keeping your own.
-
-#### Sortable drags a styled copy
-
-The `Sortable` component now turns on the SortableJS `forceFallback` option. A dragged item is an HTML copy that Tabler styles with `.sortable-drag`, instead of the browser's own drag image. Turn the option off on a list to get the 1.5 behavior back:
-
-```diff
-- <ul class="list-group" data-sortable>
-+ <ul class="list-group" data-sortable='{"forceFallback":false}'>
-```
 
 ### Clipboard is built in
 
@@ -374,22 +363,6 @@ A lot of Bootstrap variables that were plain Sass colors are now `color-mix()` e
 
 You can still override them with anything Sass accepts. Just be aware that a Sass color function such as `darken()` or `rgba()` won't work on their default values any more, because the default isn't a color, it's a string with `var()` inside.
 
-## The default gray is neutral
-
-Every gray in Tabler comes from the `--tblr-gray-50` … `--tblr-gray-950` scale. In 1.5 that scale had a blue tint. In 1.6 the default is `neutral`, a pure gray, so backgrounds, borders and muted text look slightly different. The Sass defaults `$gray-50` … `$gray-950` changed the same way.
-
-The old scale ships in `tabler-themes.css` as `gray`. To keep the 1.5 look, load that stylesheet and set the base on `<html>`:
-
-```diff
-- <html>
-+ <html data-bs-theme-base="gray">
-    <head>
-      <link rel="stylesheet" href="/dist/css/tabler.min.css" />
-+     <link rel="stylesheet" href="/dist/css/tabler-themes.min.css" />
-```
-
-`tabler-theme.js` also treats `neutral` as the default now. A visitor who picked `gray` in the theme settings keeps it. See [Theme base colors](/ui/plugins/theme-base-colors) for the other palettes.
-
 ## Visual changes
 
 None of these break markup, but they change how a page looks or scrolls. Worth a quick look at your screens after the upgrade.
@@ -419,7 +392,7 @@ Besides the changes above, 1.6 adds:
 - `Autosize`, `CountUp`, `InputMask`, `Sortable` and `SwitchIcon` as real components with instances, methods and events, see above.
 - `data-tblr-countup` as an alias of `data-countup`.
 - `.navbar-floating` for [navbars](/ui/layout/navbars) and `.offcanvas-floating` for [offcanvas](/ui/components/offcanvas), which detach the element from the edge of the screen.
-- Drag styles for [Sortable](/ui/plugins/sortable): `.sortable-ghost`, `.sortable-chosen` and `.sortable-drag`.
+- Drag styles for [Sortable](/ui/plugins/sortable): `.sortable-ghost`, `.sortable-chosen`, and `.sortable-drag` for lists that turn on `forceFallback`.
 - A billing page in the preview, with plan usage, payment method and invoices.
 - The Bootstrap component port is compiled with strict TypeScript, so the type declarations in the package are tighter. Configs are typed per component.
 
