@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/core": minor
 ---
 
-Fixed `.rounded-4` and `.rounded-5` ignoring the `[data-bs-theme-radius]` scale and de-duplicated border-radius token emission.
+Added `--tblr-radius-*` tokens from a new `$radii` map; `--tblr-border-radius-*` now alias them.
