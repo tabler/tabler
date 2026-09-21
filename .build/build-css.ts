@@ -143,8 +143,11 @@ async function minify(files: string[]): Promise<void> {
     format: 'breakWith=lf;breaks:afterComment=on',
     inline: 'local',
     level: { 1: true },
-    rebase: true,
-    rebaseTo: resolve(outDir),
+    // No url() rebasing: the input already sits in outDir, so there is nothing
+    // to move. With the source map handed over explicitly clean-css would
+    // rebase against the original .scss path and turn `../img/flags/us.svg`
+    // into `../../../img/flags/us.svg`.
+    rebase: false,
     returnPromise: true,
     sourceMap: true,
     sourceMapInlineSources: true,
