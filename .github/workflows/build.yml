@@ -22,3 +22,11 @@ jobs:
       # turbo directly: `pnpm run build` also zips the package, which only the release needs
       - name: Build
         run: pnpm exec turbo build
+
+      # Nothing the last release shipped may disappear in a minor release. The
+      # versions pull request runs it with --strict, so a release cannot be
+      # merged while compat-baseline.txt still lists a break nobody accepted.
+      - name: Check backward compatibility
+        env:
+          STRICT: ${{ github.head_ref == 'changeset-release/dev' && '--strict' || '' }}
+        run: pnpm run check:compat $STRICT
