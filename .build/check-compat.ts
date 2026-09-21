@@ -22,41 +22,13 @@
 // skill for how to fix what it reports.
 //
 // Usage: tsx .build/check-compat.ts [--strict]
-import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
+import { pkgName, releasedPackage } from './released-package'
 
-const pkgName = '@tabler/core'
 const coreDir = 'core'
 const baselineFile = '.build/compat-baseline.txt'
-const cacheDir = 'node_modules/.cache/check-compat'
 const strict = process.argv.includes('--strict')
-
-const registry = 'https://registry.npmjs.org'
-
-async function releasedDir(): Promise<{ dir: string; version: string }> {
-  const local = JSON.parse(readFileSync(join(coreDir, 'package.json'), 'utf8')).version as string
-  // On the versions PR the local version is not published yet: compare with `latest`.
-  let version = local
-  let response = await fetch(`${registry}/${pkgName}/${version}`)
-  if (response.status === 404) {
-    response = await fetch(`${registry}/${pkgName}/latest`)
-  }
-  if (!response.ok) throw new Error(`npm registry answered ${response.status} for ${pkgName}`)
-  const manifest = (await response.json()) as { version: string; dist: { tarball: string } }
-  version = manifest.version
-
-  const dir = join(cacheDir, version)
-  if (!existsSync(join(dir, 'package', 'package.json'))) {
-    mkdirSync(dir, { recursive: true })
-    const tarball = await fetch(manifest.dist.tarball)
-    if (!tarball.ok) throw new Error(`could not download ${manifest.dist.tarball}: ${tarball.status}`)
-    const archive = join(dir, 'package.tgz')
-    writeFileSync(archive, Buffer.from(await tarball.arrayBuffer()))
-    execFileSync('tar', ['-xzf', archive, '-C', dir])
-  }
-  return { dir: join(dir, 'package'), version }
-}
 
 function walk(root: string, dir = root): string[] {
   if (!existsSync(dir)) return []
@@ -211,7 +183,7 @@ async function main() {
     throw new Error('core/dist is missing — build core first: pnpm --filter @tabler/core build')
   }
 
-  const { dir: released, version } = await releasedDir()
+  const { dir: released, version } = await releasedPackage()
   const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
 
   const baseline = new Map<string, boolean>() // key → accepted

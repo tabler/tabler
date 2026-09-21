@@ -115,7 +115,15 @@ It reports what the release has and the build lost, one key per line:
 
 Fix each one with the patterns from section 3, then run it again. Known breaks are listed in `.build/compat-baseline.txt`; when you fix one, delete its line, or the check fails on the stale entry. Never add a line to the baseline to make a PR green. A line gets ` # accepted: <why>` only after the maintainers decided to ship that break. CI runs the check after the build, and with `--strict` on the versions pull request, so a release cannot be merged while an unaccepted line is left.
 
-The check cannot see everything. It does not know about data attributes and their options, events, default values, a Sass variable whose type changed, or behaviour. For those, read the diff against the release tag with the table from section 1 in hand:
+`check:compat` compares names. `check:compat-fixture` covers behaviour: `.build/compat-fixture/` is a small project written the way a user of the last release would write it (`@use … with` on old variables, old functions, `rgba(var(--tblr-primary-rgb), .5)`, an empty `.legend`, the libraries in `dist/libs`, `tabler.tabler.getColor()`), and the check runs it against the release and against the working tree. Every assertion has to give the same answer on both.
+
+```shell
+pnpm run check:compat-fixture
+```
+
+Do not edit the fixture to make it pass: it stands for code you cannot reach. Add to it when a break got through that a real project would have hit. `--package <dir>` runs it against another checkout.
+
+Even the two checks together cannot see everything. They do not know about data attributes and their options, events, default values, a Sass variable whose type changed, or behaviour. For those, read the diff against the release tag with the table from section 1 in hand:
 
 ```shell
 git diff "@tabler/core@$(npm view @tabler/core version)"..HEAD -- core/scss/_variables.scss core/js .browserslistrc
