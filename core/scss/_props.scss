@@ -45,7 +45,7 @@
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
     --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    --#{$name}-darken: color-mix(in oklab, var(--#{$name}), transparent 20%);
+    --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
   }
@@ -94,7 +94,7 @@
 
   /** Backdrops */
   --backdrop-opacity: #{$backdrop-opacity};
-  --backdrop-bg: var(--bg-surface-dark);
+  --backdrop-bg: #{$backdrop-bg};
   @each $name, $value in $backdrops {
     --backdrop-bg#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }

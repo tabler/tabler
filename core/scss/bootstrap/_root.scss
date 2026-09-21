@@ -3,9 +3,7 @@
 
 @use '../config' as *;
 
-:root,
-[data-bs-theme='light'],
-[data-theme='light'] {
+:root {
   // Note: Custom variable values only support SassScript inside `#{}`.
 
   // Colors
@@ -82,10 +80,6 @@
   --tertiary-bg: light-dark(#{$body-tertiary-bg}, #{$body-tertiary-bg-dark});
   // scss-docs-end root-body-variables
 
-  // $headings-color is itself light-dark(gray-900, white); the dark-mode block below
-  // overrides it to `inherit`, which can't be expressed as a light-dark() branch.
-  --heading-color: #{$headings-color};
-
   --link-color: light-dark(#{$link-color}, #{$link-color-dark});
   --link-decoration: #{$link-decoration};
 
@@ -137,6 +131,12 @@
   --form-invalid-color: light-dark(#{$form-invalid-color}, #{$form-invalid-color-dark});
   --form-invalid-border-color: light-dark(#{$form-invalid-border-color}, #{$form-invalid-border-color-dark});
   // scss-docs-end root-form-validation-variables
+}
+
+:root,
+[data-bs-theme='light'],
+[data-theme='light'] {
+  --heading-color: #{$headings-color};
 }
 
 @if $enable-dark-mode {
