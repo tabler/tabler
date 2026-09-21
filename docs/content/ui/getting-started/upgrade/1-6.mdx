@@ -27,6 +27,7 @@ Hide `path:first-child` in `.accordion-button-toggle-plus` from your own CSS|Dro
 Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable yourself, see [Removed JavaScript helpers](#removed-javascript-helpers)
 Use `.form-hint`|Rename to `.form-text` (the old name still works)
 Override `$form-switch-bg-image` or the toggler icon variables|See [Masked icons](#masked-icons)
+Override `$input-btn-focus-*`, a `$*-focus-box-shadow` variable or `--tblr-btn-focus-box-shadow`|Use the focus ring tokens, see [The focus ring is an outline](#the-focus-ring-is-an-outline)
 Override `$theme-colors-rgb` or use `theme-color-lighter()`|See [Sass changes](#sass-changes)
 Rely on the empty gutter next to the scrollbar|See [Visual changes](#visual-changes)
 Set `data-mask` or `data-countup` from code after page load|Create the component instead, see [Plugins are components now](#plugins-are-components-now)
@@ -230,6 +231,44 @@ For most projects this is invisible. It matters if you customized those icons in
 
 If you replaced one of the SVGs with your own, keep the shape but drop the `fill` and `stroke` colors from it. The mask only looks at the alpha channel, so any color inside the SVG is ignored.
 
+## The focus ring is an outline
+
+In 1.5 the focus indicator was a `box-shadow`, a solid 2px ring with a soft `0.25rem` halo around it. In 1.6 it's an `outline`, the way Bootstrap 6 draws it. Every component uses the same three variables on `:root`:
+
+```css
+:root {
+  --tblr-focus-ring-width: 2px;
+  --tblr-focus-ring-offset: 2px;
+  --tblr-focus-ring-color: /* primary mixed with the page background */;
+}
+```
+
+The color is `--tblr-primary` mixed with `--tblr-body-bg`, at `--tblr-focus-ring-opacity` (`0.5`) in light mode and `--tblr-focus-ring-opacity-dark` (`0.75`) in dark mode. It follows `--tblr-primary`, so a recolored theme gets a matching ring for free.
+
+The per-component shadow variables are gone. If you changed the ring of one component, set the ring variables on it instead:
+
+```diff
+  .btn {
+-   --tblr-btn-focus-box-shadow: 0 0 0 3px #f11d46;
++   --tblr-focus-ring-width: 3px;
++   --tblr-focus-ring-color: #f11d46;
+  }
+```
+
+The same goes for `--tblr-pagination-focus-box-shadow`, `--tblr-accordion-btn-focus-box-shadow` and `--tblr-btn-close-focus-shadow`.
+
+Form controls draw the ring over their border with `--tblr-focus-ring-offset: -1px`. Buttons and everything else draw it `2px` outside.
+
+If you write your own components, the `focus-ring()` mixin gives them the same ring. Pass `true` to apply the offset, and a color as the second argument to override it:
+
+```scss
+.my-control:focus-visible {
+  @include focus-ring(true);
+}
+```
+
+The `.focus-ring` helper is fixed along the way. It now shows on `:focus-visible` instead of `:focus`, so a mouse click no longer draws it.
+
 ## Sass changes
 
 Only relevant if you compile `scss/tabler.scss` yourself.
@@ -243,8 +282,24 @@ Variable|What to do instead
 `$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position`, `$form-switch-focus-bg-image`|See [Masked icons](#masked-icons).
 `$form-check-input-checked-bg-image-dark`|See [Masked icons](#masked-icons).
 `$navbar-light-toggler-icon-bg`, `$navbar-dark-toggler-icon-bg`|Use `$navbar-toggler-icon-bg`.
+`$focus-ring-blur`, `$focus-ring-box-shadow`|Use `$focus-ring-width`, `$focus-ring-offset` and `$focus-ring-color`. See [The focus ring is an outline](#the-focus-ring-is-an-outline).
+`$input-btn-focus-width`, `$input-btn-focus-color-opacity`, `$input-btn-focus-color`, `$input-btn-focus-blur`, `$input-btn-focus-box-shadow`|Same as above.
+`$input-focus-width`, `$input-focus-box-shadow`, `$btn-focus-box-shadow`, `$form-select-focus-width`, `$form-select-focus-box-shadow`, `$form-check-input-focus-box-shadow`, `$form-range-thumb-focus-box-shadow`|Same as above.
+`$nav-link-focus-box-shadow`, `$pagination-focus-box-shadow`, `$pagination-focus-outline`, `$accordion-btn-focus-box-shadow`, `$btn-close-focus-shadow`|Same as above.
 
 Setting a removed variable in `@use … with (…)` is a compile error in Sass, so you'll notice right away.
+
+In `$form-validation-states` the `focus-box-shadow` key is now `focus-ring-color`, and it takes a color instead of a shadow:
+
+```diff
+  'invalid': (
+    'color': var(--form-invalid-color),
+-   'focus-box-shadow': 0 0 0 0.25rem rgba(214, 57, 57, 0.25),
++   'focus-ring-color': focus-ring-color(var(--danger)),
+  ),
+```
+
+Two defaults changed too: `$focus-ring-width` went from `0.25rem` to `2px`, and `$focus-ring-opacity` from `0.25` to `0.5`.
 
 ### Removed functions
 
@@ -270,6 +325,7 @@ You can still override them with anything Sass accepts. Just be aware that a Sas
 
 None of these break markup, but they change how a page looks or scrolls. Worth a quick look at your screens after the upgrade.
 
+- **The focus ring is a solid outline.** The soft halo around focused buttons and inputs is gone. Focus is a single 2px ring, stronger in dark mode. See [The focus ring is an outline](#the-focus-ring-is-an-outline).
 - **No reserved scrollbar gutter.** 1.5 set `scrollbar-gutter: stable` on `html`, which left an empty strip on the right of the navbar on pages too short to scroll. That rule is gone. Layout shifts between short and long pages are back to the browser default, which on macOS and most mobile browsers means none.
 - **Scroll chaining is contained.** Scrolling to the end of a modal body, an offcanvas body or a scrollable dropdown no longer scrolls the page behind it.
 - **Native `<dialog>` gets a backdrop.** A `<dialog>` opened with `showModal()` has the same backdrop as a modal, and `.modal-blur` on it blurs the page behind.

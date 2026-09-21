@@ -67,6 +67,12 @@
   }
 }
 
+@include describe('focus-ring-color') {
+  @include it('mixes with the page background, stronger in dark mode') {
+    @include assert-equal(meta.inspect(focus-ring-color(var(--primary))), 'light-dark(color-mix(in oklab, var(--primary) calc(var(--focus-ring-opacity) * 100%), var(--body-bg)), color-mix(in oklab, var(--primary) calc(var(--focus-ring-opacity-dark) * 100%), var(--body-bg)))');
+  }
+}
+
 @include describe('map-loop') {
   // Applies a module-level function (resolved by name via meta.get-function) to
   // every value in the map. `to-percentage` lives in the same module, so it

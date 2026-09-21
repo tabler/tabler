@@ -43,6 +43,8 @@
   border: $form-check-input-border;
   print-color-adjust: exact; // Keep themed appearance for print
   @include transition($form-check-transition);
+  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
+  outline-color: transparent;
 
   // The check, dash or dot is a pseudo-element painted through a CSS mask, so
   // its colour comes from `--form-check-icon-color` instead of a colour baked
@@ -74,10 +76,9 @@
     filter: $form-check-input-active-filter;
   }
 
-  &:focus {
+  &:focus-visible {
     border-color: $form-check-input-focus-border;
-    outline: 0;
-    box-shadow: $form-check-input-focus-box-shadow;
+    @include focus-ring(true);
   }
 
   &:checked {

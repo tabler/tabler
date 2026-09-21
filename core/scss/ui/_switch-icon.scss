@@ -1,6 +1,7 @@
 @use '../config' as *;
 
 .switch-icon {
+  @include focus-ring-transition();
   --switch-icon-size: #{$switch-icon-size};
   --switch-icon-min-size: #{$switch-icon-min-size};
   --switch-icon-disabled-opacity: #{$switch-icon-disabled-opacity};
@@ -36,8 +37,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+    @include focus-ring(true);
   }
 
   svg {
