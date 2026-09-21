@@ -4,4 +4,4 @@
 "@tabler/docs": minor
 ---
 
-Added a `Clipboard` copy button and dropped the `clipboard` package; the browser API does the work.
+Added a `Clipboard` copy button built on the browser API; `dist/libs/clipboard` is deprecated.

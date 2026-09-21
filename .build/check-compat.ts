@@ -7,8 +7,10 @@
 // release of `@tabler/core` from npm and compares its public surface with the
 // working tree:
 //
-//   css      classes and `--tblr-*` custom properties of every dist/css/*.css
+//   css      classes and custom properties of every dist/css/*.css
 //   sass     `$variables`, and `@function` / `@mixin` names and parameters, in scss/
+//   sass-type  a variable that was a Sass colour and is now a string: `darken($x, 5%)`
+//            in a project stops compiling, and no alias can fix a type
 //   js       top-level exports of dist/js/tabler.esm.js
 //   file     every path under dist/ (libs, images, types), and scss/ partials
 //
@@ -22,41 +24,14 @@
 // skill for how to fix what it reports.
 //
 // Usage: tsx .build/check-compat.ts [--strict]
-import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
+import { compileString } from 'sass'
+import { pkgName, releasedPackage } from './released-package'
 
-const pkgName = '@tabler/core'
 const coreDir = 'core'
 const baselineFile = '.build/compat-baseline.txt'
-const cacheDir = 'node_modules/.cache/check-compat'
 const strict = process.argv.includes('--strict')
-
-const registry = 'https://registry.npmjs.org'
-
-async function releasedDir(): Promise<{ dir: string; version: string }> {
-  const local = JSON.parse(readFileSync(join(coreDir, 'package.json'), 'utf8')).version as string
-  // On the versions PR the local version is not published yet: compare with `latest`.
-  let version = local
-  let response = await fetch(`${registry}/${pkgName}/${version}`)
-  if (response.status === 404) {
-    response = await fetch(`${registry}/${pkgName}/latest`)
-  }
-  if (!response.ok) throw new Error(`npm registry answered ${response.status} for ${pkgName}`)
-  const manifest = (await response.json()) as { version: string; dist: { tarball: string } }
-  version = manifest.version
-
-  const dir = join(cacheDir, version)
-  if (!existsSync(join(dir, 'package', 'package.json'))) {
-    mkdirSync(dir, { recursive: true })
-    const tarball = await fetch(manifest.dist.tarball)
-    if (!tarball.ok) throw new Error(`could not download ${manifest.dist.tarball}: ${tarball.status}`)
-    const archive = join(dir, 'package.tgz')
-    writeFileSync(archive, Buffer.from(await tarball.arrayBuffer()))
-    execFileSync('tar', ['-xzf', archive, '-C', dir])
-  }
-  return { dir: join(dir, 'package'), version }
-}
 
 function walk(root: string, dir = root): string[] {
   if (!existsSync(dir)) return []
@@ -72,7 +47,9 @@ const matches = (source: string, pattern: RegExp): Set<string> => new Set([...so
 
 // A class is a dot followed by an identifier; `1.5rem` and `url(a.svg)` are not.
 const cssClass = /(?<![\w)\]"'-])\.(-?[a-zA-Z_][\w-]*)/g
-const cssProperty = /(--tblr-[\w-]+)/g
+// Every custom property, not only `--tblr-*`: a vendor name that gained the
+// prefix (`--litepicker-*`) is as broken as one that disappeared.
+const cssProperty = /(?<![\w-])(--[a-zA-Z][\w-]*)/g
 
 const stripCssNoise = (css: string): string => css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/url\([^)]*\)/g, 'url()')
 
@@ -163,6 +140,27 @@ function sassBreaks(released: string, current: string): string[] {
   return breaks
 }
 
+// --- sass types ------------------------------------------------------------
+
+// The type of every variable the config module exposes, read by Sass itself.
+function sassTypes(root: string): Map<string, string> {
+  const source = `
+    @use 'sass:meta';
+    @use 'scss/config' as config;
+    a {
+      @each $name, $value in meta.module-variables('config') {
+        --#{$name}: #{meta.type-of($value)};
+      }
+    }`
+  const { css } = compileString(source, { loadPaths: [root, 'node_modules'], logger: { warn() {}, debug() {} } })
+  return new Map([...css.matchAll(/--([\w-]+): (\w+);/g)].map((match) => [match[1]!, match[2]!]))
+}
+
+function sassTypeBreaks(released: string, current: string): string[] {
+  const after = sassTypes(current)
+  return [...sassTypes(released)].filter(([name, type]) => type === 'color' && after.has(name) && after.get(name) !== 'color').map(([name]) => `sass-type:$${name}`)
+}
+
 // --- js --------------------------------------------------------------------
 
 function esmExports(file: string): Set<string> {
@@ -209,8 +207,8 @@ async function main() {
     throw new Error('core/dist is missing — build core first: pnpm --filter @tabler/core build')
   }
 
-  const { dir: released, version } = await releasedDir()
-  const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
+  const { dir: released, version } = await releasedPackage()
+  const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...sassTypeBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
 
   const baseline = new Map<string, boolean>() // key → accepted
   for (const line of readFileSync(baselineFile, 'utf8').split('\n')) {

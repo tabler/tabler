@@ -97,10 +97,10 @@ Put `data-sortable` on the `tbody` to reorder the rows of a table.
 
 Tabler styles the classes SortableJS adds while dragging: `.sortable-ghost` marks the drop position, `.sortable-chosen` the picked item and `.sortable-drag` the copy that follows the pointer.
 
-The component turns on the `forceFallback` option by default. SortableJS then drags an HTML copy of the item instead of the browser's drag image, so `.sortable-drag` can style it. To get the browser's drag image back, turn the option off:
+The browser draws the dragged item itself by default, and CSS cannot style that image. Turn on the `forceFallback` option and SortableJS drags an HTML copy of the item instead, which `.sortable-drag` tilts and lifts with a shadow:
 
 ```html
-<ul class="list-group" data-sortable='{"forceFallback":false}'>
+<ul class="list-group" data-sortable='{"forceFallback":true}'>
   …
 </ul>
 ```
