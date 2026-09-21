@@ -369,7 +369,7 @@ Two pairs of functions are new:
 
 ### Variables that turned into color-mix()
 
-This is the one change that can stop a Sass build. A lot of Bootstrap variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-text-emphasis`, `*-border-subtle`, `$focus-ring-color`, `$input-focus-border-color` and most `rgba($black, …)` shadows.
+This is the one change in 1.6 that can stop a Sass build, and the one exception to "nothing breaks". 69 variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property, so that they follow `--tblr-*` overrides in the browser. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families and their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark mode border colors, and a few navbar, dropdown and switch colors. The theme colors such as `$primary`, the grays, `$body-color`, `$body-bg` and `$link-color` are still Sass colors.
 
 You can still override them with anything Sass accepts. But a Sass color function such as `darken()` or `rgba()` fails on their default values, because the default isn't a color, it's a string with `var()` inside. Build the value from the base color instead, with Tabler's own functions:
 
