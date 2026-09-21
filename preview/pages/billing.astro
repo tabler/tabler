@@ -140,18 +140,20 @@ const invoiceStatus = {
               <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
                 {
                   paymentMethods.map((method) => (
-                    <label class="form-selectgroup-item flex-fill">
-                      <input type="radio" name="payment-method" value={method.provider} class="form-selectgroup-input" checked={method.isDefault} />
+                    <div class="form-selectgroup-item flex-fill">
+                      <input type="radio" id={`payment-method-${method.provider}`} name="payment-method" value={method.provider} class="form-selectgroup-input" checked={method.isDefault} />
                       <div class="form-selectgroup-label d-flex align-items-center p-3">
-                        <div class="me-3">
-                          <span class="form-selectgroup-check" />
-                        </div>
-                        <Payment payment={method.provider} size="sm" class="me-3" />
-                        <div class="me-auto">
-                          <div class="fw-medium">{method.title}</div>
-                          <div class="text-secondary">{method.description}</div>
-                        </div>
-                        {method.isDefault && <Badge text="Default" color="primary" light class="me-2" />}
+                        <label for={`payment-method-${method.provider}`} class="d-flex align-items-center flex-fill mb-0">
+                          <div class="me-3">
+                            <span class="form-selectgroup-check" />
+                          </div>
+                          <Payment payment={method.provider} size="sm" class="me-3" />
+                          <div class="me-auto">
+                            <div class="fw-medium">{method.title}</div>
+                            <div class="text-secondary">{method.description}</div>
+                          </div>
+                          {method.isDefault && <Badge text="Default" color="primary" light class="me-2" />}
+                        </label>
                         <div class="dropdown">
                           <button type="button" class="btn btn-action btn-sm" data-bs-toggle="dropdown" aria-expanded="false" aria-label={`Actions for ${method.title}`}>
                             <Icon name="dots-vertical" />
@@ -174,7 +176,7 @@ const invoiceStatus = {
                           </div>
                         </div>
                       </div>
-                    </label>
+                    </div>
                   ))
                 }
               </div>

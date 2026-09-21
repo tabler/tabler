@@ -7,6 +7,8 @@ interface Props {
   direction?: 'start' | 'end' | 'top' | 'bottom' | undefined
   /** responsive variant offcanvas-{responsive} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
   responsive?: Exclude<Breakpoint, 'xs'> | undefined
+  /** core/scss/ui/_offcanvas.scss `.offcanvas-floating` — keeps a gap between the panel and the viewport edges */
+  floating?: boolean
   show?: boolean
   class?: string
   /** defaults to "-1" when not provided */
@@ -17,11 +19,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { direction, responsive, show, class: className, tabindex, role, ...rest } = Astro.props
+const { direction, responsive, floating, show, class: className, tabindex, role, ...rest } = Astro.props
 ---
 
 <!-- BEGIN OFFCANVAS -->
-<div class:list={[responsive ? `offcanvas-${responsive}` : 'offcanvas', direction && `offcanvas-${direction}`, show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
+<div class:list={[responsive ? `offcanvas-${responsive}` : 'offcanvas', direction && `offcanvas-${direction}`, floating && 'offcanvas-floating', show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
   <slot />
 </div>
 <!-- END OFFCANVAS -->

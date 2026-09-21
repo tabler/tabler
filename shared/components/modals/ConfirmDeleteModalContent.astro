@@ -43,14 +43,18 @@ import ModalClose from './ModalClose.astro'
   </div>
 </div>
 <!-- BEGIN CONFIRM DELETE -->
-<script>
-  const checkbox = document.getElementById('confirm-delete-checkbox') as HTMLInputElement | null
-  const deleteButton = document.getElementById('confirm-delete-button') as HTMLButtonElement | null
+<script is:inline>
+  function initConfirmDelete() {
+    const checkbox = document.getElementById('confirm-delete-checkbox')
+    const deleteButton = document.getElementById('confirm-delete-button')
 
-  if (checkbox && deleteButton) {
-    checkbox.addEventListener('change', function (this: HTMLInputElement) {
-      deleteButton.disabled = !this.checked
-    })
+    if (checkbox && deleteButton) {
+      checkbox.addEventListener('change', function () {
+        deleteButton.disabled = !this.checked
+      })
+    }
   }
+
+  document.readyState !== 'loading' ? initConfirmDelete() : document.addEventListener('DOMContentLoaded', initConfirmDelete, { once: true })
 </script>
 <!-- END CONFIRM DELETE -->

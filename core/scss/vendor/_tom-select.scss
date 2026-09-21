@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../config' as *;
 
 $input-border-width: 1px;
@@ -5,10 +6,6 @@ $input-border-width: 1px;
 :root {
   --ts-pr-clear-button: 0rem;
   --ts-pr-caret: 0rem;
-}
-
-.ts-input {
-  color: inherit;
 }
 
 .focus .ts-control {
@@ -52,6 +49,71 @@ $input-border-width: 1px;
       background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
     }
   }
+
+  // The same preset also colours the wrapper border and the focused
+  // `.ts-control` with `var(--bs-form-valid-color)` / `--bs-form-invalid-color`.
+  // Those variables do not exist in Tabler, so the border falls back to
+  // `currentColor` and the focus ring disappears. Repeat Tabler's own
+  // validation colours; `!important` for the same reason as `.ts-dropdown`
+  // below.
+  @each $state, $data in $form-validation-states {
+    &.is-#{$state} {
+      border-color: map.get($data, 'border-color') !important;
+
+      &.focus .ts-control {
+        border-color: map.get($data, 'border-color') !important;
+        box-shadow: map.get($data, 'focus-box-shadow') !important;
+      }
+    }
+  }
+}
+
+// The bootstrap5 preset hardcodes Bootstrap's own input metrics on
+// `.ts-control` (0.375rem 0.75rem padding, 1.5 line-height), so a Tom Select
+// came out 5px shorter than a `.form-control` next to it (#2567). Use Tabler's
+// input tokens instead, in every size. The multi-value control follows the
+// preset's formula: take the item's 1px padding, 1px border and 3px bottom
+// margin out of the control's padding so the chips fill the same height.
+.ts-wrapper.form-control,
+.ts-wrapper.form-select {
+  .ts-control {
+    padding: $input-padding-y $input-padding-x;
+    font-size: $input-font-size;
+    line-height: $input-line-height;
+  }
+
+  &.multi.has-items .ts-control {
+    padding-top: calc(#{$input-padding-y} - 2px) !important;
+    padding-bottom: calc(#{$input-padding-y} - 5px);
+  }
+
+  &.form-control-sm,
+  &.form-select-sm {
+    .ts-control {
+      padding: $input-padding-y-sm $input-padding-x-sm;
+      font-size: $input-font-size-sm;
+      line-height: $input-line-height-sm;
+    }
+
+    &.multi.has-items .ts-control {
+      padding-top: calc(#{$input-padding-y-sm} - 2px) !important;
+      padding-bottom: calc(#{$input-padding-y-sm} - 5px);
+    }
+  }
+
+  &.form-control-lg,
+  &.form-select-lg {
+    .ts-control {
+      padding: $input-padding-y-lg $input-padding-x-lg;
+      font-size: $input-font-size-lg;
+      line-height: $input-line-height-lg;
+    }
+
+    &.multi.has-items .ts-control {
+      padding-top: calc(#{$input-padding-y-lg} - 2px) !important;
+      padding-bottom: calc(#{$input-padding-y-lg} - 5px);
+    }
+  }
 }
 
 // Every declaration below is `!important`: the bootstrap5 preset CSS targets
@@ -73,9 +135,16 @@ $input-border-width: 1px;
     padding: $dropdown-item-padding-y $dropdown-item-padding-x;
   }
 
-  .active {
+  // Tom Select marks the highlighted row with .active; match the row only, so an
+  // .active element inside an option (a lit .signal-bar) keeps its own background
+  [data-selectable].active {
     color: var(--body-color) !important;
     background-color: var(--active-bg) !important;
+  }
+
+  // The library's own `.ts-dropdown .active` also hits a lit bar and clears its background
+  .signal-bar.active {
+    background-color: var(--signal-color);
   }
 
   .active.create {
@@ -91,6 +160,12 @@ $input-border-width: 1px;
 .ts-control,
 .ts-control input {
   color: var(--body-color);
+}
+
+// An item rendered with an indicator reuses `.dropdown-item`, whose `width: 100%` fills the
+// control and pushes the search input to a second line on focus
+.ts-control > .dropdown-item {
+  width: auto;
 }
 
 .ts-control input {

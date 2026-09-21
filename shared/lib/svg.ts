@@ -11,7 +11,10 @@ export type IllustrationImage = FreeIllustration | `${FreeIllustration}.svg`
 
 /** Source SVG of a bundled illustration, in its auto-dark variant. */
 export function freeIllustrationSource(image: IllustrationImage): string {
-  return freeIllustrations.autodark[image.replaceAll('.svg', '') as FreeIllustration] ?? ''
+  const name = image.replace(/\.svg$/, '')
+  const source = (freeIllustrations.autodark as Record<string, string | undefined>)[name]
+  if (!source) throw new Error(`Unknown illustration "${image}" — not in @data/free-illustrations.json`)
+  return source
 }
 
 type IconRecord = { svg: Record<string, string | null | undefined> }
@@ -24,8 +27,13 @@ const FILLER_PATH = /<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/
  * aria-hidden="true" focusable="false" and the given classes.
  */
 export function iconSvg(name: string, { filled = false, classes = 'icon' }: { filled?: boolean | undefined; classes?: string | undefined } = {}): string | undefined {
-  const icon = (icons as unknown as Record<string, IconRecord>)[name]
-  if (!icon) return undefined
+  const icon = (icons as unknown as Record<string, IconRecord | undefined>)[name]
+  if (!icon) {
+    // Icon.astro renders nothing for an unknown name, which is invisible in the
+    // page; say so in the build log instead of failing silently.
+    console.warn(`[svg] unknown Tabler icon "${name}"`)
+    return undefined
+  }
   let svg = icon.svg?.[filled ? 'filled' : 'outline'] ?? ''
   svg = svg.replace(FILLER_PATH, '')
   svg = svg.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${classes}"`)

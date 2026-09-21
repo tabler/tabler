@@ -15,6 +15,8 @@ interface Props {
   /** person object (photo → src, initials → placeholder); resolve demo ids with personById() from @shared/lib/people */
   person?: Person | undefined
   link?: boolean
+  /** href for the linked avatar (link); defaults to "#" when omitted */
+  href?: string
   size?: AvatarSize | undefined
   class?: string
   /** avatar-{shape} (core/scss/ui/_avatars.scss) */
@@ -30,7 +32,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, size, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, href: hrefProp, size, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
@@ -43,10 +45,13 @@ if (person) {
 }
 
 const El = linkProp ? 'a' : 'span'
+const linkAttrs = linkProp ? { href: hrefProp ?? '#' } : {}
 
 const classes = ['avatar', size && `avatar-${size}`, className, shape && `avatar-${shape}`, color && `bg-${color}-lt`]
 ---
 
-<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />}</El
+<El {...linkAttrs} class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
+  >{status && <span class={`badge bg-${status}`} role={statusLabel ? 'img' : undefined} aria-label={statusLabel} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
+    src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />
+  }</El
 >

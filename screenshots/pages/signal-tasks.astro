@@ -1,0 +1,52 @@
+---
+// Signal in context: a task list card where the priority column shows a signal
+// next to its label, the way an issue tracker does. Rows are sorted from
+// urgent to none, so the lit bars step down the column.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import Signal from '@ui/Signal.astro'
+import Avatar from '@ui/Avatar.astro'
+import { personById } from '@shared/lib/people'
+
+const tasks = [
+  { name: 'Payment page returns 500 on submit', priority: 'Urgent', value: 3, color: 'orange', person: 1 },
+  { name: 'Fix the broken password reset link', priority: 'Urgent', value: 3, color: 'orange', person: 4 },
+  { name: 'Update the onboarding copy', priority: 'Normal', value: 2, color: 'blue', person: 2 },
+  { name: 'Export invoices to CSV', priority: 'Normal', value: 2, color: 'blue', person: 6 },
+  { name: 'Refresh the team page photos', priority: 'Low', value: 1, color: 'green', person: 3 },
+  { name: 'Try a new font for the blog', priority: 'None', value: 0, color: undefined, person: 5 },
+]
+---
+
+<ScreenshotLayout title="Signal in a task list" columns={2}>
+  <Card>
+    <CardHeader title="Tasks" />
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Priority</th>
+            <th class="w-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            tasks.map((task) => (
+              <tr>
+                <td>{task.name}</td>
+                <td class="text-nowrap">
+                  <Signal value={task.value} color={task.color} class="me-1" /> {task.priority}
+                </td>
+                <td>
+                  <Avatar size="xs" person={personById(task.person)} />
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</ScreenshotLayout>

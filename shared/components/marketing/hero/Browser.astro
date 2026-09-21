@@ -1,6 +1,9 @@
 ---
 import Icon from '@ui/Icon.astro'
 import { site } from '@shared/lib/site'
+import { relativeBase } from '@shared/lib/url'
+
+const base = relativeBase(Astro.url.pathname)
 ---
 
 <!-- BEGIN HERO -->
@@ -38,7 +41,7 @@ import { site } from '@shared/lib/site'
           </div>
         </div>
         <picture>
-          <img src="../static/marketing/preview.png" srcset="../static/marketing/preview.png 1x, ../static/marketing/preview@2x.png 2x" alt="" class="img-fluid" width="1040" height="760" loading="lazy" />
+          <img src={`${base}/static/marketing/preview.png`} srcset={`${base}/static/marketing/preview.png 1x, ${base}/static/marketing/preview@2x.png 2x`} alt="" class="img-fluid" width="1040" height="760" loading="lazy" />
         </picture>
       </div>
     </div>

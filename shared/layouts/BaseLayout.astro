@@ -28,18 +28,25 @@ const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description, t
 // script runs, so a page keeps its variant until the visitor chooses otherwise.
 const themeAttributes = themeDataAttributes(themeSettings)
 
-// Development build: unminified assets, dev favicon.
-const environment = 'development'
-const min = environment === 'development' ? '' : '.min'
+// Development build: unminified assets, dev favicon (same rule as DocsLayout).
+const environment = process.env.NODE_ENV || 'production'
+const isDevelopment = environment === 'development'
+const min = isDevelopment ? '' : '.min'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
 
 type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean }
+const unknownLibs = pageLibs.filter((name) => !(name in libs))
+if (unknownLibs.length > 0) {
+  throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
+}
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
-const googleMapsKey = site.googleMapsDevKey
+// Google Maps API key comes from the environment (GOOGLE_MAPS_KEY in .env or the
+// host's settings), never from the source. Without it the script loads keyless.
+const googleMapsKey = import.meta.env.GOOGLE_MAPS_KEY ?? process.env.GOOGLE_MAPS_KEY ?? ''
 // External URLs (http/https) are emitted verbatim (with the maps-key placeholder
 // replaced); local files as ./dist/libs/{npm}/{file}.
-const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file.replace('GOOGLE_MAPS_KEY', googleMapsKey) : `${base}/dist/libs/${lib.npm}/${file}`)
+const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file.replace(googleMapsKey ? 'GOOGLE_MAPS_KEY' : '?key=GOOGLE_MAPS_KEY', googleMapsKey) : `${base}/dist/libs/${lib.npm}/${file}`)
 const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((file) => libHref(lib, file)))
 const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean(lib.head) === head).flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
 ---
@@ -55,8 +62,8 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <title>{title ? `${title} - ` : ''}{site.title} - {site.descriptionShort}</title>
     <meta name="description" content={description ?? site.descriptionShort} />
 
-    <link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
-    <link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
+    <link rel="icon" href={`${base}/favicon${isDevelopment ? '-dev' : ''}.ico`} type="image/x-icon" />
+    <link rel="shortcut icon" href={`${base}/favicon${isDevelopment ? '-dev' : ''}.ico`} type="image/x-icon" />
     <!-- END META -->
 
     {

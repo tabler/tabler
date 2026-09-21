@@ -87,7 +87,7 @@ The sources write custom properties without a prefix. Add [postcss-prefix-custom
 
 ### Plugins
 
-The third-party libraries used by the demo pages (ApexCharts, Tom Select, Litepicker, FullCalendar, Dropzone and others) are bundled in `dist/libs`. The list of shipped files is in [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json), and each plugin has its own page in the [plugins documentation](https://docs.tabler.io/ui/plugins/).
+The third-party libraries used by the demo pages (ApexCharts, Tom Select, Vanilla Calendar Pro, FullCalendar, Dropzone and others) are bundled in `dist/libs`. The list of shipped files is in [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json), and each plugin has its own page in the [plugins documentation](https://docs.tabler.io/ui/plugins/).
 
 ## What's included
 

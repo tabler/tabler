@@ -14,11 +14,9 @@ interface Props {
 	class?: string;
 	/** name of a layout/headers/ component rendered instead of the title block, e.g. "profile" */
 	file?: string | undefined;
-	/** text-white on .page-header (dark overlapping navbar) */
-	textWhite?: boolean | undefined;
 }
 
-const { title, pretitle, description, class: className, file, textWhite } = Astro.props;
+const { title, pretitle, description, class: className, file } = Astro.props;
 
 const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
 ---
@@ -27,7 +25,7 @@ const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
 {file === 'uptime' && <HeaderUptime />}
 {
 	!file && title && (
-		<div class={`page-header${className ? ` ${className}` : ''} d-print-none${textWhite ? ' text-white' : ''}`}>
+		<div class={`page-header${className ? ` ${className}` : ''} d-print-none`}>
 			<div class="container-xl">
 				<div class="row g-2 align-items-center">
 					<div class="col">

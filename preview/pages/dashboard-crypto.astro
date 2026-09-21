@@ -192,7 +192,7 @@ const operationCurrencies = currencies.slice(0, 20)
                       <td class="">{market.price}</td>
                       <td class="d-none d-xl-table-cell">{market.volume}</td>
                       <td class="d-none d-xl-table-cell text-end">
-                        <Trending value={market.change as unknown as number} />
+                        <Trending value={market.change} />
                       </td>
                     </tr>
                   ))
@@ -232,8 +232,8 @@ const operationCurrencies = currencies.slice(0, 20)
               <p>Place new order:</p>
 
               <div class="input-group mb-3">
-                <label class="input-group-text">Amount</label>
-                <select class="form-select">
+                <label class="input-group-text" for="crypto-amount-value">Amount</label>
+                <select class="form-select" aria-label="Currency">
                   {
                     operationCurrencies.map((currency, i) => (
                       <option value={currency.symbol} selected={i === 0}>
@@ -242,19 +242,19 @@ const operationCurrencies = currencies.slice(0, 20)
                     ))
                   }
                 </select>
-                <input type="text" class="form-control" value="0.25" />
+                <input type="text" id="crypto-amount-value" class="form-control" value="0.25" />
               </div>
 
               <div class="input-group mb-3">
-                <label class="input-group-text">Price</label>
-                <input type="text" class="form-control" readonly="" value="23,077.05" />
-                <label class="input-group-text">$</label>
+                <label class="input-group-text" for="crypto-order-price">Price</label>
+                <input type="text" id="crypto-order-price" class="form-control" readonly="" value="23,077.05" />
+                <label class="input-group-text" for="crypto-order-price">$</label>
               </div>
 
               <div class="input-group mb-3">
-                <label class="input-group-text">Total</label>
-                <input type="text" class="form-control" readonly="" value="5,769.27" />
-                <label class="input-group-text">$</label>
+                <label class="input-group-text" for="crypto-order-total">Total</label>
+                <input type="text" id="crypto-order-total" class="form-control" readonly="" value="5,769.27" />
+                <label class="input-group-text" for="crypto-order-total">$</label>
               </div>
 
               <div class="d-grid">

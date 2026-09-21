@@ -109,10 +109,13 @@
 // Zebra-striping
 //
 // Default zebra-stripe styles (alternating gray and transparent backgrounds)
+//
+// A row or cell that declares its own background wins over the stripe, so
+// `.bg-*`, `.table-*`, `.text-bg-*` and inline backgrounds stay visible.
 
 // For rows
 .table-striped {
-  > tbody > tr:nth-of-type(#{$table-striped-order}) > * {
+  > tbody > tr:nth-of-type(#{$table-striped-order}):not(:is(#{$table-striped-exclude-selector})) > *:not(:is(#{$table-striped-exclude-selector})) {
     --table-color-type: var(--table-striped-color);
     --table-bg-type: var(--table-striped-bg);
   }
@@ -120,7 +123,7 @@
 
 // For columns
 .table-striped-columns {
-  > :not(caption) > tr > :nth-child(#{$table-striped-columns-order}) {
+  > :not(caption) > tr:not(:is(#{$table-striped-exclude-selector})) > :nth-child(#{$table-striped-columns-order}):not(:is(#{$table-striped-exclude-selector})) {
     --table-color-type: var(--table-striped-color);
     --table-bg-type: var(--table-striped-bg);
   }

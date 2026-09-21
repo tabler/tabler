@@ -87,6 +87,30 @@ button.legend {
   color: var(--secondary);
 }
 
+.legend-unit {
+  font-size: $h5-font-size;
+  font-weight: var(--font-weight-normal);
+  color: var(--secondary);
+}
+
+// Large legend: the label on the first line, a big value (with an optional unit) below
+.legend-lg {
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 0.5rem;
+  min-width: $legend-lg-min-width;
+  @include border-radius(var(--border-radius));
+  font-weight: var(--font-weight-normal);
+  text-align: start;
+
+  .legend-value {
+    grid-column: 1 / -1;
+    font-size: $legend-lg-value-font-size;
+    font-weight: var(--font-weight-medium);
+    color: var(--body-color);
+  }
+}
+
 @each $name, $color in map.merge($theme-colors, $social-colors) {
   .legend-#{$name} {
     --legend-color: var(--#{$name});
@@ -112,4 +136,24 @@ button.legend {
 .legend-list-vertical {
   flex-direction: column;
   align-items: flex-start;
+}
+
+// A line between the items, for a row of large legends
+.legend-list-divided {
+  &,
+  &:has(> a.legend, > button.legend) {
+    --legend-list-gap: 0.5rem 1.5rem;
+  }
+
+  > .legend {
+    position: relative;
+  }
+
+  > .legend + .legend::before {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: -0.75rem;
+    content: '';
+    border-inline-start: var(--border-width) var(--border-style) var(--border-color);
+  }
 }

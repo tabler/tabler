@@ -34,17 +34,17 @@ $enable-important-utilities: true !default;
 $color-mode-type: data !default;
 
 // Colors
-$gray-50: oklch(98.46% 0.0017 247.84deg) !default; // #f9fafb
-$gray-100: oklch(96.7% 0.0029 264.54deg) !default; // #f3f4f6
-$gray-200: oklch(92.76% 0.0058 264.53deg) !default; // #e5e7eb
-$gray-300: oklch(87.17% 0.0093 258.34deg) !default; // #d1d5db
-$gray-400: oklch(71.37% 0.0192 261.32deg) !default; // #9ca3af
-$gray-500: oklch(55.1% 0.0234 264.36deg) !default; // #6b7280
-$gray-600: oklch(44.61% 0.0263 256.8deg) !default; // #4b5563
-$gray-700: oklch(37.29% 0.0306 259.73deg) !default; // #374151
-$gray-800: oklch(27.81% 0.0296 256.85deg) !default; // #1f2937
-$gray-900: oklch(21.01% 0.0318 264.66deg) !default; // #111827
-$gray-950: oklch(12.96% 0.0274 261.69deg) !default; // #030712
+$gray-50: oklch(98.51% 0 0deg) !default; // #fafafa
+$gray-100: oklch(97.02% 0 0deg) !default; // #f5f5f5
+$gray-200: oklch(92.19% 0 0deg) !default; // #e5e5e5
+$gray-300: oklch(86.99% 0 0deg) !default; // #d4d4d4
+$gray-400: oklch(71.55% 0 0deg) !default; // #a3a3a3
+$gray-500: oklch(55.55% 0 0deg) !default; // #737373
+$gray-600: oklch(43.86% 0 0deg) !default; // #525252
+$gray-700: oklch(37.15% 0 0deg) !default; // #404040
+$gray-800: oklch(26.86% 0 0deg) !default; // #262626
+$gray-900: oklch(20.46% 0 0deg) !default; // #171717
+$gray-950: oklch(14.48% 0 0deg) !default; // #0a0a0a
 
 // $black and $white moved to `_settings.scss`
 
@@ -366,8 +366,8 @@ $negative-spacers: null !default;
 // reads `--body-text-align` unconditionally, so a null left the declaration
 // invalid.
 $body-text-align: start !default;
-$body-color: $gray-500 !default;
-$body-bg: $white !default;
+$body-color: $gray-800 !default;
+$body-bg: $gray-50 !default;
 
 $body-secondary-color: color-transparent(var(--body-color), 0.75) !default;
 $body-secondary-bg: $gray-200 !default;
@@ -542,9 +542,6 @@ $zindex-levels: (
 
 $text-secondary-opacity: 0.7 !default;
 
-$body-text-align: null !default;
-$body-bg: $gray-50 !default;
-$body-color: $gray-800 !default;
 $body-emphasis-color: $gray-700 !default;
 
 // $color-contrast-dark and $color-contrast-light moved to `_settings.scss`.
@@ -662,35 +659,6 @@ $gray-colors: (
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
 
-$grays: (
-  '100': $gray-100,
-  '200': $gray-200,
-  '300': $gray-300,
-  '400': $gray-400,
-  '500': $gray-500,
-  '600': $gray-600,
-  '700': $gray-700,
-  '800': $gray-800,
-  '900': $gray-900,
-) !default;
-
-$colors: (
-  'blue': $blue,
-  'indigo': $indigo,
-  'purple': $purple,
-  'pink': $pink,
-  'red': $red,
-  'orange': $orange,
-  'yellow': $yellow,
-  'green': $green,
-  'teal': $teal,
-  'cyan': $cyan,
-  'black': $black,
-  'white': $white,
-  'gray': $gray-600,
-  'gray-dark': $gray-800,
-) !default;
-
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;
 $secondary-text-emphasis: mix-color-css(var(--black), var(--secondary), 60%) !default;
@@ -779,6 +747,7 @@ $code-font-size: $font-size-reative-sm !default;
 $pre-padding: 1rem !default;
 $pre-bg: var(--bg-surface-dark) !default;
 $pre-color: var(--light) !default;
+$pre-selection-bg: color-transparent(var(--primary), 0.4) !default;
 
 $kbd-padding-x: 0.5rem !default;
 $kbd-padding-y: 0.25rem !default;
@@ -904,9 +873,6 @@ $container-max-widths: (
 // Grid columns
 $grid-columns: 12 !default;
 $grid-row-columns: 6 !default;
-
-// Grid
-$grid-gutter-width: 1rem !default;
 
 $container-variations: (
   slim: 16rem,
@@ -1331,6 +1297,7 @@ $accordion-body-padding-y: $accordion-padding-y !default;
 $accordion-body-padding-x: $accordion-padding-x !default;
 
 $accordion-button-padding-y: $accordion-padding-y !default;
+$accordion-button-line-height: 1.25rem !default;
 $accordion-button-bg: transparent !default;
 $accordion-button-active-color: inherit !default;
 $accordion-btn-gap: 0.75rem !default;
@@ -1600,6 +1567,8 @@ $navbar-hover-color: var(--body-color) !default;
 
 $navbar-border-width: var(--border-width) !default;
 $navbar-border-color: var(--border-color) !default;
+$navbar-floating-margin: 0.5rem !default;
+$navbar-floating-border-radius: var(--border-radius-lg) !default;
 
 $navbar-light-color: var(--body-color) !default;
 $navbar-light-brand-color: var(--body-color) !default;
@@ -1754,6 +1723,16 @@ $status-indicator-size: 2.5rem !default;
 $status-circle-size: 0.75rem !default;
 // scss-docs-end status-variables
 
+// scss-docs-start signal-variables
+$signal-size: map.get(map.get($avatar-sizes, 'xs'), size) !default;
+$signal-gap-ratio: 0.1 !default;
+$signal-padding-y-ratio: 0.2 !default;
+$signal-padding-x-ratio: 0.1 !default;
+$signal-bar-border-radius: 1px !default;
+$signal-bar-inactive-opacity: 0.24 !default;
+$signal-max-bars: 5 !default;
+// scss-docs-end signal-variables
+
 // Steps
 // scss-docs-start steps-variables
 $steps-border-width: 2px !default;
@@ -1808,6 +1787,8 @@ $table-striped-bg-factor: 0.05 !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--bg-surface-tertiary) !default;
 $table-striped-columns-order: even !default;
+// Rows and cells matching this selector keep their own background instead of the stripe.
+$table-striped-exclude-selector: '[class^="bg-"], [class*=" bg-"], [class^="table-"], [class*=" table-"], [class^="text-bg-"], [class*=" text-bg-"], [style*="background"]' !default;
 
 $table-group-separator-color: var(--border-color-translucent) !default;
 
@@ -2025,7 +2006,7 @@ $form-select-font-size-lg: $input-font-size-lg !default;
 $form-select-border-radius-lg: $input-border-radius-lg !default;
 $form-select-transition: $input-transition !default;
 
-$form-switch-color: var(--gray-200) !default;
+$form-switch-color: light-dark(var(--gray-200), #{color-transparent(var(--white), 0.25)}) !default;
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
 $form-switch-padding-start: $form-switch-width + 0.5rem !default;
@@ -2036,6 +2017,8 @@ $form-switch-transition:
 $form-switch-knob-transition: inset-inline-start 0.15s ease-in-out !default;
 $form-switch-focus-color: mix-color-css(var(--white), var(--primary), 50%) !default;
 $form-switch-checked-color: var(--white) !default;
+$form-switch-disabled-bg: $input-disabled-bg !default;
+$form-switch-disabled-color: light-dark(var(--gray-400), var(--gray-600)) !default;
 
 // Form range
 $form-range-track-width: 100% !default;
@@ -2163,6 +2146,8 @@ $legend-padding-y: 0.375rem !default;
 $legend-padding-x: 0.75rem !default;
 $legend-list-gap: 0.25rem 1rem !default;
 $legend-list-gap-interactive: 0.25rem !default;
+$legend-lg-min-width: 9rem !default;
+$legend-lg-value-font-size: $h2-font-size !default;
 // scss-docs-end legend-variables
 
 // Switch icon
@@ -2191,8 +2176,9 @@ $offcanvas-color: var(--body-color) !default;
 $offcanvas-box-shadow: $modal-content-box-shadow-xs !default;
 $offcanvas-backdrop-bg: $backdrop-bg !default;
 $offcanvas-backdrop-opacity: $modal-backdrop-opacity !default;
-$offcanvas-border-color: var(--border-color) !default;
 $offcanvas-narrow-width: 20rem !default;
+$offcanvas-margin: 0.5rem !default;
+$offcanvas-border-radius: $modal-content-border-radius !default;
 // scss-docs-end offcanvas-variables
 
 // Chat
@@ -2317,6 +2303,21 @@ $markdown-pre-max-height: 20rem !default;
 $calendar-padding-y: 0.5rem !default;
 $calendar-date-padding: 0.2rem !default;
 $calendar-date-size: 1.4rem !default;
+
+// Datepicker
+// scss-docs-start datepicker-variables
+$datepicker-calendar-padding: 0 !default;
+$datepicker-calendar-font-size: $font-size-sm !default;
+$datepicker-calendar-header-font-weight: $font-weight-medium !default;
+$datepicker-calendar-day-size: 2rem !default;
+$datepicker-calendar-day-font-size: $font-size-sm !default;
+$datepicker-calendar-range-bg-opacity: 10% !default;
+$datepicker-padding: 1rem !default;
+$datepicker-bg: $dropdown-bg !default;
+$datepicker-border-radius: $dropdown-border-radius !default;
+$datepicker-box-shadow: $dropdown-box-shadow !default;
+$datepicker-min-width: 280px !default;
+// scss-docs-end datepicker-variables
 
 // HR text
 $hr-text-gap: 0.5rem !default;

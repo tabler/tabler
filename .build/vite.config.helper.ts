@@ -46,14 +46,6 @@ export function createViteConfig({ entry, name, fileName, formats, outDir, banne
     define: {
       'process.env.NODE_ENV': '"production"',
     },
-    esbuild: {
-      target: 'es2015',
-      tsconfigRaw: {
-        compilerOptions: {
-          target: 'ES2015',
-        },
-      },
-    },
   }
 
   return defineConfig(config)

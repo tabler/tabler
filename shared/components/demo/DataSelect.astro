@@ -14,7 +14,7 @@ interface Props {
 	class?: string;
 	state?: FormValidationState | undefined;
 	placeholder?: string;
-	/** option decoration: 'avatar' | 'flag' | 'label' */
+	/** option decoration: 'avatar' | 'flag' | 'label' | 'signal' */
 	indicator?: string;
 	/** plain value list — overrides the selects.json lookup */
 	values?: string[];
@@ -31,8 +31,16 @@ const {
 } = Astro.props;
 
 const id = idProp ?? keyProp;
+if (!id) {
+	throw new Error('DataSelect: pass an `id` or a `key` — the select needs one for its id');
+}
 const key = keyProp ?? 'people';
-const data = (selects as Record<string, any>)[key] ?? {};
+let data = (selects as Record<string, any>)[key];
+if (!data && !values) {
+	throw new Error(`DataSelect: unknown key "${key}" — not in @data/selects.json`);
+}
+// `values` alone needs no selects.json entry.
+data ??= {};
 
 const isMultiple = Boolean(data.multiple);
 
@@ -41,6 +49,10 @@ const preselected = new Set<string>(
 	(Array.isArray(data.value) ? data.value : data.value === undefined ? [] : [data.value]).map(String),
 );
 const isSelected = (value: string) => preselected.has(value);
+
+// Same markup as ui/Signal.astro, as a string: TomSelect renders the indicator from an attribute.
+const signalHtml = (value: number, color?: string) =>
+	`<span class="signal${color ? ` signal-${color}` : ''}" aria-hidden="true">${[1, 2, 3].map((bar) => `<span class="signal-bar${bar <= value ? ' active' : ''}"></span>`).join('')}</span>`;
 
 // Build the option list.
 let options: SelectOption[] = [];
@@ -67,14 +79,15 @@ if (values) {
 } else if (Array.isArray(data.options)) {
 	options = (data.options as string[]).map((option) => ({ value: option, text: option, selected: isSelected(option) }));
 } else if (data.options) {
-	// object of { key: { name, flag?, label?, selected? } } — with optional indicator
+	// object of { key: { name, flag?, label?, signal?, color?, selected? } } — with optional indicator
 	options = Object.entries(data.options as Record<string, any>).map(([optKey, v]) => {
 		let custom: string | undefined;
 		if (indicator === 'flag') custom = `<span class="flag flag-xs flag-country-${v.flag}"></span>`;
 		else if (indicator === 'label') custom = `<span class="badge bg-primary-lt">${v.label}</span>`;
+		else if (indicator === 'signal') custom = signalHtml(v.signal, v.color);
 		return { value: optKey, text: v.name, custom, selected: Boolean(v.selected) || isSelected(optKey) };
 	});
 }
 ---
 
-{id && <Select id={id} class={className} state={state} placeholder={placeholder} multiple={isMultiple} options={options} optgroups={optgroups} />}
+<Select id={id} class={className} state={state} placeholder={placeholder} multiple={isMultiple} options={options} optgroups={optgroups} />
