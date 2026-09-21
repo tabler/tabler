@@ -26,16 +26,18 @@ jobs:
 
       - name: Set up the workspace
         uses: ./.github/actions/setup
+        with:
+          turbo-cache: 'false'
 
       - name: Update npm # trusted publishing requires npm >= 11.5.1
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.19.1
 
       - name: Build
         run: pnpm run build
 
       - name: Create release Pull Request or publish to NPM
         id: changesets
-        uses: changesets/action@v2
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           version-script: pnpm run version
           publish-script: pnpm run publish
