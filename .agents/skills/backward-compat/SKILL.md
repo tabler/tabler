@@ -1,7 +1,7 @@
 ---
 name: backward-compat
 description: >-
-  Keep a change to `@tabler/core` backward compatible, so a patch or minor release never breaks a project that updates. Use before renaming, removing or changing the meaning of anything a user can touch — a class, a `--tblr-*` custom property, a Sass variable, mixin or function, a `data-*` attribute or option, a JS export, an event, a file under `dist/`, a default value — and whenever a changeset on `dev` looks like it needs a `major` bump. Also consult it proactively when a cleanup or refactor in `core/` deletes something, since "dead" code is often somebody's API. Covers what counts as public API, the `deprecated` files where compatibility code lives, the alias patterns, the `check:compat` gate, and what to do when a break cannot be avoided.
+  Keep a change to `@tabler/core` backward compatible, so a patch or minor release never breaks a project that updates. Use before renaming, removing or changing the meaning of anything a user can touch — a class, a `--tblr-*` custom property, a Sass variable, mixin or function, a `data-*` attribute or option, a JS export, an event, a file under `dist/`, a default value — and whenever a changeset on `dev` looks like it needs a `major` bump. Also consult it proactively when a cleanup or refactor in `core/` deletes something, since "dead" code is often somebody's API. Covers what counts as public API, the `deprecated` files where compatibility code lives, the alias patterns, how to review the public surface before a PR, and what to do when a break cannot be avoided.
 ---
 
 # Backward compatibility
@@ -42,7 +42,7 @@ How Tabler looks is not frozen by semver. A minor release may change a color, a 
 - **Behaviour is not "visual".** What a click does, when an animation starts, which drag image the browser uses: those are behaviour defaults, and stay opt-in until the next major.
 - **It is listed.** Every visible change gets a bullet under "Visual changes" in the upgrade guide and a changeset that names it, so a user who sees a difference after updating can find out why. When the old look is cheap to keep, say how: a variable to set, or a theme in `tabler-themes.css`.
 
-`check:compat` and `check:compat-fixture` do not look at pixels, so this rule is on the author and the reviewer.
+No tool looks at pixels, so this rule is on the author and the reviewer.
 
 ## 2. Where compatibility code lives
 
@@ -106,40 +106,13 @@ New validation must not throw on input that used to work. Coerce the value, or l
 
 ## 4. Check the public surface before the PR
 
-`check:compat` downloads the last release of `@tabler/core` from npm and compares it with the working tree. It needs `core/dist`, so build core first:
-
-```shell
-pnpm --filter @tabler/core build
-pnpm run check:compat
-```
-
-It reports what the release has and the build lost, one key per line:
-
-| Key | Means |
-| --- | --- |
-| `css:tabler.css:.legend` | a class is gone from that stylesheet |
-| `css:tabler.css:--tblr-primary-rgb` | a custom property is gone |
-| `sass:$focus-ring-blur` | a Sass variable is gone |
-| `sass:@function url-svg` | a function or mixin is gone |
-| `sass:@mixin focus-ring($show-border)` | that parameter was renamed or moved |
-| `js:tabler.esm.js:tabler` | a top-level export is gone |
-| `file:dist/libs/litepicker/dist/litepicker.js` | a file is gone from the package |
-
-Fix each one with the patterns from section 3, then run it again. Known breaks are listed in `.build/compat-baseline.txt`; when you fix one, delete its line, or the check fails on the stale entry. Never add a line to the baseline to make a PR green. A line gets ` # accepted: <why>` only after the maintainers decided to ship that break. CI runs the check after the build. The Release workflow runs it with `--strict` on every push to `dev`, before it opens the versions pull request or publishes, so nothing reaches npm while an unaccepted line is left.
-
-`check:compat` compares names. `check:compat-fixture` covers behaviour: `.build/compat-fixture/` is a small project written the way a user of the last release would write it (`@use … with` on old variables, old functions, `rgba(var(--tblr-primary-rgb), .5)`, an empty `.legend`, the libraries in `dist/libs`, `tabler.tabler.getColor()`), and the check runs it against the release and against the working tree. Every assertion has to give the same answer on both.
-
-```shell
-pnpm run check:compat-fixture
-```
-
-Do not edit the fixture to make it pass: it stands for code you cannot reach. Add to it when a break got through that a real project would have hit. `--package <dir>` runs it against another checkout.
-
-Even the two checks together cannot see everything. They do not know about data attributes and their options, events, default values, a Sass variable whose type changed, or behaviour. For those, read the diff against the release tag with the table from section 1 in hand:
+There is no automated gate on this branch: 2.0 breaks the 1.x API on purpose, and the upgrade guide, not an alias, is what covers a user who updates. Within 2.x the rule from section 1 applies again, and the review is manual. Read the diff against the last release tag with the table from section 1 in hand:
 
 ```shell
 git diff "@tabler/core@$(npm view @tabler/core version)"..HEAD -- core/scss/_variables.scss core/js .browserslistrc
 ```
+
+Look for a class, custom property, Sass variable, function or mixin parameter, JS export or `dist/` file that the release had and the build lost, and for data attributes and their options, events, default values and a Sass variable whose type changed. Fix each one with the patterns from section 3.
 
 ## 5. Changesets and the upgrade guide
 
@@ -155,8 +128,8 @@ Some changes have no alias: dropping a whole color model, raising the browser fl
 
 Only the maintainers can decide to ship a break in a minor release, and it takes all three of these:
 
-1. a line per item in `.build/compat-baseline.txt` with `# accepted: <why>`, under a comment that says who decided and when,
+1. a note in the PR that says who decided and when,
 2. a section in the upgrade guide that says plainly what stops working and shows the fix,
-3. a check that keeps the exception from growing.
+3. a test that keeps the exception from growing.
 
-1.6 has one. Moving color mixing to the browser turned 69 Sass variables from colors into `color-mix()` strings: the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families with their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark border colors and a few navbar, dropdown and switch colors. `darken($primary-bg-subtle, 5%)` in a project no longer compiles, and no alias can change a type back. The theme colors, the grays, `$body-color`, `$body-bg` and `$link-color` are still colors. `check:compat` lists each one as `sass-type:$name`, and fails when another color variable stops being one. Do not add to that list: a new variable that needs a runtime value gets a new name, and the old one keeps its color.
+1.6 has one. Moving color mixing to the browser turned 69 Sass variables from colors into `color-mix()` strings: the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families with their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark border colors and a few navbar, dropdown and switch colors. `darken($primary-bg-subtle, 5%)` in a project no longer compiles, and no alias can change a type back. The theme colors, the grays, `$body-color`, `$body-bg` and `$link-color` are still colors. Do not add to that list: a new variable that needs a runtime value gets a new name, and the old one keeps its color.

@@ -22,11 +22,3 @@ jobs:
       # turbo directly: `pnpm run build` also zips the package, which only the release needs
       - name: Build
         run: pnpm exec turbo build
-
-      # Nothing the last release shipped may disappear in a minor release. On the
-      # versions pull request it runs with --strict, but workflows there wait for
-      # a manual approval, so the Release workflow runs --strict too.
-      - name: Check backward compatibility
-        env:
-          STRICT: ${{ github.head_ref == 'changeset-release/dev' && '--strict' || '' }}
-        run: pnpm run check:compat $STRICT
