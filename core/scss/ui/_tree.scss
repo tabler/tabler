@@ -51,20 +51,17 @@
   }
 
   &:is(summary)::before {
-    box-sizing: border-box;
-    width: calc(var(--tree-toggle-size) / 2);
-    height: calc(var(--tree-toggle-size) / 2);
-    margin-inline: calc(var(--tree-toggle-size) / 4);
-    border-block-end: 2px solid var(--tree-toggle-color);
-    border-inline-end: 2px solid var(--tree-toggle-color);
+    background-color: var(--tree-toggle-color);
     transition: transform $transition-time;
 
     /* rtl:ignore */
-    transform: rotate(calc(var(--dir) * -45deg));
+    transform: scaleX(var(--dir));
+    @include mask-icon(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9.707 5.293l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 1 1 -1.414 -1.414l5.293 -5.293l-5.293 -5.293a1 1 0 0 1 1.414 -1.414'/></svg>"), $size: 100%);
   }
 
   details[open] > &::before {
-    transform: rotate(45deg);
+    /* rtl:ignore */
+    transform: scaleX(var(--dir)) rotate(90deg);
   }
 
   &:hover {
