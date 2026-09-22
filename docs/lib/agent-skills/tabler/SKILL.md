@@ -44,40 +44,40 @@ Every app page follows the same structure. `${site.docsUrl}/ui/layout/page-layou
 
 ```html
 <div class="page">
-  <header class="navbar navbar-expand-md d-print-none">
+  <header class="navbar md:navbar-expand print:d-none">
     <!-- brand, navigation, user menu -->
   </header>
   <div class="page-wrapper">
-    <div class="page-header d-print-none">
-      <div class="container-xl">
+    <div class="page-header print:d-none">
+      <div class="xl:container">
         <div class="row g-2 align-items-center">
           <div class="col">
             <div class="page-pretitle">Overview</div>
             <h2 class="page-title">Dashboard</h2>
           </div>
-          <div class="col-auto ms-auto d-print-none">
+          <div class="col-auto ms-auto print:d-none">
             <!-- page actions -->
           </div>
         </div>
       </div>
     </div>
     <div class="page-body">
-      <div class="container-xl">
+      <div class="xl:container">
         <div class="row row-deck row-cards">
           <!-- cards -->
         </div>
       </div>
     </div>
-    <footer class="footer footer-transparent d-print-none">
-      <div class="container-xl"><!-- footer links --></div>
+    <footer class="footer footer-transparent print:d-none">
+      <div class="xl:container"><!-- footer links --></div>
     </footer>
   </div>
 </div>
 ```
 
-- A sidebar is `<aside class="navbar navbar-vertical navbar-expand-lg">` placed before `.page-wrapper`.
+- A sidebar is `<aside class="navbar navbar-vertical lg:navbar-expand">` placed before `.page-wrapper`.
 - Content goes in cards: `.card` with `.card-header`, `.card-body`, `.card-footer`. Put cards in `.row.row-deck.row-cards` so they align in height.
-- Use `.container-xl` for boxed pages and `.container-fluid` for full-width ones.
+- Use `.xl:container` for boxed pages and `.container-fluid` for full-width ones.
 
 ## Icons
 
