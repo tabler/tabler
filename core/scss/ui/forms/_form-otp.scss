@@ -1,171 +1,173 @@
 @use '../../config' as *;
 
-.otp {
-  // scss-docs-start otp-css-vars
-  --otp-size: #{$otp-size};
-  --otp-font-size: #{$otp-font-size};
-  --otp-gap: #{$otp-gap};
-  --otp-slot-color: #{$otp-slot-color};
-  --otp-slot-bg: #{$otp-slot-bg};
-  --otp-slot-border-width: #{$otp-slot-border-width};
-  --otp-slot-border-color: #{$otp-slot-border-color};
-  --otp-slot-border-radius: #{$otp-slot-border-radius};
-  --otp-slot-box-shadow: #{$otp-slot-box-shadow};
-  --otp-separator-color: #{$otp-separator-color};
-  // scss-docs-end otp-css-vars
-  position: relative;
-  display: inline-flex;
-  gap: var(--otp-gap);
-  align-items: center;
-  min-height: var(--otp-size);
-  // `.otp` is the only content on its line, so its own baseline (derived from
-  // whichever slot the flex baseline algorithm picks) never has to matter -
-  // otherwise an empty vs. active slot resolve to different baselines and the
-  // line box around `.otp` grows or shrinks by a few pixels between them.
-  vertical-align: bottom;
-}
-
-// Before the script renders the slots, the input keeps a `.form-control`-like
-// look and the `.otp` wrapper's `min-height` already matches it - no layout
-// shift once `.otp-rendered .otp-input` below takes over.
-.otp > input {
-  width: 100%;
-  height: var(--otp-size);
-  padding-inline: 0.75rem;
-  font-size: var(--otp-font-size);
-  color: var(--otp-slot-color);
-  background-color: var(--otp-slot-bg);
-  border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
-  box-shadow: var(--otp-slot-box-shadow);
-  @include border-radius(var(--otp-slot-border-radius));
-}
-
-// The real input is a transparent overlay on top of the rendered slots, so
-// screen readers, password managers and SMS autofill see one ordinary field.
-.otp-rendered .otp-input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  color: transparent;
-  cursor: text;
-  caret-color: transparent;
-  background-color: transparent;
-  border: 0;
-  // The base `.otp > input` rule sets this for the pre-render fallback look;
-  // the overlay itself must stay invisible, or its shadow spans every slot.
-  box-shadow: none;
-
-  // The active slot draws its own focus ring; the native outline would
-  // otherwise wrap the whole overlay input, spanning every slot at once.
-  &:focus {
-    outline: 0;
+@layer forms {
+  .otp {
+    // scss-docs-start otp-css-vars
+    --otp-size: #{$otp-size};
+    --otp-font-size: #{$otp-font-size};
+    --otp-gap: #{$otp-gap};
+    --otp-slot-color: #{$otp-slot-color};
+    --otp-slot-bg: #{$otp-slot-bg};
+    --otp-slot-border-width: #{$otp-slot-border-width};
+    --otp-slot-border-color: #{$otp-slot-border-color};
+    --otp-slot-border-radius: #{$otp-slot-border-radius};
+    --otp-slot-box-shadow: #{$otp-slot-box-shadow};
+    --otp-separator-color: #{$otp-separator-color};
+    // scss-docs-end otp-css-vars
+    position: relative;
+    display: inline-flex;
+    gap: var(--otp-gap);
+    align-items: center;
+    min-height: var(--otp-size);
+    // `.otp` is the only content on its line, so its own baseline (derived from
+    // whichever slot the flex baseline algorithm picks) never has to matter -
+    // otherwise an empty vs. active slot resolve to different baselines and the
+    // line box around `.otp` grows or shrinks by a few pixels between them.
+    vertical-align: bottom;
   }
 
-  &::selection {
+  // Before the script renders the slots, the input keeps a `.form-control`-like
+  // look and the `.otp` wrapper's `min-height` already matches it - no layout
+  // shift once `.otp-rendered .otp-input` below takes over.
+  .otp > input {
+    width: 100%;
+    height: var(--otp-size);
+    padding-inline: 0.75rem;
+    font-size: var(--otp-font-size);
+    color: var(--otp-slot-color);
+    background-color: var(--otp-slot-bg);
+    border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
+    box-shadow: var(--otp-slot-box-shadow);
+    @include border-radius(var(--otp-slot-border-radius));
+  }
+
+  // The real input is a transparent overlay on top of the rendered slots, so
+  // screen readers, password managers and SMS autofill see one ordinary field.
+  .otp-rendered .otp-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color: transparent;
+    cursor: text;
+    caret-color: transparent;
     background-color: transparent;
+    border: 0;
+    // The base `.otp > input` rule sets this for the pre-render fallback look;
+    // the overlay itself must stay invisible, or its shadow spans every slot.
+    box-shadow: none;
+
+    // The active slot draws its own focus ring; the native outline would
+    // otherwise wrap the whole overlay input, spanning every slot at once.
+    &:focus {
+      outline: 0;
+    }
+
+    &::selection {
+      background-color: transparent;
+    }
   }
-}
 
-.otp-slots {
-  display: inline-flex;
-  gap: var(--otp-gap);
-  align-items: center;
-  pointer-events: none;
-}
-
-.otp-slot {
-  position: relative;
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--otp-size);
-  height: var(--otp-size);
-  font-size: var(--otp-font-size);
-  color: var(--otp-slot-color);
-  background-color: var(--otp-slot-bg);
-  border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
-  box-shadow: var(--otp-slot-box-shadow);
-  @include border-radius(var(--otp-slot-border-radius));
-  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
-}
-
-.otp-slot-active {
-  // Bring the focused slot to the front so its ring isn't clipped by the
-  // next slot in `.otp-connected`, where slots overlap by their border width.
-  z-index: 1;
-
-  --focus-ring-offset: -1px;
-  border-color: $input-focus-border-color;
-  @include focus-ring(true);
-
-  &:not(.otp-slot-filled)::after {
-    display: block;
-    width: 1px;
-    height: 1.2em;
-    content: '';
-    background-color: var(--otp-slot-color);
-    animation: otp-caret-blink 1s step-end infinite;
+  .otp-slots {
+    display: inline-flex;
+    gap: var(--otp-gap);
+    align-items: center;
+    pointer-events: none;
   }
-}
-
-.otp-input:disabled ~ .otp-slots .otp-slot {
-  color: var(--disabled-color);
-  background-color: $input-disabled-bg;
-}
-
-// Zero gap with shared, merged borders; only the first and last slot keep a
-// rounded corner. Not meant to be combined with `groups`/`separator`.
-.otp-connected {
-  --otp-gap: 0;
 
   .otp-slot {
-    margin-inline-start: calc(var(--otp-slot-border-width) * -1);
-    border-radius: 0;
-
-    &:first-child {
-      margin-inline-start: 0;
-      border-start-start-radius: var(--otp-slot-border-radius);
-      border-end-start-radius: var(--otp-slot-border-radius);
-    }
-
-    &:last-child {
-      border-start-end-radius: var(--otp-slot-border-radius);
-      border-end-end-radius: var(--otp-slot-border-radius);
-    }
-  }
-}
-
-.otp-separator {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  padding-inline: calc(var(--otp-gap) / 2);
-  color: var(--otp-separator-color);
-}
-
-.otp-sm {
-  --otp-size: #{$input-height-sm};
-  --otp-font-size: #{$input-font-size-sm};
-}
-
-.otp-lg {
-  --otp-size: #{$input-height-lg};
-  --otp-font-size: #{$input-font-size-lg};
-}
-
-@keyframes otp-caret-blink {
-  0%,
-  50% {
-    opacity: 1;
+    position: relative;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--otp-size);
+    height: var(--otp-size);
+    font-size: var(--otp-font-size);
+    color: var(--otp-slot-color);
+    background-color: var(--otp-slot-bg);
+    border: var(--otp-slot-border-width) solid var(--otp-slot-border-color);
+    box-shadow: var(--otp-slot-box-shadow);
+    @include border-radius(var(--otp-slot-border-radius));
+    @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
   }
 
-  50.01%,
-  100% {
-    opacity: 0;
+  .otp-slot-active {
+    // Bring the focused slot to the front so its ring isn't clipped by the
+    // next slot in `.otp-connected`, where slots overlap by their border width.
+    z-index: 1;
+
+    --focus-ring-offset: -1px;
+    border-color: $input-focus-border-color;
+    @include focus-ring(true);
+
+    &:not(.otp-slot-filled)::after {
+      display: block;
+      width: 1px;
+      height: 1.2em;
+      content: '';
+      background-color: var(--otp-slot-color);
+      animation: otp-caret-blink 1s step-end infinite;
+    }
+  }
+
+  .otp-input:disabled ~ .otp-slots .otp-slot {
+    color: var(--disabled-color);
+    background-color: $input-disabled-bg;
+  }
+
+  // Zero gap with shared, merged borders; only the first and last slot keep a
+  // rounded corner. Not meant to be combined with `groups`/`separator`.
+  .otp-connected {
+    --otp-gap: 0;
+
+    .otp-slot {
+      margin-inline-start: calc(var(--otp-slot-border-width) * -1);
+      border-radius: 0;
+
+      &:first-child {
+        margin-inline-start: 0;
+        border-start-start-radius: var(--otp-slot-border-radius);
+        border-end-start-radius: var(--otp-slot-border-radius);
+      }
+
+      &:last-child {
+        border-start-end-radius: var(--otp-slot-border-radius);
+        border-end-end-radius: var(--otp-slot-border-radius);
+      }
+    }
+  }
+
+  .otp-separator {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    padding-inline: calc(var(--otp-gap) / 2);
+    color: var(--otp-separator-color);
+  }
+
+  .otp-sm {
+    --otp-size: #{$input-height-sm};
+    --otp-font-size: #{$input-font-size-sm};
+  }
+
+  .otp-lg {
+    --otp-size: #{$input-height-lg};
+    --otp-font-size: #{$input-font-size-lg};
+  }
+
+  @keyframes otp-caret-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    50.01%,
+    100% {
+      opacity: 0;
+    }
   }
 }

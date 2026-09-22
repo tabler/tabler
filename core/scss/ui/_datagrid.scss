@@ -20,14 +20,16 @@ $datagrid-tokens: defaults(
 
 // stylelint-enable custom-property-no-missing-var-function
 
-.datagrid {
-  @include tokens($datagrid-tokens);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--datagrid-item-width), 1fr));
-  grid-gap: var(--datagrid-padding);
-}
+@layer components {
+  .datagrid {
+    @include tokens($datagrid-tokens);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--datagrid-item-width), 1fr));
+    grid-gap: var(--datagrid-padding);
+  }
 
-.datagrid-title {
-  @include subheader();
-  margin-bottom: var(--datagrid-title-margin-bottom);
+  .datagrid-title {
+    @include subheader();
+    margin-bottom: var(--datagrid-title-margin-bottom);
+  }
 }
