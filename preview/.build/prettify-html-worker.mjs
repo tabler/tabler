@@ -12,7 +12,16 @@ for (const file of files) {
   const source = readFileSync(file, 'utf8')
   // Astro appends "overflow-x: auto" to the shiki <pre> style — the Eleventy
   // pipeline doesn't have it and HTML is the product: restore 1:1.
-  const cleaned = source.replaceAll('; overflow-x: auto;', '')
+  const cleaned = source
+    .replaceAll('; overflow-x: auto;', '')
+    // Give every <!-- BEGIN/END ... --> marker its own line. Prettier keeps a
+    // comment glued to whatever touches it (an inline <a>, the next marker), so
+    // a component rendered in a .map() came out as
+    // `<!-- END NAVBAR ITEM --><!-- BEGIN NAVBAR ITEM --><a ...>`. Only a
+    // marker with a non-space neighbour gets a newline, so nothing that is
+    // already on its own line gains a blank line (prettier would keep it).
+    .replaceAll(/(?<=\S)(?=<!-- (?:BEGIN|END) [^>]*-->)/g, '\n')
+    .replaceAll(/(?<=<!-- (?:BEGIN|END) [^>]*-->)(?=\S)/g, '\n')
   // filepath is not redundant next to parser: "html" — prettier's printer keys
   // some output off it, and without it the doctype comes out as <!DOCTYPE html>
   // instead of the <!doctype html> the prettier CLI writes.
