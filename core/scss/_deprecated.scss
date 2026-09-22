@@ -7,6 +7,12 @@
 // with `@extend`, which only reaches modules upstream of this one.
 //
 // Removed in 2.0, together with this file and `_deprecated-props.scss`.
+//
+// The tokens stay unlayered like every other token. Each rule sits in the
+// layer of the rule it patches (`forms`, `components`, `helpers`), so a
+// utility still wins over an alias the way it wins over the original. An
+// `@extend` cannot cross into a layer, so the extending rule stays outside
+// and only its own declarations are layered.
 @use 'sass:map';
 @use 'config' as *;
 @use 'core';
@@ -56,25 +62,28 @@
   // (from `bootstrap/forms/_form-text.scss`).
   .form-hint {
     @extend .form-text;
-    --form-hint-margin-top: #{$form-hint-margin-top};
-    --form-hint-label-offset: #{$form-hint-label-offset};
-    --form-hint-control-margin-top: #{$form-hint-control-margin-top};
 
-    // Kept from the old rule, so an inline element still gets the top margin.
-    display: block;
+    @layer forms {
+      --form-hint-margin-top: #{$form-hint-margin-top};
+      --form-hint-label-offset: #{$form-hint-label-offset};
+      --form-hint-control-margin-top: #{$form-hint-control-margin-top};
 
-    + .form-control {
-      margin-top: var(--form-hint-margin-top);
-    }
+      // Kept from the old rule, so an inline element still gets the top margin.
+      display: block;
 
-    .form-label + & {
-      margin-top: var(--form-hint-label-offset);
-    }
+      + .form-control {
+        margin-top: var(--form-hint-margin-top);
+      }
 
-    .input-group + &,
-    .form-control + &,
-    .form-select + & {
-      margin-top: var(--form-hint-control-margin-top);
+      .form-label + & {
+        margin-top: var(--form-hint-label-offset);
+      }
+
+      .input-group + &,
+      .form-control + &,
+      .form-select + & {
+        margin-top: var(--form-hint-control-margin-top);
+      }
     }
   }
 
@@ -82,72 +91,81 @@
   // `.legend` is deprecated, use `.legend-dot` instead (from `ui/_legend.scss`).
   .legend:empty {
     @extend .legend-dot;
-    padding: 0;
-  }
 
-  // deprecated(2.0): `--tblr-status-color-rgb`, use `--tblr-status-color`
-  .status {
-    --status-color-rgb: #{deprecated-rgb-triplet($text-secondary)};
-  }
-
-  @each $name, $color in map.merge($theme-colors, $social-colors) {
-    .status-#{$name} {
-      --status-color-rgb: var(--#{$name}-rgb);
+    @layer components {
+      padding: 0;
     }
   }
 
-  // deprecated(2.0): the focus ring is an outline. A project that set one of
-  // the old box-shadow tokens still gets its shadow, next to the outline.
-  // A button has a shadow of its own, so the fallback is that one and an
-  // untouched project looks the same. `.btn-link` sets `box-shadow: none`
-  // directly and needs its own fallback.
-  .btn:focus-visible:not(:active),
-  .btn-check:focus-visible + .btn {
-    @if $btn-focus-box-shadow != $focus-ring-box-shadow {
-      --btn-focus-box-shadow: #{$btn-focus-box-shadow};
+  @layer components {
+    // deprecated(2.0): `--tblr-status-color-rgb`, use `--tblr-status-color`
+    .status {
+      --status-color-rgb: #{deprecated-rgb-triplet($text-secondary)};
     }
-    box-shadow: var(--btn-focus-box-shadow, var(--btn-box-shadow));
-  }
 
-  .btn-link:focus-visible:not(:active) {
-    box-shadow: var(--btn-focus-box-shadow, none);
-  }
-
-  .btn-close:focus-visible {
-    @if $btn-close-focus-shadow != $focus-ring-box-shadow {
-      --btn-close-focus-shadow: #{$btn-close-focus-shadow};
+    @each $name, $color in map.merge($theme-colors, $social-colors) {
+      .status-#{$name} {
+        --status-color-rgb: var(--#{$name}-rgb);
+      }
     }
-    box-shadow: var(--btn-close-focus-shadow, none);
-  }
 
-  .page-link:focus-visible {
-    @if $pagination-focus-box-shadow != $focus-ring-box-shadow {
-      --pagination-focus-box-shadow: #{$pagination-focus-box-shadow};
+    // deprecated(2.0): the focus ring is an outline. A project that set one of
+    // the old box-shadow tokens still gets its shadow, next to the outline.
+    // A button has a shadow of its own, so the fallback is that one and an
+    // untouched project looks the same. `.btn-link` sets `box-shadow: none`
+    // directly and needs its own fallback.
+    .btn:focus-visible:not(:active),
+    .btn-check:focus-visible + .btn {
+      @if $btn-focus-box-shadow != $focus-ring-box-shadow {
+        --btn-focus-box-shadow: #{$btn-focus-box-shadow};
+      }
+      box-shadow: var(--btn-focus-box-shadow, var(--btn-box-shadow));
     }
-    box-shadow: var(--pagination-focus-box-shadow, none);
-  }
 
-  .accordion-button:focus-visible {
-    @if $accordion-btn-focus-box-shadow != $focus-ring-box-shadow {
-      --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
+    .btn-link:focus-visible:not(:active) {
+      box-shadow: var(--btn-focus-box-shadow, none);
     }
-    box-shadow: var(--accordion-btn-focus-box-shadow, none);
+
+    .btn-close:focus-visible {
+      @if $btn-close-focus-shadow != $focus-ring-box-shadow {
+        --btn-close-focus-shadow: #{$btn-close-focus-shadow};
+      }
+      box-shadow: var(--btn-close-focus-shadow, none);
+    }
+
+    .page-link:focus-visible {
+      @if $pagination-focus-box-shadow != $focus-ring-box-shadow {
+        --pagination-focus-box-shadow: #{$pagination-focus-box-shadow};
+      }
+      box-shadow: var(--pagination-focus-box-shadow, none);
+    }
+
+    .accordion-button:focus-visible {
+      @if $accordion-btn-focus-box-shadow != $focus-ring-box-shadow {
+        --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
+      }
+      box-shadow: var(--accordion-btn-focus-box-shadow, none);
+    }
   }
 
-  // deprecated(2.0): `--tblr-focus-ring-x`, `-y` and `-blur` moved and blurred
-  // the `.focus-ring` helper's shadow. All three default to `0`, which draws nothing.
-  .focus-ring:focus-visible {
-    box-shadow: var(--focus-ring-x, 0) var(--focus-ring-y, 0) var(--focus-ring-blur, 0) 0 var(--focus-ring-color);
+  @layer helpers {
+    // deprecated(2.0): `--tblr-focus-ring-x`, `-y` and `-blur` moved and blurred
+    // the `.focus-ring` helper's shadow. All three default to `0`, which draws nothing.
+    .focus-ring:focus-visible {
+      box-shadow: var(--focus-ring-x, 0) var(--focus-ring-y, 0) var(--focus-ring-blur, 0) 0 var(--focus-ring-color);
+    }
   }
 
-  // deprecated(2.0): the check mark and the switch knob are masks now. An
-  // image set through the old token is still painted, under the mask.
-  .form-check-input:checked,
-  .form-check-input:indeterminate {
-    background-image: var(--form-check-bg-image, none);
-  }
+  @layer forms {
+    // deprecated(2.0): the check mark and the switch knob are masks now. An
+    // image set through the old token is still painted, under the mask.
+    .form-check-input:checked,
+    .form-check-input:indeterminate {
+      background-image: var(--form-check-bg-image, none);
+    }
 
-  .form-switch .form-check-input {
-    background-image: var(--form-switch-bg, none);
+    .form-switch .form-check-input {
+      background-image: var(--form-switch-bg, none);
+    }
   }
 }
