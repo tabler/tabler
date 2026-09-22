@@ -1,0 +1,57 @@
+// Sass variables kept only so that projects written for an older 1.x release
+// still compile: configuring a variable that does not exist is an error in the
+// Sass module system, and so is reading one. Nothing in Tabler reads them. Each
+// keeps its 1.5 default; `_deprecated.scss` turns a customised value into the
+// matching new token where there is one.
+//
+// Removed in 2.0, together with this file.
+@use 'settings' as *;
+@use 'variables' as *;
+@use 'mixins/functions' as *;
+
+// deprecated(2.0): the focus ring is an outline, see `$focus-ring-width`,
+// `$focus-ring-offset`, `$focus-ring-color` and `$focus-ring-opacity`
+$focus-ring-blur: 0 !default;
+$input-btn-focus-width: 0.25rem !default;
+$input-btn-focus-color-opacity: 0.25 !default;
+$input-btn-focus-color: color-transparent(var(--primary), $input-btn-focus-color-opacity) !default;
+$input-btn-focus-blur: $focus-ring-blur !default;
+$focus-ring-box-shadow:
+  0 0 0 2px var(--primary),
+  0 0 $focus-ring-blur $input-btn-focus-width $input-btn-focus-color !default;
+$input-btn-focus-box-shadow: $focus-ring-box-shadow !default;
+$input-focus-width: $input-btn-focus-width !default;
+$input-focus-box-shadow: $input-btn-focus-box-shadow !default;
+$btn-focus-box-shadow: $focus-ring-box-shadow !default;
+$btn-close-focus-shadow: $focus-ring-box-shadow !default;
+$accordion-btn-focus-box-shadow: $focus-ring-box-shadow !default;
+$nav-link-focus-box-shadow: $focus-ring-box-shadow !default;
+$pagination-focus-box-shadow: $focus-ring-box-shadow !default;
+$pagination-focus-outline: 0 !default;
+$form-check-input-focus-box-shadow: $focus-ring-box-shadow !default;
+$form-select-focus-width: $input-focus-width !default;
+$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-color !default;
+$form-range-thumb-focus-box-shadow:
+  0 0 0 1px var(--body-bg),
+  $input-focus-box-shadow !default;
+
+// deprecated(2.0): `.form-hint` is `.form-text`
+$form-hint-margin-top: 0.25rem !default;
+$form-hint-label-offset: -0.25rem !default;
+$form-hint-control-margin-top: 0.5rem !default;
+
+// deprecated(2.0): the switch knob, the check mark and the navbar toggler are
+// masks painted with a colour, see `$form-switch-color`, `$form-check-input-checked-color`
+// and `$navbar-light-icon-color`
+$form-switch-color-dark: rgba($white, 0.25) !default;
+$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#e5e7eb'/></svg>") !default;
+$form-switch-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color-dark}'/></svg>") !default;
+$form-switch-focus-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#83b7e8'/></svg>") !default;
+$form-switch-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$white}'/></svg>") !default;
+$form-switch-checked-bg-position: right center !default;
+$form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#1f2937' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
+$navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='rgba(0, 0, 0, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='rgba(255, 255, 255, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+
+// deprecated(2.0): colours are mixed with `color-mix()`, nothing needs the triplets
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value') !default;

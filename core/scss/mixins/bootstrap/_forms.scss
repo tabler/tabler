@@ -22,7 +22,7 @@
   }
 }
 
-@mixin form-validation-state($state, $color, $icon, $tooltip-color: color-contrast($color), $tooltip-bg-color: color-transparent($color, $form-feedback-tooltip-opacity), $focus-ring-color: focus-ring-color($color), $border-color: $color) {
+@mixin form-validation-state($state, $color, $icon, $tooltip-color: color-contrast($color), $tooltip-bg-color: color-transparent($color, $form-feedback-tooltip-opacity), $focus-box-shadow: null, $border-color: $color, $focus-ring-color: focus-ring-color($color)) {
   .#{$state}-feedback {
     display: none;
     width: 100%;
@@ -69,6 +69,8 @@
       &:focus {
         border-color: $border-color;
         @include focus-ring(true, $focus-ring-color);
+        // deprecated(2.0): a `focus-box-shadow` key in `$form-validation-states`
+        box-shadow: $focus-box-shadow;
       }
     }
   }
@@ -100,6 +102,8 @@
       &:focus {
         border-color: $border-color;
         @include focus-ring(true, $focus-ring-color);
+        // deprecated(2.0): a `focus-box-shadow` key in `$form-validation-states`
+        box-shadow: $focus-box-shadow;
       }
     }
   }
@@ -122,6 +126,8 @@
 
       &:focus {
         @include focus-ring(true, $focus-ring-color);
+        // deprecated(2.0): a `focus-box-shadow` key in `$form-validation-states`
+        box-shadow: $focus-box-shadow;
       }
 
       ~ .form-check-label {

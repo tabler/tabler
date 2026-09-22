@@ -86,4 +86,23 @@ const eventActionOnPlugin = (Plugin: PluginComponent, onEvent: string, stringSel
   })
 }
 
-export { enableDismissTrigger, eventAction, eventActionOnPlugin }
+/**
+ * Creates the component for every element that matches on page load. One
+ * element with a broken config must not stop the rest of the bundle, so the
+ * error is logged and the loop goes on.
+ */
+const initAll = (selector: string, Plugin: PluginComponent, filter: ((element: HTMLElement) => boolean) | null = null): void => {
+  for (const element of SelectorEngine.find(selector)) {
+    if (filter && !filter(element)) {
+      continue
+    }
+
+    try {
+      Plugin.getOrCreateInstance(element)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export { enableDismissTrigger, eventAction, eventActionOnPlugin, initAll }

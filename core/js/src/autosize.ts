@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = Record<string, never>
@@ -134,9 +134,7 @@ class Autosize extends BaseComponent {
  */
 
 // js-docs-start autosize-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_TOGGLE)) {
-  Autosize.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_TOGGLE, Autosize)
 // js-docs-end autosize-init
 
 export default Autosize

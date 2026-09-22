@@ -32,6 +32,8 @@ Each directory has a forward-only `_index.scss` barrel (`bootstrap/`, `layout/`,
 
 The module graph uses `@use` / `@forward`: a partial starts with `@use '../config' as *`, which is the hub forwarding `settings`, `variables`, `variables-dark`, `maps`, `mixins` and `utilities`. Cross-module `@extend` rules must stay in `_extends.scss`, which loads last.
 
+**Cascade layers.** `_layers.scss` declares the order once (`colors, config, root, reboot, layout, content, forms, components, custom, helpers, utilities`, the Bootstrap v6 names) and every CSS-emitting partial wraps its rules in one `@layer x { … }` block: `ui/*`, `bootstrap/_buttons` … `_toasts`, `layout/_navbar`, `_page`, `_core` → `components`; `bootstrap/forms/*` and `ui/forms/*` → `forms` (except `_input-group` and `_validation`, which restyle `.btn` and sit in `components`); `type`, `images`, `tables`, `ui/typo` → `content`; `containers`, `grid`, `ui/_grid` → `layout`; `helpers` → `helpers`; `utils/*` and `utilities/_api` → `utilities`. Keep outside the block: `@use`, `$variables` (a `$x-tokens` map inside a block is local to it), `@mixin`/`@function`, `@property`, `@keyframes`, `@font-face`. The `:root` token files (`bootstrap/_root`, `_props`, `layout/_root`, `tabler-themes`), `layout/_dark.scss` (its `color-scheme: dark` switch must beat the unlayered `color-scheme: light`) and `vendor/*` stay unlayered. Utilities carry no `!important` — the `utilities` layer wins by order — so do not add one. A partial with no block is still compiled, just unlayered, so a forgotten wrapper shows up as a rule that beats every utility.
+
 ## 2. The component pattern
 
 Every themeable value is a **custom property on the component's root class**, seeded
@@ -103,7 +105,7 @@ Global properties (`--dir`, colours, fonts, spacing) live in `_props.scss`, whic
 
 - Colour pairs are expressed with `light-dark()` where possible (`_variables.scss`, `layout/_root.scss`), so one declaration covers both modes.
 - What cannot be expressed that way goes to `_variables-dark.scss`, or to `layout/_dark.scss` for the visibility helpers.
-- Dark mode is keyed on `.theme-dark`, `[data-bs-theme='dark']` and `[data-theme='dark']` — match all three when you add a selector, and keep the whole block behind `@if $enable-dark-mode`.
+- Dark mode is keyed on `[data-bs-theme='dark']` and `[data-theme='dark']` — match both when you add a selector, and keep the whole block behind `@if $enable-dark-mode`. (The legacy `.theme-dark` toggle class was retired in favor of `.theme-{color}` — see `mixins/_theme.scss`.)
 
 ## 5. RTL
 
@@ -156,6 +158,7 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 - [ ] Custom properties written bare; new foreign names added to `cssVarIgnore`
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`
 - [ ] Logical properties, or `--dir` + `/* rtl:ignore */`; no hand-written RTL
+- [ ] No class, custom property, Sass variable or mixin parameter removed or renamed without an alias (`backward-compat`)
 - [ ] sass-true test for a mixin that can break silently
 - [ ] `lint:scss`, `check:tokens`, `lint:prettier`, `test:scss` clean
 - [ ] Docs page and class table updated (`write-docs`, `class-reference`), changeset written

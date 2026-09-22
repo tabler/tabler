@@ -1,55 +1,57 @@
 @use '../config' as *;
 
-.signal {
-  --signal-size: #{$signal-size};
-  --signal-color: #{$text-secondary};
-  --signal-bars: 3;
-  --signal-bar-border-radius: #{$signal-bar-border-radius};
-  --signal-bar-inactive-opacity: #{$signal-bar-inactive-opacity};
-  --signal-gap: calc(var(--signal-size) * #{$signal-gap-ratio});
-  --signal-padding-y: calc(var(--signal-size) * #{$signal-padding-y-ratio});
-  --signal-padding-x: calc(var(--signal-size) * #{$signal-padding-x-ratio});
-  display: inline-flex;
-  flex-shrink: 0;
-  gap: var(--signal-gap);
-  align-items: flex-end;
-  width: var(--signal-size);
-  height: var(--signal-size);
-  padding: var(--signal-padding-y) var(--signal-padding-x);
-  vertical-align: middle;
-}
-
-// Each bar takes its share of the full height: the first of three is a third, the last is full
-.signal-bar {
-  --signal-bar-index: 1;
-  flex: 1;
-  height: calc(100% * var(--signal-bar-index) / var(--signal-bars));
-  background: var(--signal-color);
-  opacity: var(--signal-bar-inactive-opacity);
-  @include border-radius(var(--signal-bar-border-radius));
-
-  &.active {
-    opacity: 1;
+@layer components {
+  .signal {
+    --signal-size: #{$signal-size};
+    --signal-color: #{$text-secondary};
+    --signal-bars: 3;
+    --signal-bar-border-radius: #{$signal-bar-border-radius};
+    --signal-bar-inactive-opacity: #{$signal-bar-inactive-opacity};
+    --signal-gap: calc(var(--signal-size) * #{$signal-gap-ratio});
+    --signal-padding-y: calc(var(--signal-size) * #{$signal-padding-y-ratio});
+    --signal-padding-x: calc(var(--signal-size) * #{$signal-padding-x-ratio});
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: var(--signal-gap);
+    align-items: flex-end;
+    width: var(--signal-size);
+    height: var(--signal-size);
+    padding: var(--signal-padding-y) var(--signal-padding-x);
+    vertical-align: middle;
   }
 
-  @for $index from 2 through $signal-max-bars {
-    &:nth-child(#{$index}) {
-      --signal-bar-index: #{$index};
+  // Each bar takes its share of the full height: the first of three is a third, the last is full
+  .signal-bar {
+    --signal-bar-index: 1;
+    flex: 1;
+    height: calc(100% * var(--signal-bar-index) / var(--signal-bars));
+    background: var(--signal-color);
+    opacity: var(--signal-bar-inactive-opacity);
+    @include border-radius(var(--signal-bar-border-radius));
+
+    &.active {
+      opacity: 1;
+    }
+
+    @for $index from 2 through $signal-max-bars {
+      &:nth-child(#{$index}) {
+        --signal-bar-index: #{$index};
+      }
     }
   }
-}
 
-// The number of bars is read from the markup, so the steps stay even for any count
-@for $count from 2 through $signal-max-bars {
-  @if $count != 3 {
-    .signal:has(> .signal-bar:last-child:nth-child(#{$count})) {
-      --signal-bars: #{$count};
+  // The number of bars is read from the markup, so the steps stay even for any count
+  @for $count from 2 through $signal-max-bars {
+    @if $count != 3 {
+      .signal:has(> .signal-bar:last-child:nth-child(#{$count})) {
+        --signal-bars: #{$count};
+      }
     }
   }
-}
 
-@each $name, $color in $theme-colors {
-  .signal-#{$name} {
-    --signal-color: var(--#{$name});
+  @each $name, $color in $theme-colors {
+    .signal-#{$name} {
+      --signal-color: var(--#{$name});
+    }
   }
 }
