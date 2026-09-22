@@ -85,6 +85,15 @@ There's a good reason to switch. The triplets are static: overriding `--tblr-pri
 
 `--tblr-primary-lt`, `--tblr-primary-darken` and the other derived variables still exist, they're computed with `color-mix()` now.
 
+The same goes for the one component token that was a triplet: `.status` used to set `--tblr-status-color-rgb`, and it is deprecated in favor of `--tblr-status-color`, which holds the color itself:
+
+```diff
+  .status-custom {
+-   --tblr-status-color-rgb: 241, 29, 70;
++   --tblr-status-color: #f11d46;
+  }
+```
+
 ### The palette is defined in oklch
 
 The color values themselves moved from hex to `oklch()`. `--tblr-primary` used to resolve to `#066fd1`, now it resolves to `oklch(54.6% 0.1724 254.2deg)`. The colors look the same. It only matters if you read a variable from JavaScript and expect a hex string, see [Deprecated JavaScript helpers](#deprecated-javascript-helpers) below.
@@ -227,6 +236,8 @@ Component|Events
 const color = tabler.tabler.getColor('primary', 0.5);
 ```
 
+With a bundler the namespace is a named export, `import { tabler } from '@tabler/core'`, and the same applies to it.
+
 The namespace is deprecated and goes away in 2.0. `hexToRgba()` only understands hex strings, and the palette is `oklch()` now, so `getColor()` with an opacity returns a `color-mix()` expression instead of `rgba()`. Read the variable yourself, and use `color-mix()` when you need transparency:
 
 ```js
@@ -246,7 +257,7 @@ In 1.5 `.legend` was a small colored dot. In 1.6 `.legend` is a whole legend ite
 + <span class="legend-dot bg-primary"></span>
 ```
 
-An empty `.legend` still renders as a dot, so the old markup still works. It is deprecated, so rename it when you touch that markup. See [Legend](/ui/components/legend) for the new item, the list and the interactive states.
+An empty `.legend` still renders as a dot, so the old markup still works. It is deprecated, so rename it when you touch that markup. See [Legend](/ui/components/legend) for the new item, the list and the interactive states, and for `.legend-lg`, `.legend-unit` and `.legend-list-divided`, which show a big value with a unit.
 
 ## Form hint is form text
 
@@ -402,6 +413,10 @@ None of these break markup, but they change how a page looks or scrolls. Worth a
 - **Colors are computed in oklab.** Tints, shades and hover states are mixed in the `oklab` color space instead of `sRGB`. Mixed colors are a touch less muddy, mostly noticeable in the lighter `-lt` backgrounds. Solid colors are the same as before.
 - **`.form-selectgroup-label`** no longer applies the icon-only margin to icons nested deeper inside the label.
 - **Striped tables respect custom backgrounds.** A `<tr>` or `<td>` with `.bg-*`, `.table-*`, `.text-bg-*` or an inline `background` keeps that background inside `.table-striped` and `.table-striped-columns`. Before, the stripe painted over it.
+- **`pre` is 13px.** Code blocks have their own size now, `$pre-font-size` (`0.92857143em`, 13px at the default base size), and `$markdown-pre-font-size` inside `.markdown`. In 1.5 `pre` inherited the size of its parent.
+- **`.card-options` is in the flow.** In 1.5 it was `position: absolute` in the top right corner of `.card-header`. It is a regular flex item now, pushed to the end with `margin-inline-start: auto`. If your CSS positioned it or reserved space for it, remove that.
+- **A disabled switch looks disabled.** A `.form-switch` that is `disabled` and off gets a filled track and a darker knob. Before, it looked the same as an enabled one.
+- **Tom Select matches `.form-control`.** The control uses Tabler's input metrics in every size, so it is as tall as the inputs next to it, and it no longer grows on focus when the selected item has an avatar, a flag or a badge.
 - **The accordion plus toggle rotates.** `.accordion-button-toggle-plus` used to hide the first `<path>` of the inline SVG when the item was open, which didn't work with sprite icons or icon fonts. It now rotates the whole icon a quarter turn into a close icon. If your own CSS targeted `path:first-child` in that toggle, remove it. Any icon source works, but the icon has to be a plus for the rotation to make sense.
 
 ## What is new in 1.6
@@ -419,7 +434,10 @@ Besides the changes above, 1.6 adds:
 - A `switch-icon-loading` state for [Switch icon](/ui/components/switch-icon). Pass a promise to `event.wait()` in `toggle.bs.switch-icon` and the button shows a spinner until it settles.
 - `Autosize`, `CountUp`, `InputMask`, `Sortable` and `SwitchIcon` as real components with instances, methods and events, see above.
 - `data-tblr-countup` as an alias of `data-countup`.
-- `.navbar-floating` for [navbars](/ui/layout/navbars) and `.offcanvas-floating` for [offcanvas](/ui/components/offcanvas), which detach the element from the edge of the screen.
+- `.navbar-floating` for [navbars](/ui/layout/navbars) and `.offcanvas-floating` for [offcanvas](/ui/components/offcanvas), which detach the element from the edge of the screen. The theme settings `data-bs-navbar-style="floating"` and `data-bs-offcanvas-style="floating"` on `<html>` do the same for the whole page.
+- `.page-section-title` and `.page-section-description` for a section heading inside the page body, between the page header and the cards.
+- `.theme-dark` as a class alternative to `data-bs-theme="dark"`. The dark mode selectors match both.
+- `tabler.js` no longer stops on page load when one element has an invalid `data-*` config. The error is logged and every other component is still created, so a workaround that initialized components by hand can go.
 - Drag styles for [Sortable](/ui/plugins/sortable): `.sortable-ghost`, `.sortable-chosen`, and `.sortable-drag` for lists that turn on `forceFallback`.
 - A billing page in the preview, with plan usage, payment method and invoices.
 - The Bootstrap component port is compiled with strict TypeScript, so the type declarations in the package are tighter. Configs are typed per component.
