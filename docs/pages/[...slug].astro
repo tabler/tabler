@@ -8,6 +8,7 @@ import DocsLayout from '@layouts/DocsLayout.astro'
 import { docsUrlFromId } from '@lib/docs-pages'
 import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
 import { callouts } from '@components/callouts/index.ts'
+import { cssSection } from '@lib/scss-docs'
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('docs')
@@ -30,8 +31,12 @@ const toc: { level: 2 | 3; text: string; id: string }[] = headings.filter((headi
 if (data.classnames) {
   toc.push({ level: 2, text: 'Class reference', id: 'class-reference' })
 }
-if (data.cssVars) {
-  toc.push({ level: 2, text: 'CSS variables', id: 'css-variables' })
+// DocsCssVars too; only the parts that exist in the sources get an entry.
+const { css, sass } = await cssSection(data.cssVars, data.sassVars)
+if (css || sass) {
+  toc.push({ level: 2, text: 'CSS', id: 'css' })
+  if (css) toc.push({ level: 3, text: 'Variables', id: 'css-variables' })
+  if (sass) toc.push({ level: 3, text: 'Sass variables', id: 'sass-variables' })
 }
 ---
 
@@ -48,6 +53,7 @@ if (data.cssVars) {
   hidePagination={data.hidePagination}
   classnames={data.classnames}
   cssVars={data.cssVars}
+  sassVars={data.sassVars}
   sourcePath={data.source}
   toc={toc}
   url={docsUrlFromId(entry.id)}
