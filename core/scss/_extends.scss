@@ -10,8 +10,65 @@
 // Rules containing only `@extend` emit no CSS of their own, so placing them
 // here does not change the compiled output — each extension is applied
 // in-place to the rules it extends.
+@use 'sass:map';
 @use 'config' as *;
 @use 'core';
+
+// Generic .theme-{color} classes (mixins/_theme.scss) plus every component's
+// own `.component-{color}` hook onto them — cross-module for the same reason
+// as everything else in this file: @extend can't reach ui/_buttons.scss (or
+// any sibling module) from ui/_alerts.scss etc.
+@include generate-theme-classes();
+
+@each $color, $value in map.merge($theme-colors, $social-colors) {
+  .btn-#{$color},
+  .status-#{$color} {
+    @extend .theme-#{$color};
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .alert-#{$name},
+  .toast-#{$name},
+  .bg-pattern-#{$name} {
+    @extend .theme-#{$name};
+  }
+
+  // list-group-item's own alpha-blended border/hover-bg (bootstrap/_list-group.scss
+  // reads them as --list-group-border-tint/--list-group-hover-tint) — not part of
+  // the shared --theme-* contract, since the alpha values are list-group-specific.
+  .list-group-item-#{$name} {
+    @extend .theme-#{$name};
+    --list-group-border-tint: #{color-transparent(var(--theme-bg), $list-group-variant-border-alpha)};
+    --list-group-hover-tint: #{color-transparent(var(--theme-bg), $list-group-variant-hover-alpha)};
+  }
+}
+
+@each $name, $color in $extra-colors {
+  .steps-#{$name} {
+    @extend .theme-#{$name};
+  }
+
+  // The -lt modifier swaps which theme property feeds --steps-color/-fg
+  // (ui/_steps.scss), so it can't just join the combined selector above.
+  .steps-#{$name}-lt {
+    @extend .theme-#{$name};
+    --steps-color: var(--theme-lt);
+    --steps-fg: var(--theme-bg);
+  }
+}
+
+// .table-{color} (bootstrap/_tables.scss, table-variant() mixin) computes its
+// own row/stripe/hover/active shades in Sass at compile time — a different
+// mechanism from --theme-*, kept as-is to not change how the 8 existing
+// variants already look. Extending .theme-{color} here only adds the shared
+// contract on top, so something nested inside a colored row (a .btn, a
+// .badge) can still pick up the same color via inheritance.
+@each $name in map.keys($table-variants) {
+  .table-#{$name} {
+    @extend .theme-#{$name};
+  }
+}
 
 // Heading helpers (from `bootstrap/_type.scss`)
 .h1 {

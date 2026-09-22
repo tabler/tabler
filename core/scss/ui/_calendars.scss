@@ -77,19 +77,19 @@ $calendar-tokens: defaults(
     @include focus-ring-transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
 
     &:hover {
-      color: var(--primary);
+      color: var(--theme-bg, var(--primary));
       text-decoration: none;
       background: var(--bg-surface);
       border-color: var(--border-active-color);
     }
 
     &:focus-visible {
-      @include focus-ring(true);
+      @include focus-ring(true, var(--theme-bg, var(--focus-ring-color)));
     }
   }
 
   .date-today {
-    color: var(--primary);
+    color: var(--theme-bg, var(--primary));
     border-color: var(--border-color);
   }
 }
@@ -111,9 +111,9 @@ $calendar-tokens: defaults(
   &.range-start,
   &.range-end {
     .date-item {
-      color: var(--primary-fg);
-      background: var(--primary);
-      border-color: var(--primary);
+      color: var(--theme-fg, var(--primary-fg));
+      background: var(--theme-bg, var(--primary));
+      border-color: var(--theme-bg, var(--primary));
     }
   }
 

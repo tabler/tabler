@@ -14,6 +14,10 @@
   // stylelint-disable-next-line property-disallowed-list
   border-radius: 50%;
   animation: var(--spinner-animation-speed) linear infinite var(--spinner-animation-name);
+  // Both variants paint from currentColor (below); without a default here
+  // one with no .text-{color} utility just inherits the ambient body text
+  // color instead of standing out as a loading indicator, like .loader does.
+  color: var(--theme-bg, var(--primary));
 }
 
 // scss-docs-start spinner-border-keyframes

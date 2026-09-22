@@ -1,0 +1,34 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+// Ported from Bootstrap v6's `.theme-*` generator (scss/_theme.scss): one
+// mixin maps a color's tokens onto a generic `--theme-*` contract, so a
+// component reads `--theme-bg`/`--theme-fg` instead of getting its own
+// per-color ruleset.
+// scss-docs-start theme-color-vars-mixin
+@mixin theme-color-vars($color) {
+  --theme-bg: var(--#{$color});
+  --theme-fg: var(--#{$color}-fg);
+  --theme-darken: var(--#{$color}-darken);
+  --theme-lt: var(--#{$color}-lt);
+  // Stronger tint than --theme-lt (10%), for a hover/active background on
+  // subtle-surface components (list-group, nav, dropdown, pagination) —
+  // matches Bootstrap v6's `--theme-bg-muted`.
+  --theme-muted: var(--#{$color}-200);
+  @if $color == 'dark' {
+    --theme-border: var(--dark-mode-border-color);
+  } @else {
+    --theme-border: transparent;
+  }
+}
+// scss-docs-end theme-color-vars-mixin
+
+// scss-docs-start generate-theme-classes-mixin
+@mixin generate-theme-classes() {
+  @each $color, $value in map.merge($theme-colors, $social-colors) {
+    .theme-#{$color} {
+      @include theme-color-vars($color);
+    }
+  }
+}
+// scss-docs-end generate-theme-classes-mixin

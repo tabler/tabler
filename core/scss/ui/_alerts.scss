@@ -6,7 +6,7 @@
 $alert-tokens: () !default;
 $alert-tokens: defaults(
   (
-    --alert-variant-color: var(--body-color),
+    --alert-variant-color: var(--theme-bg, var(--body-color)),
     --alert-color: var(--alert-variant-color),
     --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))},
     --alert-padding-x: $alert-padding-x,
@@ -109,8 +109,5 @@ $alert-tokens: defaults(
   border-color: var(--border-color);
 }
 
-@each $name, $color in $theme-colors {
-  .alert-#{$name} {
-    --alert-variant-color: var(--#{$name});
-  }
-}
+// `.alert-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+// its header comment: @extend only reaches modules this file loads).
