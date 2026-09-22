@@ -226,6 +226,14 @@ The tree starts on its own for every `[data-bs-toggle="tree"]` element:
 
 To create it from code, call `Tree.getOrCreateInstance(element)`. The `checked` getter returns the checked inputs, and each change fires the native `change` event on the input.
 
+Once the cascade to parents and children settles, the tree fires `changed.bs.tree` on the root list, so code listening for the outcome does not need to read `checked` after every native `change`:
+
+```js
+document.querySelector('.tree').addEventListener('changed.bs.tree', (event) => {
+  console.log(event.relatedTarget, event.checked);
+});
+```
+
 ## Accessibility
 
 - The tree is made of plain nested lists and `<details>`, so screen readers announce the nesting and the expanded state without extra roles.

@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { clearFixture, getFixture } from '../helpers/fixture'
+import EventHandler from '../../src/bootstrap/dom/event-handler'
 import Tree from '../../src/tree'
 
 describe('Tree', () => {
@@ -139,6 +140,19 @@ describe('Tree', () => {
 
       expect(() => box('leaf').click()).not.toThrow()
       expect(box('leaf').checked).toBe(true)
+    })
+
+    it('should fire changed.bs.tree with the clicked checkbox and the checked list, after the cascade settles', () => {
+      const tree = create(markup())
+      const spy = vi.fn()
+      EventHandler.on(fixtureEl.querySelector('.tree')!, 'changed.bs.tree', spy)
+
+      box('a').click()
+
+      expect(spy).toHaveBeenCalledTimes(1)
+      const event = spy.mock.calls[0][0] as CustomEvent
+      expect(event.relatedTarget).toBe(box('a'))
+      expect(event.checked).toEqual([box('a')])
     })
   })
 

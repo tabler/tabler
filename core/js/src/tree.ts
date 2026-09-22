@@ -23,6 +23,7 @@ const DATA_KEY = `bs.${NAME}`
 const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_CHANGE = `change${EVENT_KEY}`
+const EVENT_CHANGED = `changed${EVENT_KEY}`
 
 const SELECTOR_ITEM = 'li'
 const SELECTOR_CHECKBOX = 'input[type="checkbox"]'
@@ -64,6 +65,11 @@ class Tree extends BaseComponent {
 
       this.#cascadeDown(checkbox)
       this.#cascadeUp(checkbox)
+
+      EventHandler.trigger(this._element, EVENT_CHANGED, {
+        relatedTarget: checkbox,
+        checked: this.checked,
+      })
     })
   }
 
