@@ -48,9 +48,7 @@ const registration = /@property\s+(--[\w-]+)/g
 // reference. Only the names listed here get the scope check; every other
 // reference is checked for existence alone. name (unprefixed) → the class(es)
 // whose subtree owns it.
-export const scopedProperties: Record<string, string[]> = {
-  'icon-size': ['icon'],
-}
+export const scopedProperties: Record<string, string[]> = {}
 
 const globalRoot = /^(?::root|:host|html(?:\[[^\]]*\])*|\*)$/
 
