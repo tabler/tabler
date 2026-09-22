@@ -107,6 +107,27 @@ describe('Tree', () => {
       expect(box('root').checked).toBe(true)
     })
 
+    it('should reach an always-expanded folder whose checkbox sits in a label', () => {
+      fixtureEl.innerHTML = `
+        <ul class="tree" data-bs-toggle="tree">
+          <li>
+            <label class="tree-node"><input id="folder" type="checkbox"> Folder</label>
+            <ul class="tree-children">
+              <li><label class="tree-node"><input id="a" type="checkbox"> A</label></li>
+              <li><label class="tree-node"><input id="b" type="checkbox"> B</label></li>
+            </ul>
+          </li>
+        </ul>`
+      new Tree(fixtureEl.querySelector<HTMLElement>('.tree')!)
+
+      box('a').click()
+      expect(box('folder').indeterminate).toBe(true)
+
+      box('b').click()
+      expect(box('folder').checked).toBe(true)
+      expect(box('folder').indeterminate).toBe(false)
+    })
+
     it('should ignore a folder without a checkbox', () => {
       fixtureEl.innerHTML = `
         <ul class="tree" data-bs-toggle="tree">

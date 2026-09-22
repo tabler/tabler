@@ -26,7 +26,7 @@ const EVENT_CHANGE = `change${EVENT_KEY}`
 
 const SELECTOR_ITEM = 'li'
 const SELECTOR_CHECKBOX = 'input[type="checkbox"]'
-const SELECTOR_OWN_CHECKBOX = `:scope > details > summary ${SELECTOR_CHECKBOX}, :scope > ${SELECTOR_CHECKBOX}`
+const SELECTOR_OWN_CHECKBOX = `:scope > details > summary ${SELECTOR_CHECKBOX}, :scope > label ${SELECTOR_CHECKBOX}, :scope > ${SELECTOR_CHECKBOX}`
 const SELECTOR_DESCENDANT_CHECKBOXES = `:scope ul ${SELECTOR_CHECKBOX}`
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 

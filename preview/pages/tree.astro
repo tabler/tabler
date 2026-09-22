@@ -87,6 +87,18 @@ const leafOnly: TreeItem[] = [
     children: [{ label: 'Repositories' }, { label: 'Runbooks', checked: true }],
   },
 ]
+
+const alwaysExpanded: TreeItem[] = [
+  {
+    label: 'Projects',
+    children: [{ label: 'Read', checked: true }, { label: 'Write', checked: true }, { label: 'Delete' }],
+  },
+  {
+    label: 'Billing',
+    children: [{ label: 'View invoices', checked: true }, { label: 'Change plan' }],
+  },
+  { label: 'Audit log' },
+]
 ---
 
 <DefaultLayout title="Tree" pageMenu="base.tree" description="A tree shows nested items, such as folders and files, that can be expanded, linked or checked.">
@@ -149,6 +161,16 @@ const leafOnly: TreeItem[] = [
           <CardTitle>Checkboxes on items only</CardTitle>
           <CardSubtitle>Leave the checkbox off the folders to let users pick single items.</CardSubtitle>
           <Tree items={leafOnly} checkboxes="leaves" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Always expanded</CardTitle>
+          <CardSubtitle>Add <code>expanded</code> to keep every folder open with no collapse toggle, while checkboxes stay selectable.</CardSubtitle>
+          <Tree items={alwaysExpanded} checkboxes expanded />
         </CardBody>
       </Card>
     </div>

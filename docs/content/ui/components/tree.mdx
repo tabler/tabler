@@ -10,6 +10,8 @@ classnames:
       desc: Root list
     - class: tree-children
       desc: Nested list inside a details element, with a guide line
+    - class: tree-expanded
+      desc: Set on the root list to keep every folder open and drop the collapse-toggle space
   part:
     - class: tree-node
       desc: One row - a summary, a link or a label
@@ -192,6 +194,27 @@ Leave the checkbox out of the folder rows to let users select single items only.
       </ul>
     </details>
   </li>
+</ul>
+</Example>
+
+## Always expanded
+
+Leave out `<details>` entirely to keep every folder open with no collapse toggle. A folder row is a `<span class="tree-node">`, or a `<label class="tree-node">` when it has a checkbox, followed by its `<ul class="tree-children">` — both are always rendered. Add `.tree-expanded` to the root list so every row starts where the collapse toggle would otherwise sit, since there is nothing left to toggle.
+
+<Example>
+<ul class="tree tree-expanded" data-bs-toggle="tree">
+  <li>
+    <label class="tree-node">
+      <input class="form-check-input" type="checkbox" />
+      Projects
+    </label>
+    <ul class="tree-children">
+      <li><label class="tree-node"><input class="form-check-input" type="checkbox" checked /> Read</label></li>
+      <li><label class="tree-node"><input class="form-check-input" type="checkbox" checked /> Write</label></li>
+      <li><label class="tree-node"><input class="form-check-input" type="checkbox" /> Delete</label></li>
+    </ul>
+  </li>
+  <li><label class="tree-node"><input class="form-check-input" type="checkbox" /> Audit log</label></li>
 </ul>
 </Example>
 

@@ -10,7 +10,7 @@ export interface TreeItem {
   icon?: string
   /** turns a leaf into a link */
   href?: string
-  /** expands a folder */
+  /** expands a folder; ignored when the tree has `expanded` */
   open?: boolean
   /** checks the item; only read when the tree has checkboxes */
   checked?: boolean
@@ -30,26 +30,28 @@ interface Props {
   fileIcon?: string | undefined
   /** set on the nested lists only */
   nested?: boolean
+  /** keeps every folder open with no collapse toggle, so items stay selectable */
+  expanded?: boolean
   class?: string
   /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root list */
   [key: string]: unknown
 }
 
-const { items, checkboxes = false, folderIcon, folderOpenIcon, fileIcon, nested = false, class: className, ...rest } = Astro.props
+const { items, checkboxes = false, folderIcon, folderOpenIcon, fileIcon, nested = false, expanded = false, class: className, ...rest } = Astro.props
 
 const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
 ---
 
-<ul class:list={[nested ? 'tree-children' : 'tree', className]} {...nested ? {} : toggle} {...rest}>
+<ul class:list={[nested ? 'tree-children' : 'tree', expanded && 'tree-expanded', className]} {...nested ? {} : toggle} {...rest}>
   {
     items.map((item) => {
       const isFolder = Boolean(item.children?.length)
       const hasCheckbox = checkboxes === true || (checkboxes === 'leaves' && !isFolder)
       const nodeClasses = ['tree-node', item.active && 'active', item.disabled && 'disabled']
-      const icon = item.icon ?? (isFolder ? (item.open ? (folderOpenIcon ?? folderIcon) : folderIcon) : fileIcon)
+      const icon = item.icon ?? (isFolder ? ((item.open || expanded) ? (folderOpenIcon ?? folderIcon) : folderIcon) : fileIcon)
       const content = (
         <>
-          {hasCheckbox && <input class="form-check-input" type="checkbox" checked={item.checked} disabled={item.disabled} aria-label={isFolder ? item.label : undefined} />}
+          {hasCheckbox && <input class="form-check-input" type="checkbox" checked={item.checked} disabled={item.disabled} aria-label={isFolder && !expanded ? item.label : undefined} />}
           {icon && <Icon name={icon} class="tree-icon" />}
           {item.label}
         </>
@@ -57,7 +59,12 @@ const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
 
       return (
         <li>
-          {isFolder ? (
+          {isFolder && expanded ? (
+            <>
+              {hasCheckbox ? <label class:list={nodeClasses}>{content}</label> : <span class:list={nodeClasses}>{content}</span>}
+              <Tree items={item.children ?? []} checkboxes={checkboxes} folderIcon={folderIcon} folderOpenIcon={folderOpenIcon} fileIcon={fileIcon} expanded nested />
+            </>
+          ) : isFolder ? (
             <details open={item.open}>
               <summary class:list={nodeClasses}>{content}</summary>
               <Tree items={item.children ?? []} checkboxes={checkboxes} folderIcon={folderIcon} folderOpenIcon={folderOpenIcon} fileIcon={fileIcon} nested />
