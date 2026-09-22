@@ -1,20 +1,61 @@
 ---
 // Custom-property block for a component, from the page's `css-vars` front
 // matter: the `// scss-docs-start <prefix>-css-vars` block of the SCSS source,
-// shown verbatim as on the Bootstrap docs (see lib/css-vars.ts).
+// shown as on the Bootstrap docs, minus its comment lines.
 import CodeSnippet from '@components/CodeSnippet.astro'
-import { cssVarsSource } from '@lib/css-vars'
+import { extractMarkedSnippet } from '@shared/lib/code-example'
 import { site } from '@shared/lib/site'
 
+// Vite inlines the sources at build time — `node:fs` paths would break once
+// the component is bundled into dist/.prerender during `astro build`.
+const scssSources = import.meta.glob('../../core/scss/**/*.scss', { query: '?raw', import: 'default' })
+
 interface Props {
+  /** the family after `--`, e.g. `badge` for the `badge-css-vars` marker */
   prefix: string
 }
 
 const { prefix } = Astro.props
-const source = cssVarsSource(prefix)
-if (!source) throw new Error(`css-vars: no "scss-docs-start ${prefix}-css-vars" marker in core/scss`)
 
-const { path, selector, code } = source
+// The block named `<prefix>-css-vars`; when no file has that marker, the first
+// `<prefix>-*-css-vars` one stands in (`spinner` → `spinner-border-css-vars`),
+// so a page can name the family without repeating Bootstrap's marker names.
+const exact = `${prefix}-css-vars`
+const family = new RegExp(`^\\s*// scss-docs-start (${prefix}-[\\w-]*-css-vars)$`, 'm')
+
+let found: { path: string; name: string; source: string } | undefined
+for (const [key, load] of Object.entries(scssSources).sort(([a], [b]) => a.localeCompare(b))) {
+  const source = (await load()) as string
+  const path = key.replace('../../', '')
+  if (source.includes(`// scss-docs-start ${exact}\n`)) {
+    found = { path, name: exact, source }
+    break
+  }
+  const match = source.match(family)
+  if (match && !found) found = { path, name: match[1]!, source }
+}
+
+if (!found) throw new Error(`css-vars: no "// scss-docs-start ${prefix}-css-vars" marker in core/scss`)
+
+const snippet = extractMarkedSnippet(found.source.replaceAll(' !default', ''), 'scss-docs', found.name)
+if (snippet === null) throw new Error(`css-vars: "${found.name}" has no matching scss-docs-end marker in ${found.path}`)
+
+// Comment lines inside the block explain the source, not the API.
+const code = snippet
+  .split('\n')
+  .filter((line) => !/^\s*\/\//.test(line))
+  .join('\n')
+
+// The rule the block sits in: the nearest non-comment line above the marker.
+const above = found.source
+  .slice(0, found.source.indexOf(`// scss-docs-start ${found.name}`))
+  .split('\n')
+  .reverse()
+const opener = above
+  .slice(1)
+  .find((line) => line.trim() && !/^\s*\/\//.test(line))
+  ?.trim()
+const selector = opener?.endsWith('{') ? opener.slice(0, -1).trim() : undefined
 ---
 
 <!-- BEGIN DOCS CSS VARS -->
@@ -28,7 +69,7 @@ const { path, selector, code } = source
         on <code>{selector}</code>
       </Fragment>
     )
-  } for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too. Source: <a href={`${site.githubUrl}/blob/dev/${path}`}><code>{path}</code></a>.
+  } for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too. Source: <a href={`${site.githubUrl}/blob/dev/${found.path}`}><code>{found.path}</code></a>.
 </p>
 
 <CodeSnippet code={code} lang="scss" />
