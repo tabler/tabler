@@ -2,183 +2,183 @@
 
 @layer components {
   .switch-icon {
-  @include focus-ring-transition();
-  --switch-icon-size: #{$switch-icon-size};
-  --switch-icon-min-size: #{$switch-icon-min-size};
-  --switch-icon-disabled-opacity: #{$switch-icon-disabled-opacity};
-  --switch-icon-loading-size: #{$switch-icon-loading-size};
-  --switch-icon-loading-border-width: #{$switch-icon-loading-border-width};
-  --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed};
-  position: relative;
-  display: inline-block;
-  width: var(--switch-icon-size);
-  min-width: var(--switch-icon-min-size);
-  height: var(--switch-icon-size);
-  min-height: var(--switch-icon-min-size);
-  padding: 0;
-  line-height: 1;
-  vertical-align: bottom;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-
-  &.disabled,
-  &:disabled,
-  &[aria-disabled='true'] {
-    pointer-events: none;
-    opacity: var(--switch-icon-disabled-opacity);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed * 2};
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
-
-  &:focus-visible {
-    @include focus-ring(true, var(--theme-bg, var(--focus-ring-color)));
-  }
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  // Both icons sit centered in the (possibly larger) button box
-  .switch-icon-a,
-  .switch-icon-b {
-    position: absolute;
-    inset: 0;
-    display: block;
+    @include focus-ring-transition();
+    --switch-icon-size: #{$switch-icon-size};
+    --switch-icon-min-size: #{$switch-icon-min-size};
+    --switch-icon-disabled-opacity: #{$switch-icon-disabled-opacity};
+    --switch-icon-loading-size: #{$switch-icon-loading-size};
+    --switch-icon-loading-border-width: #{$switch-icon-loading-border-width};
+    --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed};
+    position: relative;
+    display: inline-block;
     width: var(--switch-icon-size);
+    min-width: var(--switch-icon-min-size);
     height: var(--switch-icon-size);
-    margin: auto;
-  }
+    min-height: var(--switch-icon-min-size);
+    padding: 0;
+    line-height: 1;
+    vertical-align: bottom;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
 
-  .switch-icon-a {
-    opacity: 1;
-  }
-
-  .switch-icon-b {
-    opacity: 0;
-  }
-
-  &.active {
-    .switch-icon-a {
-      opacity: 0;
+    &.disabled,
+    &:disabled,
+    &[aria-disabled='true'] {
+      pointer-events: none;
+      opacity: var(--switch-icon-disabled-opacity);
     }
 
-    .switch-icon-b {
-      opacity: 1;
+    @media (prefers-reduced-motion: reduce) {
+      --switch-icon-loading-animation-speed: #{$switch-icon-loading-animation-speed * 2};
     }
-  }
 
-  // Loading state: both icons hidden, a spinner drawn in their place
-  &.switch-icon-loading {
-    pointer-events: none;
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
 
+    &:focus-visible {
+      @include focus-ring(true, var(--theme-bg, var(--focus-ring-color)));
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    // Both icons sit centered in the (possibly larger) button box
     .switch-icon-a,
     .switch-icon-b {
-      opacity: 0;
-      transition: none;
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: var(--switch-icon-size);
+      height: var(--switch-icon-size);
+      margin: auto;
     }
 
-    &::after {
-      position: absolute;
-      inset-inline-start: calc(50% - var(--switch-icon-loading-size) / 2);
-      top: calc(50% - var(--switch-icon-loading-size) / 2);
-      width: var(--switch-icon-loading-size);
-      height: var(--switch-icon-loading-size);
-      content: '';
-      border: var(--switch-icon-loading-border-width) var(--border-style) currentColor;
-      border-inline-end-color: transparent;
-      animation: spinner-border var(--switch-icon-loading-animation-speed) linear infinite;
-      @include border-radius(var(--border-radius-pill));
+    .switch-icon-a {
+      opacity: 1;
     }
-  }
+
+    .switch-icon-b {
+      opacity: 0;
+    }
+
+    &.active {
+      .switch-icon-a {
+        opacity: 0;
+      }
+
+      .switch-icon-b {
+        opacity: 1;
+      }
+    }
+
+    // Loading state: both icons hidden, a spinner drawn in their place
+    &.switch-icon-loading {
+      pointer-events: none;
+
+      .switch-icon-a,
+      .switch-icon-b {
+        opacity: 0;
+        transition: none;
+      }
+
+      &::after {
+        position: absolute;
+        inset-inline-start: calc(50% - var(--switch-icon-loading-size) / 2);
+        top: calc(50% - var(--switch-icon-loading-size) / 2);
+        width: var(--switch-icon-loading-size);
+        height: var(--switch-icon-loading-size);
+        content: '';
+        border: var(--switch-icon-loading-border-width) var(--border-style) currentColor;
+        border-inline-end-color: transparent;
+        animation: spinner-border var(--switch-icon-loading-animation-speed) linear infinite;
+        @include border-radius(var(--border-radius-pill));
+      }
+    }
   }
 
   // Inside a button (e.g. .btn-action) the button is the target and carries hover and focus
   .btn .switch-icon {
-  --switch-icon-min-size: var(--switch-icon-size);
-  vertical-align: middle;
-  pointer-events: none;
+    --switch-icon-min-size: var(--switch-icon-size);
+    vertical-align: middle;
+    pointer-events: none;
 
-  // the button's own icon sizing and margins would misplace the two stacked icons
-  .icon {
-    width: 100%;
-    min-width: 0;
-    height: 100%;
-    margin: 0;
-  }
+    // the button's own icon sizing and margins would misplace the two stacked icons
+    .icon {
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      margin: 0;
+    }
   }
 
   // Fade variant
   .switch-icon-fade {
-  .switch-icon-a,
-  .switch-icon-b {
-    @include transition(opacity $transition-time);
-  }
+    .switch-icon-a,
+    .switch-icon-b {
+      @include transition(opacity $transition-time);
+    }
   }
 
   // Scale variant
   .switch-icon-scale {
-  .switch-icon-a,
-  .switch-icon-b {
-    @include transition(opacity $transition-time, transform 0s $transition-time);
-  }
-
-  .switch-icon-b {
-    transform: scale(1.5);
-  }
-
-  &.active {
     .switch-icon-a,
     .switch-icon-b {
-      @include transition(opacity 0s, transform $transition-time);
+      @include transition(opacity $transition-time, transform 0s $transition-time);
     }
 
     .switch-icon-b {
-      transform: scale(1);
+      transform: scale(1.5);
     }
-  }
+
+    &.active {
+      .switch-icon-a,
+      .switch-icon-b {
+        @include transition(opacity 0s, transform $transition-time);
+      }
+
+      .switch-icon-b {
+        transform: scale(1);
+      }
+    }
   }
 
   // Flip variant
   .switch-icon-flip {
-  perspective: 10em;
+    perspective: 10em;
 
-  .switch-icon-a,
-  .switch-icon-b {
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    @include transition(opacity 0s 0.15s, transform $transition-time ease-in-out);
-  }
+    .switch-icon-a,
+    .switch-icon-b {
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      @include transition(opacity 0s 0.15s, transform $transition-time ease-in-out);
+    }
 
-  .switch-icon-a {
-    opacity: 1;
-    transform: rotateY(0deg);
-  }
-
-  .switch-icon-b {
-    opacity: 1;
-    transform: rotateY(-180deg);
-  }
-
-  &.active {
     .switch-icon-a {
       opacity: 1;
-      transform: rotateY(180deg);
+      transform: rotateY(0deg);
     }
 
     .switch-icon-b {
       opacity: 1;
-      transform: rotateY(0deg);
+      transform: rotateY(-180deg);
     }
-  }
+
+    &.active {
+      .switch-icon-a {
+        opacity: 1;
+        transform: rotateY(180deg);
+      }
+
+      .switch-icon-b {
+        opacity: 1;
+        transform: rotateY(0deg);
+      }
+    }
   }
 
   // Slide variant
@@ -188,95 +188,95 @@
   .switch-icon-slide-right,
   .switch-icon-slide-end,
   .switch-icon-slide-down {
-  overflow: hidden;
+    overflow: hidden;
 
-  .switch-icon-a,
-  .switch-icon-b {
-    @include transition(opacity $transition-time, transform $transition-time);
-  }
+    .switch-icon-a,
+    .switch-icon-b {
+      @include transition(opacity $transition-time, transform $transition-time);
+    }
 
-  .switch-icon-a {
-    transform: translateY(0);
-  }
-
-  .switch-icon-b {
-    transform: translateY(100%);
-  }
-
-  &.active {
     .switch-icon-a {
-      transform: translateY(-100%);
+      transform: translateY(0);
     }
 
     .switch-icon-b {
-      transform: translateY(0);
+      transform: translateY(100%);
     }
-  }
+
+    &.active {
+      .switch-icon-a {
+        transform: translateY(-100%);
+      }
+
+      .switch-icon-b {
+        transform: translateY(0);
+      }
+    }
   }
 
   .switch-icon-slide-left,
   .switch-icon-slide-start {
-  .switch-icon-a {
-    transform: translateX(0);
-  }
-
-  .switch-icon-b {
-    /* rtl:ignore */
-    transform: translateX(calc(var(--dir) * 100%));
-  }
-
-  &.active {
     .switch-icon-a {
-      /* rtl:ignore */
-      transform: translateX(calc(var(--dir) * -100%));
+      transform: translateX(0);
     }
 
     .switch-icon-b {
-      transform: translateX(0);
-    }
-  }
-  }
-
-  .switch-icon-slide-right,
-  .switch-icon-slide-end {
-  .switch-icon-a {
-    transform: translateX(0);
-  }
-
-  .switch-icon-b {
-    /* rtl:ignore */
-    transform: translateX(calc(var(--dir) * -100%));
-  }
-
-  &.active {
-    .switch-icon-a {
       /* rtl:ignore */
       transform: translateX(calc(var(--dir) * 100%));
     }
 
-    .switch-icon-b {
-      transform: translateX(0);
+    &.active {
+      .switch-icon-a {
+        /* rtl:ignore */
+        transform: translateX(calc(var(--dir) * -100%));
+      }
+
+      .switch-icon-b {
+        transform: translateX(0);
+      }
     }
   }
+
+  .switch-icon-slide-right,
+  .switch-icon-slide-end {
+    .switch-icon-a {
+      transform: translateX(0);
+    }
+
+    .switch-icon-b {
+      /* rtl:ignore */
+      transform: translateX(calc(var(--dir) * -100%));
+    }
+
+    &.active {
+      .switch-icon-a {
+        /* rtl:ignore */
+        transform: translateX(calc(var(--dir) * 100%));
+      }
+
+      .switch-icon-b {
+        transform: translateX(0);
+      }
+    }
   }
 
   .switch-icon-slide-down {
-  .switch-icon-a {
-    transform: translateY(0);
-  }
-
-  .switch-icon-b {
-    transform: translateY(-100%);
-  }
-
-  &.active {
     .switch-icon-a {
-      transform: translateY(100%);
+      transform: translateY(0);
     }
 
     .switch-icon-b {
-      transform: translateY(0);
+      transform: translateY(-100%);
     }
-  }
+
+    &.active {
+      .switch-icon-a {
+        transform: translateY(100%);
+      }
+
+      .switch-icon-b {
+        transform: translateY(0);
+      }
+    }
   }
 }

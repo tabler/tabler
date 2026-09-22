@@ -18,112 +18,112 @@ $calendar-tokens: defaults(
 
 @layer components {
   .calendar {
-  @include tokens($calendar-tokens);
-  display: block;
-  font-size: $font-size-sm;
-  border: var(--border-width) var(--border-style) var(--border-color);
-  @include border-radius(var(--border-radius));
+    @include tokens($calendar-tokens);
+    display: block;
+    font-size: $font-size-sm;
+    border: var(--border-width) var(--border-style) var(--border-color);
+    @include border-radius(var(--border-radius));
   }
 
   .calendar-nav {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   }
 
   .calendar-title {
-  flex: 1;
-  text-align: center;
+    flex: 1;
+    text-align: center;
   }
 
   .calendar-body,
   .calendar-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  padding: var(--calendar-padding-y) 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    padding: var(--calendar-padding-y) 0;
   }
 
   .calendar-header {
-  color: var(--secondary);
+    color: var(--secondary);
   }
 
   .calendar-date {
-  flex: 0 0 calc(100% / 7);
-  max-width: calc(100% / 7);
-  padding: var(--calendar-date-padding);
-  text-align: center;
-  border: 0;
-
-  &.prev-month,
-  &.next-month {
-    opacity: 0.25;
-  }
-
-  .date-item {
-    position: relative;
-    display: inline-block;
-    width: var(--calendar-date-size);
-    height: var(--calendar-date-size);
-    line-height: var(--calendar-date-size);
-    color: var(--secondary-color);
+    flex: 0 0 calc(100% / 7);
+    max-width: calc(100% / 7);
+    padding: var(--calendar-date-padding);
     text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background: 0 0;
-    border: var(--border-width) var(--border-style) transparent;
-    @include border-radius(var(--border-radius-pill));
-    outline: 0;
-    @include focus-ring-transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
+    border: 0;
 
-    &:hover {
-      color: var(--theme-bg, var(--primary));
+    &.prev-month,
+    &.next-month {
+      opacity: 0.25;
+    }
+
+    .date-item {
+      position: relative;
+      display: inline-block;
+      width: var(--calendar-date-size);
+      height: var(--calendar-date-size);
+      line-height: var(--calendar-date-size);
+      color: var(--secondary-color);
+      text-align: center;
       text-decoration: none;
-      background: var(--bg-surface);
-      border-color: var(--border-active-color);
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background: 0 0;
+      border: var(--border-width) var(--border-style) transparent;
+      @include border-radius(var(--border-radius-pill));
+      outline: 0;
+      @include focus-ring-transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
+
+      &:hover {
+        color: var(--theme-bg, var(--primary));
+        text-decoration: none;
+        background: var(--bg-surface);
+        border-color: var(--border-active-color);
+      }
+
+      &:focus-visible {
+        @include focus-ring(true, var(--theme-bg, var(--focus-ring-color)));
+      }
     }
 
-    &:focus-visible {
-      @include focus-ring(true, var(--theme-bg, var(--focus-ring-color)));
+    .date-today {
+      color: var(--theme-bg, var(--primary));
+      border-color: var(--border-color);
     }
-  }
-
-  .date-today {
-    color: var(--theme-bg, var(--primary));
-    border-color: var(--border-color);
-  }
   }
 
   .calendar-range {
-  position: relative;
+    position: relative;
 
-  &::before {
-    position: absolute;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    top: 50%;
-    height: var(--calendar-date-size);
-    content: '';
-    background: var(--active-bg);
-    transform: translateY(-50%);
-  }
-
-  &.range-start,
-  &.range-end {
-    .date-item {
-      color: var(--theme-fg, var(--primary-fg));
-      background: var(--theme-bg, var(--primary));
-      border-color: var(--theme-bg, var(--primary));
+    &::before {
+      position: absolute;
+      inset-inline-start: 0;
+      inset-inline-end: 0;
+      top: 50%;
+      height: var(--calendar-date-size);
+      content: '';
+      background: var(--active-bg);
+      transform: translateY(-50%);
     }
-  }
 
-  &.range-start::before {
-    inset-inline-start: 50%;
-  }
+    &.range-start,
+    &.range-end {
+      .date-item {
+        color: var(--theme-fg, var(--primary-fg));
+        background: var(--theme-bg, var(--primary));
+        border-color: var(--theme-bg, var(--primary));
+      }
+    }
 
-  &.range-end::before {
-    inset-inline-end: 50%;
-  }
+    &.range-start::before {
+      inset-inline-start: 50%;
+    }
+
+    &.range-end::before {
+      inset-inline-end: 50%;
+    }
   }
 }

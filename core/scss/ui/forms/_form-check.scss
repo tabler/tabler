@@ -5,104 +5,104 @@ Form check
 
 @layer forms {
   .form-check {
-  user-select: none;
+    user-select: none;
 
-  &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
-    color: var(--secondary);
-  }
+    &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
+      color: var(--secondary);
+    }
 
-  .form-check-label-off {
-    color: var(--secondary);
-  }
+    .form-check-label-off {
+      color: var(--secondary);
+    }
 
-  .form-check-input:checked ~ .form-check-label-off {
-    display: none;
-  }
+    .form-check-input:checked ~ .form-check-label-off {
+      display: none;
+    }
 
-  .form-check-input:not(:checked) ~ .form-check-label-on {
-    display: none;
-  }
+    .form-check-input:not(:checked) ~ .form-check-label-on {
+      display: none;
+    }
   }
 
   .form-check-input {
-  --form-check-input-width: #{$form-check-input-width};
-  margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
+    --form-check-input-width: #{$form-check-input-width};
+    margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
 
-  background-size: var(--form-check-input-width);
-  box-shadow: $form-check-input-box-shadow;
+    background-size: var(--form-check-input-width);
+    box-shadow: $form-check-input-box-shadow;
   }
 
   .form-check-label {
-  --form-check-label-required-gap: #{$form-check-label-required-gap};
+    --form-check-label-required-gap: #{$form-check-label-required-gap};
 
-  display: block;
+    display: block;
 
-  &.required {
-    &::after {
-      margin-inline-start: var(--form-check-label-required-gap);
-      color: var(--danger);
-      content: '*';
+    &.required {
+      &::after {
+        margin-inline-start: var(--form-check-label-required-gap);
+        color: var(--danger);
+        content: '*';
+      }
     }
-  }
   }
 
   .form-check-description {
-  --form-check-description-margin-top: #{$form-check-description-margin-top};
+    --form-check-description-margin-top: #{$form-check-description-margin-top};
 
-  display: block;
-  margin-top: var(--form-check-description-margin-top);
-  font-size: $h5-font-size;
-  color: var(--secondary);
+    display: block;
+    margin-top: var(--form-check-description-margin-top);
+    font-size: $h5-font-size;
+    color: var(--secondary);
   }
 
   .form-check-single {
-  margin: 0;
-
-  .form-check-input {
     margin: 0;
-  }
+
+    .form-check-input {
+      margin: 0;
+    }
   }
 
   /*
 Form switch
  */
   .form-switch {
-  .form-check-input {
-    height: $form-switch-height;
-    margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
-    @include transition(background-color $transition-time, background-position $transition-time, $focus-ring-transition);
+    .form-check-input {
+      height: $form-switch-height;
+      margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
+      @include transition(background-color $transition-time, background-position $transition-time, $focus-ring-transition);
 
-    // An off switch that is disabled fills its track like a disabled input,
-    // so it no longer looks like an off switch that can still be toggled.
-    &:disabled:not(:checked) {
-      --form-switch-color: #{$form-switch-disabled-color};
-      background-color: $form-switch-disabled-bg;
+      // An off switch that is disabled fills its track like a disabled input,
+      // so it no longer looks like an off switch that can still be toggled.
+      &:disabled:not(:checked) {
+        --form-switch-color: #{$form-switch-disabled-color};
+        background-color: $form-switch-disabled-bg;
+      }
     }
-  }
   }
 
   .form-switch-lg {
-  --form-switch-lg-padding-start: #{$form-switch-lg-padding-start};
-  --form-switch-lg-min-height: #{$form-switch-lg-min-height};
-  --form-switch-lg-height: #{$form-switch-lg-height};
-  --form-switch-lg-width: #{$form-switch-lg-width};
-  --form-switch-lg-bg-size: #{$form-switch-lg-bg-size};
-  --form-switch-lg-input-offset: #{$form-switch-lg-input-offset};
-  --form-switch-lg-label-padding-top: #{$form-switch-lg-label-padding-top};
-  min-height: var(--form-switch-lg-min-height);
+    --form-switch-lg-padding-start: #{$form-switch-lg-padding-start};
+    --form-switch-lg-min-height: #{$form-switch-lg-min-height};
+    --form-switch-lg-height: #{$form-switch-lg-height};
+    --form-switch-lg-width: #{$form-switch-lg-width};
+    --form-switch-lg-bg-size: #{$form-switch-lg-bg-size};
+    --form-switch-lg-input-offset: #{$form-switch-lg-input-offset};
+    --form-switch-lg-label-padding-top: #{$form-switch-lg-label-padding-top};
+    min-height: var(--form-switch-lg-min-height);
 
-  padding-inline-start: var(--form-switch-lg-padding-start);
+    padding-inline-start: var(--form-switch-lg-padding-start);
 
-  .form-check-input {
-    --form-switch-knob-size: calc(var(--form-switch-lg-height) * 0.75);
-    --form-switch-knob-offset: calc(var(--form-switch-lg-height) * 0.125);
-    width: var(--form-switch-lg-width);
-    height: var(--form-switch-lg-height);
-    margin-inline-start: var(--form-switch-lg-input-offset);
-  }
+    .form-check-input {
+      --form-switch-knob-size: calc(var(--form-switch-lg-height) * 0.75);
+      --form-switch-knob-offset: calc(var(--form-switch-lg-height) * 0.125);
+      width: var(--form-switch-lg-width);
+      height: var(--form-switch-lg-height);
+      margin-inline-start: var(--form-switch-lg-input-offset);
+    }
 
-  .form-check-label {
-    padding-top: var(--form-switch-lg-label-padding-top);
-  }
+    .form-check-label {
+      padding-top: var(--form-switch-lg-label-padding-top);
+    }
   }
 }

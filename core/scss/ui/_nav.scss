@@ -25,119 +25,119 @@ $nav-tokens: defaults(
 
 @layer components {
   .nav {
-  @include tokens($nav-tokens);
-  font-size: var(--body-font-size);
+    @include tokens($nav-tokens);
+    font-size: var(--body-font-size);
   }
 
   .nav-vertical {
-  &,
-  .nav {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
+    &,
+    .nav {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
 
-  .nav {
-    padding-inline-start: var(--nav-vertical-nested-padding-start);
-    margin-inline-start: var(--nav-vertical-nested-margin-start);
-    border-inline-start: var(--border-width) var(--border-style) var(--border-color);
-  }
+    .nav {
+      padding-inline-start: var(--nav-vertical-nested-padding-start);
+      margin-inline-start: var(--nav-vertical-nested-margin-start);
+      border-inline-start: var(--border-width) var(--border-style) var(--border-color);
+    }
 
-  .nav-link.active,
-  .nav-item.show .nav-link {
-    font-weight: var(--font-weight-medium);
-    color: var(--nav-link-active-color);
-  }
+    .nav-link.active,
+    .nav-item.show .nav-link {
+      font-weight: var(--font-weight-medium);
+      color: var(--nav-link-active-color);
+    }
 
-  &.nav-pills {
-    margin: 0 calc(-1 * $nav-link-padding-x);
-  }
+    &.nav-pills {
+      margin: 0 calc(-1 * $nav-link-padding-x);
+    }
   }
 
   //
   // Nav bordered
   //
   .nav-bordered {
-  border-bottom: $nav-bordered-border-width var(--border-style) $nav-bordered-border-color;
+    border-bottom: $nav-bordered-border-width var(--border-style) $nav-bordered-border-color;
 
-  .nav-item {
-    + .nav-item {
-      margin-inline-start: $nav-bordered-margin-x;
+    .nav-item {
+      + .nav-item {
+        margin-inline-start: $nav-bordered-margin-x;
+      }
     }
-  }
 
-  .nav-link {
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
-    border: 0;
-    border-bottom: $nav-bordered-link-active-border-width var(--border-style) transparent;
+    .nav-link {
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+      margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
+      border: 0;
+      border-bottom: $nav-bordered-link-active-border-width var(--border-style) transparent;
 
-    &:hover {
-      background-color: transparent;
+      &:hover {
+        background-color: transparent;
+      }
     }
-  }
 
-  .nav-link.active,
-  .nav-item.show .nav-link {
-    color: var(--theme-bg, #{$nav-bordered-link-active-color});
-    border-color: var(--theme-bg, #{$nav-bordered-link-active-border-color});
-  }
+    .nav-link.active,
+    .nav-item.show .nav-link {
+      color: var(--theme-bg, #{$nav-bordered-link-active-color});
+      border-color: var(--theme-bg, #{$nav-bordered-link-active-border-color});
+    }
   }
 
   .nav-underline {
-  .nav-link {
-    border-radius: 0;
-  }
+    .nav-link {
+      border-radius: 0;
+    }
   }
 
   .nav-link {
-  display: flex;
-  align-items: center;
-  @include transition(color $transition-time, background-color $transition-time, $focus-ring-transition);
+    display: flex;
+    align-items: center;
+    @include transition(color $transition-time, background-color $transition-time, $focus-ring-transition);
 
-  &:hover,
-  &:focus {
-    background-color: var(--nav-link-hover-bg);
-  }
+    &:hover,
+    &:focus {
+      background-color: var(--nav-link-hover-bg);
+    }
   }
 
   .nav-link-toggle {
-  padding: 0 var(--nav-link-toggle-padding-x);
-  margin-inline-start: auto;
-  @include transition(transform $transition-time);
-  @include caret();
+    padding: 0 var(--nav-link-toggle-padding-x);
+    margin-inline-start: auto;
+    @include transition(transform $transition-time);
+    @include caret();
 
-  &::after {
-    margin: 0;
-  }
+    &::after {
+      margin: 0;
+    }
 
-  @at-root .nav-link[aria-expanded='true'] & {
-    transform: rotate(180deg);
-  }
+    @at-root .nav-link[aria-expanded='true'] & {
+      transform: rotate(180deg);
+    }
   }
 
   .nav-link-icon {
-  flex-shrink: 0;
-  width: var(--nav-link-icon-width, #{$nav-link-icon-size});
-  height: var(--nav-link-icon-height, #{$nav-link-icon-size});
-  margin-inline-end: var(--nav-link-icon-margin-end);
-  color: var(--nav-link-icon-color, #{$nav-link-icon-color});
+    flex-shrink: 0;
+    width: var(--nav-link-icon-width, #{$nav-link-icon-size});
+    height: var(--nav-link-icon-height, #{$nav-link-icon-size});
+    margin-inline-end: var(--nav-link-icon-margin-end);
+    color: var(--nav-link-icon-color, #{$nav-link-icon-color});
 
-  svg {
-    display: block;
-    height: 100%;
-  }
+    svg {
+      display: block;
+      height: 100%;
+    }
 
-  .nav-link:hover & {
-    color: var(--nav-link-hover-icon-color, #{$nav-link-hover-icon-color});
-  }
+    .nav-link:hover & {
+      color: var(--nav-link-hover-icon-color, #{$nav-link-hover-icon-color});
+    }
   }
 
   .nav-fill {
-  .nav-item {
-    .nav-link {
-      justify-content: center;
+    .nav-item {
+      .nav-link {
+        justify-content: center;
+      }
     }
-  }
   }
 }

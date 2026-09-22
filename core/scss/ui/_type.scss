@@ -4,17 +4,17 @@
 
 @layer content {
   .lead {
-  font-size: inherit;
-  color: var(--secondary);
+    font-size: inherit;
+    color: var(--secondary);
   }
 
   a {
-  text-decoration-skip-ink: auto;
-  color: color-transparent(var(--link-color), calc(var(--link-opacity, 1) * 100%));
+    text-decoration-skip-ink: auto;
+    color: color-transparent(var(--link-color), calc(var(--link-opacity, 1) * 100%));
 
-  &:hover {
-    color: color-transparent(var(--link-hover-color), calc(var(--link-opacity, 1) * 100%));
-  }
+    &:hover {
+      color: color-transparent(var(--link-hover-color), calc(var(--link-opacity, 1) * 100%));
+    }
   }
 
   h1,
@@ -29,160 +29,160 @@
   .h4,
   .h5,
   .h6 {
-  a {
-    color: inherit;
-
-    &:hover {
+    a {
       color: inherit;
+
+      &:hover {
+        color: inherit;
+      }
     }
-  }
   }
 
   h1,
   .h1 {
-  font-size: var(--font-size-h1);
-  line-height: var(--line-height-h1);
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-h1);
   }
 
   h2,
   .h2 {
-  font-size: var(--font-size-h2);
-  line-height: var(--line-height-h2);
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-h2);
   }
 
   h3,
   .h3 {
-  font-size: var(--font-size-h3);
-  line-height: var(--line-height-h3);
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-h3);
   }
 
   h4,
   .h4 {
-  font-size: var(--font-size-h4);
-  line-height: var(--line-height-h4);
+    font-size: var(--font-size-h4);
+    line-height: var(--line-height-h4);
   }
 
   h5,
   .h5 {
-  font-size: var(--font-size-h5);
-  line-height: var(--line-height-h5);
+    font-size: var(--font-size-h5);
+    line-height: var(--line-height-h5);
   }
 
   h6,
   .h6 {
-  font-size: var(--font-size-h6);
-  line-height: var(--line-height-h6);
+    font-size: var(--font-size-h6);
+    line-height: var(--line-height-h6);
   }
 
   .fs-base {
-  font-size: var(--body-font-size);
+    font-size: var(--body-font-size);
   }
 
   strong,
   .strong,
   b {
-  font-weight: $headings-font-weight;
+    font-weight: $headings-font-weight;
   }
 
   blockquote {
-  --blockquote-padding: #{$blockquote-padding};
-  --blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
-  padding: var(--blockquote-padding) var(--blockquote-padding) var(--blockquote-padding);
-  border-inline-start: $border-width-wide var(--border-style) var(--border-color);
+    --blockquote-padding: #{$blockquote-padding};
+    --blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
+    padding: var(--blockquote-padding) var(--blockquote-padding) var(--blockquote-padding);
+    border-inline-start: $border-width-wide var(--border-style) var(--border-color);
 
-  p {
-    margin-bottom: var(--blockquote-paragraph-margin-bottom);
+    p {
+      margin-bottom: var(--blockquote-paragraph-margin-bottom);
 
-    &:last-child {
-      margin-bottom: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
-  }
 
-  cite {
-    display: block;
-    text-align: end;
+    cite {
+      display: block;
+      text-align: end;
 
-    &::before {
-      content: '— ';
+      &::before {
+        content: '— ';
+      }
     }
-  }
   }
 
   ul,
   ol {
-  --list-padding-start: #{$list-padding-start};
-  padding-inline-start: var(--list-padding-start);
+    --list-padding-start: #{$list-padding-start};
+    padding-inline-start: var(--list-padding-start);
   }
 
   hr {
-  --hr-margin-y: #{$hr-margin-y};
-  margin: var(--hr-margin-y) 0;
+    --hr-margin-y: #{$hr-margin-y};
+    margin: var(--hr-margin-y) 0;
   }
 
   dl {
-  dd {
-    &:last-child {
-      margin-bottom: 0;
+    dd {
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
-  }
   }
 
   pre {
-  --scrollbar-color: #{$pre-color};
-  padding: $pre-padding;
-  font-size: $pre-font-size;
-  line-height: $line-height-base;
-  color: $pre-color;
-  background: $pre-bg;
-  @include border-radius(var(--border-radius));
+    --scrollbar-color: #{$pre-color};
+    padding: $pre-padding;
+    font-size: $pre-font-size;
+    line-height: $line-height-base;
+    color: $pre-color;
+    background: $pre-bg;
+    @include border-radius(var(--border-radius));
 
-  @include scrollbar();
+    @include scrollbar();
 
-  // pre keeps its dark surface in both color schemes, so the light-mode
-  // selection tint (10% primary) is invisible here - use the dark-mode value
-  &::selection,
-  ::selection {
-    background-color: $pre-selection-bg;
+    // pre keeps its dark surface in both color schemes, so the light-mode
+    // selection tint (10% primary) is invisible here - use the dark-mode value
+    &::selection,
+    ::selection {
+      background-color: $pre-selection-bg;
+    }
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
   }
 
   code {
-    padding: 0;
-    background: transparent;
-  }
-  }
-
-  code {
-  padding: 2px 4px;
-  background: var(--code-bg);
-  @include border-radius(var(--border-radius));
+    padding: 2px 4px;
+    background: var(--code-bg);
+    @include border-radius(var(--border-radius));
   }
 
   abbr {
-  text-decoration: underline dotted;
-  cursor: help;
-  text-decoration-skip-ink: none;
+    text-decoration: underline dotted;
+    cursor: help;
+    text-decoration-skip-ink: none;
   }
 
   kbd,
   .kbd {
-  box-sizing: border-box;
-  display: inline-block;
-  max-width: 100%;
-  font-size: $kbd-font-size;
-  font-weight: $kbd-font-weight;
-  line-height: 1;
-  vertical-align: baseline;
-  border: $kbd-border;
-  @include border-radius($kbd-border-radius);
+    box-sizing: border-box;
+    display: inline-block;
+    max-width: 100%;
+    font-size: $kbd-font-size;
+    font-weight: $kbd-font-weight;
+    line-height: 1;
+    vertical-align: baseline;
+    border: $kbd-border;
+    @include border-radius($kbd-border-radius);
   }
 
   img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
   }
 
   .list-unstyled {
-  margin-inline-start: 0;
+    margin-inline-start: 0;
   }
 
   /**
@@ -190,11 +190,11 @@ Selection
  */
   ::selection,
   .text-selected {
-  background-color: $selection-bg;
+    background-color: $selection-bg;
   }
 
   .text-selected {
-  display: inline-block;
+    display: inline-block;
   }
 
   /**
@@ -202,82 +202,82 @@ Links
  */
   [class^='link-'],
   [class*=' link-'] {
-  &.disabled {
+    &.disabled {
       color: $nav-link-disabled-color !important; // stylelint-disable-line declaration-no-important
-    pointer-events: none;
-  }
+      pointer-events: none;
+    }
   }
 
   a:hover:has(.icon) {
-  text-decoration: none;
+    text-decoration: none;
   }
 
   .link-hoverable {
-  @include border-radius(var(--border-radius));
-  transition: background-color 0.15s ease-in-out;
+    @include border-radius(var(--border-radius));
+    transition: background-color 0.15s ease-in-out;
 
-  &:hover {
-    color: var(--primary);
-    text-decoration: none;
-    background: $hover-bg;
-  }
+    &:hover {
+      color: var(--primary);
+      text-decoration: none;
+      background: $hover-bg;
+    }
   }
 
   /**
 Subheader
  */
   .subheader {
-  @include subheader();
+    @include subheader();
   }
 
   /**
 Mentions
  */
   .mention {
-  display: inline-block;
-  padding: calc(2em / 12) calc(8em / 12);
-  font-size: calc(12em / 14);
-  font-weight: var(--font-weight-medium);
-  line-height: calc(16em / 12);
-  color: var(--body-color);
-  background: var(--bg-surface-tertiary);
-  box-shadow: var(--shadow-border);
-  @include border-radius(var(--border-radius-pill));
+    display: inline-block;
+    padding: calc(2em / 12) calc(8em / 12);
+    font-size: calc(12em / 14);
+    font-weight: var(--font-weight-medium);
+    line-height: calc(16em / 12);
+    color: var(--body-color);
+    background: var(--bg-surface-tertiary);
+    box-shadow: var(--shadow-border);
+    @include border-radius(var(--border-radius-pill));
 
-  @at-root a#{&} {
-    cursor: pointer;
+    @at-root a#{&} {
+      cursor: pointer;
 
-    &:hover,
-    &.hover {
-      text-decoration: underline;
-      background: $hover-bg;
+      &:hover,
+      &.hover {
+        text-decoration: underline;
+        background: $hover-bg;
+      }
     }
-  }
   }
 
   .mention-avatar,
   .mention-app,
   .mention-color {
-  display: inline-flex;
-  width: calc(14em / 12);
-  height: calc(14em / 12);
-  margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
-  text-align: center;
-  vertical-align: middle;
-  background: no-repeat center center/cover;
-  box-shadow: var(--shadow-border);
-  @include border-radius(var(--border-radius-pill));
+    display: inline-flex;
+    width: calc(14em / 12);
+    height: calc(14em / 12);
+    margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
+    text-align: center;
+    vertical-align: middle;
+    background: no-repeat center center/cover;
+    box-shadow: var(--shadow-border);
+    @include border-radius(var(--border-radius-pill));
   }
 
   .mention-app {
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .mention-count {
-  margin-inline-start: calc(8em / 12);
-  color: var(--secondary);
+    margin-inline-start: calc(8em / 12);
+    color: var(--secondary);
   }
 }
 
@@ -288,12 +288,12 @@ $text-variants: (
 
 @layer content {
   @each $variant, $color in $text-variants {
-  .text-#{$variant} {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: $color;
-    background: color-transparent($color, 0.04);
-  }
+    .text-#{$variant} {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: $color;
+      background: color-transparent($color, 0.04);
+    }
   }
 }
 
@@ -310,49 +310,49 @@ $text-variants: (
   // unqualified `.steps` rule still applies here though, so the layout it sets up
   // (flex row, full width, scrollable below `sm`) has to be undone.
   .steps:not(:has(> .step-item)) {
-  --steps-padding: #{$steps-padding};
-  --steps-item-size: #{$steps-item-size};
-  --steps-margin-start: #{$steps-margin-start};
-  --steps-margin-bottom: #{$steps-margin-bottom};
-  --steps-heading-margin-top: #{$steps-heading-margin-top};
-  display: block;
-  width: auto;
-  padding-inline-start: var(--steps-padding);
-  margin-inline-start: var(--steps-margin-start);
-  margin-bottom: var(--steps-margin-bottom);
-  overflow: visible;
-  counter-reset: step;
-  border-inline-start: var(--border-width) solid var(--border-color);
+    --steps-padding: #{$steps-padding};
+    --steps-item-size: #{$steps-item-size};
+    --steps-margin-start: #{$steps-margin-start};
+    --steps-margin-bottom: #{$steps-margin-bottom};
+    --steps-heading-margin-top: #{$steps-heading-margin-top};
+    display: block;
+    width: auto;
+    padding-inline-start: var(--steps-padding);
+    margin-inline-start: var(--steps-margin-start);
+    margin-bottom: var(--steps-margin-bottom);
+    overflow: visible;
+    counter-reset: step;
+    border-inline-start: var(--border-width) solid var(--border-color);
 
-  h3 {
-    counter-increment: step;
+    h3 {
+      counter-increment: step;
 
-    &:not(:first-child) {
+      &:not(:first-child) {
         margin-top: var(--steps-heading-margin-top);
+      }
+
+      &::before {
+        position: absolute;
+        display: inline-block;
+        width: var(--steps-item-size);
+        height: var(--steps-item-size);
+        margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
+        margin-top: var(--border-width);
+        font-size: var(--font-size-h4);
+        font-weight: var(--font-weight-semibold);
+        line-height: calc(var(--steps-item-size) - 2 * var(--border-width));
+        color: var(--body-color);
+        text-align: center;
+        content: counter(step);
+        background: var(--bg-surface);
+        border: var(--border-width) solid var(--border-color);
+        @include border-radius(var(--border-radius));
+      }
     }
 
-    &::before {
-      position: absolute;
-      display: inline-block;
-      width: var(--steps-item-size);
-      height: var(--steps-item-size);
-      margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
-      margin-top: var(--border-width);
-      font-size: var(--font-size-h4);
-      font-weight: var(--font-weight-semibold);
-      line-height: calc(var(--steps-item-size) - 2 * var(--border-width));
-      color: var(--body-color);
-      text-align: center;
-      content: counter(step);
-      background: var(--bg-surface);
-      border: var(--border-width) solid var(--border-color);
-      @include border-radius(var(--border-radius));
+    > :last-child {
+      margin-bottom: 0;
     }
-  }
-
-  > :last-child {
-    margin-bottom: 0;
-  }
   }
 }
 
@@ -374,15 +374,15 @@ $callout-tokens: defaults(
 
 @layer content {
   .callout {
-  @include tokens($callout-tokens);
-  padding: var(--callout-padding-y) var(--callout-padding-x);
-  margin-bottom: var(--callout-margin-bottom);
-  background: var(--theme-lt, var(--primary-lt));
-  border: var(--border-width) solid var(--theme-muted, var(--primary-200));
-  @include border-radius(var(--border-radius));
+    @include tokens($callout-tokens);
+    padding: var(--callout-padding-y) var(--callout-padding-x);
+    margin-bottom: var(--callout-margin-bottom);
+    background: var(--theme-lt, var(--primary-lt));
+    border: var(--border-width) solid var(--theme-muted, var(--primary-200));
+    @include border-radius(var(--border-radius));
 
-  > :last-child {
-    margin-bottom: 0;
-  }
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 }
