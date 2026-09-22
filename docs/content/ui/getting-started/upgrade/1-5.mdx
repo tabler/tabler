@@ -27,6 +27,7 @@ Load `tabler-theme.js`|Pages follow the OS color scheme now - see [Color mode](#
 Use payment provider icons|Check the [removed providers](#removed-payment-providers)
 Link files inside `dist/libs`|Check the [moved paths](#smaller-distlibs-folder)
 Load `tabler.rtl.css`|You can drop it - plain `tabler.css` now handles RTL
+Have `.text-gray-*` classes in your markup|They color the text now - see [Gray text utilities](#gray-text-utilities)
 
 ## Update the package
 
@@ -276,6 +277,19 @@ These changes are not breaking, but they change how a page looks. Check your scr
 - **Cards**: `--tblr-card-header-bg` and `--tblr-card-footer-bg` can be set on their own, and the card status bar is `3px`.
 - **Layout**: the `margin-inline-start: calc(100vw - 100%)` hack on the root element is gone, so there is no white gap on the left when a scrollbar is present.
 - **Trending**: the component uses the `arrow-up` and `arrow-down` icons instead of `trending-up` and `trending-down`.
+
+### Gray text utilities
+
+Tabler 1.4 had no `.text-gray-*` classes, only `.text-gray-*-fg`. A class like `.text-gray-200` in your markup did nothing, and the text kept the color of its parent. Tabler 1.5 adds `.text-gray-50` to `.text-gray-950`, so the same class now sets the color. On `.text-gray-200` that is a very light gray, which is hard to read on a white page.
+
+Pick the shade you want to see, or remove the class:
+
+```diff
+- <p class="text-gray-200">Last updated 3 hours ago</p>
++ <p class="text-gray-600">Last updated 3 hours ago</p>
+```
+
+For muted text, `.text-secondary` follows the theme and keeps enough contrast in dark mode.
 
 ## RTL
 

@@ -299,4 +299,22 @@ describe('CountUp', () => {
       expect(second).toBe(first)
     })
   })
+  describe('loose data-countup types', () => {
+    it('should read numbers and booleans written as strings, as countUp.js did', () => {
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"duration":"3","decimalPlaces":"2","useGrouping":"false","separator":1}\'>30000</h1>'
+
+      const instance = new CountUp(element())
+
+      expect(instance._config.duration).toBe(3)
+      expect(instance._config.decimalPlaces).toBe(2)
+      expect(instance._config.useGrouping).toBe(false)
+      expect(instance._config.separator).toBe('1')
+    })
+
+    it('should still reject a value that is not a number', () => {
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"duration":"fast"}\'>30000</h1>'
+
+      expect(() => new CountUp(element())).toThrow(TypeError)
+    })
+  })
 })

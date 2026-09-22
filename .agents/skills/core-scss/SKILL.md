@@ -156,6 +156,8 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 - [ ] Custom properties written bare; new foreign names added to `cssVarIgnore`
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`
 - [ ] Logical properties, or `--dir` + `/* rtl:ignore */`; no hand-written RTL
+- [ ] No class, custom property, Sass variable or mixin parameter removed or renamed without an alias (`backward-compat`)
 - [ ] sass-true test for a mixin that can break silently
 - [ ] `lint:scss`, `check:tokens`, `lint:prettier`, `test:scss` clean
+- [ ] `check:compat` clean after a core build, with no new line in `.build/compat-baseline.txt`
 - [ ] Docs page and class table updated (`write-docs`, `class-reference`), changeset written

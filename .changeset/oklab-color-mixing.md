@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Removed the `--tblr-*-rgb` variables and moved color mixing to `color-mix(in oklab)`; use `color-mix()` instead of `rgba(var(--tblr-*-rgb))`.
+Updated color mixing to `color-mix(in oklab)`; the `--tblr-*-rgb` variables are deprecated and stay until 2.0.
