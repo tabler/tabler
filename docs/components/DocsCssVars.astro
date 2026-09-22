@@ -1,0 +1,64 @@
+---
+// The "CSS" section of a component page, built like the Bootstrap docs: the
+// custom-property block and the Sass defaults, both cut from the sources by
+// lib/scss-docs.ts. Either part may be missing.
+import CodeSnippet from '@components/CodeSnippet.astro'
+import { cssSection } from '@lib/scss-docs'
+import { site } from '@shared/lib/site'
+
+interface Props {
+  /** the custom-property family after `--`, e.g. `badge` for the `badge-css-vars` marker */
+  cssVars?: string | undefined
+  /** the `<name>-variables` marker in `_variables.scss`; defaults to `cssVars` */
+  sassVars?: string | undefined
+}
+
+const { cssVars, sassVars } = Astro.props
+const { css, sass } = await cssSection(cssVars, sassVars)
+
+const fileLink = (path: string) => `${site.githubUrl}/blob/dev/${path}`
+---
+
+<!-- BEGIN DOCS CSS VARS -->{
+  (css || sass) && (
+    <Fragment>
+      <h2 id="css">CSS</h2>
+
+      {css && (
+        <Fragment>
+          <h3 id="css-variables">Variables</h3>
+          <p>
+            The component uses local CSS variables
+            {css.selector && (
+              <Fragment>
+                {' '}
+                on <code>{css.selector}</code>
+              </Fragment>
+            )}{' '}
+            for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too. Source:{' '}
+            <a href={fileLink(css.path)}>
+              <code>{css.path}</code>
+            </a>
+            .
+          </p>
+          <CodeSnippet code={css.code} lang="scss" />
+        </Fragment>
+      )}
+
+      {sass && (
+        <Fragment>
+          <h3 id="sass-variables">Sass variables</h3>
+          <p>
+            Override these variables before importing Tabler to change the defaults. Source:{' '}
+            <a href={fileLink(sass.path)}>
+              <code>{sass.path}</code>
+            </a>
+            .
+          </p>
+          <CodeSnippet code={sass.code} lang="scss" />
+        </Fragment>
+      )}
+    </Fragment>
+  )
+}
+<!-- END DOCS CSS VARS -->

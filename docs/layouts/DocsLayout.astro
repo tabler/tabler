@@ -11,6 +11,7 @@ import DocsNavbar from '@components/DocsNavbar.astro';
 import DocsMenu from '@components/DocsMenu.astro';
 import DocsSearch from '@components/DocsSearch.astro';
 import DocsClassnames from '@components/DocsClassnames.astro';
+import DocsCssVars from '@components/DocsCssVars.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsCopyMarkdownLink from '@components/DocsCopyMarkdownLink.astro';
@@ -31,6 +32,10 @@ interface Props {
 	sourcePath?: string | undefined;
 	/** class reference table, rendered above the page body */
 	classnames?: Record<string, { class: string; desc: string; default: boolean }[]> | undefined;
+	/** front matter `css-vars`: custom-property family (`badge` for `--tblr-badge-*`), rendered below the class reference */
+	cssVars?: string | undefined;
+	/** front matter `sass-vars`: the `<name>-variables` marker in `_variables.scss`, defaults to `cssVars` */
+	sassVars?: string | undefined;
 	/** front matter: SEO description */
 	description?: string | undefined;
 	/** front matter: optional SEO description override */
@@ -65,6 +70,8 @@ const {
 	seoTitle,
 	summary,
 	classnames,
+	cssVars,
+	sassVars,
 	sourcePath,
 	description,
 	seoDescription,
@@ -408,6 +415,8 @@ const relatedPages = await Promise.all(
 									<slot />
 
 									{classnames && <DocsClassnames classnames={classnames} />}
+
+									{(cssVars || sassVars) && <DocsCssVars cssVars={cssVars} sassVars={sassVars} />}
 
 									{relatedPages.length > 0 && (
 										<Fragment>
