@@ -1,0 +1,143 @@
+@use '../config' as *;
+
+$tree-chevron: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9.707 5.293l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 1 1 -1.414 -1.414l5.293 -5.293l-5.293 -5.293a1 1 0 0 1 1.414 -1.414'/></svg>");
+
+.tree,
+.tree-children {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tree {
+  --tree-node-padding-y: #{$tree-node-padding-y};
+  --tree-node-padding-x: #{$tree-node-padding-x};
+  --tree-node-gap: #{$tree-node-gap};
+  --tree-node-color: #{$tree-node-color};
+  --tree-node-hover-bg: #{$tree-node-hover-bg};
+  --tree-node-active-color: #{$tree-node-active-color};
+  --tree-node-active-bg: #{$tree-node-active-bg};
+  --tree-node-border-radius: #{$tree-node-border-radius};
+  --tree-toggle-size: #{$tree-toggle-size};
+  --tree-toggle-color: #{$tree-toggle-color};
+  --tree-indent: #{$tree-indent};
+  --tree-guide-color: #{$tree-guide-color};
+}
+
+.tree-children {
+  padding-inline-start: calc(var(--tree-indent) - var(--tree-toggle-size) / 2);
+  margin-inline-start: calc(var(--tree-node-padding-x) + var(--tree-toggle-size) / 2);
+  border-inline-start: var(--border-width) var(--border-style) var(--tree-guide-color);
+}
+
+.tree-node {
+  display: flex;
+  gap: var(--tree-node-gap);
+  align-items: center;
+  padding: var(--tree-node-padding-y) var(--tree-node-padding-x);
+  color: var(--tree-node-color);
+  text-decoration: none;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  @include border-radius(var(--tree-node-border-radius));
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::before {
+    flex-shrink: 0;
+    width: var(--tree-toggle-size);
+    height: var(--tree-toggle-size);
+    content: '';
+  }
+
+  // a folder with a checkbox supplies its own .tree-toggle button instead
+  &:has(> .tree-toggle)::before {
+    content: none;
+  }
+
+  &:is(summary)::before {
+    background-color: var(--tree-toggle-color);
+    transition: transform $transition-time;
+
+    /* rtl:ignore */
+    transform: scaleX(var(--dir));
+    @include mask-icon($tree-chevron, $size: 100%);
+  }
+
+  details[open] > &::before {
+    /* rtl:ignore */
+    transform: scaleX(var(--dir)) rotate(90deg);
+  }
+
+  &:hover {
+    color: var(--tree-node-color);
+    background: var(--tree-node-hover-bg);
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
+  &.active {
+    color: var(--tree-node-active-color);
+    background: var(--tree-node-active-bg);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .form-check-input {
+    flex-shrink: 0;
+    margin: 0;
+  }
+}
+
+.tree-expanded .tree-node::before {
+  content: none;
+}
+
+// with checkboxes on leaves only, folders never get one, so a leaf's own
+// blank spacer (reserved to line its label up with a folder's arrow) just
+// adds dead space in front of its checkbox — drop it for this mode only
+.tree-checkboxes-leaves .tree-node:not(:is(summary))::before {
+  content: none;
+}
+
+.tree-toggle {
+  flex-shrink: 0;
+  width: var(--tree-toggle-size);
+  height: var(--tree-toggle-size);
+  padding: 0;
+  background-color: var(--tree-toggle-color);
+  border: 0;
+  transition: transform $transition-time;
+
+  /* rtl:ignore */
+  transform: scaleX(var(--dir));
+  @include mask-icon($tree-chevron, $size: 100%);
+
+  &[aria-expanded='true'] {
+    /* rtl:ignore */
+    transform: scaleX(var(--dir)) rotate(90deg);
+  }
+}
+
+.tree-icon {
+  flex-shrink: 0;
+  color: var(--tree-toggle-color);
+}
+
+// swap the folder icon for its open variant, matching whichever toggle the
+// folder actually has — native <details> or the js-toggle .tree-toggle button
+details:not([open]) > .tree-node > .tree-icon-open,
+details[open] > .tree-node > .tree-icon-closed,
+.tree-node:has(> .tree-toggle[aria-expanded='false']) > .tree-icon-open,
+.tree-node:has(> .tree-toggle[aria-expanded='true']) > .tree-icon-closed {
+  display: none;
+}
