@@ -17,6 +17,10 @@ classnames:
       desc: One row - a summary, a link or a label
     - class: tree-icon
       desc: Icon before the label of a row
+    - class: tree-icon-closed
+      desc: A folder icon shown only while its folder is collapsed, paired with tree-icon-open
+    - class: tree-icon-open
+      desc: A folder icon shown only while its folder is expanded, paired with tree-icon-closed
     - class: tree-toggle
       desc: The expand/collapse button of a folder that has a checkbox, a sibling of the checkbox instead of summary's own arrow
   state:
@@ -61,7 +65,9 @@ Build a tree from nested lists. A folder is a `<details>` element with a `<summa
 
 ## Icons
 
-Put an icon with `.tree-icon` before the label of any row. Use a different icon for folders, files or an open folder.
+Put an icon with `.tree-icon` before the label of any row.
+
+For a folder, render two icons instead of one — `.tree-icon-closed` and `.tree-icon-open` — and CSS shows whichever matches the folder's live state. This works with no JavaScript and no re-render, for both the native `<details>` toggle and the `.tree-toggle` button a folder with a checkbox uses. Click "Documents" below to see it swap.
 
 The examples use [Tabler Icons](https://tabler.io/icons) as inline SVG with `stroke="currentColor"`, so the icon follows the text color in light and dark mode. Any other icon works too, as long as it is an element with the `.tree-icon` class.
 
@@ -70,7 +76,8 @@ The examples use [Tabler Icons](https://tabler.io/icons) as inline SVG with `str
   <li>
     <details open>
       <summary class="tree-node">
-        <svg class="icon tree-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" /></svg>
+        <svg class="icon tree-icon tree-icon-closed" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" /></svg>
+        <svg class="icon tree-icon tree-icon-open" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" /></svg>
         Documents
       </summary>
       <ul class="tree-children">

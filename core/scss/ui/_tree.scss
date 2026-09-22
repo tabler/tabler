@@ -124,3 +124,12 @@ $tree-chevron: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' v
   flex-shrink: 0;
   color: var(--tree-toggle-color);
 }
+
+// swap the folder icon for its open variant, matching whichever toggle the
+// folder actually has — native <details> or the js-toggle .tree-toggle button
+details:not([open]) > .tree-node > .tree-icon-open,
+details[open] > .tree-node > .tree-icon-closed,
+.tree-node:has(> .tree-toggle[aria-expanded='false']) > .tree-icon-open,
+.tree-node:has(> .tree-toggle[aria-expanded='true']) > .tree-icon-closed {
+  display: none;
+}

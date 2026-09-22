@@ -53,10 +53,21 @@ const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
       const jsToggle = isFolder && !expanded && hasCheckbox
       const nodeClasses = ['tree-node', item.active && 'active', item.disabled && 'disabled']
       const icon = item.icon ?? (isFolder ? ((item.open || expanded) ? (folderOpenIcon ?? folderIcon) : folderIcon) : fileIcon)
+      // an interactive folder (native details, or the js-toggle div) can flip its own
+      // open state without a re-render, so render both icons and let CSS pick one
+      const dualIcon = isFolder && !expanded && !item.icon && Boolean(folderIcon) && Boolean(folderOpenIcon)
+      const iconContent = dualIcon ? (
+        <>
+          <Icon name={folderIcon!} class="tree-icon tree-icon-closed" />
+          <Icon name={folderOpenIcon!} class="tree-icon tree-icon-open" />
+        </>
+      ) : (
+        icon && <Icon name={icon} class="tree-icon" />
+      )
       const content = (
         <>
           {hasCheckbox && <input class="form-check-input" type="checkbox" checked={item.checked} disabled={item.disabled} aria-label={isFolder && !expanded ? item.label : undefined} />}
-          {icon && <Icon name={icon} class="tree-icon" />}
+          {iconContent}
           {item.label}
         </>
       )
