@@ -4,200 +4,202 @@
 
 @use '../../config' as *;
 
-.form-check {
-  display: block;
-  min-height: $form-check-min-height;
-  padding-inline-start: $form-check-padding-start;
-  margin-bottom: $form-check-margin-bottom;
+@layer forms {
+  .form-check {
+    display: block;
+    min-height: $form-check-min-height;
+    padding-inline-start: $form-check-padding-start;
+    margin-bottom: $form-check-margin-bottom;
 
-  .form-check-input {
-    float: inline-start;
-    margin-inline-start: $form-check-padding-start * -1;
-  }
-}
-
-.form-check-reverse {
-  padding-inline-end: $form-check-padding-start;
-  padding-inline-start: 0;
-  text-align: end;
-
-  .form-check-input {
-    float: inline-end;
-    margin-inline-end: $form-check-padding-start * -1;
-    margin-inline-start: 0;
-  }
-}
-
-.form-check-input {
-  --form-check-bg: #{$form-check-input-bg};
-  --form-check-icon-color: #{$form-check-input-checked-color};
-
-  position: relative;
-  flex-shrink: 0;
-  width: $form-check-input-width;
-  height: $form-check-input-width;
-  margin-top: ($line-height-base - $form-check-input-width) * 0.5; // line-height minus check height
-  vertical-align: top;
-  appearance: none;
-  background-color: var(--form-check-bg);
-  border: $form-check-input-border;
-  print-color-adjust: exact; // Keep themed appearance for print
-  @include transition($form-check-transition);
-  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
-  outline-color: transparent;
-
-  // The check, dash or dot is a pseudo-element painted through a CSS mask, so
-  // its colour comes from `--form-check-icon-color` instead of a colour baked
-  // into the svg. Hidden until the input is checked or indeterminate.
-  &::before {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: '';
-    background-color: var(--form-check-icon-color);
-    opacity: 0;
-    @include mask-icon(var(--form-check-icon));
-  }
-
-  &[type='checkbox'] {
-    --form-check-icon: #{escape-svg($form-check-input-checked-bg-image)};
-
-    @include border-radius($form-check-input-border-radius);
-  }
-
-  &[type='radio'] {
-    --form-check-icon: #{escape-svg($form-check-radio-checked-bg-image)};
-
-    // stylelint-disable-next-line property-disallowed-list
-    border-radius: $form-check-radio-border-radius;
-  }
-
-  &:active {
-    filter: $form-check-input-active-filter;
-  }
-
-  &:focus-visible {
-    border-color: $form-check-input-focus-border;
-    @include focus-ring(true);
-  }
-
-  &:checked {
-    background-color: var(--theme-bg, #{$form-check-input-checked-bg-color});
-    border-color: $form-check-input-checked-border-color;
-
-    &::before {
-      opacity: 1;
+    .form-check-input {
+      float: inline-start;
+      margin-inline-start: $form-check-padding-start * -1;
     }
   }
 
-  &[type='checkbox']:indeterminate {
-    --form-check-icon: #{escape-svg($form-check-input-indeterminate-bg-image)};
-    --form-check-icon-color: #{$form-check-input-indeterminate-color};
+  .form-check-reverse {
+    padding-inline-end: $form-check-padding-start;
+    padding-inline-start: 0;
+    text-align: end;
 
-    background-color: var(--theme-bg, #{$form-check-input-indeterminate-bg-color});
-    border-color: $form-check-input-indeterminate-border-color;
-
-    &::before {
-      opacity: 1;
+    .form-check-input {
+      float: inline-end;
+      margin-inline-end: $form-check-padding-start * -1;
+      margin-inline-start: 0;
     }
   }
-
-  &:disabled {
-    pointer-events: none;
-    filter: none;
-    opacity: $form-check-input-disabled-opacity;
-  }
-
-  // Use disabled attribute in addition of :disabled pseudo-class
-  // See: https://github.com/twbs/bootstrap/issues/28247
-  &[disabled],
-  &:disabled {
-    ~ .form-check-label {
-      cursor: default;
-      opacity: $form-check-label-disabled-opacity;
-    }
-  }
-}
-
-.form-check-label {
-  color: $form-check-label-color;
-  cursor: $form-check-label-cursor;
-}
-
-//
-// Switch
-//
-
-.form-switch {
-  padding-inline-start: $form-switch-padding-start;
 
   .form-check-input {
-    --form-switch-color: #{$form-switch-color};
-    // The knob is a circle three quarters of the track height, inset by an eighth
-    // — the same geometry the old `viewBox='-4 -4 8 8'` svg had.
-    --form-switch-knob-size: calc(#{$form-switch-height} * 0.75);
-    --form-switch-knob-offset: calc(#{$form-switch-height} * 0.125);
+    --form-check-bg: #{$form-check-input-bg};
+    --form-check-icon-color: #{$form-check-input-checked-color};
 
-    width: $form-switch-width;
-    margin-inline-start: $form-switch-padding-start * -1;
-    @include border-radius($form-switch-border-radius, 0);
-    @include transition($form-switch-transition);
+    position: relative;
+    flex-shrink: 0;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    margin-top: ($line-height-base - $form-check-input-width) * 0.5; // line-height minus check height
+    vertical-align: top;
+    appearance: none;
+    background-color: var(--form-check-bg);
+    border: $form-check-input-border;
+    print-color-adjust: exact; // Keep themed appearance for print
+    @include transition($form-check-transition);
+    // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
+    outline-color: transparent;
 
-    // The knob replaces the masked check icon: a plain circle that slides.
+    // The check, dash or dot is a pseudo-element painted through a CSS mask, so
+    // its colour comes from `--form-check-icon-color` instead of a colour baked
+    // into the svg. Hidden until the input is checked or indeterminate.
     &::before {
-      inset-block: 0;
-      inset-inline: var(--form-switch-knob-offset) auto;
-      width: var(--form-switch-knob-size);
-      height: var(--form-switch-knob-size);
-      margin-block: auto;
-      background-color: var(--form-switch-color);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      content: '';
+      background-color: var(--form-check-icon-color);
+      opacity: 0;
+      @include mask-icon(var(--form-check-icon));
+    }
+
+    &[type='checkbox'] {
+      --form-check-icon: #{escape-svg($form-check-input-checked-bg-image)};
+
+      @include border-radius($form-check-input-border-radius);
+    }
+
+    &[type='radio'] {
+      --form-check-icon: #{escape-svg($form-check-radio-checked-bg-image)};
+
       // stylelint-disable-next-line property-disallowed-list
-      border-radius: 50%;
-      opacity: 1;
-      mask-image: none;
-      @include transition($form-switch-knob-transition);
+      border-radius: $form-check-radio-border-radius;
     }
 
-    &:focus {
-      --form-switch-color: #{$form-switch-focus-color};
+    &:active {
+      filter: $form-check-input-active-filter;
+    }
+
+    &:focus-visible {
+      border-color: $form-check-input-focus-border;
+      @include focus-ring(true);
     }
 
     &:checked {
-      --form-switch-color: #{$form-switch-checked-color};
+      background-color: var(--theme-bg, #{$form-check-input-checked-bg-color});
+      border-color: $form-check-input-checked-border-color;
 
       &::before {
-        inset-inline-start: calc(100% - var(--form-switch-knob-size) - var(--form-switch-knob-offset));
+        opacity: 1;
+      }
+    }
+
+    &[type='checkbox']:indeterminate {
+      --form-check-icon: #{escape-svg($form-check-input-indeterminate-bg-image)};
+      --form-check-icon-color: #{$form-check-input-indeterminate-color};
+
+      background-color: var(--theme-bg, #{$form-check-input-indeterminate-bg-color});
+      border-color: $form-check-input-indeterminate-border-color;
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &:disabled {
+      pointer-events: none;
+      filter: none;
+      opacity: $form-check-input-disabled-opacity;
+    }
+
+    // Use disabled attribute in addition of :disabled pseudo-class
+    // See: https://github.com/twbs/bootstrap/issues/28247
+    &[disabled],
+    &:disabled {
+      ~ .form-check-label {
+        cursor: default;
+        opacity: $form-check-label-disabled-opacity;
       }
     }
   }
 
-  &.form-check-reverse {
-    padding-inline-end: $form-switch-padding-start;
-    padding-inline-start: 0;
+  .form-check-label {
+    color: $form-check-label-color;
+    cursor: $form-check-label-cursor;
+  }
+
+  //
+  // Switch
+  //
+
+  .form-switch {
+    padding-inline-start: $form-switch-padding-start;
 
     .form-check-input {
-      margin-inline-end: $form-switch-padding-start * -1;
-      margin-inline-start: 0;
+      --form-switch-color: #{$form-switch-color};
+      // The knob is a circle three quarters of the track height, inset by an eighth
+      // — the same geometry the old `viewBox='-4 -4 8 8'` svg had.
+      --form-switch-knob-size: calc(#{$form-switch-height} * 0.75);
+      --form-switch-knob-offset: calc(#{$form-switch-height} * 0.125);
+
+      width: $form-switch-width;
+      margin-inline-start: $form-switch-padding-start * -1;
+      @include border-radius($form-switch-border-radius, 0);
+      @include transition($form-switch-transition);
+
+      // The knob replaces the masked check icon: a plain circle that slides.
+      &::before {
+        inset-block: 0;
+        inset-inline: var(--form-switch-knob-offset) auto;
+        width: var(--form-switch-knob-size);
+        height: var(--form-switch-knob-size);
+        margin-block: auto;
+        background-color: var(--form-switch-color);
+        // stylelint-disable-next-line property-disallowed-list
+        border-radius: 50%;
+        opacity: 1;
+        mask-image: none;
+        @include transition($form-switch-knob-transition);
+      }
+
+      &:focus {
+        --form-switch-color: #{$form-switch-focus-color};
+      }
+
+      &:checked {
+        --form-switch-color: #{$form-switch-checked-color};
+
+        &::before {
+          inset-inline-start: calc(100% - var(--form-switch-knob-size) - var(--form-switch-knob-offset));
+        }
+      }
+    }
+
+    &.form-check-reverse {
+      padding-inline-end: $form-switch-padding-start;
+      padding-inline-start: 0;
+
+      .form-check-input {
+        margin-inline-end: $form-switch-padding-start * -1;
+        margin-inline-start: 0;
+      }
     }
   }
-}
 
-.form-check-inline {
-  display: inline-block;
-  margin-inline-end: $form-check-inline-margin-end;
-}
+  .form-check-inline {
+    display: inline-block;
+    margin-inline-end: $form-check-inline-margin-end;
+  }
 
-.btn-check {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  pointer-events: none;
+  .btn-check {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
 
-  &[disabled],
-  &:disabled {
-    + .btn {
-      pointer-events: none;
-      filter: none;
-      opacity: $form-check-btn-check-disabled-opacity;
+    &[disabled],
+    &:disabled {
+      + .btn {
+        pointer-events: none;
+        filter: none;
+        opacity: $form-check-btn-check-disabled-opacity;
+      }
     }
   }
 }

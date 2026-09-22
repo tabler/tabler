@@ -1,75 +1,77 @@
 @use '../config' as *;
 
-.offcanvas {
-  @include media-print() {
-    display: none;
-  }
-}
-
-.offcanvas-body {
-  overscroll-behavior: contain;
-}
-
-.offcanvas-header {
-  border-bottom: var(--border-width) var(--border-style) var(--border-color);
-}
-
-.offcanvas-footer {
-  padding: $offcanvas-padding-y $offcanvas-padding-x;
-}
-
-.offcanvas-title {
-  --offcanvas-title-line-height: #{$offcanvas-title-line-height};
-
-  font-size: $h3-font-size;
-  font-weight: var(--font-weight-medium);
-  line-height: var(--offcanvas-title-line-height);
-}
-
-.offcanvas-narrow {
-  --offcanvas-narrow-width: #{$offcanvas-narrow-width};
-  --offcanvas-width: var(--offcanvas-narrow-width);
-}
-
-// Floating variant: the panel keeps a gap from the viewport edges. Two routes
-// to the same state: the .offcanvas-floating class on the panel, or
-// data-bs-offcanvas-style="floating" on <html> (the theme settings), which
-// covers every panel on the page — found by its direction class.
-//
-// --offcanvas-margin is 0px above the breakpoint of a responsive variant, so
-// the inline content there is left alone.
-$offcanvas-floating-attr: "html[data-bs-offcanvas-style='floating']";
-
-.offcanvas-floating,
-#{$offcanvas-floating-attr} :is(.offcanvas-start, .offcanvas-end, .offcanvas-top, .offcanvas-bottom) {
-  --offcanvas-transition: #{transform $offcanvas-transition-duration ease-in-out, translate $offcanvas-transition-duration ease-in-out};
-  max-width: calc(100% - 2 * var(--offcanvas-margin));
-  max-height: calc(100% - 2 * var(--offcanvas-margin));
-  margin: var(--offcanvas-margin);
-  border: var(--offcanvas-border-width) solid var(--offcanvas-border-color);
-  border-radius: $offcanvas-border-radius;
-
-  // The closed panel has to travel past its own margin to leave the viewport.
-  &.offcanvas-start {
-    /* rtl:ignore */
-    translate: calc(var(--dir) * -1 * var(--offcanvas-margin));
+@layer components {
+  .offcanvas {
+    @include media-print() {
+      display: none;
+    }
   }
 
-  &.offcanvas-end {
-    /* rtl:ignore */
-    translate: calc(var(--dir) * var(--offcanvas-margin));
+  .offcanvas-body {
+    overscroll-behavior: contain;
   }
 
-  &.offcanvas-top {
-    translate: 0 calc(-1 * var(--offcanvas-margin));
+  .offcanvas-header {
+    border-bottom: var(--border-width) var(--border-style) var(--border-color);
   }
 
-  &.offcanvas-bottom {
-    translate: 0 var(--offcanvas-margin);
+  .offcanvas-footer {
+    padding: $offcanvas-padding-y $offcanvas-padding-x;
   }
 
-  &.showing,
-  &.show:not(.hiding) {
-    translate: none;
+  .offcanvas-title {
+    --offcanvas-title-line-height: #{$offcanvas-title-line-height};
+
+    font-size: $h3-font-size;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--offcanvas-title-line-height);
+  }
+
+  .offcanvas-narrow {
+    --offcanvas-narrow-width: #{$offcanvas-narrow-width};
+    --offcanvas-width: var(--offcanvas-narrow-width);
+  }
+
+  // Floating variant: the panel keeps a gap from the viewport edges. Two routes
+  // to the same state: the .offcanvas-floating class on the panel, or
+  // data-bs-offcanvas-style="floating" on <html> (the theme settings), which
+  // covers every panel on the page — found by its direction class.
+  //
+  // --offcanvas-margin is 0px above the breakpoint of a responsive variant, so
+  // the inline content there is left alone.
+  $offcanvas-floating-attr: "html[data-bs-offcanvas-style='floating']";
+
+  .offcanvas-floating,
+  #{$offcanvas-floating-attr} :is(.offcanvas-start, .offcanvas-end, .offcanvas-top, .offcanvas-bottom) {
+    --offcanvas-transition: #{transform $offcanvas-transition-duration ease-in-out, translate $offcanvas-transition-duration ease-in-out};
+    max-width: calc(100% - 2 * var(--offcanvas-margin));
+    max-height: calc(100% - 2 * var(--offcanvas-margin));
+    margin: var(--offcanvas-margin);
+    border: var(--offcanvas-border-width) solid var(--offcanvas-border-color);
+    border-radius: $offcanvas-border-radius;
+
+    // The closed panel has to travel past its own margin to leave the viewport.
+    &.offcanvas-start {
+      /* rtl:ignore */
+      translate: calc(var(--dir) * -1 * var(--offcanvas-margin));
+    }
+
+    &.offcanvas-end {
+      /* rtl:ignore */
+      translate: calc(var(--dir) * var(--offcanvas-margin));
+    }
+
+    &.offcanvas-top {
+      translate: 0 calc(-1 * var(--offcanvas-margin));
+    }
+
+    &.offcanvas-bottom {
+      translate: 0 var(--offcanvas-margin);
+    }
+
+    &.showing,
+    &.show:not(.hiding) {
+      translate: none;
+    }
   }
 }

@@ -18,6 +18,6 @@ describe('input-group-flat validation', () => {
 
   it.each(['valid', 'invalid'])('keeps the %s color while the group has focus', (state) => {
     expect(flat).toMatch(new RegExp(`\\.input-group-flat:has\\(\\.form-control\\.is-${state}\\):focus-within[^{]*\\{ outline-color: [^;]+; \\}`))
-    expect(flat).toMatch(new RegExp(`\\.input-group-flat:has\\(\\.form-control\\.is-${state}\\):focus-within \\.form-control,[^{]*\\.input-group-text \\{ border-color: [^;]+ !important; \\}`))
+    expect(flat).toMatch(new RegExp(`\\.input-group-flat:has\\(\\.form-control\\.is-${state}\\):focus-within \\.form-control,[^{]*\\.input-group-text \\{ border-color: [^;]+; \\}`))
   })
 })
