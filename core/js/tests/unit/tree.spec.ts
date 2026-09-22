@@ -156,6 +156,69 @@ describe('Tree', () => {
     })
   })
 
+  describe('toggle', () => {
+    const jsToggleMarkup = `
+      <ul class="tree" data-bs-toggle="tree">
+        <li>
+          <div class="tree-node">
+            <button type="button" class="tree-toggle" aria-expanded="true"></button>
+            <input id="folder" type="checkbox">
+            Folder
+          </div>
+          <ul class="tree-children">
+            <li><label class="tree-node"><input id="a" type="checkbox"> A</label></li>
+            <li><label class="tree-node"><input id="b" type="checkbox"> B</label></li>
+          </ul>
+        </li>
+      </ul>`
+
+    it('should collapse and re-expand when the toggle button is clicked', () => {
+      create(jsToggleMarkup)
+      const button = fixtureEl.querySelector<HTMLButtonElement>('.tree-toggle')!
+      const children = fixtureEl.querySelector<HTMLElement>('.tree-children')!
+
+      button.click()
+      expect(button.getAttribute('aria-expanded')).toBe('false')
+      expect(children.hidden).toBe(true)
+
+      button.click()
+      expect(button.getAttribute('aria-expanded')).toBe('true')
+      expect(children.hidden).toBe(false)
+    })
+
+    it('should toggle when the row is clicked anywhere, not only the button', () => {
+      create(jsToggleMarkup)
+      const node = fixtureEl.querySelector<HTMLElement>('.tree-node')!
+      const button = fixtureEl.querySelector<HTMLButtonElement>('.tree-toggle')!
+
+      node.click()
+
+      expect(button.getAttribute('aria-expanded')).toBe('false')
+    })
+
+    it('should not toggle when the checkbox is clicked, but should still check it', () => {
+      create(jsToggleMarkup)
+      const button = fixtureEl.querySelector<HTMLButtonElement>('.tree-toggle')!
+
+      box('folder').click()
+
+      expect(button.getAttribute('aria-expanded')).toBe('true')
+      expect(box('a').checked).toBe(true)
+      expect(box('b').checked).toBe(true)
+    })
+
+    it('should still cascade up to a folder whose checkbox sits in a div', () => {
+      create(jsToggleMarkup)
+
+      box('a').click()
+      expect(box('folder').indeterminate).toBe(true)
+
+      box('b').click()
+      expect(box('folder').checked).toBe(true)
+      expect(box('folder').indeterminate).toBe(false)
+    })
+  })
+
   describe('disabled', () => {
     it('should leave a disabled child alone and ignore it when checking the folder', () => {
       create(markup().replace('id="b" type="checkbox"', 'id="b" type="checkbox" disabled'))

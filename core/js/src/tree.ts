@@ -24,12 +24,15 @@ const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_CHANGE = `change${EVENT_KEY}`
 const EVENT_CHANGED = `changed${EVENT_KEY}`
+const EVENT_CLICK = `click${EVENT_KEY}`
 
 const SELECTOR_ITEM = 'li'
 const SELECTOR_CHECKBOX = 'input[type="checkbox"]'
-const SELECTOR_OWN_CHECKBOX = `:scope > details > summary ${SELECTOR_CHECKBOX}, :scope > label ${SELECTOR_CHECKBOX}, :scope > ${SELECTOR_CHECKBOX}`
+const SELECTOR_OWN_CHECKBOX = `:scope > details > summary ${SELECTOR_CHECKBOX}, :scope > label ${SELECTOR_CHECKBOX}, :scope > div ${SELECTOR_CHECKBOX}, :scope > ${SELECTOR_CHECKBOX}`
 const SELECTOR_DESCENDANT_CHECKBOXES = `:scope ul ${SELECTOR_CHECKBOX}`
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
+const SELECTOR_TOGGLE_BUTTON = '.tree-toggle'
+const SELECTOR_TOGGLE_NODE = `.tree-node:has(> ${SELECTOR_TOGGLE_BUTTON})`
 
 const findCheckboxes = (selector: string, root: Element): HTMLInputElement[] => SelectorEngine.find(selector, root) as HTMLInputElement[]
 
@@ -70,6 +73,20 @@ class Tree extends BaseComponent {
         relatedTarget: checkbox,
         checked: this.checked,
       })
+    })
+
+    EventHandler.on(this._element, EVENT_CLICK, (event: Event) => {
+      const target = event.target as HTMLElement
+
+      if (target.closest(SELECTOR_CHECKBOX)) {
+        return
+      }
+
+      const node = target.closest(SELECTOR_TOGGLE_NODE) as HTMLElement | null
+
+      if (node) {
+        this.#toggleFolder(node)
+      }
     })
   }
 
@@ -115,6 +132,20 @@ class Tree extends BaseComponent {
 
       item = item.parentElement?.closest(SELECTOR_ITEM)
     }
+  }
+
+  #toggleFolder(node: HTMLElement): void {
+    const button = SelectorEngine.findOne(SELECTOR_TOGGLE_BUTTON, node) as HTMLButtonElement | null
+    const children = node.nextElementSibling as HTMLElement | null
+
+    if (!button || !children) {
+      return
+    }
+
+    const expanded = button.getAttribute('aria-expanded') === 'true'
+
+    button.setAttribute('aria-expanded', String(!expanded))
+    children.hidden = expanded
   }
 
   #syncFromChildren(checkbox: HTMLInputElement): void {

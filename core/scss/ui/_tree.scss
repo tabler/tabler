@@ -1,5 +1,7 @@
 @use '../config' as *;
 
+$tree-chevron: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9.707 5.293l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 1 1 -1.414 -1.414l5.293 -5.293l-5.293 -5.293a1 1 0 0 1 1.414 -1.414'/></svg>");
+
 .tree,
 .tree-children {
   padding: 0;
@@ -50,13 +52,18 @@
     content: '';
   }
 
+  // a folder with a checkbox supplies its own .tree-toggle button instead
+  &:has(> .tree-toggle)::before {
+    content: none;
+  }
+
   &:is(summary)::before {
     background-color: var(--tree-toggle-color);
     transition: transform $transition-time;
 
     /* rtl:ignore */
     transform: scaleX(var(--dir));
-    @include mask-icon(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9.707 5.293l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 1 1 -1.414 -1.414l5.293 -5.293l-5.293 -5.293a1 1 0 0 1 1.414 -1.414'/></svg>"), $size: 100%);
+    @include mask-icon($tree-chevron, $size: 100%);
   }
 
   details[open] > &::before {
@@ -92,6 +99,25 @@
 
 .tree-expanded .tree-node::before {
   content: none;
+}
+
+.tree-toggle {
+  flex-shrink: 0;
+  width: var(--tree-toggle-size);
+  height: var(--tree-toggle-size);
+  padding: 0;
+  background-color: var(--tree-toggle-color);
+  border: 0;
+  transition: transform $transition-time;
+
+  /* rtl:ignore */
+  transform: scaleX(var(--dir));
+  @include mask-icon($tree-chevron, $size: 100%);
+
+  &[aria-expanded='true'] {
+    /* rtl:ignore */
+    transform: scaleX(var(--dir)) rotate(90deg);
+  }
 }
 
 .tree-icon {

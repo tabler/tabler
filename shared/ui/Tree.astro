@@ -47,6 +47,10 @@ const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
     items.map((item) => {
       const isFolder = Boolean(item.children?.length)
       const hasCheckbox = checkboxes === true || (checkboxes === 'leaves' && !isFolder)
+      // <summary> is an implicit button, so a folder with a checkbox can't use it —
+      // interactive content inside a button role breaks assistive tech. Use a plain
+      // div with its own toggle button instead, so the checkbox is its sibling.
+      const jsToggle = isFolder && !expanded && hasCheckbox
       const nodeClasses = ['tree-node', item.active && 'active', item.disabled && 'disabled']
       const icon = item.icon ?? (isFolder ? ((item.open || expanded) ? (folderOpenIcon ?? folderIcon) : folderIcon) : fileIcon)
       const content = (
@@ -59,7 +63,15 @@ const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
 
       return (
         <li>
-          {isFolder && expanded ? (
+          {jsToggle ? (
+            <>
+              <div class:list={nodeClasses}>
+                <button type="button" class="tree-toggle" aria-expanded={item.open ? 'true' : 'false'} aria-label={`Toggle ${item.label}`} />
+                {content}
+              </div>
+              <Tree items={item.children ?? []} checkboxes={checkboxes} folderIcon={folderIcon} folderOpenIcon={folderOpenIcon} fileIcon={fileIcon} nested hidden={!item.open} />
+            </>
+          ) : isFolder && expanded ? (
             <>
               {hasCheckbox ? <label class:list={nodeClasses}>{content}</label> : <span class:list={nodeClasses}>{content}</span>}
               <Tree items={item.children ?? []} checkboxes={checkboxes} folderIcon={folderIcon} folderOpenIcon={folderOpenIcon} fileIcon={fileIcon} expanded nested />
