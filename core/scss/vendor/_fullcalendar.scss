@@ -3,9 +3,14 @@
 :root {
   --fc-border-color: var(--border-color);
   --fc-daygrid-event-dot-width: 5px;
+}
 
-  --fc-event-bg-color: var(--primary-lt);
-  --fc-event-border-color: var(--primary-200);
+// On .fc itself, not :root: a var(--theme-x, …) fallback evaluated that high
+// up freezes on the fallback forever, since nothing ever wraps <html> itself
+// in an ambient .theme-* — same lesson as _stars-rating.scss.
+.fc {
+  --fc-event-bg-color: var(--theme-lt, var(--primary-lt));
+  --fc-event-border-color: var(--theme-muted, var(--primary-200));
   --fc-event-text-color: var(--body-color);
 }
 
