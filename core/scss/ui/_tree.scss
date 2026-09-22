@@ -101,6 +101,13 @@ $tree-chevron: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' v
   content: none;
 }
 
+// with checkboxes on leaves only, folders never get one, so a leaf's own
+// blank spacer (reserved to line its label up with a folder's arrow) just
+// adds dead space in front of its checkbox — drop it for this mode only
+.tree-checkboxes-leaves .tree-node:not(:is(summary))::before {
+  content: none;
+}
+
 .tree-toggle {
   flex-shrink: 0;
   width: var(--tree-toggle-size);

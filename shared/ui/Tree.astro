@@ -42,7 +42,7 @@ const { items, checkboxes = false, folderIcon, folderOpenIcon, fileIcon, nested 
 const toggle = checkboxes ? { 'data-bs-toggle': 'tree' } : {}
 ---
 
-<ul class:list={[nested ? 'tree-children' : 'tree', expanded && 'tree-expanded', className]} {...nested ? {} : toggle} {...rest}>
+<ul class:list={[nested ? 'tree-children' : 'tree', expanded && 'tree-expanded', checkboxes === 'leaves' && 'tree-checkboxes-leaves', className]} {...nested ? {} : toggle} {...rest}>
   {
     items.map((item) => {
       const isFolder = Boolean(item.children?.length)
