@@ -56,11 +56,17 @@ const docs = defineCollection({
        * listed once as `alert-{color}` rather than one row per generated class.
        */
       'classnames': z.record(z.string(), z.array(classnameEntry)).optional(),
+      /**
+       * Custom-property family the component exposes, as the part after
+       * `--tblr-`: `badge` lists every `--tblr-badge-*` variable. Rendered
+       * below the class reference by DocsCssVars from the compiled CSS.
+       */
+      'css-vars': z.string().optional(),
     })
     // strict so a mistyped key fails the build instead of being silently dropped
     .strict()
     // kebab-case front matter keys → the camelCase props DocsLayout expects
-    .transform(({ 'docs-libs': docsLibs, 'css-plugins': cssPlugins, 'hide-pagination': hidePagination, 'added-in': addedIn, ...rest }) => ({ ...rest, docsLibs, cssPlugins, hidePagination, addedIn })),
+    .transform(({ 'docs-libs': docsLibs, 'css-plugins': cssPlugins, 'hide-pagination': hidePagination, 'added-in': addedIn, 'css-vars': cssVars, ...rest }) => ({ ...rest, docsLibs, cssPlugins, hidePagination, addedIn, cssVars })),
 })
 
 export const collections = { docs }

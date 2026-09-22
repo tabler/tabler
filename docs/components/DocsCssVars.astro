@@ -1,0 +1,35 @@
+---
+// Custom-property block for a component, from the page's `css-vars` front
+// matter: the `// scss-docs-start <prefix>-css-vars` block of the SCSS source,
+// shown verbatim as on the Bootstrap docs (see lib/css-vars.ts).
+import CodeSnippet from '@components/CodeSnippet.astro'
+import { cssVarsSource } from '@lib/css-vars'
+import { site } from '@shared/lib/site'
+
+interface Props {
+  prefix: string
+}
+
+const { prefix } = Astro.props
+const source = cssVarsSource(prefix)
+if (!source) throw new Error(`css-vars: no "scss-docs-start ${prefix}-css-vars" marker in core/scss`)
+
+const { path, selector, code } = source
+---
+
+<!-- BEGIN DOCS CSS VARS -->
+<h2 id="css-variables">CSS variables</h2>
+
+<p>
+  The component uses local CSS variables{
+    selector && (
+      <Fragment>
+        {' '}
+        on <code>{selector}</code>
+      </Fragment>
+    )
+  } for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too. Source: <a href={`${site.githubUrl}/blob/dev/${path}`}><code>{path}</code></a>.
+</p>
+
+<CodeSnippet code={code} lang="scss" />
+<!-- END DOCS CSS VARS -->
