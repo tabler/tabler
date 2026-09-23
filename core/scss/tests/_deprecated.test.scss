@@ -1,0 +1,134 @@
+// The deprecated functions, mixins and parameters keep the results they had in
+// 1.5, so a project written for it still compiles to the same thing.
+
+@use 'sass:color';
+@use 'sass:map';
+@use '../config' as *;
+
+@include describe('deprecated functions') {
+  @include it('theme-color-lighter mixes 10% of the colour into the background') {
+    @include assert-equal(theme-color-lighter(#000), color.mix(#000, #fff, 10%));
+    @include assert-equal(theme-color-lighter(#fff, #000), color.mix(#fff, #000, 10%));
+  }
+
+  @include it('theme-color-darker shades by 10%') {
+    @include assert-equal(theme-color-darker(#fff), shade-color(#fff, 10%));
+  }
+
+  @include it('map-get-multiple keeps the listed keys') {
+    @include assert-equal(
+      map-get-multiple(
+        (
+          a: 1,
+          b: 2,
+          c: 3,
+        ),
+        (a, c)
+      ),
+      (
+        a: 1,
+        c: 3,
+      )
+    );
+  }
+
+  @include it('map-merge-multiple merges every map') {
+    @include assert-equal(
+      map-merge-multiple(
+        (
+          a: 1,
+        ),
+        (
+          b: 2,
+        ),
+        (
+          a: 3,
+        )
+      ),
+      (
+        a: 3,
+        b: 2,
+      )
+    );
+  }
+
+  @include it('breakpoint-prev returns the breakpoint one step down') {
+    @include assert-equal(
+      breakpoint-prev(
+        md,
+        (
+          xs: 0,
+          sm: 576px,
+          md: 768px,
+        )
+      ),
+      sm
+    );
+    @include assert-equal(
+      breakpoint-prev(
+        xs,
+        (
+          xs: 0,
+          sm: 576px,
+        )
+      ),
+      null
+    );
+  }
+
+  @include it('varify wraps every entry in var()') {
+    @include assert-equal('#{varify((a, b))}', 'var(--a) var(--b)');
+  }
+}
+
+@include describe('deprecated variables') {
+  @include it('keep their 1.5 defaults') {
+    @include assert-equal($input-btn-focus-width, 0.25rem);
+    @include assert-equal($form-hint-margin-top, 0.25rem);
+    @include assert-equal(map.has-key($theme-colors-rgb, 'primary'), true);
+  }
+}
+
+@include describe('deprecated mixin parameters') {
+  @include it('focus-ring($show-border: true) draws the ring over the border') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include focus-ring($show-border: true);
+        }
+      }
+      @include expect() {
+        .t {
+          outline: var(--focus-ring, var(--focus-ring-width) solid var(--focus-ring-color));
+          outline-offset: var(--focus-ring-offset);
+        }
+      }
+    }
+  }
+
+  @include it('media-breakpoint-down-than wraps content below the previous breakpoint') {
+    @include assert() {
+      @include output() {
+        @include media-breakpoint-down-than(
+          md,
+          (
+            xs: 0,
+            sm: 576px,
+            md: 768px,
+          )
+        ) {
+          .t {
+            color: red;
+          }
+        }
+      }
+      @include expect() {
+        @media (max-width: 575.98px) {
+          .t {
+            color: red;
+          }
+        }
+      }
+    }
+  }
+}

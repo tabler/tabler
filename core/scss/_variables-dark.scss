@@ -7,16 +7,16 @@
 //
 $darken-dark: adjust-lightness-css(var(--dark), -2%) !default;
 $lighten-dark: adjust-lightness-css(var(--dark), 2%) !default;
-$border-color-dark: adjust-lightness-css(var(--dark), 8%) !default;
-$border-color-translucent-dark: rgba(128, 150, 172, 0.2) !default;
-$border-dark-color-dark: adjust-lightness-css(var(--dark), 4%) !default;
-$border-active-color-dark: adjust-lightness-css(var(--dark), 12%) !default;
+// Borders come from the gray scale, mirroring the light-mode set in `_variables.scss`.
+$border-color-dark: var(--gray-700) !default;
+$border-opacity-dark: 8% !default;
+$border-color-translucent-dark: color-transparent(var(--gray-200), $border-opacity-dark) !default;
+$border-dark-color-dark: mix-color-css(var(--gray-700), var(--gray-800)) !default;
+$border-active-color-dark: var(--gray-600) !default;
 
 //new bootsrap variables
 $body-color-dark: $gray-200 !default;
 $body-emphasis-color-dark: $white !default;
-
-$text-secondary-dark: rgba(153, 159, 164, 1) !default;
 
 // Theme text emphasis dark
 $primary-text-emphasis-dark: mix-color-css(var(--white), var(--primary), 40%) !default;
@@ -70,9 +70,6 @@ $mark-bg-dark: mix-color-css(var(--black), var(--yellow), 60%) !default;
 // Forms dark
 //
 
-$form-select-indicator-color-dark: $body-color-dark !default;
-$form-select-indicator-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-select-indicator-color-dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>") !default;
-
 // Form validation colors dark
 $form-valid-color-dark: mix-color-css(var(--white), var(--green), 40%) !default;
 $form-valid-border-color-dark: mix-color-css(var(--white), var(--green), 40%) !default;
@@ -90,9 +87,3 @@ $form-invalid-border-color-dark: mix-color-css(var(--white), var(--red), 40%) !d
 $carousel-indicator-active-bg-dark: $carousel-dark-indicator-active-bg !default;
 $carousel-caption-color-dark: $carousel-dark-caption-color !default;
 $carousel-control-icon-filter-dark: $carousel-dark-control-icon-filter !default;
-
-//
-// Close button dark
-//
-
-$btn-close-filter-dark: $btn-close-white-filter !default;

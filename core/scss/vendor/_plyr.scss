@@ -1,5 +1,8 @@
 @use '../config' as *;
 
-body {
-  --plyr-color-main: #{var(--primary)};
+// On .plyr itself, not body: a var(--theme-x, …) fallback evaluated higher up
+// the tree freezes on the fallback the moment nothing wraps that ancestor in
+// an ambient .theme-* — same lesson as bootstrap/_list-group.scss.
+.plyr {
+  --plyr-color-main: #{var(--theme-bg, var(--primary))};
 }

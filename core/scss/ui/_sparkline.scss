@@ -4,68 +4,70 @@ Sparkline (inline SVG, rendered by js/src/sparkline.ts)
 @use 'sass:map';
 @use '../config' as *;
 
-.sparkline {
-  --sparkline-width: #{$sparkline-width};
-  --sparkline-height: #{$sparkline-height};
-  --sparkline-stroke: #{$sparkline-stroke};
-  --sparkline-negative: #{$sparkline-negative};
-  --sparkline-zero: #{$sparkline-zero};
-  --sparkline-threshold: #{$sparkline-threshold};
-  --sparkline-stroke-width: #{$sparkline-stroke-width};
-  --sparkline-fill: #{$sparkline-fill};
-  --sparkline-track: #{$sparkline-track};
-  --sparkline-spot: #{$sparkline-spot};
-  --sparkline-spot-size: #{$sparkline-spot-size};
-  --sparkline-label-font-size: #{$sparkline-label-font-size};
-  --sparkline-label-color: #{$sparkline-label-color};
+@layer components {
+  .sparkline {
+    --sparkline-width: #{$sparkline-width};
+    --sparkline-height: #{$sparkline-height};
+    --sparkline-stroke: #{$sparkline-stroke};
+    --sparkline-negative: #{$sparkline-negative};
+    --sparkline-zero: #{$sparkline-zero};
+    --sparkline-threshold: #{$sparkline-threshold};
+    --sparkline-stroke-width: #{$sparkline-stroke-width};
+    --sparkline-fill: #{$sparkline-fill};
+    --sparkline-track: #{$sparkline-track};
+    --sparkline-spot: #{$sparkline-spot};
+    --sparkline-spot-size: #{$sparkline-spot-size};
+    --sparkline-label-font-size: #{$sparkline-label-font-size};
+    --sparkline-label-color: #{$sparkline-label-color};
 
-  position: relative;
-  display: inline-block;
-  flex-shrink: 0; // a fixed-size graphic: never squeezed by a flex row
-  width: var(--sparkline-width);
-  height: var(--sparkline-height);
-  line-height: 0;
-  vertical-align: middle;
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0; // a fixed-size graphic: never squeezed by a flex row
+    width: var(--sparkline-width);
+    height: var(--sparkline-height);
+    line-height: 0;
+    vertical-align: middle;
 
-  .sparkline-svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
+    .sparkline-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .sparkline-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--sparkline-label-font-size);
+      font-weight: $font-weight-medium;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      color: var(--sparkline-label-color);
+    }
   }
 
-  .sparkline-label {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--sparkline-label-font-size);
-    font-weight: $font-weight-medium;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-    color: var(--sparkline-label-color);
+  @each $sparkline-size, $size in $sparkline-sizes {
+    .sparkline-#{$sparkline-size} {
+      --sparkline-width: #{map.get($size, width)};
+      --sparkline-height: #{map.get($size, height)};
+    }
   }
-}
 
-@each $sparkline-size, $size in $sparkline-sizes {
-  .sparkline-#{$sparkline-size} {
-    --sparkline-width: #{map.get($size, width)};
-    --sparkline-height: #{map.get($size, height)};
+  // Same width as height, for the circle type
+  .sparkline-square {
+    --sparkline-width: var(--sparkline-height);
   }
-}
 
-// Same width as height, for the circle type
-.sparkline-square {
-  --sparkline-width: var(--sparkline-height);
-}
-
-// Greyed out, for a series that is off or data that is stale
-.sparkline-disabled {
-  --sparkline-stroke: #{$sparkline-disabled-color};
-  --sparkline-negative: #{$sparkline-disabled-color};
-  --sparkline-spot: #{$sparkline-disabled-color};
-  --sparkline-fill: color-mix(in oklab, #{$sparkline-disabled-color} 30%, transparent);
-  --sparkline-track: color-mix(in oklab, #{$sparkline-disabled-color} 40%, transparent);
-  --sparkline-label-color: #{$sparkline-disabled-color};
+  // Greyed out, for a series that is off or data that is stale
+  .sparkline-disabled {
+    --sparkline-stroke: #{$sparkline-disabled-color};
+    --sparkline-negative: #{$sparkline-disabled-color};
+    --sparkline-spot: #{$sparkline-disabled-color};
+    --sparkline-fill: color-mix(in oklab, #{$sparkline-disabled-color} 30%, transparent);
+    --sparkline-track: color-mix(in oklab, #{$sparkline-disabled-color} 40%, transparent);
+    --sparkline-label-color: #{$sparkline-disabled-color};
+  }
 }

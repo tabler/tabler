@@ -6,8 +6,16 @@
  */
 
 import BaseComponent from './bootstrap/base-component'
-import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
+
+// The part of a SortableJS instance the component uses
+interface SortableInstance {
+  option(name: string, value?: unknown): unknown
+  toArray(): string[]
+  sort(order: string[], useAnimation?: boolean): void
+  destroy(): void
+}
 
 type ComponentConfig = Record<string, unknown>
 
@@ -22,9 +30,9 @@ const DATA_ATTRIBUTE = `data-${NAME}`
 
 const SELECTOR_DATA_SORTABLE = `[${DATA_ATTRIBUTE}]`
 
-const Default: ComponentConfig = {
-  forceFallback: true,
-}
+// SortableJS defaults apply. Set `forceFallback: true` to drag an HTML copy that
+// `.sortable-drag` can style, instead of the browser's drag image.
+const Default: ComponentConfig = {}
 
 const DefaultType: Record<string, string> = {}
 
@@ -34,7 +42,7 @@ const DefaultType: Record<string, string> = {}
  * Wraps SortableJS (https://sortablejs.github.io/Sortable/), loaded separately
  * as `window.Sortable`. Without the plugin the component is inert. Options come
  * from the `data-sortable` attribute as JSON, or from the config object.
- * `forceFallback` is on by default so the dragged copy can be styled with `.sortable-drag`.
+ * Turn `forceFallback` on so the dragged copy can be styled with `.sortable-drag`.
  */
 
 class Sortable extends BaseComponent {
@@ -108,9 +116,8 @@ class Sortable extends BaseComponent {
  */
 
 // js-docs-start sortable-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_SORTABLE)) {
-  Sortable.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_SORTABLE, Sortable)
 // js-docs-end sortable-init
 
 export default Sortable
+export type { SortableInstance }

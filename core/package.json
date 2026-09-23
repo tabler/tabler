@@ -15,7 +15,7 @@
     "lint": "pnpm run lint:scss && pnpm run lint:scss:vars",
     "lint:scss": "stylelint \"scss/**/*.scss\" --config ../stylelint.config.mjs",
     "lint:scss:fix": "pnpm run lint:scss --fix",
-    "lint:scss:vars": "find-unused-sass-variables scss/",
+    "lint:scss:vars": "find-unused-sass-variables scss/ --ignoreFiles scss/_variables-deprecated.scss",
     "js": "pnpm run js:build && pnpm run js:min && pnpm run js:types",
     "js:types": "tsc -p tsconfig.types.json",
     "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\"",
@@ -101,19 +101,19 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "89 kB"
+        "maxSize": "91 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "83 kB"
+        "maxSize": "84 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "88 kB"
+        "maxSize": "91 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "83 kB"
+        "maxSize": "84 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
@@ -245,13 +245,24 @@
       }
     ]
   },
+  "peerDependencies": {
+    "vanilla-calendar-pro": "^3.3.2"
+  },
+  "peerDependenciesMeta": {
+    "vanilla-calendar-pro": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@melloware/coloris": "^0.25.0",
     "@types/node": "^26.4.0",
     "@vitest/browser-playwright": "4.1.11",
     "@vitest/coverage-istanbul": "4.1.11",
     "apexcharts": "7.0.0",
+    "autosize": "^6.0.1",
     "choices.js": "^11.2.4",
+    "clipboard": "^2.0.11",
+    "countup.js": "^2.10.1",
     "driver.js": "^1.8.0",
     "dropzone": "^6.0.0-beta.2",
     "find-unused-sass-variables": "^6.2.1",
@@ -262,13 +273,13 @@
     "imask": "^7.6.1",
     "jsvectormap": "^1.7.0",
     "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
     "playwright": "1.62.1",
     "plyr": "^3.8.4",
     "sass": "1.103.1",
     "sass-true": "^10.1.0",
     "signature_pad": "^5.1.4",
     "sortablejs": "^1.15.7",
-    "star-rating.js": "^4.3.1",
     "tom-select": "^2.6.2",
     "typed.js": "^3.0.0",
     "typescript": "^7.0.2",

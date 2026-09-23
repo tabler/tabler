@@ -1,54 +1,41 @@
 ---
+// Rating initializes from `data-bs-toggle="rating"` and its `data-bs-*` options (tabler.js, core/js/src/rating.ts).
 import { iconSvg } from '@shared/lib/svg'
-import CaptureScript from '../components/CaptureScript.astro'
-import type { IconSize } from './Icon.astro'
+
+type RatingSize = 'sm' | 'lg'
 
 interface Props {
-  id: string
-  icon?: string
-  color?: string
-  size?: IconSize | undefined
+  /** data-bs-max: number of stars. */
+  max?: number
+  /** Initial value, written to the real input. */
   value?: number
-  /** accessible name for the underlying select; defaults to "Rating" */
-  label?: string
+  /** data-bs-half: allows half-star steps. */
+  half?: boolean
+  /** data-bs-clearable: clicking the selected star clears the value. */
+  clearable?: boolean
+  /** data-bs-readonly: display only, fractional fill, no radios rendered. */
+  readonly?: boolean
+  /** Icon name (from the icon set) used for each star. Defaults to a filled star. */
+  icon?: string
+  size?: RatingSize
+  /** Any theme or extended color, applied as a `text-*` class. */
+  color?: string
+  ariaLabel?: string
+  id?: string
+  name?: string
+  disabled?: boolean
+  class?: string
+  /** remaining attributes (data-*, …) are forwarded to the `.rating` wrapper */
+  [key: string]: unknown
 }
 
-const { id, icon = 'star', color, size, value, label = 'Rating' } = Astro.props
+const { max, value, half, clearable, readonly, icon = 'star', size, color, ariaLabel, id, name, disabled, class: className, ...rest } = Astro.props
 
-const starClasses = ['icon', 'gl-star-full', color && `text-${color}`, size && `icon-${size}`].filter(Boolean).join(' ')
+const iconMarkup = iconSvg(icon, { filled: true })
 
-const star = iconSvg(icon, { filled: true, classes: starClasses }) ?? ''
-
-const ratingSelector = `#rating-${id}`
-const ratingKey = `rating-${id}`
+const wrapperClass = ['rating', size && `rating-${size}`, color && `text-${color}`, className]
 ---
 
-<select id={`rating-${id}`} aria-label={label}>
-  <option value="">Select a rating</option>
-  <option value="5" selected={value === 5}>Excellent</option>
-  <option value="4" selected={value === 4}>Very good</option>
-  <option value="3" selected={value === 3}>Average</option>
-  <option value="2" selected={value === 2}>Poor</option>
-  <option value="1" selected={value === 1}>Terrible</option>
-</select>
-<CaptureScript>
-  <!-- BEGIN RATING -->
-  <script is:inline define:vars={{ ratingSelector, ratingKey, star }}>
-    window.tabler_rating ??= {}
-
-    function initRating() {
-      const rating = new StarRating(ratingSelector, {
-        tooltip: false,
-        clearable: false,
-        stars: (el) => {
-          el.innerHTML = star
-        },
-        classNames: {},
-      })
-      window.tabler_rating[ratingKey] = rating
-    }
-
-    document.readyState !== 'loading' ? initRating() : document.addEventListener('DOMContentLoaded', initRating, { once: true })
-  </script>
-  <!-- END RATING -->
-</CaptureScript>
+<div class:list={wrapperClass} id={id} data-bs-toggle="rating" data-bs-max={max} data-bs-half={half ? 'true' : undefined} data-bs-clearable={clearable ? 'true' : undefined} data-bs-readonly={readonly ? 'true' : undefined} data-bs-icon={iconMarkup} aria-label={ariaLabel} {...rest}>
+  <input type="hidden" name={name} value={value} disabled={disabled} />
+</div>

@@ -5,10 +5,14 @@
   color: var(--secondary) !important;
   border: var(--border-width) dashed var(--border-color) !important;
 
+  // !important on every property: the base .dropzone rule above sets each of
+  // these !important too, and without matching that here, this state (already
+  // true before --theme-* existed) never actually painted — the base rule
+  // always won regardless of selector specificity.
   &.dz-drag-hover {
-    color: var(--primary);
-    background: color-transparent(var(--primary), 0.01);
-    border: var(--border-width) dashed var(--primary);
+    color: var(--theme-bg, var(--primary)) !important;
+    background: color-transparent(var(--theme-bg, var(--primary)), 0.01) !important;
+    border: var(--border-width) dashed var(--theme-bg, var(--primary)) !important;
 
     .dz-message {
       opacity: 1;

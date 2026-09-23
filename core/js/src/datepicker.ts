@@ -9,6 +9,7 @@ import type { Calendar, DateAny, DateMode, DatesArr, MonthsCount, Options, Posit
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import { isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -106,6 +107,13 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   vcpOptions: 'object',
 }
 
+// Delegated Data API handlers run in the capture phase, before the plugin's
+// own click listener, which opens the popup from a `setTimeout`. Two nested
+// timeouts are the first point that is after it for certain.
+const afterPluginTimers = (callback: () => void): void => {
+  setTimeout(() => setTimeout(callback))
+}
+
 /**
  * Class definition
  *
@@ -120,6 +128,14 @@ class Datepicker extends BaseComponent {
   declare _config: ComponentConfig
   _calendar: Calendar | null = null
   _isShown = false
+  // The plugin opens and closes the popup on its own too (its click and focus
+  // listeners, Escape, a click outside), so `onShow` and `onHide` are what
+  // tracks the state and fires the events; these flags tell them who asked.
+  _isShowing = false
+  _isHiding = false
+  _isSilent = false
+  _skipPluginShow = false
+  _resolveShown: (() => void) | null = null
   _isInput = false
   _isInline = false
   _boundInput: HTMLInputElement | null = null
@@ -173,7 +189,9 @@ class Datepicker extends BaseComponent {
       return // Inline calendars are always visible
     }
 
-    if (!this._calendar || isDisabled(this._element) || this._isShown) {
+    // The first `calendar.show()` clicks the element to build the popup, and
+    // that click comes back here through the Data API; `_isShowing` stops it.
+    if (!this._calendar || isDisabled(this._element) || this._isShown || this._isShowing) {
       return
     }
 
@@ -182,10 +200,20 @@ class Datepicker extends BaseComponent {
       return
     }
 
+    this._isShowing = true
+    this._skipPluginShow = false
     this._calendar.show()
-    this._isShown = true
 
-    EventHandler.trigger(this._element, EVENT_SHOWN)
+    // The first show builds the popup and opens it a tick later
+    if (!this._isShown) {
+      await new Promise<void>((resolve) => {
+        this._resolveShown = resolve
+        afterPluginTimers(resolve)
+      })
+    }
+
+    this._resolveShown = null
+    this._isShowing = false
   }
 
   async hide(): Promise<void> {
@@ -202,10 +230,16 @@ class Datepicker extends BaseComponent {
       return
     }
 
-    this._calendar.hide()
-    this._isShown = false
+    // On a click on a button trigger the plugin's own listener runs next and
+    // queues a `show()`; without this the popup would open again right away.
+    this._skipPluginShow = true
+    afterPluginTimers(() => {
+      this._skipPluginShow = false
+    })
 
-    EventHandler.trigger(this._element, EVENT_HIDDEN)
+    this._isHiding = true
+    this._calendar.hide()
+    this._isHiding = false
   }
 
   dispose(): void {
@@ -419,6 +453,58 @@ class Datepicker extends BaseComponent {
     EventHandler.on(document, EVENT_FOCUSIN, this._onFocusIn)
   }
 
+  _silently(callback: () => void): void {
+    this._isSilent = true
+    callback()
+    this._isSilent = false
+  }
+
+  _handlePluginShow(): void {
+    const calendar = this._calendar
+    if (!calendar) {
+      return
+    }
+
+    if (!this._isSilent && !this._isShown) {
+      // Opened by the plugin itself: right after `hide()` on a trigger click it
+      // must stay closed, otherwise it gets the same cancelable `show` event.
+      const prevented = this._skipPluginShow || (!this._isShowing && EventHandler.trigger(this._element, EVENT_SHOW)?.defaultPrevented)
+
+      if (prevented) {
+        this._silently(() => calendar.hide())
+        return
+      }
+    }
+
+    const wasShown = this._isShown
+    this._isShown = true
+    this._syncThemeAttribute(calendar.context.mainElement)
+    this._alignToPositionElement()
+
+    if (!wasShown) {
+      EventHandler.trigger(this._element, EVENT_SHOWN)
+    }
+
+    this._resolveShown?.()
+  }
+
+  _handlePluginHide(): void {
+    const calendar = this._calendar
+    if (!calendar || this._isSilent || !this._isShown) {
+      return
+    }
+
+    // Closed by the plugin itself (Escape, a click outside): `hide` is still
+    // cancelable, the popup opens again before the browser paints.
+    if (!this._isHiding && EventHandler.trigger(this._element, EVENT_HIDE)?.defaultPrevented) {
+      this._silently(() => calendar.show())
+      return
+    }
+
+    this._isShown = false
+    EventHandler.trigger(this._element, EVENT_HIDDEN)
+  }
+
   _buildCalendarOptions(): Options {
     // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
@@ -440,18 +526,8 @@ class Datepicker extends BaseComponent {
       onInit: (self) => {
         this._syncThemeAttribute(self.context.mainElement)
       },
-      onShow: () => {
-        if (!this._calendar) {
-          return
-        }
-
-        this._isShown = true
-        this._syncThemeAttribute(this._calendar.context.mainElement)
-        this._alignToPositionElement()
-      },
-      onHide: () => {
-        this._isShown = false
-      },
+      onShow: () => this._handlePluginShow(),
+      onHide: () => this._handlePluginHide(),
     }
 
     // Navigate to the month of the first selected date
@@ -584,14 +660,11 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
 
 // Render on load what cannot wait for a focus or a click: inline calendars,
 // and fields with preselected dates or a value, so they show it right away.
-for (const element of SelectorEngine.find(SELECTOR_DATA_TOGGLE)) {
+initAll(SELECTOR_DATA_TOGGLE, Datepicker, (element) => {
   const { dataset } = element
-  const eager = dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || (element as HTMLInputElement).value
 
-  if (eager) {
-    Datepicker.getOrCreateInstance(element)
-  }
-}
+  return dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || Boolean((element as HTMLInputElement).value)
+})
 // js-docs-end datepicker-init
 
 export default Datepicker
