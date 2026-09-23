@@ -1,7 +1,7 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap rating.ts
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * Tabler rating.ts
+ * Licensed under MIT (https://github.com/tabler/tabler/blob/dev/LICENSE)
  * --------------------------------------------------------------------------
  */
 
