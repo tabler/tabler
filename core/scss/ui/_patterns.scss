@@ -8,26 +8,37 @@
   background-clip: padding-box;
 }
 
-.bg-pattern-transparent {
+// The shared tokens are written once for every pattern through @extend; a
+// pattern with a different opacity only overrides --pattern-opacity.
+%pattern-base {
   @include pattern-base();
+}
+
+@mixin pattern-opacity($opacity) {
+  --pattern-opacity: calc(var(--pattern-opacity-factor, #{$pattern-opacity-factor}) * #{$opacity});
+}
+
+.bg-pattern-transparent {
+  @extend %pattern-base;
   background-image: repeating-conic-gradient(var(--pattern-fill) 0% 25%, transparent 0% 50%);
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
 }
 
 .bg-pattern-diagonal {
-  @include pattern-base();
+  @extend %pattern-base;
   background-image: repeating-linear-gradient(-45deg, var(--pattern-fill) 0 1px, transparent 0 50%);
   background-size: var(--pattern-size) var(--pattern-size);
 }
 
 .bg-pattern-diagonal-2 {
-  @include pattern-base();
+  @extend %pattern-base;
   background-image: repeating-linear-gradient(45deg, var(--pattern-fill) 0 1px, transparent 0 50%);
   background-size: var(--pattern-size) var(--pattern-size);
 }
 
 .bg-pattern-dots {
-  @include pattern-base(20%);
+  @extend %pattern-base;
+  @include pattern-opacity(20%);
   --pattern-dot: max(1px, calc(var(--pattern-size) * 0.1));
   background-image: radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent calc(var(--pattern-dot) + 0.5px)), radial-gradient(circle, var(--pattern-fill) var(--pattern-dot), transparent calc(var(--pattern-dot) + 0.5px));
   background-position:
@@ -37,7 +48,8 @@
 }
 
 .bg-pattern-rectangles {
-  @include pattern-base(3%);
+  @extend %pattern-base;
+  @include pattern-opacity(3%);
   background-image: repeating-linear-gradient(45deg, var(--pattern-fill) 25%, transparent 25%, transparent 75%, var(--pattern-fill) 75%, var(--pattern-fill)), repeating-linear-gradient(45deg, var(--pattern-fill) 25%, transparent 25%, transparent 75%, var(--pattern-fill) 75%, var(--pattern-fill));
   background-position:
     -1px -1px,
@@ -46,21 +58,24 @@
 }
 
 .bg-pattern-lines {
-  @include pattern-base(6%);
+  @extend %pattern-base;
+  @include pattern-opacity(6%);
   background-image: repeating-linear-gradient(0deg, var(--pattern-fill), var(--pattern-fill) 1px, transparent 1px, transparent);
   background-position: -1px -1px;
   background-size: var(--pattern-size) var(--pattern-size);
 }
 
 .bg-pattern-lines-vertical {
-  @include pattern-base(6%);
+  @extend %pattern-base;
+  @include pattern-opacity(6%);
   background-image: repeating-linear-gradient(90deg, var(--pattern-fill), var(--pattern-fill) 1px, transparent 1px, transparent);
   background-position: -1px -1px;
   background-size: var(--pattern-size) var(--pattern-size);
 }
 
 .bg-pattern-grid {
-  @include pattern-base(6%);
+  @extend %pattern-base;
+  @include pattern-opacity(6%);
   background-image: linear-gradient(to right, var(--pattern-fill) 1px, transparent 1px), linear-gradient(to bottom, var(--pattern-fill) 1px, transparent 1px);
   background-position:
     -1px -1px,
@@ -69,14 +84,15 @@
 }
 
 .bg-pattern-grid-diagonal {
-  @include pattern-base();
+  @extend %pattern-base;
   background-image: linear-gradient(45deg, transparent 49%, var(--pattern-fill) 49%, var(--pattern-fill) 51%, transparent 51%), linear-gradient(-45deg, transparent 49%, var(--pattern-fill) 49%, var(--pattern-fill) 51%, transparent 51%);
   background-position: center center;
   background-size: calc(var(--pattern-size) * 2) calc(var(--pattern-size) * 2);
 }
 
 .bg-pattern-blueprint {
-  @include pattern-base(6%);
+  @extend %pattern-base;
+  @include pattern-opacity(6%);
   --pattern-line: var(--pattern-fill);
   background-image: linear-gradient(var(--pattern-line) 2px, transparent 2px), linear-gradient(90deg, var(--pattern-line) 2px, transparent 2px), linear-gradient(var(--pattern-line) 1px, transparent 1px), linear-gradient(90deg, var(--pattern-line) 1px, transparent 1px);
   background-position:
@@ -92,7 +108,7 @@
 }
 
 .bg-pattern-cross-dots {
-  @include pattern-base();
+  @extend %pattern-base;
   background-image: radial-gradient(var(--pattern-fill) 1px, transparent 1px), radial-gradient(var(--pattern-fill) 1px, transparent 1px);
   background-position:
     0 0,
@@ -101,7 +117,7 @@
 }
 
 .bg-pattern-circles {
-  @include pattern-base();
+  @extend %pattern-base;
   background-image:
     radial-gradient(circle at center top, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%), radial-gradient(circle at center bottom, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%),
     radial-gradient(circle at right center, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%), radial-gradient(circle at left center, transparent 9%, var(--pattern-fill) 10%, var(--pattern-fill) 15%, transparent 16%);
@@ -110,19 +126,22 @@
 }
 
 .bg-pattern-diagonal-stripes {
-  @include pattern-base(5%);
+  @extend %pattern-base;
+  @include pattern-opacity(5%);
   background-image: repeating-linear-gradient(45deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-repeat: no-repeat;
 }
 
 .bg-pattern-diagonal-stripes-2 {
-  @include pattern-base(5%);
+  @extend %pattern-base;
+  @include pattern-opacity(5%);
   background-image: repeating-linear-gradient(-45deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-repeat: no-repeat;
 }
 
 .bg-pattern-zigzag {
-  @include pattern-base(5%);
+  @extend %pattern-base;
+  @include pattern-opacity(5%);
   background:
     linear-gradient(135deg, var(--pattern-fill) 25%, transparent 25%) calc(-1 * var(--pattern-size)) 0,
     linear-gradient(225deg, var(--pattern-fill) 25%, transparent 25%) calc(-1 * var(--pattern-size)) 0,
@@ -133,12 +152,14 @@
 }
 
 .bg-pattern-vertical-stripes {
-  @include pattern-base(5%);
+  @extend %pattern-base;
+  @include pattern-opacity(5%);
   background-image: repeating-linear-gradient(90deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
 }
 
 .bg-pattern-horizontal-stripes {
-  @include pattern-base(5%);
+  @extend %pattern-base;
+  @include pattern-opacity(5%);
   background-image: repeating-linear-gradient(0deg, transparent, transparent var(--pattern-size), var(--pattern-fill) var(--pattern-size), var(--pattern-fill) calc(2 * var(--pattern-size)));
   background-position: -1px -1px;
 }

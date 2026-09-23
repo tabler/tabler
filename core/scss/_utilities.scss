@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 @use 'settings' as *;
 @use 'variables' as *;
@@ -20,6 +21,25 @@ $utilities-border-colors: map-loop(
   '$key',
   'border'
 ) !default;
+
+// `utils/_colors.scss` emits `.text-*`, `.bg-*` and `.border-*` for these colors
+// later in the file, with the same specificity, which always overrides the
+// utilities generated here. The API only keeps what that file does not
+// cover: the `--bg-opacity: 1` / `--border-opacity: 1` reset, which has to
+// stay ahead of the `.bg-opacity-*` / `.border-opacity-*` classes.
+$utilities-colors-overridden-text: map.keys($theme-colors);
+$utilities-colors-overridden: list.join(map.keys($theme-colors), ('white'), comma);
+
+// `(color: 1)` for every overridden color the given utility map generates.
+@function utilities-opacity-reset($utility-colors) {
+  $map: ();
+  @each $color in $utilities-colors-overridden {
+    @if map.has-key($utility-colors, $color) {
+      $map: map.merge($map, (#{$color}: 1));
+    }
+  }
+  @return $map;
+}
 
 // Utilities
 
@@ -201,7 +221,13 @@ $utilities: map.merge(
       local-vars: (
         'border-opacity': 1,
       ),
-      values: $utilities-border-colors,
+      values: map.remove($utilities-border-colors, $utilities-colors-overridden...),
+    ),
+    'border-color-opacity': (
+      css-var: true,
+      css-variable-name: border-opacity,
+      class: border,
+      values: utilities-opacity-reset($utilities-border-colors),
     ),
     'subtle-border-color': (
       property: border-color,
@@ -687,20 +713,23 @@ $utilities: map.merge(
       local-vars: (
         'text-opacity': 1,
       ),
-      values: map.merge(
-          $utilities-text-colors,
-          (
-            'muted': var(--secondary-color),
-            // deprecated
-            'black-50': color-transparent(var(--black), 0.5),
-            // deprecated
-            'white-50': color-transparent(var(--white), 0.5),
-            // deprecated
-            'body-secondary': var(--secondary-color),
-            'body-tertiary': var(--tertiary-color),
-            'body-emphasis': var(--emphasis-color),
-            'reset': inherit,
-          )
+      values: map.remove(
+          map.merge(
+            $utilities-text-colors,
+            (
+              'muted': var(--secondary-color),
+              // deprecated
+              'black-50': color-transparent(var(--black), 0.5),
+              // deprecated
+              'white-50': color-transparent(var(--white), 0.5),
+              // deprecated
+              'body-secondary': var(--secondary-color),
+              'body-tertiary': var(--tertiary-color),
+              'body-emphasis': var(--emphasis-color),
+              'reset': inherit,
+            )
+          ),
+          $utilities-colors-overridden-text...
         ),
     ),
     'text-opacity': (
@@ -772,14 +801,23 @@ $utilities: map.merge(
       local-vars: (
         'bg-opacity': 1,
       ),
-      values: map.merge(
-          $utilities-bg-colors,
-          (
-            'transparent': transparent,
-            'body-secondary': color-transparent(var(--secondary-bg), calc(var(--bg-opacity) * 100%)),
-            'body-tertiary': color-transparent(var(--tertiary-bg), calc(var(--bg-opacity) * 100%)),
-          )
+      values: map.remove(
+          map.merge(
+            $utilities-bg-colors,
+            (
+              'transparent': transparent,
+              'body-secondary': color-transparent(var(--secondary-bg), calc(var(--bg-opacity) * 100%)),
+              'body-tertiary': color-transparent(var(--tertiary-bg), calc(var(--bg-opacity) * 100%)),
+            )
+          ),
+          $utilities-colors-overridden...
         ),
+    ),
+    'background-color-opacity': (
+      css-var: true,
+      css-variable-name: bg-opacity,
+      class: bg,
+      values: utilities-opacity-reset($utilities-bg-colors),
     ),
     'bg-opacity': (
       css-var: true,

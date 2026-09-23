@@ -371,6 +371,16 @@ Navbar
   }
 }
 
+// The vertical navbar is a vertical list at every width: the stacked mobile
+// menu below its breakpoint, the sidebar from it up. Emitted once instead of
+// inside every breakpoint of both loops; it stays ahead of them in source
+// order, so the per-breakpoint rules below still override it.
+@if $enable-navbar-vertical {
+  .navbar-vertical[class*='navbar-expand'] {
+    @include navbar-vertical-nav();
+  }
+}
+
 .navbar-expand {
   @each $breakpoint in map.keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
@@ -760,11 +770,6 @@ Navbar vertical
               flex-grow: 1;
               flex-direction: column;
               min-height: auto;
-
-              .nav-link {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-              }
             }
 
             // Bottom-pinned footer area, e.g. a user block. Sits after the
@@ -818,15 +823,13 @@ Navbar vertical
               padding-inline-end: var(--sidebar-width);
             }
 
-            @include navbar-vertical-nav();
-
             // Folded state, both routes; the hover variant folds only while
             // not hovered and not holding visible keyboard focus. Plain
             // :focus-within would keep the sidebar stuck open after a mouse
             // click, because the clicked link keeps focus.
-            &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible))),
-            :where([data-bs-sidebar='folded']) &,
-            :where([data-bs-sidebar='folded-hover']) &:not(:hover):not(:has(:focus-visible)) {
+            // One :is() instead of a selector list — the mixin's rules are long
+            // and a list would repeat each of them three times.
+            &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible)), [data-bs-sidebar='folded'] *, [data-bs-sidebar='folded-hover'] :not(:hover):not(:has(:focus-visible))) {
               @include navbar-vertical-folded();
             }
 
