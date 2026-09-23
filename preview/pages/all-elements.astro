@@ -15,6 +15,7 @@ import Badge from '@ui/Badge.astro'
 import BadgeList from '@ui/BadgeList.astro'
 import Progress from '@ui/Progress.astro'
 import DataSelect from '@components/demo/DataSelect.astro'
+import Datepicker from '@ui/Datepicker.astro'
 import Check from '@ui/form/Check.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import Nav from '@components/demo/Nav.astro'
@@ -70,7 +71,7 @@ function greetUser(name) {
 }`
 ---
 
-<DefaultLayout title="All elements - Kitchen sink" pageHeader="All elements" pageMenu="base.all-elements" pageLibs={['tom-select']}>
+<DefaultLayout title="All elements - Kitchen sink" pageHeader="All elements" pageMenu="base.all-elements" pageLibs={['tom-select', 'vanilla-calendar-pro']}>
   <div class="row row-cards">
     <!-- Typography Section -->
     <div class="col-12">
@@ -620,14 +621,15 @@ function greetUser(name) {
           <ButtonList>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-demo"> Open modal </button>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-success"> Success modal </button>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-overlays"> Modal with Select and Datepicker </button>
           </ButtonList>
 
           <!-- Demo Modal -->
-          <div class="modal modal-blur fade" id="modal-demo" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+          <dialog class="modal modal-blur fade" id="modal-demo" aria-labelledby="modal-demo-title">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
+                  <h5 class="modal-title" id="modal-demo-title">Modal title</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -639,15 +641,15 @@ function greetUser(name) {
                 </div>
               </div>
             </div>
-          </div>
+          </dialog>
 
           <!-- Success Modal -->
-          <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <dialog class="modal modal-blur fade" id="modal-success" aria-labelledby="modal-success-title">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-body text-center py-4">
                   <Icon name="circle-check" color="success" size="lg" class="mb-2" />
-                  <h3>Success!</h3>
+                  <h3 id="modal-success-title">Success!</h3>
                   <div class="text-secondary">Your action was completed successfully.</div>
                 </div>
                 <div class="modal-footer">
@@ -664,7 +666,32 @@ function greetUser(name) {
                 </div>
               </div>
             </div>
-          </div>
+          </dialog>
+
+          <!-- Real showModal() dialog with plugin overlays: exercises the top-layer
+               path html-checks needs, unlike the always-`show`n modals.astro demos. -->
+          <dialog class="modal modal-blur fade" id="modal-overlays" aria-labelledby="modal-overlays-title">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modal-overlays-title">Modal with Select and Datepicker</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <FormGroup label="Assignee" for="select-modal-overlays-select" class="mb-3">
+                    <DataSelect id="modal-overlays-select" values={['Alice', 'Bob', 'Carol']} />
+                  </FormGroup>
+                  <FormGroup label="Due date" for="datepicker-modal-overlays-date">
+                    <Datepicker id="modal-overlays-date" />
+                  </FormGroup>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </dialog>
         </CardBody>
       </Card>
     </div>

@@ -411,6 +411,51 @@ class Datepicker extends BaseComponent {
     }
   }
 
+  // The plugin always appends the popup to <body>. Outside a modal that's
+  // harmless, but a `showModal()` dialog paints its whole subtree in the
+  // browser's top layer — a <body> sibling still paints on top of it, yet
+  // isn't part of that layer, so clicks on it fall through to the dialog's
+  // ::backdrop instead of reaching the calendar (closing the modal instead
+  // of picking a date). Move the popup into the dialog itself, not into
+  // .modal-dialog, since that child gets a `transform` during the fade
+  // transition, which would turn it into the containing block for the
+  // popup's `position: absolute` and break the math below.
+  // Returns the modal, so the caller knows whether to correct the position.
+  _reparentIntoModal(element: HTMLElement | undefined): HTMLElement | null {
+    if (!element) {
+      return null
+    }
+
+    const modal = this._element.closest<HTMLElement>('.modal')
+    if (modal && element.parentElement !== modal) {
+      modal.append(element)
+    }
+
+    return modal
+  }
+
+  // The plugin (and _alignToPositionElement above) position the popup as a
+  // <body>-relative absolute box, adding the page's scroll offset so it stays
+  // under the input as the page scrolls. `.modal` is `position: fixed` at the
+  // viewport origin and never scrolls with the page, so once the popup is
+  // reparented into it that offset would double-count — subtract it back out.
+  _adjustPositionForModal(element: HTMLElement | undefined, modal: HTMLElement | null): void {
+    if (!element || !modal) {
+      return
+    }
+
+    const top = Number.parseFloat(element.style.top)
+    const left = Number.parseFloat(element.style.left)
+
+    if (!Number.isNaN(top)) {
+      element.style.top = `${top - window.scrollY}px`
+    }
+
+    if (!Number.isNaN(left)) {
+      element.style.left = `${left - window.scrollX}px`
+    }
+  }
+
   _setupThemeObserver(): void {
     const ancestor = this._getThemeAncestor()
     if (!ancestor || this._config.datepickerTheme) {
@@ -478,8 +523,11 @@ class Datepicker extends BaseComponent {
 
     const wasShown = this._isShown
     this._isShown = true
-    this._syncThemeAttribute(calendar.context.mainElement)
+    const { mainElement } = calendar.context
+    this._syncThemeAttribute(mainElement)
+    const modal = this._reparentIntoModal(mainElement)
     this._alignToPositionElement()
+    this._adjustPositionForModal(mainElement, modal)
 
     if (!wasShown) {
       EventHandler.trigger(this._element, EVENT_SHOWN)
@@ -525,6 +573,7 @@ class Datepicker extends BaseComponent {
       onClickDate: (self, event) => this._handleDateClick(self, event),
       onInit: (self) => {
         this._syncThemeAttribute(self.context.mainElement)
+        this._reparentIntoModal(self.context.mainElement)
       },
       onShow: () => this._handlePluginShow(),
       onHide: () => this._handlePluginHide(),
