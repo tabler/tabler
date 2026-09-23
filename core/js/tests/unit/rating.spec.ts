@@ -146,6 +146,24 @@ describe('Rating', () => {
       expect(stars[3].style.getPropertyValue('--tblr-rating-fill')).toBe('70%')
       expect(stars[4].style.getPropertyValue('--tblr-rating-fill')).toBe('0%')
     })
+
+    it('redraws the fill and the label on setValue() and clear()', () => {
+      fixtureEl.innerHTML = '<div class="rating"><input type="hidden" value="1"></div>'
+      const el = fixtureEl.querySelector('.rating') as HTMLElement
+
+      const rating = new Rating(el, { readonly: true, max: 5 })
+      rating.setValue(2.5)
+
+      const stars = el.querySelectorAll<HTMLElement>('.rating-star')
+      expect(stars[1].style.getPropertyValue('--tblr-rating-fill')).toBe('100%')
+      expect(stars[2].style.getPropertyValue('--tblr-rating-fill')).toBe('50%')
+      expect(el.getAttribute('aria-label')).toBe('2.5 out of 5')
+
+      rating.clear()
+
+      expect(stars[0].style.getPropertyValue('--tblr-rating-fill')).toBe('0%')
+      expect(el.getAttribute('aria-label')).toBe('0 out of 5')
+    })
   })
 
   describe('change.bs.rating', () => {

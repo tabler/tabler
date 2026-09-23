@@ -231,19 +231,17 @@ class Rating extends BaseComponent {
   _renderReadonly(): void {
     this._element.classList.add(CLASS_NAME_READONLY)
     this._element.setAttribute('role', 'img')
-    this._element.setAttribute('aria-label', `${this._value} out of ${this._max}`)
 
     for (let index = 1; index <= this._max; index++) {
       const star = document.createElement('span')
       star.className = CLASS_NAME_STAR
       star.append(this._createStarIconElement())
 
-      const fill = Math.round(Math.max(0, Math.min(1, this._value - (index - 1))) * 10_000) / 100
-      star.style.setProperty(VAR_FILL, `${fill}%`)
-
       this._stars.push(star)
       this._element.append(star)
     }
+
+    this._render()
   }
 
   _renderInteractive(): void {
@@ -412,6 +410,7 @@ class Rating extends BaseComponent {
 
   _render(): void {
     if (this._config.readonly) {
+      this._renderReadonlyFill()
       return
     }
 
@@ -421,6 +420,17 @@ class Rating extends BaseComponent {
       const threshold = index + 1
       star.classList.toggle(CLASS_NAME_STAR_ACTIVE, display >= threshold)
       star.classList.toggle(CLASS_NAME_STAR_HALF, this._config.half && display < threshold && display >= threshold - 0.5)
+    }
+  }
+
+  // Readonly stars take a fractional fill, so `setValue()` / `clear()` redraw
+  // it (and the label) here rather than only at construction time.
+  _renderReadonlyFill(): void {
+    this._element.setAttribute('aria-label', `${this._value} out of ${this._max}`)
+
+    for (const [index, star] of this._stars.entries()) {
+      const fill = Math.round(Math.max(0, Math.min(1, this._value - index)) * 10_000) / 100
+      star.style.setProperty(VAR_FILL, `${fill}%`)
     }
   }
 }
