@@ -23,7 +23,8 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--alert-gap);
+  row-gap: var(--alert-heading-margin-bottom);
+  column-gap: var(--alert-gap);
   align-items: center;
   padding: var(--alert-padding-y) var(--alert-padding-x);
   margin-bottom: var(--alert-margin-bottom);
@@ -52,7 +53,6 @@
 
 .alert-action,
 .alert-link {
-  margin-inline-start: auto;
   white-space: nowrap;
 }
 
@@ -74,20 +74,22 @@
   min-width: 0;
 }
 
+.alert > .alert-heading {
+  flex-basis: 100%;
+}
+
 .alert > .alert-heading + .alert-list {
   flex-basis: 100%;
 }
 
 .alert > .alert-heading + :is(div, p) {
-  flex: 1 1 auto;
-  align-self: center;
+  flex: 0 1 auto;
   min-width: 0;
 }
 
 .alert > .btn-list {
   flex-basis: 100%;
   align-items: center;
-  margin-top: calc(var(--alert-gap) * -0.75);
 }
 
 .alert-link {
