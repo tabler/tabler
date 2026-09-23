@@ -1,16 +1,30 @@
 ---
 title: Star rating
-summary: Use star rating to show score values with static stars or interactive star states.
-description: Build star rating UI with stars classes and data-star-rating state selectors.
+summary: Show a static star row, or add an interactive, accessible rating built from one real input.
+description: Build star rating UI with the stars display classes and the native, JavaScript-driven Rating component.
 related: [/ui/components/icon]
 source: core/scss/ui/_stars.scss
 css-vars: stars
 classnames:
   component:
     - class: stars
-      desc: Container element, holding one icon per star
+      desc: Static, read-only star row - one icon per star
+    - class: rating
+      desc: Interactive rating wrapper; holds the real input and the rendered stars
+  part:
+    - class: rating-star
+      desc: One rendered star - icon, plus its hit area(s) in interactive mode
+  modifier:
+    - class: rating-readonly
+      desc: Display-only mode with a fractional fill; no radios rendered
+  size:
+    - class: rating-sm
+      desc: Smaller stars
+    - class: rating-lg
+      desc: Larger stars
 ---
 import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 import Icon from '@ui/Icon.astro';
 
 ## Overview
@@ -60,35 +74,130 @@ Color only the active stars and keep the rest in default color.
 </div>
 </Example>
 
-### Data-star-rating states
+## Interactive rating
 
-The vendor styles also target `[data-star-rating]`.
-Use `.gl-active` and `.gl-star-full` to control active and inactive star color.
+A rating looks like several stars, but it is one real `<input>`. JavaScript renders `.rating-star`s on top of it - a `radiogroup` of unnamed radios in interactive mode, so keyboard navigation (arrow keys, <kbd>Home</kbd>/<kbd>End</kbd>), focus and screen reader announcements come from the widget itself, while only the real input's value is ever submitted with the form.
 
-<Example centered>
-<div data-star-rating class="d-flex gap-1" style="--tblr-icon-size: 1.25rem;">
-  <span class="gl-active"><Icon name="star" filled class="gl-star-full" /></span>
-  <span class="gl-active"><Icon name="star" filled class="gl-star-full" /></span>
-  <span class="gl-active"><Icon name="star" filled class="gl-star-full" /></span>
-  <span><Icon name="star" filled class="gl-star-full" /></span>
-  <span><Icon name="star" filled class="gl-star-full" /></span>
+Add `data-bs-toggle="rating"` to a wrapper with an input inside, and Tabler renders the stars for you.
+
+<Example column>
+<div class="rating" data-bs-toggle="rating">
+  <input type="hidden" name="score" value="4" />
 </div>
 </Example>
 
-### Custom rating colors
+### Sizes
 
-Use CSS custom properties from vendor styles to change star colors.
-You can set active and inactive colors per instance.
+Add `.rating-sm` or `.rating-lg` for smaller or larger stars.
 
-<Example centered>
-<div data-star-rating class="d-flex gap-1" style="--gl-star-color: var(--tblr-red); --gl-star-color-inactive: var(--tblr-border-color); --tblr-icon-size: 1.25rem;">
-  <span class="gl-active"><Icon name="heart" filled class="gl-star-full" /></span>
-  <span class="gl-active"><Icon name="heart" filled class="gl-star-full" /></span>
-  <span class="gl-active"><Icon name="heart" filled class="gl-star-full" /></span>
-  <span><Icon name="heart" filled class="gl-star-full" /></span>
-  <span><Icon name="heart" filled class="gl-star-full" /></span>
+<Example column>
+<div class="rating rating-sm" data-bs-toggle="rating">
+  <input type="hidden" value="3" />
+</div>
+<div class="rating" data-bs-toggle="rating">
+  <input type="hidden" value="3" />
+</div>
+<div class="rating rating-lg" data-bs-toggle="rating">
+  <input type="hidden" value="3" />
 </div>
 </Example>
+
+### Colors
+
+Color the stars with a `text-*` class on `.rating`, or set `--rating-color`/`--rating-color-inactive` directly for full control.
+
+<Example column>
+<div class="rating text-red" data-bs-toggle="rating">
+  <input type="hidden" value="4" />
+</div>
+</Example>
+
+### Half stars
+
+Add `data-bs-half="true"` for 0.5 steps. Each star gets two overlapping hit areas, one per half, so a click or tap on either side of a star picks the nearer step.
+
+<Example column>
+<div class="rating" data-bs-toggle="rating" data-bs-half="true">
+  <input type="hidden" value="3.5" />
+</div>
+</Example>
+
+### Clearable
+
+Add `data-bs-clearable="true"` so clicking the already-selected star clears the value.
+
+<Example column>
+<div class="rating" data-bs-toggle="rating" data-bs-clearable="true">
+  <input type="hidden" value="4" />
+</div>
+</Example>
+
+### Readonly
+
+Add `data-bs-readonly="true"` for a display-only rating: no radios are rendered, and the value fills the stars fractionally (for example `3.7`), instead of snapping to a step.
+
+<Example column>
+<div class="rating rating-readonly" data-bs-toggle="rating" data-bs-readonly="true">
+  <input type="hidden" value="3.7" />
+</div>
+</Example>
+
+### Disabled
+
+Add `disabled` to the inner input.
+
+<Example column>
+<div class="rating" data-bs-toggle="rating">
+  <input type="hidden" value="3" disabled />
+</div>
+</Example>
+
+## Options
+
+Options are read from `data-bs-*` attributes on the `.rating` element (the `data-tblr-*` alias also works), or passed to the constructor.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `max` | number | `5` | Number of stars. |
+| `half` | boolean | `false` | Allows 0.5 steps; renders two hit areas per star. |
+| `clearable` | boolean | `false` | Clicking the already-selected star clears the value. |
+| `readonly` | boolean | `false` | Display only, fractional fill, no radios rendered. |
+| `icon` | string or null | `null` | Raw SVG markup, or a selector for a `<template>` holding the icon. Defaults to a filled star. |
+| `labels` | array, function, or null | `null` | `aria-label` per star. An array is indexed by whole-star value; a function is called with the value (including halves) and returns the label. Defaults to `"1 star"`, `"2 stars"`, … |
+
+## JavaScript
+
+Tabler creates a `Rating` for every element matching `[data-bs-toggle="rating"]` (or `[data-tblr-toggle="rating"]`):
+
+<CodeDocs name="rating-init" file="core/js/src/rating.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('.rating')
+const rating = tabler.Rating.getOrCreateInstance(el, { max: 5, half: true })
+```
+
+Listen for `change.bs.rating` to know when the value changes, and `hover.bs.rating` to preview it - for example to drive a label that follows the pointer:
+
+```javascript
+el.addEventListener('change.bs.rating', (event) => {
+  console.log(event.value)
+})
+
+el.addEventListener('hover.bs.rating', (event) => {
+  label.textContent = `${event.value} out of 5`
+})
+```
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `getValue()` | Returns the current value. |
+| `setValue(value)` | Sets the value and re-renders the stars. |
+| `clear()` | Empties the value. |
+| `dispose()` | Removes the rendered stars and listeners. |
 
 ## Examples
 
@@ -112,7 +221,6 @@ This pattern works for cards, reviews, and product lists.
 
 ## Accessibility
 
-- Add a text label near stars, for example `4.0 out of 5`.
-- For read-only stars, keep the value visible in text.
-- For interactive ratings, ensure keyboard focus and clear selected state.
+- The interactive rating is a native `radiogroup`: arrow keys move between stars, and the selected star is announced.
+- For read-only stars (`.stars`, or `.rating.rating-readonly`), keep the value visible in text, for example `4.0 out of 5`.
 - Do not rely on color alone; pair color with a numeric value.
