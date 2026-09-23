@@ -408,13 +408,15 @@ header > .navbar {
   }
 }
 
-// All Package promo card under the table of contents: a soft blue → violet
-// wash (the promo banner's brand hues) over the card background, so it reads
-// as an offer without shouting over the docs.
-.docs-promo-card {
-  background-image:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--tblr-primary) 14%, transparent), transparent 60%),
-    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--tblr-purple) 14%, transparent), transparent 60%);
+// All Package promo card under the table of contents (.card-gradient-rainbow):
+// on hover the rainbow border starts rotating, reusing core's gradient-animation.
+.docs-promo-card:hover,
+.docs-promo-card:focus-visible {
+  animation: gradient-animation 6s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 // Previous/next page navigation: a pair of cards on the page canvas below the
