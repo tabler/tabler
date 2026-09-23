@@ -20,18 +20,16 @@
   // scss-docs-end alert-css-vars
 
   position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  row-gap: var(--alert-heading-margin-bottom);
-  column-gap: var(--alert-gap);
-  align-items: center;
   padding: var(--alert-padding-y) var(--alert-padding-x);
   margin-bottom: var(--alert-margin-bottom);
   color: var(--alert-color);
   background-color: color-mix(in oklab, var(--alert-bg), var(--bg-surface));
   border: var(--border-width) var(--border-style) var(--alert-border-color);
   @include border-radius(var(--alert-border-radius));
+
+  &:has(> .alert-icon) {
+    padding-inline-start: calc(var(--alert-padding-x) + var(--alert-icon-size) + var(--alert-gap));
+  }
 }
 
 .alert-heading {
@@ -45,14 +43,20 @@
 }
 
 .alert-icon {
-  align-self: flex-start;
   width: var(--alert-icon-size) !important;
   height: var(--alert-icon-size) !important;
   color: var(--alert-color);
 }
 
+.alert > .alert-icon {
+  position: absolute;
+  inset-inline-start: var(--alert-padding-x);
+  top: var(--alert-padding-y);
+}
+
 .alert-action,
 .alert-link {
+  margin-inline-start: 0.25rem;
   white-space: nowrap;
 }
 
@@ -69,27 +73,9 @@
   margin: 0;
 }
 
-.alert-icon + div {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.alert > .alert-heading {
-  flex-basis: 100%;
-}
-
-.alert > .alert-heading + .alert-list {
-  flex-basis: 100%;
-}
-
-.alert > .alert-heading + :is(div, p) {
-  flex: 0 1 auto;
-  min-width: 0;
-}
-
-.alert > .btn-list {
-  flex-basis: 100%;
-  align-items: center;
+.alert > .alert-heading + div:has(+ .alert-action),
+.alert > .alert-heading + div:has(+ .alert-link) {
+  display: inline;
 }
 
 .alert-link {
