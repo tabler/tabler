@@ -2,7 +2,7 @@
 // Copies img/ to dist/img — only the images the stylesheets actually reference.
 // The references are read from the compiled CSS of every scss/*.scss entry, so
 // a flag or payment logo that no `$flag-countries` / `$payment-providers` /
-// `$social-apps` entry points at is not shipped.
+// `$social-apps` entry points at is not shipped — except the files below.
 import { compile } from 'sass'
 import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -14,7 +14,11 @@ const scssDir = join(coreDir, 'scss')
 const srcDir = join(coreDir, 'img')
 const outDir = join(coreDir, 'dist', 'img')
 
-const used = new Set<string>()
+// Shipped in 1.x without any class pointing at them. Removing a file from dist/
+// is a breaking change (check:compat), so they stay until 2.0.
+const keptUntilV2 = ['flags/kn-sk.svg']
+
+const used = new Set<string>(keptUntilV2)
 for (const entry of readdirSync(scssDir).filter((file) => file.endsWith('.scss') && !file.startsWith('_'))) {
   const { css } = compile(join(scssDir, entry), { loadPaths: [join(coreDir, 'node_modules')], quietDeps: true, silenceDeprecations: ['import'] })
   for (const [, path] of css.matchAll(/url\(\s*['"]?[^'")]*?\/img\/([^'")?#]+)/g)) used.add(path)
