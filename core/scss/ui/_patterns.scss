@@ -1,5 +1,13 @@
 @use '../config' as *;
 
+// Module-level, outside `@layer`, so .build/generate-tokens.ts can read it.
+$sizes: (
+  'sm': $pattern-size-sm,
+  'md': $pattern-size-md,
+  'lg': $pattern-size-lg,
+  'xl': $pattern-size-xl,
+);
+
 @mixin pattern-base($opacity: $pattern-opacity) {
   --pattern-color: var(--theme-bg, var(--body-color));
   --pattern-size: #{$pattern-size};
@@ -171,13 +179,6 @@
   // doesn't load ui/_buttons.scss (where .theme-* is generated).
 
   // Sizes
-  $sizes: (
-    'sm': $pattern-size-sm,
-    'md': $pattern-size-md,
-    'lg': $pattern-size-lg,
-    'xl': $pattern-size-xl,
-  );
-
   @each $size, $value in $sizes {
     .bg-pattern-#{$size} {
       --pattern-size: #{$value};
