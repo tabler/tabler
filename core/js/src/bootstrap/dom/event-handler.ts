@@ -80,6 +80,7 @@ const nativeEvents = new Set([
   'error',
   'abort',
   'scroll',
+  'scrollend',
 ])
 
 function makeEventUid(element: EventableElement | EventCallback, uid?: string): string | number {
