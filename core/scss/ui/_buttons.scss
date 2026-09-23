@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 
 //
@@ -93,62 +94,85 @@
   --btn-hover-color: var(--body-color);
 }
 
-@each $color, $value in map.merge($theme-colors, $social-colors) {
-  .btn-#{$color} {
-    @if $color == 'dark' {
-      --btn-border-color: var(--dark-mode-border-color);
-      --btn-hover-border-color: var(--dark-mode-border-active-color);
-      --btn-active-border-color: var(--dark-mode-border-active-color);
-    } @else {
-      --btn-border-color: transparent;
-      --btn-hover-border-color: transparent;
-      --btn-active-border-color: transparent;
+// Each color class only points the --btn-variant* tokens at its palette
+// colors; the shared rules below turn them into the button tokens. The rules
+// are grouped by variant (solid, outline, ghost) rather than by color, so each
+// token list is written once instead of once per color.
+$btn-colors: map.keys(map.merge($theme-colors, $social-colors));
+
+@function btn-color-selectors($patterns...) {
+  $selectors: ();
+  @each $pattern in $patterns {
+    @each $color in $btn-colors {
+      $selectors: list.append($selectors, str-replace($pattern, '{c}', '#{$color}'), $separator: comma);
     }
-
-    --btn-color: var(--#{$color}-fg, #{$white});
-    --btn-bg: var(--#{$color});
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-bg: var(--#{$color}-darken);
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color}-darken);
-    --btn-disabled-bg: var(--#{$color});
-    --btn-disabled-color: var(--#{$color}-fg);
-    --btn-box-shadow: var(--shadow-input);
   }
+  @return $selectors;
+}
 
+@each $color in $btn-colors {
+  .btn-#{$color},
   .btn-outline-#{$color},
-  .btn-outline.btn-#{$color} {
-    --btn-color: var(--#{$color});
-    --btn-bg: transparent;
-    --btn-border-color: var(--#{$color});
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-border-color: transparent;
-    --btn-hover-bg: var(--#{$color});
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color});
-    --btn-active-border-color: var(--#{$color});
-    --btn-disabled-color: var(--#{$color});
-    --btn-disabled-border-color: var(--#{$color});
+  .btn-ghost-#{$color} {
+    --btn-variant: var(--#{$color});
+    --btn-variant-fg: var(--#{$color}-fg);
+    --btn-variant-darken: var(--#{$color}-darken);
   }
+}
 
-  .btn-ghost-#{$color},
-  .btn-ghost.btn-#{$color} {
-    --btn-color: var(--#{$color});
-    --btn-bg: transparent;
-    --btn-border-color: transparent;
-    --btn-hover-color: var(--#{$color}-fg);
-    --btn-hover-bg: var(--#{$color});
-    --btn-hover-border-color: var(--#{$color});
-    --btn-active-color: var(--#{$color}-fg);
-    --btn-active-bg: var(--#{$color});
-    --btn-active-border-color: transparent;
-    --btn-active-shadow: #{$btn-active-box-shadow};
-    --btn-disabled-color: var(--#{$color});
-    --btn-disabled-bg: transparent;
-    --btn-disabled-border-color: transparent;
-    --gradient: none;
-    --btn-box-shadow: none;
+#{btn-color-selectors('.btn-{c}')} {
+  --btn-border-color: transparent;
+  --btn-hover-border-color: transparent;
+  --btn-active-border-color: transparent;
+  --btn-color: var(--btn-variant-fg, #{$white});
+  --btn-bg: var(--btn-variant);
+  --btn-hover-color: var(--btn-variant-fg);
+  --btn-hover-bg: var(--btn-variant-darken);
+  --btn-active-color: var(--btn-variant-fg);
+  --btn-active-bg: var(--btn-variant-darken);
+  --btn-disabled-bg: var(--btn-variant);
+  --btn-disabled-color: var(--btn-variant-fg);
+  --btn-box-shadow: var(--shadow-input);
+}
+
+@if map.has-key($theme-colors, 'dark') {
+  .btn-dark {
+    --btn-border-color: var(--dark-mode-border-color);
+    --btn-hover-border-color: var(--dark-mode-border-active-color);
+    --btn-active-border-color: var(--dark-mode-border-active-color);
   }
+}
+
+#{btn-color-selectors('.btn-outline-{c}', '.btn-outline.btn-{c}')} {
+  --btn-color: var(--btn-variant);
+  --btn-bg: transparent;
+  --btn-border-color: var(--btn-variant);
+  --btn-hover-color: var(--btn-variant-fg);
+  --btn-hover-border-color: transparent;
+  --btn-hover-bg: var(--btn-variant);
+  --btn-active-color: var(--btn-variant-fg);
+  --btn-active-bg: var(--btn-variant);
+  --btn-active-border-color: var(--btn-variant);
+  --btn-disabled-color: var(--btn-variant);
+  --btn-disabled-border-color: var(--btn-variant);
+}
+
+#{btn-color-selectors('.btn-ghost-{c}', '.btn-ghost.btn-{c}')} {
+  --btn-color: var(--btn-variant);
+  --btn-bg: transparent;
+  --btn-border-color: transparent;
+  --btn-hover-color: var(--btn-variant-fg);
+  --btn-hover-bg: var(--btn-variant);
+  --btn-hover-border-color: var(--btn-variant);
+  --btn-active-color: var(--btn-variant-fg);
+  --btn-active-bg: var(--btn-variant);
+  --btn-active-border-color: transparent;
+  --btn-active-shadow: #{$btn-active-box-shadow};
+  --btn-disabled-color: var(--btn-variant);
+  --btn-disabled-bg: transparent;
+  --btn-disabled-border-color: transparent;
+  --gradient: none;
+  --btn-box-shadow: none;
 }
 
 //
