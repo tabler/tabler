@@ -1,73 +1,75 @@
 @use '../config' as *;
 
-.carousel-indicators-vertical {
-  --carousel-indicators-vertical-margin-inline-end: #{$carousel-indicators-vertical-margin-inline-end};
+@layer components {
+  .carousel-indicators-vertical {
+    --carousel-indicators-vertical-margin-inline-end: #{$carousel-indicators-vertical-margin-inline-end};
 
-  inset-inline-start: auto;
-  top: 0;
-  flex-direction: column;
-  margin-block: 0;
-  margin-inline: 0 var(--carousel-indicators-vertical-margin-inline-end);
+    inset-inline-start: auto;
+    top: 0;
+    flex-direction: column;
+    margin-block: 0;
+    margin-inline: 0 var(--carousel-indicators-vertical-margin-inline-end);
 
-  [data-bs-target],
-  [data-target] {
-    width: $carousel-indicator-height;
-    height: $carousel-indicator-width;
-    margin: $carousel-indicator-spacer 0 $carousel-indicator-spacer;
-    border: 0;
-    border-inline-start: $carousel-indicator-hit-area-height var(--border-style) transparent;
-    border-inline-end: $carousel-indicator-hit-area-height var(--border-style) transparent;
-  }
-}
-
-.carousel-indicators-dot {
-  [data-bs-target],
-  [data-target] {
-    width: $carousel-indicator-dot-width;
-    height: $carousel-indicator-dot-width;
-    margin: 0;
-    border: $carousel-indicator-hit-area-height var(--border-style) transparent;
-    @include border-radius(var(--border-radius-pill));
-  }
-}
-
-.carousel-indicators-thumb {
-  [data-bs-target],
-  [data-target] {
-    width: $carousel-indicator-thumb-width * 0.5;
-    height: auto;
-    margin: 0 $carousel-indicator-spacer;
-    background: no-repeat center/cover;
-    border: 0;
-    box-shadow: var(--shadow-card);
-    opacity: $carousel-indicator-thumb-opacity;
-    @include border-radius(var(--border-radius));
-
-    @include media-breakpoint-up(lg) {
-      width: $carousel-indicator-thumb-width;
-    }
-
-    &::before {
-      display: block;
-      padding-top: var(--aspect-ratio, 100%);
-      content: '';
-    }
-  }
-
-  &.carousel-indicators-vertical {
     [data-bs-target],
     [data-target] {
-      margin: $carousel-indicator-spacer 0;
+      width: $carousel-indicator-height;
+      height: $carousel-indicator-width;
+      margin: $carousel-indicator-spacer 0 $carousel-indicator-spacer;
+      border: 0;
+      border-inline-start: $carousel-indicator-hit-area-height var(--border-style) transparent;
+      border-inline-end: $carousel-indicator-hit-area-height var(--border-style) transparent;
     }
   }
-}
 
-.carousel-caption-background {
-  position: absolute;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  bottom: 0;
-  height: 90%;
-  background: var(--dark);
-  background: linear-gradient(0deg, color-transparent(var(--dark), 0.9), color-transparent(var(--dark), 0));
+  .carousel-indicators-dot {
+    [data-bs-target],
+    [data-target] {
+      width: $carousel-indicator-dot-width;
+      height: $carousel-indicator-dot-width;
+      margin: 0;
+      border: $carousel-indicator-hit-area-height var(--border-style) transparent;
+      @include border-radius(var(--border-radius-pill));
+    }
+  }
+
+  .carousel-indicators-thumb {
+    [data-bs-target],
+    [data-target] {
+      width: $carousel-indicator-thumb-width * 0.5;
+      height: auto;
+      margin: 0 $carousel-indicator-spacer;
+      background: no-repeat center/cover;
+      border: 0;
+      box-shadow: var(--shadow-card);
+      opacity: $carousel-indicator-thumb-opacity;
+      @include border-radius(var(--border-radius));
+
+      @include media-breakpoint-up(lg) {
+        width: $carousel-indicator-thumb-width;
+      }
+
+      &::before {
+        display: block;
+        padding-top: var(--aspect-ratio, 100%);
+        content: '';
+      }
+    }
+
+    &.carousel-indicators-vertical {
+      [data-bs-target],
+      [data-target] {
+        margin: $carousel-indicator-spacer 0;
+      }
+    }
+  }
+
+  .carousel-caption-background {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    bottom: 0;
+    height: 90%;
+    background: var(--dark);
+    background: linear-gradient(0deg, color-transparent(var(--dark), 0.9), color-transparent(var(--dark), 0));
+  }
 }

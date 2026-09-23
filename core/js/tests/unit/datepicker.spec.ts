@@ -27,6 +27,7 @@ describe('Datepicker', () => {
   })
 
   const input = (): HTMLInputElement => fixtureEl.querySelector('input')!
+  const tick = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 20))
 
   describe('NAME', () => {
     it('should return plugin name', () => {
@@ -242,6 +243,68 @@ describe('Datepicker', () => {
       const instance = Datepicker.getInstance(button) as Datepicker | null
       expect(instance).not.toBeNull()
       expect(instance!._isShown).toBe(true)
+    })
+
+    it('should close on the second click of a button trigger', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="datepicker">Select date</button>'
+
+      const button = fixtureEl.querySelector('button')!
+      const seen: string[] = []
+      for (const name of ['show', 'shown', 'hide', 'hidden']) {
+        button.addEventListener(`${name}.bs.datepicker`, () => seen.push(name))
+      }
+
+      button.click()
+      await tick()
+      button.click()
+      await tick()
+
+      const instance = Datepicker.getInstance(button) as Datepicker
+      expect(instance._isShown).toBe(false)
+      expect(instance.calendar!.context.isShowInInputMode).toBe(false)
+      expect(seen).toEqual(['show', 'shown', 'hide', 'hidden'])
+
+      button.click()
+      await tick()
+      expect(instance._isShown).toBe(true)
+    })
+  })
+
+  describe('closed by the plugin', () => {
+    const pressEscape = (): void => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    }
+
+    it('should fire hide and hidden on Escape', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+      const seen: string[] = []
+      for (const name of ['hide', 'hidden']) {
+        input().addEventListener(`${name}.bs.datepicker`, () => seen.push(name))
+      }
+
+      const instance = new Datepicker(input())
+      await instance.show()
+      pressEscape()
+
+      expect(instance._isShown).toBe(false)
+      expect(seen).toEqual(['hide', 'hidden'])
+    })
+
+    it('should stay open when hide is prevented', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+      const seen: string[] = []
+      input().addEventListener('hide.bs.datepicker', (event) => event.preventDefault())
+      for (const name of ['shown', 'hidden']) {
+        input().addEventListener(`${name}.bs.datepicker`, () => seen.push(name))
+      }
+
+      const instance = new Datepicker(input())
+      await instance.show()
+      pressEscape()
+
+      expect(instance._isShown).toBe(true)
+      expect(instance.calendar!.context.isShowInInputMode).toBe(true)
+      expect(seen).toEqual(['shown'])
     })
   })
 })

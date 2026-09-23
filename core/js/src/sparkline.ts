@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
 
 type SparklineType = 'line' | 'bar' | 'circle' | 'tristate'
@@ -603,9 +603,7 @@ class Sparkline extends BaseComponent {
  */
 
 // js-docs-start sparkline-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_TOGGLE)) {
-  Sparkline.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_TOGGLE, Sparkline)
 // js-docs-end sparkline-init
 
 export default Sparkline

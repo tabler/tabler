@@ -8,6 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
+import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type StrengthLevel = 'weak' | 'fair' | 'good' | 'strong'
@@ -270,9 +271,7 @@ class Strength extends BaseComponent {
  */
 
 // js-docs-start strength-init
-for (const element of SelectorEngine.find(SELECTOR_DATA_STRENGTH)) {
-  Strength.getOrCreateInstance(element)
-}
+initAll(SELECTOR_DATA_STRENGTH, Strength)
 // js-docs-end strength-init
 
 export default Strength

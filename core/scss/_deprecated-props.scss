@@ -1,0 +1,40 @@
+// The `--tblr-*-rgb` custom properties of older 1.x releases, as mixins: three
+// bundles emit them (`tabler.css`, `tabler-props.css`, `tabler-themes.css`), so
+// this module emits nothing on its own. See `_deprecated.scss` for the rest.
+//
+// Removed in 2.0, together with this file.
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:math';
+@use 'config' as *;
+
+// `6, 111, 209`: whole numbers, as the 1.5 stylesheet had them.
+@function deprecated-rgb-triplet($color) {
+  $rgb: color.to-gamut($color, $space: rgb, $method: clip);
+  @return math.round(color.channel($rgb, 'red', $space: rgb)), math.round(color.channel($rgb, 'green', $space: rgb)), math.round(color.channel($rgb, 'blue', $space: rgb));
+}
+
+// deprecated(2.0): `--tblr-*-rgb`. Tabler mixes colours with `color-mix()` and
+// reads none of these. They are static, as they were in 1.5: overriding
+// `--tblr-primary` does not change `--tblr-primary-rgb`.
+@mixin deprecated-color-props() {
+  @if $enable-deprecated {
+    :root {
+      @each $name, $color in map.merge($theme-colors, $social-colors) {
+        --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
+        --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
+      }
+    }
+  }
+}
+
+@mixin deprecated-theme-props() {
+  @if $enable-deprecated {
+    @each $name, $value in $extra-colors {
+      [data-bs-theme-primary='#{$name}'],
+      [data-theme-primary='#{$name}'] {
+        --primary-rgb: #{deprecated-rgb-triplet($value)};
+      }
+    }
+  }
+}

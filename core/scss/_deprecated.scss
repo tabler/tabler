@@ -1,0 +1,171 @@
+// CSS kept only so that projects written for an older 1.x release keep working:
+// class aliases, custom properties that nothing in Tabler reads any more, and
+// hooks that still honour the old tokens. Set `$enable-deprecated: false` to
+// leave all of it out of the build.
+//
+// Loaded last from `tabler.scss`, after `_extends.scss`: the aliases are built
+// with `@extend`, which only reaches modules upstream of this one.
+//
+// Removed in 2.0, together with this file and `_deprecated-props.scss`.
+//
+// The tokens stay unlayered like every other token. Each rule sits in the
+// layer of the rule it patches (`forms`, `components`, `helpers`), so a
+// utility still wins over an alias the way it wins over the original. An
+// `@extend` cannot cross into a layer, so the extending rule stays outside
+// and only its own declarations are layered.
+@use 'sass:map';
+@use 'config' as *;
+@use 'core';
+@use 'deprecated-props' as *;
+
+@if $enable-deprecated {
+  @include deprecated-color-props();
+
+  :root {
+    --white-rgb: #{deprecated-rgb-triplet($white)};
+    --black-rgb: #{deprecated-rgb-triplet($black)};
+    --body-color-rgb: #{deprecated-rgb-triplet($body-color)};
+    --body-bg-rgb: #{deprecated-rgb-triplet($body-bg)};
+    --emphasis-color-rgb: #{deprecated-rgb-triplet($body-emphasis-color)};
+    --secondary-color-rgb: #{deprecated-rgb-triplet($body-color)};
+    --secondary-bg-rgb: #{deprecated-rgb-triplet($body-secondary-bg)};
+    --tertiary-color-rgb: #{deprecated-rgb-triplet($body-color)};
+    --tertiary-bg-rgb: #{deprecated-rgb-triplet($body-tertiary-bg)};
+    --link-color-rgb: #{deprecated-rgb-triplet($link-color)};
+    --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color)};
+
+    // deprecated(2.0): `$input-btn-focus-width` and `$input-btn-focus-color`
+    // were the way to restyle the focus ring from Sass
+    @if $input-btn-focus-width != 0.25rem {
+      --focus-ring-width: #{$input-btn-focus-width};
+    }
+    @if $input-btn-focus-color != color-transparent(var(--primary), $input-btn-focus-color-opacity) {
+      --focus-ring-color: #{$input-btn-focus-color};
+    }
+  }
+
+  @if $enable-dark-mode {
+    @include color-mode(dark, true) {
+      --body-color-rgb: #{deprecated-rgb-triplet($body-color-dark)};
+      --body-bg-rgb: #{deprecated-rgb-triplet($body-bg-dark)};
+      --emphasis-color-rgb: #{deprecated-rgb-triplet($body-emphasis-color-dark)};
+      --secondary-color-rgb: #{deprecated-rgb-triplet($body-color-dark)};
+      --secondary-bg-rgb: #{deprecated-rgb-triplet($body-secondary-bg-dark)};
+      --tertiary-color-rgb: #{deprecated-rgb-triplet($body-color-dark)};
+      --tertiary-bg-rgb: #{deprecated-rgb-triplet($body-tertiary-bg-dark)};
+      --link-color-rgb: #{deprecated-rgb-triplet($link-color-dark)};
+      --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color-dark)};
+    }
+  }
+
+  // `.form-hint` is deprecated, use `.form-text` instead
+  // (from `bootstrap/forms/_form-text.scss`).
+  .form-hint {
+    @extend .form-text;
+
+    @layer forms {
+      --form-hint-margin-top: #{$form-hint-margin-top};
+      --form-hint-label-offset: #{$form-hint-label-offset};
+      --form-hint-control-margin-top: #{$form-hint-control-margin-top};
+
+      // Kept from the old rule, so an inline element still gets the top margin.
+      display: block;
+
+      + .form-control {
+        margin-top: var(--form-hint-margin-top);
+      }
+
+      .form-label + & {
+        margin-top: var(--form-hint-label-offset);
+      }
+
+      .input-group + &,
+      .form-control + &,
+      .form-select + & {
+        margin-top: var(--form-hint-control-margin-top);
+      }
+    }
+  }
+
+  // Before 1.6 `.legend` was the dot itself and had no children. An empty
+  // `.legend` is deprecated, use `.legend-dot` instead (from `ui/_legend.scss`).
+  .legend:empty {
+    @extend .legend-dot;
+
+    @layer components {
+      padding: 0;
+    }
+  }
+
+  @layer components {
+    // deprecated(2.0): `--tblr-status-color-rgb`, use `--tblr-status-color`
+    .status {
+      --status-color-rgb: #{deprecated-rgb-triplet($text-secondary)};
+    }
+
+    @each $name, $color in map.merge($theme-colors, $social-colors) {
+      .status-#{$name} {
+        --status-color-rgb: var(--#{$name}-rgb);
+      }
+    }
+
+    // deprecated(2.0): the focus ring is an outline. A project that set one of
+    // the old box-shadow tokens still gets its shadow, next to the outline.
+    // A button has a shadow of its own, so the fallback is that one and an
+    // untouched project looks the same. `.btn-link` sets `box-shadow: none`
+    // directly and needs its own fallback.
+    .btn:focus-visible:not(:active),
+    .btn-check:focus-visible + .btn {
+      @if $btn-focus-box-shadow != $focus-ring-box-shadow {
+        --btn-focus-box-shadow: #{$btn-focus-box-shadow};
+      }
+      box-shadow: var(--btn-focus-box-shadow, var(--btn-box-shadow));
+    }
+
+    .btn-link:focus-visible:not(:active) {
+      box-shadow: var(--btn-focus-box-shadow, none);
+    }
+
+    .btn-close:focus-visible {
+      @if $btn-close-focus-shadow != $focus-ring-box-shadow {
+        --btn-close-focus-shadow: #{$btn-close-focus-shadow};
+      }
+      box-shadow: var(--btn-close-focus-shadow, none);
+    }
+
+    .page-link:focus-visible {
+      @if $pagination-focus-box-shadow != $focus-ring-box-shadow {
+        --pagination-focus-box-shadow: #{$pagination-focus-box-shadow};
+      }
+      box-shadow: var(--pagination-focus-box-shadow, none);
+    }
+
+    .accordion-button:focus-visible {
+      @if $accordion-btn-focus-box-shadow != $focus-ring-box-shadow {
+        --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
+      }
+      box-shadow: var(--accordion-btn-focus-box-shadow, none);
+    }
+  }
+
+  @layer helpers {
+    // deprecated(2.0): `--tblr-focus-ring-x`, `-y` and `-blur` moved and blurred
+    // the `.focus-ring` helper's shadow. All three default to `0`, which draws nothing.
+    .focus-ring:focus-visible {
+      box-shadow: var(--focus-ring-x, 0) var(--focus-ring-y, 0) var(--focus-ring-blur, 0) 0 var(--focus-ring-color);
+    }
+  }
+
+  @layer forms {
+    // deprecated(2.0): the check mark and the switch knob are masks now. An
+    // image set through the old token is still painted, under the mask.
+    .form-check-input:checked,
+    .form-check-input:indeterminate {
+      background-image: var(--form-check-bg-image, none);
+    }
+
+    .form-switch .form-check-input {
+      background-image: var(--form-switch-bg, none);
+    }
+  }
+}

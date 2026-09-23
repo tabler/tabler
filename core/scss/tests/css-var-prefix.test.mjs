@@ -24,10 +24,7 @@ const scssDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 // The same two passes build-css.ts runs before autoprefixer.
 async function buildCustomPropertyNames(entry) {
   const { css } = compileSass(path.join(scssDir, entry), { loadPaths: ['node_modules'], style: 'expanded' })
-  const result = await postcss([
-    inlineValueComments,
-    prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore }),
-  ]).process(css, { from: undefined })
+  const result = await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(css, { from: undefined })
 
   const names = new Set()
   result.root.walkDecls((decl) => {
@@ -44,11 +41,6 @@ describe('css custom-property prefixing', () => {
     await expect(buildCustomPropertyNames('tabler-vendors.scss')).resolves.toMatchSnapshot()
   })
 
-  // Compiles every top-level entry point (~13 full Sass builds) — comfortably
-  // under a second locally, but tight against the 5s default on a loaded CI
-  // runner as the framework's total SCSS surface grows.
-  const deadEntriesTimeout = 15000
-
   it(
     'has no dead entries in the ignore list',
     async () => {
@@ -60,10 +52,10 @@ describe('css custom-property prefixing', () => {
       const all = [...new Set(perEntry.flat())]
 
       for (const pattern of cssVarIgnore) {
-        const matches = pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
+      const matches = pattern instanceof RegExp ? all.some((name) => pattern.test(name)) : all.includes(pattern)
         expect(matches, `unused cssVarIgnore entry: ${pattern}`).toBe(true)
       }
     },
-    deadEntriesTimeout,
+    20000,
   )
 })

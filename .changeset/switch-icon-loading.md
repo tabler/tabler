@@ -4,4 +4,4 @@
 "@tabler/docs": patch
 ---
 
-Added a `switch-icon-loading` state and a `tabler:switch-icon-toggle` event that waits for a promise before switching.
+Added a `switch-icon-loading` state and a cancelable `toggle.bs.switch-icon` event whose `event.wait(promise)` holds the switch until the promise settles.
