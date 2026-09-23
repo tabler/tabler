@@ -46,26 +46,28 @@ const groups = Object.entries(classnames).sort(([a], [b]) => (groupOrder.indexOf
 
 <p>Every class this component ships, grouped by what it changes. A name in braces stands for a family — <code>{'{color}'}</code> is any base color, <code>{'{breakpoint}'}</code> any responsive step.</p>
 
-<table class="docs-classnames">
-  <tbody>
-    {
-      groups.map(([group, entries]) =>
-        entries.map((entry) => (
-          <tr>
-            <td>
-              <code>{entry.class}</code>
-            </td>
-            <td>
-              <Badge color={groupColors[group] ?? 'secondary'} light icon={groupIcons[group] ?? 'tag'} text={group} class="text-capitalize" />
-            </td>
-            <td>
-              {entry.desc}
-              {entry.default && <Badge color="blue" light text="default" class="ms-2" />}
-            </td>
-          </tr>
-        )),
-      )
-    }
-  </tbody>
-</table>
+<div class="docs-table">
+  <table class="docs-classnames">
+    <tbody>
+      {
+        groups.map(([group, entries]) =>
+          entries.map((entry) => (
+            <tr>
+              <td>
+                <code>{entry.class}</code>
+              </td>
+              <td>
+                <Badge color={groupColors[group] ?? 'secondary'} light icon={groupIcons[group] ?? 'tag'} text={group} class="text-capitalize" />
+              </td>
+              <td>
+                {entry.desc}
+                {entry.default && <Badge color="blue" light text="default" class="ms-2" />}
+              </td>
+            </tr>
+          )),
+        )
+      }
+    </tbody>
+  </table>
+</div>
 <!-- END DOCS CLASSNAMES -->
