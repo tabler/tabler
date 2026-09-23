@@ -36,7 +36,7 @@ sits in an exempt file.
 
 | What | Pattern (extended regex) | v5 form that must be used instead |
 | --- | --- | --- |
-| Responsive/state prefix | `PREFIX` regex in the block below (the leading `["' .]` keeps SCSS pseudo-classes like `&:focus:not(…)` out) | infix: `.col-md-6`, `.d-md-none`, `.opacity-50-hover` |
+| State prefix | `PREFIX` regex in the block below (the leading `["' .]` keeps SCSS pseudo-classes like `&:focus:not(…)` out) | 1.x form: `.opacity-50-hover`, `.d-print-none`. **Responsive prefixes are correct now** — `.md\:col-6` and `.md\:d-none` are the 2.0 spelling, not a violation |
 | Dialog classes | `\.dialog(-[a-z-]+)?\b` | `.modal`, `.modal-header`, `.modal-body`, `.modal-footer`, `.modal-title`, `.modal-sm/lg/xl/fullscreen` |
 | Drawer classes | `\.drawer(-[a-z-]+)?\b` | `.offcanvas`, `.offcanvas-start/end/top/bottom`, `.offcanvas-header/body/title` |
 | Menu classes | `\.menu(-item|-header|-divider)?\b`, `\.submenu\b` | `.dropdown-menu`, `.dropdown-item`, `.dropdown-header`, `.dropdown-divider` |
@@ -55,7 +55,7 @@ Copy-ready form of the patterns (extended regex, run over added lines only):
 
 ```bash
 git diff v2-dev...HEAD | grep '^+' | grep -En \
-  -e '(^|["'"'"' .])(sm|md|lg|xl|2xl|hover|focus|active|print)(-down)?\\?:[a-z][a-z0-9-]*' \
+  -e '(^|["'"'"' .])(hover|focus|active|print)(-down)?\\?:[a-z][a-z0-9-]*' \
   -e '\.(dialog|drawer)(-[a-z-]+)?\b' -e '\.menu(-item|-header|-divider)?\b' -e '\.submenu\b' \
   -e '\.btn-(solid|subtle|text|styled)\b' -e '\.badge-subtle\b' \
   -e 'data-bs-toggle="(dialog|drawer|menu|toggler)"' -e 'data-bs-dismiss="(dialog|drawer)"' \
@@ -66,8 +66,9 @@ git diff v2-dev...HEAD | grep '^+' | grep -En \
   -e '\.form-range-input\b' -e '\.form-field\b' -e '\.accordion-icon\b'
 ```
 
-Verified 2026-09-06: this set returns zero hits on the untouched `core/scss`, `shared/ui`,
-`preview/pages` and `docs/content` trees, so any hit in a diff is real.
+Verified 2026-09-06, breakpoints dropped from the first pattern 2026-09-10 when the responsive
+prefix was adopted: this set returns zero hits on `core/scss`, `shared/ui`, `preview/pages` and
+`docs/content`, so any hit in a diff is real.
 
 `.theme-*` tokens are **allowed** (they are v6 architecture) — but flag markup where a `.theme-*`
 class *replaces* a v5 colour class instead of being emitted by it. `floatingConfig` is allowed once
