@@ -31,7 +31,7 @@ import CleanCSS from 'clean-css'
 import { addBanner } from '../shared/banner/index.mjs'
 import { cssVarIgnore, cssVarPrefix, inlineValueComments } from './css-var-prefix'
 import { extractLayerOrder, prependLayerOrder } from './css-layer-order'
-import legacyResponsive from './postcss-legacy-responsive'
+import legacyClasses from './postcss-legacy-classes'
 
 const args = process.argv.slice(2)
 const flags = args.filter((arg) => arg.startsWith('--'))
@@ -72,13 +72,13 @@ async function compile(entry: string): Promise<{ outFile: string; result: Result
   // postcss maps generated positions back to *its own input*, so renaming
   // inside the map-generating pass would leave every mapping — and the
   // embedded sourcesContent — describing css that no longer exists on disk.
-  // legacyResponsive rides along in this pass rather than its own: it only adds
+  // legacyClasses rides along in this pass rather than its own: it only adds
   // selectors, so it needs to land before the map-generating pass, and rtlcss
   // then inherits the aliases from that output for free. It runs on the
   // prefixed stylesheets only — the shipped Tabler css is what has to stay
   // backwards compatible, and `--no-prefix` is for a vendor-inlining sheet that
   // emits no responsive classes of ours. No-op until phase 8 renames them.
-  const { css: prefixed } = withPrefix ? await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore }), legacyResponsive()]).process(input, { from: outFile, to: outFile, map: false }) : { css: input }
+  const { css: prefixed } = withPrefix ? await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore }), legacyClasses()]).process(input, { from: outFile, to: outFile, map: false }) : { css: input }
   const result = await postcss([autoprefixer({ cascade: false })]).process(prefixed, {
     from: outFile,
     to: outFile,
