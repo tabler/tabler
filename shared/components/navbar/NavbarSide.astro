@@ -39,6 +39,11 @@ const {
   showLanguageSelector = false,
   showUser = false,
 } = Astro.props
+
+// The All Package link is an ad for tabler.io, so it only renders on the hosted demo
+// (Vercel deploys), never in local builds or the packaged template (VERCEL_ENV is unset there).
+const isVercelDeploy = !!process.env.VERCEL_ENV
+const allPackageUrl = 'https://tabler.io/pricing?ref=tabler-preview-navbar#bundle'
 ---
 
 <!-- BEGIN NAVBAR ACTIONS -->
@@ -48,6 +53,7 @@ const {
       <div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
         <ButtonList>
           <Button icon="heart" iconColor="pink" text="Sponsor" href={site.githubSponsorsUrl} external />
+          {isVercelDeploy && <Button icon="package" iconColor="blue" text="All Package" href={allPackageUrl} external />}
         </ButtonList>
       </div>
     )
