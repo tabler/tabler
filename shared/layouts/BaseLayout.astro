@@ -1,6 +1,7 @@
 ---
 import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
 import { site } from '@shared/lib/site'
+import { tablerJsPath } from '@shared/lib/assets'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
@@ -132,7 +133,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     }
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
+    <script is:inline type="module" src={tablerJsPath(base)}></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <PageScripts />

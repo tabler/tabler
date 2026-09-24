@@ -82,15 +82,22 @@
     --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
 
+  /** Borders */
+  --border-width-keyline: 0.5px;
+
   /** Border radiuses */
   --border-radius-scale: 1;
+  @each $name, $value in $radii {
+    --radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+  }
   @each $name, $value in $border-radiuses {
     @if $name {
-      --border-radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+      --border-radius-#{$name}: #{$value};
     } @else {
       --border-radius: #{$value};
     }
   }
+  --border-radius-2xl: var(--border-radius-xxl); // Deprecated in v5.3.0 for consistency
 
   /** Buttons and form controls: one scale, in the names Bootstrap 6 uses */
   // scss-docs-start btn-input-css-vars

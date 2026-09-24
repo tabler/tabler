@@ -30,6 +30,8 @@ import rtlcss from 'rtlcss'
 import CleanCSS from 'clean-css'
 import { addBanner } from '../shared/banner/index.mjs'
 import { cssVarIgnore, cssVarPrefix, inlineValueComments } from './css-var-prefix'
+import { extractLayerOrder, prependLayerOrder } from './css-layer-order'
+import legacyClasses from './postcss-legacy-classes'
 
 const args = process.argv.slice(2)
 const flags = args.filter((arg) => arg.startsWith('--'))
@@ -70,7 +72,13 @@ async function compile(entry: string): Promise<{ outFile: string; result: Result
   // postcss maps generated positions back to *its own input*, so renaming
   // inside the map-generating pass would leave every mapping — and the
   // embedded sourcesContent — describing css that no longer exists on disk.
-  const { css: prefixed } = withPrefix ? await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(input, { from: outFile, to: outFile, map: false }) : { css: input }
+  // legacyClasses rides along in this pass rather than its own: it only adds
+  // selectors, so it needs to land before the map-generating pass, and rtlcss
+  // then inherits the aliases from that output for free. It runs on the
+  // prefixed stylesheets only — the shipped Tabler css is what has to stay
+  // backwards compatible, and `--no-prefix` is for a vendor-inlining sheet that
+  // emits no responsive classes of ours. No-op until phase 8 renames them.
+  const { css: prefixed } = withPrefix ? await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore }), legacyClasses()]).process(input, { from: outFile, to: outFile, map: false }) : { css: input }
   const result = await postcss([autoprefixer({ cascade: false })]).process(prefixed, {
     from: outFile,
     to: outFile,
@@ -117,6 +125,18 @@ function flushWrites(): void {
 // mapping on that line comes out `'*/'.length` columns short. Ending the line
 // after the comment puts the css at column 0 — exactly where the map says.
 async function minify(files: string[]): Promise<void> {
+  // Cascade-layer order statements are taken out before clean-css sees them
+  // and put back afterwards — see css-layer-order.ts for why.
+  // Keyed by absolute path (clean-css rebases relative to the key). The
+  // input map is handed over explicitly and its annotation comment removed,
+  // as clean-css would otherwise look the map up relative to the cwd.
+  const sources: Record<string, { styles: string; sourceMap: string }> = {}
+  const layerOrders: Record<string, string[]> = {}
+  for (const file of files) {
+    const { css, statements } = extractLayerOrder(readFileSync(file, 'utf8'))
+    sources[resolve(file)] = { styles: css.replace(/\/\*# sourceMappingURL=[^*]*\*\/\s*$/, ''), sourceMap: readFileSync(`${file}.map`, 'utf8') }
+    layerOrders[file] = statements
+  }
   const minified = await new CleanCSS({
     batch: true,
     // zeroUnits (default true) strips the unit off zero values, e.g. `0%` -> `0`.
@@ -130,19 +150,23 @@ async function minify(files: string[]): Promise<void> {
     format: 'breakWith=lf;breaks:afterComment=on',
     inline: 'local',
     level: { 1: true },
-    rebase: true,
-    rebaseTo: resolve(outDir),
+    // No url() rebasing: the input already sits in outDir, so there is nothing
+    // to move. With the source map handed over explicitly clean-css would
+    // rebase against the original .scss path and turn `../img/flags/us.svg`
+    // into `../../../img/flags/us.svg`.
+    rebase: false,
     returnPromise: true,
     sourceMap: true,
     sourceMapInlineSources: true,
-  }).minify(files)
+  }).minify(sources)
   for (const inputFile of files) {
-    const fileResult = minified[inputFile]
+    const fileResult = minified[resolve(inputFile)]
     if (!fileResult) throw new Error(`build-css: no minify result for ${inputFile}`)
     if (fileResult.errors.length > 0) throw new Error(fileResult.errors.join('\n'))
     for (const warning of fileResult.warnings) console.warn(`build-css: ${warning}`)
     const minFile = inputFile.replace(/\.css$/, '.min.css')
-    writeFileSync(minFile, `${fileResult.styles}${EOL}/*# sourceMappingURL=${basename(minFile)}.map */`)
+    const styles = prependLayerOrder(fileResult.styles, layerOrders[inputFile])
+    writeFileSync(minFile, `${styles}${EOL}/*# sourceMappingURL=${basename(minFile)}.map */`)
     writeFileSync(`${minFile}.map`, fileResult.sourceMap.toString())
     console.log(`build-css: ${minFile}`)
   }

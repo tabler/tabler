@@ -197,6 +197,29 @@ describe('Datepicker', () => {
     })
   })
 
+  describe('modal reparenting', () => {
+    it('should move the popup into the dialog when the input is inside a modal', async () => {
+      fixtureEl.innerHTML = '<dialog class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><input type="text" data-bs-toggle="datepicker"></div></div></div></dialog>'
+      const dialog = fixtureEl.querySelector('dialog')!
+
+      const instance = new Datepicker(input())
+      await instance.show()
+
+      const mainElement = instance.calendar!.context.mainElement
+      expect(mainElement.parentElement).toBe(dialog)
+    })
+
+    it('should leave the popup on <body> outside a modal', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+      await instance.show()
+
+      const mainElement = instance.calendar!.context.mainElement
+      expect(mainElement.parentElement).toBe(document.body)
+    })
+  })
+
   describe('setSelectedDates', () => {
     it('should update the calendar selection', () => {
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'

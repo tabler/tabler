@@ -11,8 +11,32 @@ import Sparkline from '@ui/Sparkline.astro'
 import type { SparklineType } from '@ui/Sparkline.astro'
 import site from '@data/site.json'
 import { ucFirst } from '@shared/lib/string-format'
+import { tablerJsPath } from '@shared/lib/assets'
 
 const colors = Object.keys(site.colors)
+
+// tabler.js is an ES module with no `window.tabler` global, so the script imports
+// the component it drives. Built as a string because the import path depends on
+// the build (`.min` outside development) and `define:vars` cannot carry an import.
+const updateScript = `
+      /*
+      Pushes random data into a sparkline and counts the updated.bs.sparkline events.
+      */
+      import { Sparkline } from '${tablerJsPath()}'
+
+      const element = document.getElementById('sparkline-orders')
+      const sparkline = Sparkline.getOrCreateInstance(element)
+      let updates = 0
+
+      document.getElementById('sparkline-update').addEventListener('click', () => {
+        sparkline.update(Array.from({ length: 10 }, () => Math.floor(Math.random() * 30)))
+      })
+
+      element.addEventListener('updated.bs.sparkline', () => {
+        updates += 1
+        document.getElementById('sparkline-updates').textContent = updates + (updates === 1 ? ' update' : ' updates')
+      })
+    `
 
 const metrics: { name: string; value: string; color: string; type: SparklineType; fill?: string; values: string }[] = [
   { name: 'Revenue', value: '$12.4k', color: 'success', type: 'line', fill: 'auto', values: '5,6,7,6,8,9,10' },
@@ -32,7 +56,7 @@ const progress = [
 <DefaultLayout title="Sparkline" pageMenu="base.sparkline" description="Sparklines are tiny inline SVG charts rendered from data attributes, with no chart library needed.">
   <DocsLink slot="page-header-actions" path="/ui/components/sparkline" />
   <div class="row row-cards">
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Line</CardTitle>
@@ -42,7 +66,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Area with spot</CardTitle>
@@ -56,7 +80,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Bars</CardTitle>
@@ -69,7 +93,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Signed bars</CardTitle>
@@ -82,7 +106,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Win/loss</CardTitle>
@@ -95,7 +119,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Threshold</CardTitle>
@@ -108,7 +132,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Circle</CardTitle>
@@ -121,7 +145,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Disabled</CardTitle>
@@ -135,7 +159,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
@@ -147,7 +171,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Fixed range</CardTitle>
@@ -160,7 +184,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
@@ -174,7 +198,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Stroke width</CardTitle>
@@ -188,7 +212,7 @@ const progress = [
       </Card>
     </div>
 
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Update from JavaScript</CardTitle>
@@ -200,33 +224,14 @@ const progress = [
           </div>
           <CaptureScript>
             <!-- BEGIN SCRIPT OF SPARKLINE -->
-            <script is:inline>
-              /*
-              Pushes random data into a sparkline and counts the updated.bs.sparkline events.
-              tabler.js is deferred, so the instance is looked up once the DOM is ready.
-              */
-              document.addEventListener('DOMContentLoaded', () => {
-                const element = document.getElementById('sparkline-orders')
-                const sparkline = tabler.Sparkline.getOrCreateInstance(element)
-                let updates = 0
-
-                document.getElementById('sparkline-update').addEventListener('click', () => {
-                  sparkline.update(Array.from({ length: 10 }, () => Math.floor(Math.random() * 30)))
-                })
-
-                element.addEventListener('updated.bs.sparkline', () => {
-                  updates += 1
-                  document.getElementById('sparkline-updates').textContent = `${updates} update${updates === 1 ? '' : 's'}`
-                })
-              })
-            </script>
+            <script is:inline type="module" set:html={updateScript} />
             <!-- END SCRIPT OF SPARKLINE -->
           </CaptureScript>
         </CardBody>
       </Card>
     </div>
 
-    <div class="col-lg-8">
+    <div class="lg:col-8">
       <Card>
         <CardBody>
           <CardTitle>In a table</CardTitle>

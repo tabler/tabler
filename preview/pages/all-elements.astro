@@ -15,6 +15,7 @@ import Badge from '@ui/Badge.astro'
 import BadgeList from '@ui/BadgeList.astro'
 import Progress from '@ui/Progress.astro'
 import DataSelect from '@components/demo/DataSelect.astro'
+import Datepicker from '@ui/Datepicker.astro'
 import Check from '@ui/form/Check.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import Nav from '@components/demo/Nav.astro'
@@ -70,7 +71,7 @@ function greetUser(name) {
 }`
 ---
 
-<DefaultLayout title="All Elements - Kitchen Sink" pageHeader="All Elements" pageMenu="base.all-elements" pageLibs={['nouislider', 'star-rating.js', 'tom-select']}>
+<DefaultLayout title="All elements - Kitchen sink" pageHeader="All elements" pageMenu="base.all-elements" pageLibs={['tom-select', 'vanilla-calendar-pro']}>
   <div class="row row-cards">
     <!-- Typography Section -->
     <div class="col-12">
@@ -78,7 +79,7 @@ function greetUser(name) {
         <CardHeader title="Typography" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6">
               <div class="h1">Heading 1</div>
               <div class="h2">Heading 2</div>
               <div class="h3">Heading 3</div>
@@ -86,13 +87,13 @@ function greetUser(name) {
               <div class="h5">Heading 5</div>
               <div class="h6">Heading 6</div>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6">
               <p class="lead">This is a lead paragraph with larger text.</p>
               <p>
                 This is a regular paragraph with <strong>bold text</strong>, <em>italic text</em>, and
                 <u>underlined text</u>.
               </p>
-              <p><small class="text-muted">This is small muted text.</small></p>
+              <p><small class="text-secondary">This is small muted text.</small></p>
               <p class="text-primary">Primary text color</p>
               <p class="text-success">Success text color</p>
               <p class="text-danger">Danger text color</p>
@@ -108,8 +109,8 @@ function greetUser(name) {
         <CardHeader title="Buttons" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
-              <h4>Standard Buttons</h4>
+            <div class="md:col-6">
+              <h4>Standard buttons</h4>
               <ButtonList class="mb-3">
                 <Button text="Default" />
                 <Button text="Primary" color="primary" icon="star" />
@@ -120,15 +121,15 @@ function greetUser(name) {
                 <Button text="Info" color="info" />
               </ButtonList>
             </div>
-            <div class="col-md-6">
-              <h4>Button Sizes</h4>
+            <div class="md:col-6">
+              <h4>Button sizes</h4>
               <ButtonList class="mb-3 align-items-start">
                 <Button text="Small" size="sm" />
                 <Button text="Default" />
                 <Button text="Large" size="lg" />
               </ButtonList>
 
-              <h4>Icon Buttons</h4>
+              <h4>Icon buttons</h4>
               <ButtonList class="mb-3 align-items-start">
                 <Button icon="heart" iconOnly text="Heart" />
                 <Button icon="star" iconOnly text="Star" />
@@ -141,16 +142,16 @@ function greetUser(name) {
     </div>
 
     <!-- Cards Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Simple Card" />
+        <CardHeader title="Simple card" />
         <CardBody>
           <p>This is a simple card with header and body content.</p>
         </CardBody>
       </Card>
     </div>
 
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Card with Footer" />
         <CardBody>
@@ -179,7 +180,7 @@ function greetUser(name) {
     </div>
 
     <!-- Badges Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Badges" />
         <CardBody>
@@ -193,8 +194,8 @@ function greetUser(name) {
               <Badge text="Danger" color="danger" />
             </BadgeList>
             <BadgeList>
-              <Badge text="With Icon" color="primary" icon="star" />
-              <Badge text="Light Badge" color="primary" light />
+              <Badge text="With icon" color="primary" icon="star" />
+              <Badge text="Light badge" color="primary" light />
             </BadgeList>
           </div>
         </CardBody>
@@ -202,9 +203,9 @@ function greetUser(name) {
     </div>
 
     <!-- Progress Bars Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Progress Bars" />
+        <CardHeader title="Progress bars" />
         <CardBody>
           <div class="space-y">
             <div>
@@ -227,24 +228,24 @@ function greetUser(name) {
     <!-- Form Elements Section -->
     <div class="col-12">
       <Card>
-        <CardHeader title="Form Elements" />
+        <CardHeader title="Form elements" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
-              <FormGroup label="Text Input" for="all-elements-text-input">
+            <div class="md:col-6">
+              <FormGroup label="Text input" for="all-elements-text-input">
                 <input type="text" class="form-control" id="all-elements-text-input" placeholder="Enter text" />
               </FormGroup>
-              <FormGroup label="Email Input" for="all-elements-email-input">
+              <FormGroup label="Email input" for="all-elements-email-input">
                 <input type="email" class="form-control" id="all-elements-email-input" placeholder="Enter email" />
               </FormGroup>
-              <FormGroup label="Password Input" for="all-elements-password-input">
+              <FormGroup label="Password input" for="all-elements-password-input">
                 <input type="password" class="form-control" id="all-elements-password-input" placeholder="Enter password" autocomplete="current-password" />
               </FormGroup>
-              <FormGroup label="Select Dropdown" for="select-demo-select">
+              <FormGroup label="Select dropdown" for="select-demo-select">
                 <DataSelect id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
               </FormGroup>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6">
               <FormGroup label="Textarea" for="all-elements-textarea">
                 <textarea class="form-control" id="all-elements-textarea" rows="3" placeholder="Enter message"></textarea>
               </FormGroup>
@@ -252,7 +253,7 @@ function greetUser(name) {
                 <Check title="Option 1" type="checkbox" />
                 <Check title="Option 2" type="checkbox" checked />
               </FormGroup>
-              <FormGroup label="Radio Buttons" associate={false}>
+              <FormGroup label="Radio buttons" associate={false}>
                 <Check title="Option 1" type="radio" name="radio-demo" />
                 <Check title="Option 2" type="radio" name="radio-demo" checked />
               </FormGroup>
@@ -269,16 +270,16 @@ function greetUser(name) {
     <!-- Navigation Elements -->
     <div class="col-12">
       <Card>
-        <CardHeader title="Navigation Elements" />
+        <CardHeader title="Navigation elements" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Tabs</h4>
               <div class="mb-3">
                 <Nav tabs class="mb-4" />
               </div>
 
-              <h4>Pills Navigation</h4>
+              <h4>Pills navigation</h4>
               <div class="mb-3">
                 <Nav pills class="mb-4" />
               </div>
@@ -286,7 +287,7 @@ function greetUser(name) {
               <h4>Breadcrumb</h4>
               <Breadcrumb pages={['Home', 'Library', 'Data']} homeIcon />
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Pagination</h4>
               <Pagination count={5} activeItem={2} class="mb-4" />
 
@@ -299,18 +300,18 @@ function greetUser(name) {
     </div>
 
     <!-- Lists Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Lists" />
         <CardBody>
-          <h4>Unordered List</h4>
+          <h4>Unordered list</h4>
           <ul>
             <li>First item</li>
             <li>Second item</li>
             <li>Third item</li>
           </ul>
 
-          <h4>Ordered List</h4>
+          <h4>Ordered list</h4>
           <ol>
             <li>First item</li>
             <li>Second item</li>
@@ -321,7 +322,7 @@ function greetUser(name) {
     </div>
 
     <!-- Table Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Table" />
         <CardBody>
@@ -358,7 +359,7 @@ function greetUser(name) {
     </div>
 
     <!-- Avatars Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Avatars" />
         <CardBody>
@@ -385,7 +386,7 @@ function greetUser(name) {
     </div>
 
     <!-- Icons Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Icons" />
         <CardBody>
@@ -443,16 +444,16 @@ function greetUser(name) {
     <!-- Interactive Elements Section -->
     <div class="col-12">
       <Card>
-        <CardHeader title="Interactive Elements" />
+        <CardHeader title="Interactive elements" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Accordion</h4>
               <div class="mb-4">
                 <Accordion count={3} id="demo-accordion" />
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Spinners</h4>
               <div class="mb-3">
                 <div class="d-flex flex-wrap gap-2">
@@ -482,11 +483,11 @@ function greetUser(name) {
     </div>
 
     <!-- Status & Feedback Elements -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Status Elements" />
+        <CardHeader title="Status elements" />
         <CardBody>
-          <h4>Status Dots</h4>
+          <h4>Status dots</h4>
           <div class="mb-3">
             <StatusDot color="success" ariaLabel="Success" />
             <StatusDot color="warning" ariaLabel="Warning" />
@@ -494,7 +495,7 @@ function greetUser(name) {
             <StatusDot color="info" animated ariaLabel="Info" />
           </div>
 
-          <h4>Toast Notifications</h4>
+          <h4>Toast notifications</h4>
           <div class="mb-3">
             <Toast toastId="demo-toast" show text="This is a sample toast message!" />
           </div>
@@ -503,9 +504,9 @@ function greetUser(name) {
     </div>
 
     <!-- Enhanced Form Elements -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Enhanced Forms" />
+        <CardHeader title="Enhanced forms" />
         <CardBody>
           <h4>Input with Icons</h4>
           <div class="mb-3">
@@ -515,7 +516,7 @@ function greetUser(name) {
             <InputIcon placeholder="Loading..." loader />
           </div>
 
-          <h4>Input Groups</h4>
+          <h4>Input groups</h4>
           <div class="mb-3">
             <InputGroup prepend="@" placeholder="Username" />
           </div>
@@ -523,7 +524,7 @@ function greetUser(name) {
             <InputGroup append=".00" prepend="$" placeholder="Price" />
           </div>
 
-          <h4>Range Slider</h4>
+          <h4>Range</h4>
           <div class="mb-3">
             <Range id="demo-range" min={0} max={100} value={50} />
           </div>
@@ -532,22 +533,22 @@ function greetUser(name) {
     </div>
 
     <!-- Tags & Labels -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Tags & Labels" />
         <CardBody>
           <h4>Tags</h4>
           <TagList class="mb-3">
-            <Tag text="Primary Tag" icon="star" />
-            <Tag text="Success Tag" status="success" />
-            <Tag text="Warning Tag" status="warning" />
+            <Tag text="Primary tag" icon="star" />
+            <Tag text="Success tag" status="success" />
+            <Tag text="Warning tag" status="warning" />
           </TagList>
 
           <h4>Ribbons</h4>
-          <div class="position-relative mb-4" style="height: 100px; background-color: var(--tblr-bg-surface-secondary); border-radius: 8px;">
+          <div class="position-relative bg-surface-secondary rounded-3 p-6 mb-4">
             <Ribbon text="New" color="success" />
           </div>
-          <div class="position-relative mb-3" style="height: 100px; background: var(--tblr-bg-surface-secondary); border-radius: 8px;">
+          <div class="position-relative bg-surface-secondary rounded-3 p-6 mb-3">
             <Ribbon text="Sale" color="danger" top />
           </div>
         </CardBody>
@@ -555,9 +556,9 @@ function greetUser(name) {
     </div>
 
     <!-- Media Elements -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Media Elements" />
+        <CardHeader title="Media elements" />
         <CardBody>
           <h4>Flags</h4>
           <div class="mb-3">
@@ -575,7 +576,7 @@ function greetUser(name) {
             </div>
           </div>
 
-          <h4>Payment Icons</h4>
+          <h4>Payment icons</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
               {
@@ -593,7 +594,7 @@ function greetUser(name) {
     </div>
 
     <!-- Timeline Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
         <CardHeader title="Timeline" />
         <CardBody>
@@ -603,9 +604,9 @@ function greetUser(name) {
     </div>
 
     <!-- Empty State Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Empty State" />
+        <CardHeader title="Empty state" />
         <CardBody>
           <Empty title="No data found" description="Try adjusting your search or filter to find what you're looking for." illustration="boy-girl.svg" buttonText="Add new item" buttonIcon="plus" />
         </CardBody>
@@ -618,16 +619,17 @@ function greetUser(name) {
         <CardHeader title="Modals" />
         <CardBody>
           <ButtonList>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-demo"> Open Modal </button>
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-success"> Success Modal </button>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-demo"> Open modal </button>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-success"> Success modal </button>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#modal-overlays"> Modal with Select and Datepicker </button>
           </ButtonList>
 
           <!-- Demo Modal -->
-          <div class="modal modal-blur fade" id="modal-demo" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+          <dialog class="modal modal-blur fade" id="modal-demo" aria-labelledby="modal-demo-title">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Modal Title</h5>
+                  <h5 class="modal-title" id="modal-demo-title">Modal title</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -639,15 +641,15 @@ function greetUser(name) {
                 </div>
               </div>
             </div>
-          </div>
+          </dialog>
 
           <!-- Success Modal -->
-          <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+          <dialog class="modal modal-blur fade" id="modal-success" aria-labelledby="modal-success-title">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-body text-center py-4">
                   <Icon name="circle-check" color="success" size="lg" class="mb-2" />
-                  <h3>Success!</h3>
+                  <h3 id="modal-success-title">Success!</h3>
                   <div class="text-secondary">Your action was completed successfully.</div>
                 </div>
                 <div class="modal-footer">
@@ -657,33 +659,58 @@ function greetUser(name) {
                         <button class="btn w-100" data-bs-dismiss="modal">Cancel</button>
                       </div>
                       <div class="col">
-                        <button class="btn btn-success w-100" data-bs-dismiss="modal">OK</button>
+                        <button class="btn btn-primary w-100" data-bs-dismiss="modal">OK</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </dialog>
+
+          <!-- Real showModal() dialog with plugin overlays: exercises the top-layer
+               path html-checks needs, unlike the always-`show`n modals.astro demos. -->
+          <dialog class="modal modal-blur fade" id="modal-overlays" aria-labelledby="modal-overlays-title">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modal-overlays-title">Modal with Select and Datepicker</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <FormGroup label="Assignee" for="select-modal-overlays-select" class="mb-3">
+                    <DataSelect id="modal-overlays-select" values={['Alice', 'Bob', 'Carol']} />
+                  </FormGroup>
+                  <FormGroup label="Due date" for="datepicker-modal-overlays-date">
+                    <Datepicker id="modal-overlays-date" />
+                  </FormGroup>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </dialog>
         </CardBody>
       </Card>
     </div>
 
     <!-- Button Groups Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Button Groups" />
+        <CardHeader title="Button groups" />
         <CardBody>
-          <h4>Basic Button Group</h4>
+          <h4>Basic button group</h4>
           <ButtonGroup class="mb-3">
             <button type="button" class="btn">Left</button>
             <button type="button" class="btn">Middle</button>
             <button type="button" class="btn">Right</button>
           </ButtonGroup>
 
-          <h4>Button Toolbar</h4>
-          <div class="btn-toolbar mb-3" role="toolbar">
-            <ButtonGroup class="me-2">
+          <h4>Button toolbar</h4>
+          <div class="btn-toolbar gap-2 mb-3" role="toolbar">
+            <ButtonGroup>
               <button type="button" class="btn">1</button>
               <button type="button" class="btn">2</button>
               <button type="button" class="btn">3</button>
@@ -694,7 +721,7 @@ function greetUser(name) {
             </ButtonGroup>
           </div>
 
-          <h4>Vertical Button Group</h4>
+          <h4>Vertical button group</h4>
           <ButtonGroup vertical={true}>
             <button type="button" class="btn">Top</button>
             <button type="button" class="btn">Middle</button>
@@ -705,26 +732,26 @@ function greetUser(name) {
     </div>
 
     <!-- Segmented Navigation Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Segmented Navigation" />
+        <CardHeader title="Segmented navigation" />
         <CardBody>
-          <h4>Basic Segmented</h4>
+          <h4>Basic segmented</h4>
           <div class="mb-3">
             <NavSegmented items={['Home', 'Profile', 'Settings']} />
           </div>
 
-          <h4>With Icons</h4>
+          <h4>With icons</h4>
           <div class="mb-3">
             <NavSegmented icons={['home', 'user', 'settings']} />
           </div>
 
-          <h4>With Emojis</h4>
+          <h4>With emojis</h4>
           <div class="mb-3">
             <NavSegmented items={['👦', '👦🏿', '👦🏾', '👦🏽', '👦🏼', '👦🏻']} />
           </div>
 
-          <h4>With Icons and Text</h4>
+          <h4>With icons and text</h4>
           <div class="mb-3">
             <NavSegmented items={['Home', 'Profile', 'Settings']} icons={['home', 'user', 'settings']} />
           </div>
@@ -738,18 +765,18 @@ function greetUser(name) {
         <CardHeader title="Collapse" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
-              <h4>Basic Collapse</h4>
-              <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"> Toggle Collapse </button>
+            <div class="md:col-6">
+              <h4>Basic collapse</h4>
+              <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"> Toggle collapse </button>
               <div class="collapse" id="collapseExample">
                 <div class="card card-body">This is collapsed content that can be toggled. It's hidden by default and shown when the button is clicked.</div>
               </div>
             </div>
-            <div class="col-md-6">
-              <h4>Multiple Targets</h4>
+            <div class="md:col-6">
+              <h4>Multiple targets</h4>
               <ButtonList>
-                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1"> Toggle First </button>
-                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2"> Toggle Second </button>
+                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1"> Toggle first </button>
+                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2"> Toggle second </button>
               </ButtonList>
               <div class="collapse" id="multiCollapseExample1">
                 <div class="card card-body mb-2">First collapsible content.</div>
@@ -769,7 +796,7 @@ function greetUser(name) {
         <CardHeader title="Tooltips & Popovers" />
         <CardBody>
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Tooltips</h4>
               <ButtonList>
                 <button class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top"> Top </button>
@@ -778,11 +805,11 @@ function greetUser(name) {
                 <button class="btn" data-bs-toggle="tooltip" data-bs-placement="left" title="Tooltip on left"> Left </button>
               </ButtonList>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6">
               <h4>Popovers</h4>
               <ButtonList>
-                <button class="btn" data-bs-toggle="popover" data-bs-placement="top" title="Popover Title" data-bs-content="This is popover content on top"> Top Popover </button>
-                <button class="btn" data-bs-toggle="popover" data-bs-placement="right" title="Popover Title" data-bs-content="This is popover content on right"> Right Popover </button>
+                <button class="btn" data-bs-toggle="popover" data-bs-placement="top" title="Popover title" data-bs-content="This is popover content on top"> Top popover </button>
+                <button class="btn" data-bs-toggle="popover" data-bs-placement="right" title="Popover title" data-bs-content="This is popover content on right"> Right popover </button>
               </ButtonList>
             </div>
           </div>
@@ -791,53 +818,51 @@ function greetUser(name) {
     </div>
 
     <!-- List Groups Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="List Groups" />
-        <CardBody class="p-0">
-          <ListGroup flush>
-            <ListGroupItem>
-              <Icon name="home" class="me-2" />
-              Home
-            </ListGroupItem>
-            <ListGroupItem active>
-              <Icon name="star" class="me-2" />
-              Active item
-            </ListGroupItem>
-            <ListGroupItem>
-              <Icon name="settings" class="me-2" />
-              Settings
-            </ListGroupItem>
-            <ListGroupItem>
-              <Icon name="user" class="me-2" />
-              Profile
-            </ListGroupItem>
-            <ListGroupItem disabled>
-              <Icon name="lock" class="me-2" />
-              Disabled item
-            </ListGroupItem>
-          </ListGroup>
-        </CardBody>
+        <CardHeader title="List groups" />
+        <ListGroup class="card-list-group">
+          <ListGroupItem>
+            <Icon name="home" class="me-2" />
+            Home
+          </ListGroupItem>
+          <ListGroupItem active>
+            <Icon name="star" class="me-2" />
+            Active item
+          </ListGroupItem>
+          <ListGroupItem>
+            <Icon name="settings" class="me-2" />
+            Settings
+          </ListGroupItem>
+          <ListGroupItem>
+            <Icon name="user" class="me-2" />
+            Profile
+          </ListGroupItem>
+          <ListGroupItem disabled>
+            <Icon name="lock" class="me-2" />
+            Disabled item
+          </ListGroupItem>
+        </ListGroup>
       </Card>
     </div>
 
     <!-- Content Elements Section -->
-    <div class="col-md-6">
+    <div class="md:col-6">
       <Card>
-        <CardHeader title="Content Elements" />
+        <CardHeader title="Content elements" />
         <CardBody>
           <h4>Blockquote</h4>
           <blockquote class="blockquote mb-4">
             <p>This is a blockquote example with some sample text to demonstrate the styling.</p>
             <footer class="blockquote-footer">
-              Someone famous in <cite title="Source Title">Source Title</cite>
+              Someone famous in <cite title="Source title">Source title</cite>
             </footer>
           </blockquote>
 
-          <h4>Code Block</h4>
+          <h4>Code block</h4>
           <pre class="mb-3"><code set:html={codeExample} /></pre>
 
-          <h4>Inline Elements</h4>
+          <h4>Inline elements</h4>
           <p>This paragraph contains <code>inline code</code>, <kbd>Ctrl + S</kbd> keyboard shortcut, and <mark>highlighted text</mark>.</p>
         </CardBody>
       </Card>

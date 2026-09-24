@@ -6,11 +6,25 @@
 @use 'maps' as *;
 @use 'mixins/functions' as *;
 
+// Border utility values. Uses the `--border-color-translucent` custom property
+// (dark-mode aware) rather than the light-only Sass token.
 $border-values: (
   null: var(--border-width) var(--border-style) var(--border-color-translucent),
   wide: $border-width-wide var(--border-style) var(--border-color-translucent),
   0: 0,
-);
+) !default;
+
+$rounded-values: (
+  null: var(--border-radius),
+  0: 0,
+  1: var(--border-radius-sm),
+  2: var(--border-radius),
+  3: var(--border-radius-lg),
+  4: var(--border-radius-xl),
+  5: var(--border-radius-xxl),
+  circle: 50%,
+  pill: var(--border-radius-pill),
+) !default;
 
 $utilities-border-colors: map-loop(
   (
@@ -108,8 +122,12 @@ $utilities: map.merge(
       class: shadow,
       values: (
         null: var(--box-shadow),
+        xs: var(--shadow-xs),
         sm: var(--box-shadow-sm),
+        md: var(--shadow-md),
         lg: var(--box-shadow-lg),
+        xl: var(--shadow-xl),
+        '2xl': var(--shadow-2xl),
         none: none,
       ),
     ),
@@ -188,7 +206,8 @@ $utilities: map.merge(
       values: $border-values,
     ),
     'border-top': (
-      property: border-top,
+      class: border-top,
+      property: border-block-start,
       values: $border-values,
     ),
     'border-end': (
@@ -197,7 +216,8 @@ $utilities: map.merge(
       values: $border-values,
     ),
     'border-bottom': (
-      property: border-bottom,
+      class: border-bottom,
+      property: border-block-end,
       values: $border-values,
     ),
     'border-start': (
@@ -212,7 +232,7 @@ $utilities: map.merge(
     ),
     'border-y': (
       class: border-y,
-      property: border-top border-bottom,
+      property: border-block-start border-block-end,
       values: $border-values,
     ),
     'border-color': (
@@ -432,7 +452,7 @@ $utilities: map.merge(
     ),
     'margin-y': (
       responsive: true,
-      property: margin-top margin-bottom,
+      property: margin-block-start margin-block-end,
       class: my,
       values: map.merge(
           $spacers,
@@ -443,7 +463,7 @@ $utilities: map.merge(
     ),
     'margin-top': (
       responsive: true,
-      property: margin-top,
+      property: margin-block-start,
       class: mt,
       values: map.merge(
           $spacers,
@@ -465,7 +485,7 @@ $utilities: map.merge(
     ),
     'margin-bottom': (
       responsive: true,
-      property: margin-bottom,
+      property: margin-block-end,
       class: mb,
       values: map.merge(
           $spacers,
@@ -500,13 +520,13 @@ $utilities: map.merge(
     ),
     'negative-margin-y': (
       responsive: true,
-      property: margin-top margin-bottom,
+      property: margin-block-start margin-block-end,
       class: my,
       values: $negative-spacers,
     ),
     'negative-margin-top': (
       responsive: true,
-      property: margin-top,
+      property: margin-block-start,
       class: mt,
       values: $negative-spacers,
     ),
@@ -518,7 +538,7 @@ $utilities: map.merge(
     ),
     'negative-margin-bottom': (
       responsive: true,
-      property: margin-bottom,
+      property: margin-block-end,
       class: mb,
       values: $negative-spacers,
     ),
@@ -543,13 +563,13 @@ $utilities: map.merge(
     ),
     'padding-y': (
       responsive: true,
-      property: padding-top padding-bottom,
+      property: padding-block-start padding-block-end,
       class: py,
       values: $spacers,
     ),
     'padding-top': (
       responsive: true,
-      property: padding-top,
+      property: padding-block-start,
       class: pt,
       values: $spacers,
     ),
@@ -561,7 +581,7 @@ $utilities: map.merge(
     ),
     'padding-bottom': (
       responsive: true,
-      property: padding-bottom,
+      property: padding-block-end,
       class: pb,
       values: $spacers,
     ),
@@ -847,77 +867,27 @@ $utilities: map.merge(
     'rounded': (
       property: border-radius,
       class: rounded,
-      values: (
-        null: var(--border-radius),
-        0: 0,
-        1: var(--border-radius-sm),
-        2: var(--border-radius),
-        3: var(--border-radius-lg),
-        4: var(--border-radius-xl),
-        5: var(--border-radius-xxl),
-        circle: 50%,
-        pill: var(--border-radius-pill),
-      ),
+      values: $rounded-values,
     ),
     'rounded-top': (
       property: border-start-start-radius border-start-end-radius,
       class: rounded-top,
-      values: (
-        null: var(--border-radius),
-        0: 0,
-        1: var(--border-radius-sm),
-        2: var(--border-radius),
-        3: var(--border-radius-lg),
-        4: var(--border-radius-xl),
-        5: var(--border-radius-xxl),
-        circle: 50%,
-        pill: var(--border-radius-pill),
-      ),
+      values: $rounded-values,
     ),
     'rounded-end': (
       property: border-end-end-radius border-start-end-radius,
       class: rounded-end,
-      values: (
-        null: var(--border-radius),
-        0: 0,
-        1: var(--border-radius-sm),
-        2: var(--border-radius),
-        3: var(--border-radius-lg),
-        4: var(--border-radius-xl),
-        5: var(--border-radius-xxl),
-        circle: 50%,
-        pill: var(--border-radius-pill),
-      ),
+      values: $rounded-values,
     ),
     'rounded-bottom': (
       property: border-end-end-radius border-end-start-radius,
       class: rounded-bottom,
-      values: (
-        null: var(--border-radius),
-        0: 0,
-        1: var(--border-radius-sm),
-        2: var(--border-radius),
-        3: var(--border-radius-lg),
-        4: var(--border-radius-xl),
-        5: var(--border-radius-xxl),
-        circle: 50%,
-        pill: var(--border-radius-pill),
-      ),
+      values: $rounded-values,
     ),
     'rounded-start': (
       property: border-start-start-radius border-end-start-radius,
       class: rounded-start,
-      values: (
-        null: var(--border-radius),
-        0: 0,
-        1: var(--border-radius-sm),
-        2: var(--border-radius),
-        3: var(--border-radius-lg),
-        4: var(--border-radius-xl),
-        5: var(--border-radius-xxl),
-        circle: 50%,
-        pill: var(--border-radius-pill),
-      ),
+      values: $rounded-values,
     ),
     'visibility': (
       property: visibility,
@@ -931,6 +901,62 @@ $utilities: map.merge(
       property: z-index,
       class: z,
       values: $zindex-levels,
+    ),
+    // Container query containment — turns an element into a query container so
+    // container-query components (`.card-group`, `.list-group-horizontal`) resolve.
+    'container': (
+        property: container-type,
+        class: contains,
+        values: (
+          inline: inline-size,
+          size: size,
+        ),
+      ),
+    // Grid column counts, responsive like `justify-content`.
+    'grid-column-counts': (
+        responsive: true,
+        property: grid-template-columns,
+        class: grid-cols,
+        values: (
+          1: repeat(1, minmax(0, 1fr)),
+          2: repeat(2, minmax(0, 1fr)),
+          3: repeat(3, minmax(0, 1fr)),
+          4: repeat(4, minmax(0, 1fr)),
+          6: repeat(6, minmax(0, 1fr)),
+          subgrid: subgrid,
+        ),
+      ),
+    // `.grid-cols-fill` — span every column of the parent grid.
+    'grid-columns': (
+        property: grid-column,
+        class: grid-cols,
+        values: (
+          fill: #{'1 / -1'},
+        ),
+      ),
+    'grid-auto-flow': (
+      property: grid-auto-flow,
+      class: grid-auto-flow,
+      values: row column dense,
+    ),
+    'justify-items': (
+      property: justify-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        stretch: stretch,
+      ),
+    ),
+    'place-items': (
+      responsive: true,
+      property: place-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        stretch: stretch,
+      ),
     ),
   ),
   $utilities

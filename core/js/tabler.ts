@@ -15,6 +15,8 @@ import './src/sortable'
 import './src/otp-input'
 import './src/sparkline'
 import './src/strength'
+import './src/rating'
+import './src/tree'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
@@ -27,10 +29,12 @@ export { default as CountUp } from './src/countup'
 export { default as Datepicker } from './src/datepicker'
 export { default as InputMask } from './src/input-mask'
 export { default as OtpInput } from './src/otp-input'
+export { default as Rating } from './src/rating'
 export { default as Sortable } from './src/sortable'
 export { default as Sparkline } from './src/sparkline'
 export { default as Strength } from './src/strength'
 export { default as SwitchIcon } from './src/switch-icon'
+export { default as Tree } from './src/tree'
 
 // deprecated(2.0): the `tabler` namespace with `getColor()`, `hexToRgba()` and `prefix`
 export * as tabler from './src/deprecated'

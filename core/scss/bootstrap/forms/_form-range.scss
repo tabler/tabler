@@ -6,94 +6,143 @@
 
 @use '../../config' as *;
 
-.form-range {
-  width: 100%;
-  height: add($form-range-thumb-height, $form-range-thumb-focus-box-shadow-width * 2);
-  padding: 0; // Need to reset padding
-  appearance: none;
-  background-color: transparent;
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
-  &:focus {
-    outline: 0;
+// scss-docs-start range-css-vars
+$range-tokens: () !default;
+$range-tokens: defaults(
+  (
+    --range-track-width: $form-range-track-width,
+    --range-track-height: $form-range-track-height,
+    --range-track-cursor: $form-range-track-cursor,
+    --range-track-bg: $form-range-track-bg,
+    --range-track-border-radius: $form-range-track-border-radius,
+    --range-track-box-shadow: $form-range-track-box-shadow,
+    --range-thumb-width: $form-range-thumb-width,
+    --range-thumb-height: $form-range-thumb-height,
+    --range-thumb-bg: var(--theme-bg, #{$form-range-thumb-bg}),
+    --range-thumb-border: $form-range-thumb-border,
+    --range-thumb-border-radius: $form-range-thumb-border-radius,
+    --range-thumb-box-shadow: $form-range-thumb-box-shadow,
+    --range-thumb-focus-box-shadow-width: $form-range-thumb-focus-box-shadow-width,
+    // Derived from `--range-thumb-bg` rather than a fixed color, so a custom
+    // thumb color (see range.ts) gets a lighter shade of itself when pressed,
+    // instead of always jumping to the default primary's own active tint.
+    --range-thumb-active-bg: color-mix(in oklab, white 70%, var(--range-thumb-bg)),
+    --range-thumb-disabled-bg: $form-range-thumb-disabled-bg,
+    --range-thumb-transition: $form-range-thumb-transition,
+    --range-tooltip-bg: $tooltip-bg,
+    --range-tooltip-color: $tooltip-color,
+    --range-tooltip-padding-x: $tooltip-padding-x,
+    --range-tooltip-padding-y: $tooltip-padding-y,
+    --range-tooltip-font-size: $tooltip-font-size,
+    --range-tooltip-border-radius: $tooltip-border-radius,
+  ),
+  $range-tokens
+);
+// scss-docs-end range-css-vars
 
-    // Pseudo-elements must be split across multiple rulesets to have an effect.
-    // No box-shadow() mixin for focus accessibility.
-    &::-webkit-slider-thumb {
-      @include focus-ring(true);
-    }
-    &::-moz-range-thumb {
-      @include focus-ring(true);
-    }
-  }
+// stylelint-enable custom-property-no-missing-var-function
 
-  &::-moz-focus-outer {
-    border: 0;
-  }
-
-  &::-webkit-slider-thumb {
-    width: $form-range-thumb-width;
-    height: $form-range-thumb-height;
-    margin-top: ($form-range-track-height - $form-range-thumb-height) * 0.5; // Webkit specific
+@layer forms {
+  // `.form-range` is the bare, unenhanced input. Once the `Range` component (`data-bs-toggle="range"`)
+  // wraps it, the wrapper keeps `.form-range` and the input(s) become `.form-range-input` — both share
+  // this base look so the enhanced and unenhanced cases render identical thumbs/tracks.
+  .form-range,
+  .form-range-input {
+    @include tokens($range-tokens);
+    width: 100%;
+    height: calc(var(--range-thumb-height) + var(--range-thumb-focus-box-shadow-width) * 2);
+    padding: 0; // Need to reset padding
     appearance: none;
-    @include gradient-bg($form-range-thumb-bg);
-    border: $form-range-thumb-border;
-    @include border-radius($form-range-thumb-border-radius);
-    @include box-shadow($form-range-thumb-box-shadow);
-    @include transition($form-range-thumb-transition);
-    outline-color: transparent;
+    background-color: transparent;
+    // A text color utility (e.g. `.text-green`) sets this; the `Range` component
+    // reads the computed value back into `--range-thumb-bg` (see range.ts), since
+    // `currentcolor` itself doesn't reach `::-webkit-slider-thumb`/`::-moz-range-thumb`.
+    color: var(--range-thumb-bg);
 
-    &:active {
-      @include gradient-bg($form-range-thumb-active-bg);
+    &:focus {
+      outline: 0;
+
+      // Pseudo-elements must be split across multiple rulesets to have an effect.
+      // No box-shadow() mixin for focus accessibility.
+      &::-webkit-slider-thumb {
+        @include focus-ring(true);
+      }
+      &::-moz-range-thumb {
+        @include focus-ring(true);
+      }
     }
-  }
 
-  &::-webkit-slider-runnable-track {
-    width: $form-range-track-width;
-    height: $form-range-track-height;
-    color: transparent; // Why?
-    cursor: $form-range-track-cursor;
-    background-color: $form-range-track-bg;
-    border-color: transparent;
-    @include border-radius($form-range-track-border-radius);
-    @include box-shadow($form-range-track-box-shadow);
-  }
-
-  &::-moz-range-thumb {
-    width: $form-range-thumb-width;
-    height: $form-range-thumb-height;
-    appearance: none;
-    @include gradient-bg($form-range-thumb-bg);
-    border: $form-range-thumb-border;
-    @include border-radius($form-range-thumb-border-radius);
-    @include box-shadow($form-range-thumb-box-shadow);
-    @include transition($form-range-thumb-transition);
-    outline-color: transparent;
-
-    &:active {
-      @include gradient-bg($form-range-thumb-active-bg);
+    &::-moz-focus-outer {
+      border: 0;
     }
-  }
-
-  &::-moz-range-track {
-    width: $form-range-track-width;
-    height: $form-range-track-height;
-    color: transparent;
-    cursor: $form-range-track-cursor;
-    background-color: $form-range-track-bg;
-    border-color: transparent; // Firefox specific?
-    @include border-radius($form-range-track-border-radius);
-    @include box-shadow($form-range-track-box-shadow);
-  }
-
-  &:disabled {
-    pointer-events: none;
 
     &::-webkit-slider-thumb {
-      background-color: $form-range-thumb-disabled-bg;
+      width: var(--range-thumb-width);
+      height: var(--range-thumb-height);
+      margin-top: calc((var(--range-track-height) - var(--range-thumb-height)) * 0.5); // Webkit specific
+      appearance: none;
+      @include gradient-bg(var(--range-thumb-bg));
+      border: var(--range-thumb-border);
+      @include border-radius(var(--range-thumb-border-radius));
+      @include box-shadow(var(--range-thumb-box-shadow));
+      @include transition(var(--range-thumb-transition));
+      outline-color: transparent;
+
+      &:active {
+        @include gradient-bg(var(--range-thumb-active-bg));
+      }
+    }
+
+    &::-webkit-slider-runnable-track {
+      width: var(--range-track-width);
+      height: var(--range-track-height);
+      color: transparent; // Why?
+      cursor: var(--range-track-cursor);
+      background-color: var(--range-track-bg);
+      border-color: transparent;
+      @include border-radius(var(--range-track-border-radius));
+      @include box-shadow(var(--range-track-box-shadow));
     }
 
     &::-moz-range-thumb {
-      background-color: $form-range-thumb-disabled-bg;
+      width: var(--range-thumb-width);
+      height: var(--range-thumb-height);
+      appearance: none;
+      @include gradient-bg(var(--range-thumb-bg));
+      border: var(--range-thumb-border);
+      @include border-radius(var(--range-thumb-border-radius));
+      @include box-shadow(var(--range-thumb-box-shadow));
+      @include transition(var(--range-thumb-transition));
+      outline-color: transparent;
+
+      &:active {
+        @include gradient-bg(var(--range-thumb-active-bg));
+      }
+    }
+
+    &::-moz-range-track {
+      width: var(--range-track-width);
+      height: var(--range-track-height);
+      color: transparent;
+      cursor: var(--range-track-cursor);
+      background-color: var(--range-track-bg);
+      border-color: transparent; // Firefox specific?
+      @include border-radius(var(--range-track-border-radius));
+      @include box-shadow(var(--range-track-box-shadow));
+    }
+
+    &:disabled {
+      pointer-events: none;
+
+      &::-webkit-slider-thumb {
+        background-color: var(--range-thumb-disabled-bg);
+      }
+
+      &::-moz-range-thumb {
+        background-color: var(--range-thumb-disabled-bg);
+      }
     }
   }
 }

@@ -9,9 +9,8 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isRTL, isVisible } from './util/index'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
-import Swipe from './util/swipe'
 
 type ComponentConfig = {
   interval: number | boolean
@@ -32,7 +31,6 @@ const DATA_API_KEY = '.data-api'
 
 const ARROW_LEFT_KEY = 'ArrowLeft'
 const ARROW_RIGHT_KEY = 'ArrowRight'
-const TOUCHEVENT_COMPAT_WAIT = 500
 
 const ORDER_NEXT = 'next'
 const ORDER_PREV = 'prev'
@@ -44,22 +42,17 @@ const EVENT_SLID = `slid${EVENT_KEY}`
 const EVENT_KEYDOWN = `keydown${EVENT_KEY}`
 const EVENT_MOUSEENTER = `mouseenter${EVENT_KEY}`
 const EVENT_MOUSELEAVE = `mouseleave${EVENT_KEY}`
-const EVENT_DRAG_START = `dragstart${EVENT_KEY}`
 const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 
 const CLASS_NAME_CAROUSEL = 'carousel'
 const CLASS_NAME_ACTIVE = 'active'
-const CLASS_NAME_SLIDE = 'slide'
-const CLASS_NAME_END = 'carousel-item-end'
-const CLASS_NAME_START = 'carousel-item-start'
-const CLASS_NAME_NEXT = 'carousel-item-next'
-const CLASS_NAME_PREV = 'carousel-item-prev'
+const CLASS_NAME_FADE = 'carousel-fade'
 
 const SELECTOR_ACTIVE = '.active'
 const SELECTOR_ITEM = '.carousel-item'
 const SELECTOR_ACTIVE_ITEM = SELECTOR_ACTIVE + SELECTOR_ITEM
-const SELECTOR_ITEM_IMG = '.carousel-item img'
+const SELECTOR_INNER = '.carousel-inner'
 const SELECTOR_INDICATORS = '.carousel-indicators'
 const SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to], [data-tblr-slide], [data-tblr-slide-to]'
 const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"], [data-tblr-ride="carousel"]'
@@ -93,21 +86,25 @@ class Carousel extends BaseComponent {
   _interval: ReturnType<typeof setInterval> | null
   _activeElement: HTMLElement | null
   _isSliding: boolean
-  touchTimeout: ReturnType<typeof setTimeout> | null
-  _swipeHelper: Swipe | null
   _indicatorsElement: HTMLElement | null
+  _viewport: HTMLElement | null
+  _observer: IntersectionObserver | null
+  _pendingElement: HTMLElement | null
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._interval = null
-    this._activeElement = null
+    this._activeElement = this._getActive()
     this._isSliding = false
-    this.touchTimeout = null
-    this._swipeHelper = null
+    this._observer = null
+    this._pendingElement = null
 
+    this._viewport = SelectorEngine.findOne(SELECTOR_INNER, this._element)
     this._indicatorsElement = SelectorEngine.findOne(SELECTOR_INDICATORS, this._element)
+
     this._addEventListeners()
+    this._observeItems()
 
     if (this._config.ride === CLASS_NAME_CAROUSEL) {
       this.cycle()
@@ -141,10 +138,6 @@ class Carousel extends BaseComponent {
   }
 
   pause(): void {
-    if (this._isSliding) {
-      triggerTransitionEnd(this._element)
-    }
-
     this._clearInterval()
   }
 
@@ -190,8 +183,8 @@ class Carousel extends BaseComponent {
   }
 
   dispose(): void {
-    if (this._swipeHelper) {
-      this._swipeHelper.dispose()
+    if (this._observer) {
+      this._observer.disconnect()
     }
 
     super.dispose()
@@ -212,36 +205,11 @@ class Carousel extends BaseComponent {
       EventHandler.on(this._element, EVENT_MOUSELEAVE, () => this._maybeEnableCycle())
     }
 
-    if (this._config.touch && Swipe.isSupported()) {
-      this._addTouchEventListeners()
+    // Scrolling is native; `touch: false` only turns off the drag gesture on the
+    // viewport, buttons/keyboard/indicators keep working.
+    if (this._viewport) {
+      this._viewport.style.touchAction = this._config.touch ? '' : 'none'
     }
-  }
-
-  _addTouchEventListeners(): void {
-    for (const img of SelectorEngine.find(SELECTOR_ITEM_IMG, this._element)) {
-      EventHandler.on(img, EVENT_DRAG_START, (event: Event) => event.preventDefault())
-    }
-
-    const endCallBack = () => {
-      if (this._config.pause !== 'hover') {
-        return
-      }
-
-      this.pause()
-      if (this.touchTimeout) {
-        clearTimeout(this.touchTimeout)
-      }
-
-      this.touchTimeout = setTimeout(() => this._maybeEnableCycle(), TOUCHEVENT_COMPAT_WAIT + (this._config.interval as number))
-    }
-
-    const swipeConfig = {
-      leftCallback: () => this._slide(this._directionToOrder(DIRECTION_LEFT)),
-      rightCallback: () => this._slide(this._directionToOrder(DIRECTION_RIGHT)),
-      endCallback: endCallBack,
-    }
-
-    this._swipeHelper = new Swipe(this._element, swipeConfig)
   }
 
   _keydown(event: KeyboardEvent): void {
@@ -299,69 +267,133 @@ class Carousel extends BaseComponent {
     const isNext = order === ORDER_NEXT
     const nextElement = element || (getNextActiveElement(this._getItems(), activeElement!, isNext, this._config.wrap as boolean) as HTMLElement)
 
-    if (nextElement === activeElement) {
+    if (!activeElement || !nextElement || nextElement === activeElement) {
       return
     }
 
-    const nextElementIndex = this._getItemIndex(nextElement)
-
-    const triggerEvent = (eventName: string) => {
-      return EventHandler.trigger(this._element, eventName, {
-        relatedTarget: nextElement,
-        direction: this._orderToDirection(order),
-        from: this._getItemIndex(activeElement!),
-        to: nextElementIndex,
-      })
-    }
-
-    const slideEvent = triggerEvent(EVENT_SLIDE)
+    const slideEvent = EventHandler.trigger(this._element, EVENT_SLIDE, {
+      relatedTarget: nextElement,
+      direction: this._orderToDirection(order),
+      from: this._getItemIndex(activeElement),
+      to: this._getItemIndex(nextElement),
+    })
 
     if (slideEvent?.defaultPrevented) {
       return
     }
 
-    if (!activeElement || !nextElement) {
-      return
-    }
-
     const isCycling = Boolean(this._interval)
     this.pause()
-
     this._isSliding = true
 
-    this._setActiveIndicatorElement(nextElementIndex)
-    this._activeElement = nextElement
-
-    const directionalClassName = isNext ? CLASS_NAME_START : CLASS_NAME_END
-    const orderClassName = isNext ? CLASS_NAME_NEXT : CLASS_NAME_PREV
-
-    nextElement.classList.add(orderClassName)
-
-    reflow(nextElement)
-
-    activeElement.classList.add(directionalClassName)
-    nextElement.classList.add(directionalClassName)
-
-    const completeCallBack = () => {
-      nextElement.classList.remove(directionalClassName, orderClassName)
+    if (this._element.classList.contains(CLASS_NAME_FADE)) {
+      activeElement.classList.remove(CLASS_NAME_ACTIVE)
       nextElement.classList.add(CLASS_NAME_ACTIVE)
+      this._queueCallback(() => this._finishSlide(activeElement, nextElement), nextElement, true)
+    } else {
+      // A jump of more than one item (wrap-around, `to()`) scrolls past the
+      // items in between; pin the target so their transient crossings are
+      // ignored until it actually arrives — see `_handleIntersection()`.
+      this._pendingElement = nextElement
 
-      activeElement.classList.remove(CLASS_NAME_ACTIVE, orderClassName, directionalClassName)
+      // scrollBy() on the viewport itself, not scrollIntoView(): the latter
+      // walks up every scrollable ancestor, so on a page taller than the
+      // window it would also scroll the page to chase a carousel that isn't
+      // fully in view.
+      if (this._viewport) {
+        const delta = nextElement.getBoundingClientRect().left - this._viewport.getBoundingClientRect().left
+        this._viewport.scrollBy({ left: delta })
+      }
 
-      this._isSliding = false
-
-      triggerEvent(EVENT_SLID)
+      // Safety net: don't wait on the observer forever if it never confirms
+      // arrival (element removed, browser quirk).
+      setTimeout(() => {
+        if (this._pendingElement === nextElement) {
+          this._pendingElement = null
+          this._setActive(nextElement)
+        }
+      }, 2000)
     }
-
-    this._queueCallback(completeCallBack, activeElement, this._isAnimated())
 
     if (isCycling) {
       this.cycle()
     }
   }
 
-  _isAnimated(): boolean {
-    return this._element.classList.contains(CLASS_NAME_SLIDE)
+  _observeItems(): void {
+    // Fade carousels stack every item in one grid cell, so every item always
+    // intersects the viewport fully — geometry can't tell them apart.
+    if (!this._viewport || this._element.classList.contains(CLASS_NAME_FADE)) {
+      return
+    }
+
+    this._observer = new IntersectionObserver((entries) => this._handleIntersection(entries), {
+      root: this._viewport,
+      threshold: [0, 0.5, 1],
+    })
+
+    for (const item of this._getItems()) {
+      this._observer.observe(item)
+    }
+  }
+
+  _handleIntersection(entries: IntersectionObserverEntry[]): void {
+    if (this._pendingElement) {
+      // A programmatic jump (wrap-around, `to()`) scrolls past items in
+      // between; ignore their transient crossings until the actual target
+      // — the only one that can clear `_pendingElement` — arrives.
+      const arrived = entries.find((entry) => entry.target === this._pendingElement && entry.intersectionRatio >= 0.5)
+      if (arrived) {
+        this._pendingElement = null
+        this._setActive(arrived.target as HTMLElement)
+      }
+
+      return
+    }
+
+    // A manual swipe/scroll has no pinned target: judge only this batch, not a
+    // running history, so a stale ratio never outranks what arrives next.
+    let bestEntry: IntersectionObserverEntry | null = null
+
+    for (const entry of entries) {
+      if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+        bestEntry = entry
+      }
+    }
+
+    if (bestEntry && bestEntry.intersectionRatio >= 0.5) {
+      this._setActive(bestEntry.target as HTMLElement)
+    }
+  }
+
+  _setActive(nextElement: HTMLElement): void {
+    const activeElement = this._activeElement ?? this._getActive()
+
+    if (!activeElement || nextElement === activeElement) {
+      return
+    }
+
+    activeElement.classList.remove(CLASS_NAME_ACTIVE)
+    nextElement.classList.add(CLASS_NAME_ACTIVE)
+
+    this._finishSlide(activeElement, nextElement)
+  }
+
+  _finishSlide(fromElement: HTMLElement, toElement: HTMLElement): void {
+    const fromIndex = this._getItemIndex(fromElement)
+    const toIndex = this._getItemIndex(toElement)
+    const order = toIndex > fromIndex ? ORDER_NEXT : ORDER_PREV
+
+    this._setActiveIndicatorElement(toIndex)
+    this._activeElement = toElement
+    this._isSliding = false
+
+    EventHandler.trigger(this._element, EVENT_SLID, {
+      relatedTarget: toElement,
+      direction: this._orderToDirection(order),
+      from: fromIndex,
+      to: toIndex,
+    })
   }
 
   _getActive(): HTMLElement | null {

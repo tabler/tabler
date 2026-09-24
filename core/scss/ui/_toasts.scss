@@ -1,27 +1,26 @@
 @use '../config' as *;
 
-.toast {
-  border: $alert-border-width var(--border-style) $alert-border-color;
-  box-shadow: $alert-shadow;
+@layer components {
+  .toast {
+    --toast-color: var(--theme-bg);
+    border: $alert-border-width var(--border-style) $alert-border-color;
 
-  .toast-header {
-    user-select: none;
-  }
+    .toast-header {
+      user-select: none;
+    }
 
-  button[data-bs-dismiss='toast'],
-  button[data-dismiss='toast'] {
-    &:focus:not(:focus-visible) {
-      outline: none;
+    button[data-bs-dismiss='toast'],
+    button[data-dismiss='toast'] {
+      &:focus:not(:focus-visible) {
+        outline: none;
+      }
+    }
+
+    @include media-print() {
+      display: none;
     }
   }
 
-  @include media-print() {
-    display: none;
-  }
-}
-
-@each $state, $value in $theme-colors {
-  .toast-#{$state} {
-    --toast-color: #{$value};
-  }
+  // `.toast-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+  // its header comment: @extend only reaches modules this file loads).
 }

@@ -7,7 +7,7 @@ alwaysApply: true
 
 # Tabler — project rules
 
-Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical agent configuration lives in `.agents/` (`rules/` + `skills/` + `agents/`); `.claude/{skills,agents}` and `.cursor/{rules,skills,agents}` are symlinks into it.
+Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical agent configuration lives in `.agents/` (`rules/` + `skills/` + `agents/`); `.claude/{skills,agents}` and `.cursor/{rules,skills,agents}` are symlinks into it, and the root `CLAUDE.md` only `@`-imports `rules/*.mdc` for Claude Code — edit the files under `.agents/` only. Rules in `rules/*.mdc` (`main`, `docs`, `v2`) always apply.
 
 ## Project structure
 
@@ -41,6 +41,7 @@ Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the
 | `build-pipeline` | assets missing, stale or growing; editing `.build/` or the asset manifests |
 | `generate-changeset` | writing a changeset (always — never hand-write the file) |
 | `mr-description` | drafting an MR/PR title and description |
+| `design-system` | adding or changing anything visible — a component, variant, token, demo page or docs example; the checklist behind the `design-reviewer` agent |
 
 ## Language
 
@@ -68,7 +69,7 @@ Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the
 - Buttons: `btn` for all buttons; `btn-primary` for primary actions; plain `btn` for secondary actions (do not use `btn-outline-secondary`); `btn-sm` for small buttons; `w-100` for full width.
 - `btn-action` is always combined with `btn` (typically `btn btn-action btn-sm` for icon actions in headers and toolbars) — never use `btn-action` on its own.
 - Forms: `form-control` for inputs, `form-label` for labels, `form-check` for checkboxes/radios, `form-select` for dropdowns.
-- Layout: Bootstrap grid (`row`, `col-*`), `container-xl` for main containers, `page-wrapper` / `page-body` for page structure.
+- Layout: Bootstrap grid (`row`, `col-*`), `xl:container` for main containers, `page-wrapper` / `page-body` for page structure.
 - Badges: plain `badge` class; do not use `badge-outline` or `badge-primary`; do not change badge text color.
 - Markdown content: wrap in a `markdown` class container.
 

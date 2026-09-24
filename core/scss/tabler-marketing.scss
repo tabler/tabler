@@ -1,16 +1,13 @@
 @forward 'config';
+@forward 'layers';
 
-@forward 'marketing/core';
-@forward 'marketing/hero';
-@forward 'marketing/browser';
-@forward 'marketing/sections';
-@forward 'marketing/filters';
-@forward 'marketing/pricing';
-@forward 'marketing/shape';
+@forward 'marketing';
 
 // This bundle uses its own utilities map instead of the global one, so the
 // utilities API is emitted via the parameterized mixin (last, as before).
 @use 'utilities-marketing' as um;
 @use 'mixins/utilities-api' as *;
 
-@include utilities-api(um.$marketing-utilities);
+@layer utilities {
+  @include utilities-api(um.$marketing-utilities);
+}

@@ -24,10 +24,10 @@ Elements that only make sense on screen are hidden with `display: none` when the
 You don't need to add anything for these to work - they're built into the component styles. For example, the navbar in a default layout already has this rule, so it disappears on print without any extra class:
 
 ```html
-<header class="navbar navbar-expand-md">...</header>
+<header class="navbar md:navbar-expand">...</header>
 ```
 
-If you build your own layout elements and want them hidden on print too, add the [`.d-print-none`](#print-utilities) utility class, or use the [`media-print` mixin](#the-media-print-mixin) in your own SCSS.
+If you build your own layout elements and want them hidden on print too, add the [`.print:d-none`](#print-utilities) utility class, or use the [`media-print` mixin](#the-media-print-mixin) in your own SCSS.
 
 ## Dark mode on print
 
@@ -48,28 +48,28 @@ Tabler generates `d-print-*` classes to show or hide any element only when the p
 
 Class|`display` value used on print
 -|-
-`d-print-none`|`none`
-`d-print-inline`|`inline`
-`d-print-inline-block`|`inline-block`
-`d-print-block`|`block`
-`d-print-grid`|`grid`
-`d-print-inline-grid`|`inline-grid`
-`d-print-table`|`table`
-`d-print-table-row`|`table-row`
-`d-print-table-cell`|`table-cell`
-`d-print-flex`|`flex`
-`d-print-inline-flex`|`inline-flex`
+`print:d-none`|`none`
+`print:d-inline`|`inline`
+`print:d-inline-block`|`inline-block`
+`print:d-block`|`block`
+`print:d-grid`|`grid`
+`print:d-inline-grid`|`inline-grid`
+`print:d-table`|`table`
+`print:d-table-row`|`table-row`
+`print:d-table-cell`|`table-cell`
+`print:d-flex`|`flex`
+`print:d-inline-flex`|`inline-flex`
 
-`.d-print-none` is the one you'll use most - add it to anything that shouldn't appear on a printout, like a "Search" box or an "Edit" button:
+`.print:d-none` is the one you'll use most - add it to anything that shouldn't appear on a printout, like a "Search" box or an "Edit" button:
 
 <Example>
-<div class="d-print-none"><span class="badge bg-blue-lt">Hidden on print</span></div>
+<div class="print:d-none"><span class="badge bg-blue-lt">Hidden on print</span></div>
 </Example>
 
 The other `d-print-*` classes work the other way around: pair them with a screen-only display utility (such as `.d-none`) to show something only when the page is printed:
 
 ```html
-<div class="d-none d-print-block">This text only shows up when the page is printed.</div>
+<div class="d-none print:d-block">This text only shows up when the page is printed.</div>
 ```
 
 ## The media-print mixin

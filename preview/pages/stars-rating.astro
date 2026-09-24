@@ -8,24 +8,24 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Star Ratings" pageMenu="base.stars-rating" pageLibs={['star-rating.js']} description="An interactive star rating built on the star-rating.js widget, backed by a hidden select for accessibility and forms.">
+<DefaultLayout title="Star ratings" pageMenu="base.stars-rating" description="A native, accessible star rating: one real input, JavaScript renders the stars on top of it.">
   <DocsLink slot="page-header-actions" path="/ui/components/star-rating" />
 
   <div class="row row-cards mb-5">
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>
-          <CardSubtitle>Click a star to set the value.</CardSubtitle>
+          <CardSubtitle>Click a star, or focus one and use the arrow keys, to set the value.</CardSubtitle>
           <Rating id="basic" value={4} />
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Icons</CardTitle>
-          <CardSubtitle>Swap the star for any icon by passing a different SVG to the <code>stars</code> option.</CardSubtitle>
+          <CardSubtitle>Swap the star for any icon with the <code>icon</code> prop.</CardSubtitle>
           <div class="space-y">
             <Rating id="icon-star" value={4} />
             <Rating id="icon-heart" icon="heart" value={4} color="red" />
@@ -35,20 +35,20 @@ import DocsLink from '@ui/DocsLink.astro'
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <CardSubtitle>Match the rating to surrounding text with an <code>icon-sm</code> or <code>icon-lg</code> class on the star.</CardSubtitle>
+          <CardSubtitle>Match the rating to surrounding text with the <code>size</code> prop.</CardSubtitle>
           <div class="space-y">
             <Rating id="size-sm" value={3} size="sm" />
-            <Rating id="size-md" value={3} size="md" />
+            <Rating id="size-default" value={3} />
             <Rating id="size-lg" value={3} size="lg" />
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6 col-lg-4">
+    <div class="md:col-6 lg:col-4">
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
@@ -59,6 +59,33 @@ import DocsLink from '@ui/DocsLink.astro'
             <Rating id="color-red" color="red" value={3} />
             <Rating id="color-lime" color="lime" value={3} />
           </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="md:col-6 lg:col-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Half stars</CardTitle>
+          <CardSubtitle>Add <code>half</code> for 0.5 steps - each star gets two hit areas, one per half.</CardSubtitle>
+          <Rating id="half" value={3.5} half />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="md:col-6 lg:col-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Clearable</CardTitle>
+          <CardSubtitle>Add <code>clearable</code> so clicking the selected star empties the value.</CardSubtitle>
+          <Rating id="clearable" value={4} clearable />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="md:col-6 lg:col-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Readonly</CardTitle>
+          <CardSubtitle>Add <code>readonly</code> for a display-only rating with a fractional fill - no radios, nothing to click.</CardSubtitle>
+          <Rating id="readonly" value={3.7} readonly />
         </CardBody>
       </Card>
     </div>

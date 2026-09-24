@@ -8,7 +8,7 @@ import CaptureScript from '../CaptureScript.astro'
 ---
 
 <!-- BEGIN NOTIFICATIONS -->
-<div class="nav-item dropdown d-none d-md-flex">
+<div class="nav-item dropdown d-none md:d-flex">
   <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
     <Icon name="bell" />
     <span class="badge bg-red"></span>
@@ -32,7 +32,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="muted" />
+                <Icon name="star" color="secondary" />
               </a>
             </div>
           </div>
@@ -64,7 +64,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="muted" />
+                <Icon name="star" color="secondary" />
               </a>
             </div>
           </div>
@@ -80,7 +80,7 @@ import CaptureScript from '../CaptureScript.astro'
             </div>
             <div class="col-auto">
               <a href="#" class="list-group-item-actions" aria-label="Add to favorites">
-                <Icon name="star" color="muted" />
+                <Icon name="star" color="secondary" />
               </a>
             </div>
           </div>
@@ -104,7 +104,9 @@ import CaptureScript from '../CaptureScript.astro'
     for (const close of document.querySelectorAll('[data-navbar-notifications-close]')) {
       close.onclick = () => {
         const toggle = close.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]')
-        window.tabler.bootstrap.Dropdown.getOrCreateInstance(toggle).hide()
+        // ESM-only build: no window.tabler global. Close via Bootstrap's own
+        // data-API — clicking an open toggle dismisses the dropdown.
+        if (toggle && toggle.getAttribute('aria-expanded') === 'true') toggle.click()
       }
     }
   </script>

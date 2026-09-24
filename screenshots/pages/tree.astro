@@ -1,0 +1,50 @@
+---
+// Tree as a file picker: a share dialog where the user chooses what to send.
+// Only the leaves are marked as checked; the tree script derives the folders,
+// so the picture shows the indeterminate state a partly chosen folder gets.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Tree from '@ui/Tree.astro'
+import type { TreeItem } from '@ui/Tree.astro'
+
+const items: TreeItem[] = [
+  {
+    label: 'Documents',
+    open: true,
+    children: [
+      {
+        label: 'Invoices',
+        open: true,
+        children: [
+          { label: 'january.pdf', checked: true },
+          { label: 'february.pdf', checked: true },
+          { label: 'march.pdf', checked: true },
+        ],
+      },
+      {
+        label: 'Contracts',
+        open: true,
+        children: [{ label: 'nda.pdf', checked: true }, { label: 'service-agreement.pdf' }],
+      },
+      { label: 'notes.txt' },
+    ],
+  },
+  {
+    label: 'Photos',
+    children: [{ label: 'beach.jpg' }, { label: 'mountains.jpg' }],
+  },
+]
+---
+
+<ScreenshotLayout title="Tree" columns={2}>
+  <Card>
+    <CardBody class="p-4">
+      <CardTitle>Choose files to share</CardTitle>
+      <CardSubtitle>Pick a whole folder or single files.</CardSubtitle>
+      <Tree items={items} checkboxes folderIcon="folder" folderOpenIcon="folder-open" fileIcon="file" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

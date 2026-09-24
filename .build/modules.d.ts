@@ -19,6 +19,8 @@ declare module 'clean-css' {
   }
   export default class CleanCSS {
     constructor(options: Record<string, unknown>)
-    minify(input: string[]): Promise<Record<string, MinifyResult>>
+    // Batch mode: either file paths, or a map of absolute path -> source
+    // (with its input map), keyed the same way in the result.
+    minify(input: string[] | Record<string, { styles: string; sourceMap?: string }>): Promise<Record<string, MinifyResult>>
   }
 }

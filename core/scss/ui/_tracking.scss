@@ -1,34 +1,48 @@
 @use '../config' as *;
 
-.tracking {
-  // scss-docs-start tracking-css-vars
-  --tracking-height: #{$tracking-height};
-  --tracking-gap-width: #{$tracking-gap-width};
-  --tracking-block-border-radius: #{$tracking-border-radius};
-  --tracking-block-min-width: #{$tracking-block-min-width};
-  // scss-docs-end tracking-css-vars
-  display: flex;
-  gap: var(--tracking-gap-width);
-}
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
 
-.tracking-squares {
-  --tracking-block-border-radius: var(--border-radius-sm);
+// scss-docs-start tracking-css-vars
+$tracking-tokens: () !default;
+$tracking-tokens: defaults(
+  (
+    --tracking-height: $tracking-height,
+    --tracking-gap-width: $tracking-gap-width,
+    --tracking-block-border-radius: $tracking-border-radius,
+    --tracking-block-min-width: $tracking-block-min-width,
+  ),
+  $tracking-tokens
+);
+// scss-docs-end tracking-css-vars
 
-  .tracking-block {
-    height: auto;
+// stylelint-enable custom-property-no-missing-var-function
 
-    &::before {
-      display: block;
-      padding-top: 100%;
-      content: '';
+@layer components {
+  .tracking {
+    @include tokens($tracking-tokens);
+    display: flex;
+    gap: var(--tracking-gap-width);
+  }
+
+  .tracking-squares {
+    --tracking-block-border-radius: var(--border-radius-sm);
+
+    .tracking-block {
+      height: auto;
+
+      &::before {
+        display: block;
+        padding-top: 100%;
+        content: '';
+      }
     }
   }
-}
 
-.tracking-block {
-  flex: 1;
-  min-width: var(--tracking-block-min-width);
-  height: var(--tracking-height);
-  background: var(--border-color);
-  @include border-radius(var(--tracking-block-border-radius));
+  .tracking-block {
+    flex: 1;
+    min-width: var(--tracking-block-min-width);
+    height: var(--tracking-height);
+    background: var(--border-color);
+    @include border-radius(var(--tracking-block-border-radius));
+  }
 }
