@@ -93,6 +93,9 @@
     // The menu draws its edge with the 1px ring in --dropdown-box-shadow and has
     // no border, so `inherit` would give the arrow the text color.
     border: 1px solid var(--dropdown-border-color);
+    // clip-path + border + rotate renders garbled edges on Firefox; only the
+    // top/left border survives the clip anyway, so drop the rest.
+    border-width: 1px 0 0 1px;
 
     /* rtl:ignore */
     transform: rotate(45deg);
