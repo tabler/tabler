@@ -24,11 +24,9 @@ Form check
 }
 
 .form-check-input {
-  --form-check-input-width: #{$form-check-input-width};
-  margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
-
+  margin-top: calc((#{$form-check-min-height} - var(--form-check-input-width)) / 2);
   background-size: var(--form-check-input-width);
-  box-shadow: $form-check-input-box-shadow;
+  box-shadow: var(--form-check-box-shadow);
 }
 
 .form-check-label {
@@ -67,15 +65,15 @@ Form switch
  */
 .form-switch {
   .form-check-input {
-    height: $form-switch-height;
-    margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
+    height: var(--form-switch-height);
+    margin-top: calc((#{$form-check-min-height} - var(--form-switch-height)) / 2);
     @include transition(background-color $transition-time, background-position $transition-time, $focus-ring-transition);
 
     // An off switch that is disabled fills its track like a disabled input,
     // so it no longer looks like an off switch that can still be toggled.
     &:disabled:not(:checked) {
-      --form-switch-color: #{$form-switch-disabled-color};
-      background-color: $form-switch-disabled-bg;
+      --form-switch-color: var(--form-switch-disabled-color);
+      background-color: var(--form-switch-disabled-bg);
     }
   }
 }
