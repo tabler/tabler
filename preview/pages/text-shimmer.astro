@@ -32,6 +32,26 @@ const durations = ['1s', '2s', '4s']
     <div class="col-md-6 col-lg-4">
       <Card>
         <CardBody>
+          <CardTitle>With a loader</CardTitle>
+          <CardSubtitle>Put an empty <code>.text-shimmer-loader</code> before the label. One element, a small spinner in the text color.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              labels.map((label) => (
+                <TextShimmer loader live>
+                  {label}
+                </TextShimmer>
+              ))
+            }
+            <TextShimmer class="text-primary" loader>Thinking…</TextShimmer>
+            <TextShimmer class="h2 mb-0" loader>Thinking…</TextShimmer>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
           <CardTitle>Colors</CardTitle>
           <CardSubtitle>The text keeps its own color, so any text utility works.</CardSubtitle>
           <div class="d-flex flex-column gap-2">
