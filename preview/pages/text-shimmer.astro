@@ -1,0 +1,114 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import TextShimmer from '@ui/TextShimmer.astro'
+import Avatar from '@ui/Avatar.astro'
+
+const labels = ['Thinking…', 'Generating a reply…', 'Searching the web…', 'Reading 3 files…']
+
+const durations = ['1s', '2s', '4s']
+---
+
+<DefaultLayout title="Text shimmer" pageMenu="base.text-shimmer" description="A highlight that sweeps across a label while an agent thinks or a task runs.">
+  <DocsLink slot="page-header-actions" path="/ui/components/text-shimmer" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>.text-shimmer</code> to a short label that reports work in progress.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {labels.map((label) => <TextShimmer live>{label}</TextShimmer>)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>The text keeps its own color, so any text utility works.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            <TextShimmer>Thinking…</TextShimmer>
+            <TextShimmer class="text-secondary">Thinking…</TextShimmer>
+            <TextShimmer class="text-primary">Thinking…</TextShimmer>
+            <TextShimmer class="text-green">Thinking…</TextShimmer>
+            <TextShimmer class="text-red">Thinking…</TextShimmer>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>The shimmer follows the font size.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            <TextShimmer class="small">Thinking…</TextShimmer>
+            <TextShimmer>Thinking…</TextShimmer>
+            <TextShimmer class="h3 mb-0">Thinking…</TextShimmer>
+            <TextShimmer class="h1 mb-0">Thinking…</TextShimmer>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Speed</CardTitle>
+          <CardSubtitle>Set <code>--tblr-text-shimmer-duration</code> to change the speed of one sweep.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              durations.map((duration) => (
+                <div class="d-flex align-items-center gap-2">
+                  <TextShimmer style={`--tblr-text-shimmer-duration: ${duration}`}>Thinking…</TextShimmer>
+                  <span class="text-secondary small">{duration}</span>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Contrast</CardTitle>
+          <CardSubtitle>Set <code>--tblr-text-shimmer-opacity</code> to dim the text more or less between sweeps.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              ['0.2', '0.4', '0.7'].map((opacity) => (
+                <div class="d-flex align-items-center gap-2">
+                  <TextShimmer style={`--tblr-text-shimmer-opacity: ${opacity}`}>Thinking…</TextShimmer>
+                  <span class="text-secondary small">{opacity}</span>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>In a chat</CardTitle>
+          <CardSubtitle>A shimmering label stands in for the reply until it arrives.</CardSubtitle>
+          <div class="d-flex align-items-center gap-2">
+            <Avatar size="sm" alt="" placeholder="AI" />
+            <TextShimmer class="text-secondary" live>Reading the file…</TextShimmer>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

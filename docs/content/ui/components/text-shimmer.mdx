@@ -1,0 +1,63 @@
+---
+title: Text shimmer
+summary: A highlight that sweeps across a short label while an agent thinks or a task runs.
+description: Show that something is in progress with the text shimmer - a light band that moves across a label such as "Thinking…" until the result arrives.
+related: [/ui/components/spinner, /ui/components/placeholder, /ui/components/chat]
+source: core/scss/ui/_text-shimmer.scss
+css-vars: text-shimmer
+classnames:
+  component:
+    - class: text-shimmer
+      desc: Dims the text and sweeps a highlight across it
+---
+import Example from '@components/Example.astro';
+
+## Basic example
+
+Add `.text-shimmer` to a short label that reports work in progress. The label fades in, then the text is dimmed and a band of full color moves across it from start to end.
+
+<Example centered>
+<span class="text-shimmer">Thinking…</span>
+</Example>
+
+## Colors
+
+The shimmer is a mask, so the text keeps its own color. Combine it with any text color utility.
+
+<Example centered>
+<div class="d-flex flex-column gap-2">
+  <span class="text-shimmer">Thinking…</span>
+  <span class="text-shimmer text-secondary">Thinking…</span>
+  <span class="text-shimmer text-primary">Thinking…</span>
+  <span class="text-shimmer text-green">Thinking…</span>
+</div>
+</Example>
+
+## Speed and contrast
+
+Set `--tblr-text-shimmer-duration` to change how long one sweep takes, and `--tblr-text-shimmer-opacity` to change how much the text is dimmed between sweeps. The fade-in is `320ms` by default; change it with `--tblr-text-shimmer-fade-duration`.
+
+<Example centered>
+<div class="d-flex flex-column gap-2">
+  <span class="text-shimmer" style="--tblr-text-shimmer-duration: 1s">Fast sweep</span>
+  <span class="text-shimmer" style="--tblr-text-shimmer-duration: 4s">Slow sweep</span>
+  <span class="text-shimmer" style="--tblr-text-shimmer-opacity: 0.7">Less contrast</span>
+</div>
+</Example>
+
+## In a chat
+
+Use the shimmer in place of a reply that has not arrived yet, next to the avatar of the assistant.
+
+<Example centered>
+<div class="d-flex align-items-center gap-2">
+  <span class="avatar avatar-sm">AI</span>
+  <span class="text-shimmer text-secondary" role="status">Reading the file…</span>
+</div>
+</Example>
+
+## Accessibility
+
+- The animation is only a hint. The label itself has to say what is going on, for example "Thinking…" or "Uploading 3 files…".
+- Add `role="status"` when the label appears while the user waits, so screen readers announce it and any change to it.
+- When the user prefers reduced motion, the sweep stops and the text shows in its full color.

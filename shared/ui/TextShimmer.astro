@@ -1,0 +1,17 @@
+---
+// Text shimmer (.text-shimmer): a highlight that sweeps across a short label, such as "Thinking…", while something is in progress.
+
+interface Props {
+  /** element to render; a `span` fits inline text, a `div` a block */
+  as?: 'span' | 'div'
+  /** tells assistive technology that the label reports progress and can change */
+  live?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { as: Tag = 'span', live = false, class: className, ...rest } = Astro.props
+---
+
+<Tag class:list={['text-shimmer', className]} role={live ? 'status' : undefined} aria-live={live ? 'polite' : undefined} {...rest}><slot /></Tag>
