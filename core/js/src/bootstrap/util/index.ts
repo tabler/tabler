@@ -5,6 +5,8 @@
  * --------------------------------------------------------------------------
  */
 
+import type { JQueryPluginStatic, JQueryStaticLike } from '../types'
+
 const MAX_UID = 1_000_000
 const MILLISECONDS_MULTIPLIER = 1000
 const TRANSITION_END = 'transitionend'
@@ -156,6 +158,48 @@ const reflow = (element: HTMLElement): void => {
 
 const isRTL = (): boolean => document.documentElement.dir === 'rtl'
 
+const getjQuery = (): JQueryStaticLike | null => {
+  if (window.jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
+    return window.jQuery
+  }
+
+  return null
+}
+
+const DOMContentLoadedCallbacks: Array<() => void> = []
+
+const onDOMContentLoaded = (callback: () => void): void => {
+  if (document.readyState === 'loading') {
+    if (!DOMContentLoadedCallbacks.length) {
+      document.addEventListener('DOMContentLoaded', () => {
+        for (const domCallback of DOMContentLoadedCallbacks) {
+          domCallback()
+        }
+      })
+    }
+
+    DOMContentLoadedCallbacks.push(callback)
+  } else {
+    callback()
+  }
+}
+
+const defineJQueryPlugin = (plugin: JQueryPluginStatic): void => {
+  onDOMContentLoaded(() => {
+    const $ = getjQuery()
+    if ($) {
+      const name = plugin.NAME
+      const JQUERY_NO_CONFLICT = $.fn[name]
+      $.fn[name] = plugin.jQueryInterface
+      $.fn[name].Constructor = plugin
+      $.fn[name].noConflict = () => {
+        $.fn[name] = JQUERY_NO_CONFLICT
+        return plugin.jQueryInterface
+      }
+    }
+  })
+}
+
 const execute = (possibleCallback: unknown, args: unknown[] = [], defaultValue: unknown = possibleCallback): unknown => {
   return typeof possibleCallback === 'function' ? possibleCallback.call(args[0], ...args.slice(1)) : defaultValue
 }
@@ -206,4 +250,4 @@ const getNextActiveElement = <T>(list: T[], activeElement: T, shouldGetNext: boo
   return list[Math.max(0, Math.min(index, listLength - 1))]
 }
 
-export { execute, executeAfterTransition, findShadowRoot, getElement, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, parseSelector, reflow, triggerTransitionEnd, toType }
+export { defineJQueryPlugin, execute, executeAfterTransition, findShadowRoot, getElement, getjQuery, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, onDOMContentLoaded, parseSelector, reflow, triggerTransitionEnd, toType }
