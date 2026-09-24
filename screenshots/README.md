@@ -32,6 +32,24 @@ To make pictures of a few pages only, name them:
 pnpm --dir screenshots run capture chart-radar dashboard-crm
 ```
 
+## Making a video
+
+Some pages can also be recorded: a short clip of the fake cursor moving, hovering and clicking, with the transitions and the loading states left on. A page is recordable when it has a script of steps in `steps/<name>.json`:
+
+```json
+[{ "move": "#save" }, { "wait": 400 }, { "click": "#save" }, { "wait": 2400 }]
+```
+
+`move` glides the cursor to an element along a slight arc, in a time that follows the distance unless `duration` says otherwise; `click` moves there and clicks, or with `true` clicks where the cursor already is; `wait` holds for the given milliseconds. Make the clips:
+
+```sh
+pnpm --dir screenshots run record button
+```
+
+Every recorded page gives a light and a dark WebM in `captures/`, at @2x (2048×1536, 30 fps). With `ffmpeg` on the machine (`brew install ffmpeg`) it also writes an MP4 and a GIF. `RECORD_FRAMES=0.5,2` writes those seconds as JPEG stills next to the clip, for a quick look without a player.
+
+The page itself is a normal screenshot page (`?motion` in the URL keeps its animations); the recorder only adds the cursor and the clicks.
+
 ## Adding a picture
 
 Copy one of the pages in `pages/` and change what it shows. The file name becomes the name of the pictures. Open the page in the browser in both color modes, then run the capture for that page and check the four files.
