@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fixed `.card-progress` corner radius to match the card's `--card-border-radius` instead of a fixed `2px`.
+Fixed `.card-progress` to overlay the card like `.card-status`, so its rounded corners match the card's radius exactly.
