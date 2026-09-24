@@ -6,25 +6,57 @@
 
 @use '../../config' as *;
 
+// The control tokens, in the names Bootstrap 6 uses. One block serves every
+// text-like control: `.form-select` and `.form-control-plaintext` stand alone
+// (no `.form-control`), so they need the same declarations. A token seeded from
+// a size variable reads the `:root` scale until the Sass variable is configured.
+.form-select,
+.form-control-plaintext,
+.form-control {
+  // scss-docs-start control-css-vars
+  --control-min-height: calc(var(--control-line-height) + var(--control-padding-y) * 2 + var(--control-border-width) * 2);
+  --control-padding-y: #{var-if-default($input-padding-y, $input-btn-padding-y, '--btn-input-padding-y')};
+  --control-padding-x: #{var-if-default($input-padding-x, $input-btn-padding-x, '--btn-input-padding-x')};
+  @include rfs(var-if-default($input-font-size, $input-btn-font-size, '--btn-input-font-size'), --control-font-size);
+  --control-line-height: #{var-if-default($input-line-height, $input-btn-line-height, '--btn-input-line-height')};
+  --control-fg: #{var-if-default($input-color, var(--body-color), '--btn-input-fg')};
+  --control-bg: #{var-if-default($input-bg, var(--bg-forms), '--btn-input-bg')};
+  --control-border-width: #{$input-border-width};
+  --control-border-color: #{$input-border-color};
+  --control-border-radius: #{var-if-default($input-border-radius, var(--border-radius), '--btn-input-border-radius')};
+  --control-box-shadow: #{$input-box-shadow};
+  --control-focus-fg: #{var-if-default($input-focus-color, $input-color, '--control-fg')};
+  --control-focus-bg: #{var-if-default($input-focus-bg, $input-bg, '--control-bg')};
+  --control-focus-border-color: #{$input-focus-border-color};
+  --control-placeholder-color: #{$input-placeholder-color};
+  --control-disabled-color: #{if(sass($input-disabled-color): $input-disabled-color; else: $form-secondary-color)};
+  --control-disabled-bg: #{$input-disabled-bg};
+  --control-disabled-border-color: #{if(sass($input-disabled-border-color): $input-disabled-border-color; else: var(--control-border-color))};
+  --control-action-bg: #{$form-file-button-bg};
+  --control-action-hover-bg: #{$form-file-button-hover-bg};
+  --control-transition: #{$input-transition};
+  // scss-docs-end control-css-vars
+}
+
 .form-control {
   display: block;
   width: 100%;
-  padding: $input-padding-y $input-padding-x;
+  padding: var(--control-padding-y) var(--control-padding-x);
   font-family: $input-font-family;
-  @include font-size($input-font-size);
+  @include font-size(var(--control-font-size));
   font-weight: $input-font-weight;
-  line-height: $input-line-height;
-  color: $input-color;
+  line-height: var(--control-line-height);
+  color: var(--control-fg);
   appearance: none; // Fix appearance for date inputs in Safari
-  background-color: $input-bg;
+  background-color: var(--control-bg);
   background-clip: padding-box;
-  border: $input-border-width solid $input-border-color;
+  border: var(--control-border-width) solid var(--control-border-color);
 
   // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
-  @include border-radius($input-border-radius, 0);
+  @include border-radius(var(--control-border-radius), 0);
 
-  @include box-shadow($input-box-shadow);
-  @include transition($input-transition);
+  @include box-shadow(var(--control-box-shadow));
+  @include transition(var(--control-transition));
   // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
@@ -38,9 +70,9 @@
 
   // Customize the `:focus` state to imitate native WebKit styles.
   &:focus {
-    color: $input-focus-color;
-    background-color: $input-focus-bg;
-    border-color: $input-focus-border-color;
+    color: var(--control-focus-fg);
+    background-color: var(--control-focus-bg);
+    border-color: var(--control-focus-border-color);
     --focus-ring-offset: -1px;
     @include focus-ring(true);
   }
@@ -74,7 +106,7 @@
 
   // Placeholder
   &::placeholder {
-    color: $input-placeholder-color;
+    color: var(--control-placeholder-color);
     // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
     opacity: 1;
   }
@@ -85,31 +117,31 @@
   // disabled if the fieldset is disabled. Due to implementation difficulty, we
   // don't honor that edge case; we style them as disabled anyway.
   &:disabled {
-    color: $input-disabled-color;
-    background-color: $input-disabled-bg;
-    border-color: $input-disabled-border-color;
+    color: var(--control-disabled-color);
+    background-color: var(--control-disabled-bg);
+    border-color: var(--control-disabled-border-color);
     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
   }
 
   // File input buttons theming
   &::file-selector-button {
-    padding: $input-padding-y $input-padding-x;
-    margin: (-$input-padding-y) (-$input-padding-x);
-    margin-inline-end: $input-padding-x;
+    padding: var(--control-padding-y) var(--control-padding-x);
+    margin: calc(var(--control-padding-y) * -1) calc(var(--control-padding-x) * -1);
+    margin-inline-end: var(--control-padding-x);
     color: $form-file-button-color;
-    @include gradient-bg($form-file-button-bg);
+    @include gradient-bg(var(--control-action-bg));
     pointer-events: none;
     border-color: inherit;
     border-style: solid;
     border-width: 0;
-    border-inline-end-width: $input-border-width;
+    border-inline-end-width: var(--control-border-width);
     border-radius: 0; // stylelint-disable-line property-disallowed-list
     @include transition($btn-transition);
   }
 
   &:hover:not(:disabled):not([readonly])::file-selector-button {
-    background-color: $form-file-button-hover-bg;
+    background-color: var(--control-action-hover-bg);
   }
 }
 
@@ -121,13 +153,13 @@
 .form-control-plaintext {
   display: block;
   width: 100%;
-  padding: $input-padding-y 0;
+  padding: var(--control-padding-y) 0;
   margin-bottom: 0; // match inputs if this class comes on inputs with default margins
-  line-height: $input-line-height;
-  color: $input-plaintext-color;
+  line-height: var(--control-line-height);
+  color: #{var-if-default($input-plaintext-color, $input-color, '--control-fg')};
   background-color: transparent;
   border: solid transparent;
-  border-width: $input-border-width 0;
+  border-width: var(--control-border-width) 0;
 
   &:focus {
     outline: 0;
@@ -143,36 +175,29 @@
 // Form control sizing
 //
 // Build on `.form-control` with modifier classes to decrease or increase the
-// height and font-size of form controls.
+// height and font-size of form controls. A size only moves the tokens; the
+// height, the file button and the color swatch follow.
 //
 // Repeated in `_input_group.scss` to avoid Sass extend issues.
 
 .form-control-sm {
-  line-height: $input-line-height-sm;
-  min-height: $input-height-sm;
-  padding: $input-padding-y-sm $input-padding-x-sm;
-  @include font-size($input-font-size-sm);
-  @include border-radius($input-border-radius-sm);
-
-  &::file-selector-button {
-    padding: $input-padding-y-sm $input-padding-x-sm;
-    margin: (-$input-padding-y-sm) (-$input-padding-x-sm);
-    margin-inline-end: $input-padding-x-sm;
-  }
+  min-height: var(--control-min-height);
+  @include font-size(var(--control-font-size));
+  --control-padding-y: #{var-if-default($input-padding-y-sm, $input-btn-padding-y-sm, '--btn-input-sm-padding-y')};
+  --control-padding-x: #{var-if-default($input-padding-x-sm, $input-btn-padding-x-sm, '--btn-input-sm-padding-x')};
+  @include rfs(var-if-default($input-font-size-sm, $input-btn-font-size-sm, '--btn-input-sm-font-size'), --control-font-size);
+  --control-line-height: #{var-if-default($input-line-height-sm, $input-btn-line-height-sm, '--btn-input-sm-line-height')};
+  --control-border-radius: #{var-if-default($input-border-radius-sm, var(--border-radius-sm), '--btn-input-sm-border-radius')};
 }
 
 .form-control-lg {
-  line-height: $input-line-height-lg;
-  min-height: $input-height-lg;
-  padding: $input-padding-y-lg $input-padding-x-lg;
-  @include font-size($input-font-size-lg);
-  @include border-radius($input-border-radius-lg);
-
-  &::file-selector-button {
-    padding: $input-padding-y-lg $input-padding-x-lg;
-    margin: (-$input-padding-y-lg) (-$input-padding-x-lg);
-    margin-inline-end: $input-padding-x-lg;
-  }
+  min-height: var(--control-min-height);
+  @include font-size(var(--control-font-size));
+  --control-padding-y: #{var-if-default($input-padding-y-lg, $input-btn-padding-y-lg, '--btn-input-lg-padding-y')};
+  --control-padding-x: #{var-if-default($input-padding-x-lg, $input-btn-padding-x-lg, '--btn-input-lg-padding-x')};
+  @include rfs(var-if-default($input-font-size-lg, $input-btn-font-size-lg, '--btn-input-lg-font-size'), --control-font-size);
+  --control-line-height: #{var-if-default($input-line-height-lg, $input-btn-line-height-lg, '--btn-input-lg-line-height')};
+  --control-border-radius: #{var-if-default($input-border-radius-lg, var(--border-radius-lg), '--btn-input-lg-border-radius')};
 }
 
 // Make sure textareas don't shrink too much when resized
@@ -180,15 +205,7 @@
 // stylelint-disable selector-no-qualifying-type
 textarea {
   &.form-control {
-    min-height: $input-height;
-  }
-
-  &.form-control-sm {
-    min-height: $input-height-sm;
-  }
-
-  &.form-control-lg {
-    min-height: $input-height-lg;
+    min-height: var(--control-min-height);
   }
 }
 
@@ -196,8 +213,8 @@ textarea {
 
 .form-control-color {
   width: $form-color-width;
-  height: $input-height;
-  padding: $input-padding-y;
+  height: var(--control-min-height);
+  padding: var(--control-padding-y);
 
   &:not(:disabled):not([readonly]) {
     cursor: pointer;
@@ -205,19 +222,11 @@ textarea {
 
   &::-moz-color-swatch {
     border: 0 !important; // stylelint-disable-line declaration-no-important
-    @include border-radius($input-border-radius);
+    @include border-radius(var(--control-border-radius));
   }
 
   &::-webkit-color-swatch {
     border: 0 !important; // stylelint-disable-line declaration-no-important
-    @include border-radius($input-border-radius);
-  }
-
-  &.form-control-sm {
-    height: $input-height-sm;
-  }
-
-  &.form-control-lg {
-    height: $input-height-lg;
+    @include border-radius(var(--control-border-radius));
   }
 }

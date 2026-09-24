@@ -5,75 +5,109 @@
 
 @use '../../config' as *;
 
+// The `--control-*` tokens come from the shared block in `_form-control.scss`.
+// A `$form-select-*` variable defaults to its `$input-*` twin; only a value a
+// project changed on its own has to be written again here.
+@mixin -select-token($token, $value, $default) {
+  @if $value != $default {
+    #{$token}: #{$value};
+  }
+}
+
 .form-select {
-  --form-select-bg-img: #{escape-svg($form-select-indicator)};
+  // scss-docs-start form-select-css-vars
+  --control-select-bg: #{escape-svg($form-select-indicator)};
+  --control-select-bg-dark: #{escape-svg($form-select-indicator-dark)};
+  --control-select-bg-position: #{$form-select-bg-position};
+  --control-select-bg-size: #{$form-select-bg-size};
+  // Room for the arrow. Reads the root scale, not `--control-padding-x`, so the
+  // size modifiers keep the same 3rem they always had.
+  --control-select-indicator-padding: #{if(sass($form-select-indicator-padding == $form-select-padding-x * 3 and $form-select-padding-x == $input-btn-padding-x): calc(var(--btn-input-padding-x) * 3); else: $form-select-indicator-padding)};
+  // scss-docs-end form-select-css-vars
+  @include -select-token(--control-padding-y, $form-select-padding-y, $input-padding-y);
+  @include -select-token(--control-padding-x, $form-select-padding-x, $input-padding-x);
+  @include -select-token(--control-font-size, $form-select-font-size, $input-font-size);
+  @include -select-token(--control-line-height, $form-select-line-height, $input-line-height);
+  @include -select-token(--control-fg, $form-select-color, $input-color);
+  @include -select-token(--control-bg, $form-select-bg, $input-bg);
+  @include -select-token(--control-border-width, $form-select-border-width, $input-border-width);
+  @include -select-token(--control-border-color, $form-select-border-color, $input-border-color);
+  @include -select-token(--control-border-radius, $form-select-border-radius, $input-border-radius);
+  @include -select-token(--control-box-shadow, $form-select-box-shadow, $input-box-shadow);
+  @include -select-token(--control-focus-border-color, $form-select-focus-border-color, $input-focus-border-color);
+  @include -select-token(--control-disabled-color, $form-select-disabled-color, $input-disabled-color);
+  @include -select-token(--control-disabled-bg, $form-select-disabled-bg, $input-disabled-bg);
+  @include -select-token(--control-disabled-border-color, $form-select-disabled-border-color, $input-disabled-border-color);
+  @include -select-token(--control-transition, $form-select-transition, $input-transition);
 
   display: block;
   width: 100%;
-  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
+  padding: var(--control-padding-y) var(--control-padding-x);
+  padding-inline-end: var(--control-select-indicator-padding);
   font-family: $form-select-font-family;
-  @include font-size($form-select-font-size);
+  @include font-size(var(--control-font-size));
   font-weight: $form-select-font-weight;
-  line-height: $form-select-line-height;
-  color: $form-select-color;
+  line-height: var(--control-line-height);
+  color: var(--control-fg);
   appearance: none;
-  background-color: $form-select-bg;
-  background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
+  background-color: var(--control-bg);
+  // deprecated(2.0): `--form-select-bg-img` is the old name of `--control-select-bg`
+  background-image: var(--form-select-bg-img, var(--control-select-bg)), var(--form-select-bg-icon, none);
   background-repeat: no-repeat;
-  background-position: $form-select-bg-position;
-  background-size: $form-select-bg-size;
-  border: $form-select-border-width solid $form-select-border-color;
-  @include border-radius($form-select-border-radius, 0);
-  @include box-shadow($form-select-box-shadow);
-  @include transition($form-select-transition);
+  background-position: var(--control-select-bg-position);
+  background-size: var(--control-select-bg-size);
+  border: var(--control-border-width) solid var(--control-border-color);
+  @include border-radius(var(--control-border-radius), 0);
+  @include box-shadow(var(--control-box-shadow));
+  @include transition(var(--control-transition));
   // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
   &:focus {
-    border-color: $form-select-focus-border-color;
+    border-color: var(--control-focus-border-color);
     --focus-ring-offset: -1px;
     @include focus-ring(true);
   }
 
   &[multiple],
   &[size]:not([size='1']) {
-    padding-inline-end: $form-select-padding-x;
+    padding-inline-end: var(--control-padding-x);
     background-image: none;
   }
 
   &:disabled {
-    color: $form-select-disabled-color;
-    background-color: $form-select-disabled-bg;
-    border-color: $form-select-disabled-border-color;
+    color: var(--control-disabled-color);
+    background-color: var(--control-disabled-bg);
+    border-color: var(--control-disabled-border-color);
   }
 
   // Remove outline from select box in FF
   &:-moz-focusring {
     color: transparent;
-    text-shadow: 0 0 0 $form-select-color;
+    text-shadow: 0 0 0 var(--control-fg);
   }
 }
 
+// A size moves padding, font size and radius only: the line height stays, as
+// it always did for `.form-select`.
 .form-select-sm {
-  padding-top: $form-select-padding-y-sm;
-  padding-bottom: $form-select-padding-y-sm;
-  padding-inline-start: $form-select-padding-x-sm;
-  @include font-size($form-select-font-size-sm);
-  @include border-radius($form-select-border-radius-sm);
+  --control-padding-y: #{var-if-default($form-select-padding-y-sm, $input-btn-padding-y-sm, '--btn-input-sm-padding-y')};
+  --control-padding-x: #{var-if-default($form-select-padding-x-sm, $input-btn-padding-x-sm, '--btn-input-sm-padding-x')};
+  @include rfs(var-if-default($form-select-font-size-sm, $input-btn-font-size-sm, '--btn-input-sm-font-size'), --control-font-size);
+  --control-border-radius: #{var-if-default($form-select-border-radius-sm, var(--border-radius-sm), '--btn-input-sm-border-radius')};
 }
 
 .form-select-lg {
-  padding-top: $form-select-padding-y-lg;
-  padding-bottom: $form-select-padding-y-lg;
-  padding-inline-start: $form-select-padding-x-lg;
-  @include font-size($form-select-font-size-lg);
-  @include border-radius($form-select-border-radius-lg);
+  --control-padding-y: #{var-if-default($form-select-padding-y-lg, $input-btn-padding-y-lg, '--btn-input-lg-padding-y')};
+  --control-padding-x: #{var-if-default($form-select-padding-x-lg, $input-btn-padding-x-lg, '--btn-input-lg-padding-x')};
+  @include rfs(var-if-default($form-select-font-size-lg, $input-btn-font-size-lg, '--btn-input-lg-font-size'), --control-font-size);
+  --control-border-radius: #{var-if-default($form-select-border-radius-lg, var(--border-radius-lg), '--btn-input-lg-border-radius')};
 }
 
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .form-select {
-      --form-select-bg-img: #{escape-svg($form-select-indicator-dark)};
+      --control-select-bg: var(--control-select-bg-dark);
     }
   }
 }

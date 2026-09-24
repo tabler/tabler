@@ -13,6 +13,10 @@
     @include assert-equal(var-if-default(1rem, 0.5625rem, --btn-input-padding-y), 1rem);
   }
 
+  @include it('takes the token name as a string too') {
+    @include assert-equal(meta.inspect(var-if-default(1rem, 1rem, '--btn-input-padding-x')), 'var(--btn-input-padding-x)');
+  }
+
   @include it('compares var() defaults by value') {
     @include assert-equal(meta.inspect(var-if-default(var(--border-radius), var(--border-radius), --btn-input-border-radius)), 'var(--btn-input-border-radius)');
     @include assert-equal(meta.inspect(var-if-default(0, var(--border-radius), --btn-input-border-radius)), '0');
