@@ -33,6 +33,10 @@ export type Breakpoint = (typeof breakpoints)[number]
 export const breadcrumbVariants = ['dots', 'arrows', 'bullets'] as const
 export type BreadcrumbVariant = (typeof breadcrumbVariants)[number]
 
+/** Keys of `$gradients` (core/scss/_variables.scss). */
+export const gradients = ['rainbow', 'sun', 'snow', 'ocean', 'mellow', 'disco', 'psychedelic', 'love', 'gold'] as const
+export type Gradient = (typeof gradients)[number]
+
 /** Keys of `$form-validation-states` (core/scss/_variables.scss). */
 export const formValidationStates = ['valid', 'invalid'] as const
 export type FormValidationState = (typeof formValidationStates)[number]

@@ -30,6 +30,7 @@ const TOKENS = [
   { name: 'aspectRatios', type: 'AspectRatio', module: 'v', variable: '$aspect-ratios', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'breakpoints', type: 'Breakpoint', module: 's', variable: '$grid-breakpoints', kind: 'map', source: 'core/scss/_settings.scss' },
   { name: 'breadcrumbVariants', type: 'BreadcrumbVariant', module: 'v', variable: '$breadcrumb-variants', kind: 'map', source: 'core/scss/_variables.scss' },
+  { name: 'gradients', type: 'Gradient', module: 'v', variable: '$gradients', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'formValidationStates', type: 'FormValidationState', module: 'v', variable: '$form-validation-states', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'paymentProviders', type: 'PaymentProvider', module: 'v', variable: '$payment-providers', kind: 'list', source: 'core/scss/_variables.scss' },
   { name: 'flagCountries', type: 'FlagCountry', module: 'v', variable: '$flag-countries', kind: 'list', source: 'core/scss/_variables.scss' },
