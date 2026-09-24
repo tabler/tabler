@@ -10,8 +10,9 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import { execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
+import { defineJQueryPlugin, execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
 import type { DelegatedEvent } from './dom/event-handler'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 type PopperOffsetData = { placement: Popper.Placement; reference: Popper.Rect; popper: Popper.Rect }
 type PopperOffsetFunction = (popperData: PopperOffsetData) => number[]
@@ -395,6 +396,22 @@ class Dropdown extends BaseComponent {
       getToggleButton!.focus()
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Dropdown.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_KEYDOWN_DATA_API, SELECTOR_DATA_TOGGLE, Dropdown.dataApiKeydownHandler)
@@ -405,5 +422,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   event.preventDefault()
   ;(Dropdown.getOrCreateInstance(this) as Dropdown).toggle()
 })
+
+defineJQueryPlugin(Dropdown)
 
 export default Dropdown

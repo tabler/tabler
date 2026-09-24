@@ -8,7 +8,8 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, isDisabled, isVisible, parseSelector } from './util/index'
+import { defineJQueryPlugin, getElement, isDisabled, isVisible, parseSelector } from './util/index'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 type ComponentConfig = {
   offset: number | null
@@ -253,6 +254,22 @@ class ScrollSpy extends BaseComponent {
       node.classList.remove(CLASS_NAME_ACTIVE)
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = ScrollSpy.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
@@ -260,5 +277,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
     ScrollSpy.getOrCreateInstance(spy)
   }
 })
+
+defineJQueryPlugin(ScrollSpy)
 
 export default ScrollSpy

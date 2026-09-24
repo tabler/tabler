@@ -7,6 +7,8 @@
 
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
+import { defineJQueryPlugin } from './util/index.js'
+import type { JQueryCollectionLike } from './types'
 
 const NAME = 'button'
 const DATA_KEY = 'bs.button'
@@ -27,6 +29,16 @@ class Button extends BaseComponent {
   toggle(): void {
     this._element.setAttribute('aria-pressed', String(this._element.classList.toggle(CLASS_NAME_ACTIVE)))
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Button.getOrCreateInstance(this) as Button
+
+      if (config === 'toggle') {
+        data.toggle()
+      }
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, (event: Event) => {
@@ -40,5 +52,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, (event: Ev
   const data = Button.getOrCreateInstance(target) as Button
   data.toggle()
 })
+
+defineJQueryPlugin(Button)
 
 export default Button

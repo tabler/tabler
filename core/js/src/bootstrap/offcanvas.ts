@@ -11,8 +11,9 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { isDisabled, isVisible } from './util/index'
+import { defineJQueryPlugin, isDisabled, isVisible } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
  * Constants
@@ -212,6 +213,22 @@ class Offcanvas extends BaseComponent {
       EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED)
     })
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Offcanvas.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config](this)
+    })
+  }
 }
 
 /**
@@ -263,5 +280,7 @@ EventHandler.on(window, EVENT_RESIZE, () => {
 })
 
 enableDismissTrigger(Offcanvas)
+
+defineJQueryPlugin(Offcanvas)
 
 export default Offcanvas
