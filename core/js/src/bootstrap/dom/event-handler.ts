@@ -5,6 +5,9 @@
  * --------------------------------------------------------------------------
  */
 
+import { getjQuery } from '../util/index.js'
+import type { JQueryEventLike } from '../types'
+
 // `this` is the element the handler was bound to, or the delegate target
 export type EventCallback<E extends Event = Event> = (this: HTMLElement, event: E) => void
 
@@ -263,9 +266,37 @@ const EventHandler = {
       return null
     }
 
-    const evt = hydrateObj(new Event(event, { bubbles: true, cancelable: true }), args)
+    const $ = getjQuery()
+    const typeEvent = getTypeEvent(event)
+    const inNamespace = event !== typeEvent
 
-    element.dispatchEvent(evt)
+    let jQueryEvent: JQueryEventLike | null = null
+    let bubbles = true
+    let nativeDispatch = true
+    let defaultPrevented = false
+
+    if (inNamespace && $) {
+      jQueryEvent = $.Event(event, args)
+
+      $(element).trigger(jQueryEvent)
+      bubbles = !jQueryEvent.isPropagationStopped()
+      nativeDispatch = !jQueryEvent.isImmediatePropagationStopped()
+      defaultPrevented = jQueryEvent.isDefaultPrevented()
+    }
+
+    const evt = hydrateObj(new Event(event, { bubbles, cancelable: true }), args)
+
+    if (defaultPrevented) {
+      evt.preventDefault()
+    }
+
+    if (nativeDispatch) {
+      element.dispatchEvent(evt)
+    }
+
+    if (evt.defaultPrevented && jQueryEvent) {
+      jQueryEvent.preventDefault()
+    }
 
     return evt
   },

@@ -32,6 +32,8 @@ Call `tabler.tabler.getColor()` or `tabler.tabler.hexToRgba()`|Read the variable
 Override `$form-switch-bg-image` or the toggler icon variables|See [Masked icons](#masked-icons)
 Override `$input-btn-focus-*`, a `$*-focus-box-shadow` variable or `--tblr-btn-focus-box-shadow`|Use the focus ring tokens, see [The focus ring is an outline](#the-focus-ring-is-an-outline)
 Use `theme-color-lighter()` or another function from the [list below](#deprecated-functions)|Switch to the replacement
+Call `darken()`, `rgba()` or another Sass color function on `$primary-bg-subtle` or another derived color|Build from the base color instead, see [Variables that turned into color-mix()](#variables-that-turned-into-color-mix)
+Create components from TypeScript with a hand-written options object|Check the value types, see [Stricter TypeScript types](#stricter-typescript-types)
 Ship your own build and want the smallest CSS|Set `$enable-deprecated: false`, see [Dropping the deprecated layer](#dropping-the-deprecated-layer)
 
 ## Update the package
@@ -323,6 +325,28 @@ If you write your own components, the `focus-ring()` mixin gives them the same r
 
 The `.focus-ring` helper is fixed along the way. It now shows on `:focus-visible` instead of `:focus`, so a mouse click no longer draws it.
 
+## Stricter TypeScript types
+
+The Bootstrap component port is compiled with strict TypeScript, and every component's options are a typed `ComponentConfig` instead of a bag of `unknown`. The constructor takes `Partial<ComponentConfig>`, so you can still pass a subset of the options, and unknown keys are still accepted. What the compiler rejects now is a wrong value type:
+
+```ts
+import { Modal } from '@tabler/core';
+
+// 1.5: compiles. 1.6: `backdrop` is `boolean | 'static'`.
+new Modal(element, { backdrop: 'yes' });
+
+// 1.6
+new Modal(element, { backdrop: 'static' });
+```
+
+`Modal.Default` and `Modal.DefaultType` are typed the same way, and `getInstance()` returns `null` when there is no instance yet, so narrow it before calling a method:
+
+```ts
+Modal.getInstance(element)?.hide();
+```
+
+Nothing changes at runtime. JavaScript projects and projects that use the data attributes are not affected.
+
 ## Sass changes
 
 Only relevant if you compile `scss/tabler.scss` yourself.
@@ -338,6 +362,7 @@ Variable|What to use instead
 `$form-switch-bg-image`, `$form-switch-bg-image-dark`, `$form-switch-checked-bg-image`, `$form-switch-checked-bg-position`, `$form-switch-focus-bg-image`, `$form-switch-color-dark`|See [Masked icons](#masked-icons). No effect any more.
 `$form-check-input-checked-bg-image-dark`|See [Masked icons](#masked-icons). No effect any more.
 `$navbar-light-toggler-icon-bg`, `$navbar-dark-toggler-icon-bg`|`$navbar-toggler-icon-bg`. No effect any more.
+`$lighten-dark`|`$active-bg`, which is a `light-dark()` value and carries its own dark color, so `--tblr-active-bg` no longer reads it. Hover backgrounds use the new `$hover-bg` and `--tblr-hover-bg`. No effect any more.
 `$input-btn-focus-width`|`$focus-ring-width`. A changed value still sets the ring width.
 `$input-btn-focus-color`|`$focus-ring-color`. A changed value still sets the ring color.
 `$btn-focus-box-shadow`, `$btn-close-focus-shadow`, `$pagination-focus-box-shadow`, `$accordion-btn-focus-box-shadow`|The ring variables. A changed value is still drawn as a shadow, next to the outline.
@@ -440,6 +465,6 @@ Besides the changes above, 1.6 adds:
 - `tabler.js` no longer stops on page load when one element has an invalid `data-*` config. The error is logged and every other component is still created, so a workaround that initialized components by hand can go.
 - Drag styles for [Sortable](/ui/plugins/sortable): `.sortable-ghost`, `.sortable-chosen`, and `.sortable-drag` for lists that turn on `forceFallback`.
 - A billing page in the preview, with plan usage, payment method and invoices.
-- The Bootstrap component port is compiled with strict TypeScript, so the type declarations in the package are tighter. Configs are typed per component.
+- The Bootstrap component port is compiled with strict TypeScript, so the type declarations in the package are tighter. Configs are typed per component, see [Stricter TypeScript types](#stricter-typescript-types).
 
 The full list is in the [changelog](https://github.com/tabler/tabler/blob/dev/core/CHANGELOG.md).

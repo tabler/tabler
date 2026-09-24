@@ -468,6 +468,7 @@ export const flagCountries = [
   'wf',
   'ws',
   'ye',
+  'yt',
   'za',
   'zm',
   'zw',

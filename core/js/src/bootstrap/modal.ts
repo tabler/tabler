@@ -9,7 +9,8 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
 import { enableDismissTrigger } from './util/component-functions'
-import { isVisible } from './util/index'
+import { defineJQueryPlugin, isVisible } from './util/index'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
  * Constants
@@ -253,6 +254,22 @@ class Modal extends BaseComponent {
       this._element.classList.remove(CLASS_NAME_STATIC)
     }, this._element)
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown, relatedTarget?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Modal.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config](relatedTarget)
+    })
+  }
 }
 
 /**
@@ -293,5 +310,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 })
 
 enableDismissTrigger(Modal)
+
+defineJQueryPlugin(Modal)
 
 export default Modal

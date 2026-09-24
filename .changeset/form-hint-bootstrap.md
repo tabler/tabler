@@ -4,4 +4,4 @@
 "@tabler/docs": patch
 ---
 
-Renamed `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+Updated `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.

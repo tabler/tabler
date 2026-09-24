@@ -186,7 +186,7 @@ $card-tokens: defaults(
 
     &:hover {
       text-decoration: none;
-      background: $hover-bg;
+      background: var(--hover-bg);
     }
 
     & + & {
@@ -336,16 +336,23 @@ Stacked card
   }
 
   // Card progress
-  .card-progress {
+  // `.card >` outranks ui/_progress.scss's later `.progress { position: relative; }`.
+  .card > .card-progress {
     --card-progress-height: #{$card-progress-height};
-    height: var(--card-progress-height);
+    --card-progress-offset: calc(-1 * var(--card-border-width));
+    position: absolute;
+    inset: var(--card-progress-offset);
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    @include border-radius(var(--card-border-radius));
 
     &:last-child {
-      @include border-radius(0 0 var(--border-radius-xs) var(--border-radius-xs));
+      mask-image: linear-gradient(to top, #000 var(--card-progress-height), transparent var(--card-progress-height));
     }
 
     &:first-child {
-      @include border-radius(var(--border-radius-xs) var(--border-radius-xs) 0 0);
+      mask-image: linear-gradient(to bottom, #000 var(--card-progress-height), transparent var(--card-progress-height));
     }
   }
 

@@ -43,6 +43,10 @@ jobs:
           publish-script: pnpm run publish
           commit-message: "chore: update versions"
           pr-title: "chore: update versions"
+          # Push through git instead of the GitHub API: the API mode force-updates
+          # changeset-release/dev via a short-lived changesets-ghcommit-temp/* branch,
+          # and every one of those branches triggered a Vercel build.
+          push-with-git-cli: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

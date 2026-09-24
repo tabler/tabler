@@ -82,12 +82,16 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
         --tblr-font-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       }
 
-      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret. */
-      *,
-      *::before,
-      *::after {
+      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret.
+         A recording (?motion, see .build/record.ts) keeps the motion and only hides the caret. */
+      html:not([data-motion]) *,
+      html:not([data-motion]) *::before,
+      html:not([data-motion]) *::after {
         transition: none !important;
         animation: none !important;
+      }
+
+      * {
         caret-color: transparent !important;
       }
 
@@ -133,6 +137,10 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
 
     <!-- loaded early, before paint, so ?theme=dark applies before first render -->
     <script is:inline src={`/dist/js/tabler-theme${min}.js`}></script>
+    <!-- ?motion keeps transitions and animations, for the video recorder -->
+    <script is:inline>
+      if (new URLSearchParams(location.search).has('motion')) document.documentElement.dataset.motion = 'true'
+    </script>
   </head>
   <body>
     <div class="page page-center align-items-center">
@@ -151,7 +159,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       </div>
 
       <!-- outside .screenshot on purpose: a screenshot tool crops to [data-screenshot-target], so this toggle never ends up in the capture -->
-      <nav class="nav-segmented mt-4">
+      <nav class="nav-segmented mt-4" data-screenshot-chrome>
         <a href="?theme=light" class="nav-link hide-theme-light">Light</a>
         <a href="?theme=light" class="nav-link active hide-theme-dark">Light</a>
         <a href="?theme=dark" class="nav-link hide-theme-dark">Dark</a>

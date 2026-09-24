@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Imports payment provider assets from the tabler/tabler-payments repo: the light
-// and dark SVGs, the $payment-providers list and the demo data.
+// and dark SVGs (minified with svgo), the $payment-providers list and the demo data.
 //
 // Run: pnpm run import:payments
 // Then: pnpm run generate:tokens — refreshes PaymentProvider in shared/lib/tokens.ts
@@ -9,6 +9,7 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFile
 import { tmpdir } from 'node:os'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { optimizeSvgDir } from './optimize-svg.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
@@ -62,6 +63,7 @@ try {
     copyFileSync(join(lightDir, `${name}.svg`), join(imgDir, `${name}.svg`))
     copyFileSync(join(darkDir, `${name}.svg`), join(imgDir, `${name}-dark.svg`))
   }
+  optimizeSvgDir(imgDir)
 
   const scss = readFileSync(scssFile, 'utf8')
   const listPattern = /(\$payment-providers: \(\n)[\s\S]*?(\n\);)/

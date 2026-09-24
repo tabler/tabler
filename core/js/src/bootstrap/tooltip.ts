@@ -10,10 +10,10 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import FloatingUi, { type FloatingConfig } from './util/floating-ui'
-import { execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
+import { defineJQueryPlugin, execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
 import { DefaultAllowlist } from './util/sanitizer'
 import TemplateFactory from './util/template-factory'
-import type { AllowList, SanitizeFn } from './types'
+import type { AllowList, ComponentConfig as BaseComponentConfig, JQueryCollectionLike, SanitizeFn } from './types'
 
 /**
  * Constants
@@ -602,6 +602,24 @@ class Tooltip extends BaseComponent {
       this.tip = null
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Tooltip.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
+
+defineJQueryPlugin(Tooltip)
 
 export default Tooltip

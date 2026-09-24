@@ -3,4 +3,4 @@
 "@tabler/preview": patch
 ---
 
-Fixed docs breadcrumbs showing "Introduction", unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.
+Fixed docs breadcrumbs, unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.

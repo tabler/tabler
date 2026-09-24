@@ -8,9 +8,9 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, reflow } from './util/index'
+import { defineJQueryPlugin, getElement, reflow } from './util/index'
 import type { DelegatedEvent } from './dom/event-handler'
-import type { ElementSelector } from './types'
+import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
 type ComponentConfig = {
   parent: HTMLElement | null
@@ -247,6 +247,25 @@ class Collapse extends BaseComponent {
       element.setAttribute('aria-expanded', String(isOpen))
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    const _config: BaseComponentConfig = {}
+    if (typeof config === 'string' && /show|hide/.test(config)) {
+      _config.toggle = false
+    }
+
+    return this.each(function (this: HTMLElement) {
+      const data = Collapse.getOrCreateInstance(this, _config) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config === 'string') {
+        if (typeof data[config] === 'undefined') {
+          throw new TypeError(`No method named "${config}"`)
+        }
+
+        data[config]()
+      }
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
@@ -259,5 +278,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     ;(Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
   }
 })
+
+defineJQueryPlugin(Collapse)
 
 export default Collapse
