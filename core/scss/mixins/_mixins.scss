@@ -117,3 +117,20 @@
     @content;
   }
 }
+
+// `$input-height` and its sizes as a token: the `:root` scale's min height
+// (`--btn-input-min-height`) while the input metrics keep their defaults, the
+// configured Sass value otherwise. Elements that sit next to a control (an icon
+// addon, a select-group tile, an otp slot) match its height through it.
+@function input-height-token($size: null) {
+  @if $size == 'sm' {
+    $default: add($input-btn-line-height-sm, add(calc($input-btn-padding-y-sm * 2), calc(#{$input-btn-border-width} * 2), false));
+    @return if(sass($input-height-sm == $default): var(--btn-input-sm-min-height); else: $input-height-sm);
+  }
+  @if $size == 'lg' {
+    $default: add($input-btn-line-height-lg, add(calc($input-btn-padding-y-lg * 2), calc(#{$input-btn-border-width} * 2), false));
+    @return if(sass($input-height-lg == $default): var(--btn-input-lg-min-height); else: $input-height-lg);
+  }
+  $default: add($input-btn-line-height, add(calc($input-btn-padding-y * 2), calc(#{$input-btn-border-width} * 2), false));
+  @return if(sass($input-height == $default): var(--btn-input-min-height); else: $input-height);
+}
