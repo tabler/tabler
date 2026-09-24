@@ -342,3 +342,15 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   }
   @return $result;
 }
+
+// Seeds a component token from a Sass variable that has a `:root` scale
+// counterpart. While the variable still holds `$default`, the token reads the
+// scale (`var(--btn-input-padding-y)`) and follows it at runtime; once a
+// project configured the variable from Sass, that value wins, as it did before
+// the scale existed. `$token` is the bare name of the root custom property.
+@function var-if-default($value, $default, $token) {
+  @if $value == $default {
+    @return var(#{$token});
+  }
+  @return $value;
+}

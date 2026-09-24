@@ -1,0 +1,20 @@
+// Tests for `var-if-default()` in scss/mixins/_functions.scss: a component
+// token follows the `:root` scale until the Sass variable is configured.
+
+@use 'sass:meta';
+@use '../mixins/functions' as *;
+
+@include describe('var-if-default') {
+  @include it('reads the root token while the variable keeps its default') {
+    @include assert-equal(meta.inspect(var-if-default(0.5625rem, 0.5625rem, --btn-input-padding-y)), 'var(--btn-input-padding-y)');
+  }
+
+  @include it('keeps a configured value') {
+    @include assert-equal(var-if-default(1rem, 0.5625rem, --btn-input-padding-y), 1rem);
+  }
+
+  @include it('compares var() defaults by value') {
+    @include assert-equal(meta.inspect(var-if-default(var(--border-radius), var(--border-radius), --btn-input-border-radius)), 'var(--btn-input-border-radius)');
+    @include assert-equal(meta.inspect(var-if-default(0, var(--border-radius), --btn-input-border-radius)), '0');
+  }
+}
