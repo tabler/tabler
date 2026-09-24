@@ -7,7 +7,21 @@
 
 @use '../../config' as *;
 
+// Addon tokens, in the names Bootstrap 6 uses. The addon sits next to the
+// control, not inside it, so it reads the `:root` scale rather than the
+// control's own `--control-*` tokens.
 .input-group {
+  // scss-docs-start input-group-css-vars
+  --input-group-addon-padding-y: #{var-if-default($input-group-addon-padding-y, $input-btn-padding-y, '--btn-input-padding-y')};
+  --input-group-addon-padding-x: #{var-if-default($input-group-addon-padding-x, $input-btn-padding-x, '--btn-input-padding-x')};
+  @include rfs(var-if-default($input-font-size, $input-btn-font-size, '--btn-input-font-size'), --input-group-addon-font-size);
+  --input-group-addon-line-height: #{var-if-default($input-line-height, $input-btn-line-height, '--btn-input-line-height')};
+  --input-group-addon-color: #{$input-group-addon-color};
+  --input-group-addon-bg: #{$input-group-addon-bg};
+  --input-group-addon-border-color: #{$input-group-addon-border-color};
+  --input-group-addon-border-radius: #{var-if-default($input-border-radius, var(--border-radius), '--btn-input-border-radius')};
+  // scss-docs-end input-group-css-vars
+
   position: relative;
   display: flex;
   flex-wrap: wrap; // For form validation feedback
@@ -51,48 +65,88 @@
 .input-group-text {
   display: flex;
   align-items: center;
-  padding: $input-group-addon-padding-y $input-group-addon-padding-x;
-  @include font-size($input-font-size); // Match inputs
+  padding: var(--input-group-addon-padding-y) var(--input-group-addon-padding-x);
+  @include font-size(var(--input-group-addon-font-size)); // Match inputs
   font-weight: $input-group-addon-font-weight;
-  line-height: $input-line-height;
-  color: $input-group-addon-color;
+  line-height: var(--input-group-addon-line-height);
+  color: var(--input-group-addon-color);
   text-align: center;
   white-space: nowrap;
-  background-color: $input-group-addon-bg;
-  border: $input-border-width solid $input-group-addon-border-color;
-  @include border-radius($input-border-radius);
+  background-color: var(--input-group-addon-bg);
+  border: $input-border-width solid var(--input-group-addon-border-color);
+  @include border-radius(var(--input-group-addon-border-radius));
 }
 
 // Sizing
 //
-// Remix the default form control sizing classes into new ones for easier
-// manipulation.
+// A size moves the addon and control tokens; the button keeps its own rules
+// until `.btn` reads the scale too.
 
-.input-group-lg > .form-control,
-.input-group-lg > .form-select,
-.input-group-lg > .input-group-text,
-.input-group-lg > .btn {
-  line-height: $input-line-height-lg;
-  min-height: $input-height-lg;
-  padding: $input-padding-y-lg $input-padding-x-lg;
-  @include font-size($input-font-size-lg);
-  @include border-radius($input-border-radius-lg);
+@mixin -input-group-size($size) {
+  --input-group-addon-padding-y: #{var-if-default(map.get($-input-group-sizes, $size, 'padding-y'), map.get($-input-group-sizes, $size, 'scale-padding-y'), '--btn-input-#{$size}-padding-y')};
+  --input-group-addon-padding-x: #{var-if-default(map.get($-input-group-sizes, $size, 'padding-x'), map.get($-input-group-sizes, $size, 'scale-padding-x'), '--btn-input-#{$size}-padding-x')};
+  @include rfs(var-if-default(map.get($-input-group-sizes, $size, 'font-size'), map.get($-input-group-sizes, $size, 'scale-font-size'), '--btn-input-#{$size}-font-size'), --input-group-addon-font-size);
+  --input-group-addon-line-height: #{var-if-default(map.get($-input-group-sizes, $size, 'line-height'), map.get($-input-group-sizes, $size, 'scale-line-height'), '--btn-input-#{$size}-line-height')};
+  --input-group-addon-border-radius: #{var-if-default(map.get($-input-group-sizes, $size, 'border-radius'), map.get($-input-group-sizes, $size, 'scale-border-radius'), '--btn-input-#{$size}-border-radius')};
+
+  > .form-control,
+  > .form-select {
+    --control-padding-y: var(--input-group-addon-padding-y);
+    --control-padding-x: var(--input-group-addon-padding-x);
+    --control-font-size: var(--input-group-addon-font-size);
+    --control-line-height: var(--input-group-addon-line-height);
+    --control-border-radius: var(--input-group-addon-border-radius);
+    min-height: var(--control-min-height);
+  }
+
+  > .form-select {
+    padding-inline-end: calc(#{var-if-default($form-select-padding-x, $input-btn-padding-x, '--btn-input-padding-x')} + var(--control-select-indicator-padding));
+  }
+
+  > .btn {
+    line-height: map.get($-input-group-sizes, $size, 'line-height');
+    min-height: map.get($-input-group-sizes, $size, 'height');
+    padding: map.get($-input-group-sizes, $size, 'padding-y') map.get($-input-group-sizes, $size, 'padding-x');
+    @include font-size(map.get($-input-group-sizes, $size, 'font-size'));
+    @include border-radius(map.get($-input-group-sizes, $size, 'border-radius'));
+  }
 }
 
-.input-group-sm > .form-control,
-.input-group-sm > .form-select,
-.input-group-sm > .input-group-text,
-.input-group-sm > .btn {
-  line-height: $input-line-height-sm;
-  min-height: $input-height-sm;
-  padding: $input-padding-y-sm $input-padding-x-sm;
-  @include font-size($input-font-size-sm);
-  @include border-radius($input-border-radius-sm);
+$-input-group-sizes: (
+  'sm': (
+    'padding-y': $input-padding-y-sm,
+    'padding-x': $input-padding-x-sm,
+    'font-size': $input-font-size-sm,
+    'line-height': $input-line-height-sm,
+    'border-radius': $input-border-radius-sm,
+    'height': $input-height-sm,
+    'scale-padding-y': $input-btn-padding-y-sm,
+    'scale-padding-x': $input-btn-padding-x-sm,
+    'scale-font-size': $input-btn-font-size-sm,
+    'scale-line-height': $input-btn-line-height-sm,
+    'scale-border-radius': var(--border-radius-sm),
+  ),
+  'lg': (
+    'padding-y': $input-padding-y-lg,
+    'padding-x': $input-padding-x-lg,
+    'font-size': $input-font-size-lg,
+    'line-height': $input-line-height-lg,
+    'border-radius': $input-border-radius-lg,
+    'height': $input-height-lg,
+    'scale-padding-y': $input-btn-padding-y-lg,
+    'scale-padding-x': $input-btn-padding-x-lg,
+    'scale-font-size': $input-btn-font-size-lg,
+    'scale-line-height': $input-btn-line-height-lg,
+    'scale-border-radius': var(--border-radius-lg),
+  ),
+);
+
+.input-group-lg {
+  @include -input-group-size('lg');
 }
 
-.input-group-lg > .form-select,
-.input-group-sm > .form-select {
-  padding-inline-end: $form-select-padding-x + $form-select-indicator-padding;
+.input-group-sm {
+  @include -input-group-size('sm');
 }
 
 // Rounded corners
