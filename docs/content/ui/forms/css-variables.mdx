@@ -1,0 +1,259 @@
+---
+title: CSS variables
+seoTitle: Form CSS variables
+order: 11
+summary: Every form control reads its size, colors and states from CSS variables, so you can restyle inputs, selects, checks and switches at runtime without recompiling Sass.
+description: Reference of the CSS variables that size and color Tabler form controls, with examples of runtime overrides.
+related: [/ui/forms/elements, /ui/forms/floating-labels, /ui/getting-started/customize]
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+Form controls are built on three layers of custom properties. Each layer reads the one above it, so you can change a single value or a single control.
+
+1. **The control scale on `:root`.** `--tblr-btn-input-*` holds the padding, font size, line height, radius and minimum height of a control, with a `-sm-*`, `-lg-*` and `-xl-*` set for each size. `--tblr-control-checked-bg` and its siblings hold the state colors that checks, radios and switches share.
+2. **Component tokens on the control.** `.form-control` and `.form-select` carry `--tblr-control-*`, `.input-group` carries `--tblr-input-group-addon-*`, `.form-floating` carries `--tblr-form-floating-*`, and so on. By default each token points at the scale.
+3. **The declarations.** Every `padding`, `color` or `border` in the stylesheet reads a token, never a fixed value.
+
+The names follow Bootstrap 6, so a project that moves to a future major keeps its overrides.
+
+Sass still works. A `$input-*`, `$form-select-*` or `$form-check-*` variable that you set in Sass is compiled into the token as a fixed value. That control then ignores the scale on `:root`, as it did before the tokens existed.
+
+## Usage
+
+### Change every control at once
+
+Override the scale on `:root`. Inputs, selects, add-ons, floating labels, select-group tiles and column labels all follow.
+
+```css
+:root {
+  --tblr-btn-input-padding-y: 0.75rem;
+  --tblr-btn-input-padding-x: 1.25rem;
+  --tblr-btn-input-border-radius: 0;
+}
+```
+
+The scale inherits, so the same variables on a container change only the controls inside it.
+
+<Example column>
+<div style="--tblr-btn-input-padding-y: 0.75rem; --tblr-btn-input-border-radius: 0">
+  <div class="mb-3">
+    <label class="form-label">Taller, square controls</label>
+    <input type="text" class="form-control" placeholder="Input" />
+  </div>
+  <div class="input-group">
+    <span class="input-group-text">@</span>
+    <input type="text" class="form-control" placeholder="Username" />
+  </div>
+</div>
+</Example>
+
+### Change one control
+
+Set a component token on the element. Tokens on the element win over the scale.
+
+<Example column>
+<input type="text" class="form-control mb-3" placeholder="Pill input" style="--tblr-control-border-radius: 2rem; --tblr-control-padding-x: 1.5rem" />
+<select class="form-select" style="--tblr-control-bg: var(--tblr-bg-surface-secondary); --tblr-control-border-color: transparent">
+  <option>Flat select</option>
+</select>
+</Example>
+
+### Make a custom size
+
+The size classes only move the size tokens, so a custom size is a few tokens on a class of your own.
+
+```css
+.form-control-xs {
+  --tblr-control-padding-y: 0.125rem;
+  --tblr-control-padding-x: 0.5rem;
+  --tblr-control-font-size: 0.75rem;
+  --tblr-control-line-height: 1rem;
+}
+```
+
+The minimum height, the file selector button and the color swatch follow the tokens on their own.
+
+### Recolor checks, radios and switches
+
+The checked and disabled colors of every check control come from `:root`.
+
+<Example column>
+<div style="--tblr-control-checked-bg: var(--tblr-green)">
+  <label class="form-check"><input class="form-check-input" type="checkbox" checked /><span class="form-check-label">Checkbox</span></label>
+  <label class="form-check"><input class="form-check-input" type="radio" checked /><span class="form-check-label">Radio</span></label>
+  <label class="form-check form-switch"><input class="form-check-input" type="checkbox" checked /><span class="form-check-label">Switch</span></label>
+</div>
+</Example>
+
+## Reference
+
+### Control scale on `:root`
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-btn-input-fg` | `var(--tblr-body-color)` |
+| `--tblr-btn-input-bg` | `var(--tblr-bg-forms)` |
+| `--tblr-btn-input-padding-y` | `0.5625rem` |
+| `--tblr-btn-input-padding-x` | `1rem` |
+| `--tblr-btn-input-font-size` | `0.875rem` |
+| `--tblr-btn-input-line-height` | `1.25rem` |
+| `--tblr-btn-input-border-radius` | `var(--tblr-border-radius)` |
+| `--tblr-btn-input-min-height` | line height + 2 × padding + 2 × border |
+
+The same set exists per size as `--tblr-btn-input-sm-*`, `--tblr-btn-input-lg-*` and `--tblr-btn-input-xl-*`.
+
+| Size | Padding | Font size | Line height | Radius |
+| --- | --- | --- | --- | --- |
+| `sm` | `0.3125rem 0.5rem` | `0.75rem` | `1rem` | `var(--tblr-border-radius-sm)` |
+| `lg` | `0.6875rem 1.5rem` | `1rem` | `1.5rem` | `var(--tblr-border-radius-lg)` |
+| `xl` | `0.6875rem 1.75rem` | `1.5rem` | `2rem` | `var(--tblr-border-radius)` |
+
+### State colors on `:root`
+
+| Variable | Default | Read by |
+| --- | --- | --- |
+| `--tblr-control-checked-bg` | `var(--tblr-primary)` | checked and indeterminate checks, radios, switches |
+| `--tblr-control-checked-border-color` | `var(--tblr-border-color-translucent)` | checked checks and radios |
+| `--tblr-control-disabled-bg` | `var(--tblr-bg-forms-disabled)` | disabled switches and OTP slots |
+| `--tblr-control-disabled-opacity` | `0.5` | disabled checks, radios, switches |
+
+### Inputs and selects
+
+Set on `.form-control`, `.form-control-plaintext` and `.form-select`. `.form-control-sm/-lg` and `.form-select-sm/-lg` override the first five with the matching size of the scale.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-control-padding-y` | `var(--tblr-btn-input-padding-y)` |
+| `--tblr-control-padding-x` | `var(--tblr-btn-input-padding-x)` |
+| `--tblr-control-font-size` | `var(--tblr-btn-input-font-size)` |
+| `--tblr-control-line-height` | `var(--tblr-btn-input-line-height)` |
+| `--tblr-control-border-radius` | `var(--tblr-btn-input-border-radius)` |
+| `--tblr-control-min-height` | line height + 2 × padding + 2 × border |
+| `--tblr-control-fg` | `var(--tblr-btn-input-fg)` |
+| `--tblr-control-bg` | `var(--tblr-btn-input-bg)` |
+| `--tblr-control-border-width` | `var(--tblr-border-width)` |
+| `--tblr-control-border-color` | `var(--tblr-border-color)` |
+| `--tblr-control-box-shadow` | `var(--tblr-shadow-input)` |
+| `--tblr-control-focus-fg` | `var(--tblr-control-fg)` |
+| `--tblr-control-focus-bg` | `var(--tblr-control-bg)` |
+| `--tblr-control-focus-border-color` | primary mixed with white |
+| `--tblr-control-placeholder-color` | `var(--tblr-tertiary)` |
+| `--tblr-control-disabled-color` | `var(--tblr-secondary)` |
+| `--tblr-control-disabled-bg` | `var(--tblr-bg-forms-disabled)` |
+| `--tblr-control-disabled-border-color` | `var(--tblr-control-border-color)` |
+| `--tblr-control-action-bg` | `var(--tblr-tertiary-bg)` (file selector button) |
+| `--tblr-control-action-hover-bg` | `var(--tblr-secondary-bg)` |
+| `--tblr-control-transition` | border color, outline color and shadow, `0.15s` |
+
+`.form-select` adds the arrow: `--tblr-control-select-bg`, `--tblr-control-select-bg-dark`, `--tblr-control-select-bg-position`, `--tblr-control-select-bg-size` and `--tblr-control-select-indicator-padding` (the room kept for the arrow, `3 ×` the scale's horizontal padding).
+
+Tom Select copies the `.form-control` or `.form-select` class onto its wrapper, so its control reads the same tokens.
+
+### Input groups
+
+Set on `.input-group`. `.input-group-sm/-lg` override the size tokens and pass them to the controls in the group.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-input-group-addon-padding-y` | `var(--tblr-btn-input-padding-y)` |
+| `--tblr-input-group-addon-padding-x` | `var(--tblr-btn-input-padding-x)` |
+| `--tblr-input-group-addon-font-size` | `var(--tblr-btn-input-font-size)` |
+| `--tblr-input-group-addon-line-height` | `var(--tblr-btn-input-line-height)` |
+| `--tblr-input-group-addon-color` | `var(--tblr-gray-500)` |
+| `--tblr-input-group-addon-bg` | `var(--tblr-bg-surface-secondary)` |
+| `--tblr-input-group-addon-border-color` | `var(--tblr-border-color)` |
+| `--tblr-input-group-addon-border-radius` | `var(--tblr-btn-input-border-radius)` |
+
+### Floating labels
+
+Set on `.form-floating`.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-form-floating-height` | `3.5rem` + 2 × border |
+| `--tblr-form-floating-line-height` | `1.25` |
+| `--tblr-form-floating-padding-x` | `var(--tblr-btn-input-padding-x)` |
+| `--tblr-form-floating-padding-y` | `1rem` |
+| `--tblr-form-floating-input-padding-t` | `1.625rem` |
+| `--tblr-form-floating-input-padding-b` | `0.625rem` |
+| `--tblr-form-floating-label-height` | `1.5em` |
+| `--tblr-form-floating-label-bg` | `var(--tblr-btn-input-bg)` (masks the text under a textarea label) |
+| `--tblr-form-floating-label-disabled-bg` | `var(--tblr-bg-forms-disabled)` |
+| `--tblr-form-floating-label-border-radius` | `var(--tblr-btn-input-border-radius)` |
+| `--tblr-form-floating-label-opacity` | `0.65` |
+| `--tblr-form-floating-label-transform` | `scale(0.85) translateY(-0.5rem) translateX(0.15rem)` |
+| `--tblr-form-floating-label-disabled-color` | gray `600` in light mode, `400` in dark |
+| `--tblr-form-floating-transition` | opacity and transform, `0.1s` |
+
+### Range inputs
+
+Set on `.form-range`.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-range-track-width` | `100%` |
+| `--tblr-range-track-height` | `0.25rem` |
+| `--tblr-range-track-cursor` | `pointer` |
+| `--tblr-range-track-bg` | `var(--tblr-border-color)` |
+| `--tblr-range-track-border-radius` | `1rem` |
+| `--tblr-range-track-box-shadow` | `var(--tblr-box-shadow-inset)` |
+| `--tblr-range-thumb-width` | `1rem` |
+| `--tblr-range-thumb-height` | `1rem` |
+| `--tblr-range-thumb-bg` | `var(--tblr-primary)` |
+| `--tblr-range-thumb-border` | `2px` white |
+| `--tblr-range-thumb-border-radius` | `1rem` |
+| `--tblr-range-thumb-box-shadow` | soft black shadow |
+| `--tblr-range-thumb-active-bg` | primary mixed with white |
+| `--tblr-range-thumb-disabled-bg` | `var(--tblr-secondary-color)` |
+| `--tblr-range-thumb-transition` | background, border, outline and shadow, `0.15s` |
+
+### Checks and radios
+
+`.form-check` carries the layout: `--tblr-form-check-min-height` (`1.25rem`), `--tblr-form-check-padding-start` (`2rem`) and `--tblr-form-check-margin-bottom` (`0.75rem`). The input itself carries the look.
+
+| Variable on `.form-check-input` | Default |
+| --- | --- |
+| `--tblr-form-check-input-width` | `1.25rem` |
+| `--tblr-form-check-bg` | `var(--tblr-bg-forms)` |
+| `--tblr-form-check-border` | `var(--tblr-border-width) var(--tblr-border-style) var(--tblr-border-color)` |
+| `--tblr-form-check-border-radius` | `var(--tblr-border-radius)` |
+| `--tblr-form-check-box-shadow` | `var(--tblr-shadow-input)` |
+| `--tblr-form-check-icon-color` | `#fff` |
+| `--tblr-form-check-focus-border-color` | primary mixed with white |
+| `--tblr-form-check-active-filter` | `brightness(90%)` |
+| `--tblr-form-check-checked-bg` | `var(--tblr-control-checked-bg)` |
+| `--tblr-form-check-checked-border-color` | `var(--tblr-control-checked-border-color)` |
+| `--tblr-form-check-indeterminate-bg` | `var(--tblr-control-checked-bg)` |
+| `--tblr-form-check-indeterminate-border-color` | `var(--tblr-form-check-indeterminate-bg)` |
+| `--tblr-form-check-disabled-opacity` | `var(--tblr-control-disabled-opacity)` |
+| `--tblr-form-check-transition` | outline color, `0.15s` |
+
+### Switches
+
+Set on `.form-switch`. The knob is three quarters of the height and slides by the width, so both follow these two tokens.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-form-switch-width` | `2rem` |
+| `--tblr-form-switch-height` | `1.25rem` |
+| `--tblr-form-switch-padding-start` | width + `0.5rem` |
+| `--tblr-form-switch-border-radius` | `var(--tblr-form-switch-width)` |
+| `--tblr-form-switch-focus-color` | primary mixed with white |
+| `--tblr-form-switch-checked-color` | `var(--tblr-white)` (the knob) |
+| `--tblr-form-switch-disabled-bg` | `var(--tblr-control-disabled-bg)` |
+| `--tblr-form-switch-disabled-color` | gray `400` in light mode, `600` in dark |
+
+`.form-switch-lg` keeps its own `--tblr-form-switch-lg-*` set.
+
+## Sass variables
+
+The tokens are seeded from the Sass variables of the same component: `$input-*` for inputs, `$form-select-*` for selects, `$input-group-addon-*`, `$form-floating-*`, `$form-range-*`, `$form-check-*` and `$form-switch-*`. Configure them through `@use` as before. A configured variable becomes a fixed token value, so it no longer follows `--tblr-btn-input-*` at runtime; leave it at its default to keep the runtime link.
+
+```scss
+@use '@tabler/core/scss/tabler' with (
+  $input-padding-y: 0.75rem,
+  $input-border-radius: 0
+);
+```

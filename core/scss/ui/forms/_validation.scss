@@ -11,7 +11,7 @@
 // `.btn`/`.btn-sm`/`.btn-lg` use for their own icons (see ui/_buttons.scss).
 %validation-icon-size {
   --form-feedback-icon-size: #{$input-btn-icon-size};
-  --form-feedback-icon-inset: #{$input-padding-x};
+  --form-feedback-icon-inset: #{var-if-default($input-padding-x, $input-btn-padding-x, '--btn-input-padding-x')};
   padding-inline-end: calc(var(--form-feedback-icon-size) + var(--form-feedback-icon-inset) * 2) !important;
   background-position: right var(--form-feedback-icon-inset) center !important;
   background-size: var(--form-feedback-icon-size) var(--form-feedback-icon-size) !important;
@@ -19,12 +19,12 @@
 
 %validation-icon-size-sm {
   --form-feedback-icon-size: #{$input-btn-icon-size-sm};
-  --form-feedback-icon-inset: #{$input-padding-x-sm};
+  --form-feedback-icon-inset: #{var-if-default($input-padding-x-sm, $input-btn-padding-x-sm, '--btn-input-sm-padding-x')};
 }
 
 %validation-icon-size-lg {
   --form-feedback-icon-size: #{$input-btn-icon-size-lg};
-  --form-feedback-icon-inset: #{$input-padding-x-lg};
+  --form-feedback-icon-inset: #{var-if-default($input-padding-x-lg, $input-btn-padding-x-lg, '--btn-input-lg-padding-x')};
 }
 
 %validation-icon-size-textarea {

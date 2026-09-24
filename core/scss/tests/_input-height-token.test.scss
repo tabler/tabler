@@ -1,0 +1,14 @@
+// Tests for `input-height-token()` in scss/mixins/_mixins.scss: the height of
+// a control as a token that reads the `:root` scale while the input metrics
+// keep their defaults.
+
+@use 'sass:meta';
+@use '../config' as *;
+
+@include describe('input-height-token') {
+  @include it('reads the root scale for the default metrics') {
+    @include assert-equal(meta.inspect(input-height-token()), 'var(--btn-input-min-height)');
+    @include assert-equal(meta.inspect(input-height-token('sm')), 'var(--btn-input-sm-min-height)');
+    @include assert-equal(meta.inspect(input-height-token('lg')), 'var(--btn-input-lg-min-height)');
+  }
+}
