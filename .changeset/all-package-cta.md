@@ -3,4 +3,4 @@
 "@tabler/preview": patch
 ---
 
-Replaced the Sponsor button in the preview navbar with a subtle All Package link (hosted demo only) and replaced the Illustrations card in the docs sidebar with an All Package card.
+Updated the preview navbar Sponsor button and the docs sidebar Illustrations card to an All Package link and card.
