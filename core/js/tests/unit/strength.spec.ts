@@ -69,6 +69,45 @@ describe('Strength', () => {
 
       expect(instance._input).toBe(fixtureEl.querySelector('#remote'))
     })
+
+    it('should bind the password field before it, not a confirm field after it', () => {
+      fixtureEl.innerHTML = `
+        <div>
+          <input type="password" id="pw">
+          <div class="strength" data-bs-strength><span class="strength-segment"></span></div>
+          <input type="password" id="pw2">
+        </div>`
+
+      const instance = new Strength(meter())
+
+      expect(instance._input).toBe(fixtureEl.querySelector('#pw'))
+    })
+
+    it('should bind the last of several preceding fields, ignoring one after it', () => {
+      fixtureEl.innerHTML = `
+        <div>
+          <input type="password" id="old">
+          <input type="password" id="new">
+          <div class="strength" data-bs-strength><span class="strength-segment"></span></div>
+          <input type="password" id="confirm">
+        </div>`
+
+      const instance = new Strength(meter())
+
+      expect(instance._input).toBe(fixtureEl.querySelector('#new'))
+    })
+
+    it('should bind the field after it when none precedes it', () => {
+      fixtureEl.innerHTML = `
+        <div>
+          <div class="strength" data-bs-strength><span class="strength-segment"></span></div>
+          <input type="password" id="confirm">
+        </div>`
+
+      const instance = new Strength(meter())
+
+      expect(instance._input).toBe(fixtureEl.querySelector('#confirm'))
+    })
   })
 
   describe('levels', () => {
