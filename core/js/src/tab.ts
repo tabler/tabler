@@ -4,13 +4,22 @@ import { Tab } from './bootstrap'
 export const EnableActivationTabsFromLocationHash = (): void => {
   const locationHash: string = window.location.hash
 
-  if (locationHash) {
-    const tabsList: HTMLAnchorElement[] = [].slice.call(document.querySelectorAll<HTMLAnchorElement>('[data-bs-toggle="tab"]'))
-    const matchedTabs = tabsList.filter((tab: HTMLAnchorElement) => tab.hash === locationHash)
+  if (!locationHash) {
+    return
+  }
 
-    matchedTabs.map((tab: HTMLAnchorElement) => {
-      new Tab(tab).show()
-    })
+  for (const tab of document.querySelectorAll<HTMLAnchorElement>('[data-bs-toggle="tab"], [data-tblr-toggle="tab"]')) {
+    if (tab.hash !== locationHash) {
+      continue
+    }
+
+    // A tab link outside a .nav/.list-group has no parent to switch in;
+    // show() would throw and stop the rest of the bundle.
+    try {
+      ;(Tab.getOrCreateInstance(tab) as InstanceType<typeof Tab>).show()
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
