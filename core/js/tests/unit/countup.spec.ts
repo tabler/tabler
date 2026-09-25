@@ -359,4 +359,24 @@ describe('CountUp', () => {
       expect(() => new CountUp(element())).toThrow(TypeError)
     })
   })
+
+  describe('robustness', () => {
+    it('ignores a data-countup value that is not an object', () => {
+      fixtureEl.innerHTML = '<h1 data-countup="null">30</h1>'
+      expect(() => new CountUp(element())).not.toThrow()
+
+      fixtureEl.innerHTML = '<h1 data-countup="[1,2]">30</h1>'
+      expect(() => new CountUp(element())).not.toThrow()
+    })
+
+    it('lets the animation start again after reset', () => {
+      const instance = quick()
+      instance.update(40)
+      expect(instance._started).toBe(true)
+
+      instance.reset()
+
+      expect(instance._started).toBe(false)
+    })
+  })
 })
