@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
+import { getElement } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
 type StrengthLevel = 'weak' | 'fair' | 'good' | 'strong'
@@ -164,10 +165,19 @@ class Strength extends BaseComponent {
   }
 
   // Private
+  _configAfterMerge(config: ComponentConfig): ComponentConfig {
+    // A partial `messages` or `weights` overrides only the keys it names.
+    return {
+      ...config,
+      messages: { ...Default.messages, ...config.messages },
+      weights: { ...Default.weights, ...config.weights },
+    }
+  }
+
   _getInput(): HTMLInputElement | null {
     const { input } = this._config
     if (input) {
-      return SelectorEngine.findOne(input) as HTMLInputElement | null
+      return getElement(input) as HTMLInputElement | null
     }
 
     // Without an explicit selector only the meter's own parent is searched.
