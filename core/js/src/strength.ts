@@ -170,13 +170,14 @@ class Strength extends BaseComponent {
       return SelectorEngine.findOne(input) as HTMLInputElement | null
     }
 
-    // Without an explicit selector only the meter's own parent is searched,
-    // and only fields before the meter qualify, so a confirm-password field
-    // placed after it is never mistaken for the one being rated.
+    // Without an explicit selector only the meter's own parent is searched.
+    // The nearest field before the meter wins, so a confirm-password field
+    // placed after it is never mistaken for the one being rated; a meter
+    // placed above its field falls back to the first field after it.
     const parent = this._element.parentElement
     const fields = parent ? (SelectorEngine.find(SELECTOR_PASSWORD, parent) as HTMLInputElement[]) : []
     const precedingFields = fields.filter((field) => Boolean(field.compareDocumentPosition(this._element) & Node.DOCUMENT_POSITION_FOLLOWING))
-    return precedingFields[precedingFields.length - 1] ?? null
+    return precedingFields[precedingFields.length - 1] ?? fields[0] ?? null
   }
 
   _getText(): HTMLElement | null {

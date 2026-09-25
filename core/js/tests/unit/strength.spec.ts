@@ -97,7 +97,7 @@ describe('Strength', () => {
       expect(instance._input).toBe(fixtureEl.querySelector('#new'))
     })
 
-    it('should not bind any field when none precedes it', () => {
+    it('should bind the field after it when none precedes it', () => {
       fixtureEl.innerHTML = `
         <div>
           <div class="strength" data-bs-strength><span class="strength-segment"></span></div>
@@ -106,7 +106,7 @@ describe('Strength', () => {
 
       const instance = new Strength(meter())
 
-      expect(instance._input).toBeNull()
+      expect(instance._input).toBe(fixtureEl.querySelector('#confirm'))
     })
   })
 
