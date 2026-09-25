@@ -100,11 +100,16 @@ class Autosize extends BaseComponent {
     // position is put back afterwards.
     const { scrollTop } = document.documentElement
     const style = getComputedStyle(element)
-    const border = style.boxSizing === 'border-box' ? Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth) : 0
+    // scrollHeight is the padding box: a border-box field adds its borders, a
+    // content-box field drops its padding.
+    const extra = style.boxSizing === 'border-box' ? Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth) : -(Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom))
     const before = element.style.height
 
+    // Measured without a scrollbar: one left over from the previous size
+    // would wrap the text and add a phantom line.
+    element.style.overflowY = 'hidden'
     element.style.height = 'auto'
-    const height = `${element.scrollHeight + border}px`
+    const height = `${element.scrollHeight + extra}px`
     element.style.height = height
 
     // Past max-height the content no longer fits, so let the field scroll.

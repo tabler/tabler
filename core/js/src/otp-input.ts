@@ -57,6 +57,9 @@ const TYPES: Record<OtpInputType, { inputmode: string; pattern: string; filter: 
   alpha: { inputmode: 'text', pattern: '[A-Za-z]*', filter: /[^A-Za-z]/g },
 }
 
+// Upper bound for the slot count, whatever the config asks for.
+const MAX_LENGTH = 32
+
 const Default: ComponentConfig = {
   groups: null,
   length: null,
@@ -87,6 +90,7 @@ class OtpInput extends BaseComponent {
   _input!: HTMLInputElement
   _type!: (typeof TYPES)[OtpInputType]
   _length = 0
+  _wasComplete = false
   _slots: HTMLElement[] = []
   _slotsContainer: HTMLElement | null = null
   // Tracks a tap so focus (fired natively by the browser) can respect the
@@ -125,6 +129,7 @@ class OtpInput extends BaseComponent {
     this._renderSlots()
     this._addEventListeners()
     this._render()
+    this._wasComplete = this._input.value.length === this._length
   }
 
   // Getters
@@ -186,18 +191,19 @@ class OtpInput extends BaseComponent {
 
   // Private
   _resolveLength(): number {
-    if (this._config.length) {
-      return this._config.length
-    }
-
-    const maxLength = Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)
-    if (!Number.isNaN(maxLength) && maxLength > 0) {
-      return maxLength
-    }
+    const candidates: unknown[] = [this._config.length, Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)]
 
     const { groups } = this._config
-    if (groups && groups.length > 0) {
-      return groups.reduce((sum, group) => sum + group, 0)
+    if (Array.isArray(groups) && groups.length > 0) {
+      candidates.push(groups.reduce<number>((sum, group) => sum + Number(group), 0))
+    }
+
+    // The first usable value wins; a negative, fractional, or huge length
+    // would render no slots or flood the DOM.
+    for (const candidate of candidates) {
+      if (typeof candidate === 'number' && Number.isInteger(candidate) && candidate > 0) {
+        return Math.min(candidate, MAX_LENGTH)
+      }
     }
 
     return 6
@@ -208,7 +214,8 @@ class OtpInput extends BaseComponent {
 
     // A single text field backs the whole control so screen readers, password
     // managers, and SMS autofill treat it like any other input.
-    if (input.type === 'number' || input.type === 'password') {
+    // Only text-like types support the selection API the slots rely on.
+    if (input.type !== 'text' && input.type !== 'tel') {
       input.type = 'text'
     }
 
@@ -328,6 +335,8 @@ class OtpInput extends BaseComponent {
     if (inputType === 'deleteContentBackward') {
       event.preventDefault()
 
+      const before = this._input.value
+
       const start = this._input.selectionStart ?? 0
       const end = this._input.selectionEnd ?? start
       const chars = [...this._input.value]
@@ -342,12 +351,14 @@ class OtpInput extends BaseComponent {
         this._selectSlot(start - 1)
       }
 
-      this._afterValueChange()
+      this._afterValueChange(before)
       return
     }
 
     if (inputType === 'deleteContentForward') {
       event.preventDefault()
+
+      const before = this._input.value
 
       const start = this._input.selectionStart ?? 0
       const end = this._input.selectionEnd ?? start
@@ -362,7 +373,7 @@ class OtpInput extends BaseComponent {
       }
 
       this._selectSlot(start)
-      this._afterValueChange()
+      this._afterValueChange(before)
     }
   }
 
@@ -407,8 +418,15 @@ class OtpInput extends BaseComponent {
     return null
   }
 
-  _afterValueChange(): void {
+  // `before` is the value ahead of the edit: a Backspace in the first slot or
+  // a Delete past the last one changes nothing and fires no event.
+  _afterValueChange(before?: string): void {
     this._render()
+
+    if (before !== undefined && before === this._input.value) {
+      return
+    }
+
     EventHandler.trigger(this._element, EVENT_INPUT, { value: this._input.value })
     this._checkComplete()
   }
@@ -442,11 +460,16 @@ class OtpInput extends BaseComponent {
     }
   }
 
+  // Fires once when the value becomes full, not on every edit of a full value.
   _checkComplete(): void {
     const { value } = this._input
-    if (value.length === this._length) {
+    const complete = value.length === this._length
+
+    if (complete && !this._wasComplete) {
       EventHandler.trigger(this._element, EVENT_COMPLETE, { value })
     }
+
+    this._wasComplete = complete
   }
 }
 
