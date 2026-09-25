@@ -7,6 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
+import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { isDisabled } from './bootstrap/util/index'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
@@ -432,7 +433,16 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   const target = SelectorEngine.getElementFromSelector(this) || this
-  const instance = Confetti.getOrCreateInstance(target) as Confetti
+  const config = Manipulator.getDataAttributes(this)
+  const instance = Confetti.getOrCreateInstance(target, config) as Confetti
+
+  // The instance lives on the target and keeps the config it was created
+  // with, so re-read the trigger's options on every click; several triggers
+  // can then share one target with their own look.
+  if (target !== this) {
+    instance._config = instance._getConfig(config) as ComponentConfig
+  }
+
   instance.burst()
 })
 
