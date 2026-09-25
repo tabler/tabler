@@ -58,7 +58,9 @@ const CLASS_NAME_DROPUP_CENTER = 'dropup-center'
 const CLASS_NAME_DROPDOWN_CENTER = 'dropdown-center'
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="dropdown"]:not(.disabled):not(:disabled), [data-tblr-toggle="dropdown"]:not(.disabled):not(:disabled)'
-const SELECTOR_DATA_TOGGLE_SHOWN = `.${CLASS_NAME_SHOW}[data-bs-toggle="dropdown"], .${CLASS_NAME_SHOW}[data-tblr-toggle="dropdown"]`
+const SELECTOR_DATA_TOGGLE_SHOWN = SELECTOR_DATA_TOGGLE.split(', ')
+  .map((selector) => `${selector}.${CLASS_NAME_SHOW}`)
+  .join(', ')
 const SELECTOR_MENU = '.dropdown-menu'
 const SELECTOR_NAVBAR = '.navbar'
 const SELECTOR_NAVBAR_NAV = '.navbar-nav'

@@ -236,4 +236,24 @@ describe('Strength', () => {
       expect(Strength.getInstance(meter())).toBeNull()
     })
   })
+
+  describe('partial config', () => {
+    it('merges a partial messages map with the defaults', () => {
+      new Strength(meter(), { messages: { weak: 'Słabe' } })
+
+      type('a')
+      expect(text().textContent).toBe('Słabe')
+
+      type('Abcdefgh1!xyz')
+      expect(text().textContent).not.toBe('')
+      expect(text().textContent).not.toBe('Słabe')
+    })
+
+    it('merges a partial weights map with the defaults', () => {
+      const instance = new Strength(meter(), { weights: { special: 3 } })
+
+      expect(instance._config.weights.lowercase).toBe(1)
+      expect(instance._config.weights.special).toBe(3)
+    })
+  })
 })

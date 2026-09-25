@@ -200,6 +200,8 @@ class CountUp extends BaseComponent {
 
   reset(): void {
     this._stop()
+    // Lets the observer start the animation again when the element comes into view.
+    this._started = false
     this._value = this._config.startVal
     this._print(this._value)
   }
@@ -239,7 +241,11 @@ class CountUp extends BaseComponent {
 
     if (raw) {
       try {
-        dataOptions = JSON.parse(raw)
+        const parsed: unknown = JSON.parse(raw)
+        // Only an object carries options; `null`, a number or an array is ignored.
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          dataOptions = parsed as Record<string, unknown>
+        }
       } catch {
         // ignore invalid JSON
       }

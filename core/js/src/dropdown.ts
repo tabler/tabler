@@ -1,14 +1,18 @@
 import { Dropdown } from './bootstrap'
+import Manipulator from './bootstrap/dom/manipulator'
 import { onDOMContentLoaded } from './bootstrap/util/index'
 
 // js-docs-start dropdown-init
 onDOMContentLoaded(() => {
-  const dropdownTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]'))
-  dropdownTriggerList.map(function (dropdownTriggerEl: HTMLElement) {
-    const options = {
-      boundary: dropdownTriggerEl.getAttribute('data-bs-boundary') === 'viewport' ? document.documentElement : ('clippingParents' as const),
+  for (const dropdownTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"], [data-tblr-toggle="dropdown"]')) {
+    try {
+      const options = {
+        boundary: Manipulator.getDataAttribute(dropdownTriggerEl, 'boundary') === 'viewport' ? document.documentElement : ('clippingParents' as const),
+      }
+      Dropdown.getOrCreateInstance(dropdownTriggerEl, options)
+    } catch (error) {
+      console.error(error)
     }
-    return new Dropdown(dropdownTriggerEl, options)
-  })
+  }
 })
 // js-docs-end dropdown-init

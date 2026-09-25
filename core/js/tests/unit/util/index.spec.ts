@@ -475,4 +475,15 @@ describe('util/index', () => {
       expect(getNextActiveElement(list, 'z', false, true)).toBe('d')
     })
   })
+
+  describe('jQuery collections', () => {
+    it('unwraps a jQuery-like collection in isElement and getElement', () => {
+      const div = document.createElement('div')
+      const collection = { 0: div, length: 1, jquery: '3.7.1' }
+
+      expect(isElement(collection)).toBe(true)
+      expect(getElement(collection)).toBe(div)
+      expect(getElement({ length: 0, jquery: '3.7.1' })).toBeNull()
+    })
+  })
 })

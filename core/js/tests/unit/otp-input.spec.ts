@@ -380,4 +380,58 @@ describe('OtpInput', () => {
       expect(event.defaultPrevented).toBe(false)
     })
   })
+
+  describe('audit fixes', () => {
+    it('fires complete once when the value becomes full', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('complete.bs.otpInput', spy)
+
+      typeInto(input(), '123456')
+      input().setSelectionRange(5, 6)
+      beforeInput(input(), { inputType: 'insertText', data: '9' })
+
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      input().setSelectionRange(5, 6)
+      beforeInput(input(), { inputType: 'deleteContentBackward' })
+      input().setSelectionRange(5, 5)
+      beforeInput(input(), { inputType: 'insertText', data: '7' })
+
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it('fires no input event for a Delete past the end or a Backspace at the start', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('input.bs.otpInput', spy)
+      typeInto(input(), '12')
+      spy.mockClear()
+
+      input().setSelectionRange(2, 2)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      input().setSelectionRange(0, 0)
+      beforeInput(input(), { inputType: 'deleteContentBackward' })
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('clamps an unusable length to a sane slot count', () => {
+      otp().setAttribute('data-bs-length', '-3')
+      new OtpInput(otp())
+      expect(fixtureEl.querySelectorAll('.otp-slot').length).toBe(6)
+
+      fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp" data-bs-length="1000000"><input type="text" /></div>'
+      new OtpInput(otp())
+      expect(fixtureEl.querySelectorAll('.otp-slot').length).toBe(32)
+    })
+
+    it('turns an email input into a text input', () => {
+      fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp"><input type="email" /></div>'
+      new OtpInput(otp())
+
+      expect(input().type).toBe('text')
+      expect(() => input().setSelectionRange(0, 0)).not.toThrow()
+    })
+  })
 })
