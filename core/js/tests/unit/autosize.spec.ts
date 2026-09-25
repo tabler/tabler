@@ -85,6 +85,16 @@ describe('Autosize', () => {
 
       expect(height()).toBe(46)
     })
+
+    it('should still update a position: fixed field', () => {
+      textarea().style.position = 'fixed'
+      const instance = new Autosize(textarea())
+
+      textarea().value = lines(3)
+      instance.update()
+
+      expect(height()).toBe(60)
+    })
   })
 
   describe('dispose', () => {
