@@ -11,6 +11,12 @@ vi.mock('@popperjs/core', () => ({
   })),
 }))
 
+let initRun = 0
+async function runPopoverInit(): Promise<void> {
+  initRun += 1
+  await import(/* @vite-ignore */ `../../src/popover.ts?run=${initRun}`)
+}
+
 describe('Popover', () => {
   let fixtureEl: HTMLElement
 
@@ -72,6 +78,15 @@ describe('Popover', () => {
 
       expect(popover).toBeInstanceOf(Popover)
       expect(Popover.getInstance(el)).toBe(popover)
+    })
+
+    it('should pass data-bs-html through the auto-init options', async () => {
+      fixtureEl.innerHTML = '<a href="#" data-bs-toggle="popover" title="<strong>Popover</strong>" data-bs-content="<em>Content</em>" data-bs-html="true">Trigger</a>'
+      const spy = vi.spyOn(Popover, 'getOrCreateInstance')
+
+      await runPopoverInit()
+
+      expect(spy).toHaveBeenCalledWith(fixtureEl.querySelector('a'), expect.objectContaining({ html: true }))
     })
   })
 
