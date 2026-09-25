@@ -36,11 +36,11 @@ describe('sticky navbar', () => {
 
 describe('navbar position', () => {
   it('hides the sidebar when the attribute is absent, which is the horizontal default', () => {
-    expect(flat).toContain('html:not([data-bs-navbar-position=vertical]) .page:has(> [class*=navbar-expand]:not(.navbar-vertical)) > .navbar-vertical { display: none; }')
+    expect(flat).toContain('html:not([data-bs-navbar-position=vertical]):not([data-bs-navbar-position=combined]) .page:has(> [class*=navbar-expand]:not(.navbar-vertical)) > .navbar-vertical { display: none; }')
   })
 
-  it('drops the sidebar offset from the page with no sidebar on it', () => {
-    expect(flat).toMatch(/html:not\(\[data-bs-navbar-position=vertical\]\) \.page:has\(> \[class\*=navbar-expand\]:not\(\.navbar-vertical\)\) > \.navbar,[^{]*> \.page-wrapper \{ --sidebar-width: 0px; --sidebar-gap: var\(--navbar-margin, 0px\); \}/)
+  it('drops the sidebar offset from the page with no sidebar on it, including the two-row navbar menu row', () => {
+    expect(flat).toMatch(/html:not\(\[data-bs-navbar-position=vertical\]\):not\(\[data-bs-navbar-position=combined\]\) \.page:has\(> \[class\*=navbar-expand\]:not\(\.navbar-vertical\)\) > \.navbar,[^{]*> \.page-wrapper,[^{]*> \[class\*=navbar-expand\]:not\(\.navbar-vertical\) \{ --sidebar-width: 0px; --sidebar-gap: var\(--navbar-margin, 0px\); \}/)
   })
 
   it('hides the horizontal navbar in the vertical position', () => {
@@ -49,6 +49,14 @@ describe('navbar position', () => {
 
   it('comes after the folded sidebar rule, so the two agree on --sidebar-width', () => {
     expect(flat.indexOf('html[data-bs-sidebar^=folded]')).toBeLessThan(flat.indexOf('html:not([data-bs-navbar-position=vertical])'))
+  })
+
+  it('offsets the two-row navbar menu row, not just its header, next to the sidebar', () => {
+    expect(flat).toContain('.navbar-expand.navbar-vertical ~ .navbar, .navbar-expand.navbar-vertical ~ [class*=navbar-expand]:not(.navbar-vertical), .navbar-expand.navbar-vertical ~ .page-wrapper { margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px)); }')
+  })
+
+  it('gives the folded class route its own --sidebar-width copy on the menu row too', () => {
+    expect(flat).toContain('.navbar-vertical:is(.navbar-folded, .navbar-folded-hover) ~ .page, .navbar-vertical:is(.navbar-folded, .navbar-folded-hover) ~ .page-wrapper, .navbar-vertical:is(.navbar-folded, .navbar-folded-hover) ~ .navbar, .navbar-vertical:is(.navbar-folded, .navbar-folded-hover) ~ [class*=navbar-expand]:not(.navbar-vertical) { --sidebar-width: var(--sidebar-folded-width); }')
   })
 })
 
