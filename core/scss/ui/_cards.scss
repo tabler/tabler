@@ -302,9 +302,21 @@ Stacked card
 }
 
 // Card progress
-// `.card >` outranks ui/_progress.scss's later `.progress { position: relative; }`.
-.card > .card-progress {
+.card-progress {
   --card-progress-height: #{$card-progress-height};
+  height: var(--card-progress-height);
+
+  &:last-child {
+    @include border-radius(0 0 2px 2px);
+  }
+
+  &:first-child {
+    @include border-radius(2px 2px 0 0);
+  }
+}
+
+// `.card >` outranks the fallback above and ui/_progress.scss's later `.progress { position: relative; }`.
+.card > .card-progress {
   --card-progress-offset: calc(-1 * var(--card-border-width));
   position: absolute;
   inset: var(--card-progress-offset);
