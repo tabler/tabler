@@ -172,8 +172,7 @@ describe('Confetti', () => {
     })
 
     it('should read options from the trigger even when data-bs-target points elsewhere', () => {
-      fixtureEl.innerHTML =
-        '<button type="button" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5" data-bs-colors="#f00"></button><div id="order"></div>'
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5" data-bs-colors="#f00"></button><div id="order"></div>'
       reduceMotion(true)
 
       button().click()
