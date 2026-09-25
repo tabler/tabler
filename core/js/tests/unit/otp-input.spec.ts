@@ -82,6 +82,13 @@ describe('OtpInput', () => {
       expect(input().getAttribute('maxlength')).toBe('8')
     })
 
+    it('should let the native maxlength override the sum of groups', () => {
+      input().setAttribute('maxlength', '6')
+      otp().setAttribute('data-bs-groups', '[3]')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(6)
+    })
+
     it('should set inputmode and pattern from the type option', () => {
       otp().setAttribute('data-bs-type', 'alphanumeric')
       new OtpInput(otp())
