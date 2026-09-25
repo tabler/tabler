@@ -334,6 +334,26 @@ class OtpInput extends BaseComponent {
       }
 
       this._afterValueChange()
+      return
+    }
+
+    if (inputType === 'deleteContentForward') {
+      event.preventDefault()
+
+      const start = this._input.selectionStart ?? 0
+      const end = this._input.selectionEnd ?? start
+      const chars = [...this._input.value]
+
+      if (end > start) {
+        chars.splice(start, end - start)
+        this._input.value = chars.join('')
+      } else if (start < chars.length) {
+        chars.splice(start, 1)
+        this._input.value = chars.join('')
+      }
+
+      this._selectSlot(start)
+      this._afterValueChange()
     }
   }
 
