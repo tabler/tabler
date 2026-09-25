@@ -433,7 +433,16 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   const target = SelectorEngine.getElementFromSelector(this) || this
-  const instance = Confetti.getOrCreateInstance(target, Manipulator.getDataAttributes(this)) as Confetti
+  const config = Manipulator.getDataAttributes(this)
+  const instance = Confetti.getOrCreateInstance(target, config) as Confetti
+
+  // The instance lives on the target and keeps the config it was created
+  // with, so re-read the trigger's options on every click; several triggers
+  // can then share one target with their own look.
+  if (target !== this) {
+    instance._config = instance._getConfig(config) as ComponentConfig
+  }
+
   instance.burst()
 })
 

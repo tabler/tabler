@@ -183,6 +183,21 @@ describe('Confetti', () => {
       expect(instance._config.colors).toEqual(['#f00'])
     })
 
+    it("should apply each trigger's own options when several share a target", () => {
+      fixtureEl.innerHTML = '<button type="button" id="small" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5"></button><button type="button" id="big" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="600"></button><div id="order"></div>'
+      reduceMotion(true)
+      const target = fixtureEl.querySelector('#order')!
+
+      fixtureEl.querySelector<HTMLElement>('#small')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(5)
+
+      fixtureEl.querySelector<HTMLElement>('#big')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(600)
+
+      fixtureEl.querySelector<HTMLElement>('#small')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(5)
+    })
+
     it('should ignore a disabled trigger', () => {
       fixtureEl.innerHTML = '<button type="button" data-bs-toggle="confetti" disabled></button>'
       reduceMotion(true)
