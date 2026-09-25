@@ -97,4 +97,41 @@ describe('tabler-theme', () => {
 
     expect(['light', 'dark']).toContain(attribute('theme'))
   })
+
+  describe('robustness', () => {
+    const blockStorage = (): (() => void) => {
+      const original = Object.getOwnPropertyDescriptor(window, 'localStorage')!
+      Object.defineProperty(window, 'localStorage', {
+        configurable: true,
+        get() {
+          throw new DOMException('blocked', 'SecurityError')
+        },
+      })
+      return () => Object.defineProperty(window, 'localStorage', original)
+    }
+
+    it('ignores a URL parameter that is not a plain token', async () => {
+      history.replaceState(null, '', '?layout=fluid%20%22onload%3D%22x&navbar=sticky')
+
+      await runThemeScript()
+
+      expect(attribute('layout')).toBeNull()
+      expect(localStorage.getItem('tabler-layout')).toBeNull()
+      expect(attribute('navbar')).toBe('sticky')
+    })
+
+    it('falls back to the server attribute when storage is blocked', async () => {
+      document.documentElement.setAttribute('data-bs-layout', 'boxed')
+      history.replaceState(null, '', '?navbar=sticky')
+      const restore = blockStorage()
+
+      try {
+        await expect(runThemeScript()).resolves.toBeUndefined()
+        expect(attribute('layout')).toBe('boxed')
+        expect(attribute('navbar')).toBe('sticky')
+      } finally {
+        restore()
+      }
+    })
+  })
 })

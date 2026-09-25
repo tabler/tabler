@@ -307,4 +307,77 @@ describe('Datepicker', () => {
       expect(seen).toEqual(['shown'])
     })
   })
+
+  describe('audit fixes', () => {
+    it('accepts a Date for dateMin and dateMax', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      expect(() => new Datepicker(input(), { dateMin: new Date(2024, 0, 1), dateMax: new Date(2024, 11, 31) })).not.toThrow()
+    })
+
+    it('keeps the live input in the DOM after dispose', () => {
+      fixtureEl.innerHTML = '<input type="text" id="picker">'
+      const original = input()
+      const instance = new Datepicker(original)
+      instance.setSelectedDates(['2024-06-20'])
+
+      instance.dispose()
+
+      expect(document.querySelector('#picker')).toBe(original)
+      expect(original.value).not.toBe('')
+    })
+
+    it('keeps a single bound input for an inline calendar after dispose', () => {
+      fixtureEl.innerHTML = '<div data-bs-toggle="datepicker" data-bs-inline="true"><input type="hidden" name="d"></div>'
+      const instance = new Datepicker(fixtureEl.firstElementChild as HTMLElement)
+      instance.setSelectedDates(['2024-06-20'])
+
+      instance.dispose()
+
+      const bound = fixtureEl.querySelectorAll('input[name="d"]')
+      expect(bound.length).toBe(1)
+      expect((bound[0] as HTMLInputElement).value).toBe('2024-06-20')
+    })
+
+    it('writes the field and opens on the month of setSelectedDates', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+
+      instance.setSelectedDates([new Date(1990, 5, 20)])
+
+      expect(instance.getSelectedDates()).toEqual(['1990-06-20'])
+      expect(input().value).not.toBe('')
+      expect(instance.calendar!.context.selectedMonth).toBe(5)
+      expect(instance.calendar!.context.selectedYear).toBe(1990)
+    })
+
+    it('opens on the month of an initial value', () => {
+      fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
+      const instance = new Datepicker(input())
+
+      expect(instance.calendar!.context.selectedMonth).toBe(5)
+      expect(instance.calendar!.context.selectedYear).toBe(1990)
+    })
+
+    it('clears the field when the picked date is deselected', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      instance.setSelectedDates(['2024-06-20'])
+      expect(input().value).not.toBe('')
+
+      instance.calendar!.context.selectedDates = []
+      instance._handleDateClick(instance.calendar!, new MouseEvent('click'))
+
+      expect(input().value).toBe('')
+    })
+
+    it('does not run the hide timer after dispose', async () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      instance.calendar!.context.selectedDates = ['2024-06-20']
+      instance._handleDateClick(instance.calendar!, new MouseEvent('click'))
+
+      instance.dispose()
+      await new Promise((resolve) => setTimeout(resolve, 150))
+    })
+  })
 })
