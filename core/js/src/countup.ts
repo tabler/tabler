@@ -331,7 +331,9 @@ class CountUp extends BaseComponent {
     }
 
     if (format === 'time') {
-      const rounded = Math.round(value)
+      // Rounded away from zero on both sides, so -90.5 and 90.5 give the same
+      // minutes; a value that rounds to 0 stays unsigned (-0 < 0 is false).
+      const rounded = Math.sign(value) * Math.round(Math.abs(value))
       const minutes = Math.abs(rounded)
       return `${rounded < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
     }

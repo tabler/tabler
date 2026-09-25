@@ -282,6 +282,20 @@ describe('CountUp', () => {
       expect(element().textContent).toBe('0:00')
     })
 
+    it('should round negative half minutes like positive ones in the time format', async () => {
+      fixtureEl.innerHTML = '<h1>0:00</h1>'
+
+      const instance = new CountUp(element(), { autoAnimate: false, duration: 0.1, format: 'time' })
+      await wait(300)
+      instance.update(90.5)
+      await wait(300)
+      expect(element().textContent).toBe('1:31')
+
+      instance.update(-90.5)
+      await wait(300)
+      expect(element().textContent).toBe('-1:31')
+    })
+
     it('should use a formatter function from the config', async () => {
       quick({ formatter: (value: number) => `${Math.round(value / 1000)}k` })
       await wait(300)
