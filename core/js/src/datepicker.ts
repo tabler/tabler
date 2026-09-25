@@ -73,6 +73,14 @@ type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 type ChangeEventArgs = { dates: string[]; event: MouseEvent }
 
+// `window.VanillaCalendarPro` is typed as `unknown` in the global augmentation,
+// so a project that never uses the datepicker isn't forced to have this
+// optional peer dependency's types resolvable; its real shape is declared here,
+// local to the module that actually needs it.
+type VanillaCalendarProGlobal = {
+  Calendar: new (selector: HTMLElement | string, options?: Options) => Calendar
+}
+
 const Default: ComponentConfig = {
   datepickerTheme: null,
   dateMin: null,
@@ -305,7 +313,8 @@ class Datepicker extends BaseComponent {
     // any click whose target is not exactly its input, so handing it a wrapper
     // makes a click on the field inside close and reopen the popup. The popup
     // is aligned with the position element after each show instead.
-    this._calendar = new window.VanillaCalendarPro!.Calendar(this._element, this._buildCalendarOptions())
+    const VanillaCalendarPro = window.VanillaCalendarPro as VanillaCalendarProGlobal
+    this._calendar = new VanillaCalendarPro.Calendar(this._element, this._buildCalendarOptions())
     this._calendar.init()
 
     // An inline calendar renders into the element and drops its children, so
