@@ -1,0 +1,92 @@
+@use '../config' as *;
+
+// A highlight that sweeps across the text, for "Thinking…" or "Generating…" labels
+.text-shimmer {
+  // scss-docs-start text-shimmer-css-vars
+  --text-shimmer-duration: #{$text-shimmer-duration};
+  --text-shimmer-opacity: #{$text-shimmer-opacity};
+  --text-shimmer-width: #{$text-shimmer-width};
+  --text-shimmer-fade-duration: #{$text-shimmer-fade-duration};
+  --text-shimmer-fade-easing: #{$text-shimmer-fade-easing};
+  --text-shimmer-loader-size: #{$text-shimmer-loader-size};
+  --text-shimmer-loader-border-width: #{$text-shimmer-loader-border-width};
+  --text-shimmer-loader-margin: #{$text-shimmer-loader-margin};
+  --text-shimmer-loader-duration: #{$text-shimmer-loader-duration};
+  --text-shimmer-loader-opacity: #{$text-shimmer-loader-opacity};
+  // scss-docs-end text-shimmer-css-vars
+  display: inline-block;
+  // The mask dims the text and lets a band of full opacity move through it, so the text keeps its own color
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, var(--text-shimmer-opacity)) calc(50% - var(--text-shimmer-width) / 2), $black 50%, rgba(0, 0, 0, var(--text-shimmer-opacity)) calc(50% + var(--text-shimmer-width) / 2));
+  mask-size: 300% 100%;
+  // The label fades in once, then the highlight keeps sweeping
+  animation:
+    text-shimmer-in var(--text-shimmer-fade-duration) var(--text-shimmer-fade-easing) both,
+    text-shimmer var(--text-shimmer-duration) linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    mask-image: none;
+    animation: none;
+  }
+}
+
+// A small spinner before the label: the element is a 1em box, ::before draws
+// a faint ring in the text color and ::after the bright arc that turns on top
+// of it. It sits inside the mask, so it dims and lights up with the text
+.text-shimmer-loader {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-inline-end: var(--text-shimmer-loader-margin);
+  vertical-align: -0.125em;
+
+  // The ring is --text-shimmer-loader-size wide, centered in the 1em box
+  &::before,
+  &::after {
+    position: absolute;
+    inset: 0;
+    width: var(--text-shimmer-loader-size);
+    height: var(--text-shimmer-loader-size);
+    margin: auto;
+    content: '';
+    border: var(--text-shimmer-loader-border-width) solid;
+    border-radius: 50%;
+  }
+
+  &::before {
+    border-color: currentColor;
+    opacity: var(--text-shimmer-loader-opacity);
+  }
+
+  &::after {
+    border-color: currentColor transparent transparent;
+    animation: rotate-360 var(--text-shimmer-loader-duration) linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: calc(var(--text-shimmer-loader-duration) * 2);
+    }
+  }
+}
+
+@keyframes text-shimmer-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// The highlight travels in the reading direction: --dir flips the start and end in RTL
+@keyframes text-shimmer {
+  from {
+    /* rtl:ignore */
+    mask-position: calc(50% + var(--dir) * 50%) 0;
+  }
+
+  to {
+    /* rtl:ignore */
+    mask-position: calc(50% - var(--dir) * 50%) 0;
+  }
+}
