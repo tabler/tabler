@@ -10,7 +10,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
-import { isDisabled } from './bootstrap/util/index'
+import { getElement, isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
 /**
@@ -92,8 +92,8 @@ const Default: ComponentConfig = {
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   datepickerTheme: '(null|string)',
-  dateMin: '(null|string|number|object)',
-  dateMax: '(null|string|number|object)',
+  dateMin: '(null|string|number|object|date)',
+  dateMax: '(null|string|number|object|date)',
   dateFormat: '(null|object|function)',
   displayElement: '(null|string|element|boolean)',
   displayMonthsCount: 'number',
@@ -136,6 +136,7 @@ class Datepicker extends BaseComponent {
   _isSilent = false
   _skipPluginShow = false
   _resolveShown: (() => void) | null = null
+  _hideTimeout = 0
   _isInput = false
   _isInline = false
   _boundInput: HTMLInputElement | null = null
@@ -243,13 +244,34 @@ class Datepicker extends BaseComponent {
   }
 
   dispose(): void {
+    window.clearTimeout(this._hideTimeout)
     this._themeObserver?.disconnect()
 
     if (this._onFocusIn) {
       EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
     }
 
-    this._calendar?.destroy()
+    if (this._calendar) {
+      this._calendar.destroy()
+
+      // The plugin swaps the element for a clone taken at init, which has the
+      // value and listeners from back then. The live element goes back in;
+      // an inline calendar keeps the clone (its original children), so only
+      // the bound input moves back into it.
+      const clone = this._calendar.context.mainElement as HTMLElement | undefined
+      if (clone && clone !== this._element && clone.isConnected) {
+        if (this._isInput) {
+          clone.replaceWith(this._element)
+        } else if (this._boundInput) {
+          const copy = SelectorEngine.findOne(SELECTOR_BOUND_INPUT, clone)
+          if (copy) {
+            copy.replaceWith(this._boundInput)
+          } else {
+            clone.append(this._boundInput)
+          }
+        }
+      }
+    }
 
     super.dispose()
   }
@@ -260,8 +282,9 @@ class Datepicker extends BaseComponent {
   }
 
   setSelectedDates(dates: DatesArr): void {
-    this._selectedDates = dates.map(String)
-    this._calendar?.set({ selectedDates: dates })
+    this._selectedDates = dates.map((date) => this._toIsoDate(date))
+    this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+    this._writeSelection(this._selectedDates)
   }
 
   // Private
@@ -334,7 +357,7 @@ class Datepicker extends BaseComponent {
     let { positionElement } = this._config
 
     if (typeof positionElement === 'string') {
-      positionElement = SelectorEngine.findOne(positionElement)
+      positionElement = getElement(positionElement)
     }
 
     // Use the input's wrapper when it sits in an icon or group wrapper
@@ -349,7 +372,7 @@ class Datepicker extends BaseComponent {
     const { displayElement } = this._config
 
     if (typeof displayElement === 'string') {
-      return SelectorEngine.findOne(displayElement)
+      return getElement(displayElement)
     }
 
     // For buttons/non-inputs (not inline), look for a display child
@@ -554,9 +577,9 @@ class Datepicker extends BaseComponent {
     const selectedDates = [...self.context.selectedDates]
     this._selectedDates = selectedDates
 
-    if (selectedDates.length > 0) {
-      this._writeSelection(selectedDates)
-    }
+    // Written even when empty: clicking the picked day again deselects it, and
+    // the field must not keep submitting the old date.
+    this._writeSelection(selectedDates)
 
     const args: ChangeEventArgs = { dates: selectedDates, event }
     EventHandler.trigger(this._element, EVENT_CHANGE, args)
@@ -572,7 +595,8 @@ class Datepicker extends BaseComponent {
     const shouldHide = (this._config.selectionMode === 'single' && selectedDates.length > 0) || (this._config.selectionMode === 'multiple-ranged' && selectedDates.length >= 2)
 
     if (shouldHide) {
-      setTimeout(() => this.hide(), HIDE_DELAY)
+      window.clearTimeout(this._hideTimeout)
+      this._hideTimeout = window.setTimeout(() => this.hide(), HIDE_DELAY)
     }
   }
 
@@ -627,11 +651,35 @@ class Datepicker extends BaseComponent {
       return
     }
 
+    this._selectedDates = [this._toIsoDate(date)]
+    // The calendar opens on the month of the value, not on today.
+    this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+  }
+
+  _toIsoDate(value: DateAny | string): string {
+    if (typeof value === 'string' && DATE_PATTERN.test(value)) {
+      return value
+    }
+
+    const date = value instanceof Date ? value : typeof value === 'string' && DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
+    if (Number.isNaN(date.getTime())) {
+      return String(value)
+    }
+
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
-    this._selectedDates = [`${year}-${month}-${day}`]
-    this._calendar?.set({ selectedDates: this._selectedDates })
+    return `${year}-${month}-${day}`
+  }
+
+  _monthOf(value: string | undefined): Pick<Options, 'selectedMonth' | 'selectedYear'> {
+    if (!value || !DATE_PATTERN.test(value)) {
+      return {}
+    }
+
+    const date = this._parseDate(value)
+    // `getMonth()` is always 0-11, which TypeScript cannot narrow on its own
+    return { selectedMonth: date.getMonth() as Range<12>, selectedYear: date.getFullYear() }
   }
 }
 
