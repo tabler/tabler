@@ -1,4 +1,5 @@
 import { Tab } from './bootstrap'
+import { onDOMContentLoaded } from './bootstrap/util/index'
 
 // js-docs-start tab-init
 export const EnableActivationTabsFromLocationHash = (): void => {
@@ -14,5 +15,5 @@ export const EnableActivationTabsFromLocationHash = (): void => {
   }
 }
 
-EnableActivationTabsFromLocationHash()
+onDOMContentLoaded(EnableActivationTabsFromLocationHash)
 // js-docs-end tab-init

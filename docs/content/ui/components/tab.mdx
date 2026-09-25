@@ -233,6 +233,8 @@ Tabler activates the tab that matches the URL hash on page load, so you can link
 
 <CodeDocs name="tab-init" file="core/js/src/tab.ts" />
 
+This runs on `DOMContentLoaded`, so `show.bs.tab` and `shown.bs.tab` for the hash tab fire before any script that itself waits for `DOMContentLoaded`. Add the listener earlier (a plain `<script>`, not one that is deferred or waits for the load event), or read `Tab.getInstance(triggerEl)` after `DOMContentLoaded` to find the tab that was activated.
+
 ## Accessibility
 
 - Wrap the tabs in an element with `role="tablist"`, give each trigger `role="tab"` and each panel `role="tabpanel"`, and link them with `aria-controls` and `aria-labelledby`.
