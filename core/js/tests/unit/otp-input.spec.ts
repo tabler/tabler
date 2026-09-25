@@ -122,6 +122,39 @@ describe('OtpInput', () => {
       fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp"></div>'
       expect(() => new OtpInput(otp())).not.toThrow()
     })
+
+    it('should fall back to the default length for a negative data-bs-length', () => {
+      otp().setAttribute('data-bs-length', '-3')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(6)
+      expect(input().getAttribute('maxlength')).toBe('6')
+    })
+
+    it('should clamp an excessive data-bs-length', () => {
+      otp().setAttribute('data-bs-length', '1e9')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(32)
+      expect(input().getAttribute('maxlength')).toBe('32')
+    })
+
+    it('should ignore groups containing a non-numeric entry', () => {
+      otp().setAttribute('data-bs-groups', '[3,"x"]')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(6)
+      expect(fixtureEl.querySelectorAll('.otp-separator')).toHaveLength(0)
+    })
+
+    it('should coerce an email input to type=text', () => {
+      input().setAttribute('type', 'email')
+      expect(() => new OtpInput(otp())).not.toThrow()
+      expect(input().type).toBe('text')
+    })
+
+    it('should keep a tel input as type=tel', () => {
+      input().setAttribute('type', 'tel')
+      new OtpInput(otp())
+      expect(input().type).toBe('tel')
+    })
   })
 
   describe('value handling', () => {

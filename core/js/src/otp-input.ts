@@ -50,6 +50,8 @@ const SYNC_EVENTS = ['blur', 'keyup', 'select']
 
 const MASK_CHARACTER = '•'
 
+const LENGTH_MAX = 32
+
 // Per-type input mode, validation pattern, and a filter that strips disallowed characters
 const TYPES: Record<OtpInputType, { inputmode: string; pattern: string; filter: RegExp }> = {
   numeric: { inputmode: 'numeric', pattern: '[0-9]*', filter: /[^0-9]/g },
@@ -119,6 +121,7 @@ class OtpInput extends BaseComponent {
 
     this._input = input
     this._type = TYPES[this._config.type as OtpInputType] ?? TYPES.numeric
+    this._config.groups = this._resolveGroups()
     this._length = this._resolveLength()
 
     this._setupInput()
@@ -185,19 +188,32 @@ class OtpInput extends BaseComponent {
   }
 
   // Private
+  _resolveGroups(): number[] | null {
+    const { groups } = this._config
+    if (!Array.isArray(groups) || groups.length === 0) {
+      return null
+    }
+
+    return groups.every((group) => Number.isInteger(group) && group > 0) ? groups : null
+  }
+
   _resolveLength(): number {
-    if (this._config.length) {
-      return this._config.length
+    const { length } = this._config
+    if (typeof length === 'number' && Number.isFinite(length) && length > 0) {
+      return Math.min(Math.trunc(length), LENGTH_MAX)
     }
 
     const maxLength = Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)
     if (!Number.isNaN(maxLength) && maxLength > 0) {
-      return maxLength
+      return Math.min(maxLength, LENGTH_MAX)
     }
 
     const { groups } = this._config
     if (groups && groups.length > 0) {
-      return groups.reduce((sum, group) => sum + group, 0)
+      return Math.min(
+        groups.reduce((sum, group) => sum + group, 0),
+        LENGTH_MAX,
+      )
     }
 
     return 6
@@ -208,7 +224,7 @@ class OtpInput extends BaseComponent {
 
     // A single text field backs the whole control so screen readers, password
     // managers, and SMS autofill treat it like any other input.
-    if (input.type === 'number' || input.type === 'password') {
+    if (input.type !== 'text' && input.type !== 'tel') {
       input.type = 'text'
     }
 
