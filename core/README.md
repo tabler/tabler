@@ -18,6 +18,15 @@ Free and open source HTML dashboard UI kit built on Bootstrap 5.
 
 `@tabler/core` is the CSS and JavaScript framework behind [Tabler](https://tabler.io). It has the layouts, components and utilities you need for admin panels, dashboards and web apps. Bootstrap 5 ships inside the package. Every component works in light and dark mode, and every stylesheet has an RTL version.
 
+<p align="center">
+<a href="https://preview.tabler.io" target="_blank">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview-dark.png">
+<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview.png" alt="Tabler preview">
+</picture>
+</a>
+</p>
+
 ## Installation
 
 Install the package with npm or your preferred JavaScript package manager:
