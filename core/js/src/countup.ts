@@ -147,6 +147,7 @@ class CountUp extends BaseComponent {
   _elapsed = 0
   _running = false
   _paused = false
+  _started = false
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -175,13 +176,7 @@ class CountUp extends BaseComponent {
       return
     }
 
-    this._observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        this._observer?.disconnect()
-        this._observer = null
-        this.start()
-      }
-    })
+    this._observer = new IntersectionObserver((entries) => this._observerCallback(entries))
     this._observer.observe(this._element)
   }
 
@@ -253,8 +248,21 @@ class CountUp extends BaseComponent {
     return super._mergeConfigObj({ ...coerceOptions(dataOptions), ...config }, element)
   }
 
+  _observerCallback(entries: IntersectionObserverEntry[]): void {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      this._observer?.disconnect()
+      this._observer = null
+
+      // update() may have already animated it while it was off screen.
+      if (!this._started) {
+        this.start()
+      }
+    }
+  }
+
   _animate(from: number, to: number): void {
     this._stop()
+    this._started = true
 
     // Users who asked for less motion get the final number at once.
     if (from === to || this._config.duration <= 0 || reducedMotion()) {

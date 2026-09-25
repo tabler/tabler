@@ -113,6 +113,48 @@ describe('CountUp', () => {
 
       expect(element().textContent).toBe('77')
     })
+
+    it('should not fire complete.bs.countup a second time when the element scrolls into view after update()', () => {
+      const spy = vi.fn()
+      element().addEventListener('complete.bs.countup', spy)
+
+      const instance = new CountUp(element(), { duration: 0 })
+      instance.update(77)
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      instance._observerCallback([{ isIntersecting: true } as unknown as IntersectionObserverEntry])
+
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(element().textContent).toBe('77')
+    })
+
+    it('should not fire complete.bs.countup twice when update() ran off screen and it then really scrolls into view', async () => {
+      const spy = vi.fn()
+      const off = document.createElement('h1')
+      off.dataset.countup = '{"duration":0.1}'
+      off.textContent = '500'
+      off.style.position = 'absolute'
+      off.style.top = '-10000px'
+      off.style.left = '-10000px'
+      document.body.append(off)
+      off.addEventListener('complete.bs.countup', spy)
+
+      try {
+        const instance = new CountUp(off)
+        instance.update(77)
+        await wait(300)
+        expect(spy).toHaveBeenCalledTimes(1)
+
+        off.style.top = '0px'
+        off.style.left = '0px'
+        await wait(500)
+
+        expect(spy).toHaveBeenCalledTimes(1)
+        expect(off.textContent).toBe('77')
+      } finally {
+        off.remove()
+      }
+    })
   })
 
   describe('data-tblr-countup', () => {
