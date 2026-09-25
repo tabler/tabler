@@ -1,5 +1,11 @@
 # @tabler/docs
 
+## 1.6.1
+
+### Patch Changes
+
+- d104e78: Fixed Confetti ignoring the trigger's `data-bs-*` options when `data-bs-target` points elsewhere.
+
 ## 1.6.0
 
 ### Minor Changes

@@ -1,5 +1,37 @@
 # @tabler/core
 
+## 1.6.1
+
+### Patch Changes
+
+- e3da90e: Fixed Autosize adding a phantom line after shrinking past `max-height` and wrong heights on `content-box` textareas.
+- e3da90e: Fixed Clipboard reading `data-bs-text` as a number or JSON, copying hidden text, and added `reset()` for a `delay` of 0.
+- 7748029: Fixed CountUp firing `complete.bs.countup` twice when `update()` ran before it scrolled into view.
+- 0a9edcb: Fixed CountUp printing `-0` when a value crosses or rounds to zero.
+- e3da90e: Fixed CountUp `reset()` blocking a later viewport start and `data-countup` or `data-sortable` JSON that is not an object.
+- e3da90e: Fixed Datepicker `dispose()` swapping the input for a stale clone, a hide timer after dispose and `Date` values for `dateMin`.
+- 6199b80: Fixed published types requiring the optional `vanilla-calendar-pro` peer dependency to be installed.
+- e3da90e: Fixed Datepicker keeping a deselected date in the field, `setSelectedDates()` not writing it and not opening on the value's month.
+- 0f6e843: Fixed tab, tooltip, popover, dropdown and toast init running before `DOMContentLoaded`, dropping early listeners.
+- e3da90e: Fixed an open dropdown with a disabled toggle being closed by outside clicks, matching Bootstrap.
+- c89bf8d: Fixed autosize not resizing a `position: fixed` textarea.
+- 70b8372: Fixed `.card-progress` to keep a 2px bar fallback when it isn't a direct child of `.card`.
+- d104e78: Fixed Confetti ignoring the trigger's `data-bs-*` options when `data-bs-target` points elsewhere.
+- 29818fc: Fixed `Manipulator.setDataAttribute()` writing `data-tblr-*` attributes instead of `data-bs-*`.
+- e2da442: Fixed the OTP input ignoring `groups` for its length when neither `length` nor `maxlength` is set.
+- e3da90e: Fixed InputMask dropping options other than `mask` and `lazy`, rejecting non-string masks and a bare `data-mask-visible`.
+- e3da90e: Fixed Bootstrap components rejecting a jQuery collection passed as the element, `container`, `parent` or `target`.
+- e3da90e: Fixed tooltip, popover, dropdown, toast and tab auto-init stopping the bundle on one bad element and ignoring `data-tblr-toggle`.
+- e3da90e: Fixed OTP input firing `complete` on every edit of a full value, events on no-op keys, invalid `length` and `type="email"` fields.
+- 3d10e24: Fixed the Delete key in `.otp` moving the caret to the last slot; it now removes the character under the caret and keeps the caret in place, like Backspace.
+- e3da90e: Fixed Clipboard `target`, Strength `input` and Datepicker `positionElement` selectors failing on ids like `#user:1`.
+- e3da90e: Fixed sidebar toggles not syncing when `tabler.js` loads after `DOMContentLoaded` and errors on synthetic clicks.
+- e3da90e: Fixed a partial `messages` or `weights` config on the Strength meter dropping the default entries.
+- f7c3956: Fixed the strength meter rating a confirm-password field after it instead of the password field before it.
+- e3da90e: Fixed SwitchIcon throwing and staying in the loading state when a `wait()` promise settles after `dispose()`.
+- e3da90e: Fixed the theme switcher and sidebar toggle failing when `localStorage` is blocked, and ignored unsafe `?theme=` URL values.
+- e3da90e: Fixed `data-bs-delay` on tooltips and popovers being overridden by the default delay.
+
 ## 1.6.0
 
 ### Minor Changes
