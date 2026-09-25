@@ -1,5 +1,49 @@
 # @tabler/preview
 
+## 1.6.0
+
+### Minor Changes
+
+- 64dd529: Added new billing page with plan usage, payment method, and invoices layout.
+- a984752: Updated the charts page with sections, card subtitles, `Legend` lists above charts and a semantic colors chart.
+- 0e2faa0: Added a `Clipboard` copy button built on the browser API; `dist/libs/clipboard` is deprecated.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page; Litepicker is deprecated.
+- be30919: Updated `.legend` into a legend item with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus a `Legend` component.
+- a984752: Added `.legend-lg`, `.legend-unit` and `.legend-list-divided` for large legend items with a big value and a unit.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+- 7e7b2ce: Added `.navbar-floating` and the `data-bs-navbar-style="floating"` theme setting for a navbar and sidebar with a `0.5rem` gap.
+- 7e7b2ce: Added `.offcanvas-floating` and the `data-bs-offcanvas-style="floating"` theme setting for an offcanvas with a `0.5rem` gap.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- a9efcc2: Added the Signal component (`.signal`): stepped bars that show a level such as priority, with a `Signal.astro` wrapper.
+- bd60d5f: Added grouped Sortable demos: drag handle, table rows, kanban board, clone, multi-drag and swap.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+- 0776b88: Added a `switch-icon-loading` state and a cancelable `toggle.bs.switch-icon` event with `event.wait(promise)` for async toggles.
+- 3f767ee: Added a System status panel with 60-day uptime history bars to the Uptime preview page.
+- 3f767ee: Added ApexCharts gauge cards to the Widgets preview page.
+
+### Patch Changes
+
+- eda6503: Updated the preview navbar Sponsor button and the docs sidebar Illustrations card to an All Package link and card.
+- a13ebc3: Added `Autosize` component to `tabler.js`, with `update()` and `dispose()` methods.
+- 4676d12: Fixed `CardTitle` text color on `CardBackgroundIcon` for readability.
+- 7bfeb12: Added a Sortable docs page covering `data-sortable`, the drag styles and the `Sortable` component.
+- 364ccf8: Fixed keyboard access and accessible names across preview pages, `Alert`, `Avatar`, `Rating`, `Tag` and `Wysiwyg` components.
+- 3f767ee: Fixed the "Card with code" widget rendering its code as plain text instead of a `pre` block.
+- 084d202: Fixed docs breadcrumbs, unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.
+- 084d202: Fixed `robots.txt`, minified assets in `BaseLayout`, the marketing menu link and the `markdown.html` redirect in the preview.
+- 0d39308: Fixed heading order, form `autocomplete` and accessible names on preview pages, `Alert`, `Button`, `Dropzone` and `Avatar`.
+- 8636174: Fixed `Trending` signs, ApexCharts 7 legend markers, marketing asset paths, `pageLibs` checks and the notifications close button.
+- 9268348: Fixed the actions dropdown in the tables and invoices demos being cut off by `.table-responsive`.
+- 2b44251: Added the `.flag-country-yt` flag for Mayotte.
+- 57e213b: Updated `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- 4cfa9f3: Removed the hardcoded Google Maps and Mapbox keys; map demos now read `GOOGLE_MAPS_KEY` and `MAPBOX_KEY` from the environment.
+- bf576f1: Fixed page modals leaking between pages and made the change-password and confirm-delete modal scripts plain inline JS.
+- 1dbabb5: Fixed a dev-server `ENOENT` race: preview's `watch:css` now writes to `tmp-assets/css` and `copy-assets` syncs it into `public/`.
+- add68b2: Fixed the missing promo top banner on docs.tabler.io and preview.tabler.io by restoring the `banner.js` script.
+- f06de8a: Updated Tabler Icons to v3.48.0.
+
 ## 1.5.1
 
 ### Patch Changes
