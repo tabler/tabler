@@ -7,6 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
+import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { isDisabled } from './bootstrap/util/index'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
@@ -432,7 +433,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   const target = SelectorEngine.getElementFromSelector(this) || this
-  const instance = Confetti.getOrCreateInstance(target) as Confetti
+  const instance = Confetti.getOrCreateInstance(target, Manipulator.getDataAttributes(this)) as Confetti
   instance.burst()
 })
 

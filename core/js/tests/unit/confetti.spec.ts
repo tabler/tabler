@@ -171,6 +171,19 @@ describe('Confetti', () => {
       expect(Confetti.getInstance(fixtureEl.querySelector('a')!)).toBeNull()
     })
 
+    it('should read options from the trigger even when data-bs-target points elsewhere', () => {
+      fixtureEl.innerHTML =
+        '<button type="button" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5" data-bs-colors="#f00"></button><div id="order"></div>'
+      reduceMotion(true)
+
+      button().click()
+
+      const instance = Confetti.getInstance(fixtureEl.querySelector('#order')!) as Confetti
+      expect(instance).not.toBeNull()
+      expect(instance._config.count).toBe(5)
+      expect(instance._config.colors).toEqual(['#f00'])
+    })
+
     it('should ignore a disabled trigger', () => {
       fixtureEl.innerHTML = '<button type="button" data-bs-toggle="confetti" disabled></button>'
       reduceMotion(true)
