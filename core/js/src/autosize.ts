@@ -92,7 +92,7 @@ class Autosize extends BaseComponent {
   // Public
   update(): void {
     const element = this._element
-    if (!element.isConnected || element.offsetParent === null) {
+    if (!element.isConnected || element.getClientRects().length === 0) {
       return
     }
 
