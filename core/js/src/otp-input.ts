@@ -123,6 +123,7 @@ class OtpInput extends BaseComponent {
 
     this._input = input
     this._type = TYPES[this._config.type as OtpInputType] ?? TYPES.numeric
+    this._config.groups = this._resolveGroups()
     this._length = this._resolveLength()
 
     this._setupInput()
@@ -190,6 +191,15 @@ class OtpInput extends BaseComponent {
   }
 
   // Private
+  _resolveGroups(): number[] | null {
+    const { groups } = this._config
+    if (!Array.isArray(groups) || groups.length === 0) {
+      return null
+    }
+
+    return groups.every((group) => Number.isInteger(group) && group > 0) ? groups : null
+  }
+
   _resolveLength(): number {
     const candidates: unknown[] = [this._config.length, Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)]
 

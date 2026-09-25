@@ -6,6 +6,7 @@ for (const popoverTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-
   try {
     const options = {
       delay: Manipulator.getDataAttribute(popoverTriggerEl, 'delay') ?? { show: 50, hide: 50 },
+      html: Manipulator.getDataAttribute(popoverTriggerEl, 'html'),
       placement: Manipulator.getDataAttribute(popoverTriggerEl, 'placement') ?? 'auto',
     }
     Popover.getOrCreateInstance(popoverTriggerEl, options)

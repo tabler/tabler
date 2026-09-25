@@ -9,6 +9,7 @@ for (const tooltipTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-
   try {
     const options = {
       delay: Manipulator.getDataAttribute(tooltipTriggerEl, 'delay') ?? { show: 50, hide: 50 },
+      html: Manipulator.getDataAttribute(tooltipTriggerEl, 'html'),
       placement: Manipulator.getDataAttribute(tooltipTriggerEl, 'placement') ?? 'auto',
     }
     Tooltip.getOrCreateInstance(tooltipTriggerEl, options)

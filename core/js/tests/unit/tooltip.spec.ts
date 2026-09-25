@@ -10,6 +10,12 @@ vi.mock('@popperjs/core', () => ({
   })),
 }))
 
+let initRun = 0
+async function runTooltipInit(): Promise<void> {
+  initRun += 1
+  await import(/* @vite-ignore */ `../../src/tooltip.ts?run=${initRun}`)
+}
+
 describe('Tooltip', () => {
   let fixtureEl: HTMLElement
 
@@ -93,6 +99,15 @@ describe('Tooltip', () => {
       new Tooltip(el)
 
       expect(el.getAttribute('aria-label')).toBe('Existing label')
+    })
+
+    it('should pass data-bs-html through the auto-init options', async () => {
+      fixtureEl.innerHTML = '<a href="#" data-bs-toggle="tooltip" title="<strong>Tooltip</strong>" data-bs-html="true">Trigger</a>'
+      const spy = vi.spyOn(Tooltip, 'getOrCreateInstance')
+
+      await runTooltipInit()
+
+      expect(spy).toHaveBeenCalledWith(fixtureEl.querySelector('a'), expect.objectContaining({ html: true }))
     })
   })
 
