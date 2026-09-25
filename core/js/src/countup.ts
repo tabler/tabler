@@ -331,14 +331,18 @@ class CountUp extends BaseComponent {
     }
 
     if (format === 'time') {
-      const minutes = Math.round(Math.abs(value))
-      return `${value < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
+      // Rounded away from zero on both sides, so -90.5 and 90.5 give the same
+      // minutes; a value that rounds to 0 stays unsigned (-0 < 0 is false).
+      const rounded = Math.sign(value) * Math.round(Math.abs(value))
+      const minutes = Math.abs(rounded)
+      return `${rounded < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
     }
 
-    const [integer, fraction] = Math.abs(value).toFixed(decimalPlaces).split('.') as [string, string | undefined]
+    const fixed = value.toFixed(decimalPlaces)
+    const [integer, fraction] = fixed.replace('-', '').split('.') as [string, string | undefined]
     const grouped = useGrouping ? integer.replace(/\B(?=(\d{3})+(?!\d))/g, separator) : integer
 
-    return `${value < 0 ? '-' : ''}${prefix}${grouped}${fraction ? decimal + fraction : ''}${suffix}`
+    return `${Number(fixed) < 0 ? '-' : ''}${prefix}${grouped}${fraction ? decimal + fraction : ''}${suffix}`
   }
 }
 

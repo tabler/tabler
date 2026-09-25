@@ -239,6 +239,15 @@ describe('CountUp', () => {
       instance.reset()
       expect(element().textContent).toBe('50,000')
     })
+
+    it('should not print a negative zero when a value rounds to zero', async () => {
+      fixtureEl.innerHTML = '<h1 data-countup>-0.3</h1>'
+
+      quick({ decimalPlaces: 0 })
+      await wait(300)
+
+      expect(element().textContent).toBe('0')
+    })
   })
 
   describe('format', () => {
@@ -260,6 +269,31 @@ describe('CountUp', () => {
       fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time"}\'>9999999999</h1>'
       new CountUp(element(), { autoAnimate: false })
       expect(element().textContent).toBe('9999999999')
+    })
+
+    it('should not print a negative zero when a time rounds to zero minutes', async () => {
+      fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time"}\'>0:00</h1>'
+
+      const instance = new CountUp(element(), { autoAnimate: false, duration: 0.1, format: 'time' })
+      await wait(300)
+      instance.update(-0.4)
+      await wait(300)
+
+      expect(element().textContent).toBe('0:00')
+    })
+
+    it('should round negative half minutes like positive ones in the time format', async () => {
+      fixtureEl.innerHTML = '<h1>0:00</h1>'
+
+      const instance = new CountUp(element(), { autoAnimate: false, duration: 0.1, format: 'time' })
+      await wait(300)
+      instance.update(90.5)
+      await wait(300)
+      expect(element().textContent).toBe('1:31')
+
+      instance.update(-90.5)
+      await wait(300)
+      expect(element().textContent).toBe('-1:31')
     })
 
     it('should use a formatter function from the config', async () => {
