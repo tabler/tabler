@@ -191,7 +191,16 @@ class OtpInput extends BaseComponent {
     }
 
     const maxLength = Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)
-    return Number.isNaN(maxLength) || maxLength < 1 ? 6 : maxLength
+    if (!Number.isNaN(maxLength) && maxLength > 0) {
+      return maxLength
+    }
+
+    const { groups } = this._config
+    if (groups && groups.length > 0) {
+      return groups.reduce((sum, group) => sum + group, 0)
+    }
+
+    return 6
   }
 
   _setupInput(): void {
