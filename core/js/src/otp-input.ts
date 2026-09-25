@@ -292,7 +292,7 @@ class OtpInput extends BaseComponent {
     this._afterValueChange()
   }
 
-  // Intercepts single-character typing and backspace so each slot is
+  // Intercepts single-character typing, Backspace and Delete so each slot is
   // overwritten in place rather than inserting and shifting the value.
   // Anything else (paste, autofill, IME) falls through to `_handleInput`.
   _handleBeforeInput(event: InputEvent): void {
