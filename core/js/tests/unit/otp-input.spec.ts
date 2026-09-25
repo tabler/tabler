@@ -210,6 +210,33 @@ describe('OtpInput', () => {
       expect(input().value).toBe('')
     })
 
+    it('should clear a selected slot on delete without shifting the caret', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().setSelectionRange(3, 4)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(input().value).toBe('12356')
+      expect(input().selectionStart).toBe(3)
+    })
+
+    it('should delete the next character on delete with a collapsed caret', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123')
+      input().setSelectionRange(1, 1)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(input().value).toBe('13')
+      expect(input().selectionStart).toBe(1)
+    })
+
+    it('should do nothing on delete at the end of the value', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123')
+      input().setSelectionRange(3, 3)
+      const event = beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(event.defaultPrevented).toBe(true)
+      expect(input().value).toBe('123')
+    })
+
     it('should select the first empty slot on keyboard focus', () => {
       const instance = new OtpInput(otp())
       instance.setValue('12')

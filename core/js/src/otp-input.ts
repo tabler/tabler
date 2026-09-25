@@ -292,7 +292,7 @@ class OtpInput extends BaseComponent {
     this._afterValueChange()
   }
 
-  // Intercepts single-character typing and backspace so each slot is
+  // Intercepts single-character typing, Backspace and Delete so each slot is
   // overwritten in place rather than inserting and shifting the value.
   // Anything else (paste, autofill, IME) falls through to `_handleInput`.
   _handleBeforeInput(event: InputEvent): void {
@@ -333,6 +333,26 @@ class OtpInput extends BaseComponent {
         this._selectSlot(start - 1)
       }
 
+      this._afterValueChange()
+      return
+    }
+
+    if (inputType === 'deleteContentForward') {
+      event.preventDefault()
+
+      const start = this._input.selectionStart ?? 0
+      const end = this._input.selectionEnd ?? start
+      const chars = [...this._input.value]
+
+      if (end > start) {
+        chars.splice(start, end - start)
+        this._input.value = chars.join('')
+      } else if (start < chars.length) {
+        chars.splice(start, 1)
+        this._input.value = chars.join('')
+      }
+
+      this._selectSlot(start)
       this._afterValueChange()
     }
   }
