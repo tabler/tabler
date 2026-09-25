@@ -364,8 +364,8 @@ describe('Datepicker', () => {
       instance.setSelectedDates(['2024-06-20'])
       expect(input().value).not.toBe('')
 
-      instance.calendar!.context.selectedDates = []
-      instance._handleDateClick(instance.calendar!, new MouseEvent('click'))
+      instance._calendar!.context.selectedDates = []
+      instance._handleDateClick(instance._calendar!, new MouseEvent('click'))
 
       expect(input().value).toBe('')
     })
@@ -373,8 +373,8 @@ describe('Datepicker', () => {
     it('does not run the hide timer after dispose', async () => {
       fixtureEl.innerHTML = '<input type="text">'
       const instance = new Datepicker(input())
-      instance.calendar!.context.selectedDates = ['2024-06-20']
-      instance._handleDateClick(instance.calendar!, new MouseEvent('click'))
+      instance._calendar!.context.selectedDates = ['2024-06-20']
+      instance._handleDateClick(instance._calendar!, new MouseEvent('click'))
 
       instance.dispose()
       await new Promise((resolve) => setTimeout(resolve, 150))

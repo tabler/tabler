@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  */
 
-import type { Calendar, DateAny, DateMode, DatesArr, MonthsCount, Options, PositionToInput, Range, WeekDayID } from 'vanilla-calendar-pro'
+import type { Calendar, Options, Range } from 'vanilla-calendar-pro'
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
@@ -40,10 +40,36 @@ const HIDE_DELAY = 100 // ms delay before hiding after selection
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 
-// The date, weekday, month-count and placement options are handed straight to
-// Vanilla Calendar Pro, so they use its own literal unions rather than the wider
-// `string` / `number`. That keeps a bad value a compile error here instead of a
-// silent no-op inside the calendar.
+// The public API is typed with local copies of the Vanilla Calendar Pro types.
+// `vanilla-calendar-pro` is an optional peer dependency, so the published
+// `dist/types` must not import it: a project that never loads the datepicker
+// would otherwise fail to type-check with TS2307. The unions match the
+// plugin's own, so a bad value is still a compile error. Members that need the
+// plugin's full types carry an internal JSDoc tag and are left out of
+// `dist/types` by `stripInternal` (the tag must not appear in plain comments,
+// or TypeScript strips the declaration that follows).
+type DateAny = Date | number | `${number}-${string}-${string}` | 'today'
+type DatesArr = Array<Date | number | string>
+type DateMode = 'single' | 'multiple' | 'multiple-ranged'
+type MonthsCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+type PositionToInput = 'auto' | 'left' | 'center' | 'right' | ['bottom' | 'top', 'left' | 'center' | 'right']
+type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+/**
+ * The part of a Vanilla Calendar Pro instance the `calendar` getter promises.
+ * Cast it to `Calendar` from `vanilla-calendar-pro` for the full type.
+ */
+interface CalendarInstance {
+  // Loosely typed on purpose: the plugin's context is large and version-specific.
+  context: Record<string, any>
+  init(): unknown
+  update(resetOptions?: object): unknown
+  set(options: object, resetOptions?: object): unknown
+  show(): unknown
+  hide(): unknown
+  destroy(): unknown
+}
+
 type ComponentConfig = {
   /** 'light', 'dark' or 'auto' for the popup only; null inherits from the nearest `[data-bs-theme]` */
   datepickerTheme: string | null
@@ -66,7 +92,7 @@ type ComponentConfig = {
   selectionMode: DateMode
   placement: PositionToInput
   /** pass-through for any Vanilla Calendar Pro option */
-  vcpOptions: Options
+  vcpOptions: object
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -126,6 +152,7 @@ const afterPluginTimers = (callback: () => void): void => {
 class Datepicker extends BaseComponent {
   declare _element: HTMLElement & { value: string }
   declare _config: ComponentConfig
+  /** @internal */
   _calendar: Calendar | null = null
   _isShown = false
   // The plugin opens and closes the popup on its own too (its click and focus
@@ -172,7 +199,7 @@ class Datepicker extends BaseComponent {
   }
 
   /** The Vanilla Calendar Pro instance, for options the component does not expose. */
-  get calendar(): Calendar | null {
+  get calendar(): CalendarInstance | null {
     return this._calendar
   }
 
@@ -528,6 +555,7 @@ class Datepicker extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
+  /** @internal */
   _buildCalendarOptions(): Options {
     // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
@@ -563,16 +591,17 @@ class Datepicker extends BaseComponent {
     }
 
     if (this._config.dateMin) {
-      calendarOptions.dateMin = this._config.dateMin
+      calendarOptions.dateMin = this._config.dateMin as Options['dateMin']
     }
 
     if (this._config.dateMax) {
-      calendarOptions.dateMax = this._config.dateMax
+      calendarOptions.dateMax = this._config.dateMax as Options['dateMax']
     }
 
     return calendarOptions
   }
 
+  /** @internal */
   _handleDateClick(self: Calendar, event: MouseEvent): void {
     const selectedDates = [...self.context.selectedDates]
     this._selectedDates = selectedDates
@@ -672,6 +701,7 @@ class Datepicker extends BaseComponent {
     return `${year}-${month}-${day}`
   }
 
+  /** @internal */
   _monthOf(value: string | undefined): Pick<Options, 'selectedMonth' | 'selectedYear'> {
     if (!value || !DATE_PATTERN.test(value)) {
       return {}
