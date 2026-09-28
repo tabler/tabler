@@ -262,7 +262,9 @@ class Sparkline extends BaseComponent {
     this._element.querySelector(`.${CLASS_NAME_LABEL}`)?.remove()
 
     if (this._config.values.length === 0) {
-      this._element.innerHTML = ''
+      cancelAnimationFrame(this._frame)
+      previous?.remove()
+      EventHandler.trigger(this._element, EVENT_RENDERED)
       return
     }
 
@@ -308,7 +310,8 @@ class Sparkline extends BaseComponent {
 
   dispose(): void {
     cancelAnimationFrame(this._frame)
-    this._element.innerHTML = ''
+    this._element.querySelector('svg')?.remove()
+    this._element.querySelector(`.${CLASS_NAME_LABEL}`)?.remove()
     super.dispose()
   }
 
@@ -365,6 +368,12 @@ class Sparkline extends BaseComponent {
     const pairs = Array.from(to.children).map((target, i) => {
       const source = from.children[i]
       const tweens: [string, string, string][] = []
+      for (const { name } of Array.from(source.attributes)) {
+        if (!target.hasAttribute(name)) {
+          source.removeAttribute(name)
+        }
+      }
+
       for (const { name, value } of Array.from(target.attributes)) {
         const start = source.getAttribute(name)
         if (start === null || start === value) {
@@ -431,8 +440,8 @@ class Sparkline extends BaseComponent {
 
     const { min, span } = rangeOf(cfg.values, cfg.min, cfg.max, ...(cfg.threshold === null ? [] : [cfg.threshold]))
     const yOf = (value: number): number => cfg.pad + (1 - (value - min) / span) * (cfg.height - cfg.pad * 2)
-    const ys = cfg.values.map(yOf)
-    const step = ys.length > 1 ? cfg.width / (ys.length - 1) : cfg.width
+    const ys = cfg.values.length === 1 ? [yOf(cfg.values[0]), yOf(cfg.values[0])] : cfg.values.map(yOf)
+    const step = cfg.width / (ys.length - 1)
 
     if (cfg.threshold !== null) {
       this._hairline(svg, yOf(cfg.threshold), 'threshold', true)
@@ -463,7 +472,7 @@ class Sparkline extends BaseComponent {
     if (spotIndex >= 0) {
       const spot = svgEl('circle')
       setAttr(spot, {
-        cx: spotIndex * step,
+        cx: cfg.values.length === 1 ? cfg.width / 2 : spotIndex * step,
         cy: ys[spotIndex],
         r: getCssNumber(this._element, 'spot-size', 2),
         fill: cssVar('spot'),
@@ -560,7 +569,7 @@ class Sparkline extends BaseComponent {
     const cfg = this._config
     const svg = this._createSvg()
 
-    const strokeWidth = getCssNumber(this._element, 'stroke-width', 3)
+    const strokeWidth = getCssNumber(this._element, 'stroke-width', 2)
     const radius = Math.max(0, Math.min(cfg.width, cfg.height) / 2 - strokeWidth / 2)
     const cx = cfg.width / 2
     const cy = cfg.height / 2
