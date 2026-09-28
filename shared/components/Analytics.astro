@@ -3,15 +3,15 @@
 // Vercel production builds (VERCEL_ENV is unset locally and "preview" on branch
 // deployments), so the dev server, local builds and branch previews ship no
 // tracking code at all. A runtime hostname check is kept as a second guard.
-// Requests go through the same-origin `/eat/*` proxy (see vercel.json in docs/
-// and preview/), which rewrites to eu.i.posthog.com.
+// The public project token comes from the POSTHOG_KEY env var (Vercel project
+// settings, Production only); without it nothing is emitted. Requests go through
+// the same-origin `/eat/*` proxy (see vercel.json in docs/ and preview/), which
+// rewrites to eu.i.posthog.com.
 //
 // The loader is PostHog's minified stub; it is assembled as a string because the
 // Astro prettier parser cannot handle it inline.
-import { site } from '@shared/lib/site'
-
 const isProduction = process.env.VERCEL_ENV === 'production'
-const key = site.posthogKey
+const key = process.env.POSTHOG_KEY
 const hosts = ['docs.tabler.io', 'preview.tabler.io', 'dev.tabler.io']
 
 const loader =
