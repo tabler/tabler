@@ -58,6 +58,28 @@ describe('Datepicker', () => {
       expect(instance._isInput).toBe(true)
     })
 
+    it('should register the extensions the library exports', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-display-months-count="2">'
+
+      const instance = new Datepicker(input())
+
+      const calendar = instance.calendar as VanillaCalendarPro.Calendar
+      expect(calendar.extensions).toContain(VanillaCalendarPro.months)
+      expect(calendar.extensions).toContain(VanillaCalendarPro.time)
+      expect(calendar.type).toBe('multiple')
+      expect(calendar.displayMonthsCount).toBe(2)
+    })
+
+    it('should keep the extensions passed in vcpOptions once', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input(), { vcpOptions: { extensions: [VanillaCalendarPro.months] } })
+
+      const extensions = (instance.calendar as VanillaCalendarPro.Calendar).extensions
+      expect(extensions.filter((extension) => extension === VanillaCalendarPro.months)).toHaveLength(1)
+      expect(extensions).toContain(VanillaCalendarPro.motion)
+    })
+
     it('should stay inert without the plugin', () => {
       delete window.VanillaCalendarPro
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
