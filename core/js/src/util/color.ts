@@ -20,7 +20,9 @@ export type OKLCHA = { l: number; c: number; h: number; a: number }
 export type ColorFormat = 'hex' | 'rgb' | 'hsl' | 'oklch'
 
 const HEX_PATTERN = /^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i
-const FUNCTION_PATTERN = /^(rgba?|hsla?|oklch)\(\s*([^)]*?)\s*\)$/i
+// No `\s*` around the arguments: it would overlap with `[^)]*` and let a long
+// run of spaces backtrack; the arguments are trimmed by `splitArguments` instead
+const FUNCTION_PATTERN = /^(rgba?|hsla?|oklch)\(([^)]*)\)$/i
 
 const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max)
 
