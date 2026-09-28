@@ -1,5 +1,64 @@
 # @tabler/docs
 
+## 1.6.0
+
+### Minor Changes
+
+- 0e2faa0: Added a `Clipboard` copy button built on the browser API; `dist/libs/clipboard` is deprecated.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- 8ceb56b: Added an agent skill under `/.well-known/agent-skills/` and an `ai-catalog.json` manifest to the docs.
+- 8ae47ae: Added a CSS variables section to component docs pages, replacing the hand-written SCSS variables sections.
+- 7bfeb12: Added a Sortable docs page covering `data-sortable`, the drag styles and the `Sortable` component.
+- be30919: Updated `.legend` into a legend item with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus a `Legend` component.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- a9efcc2: Added the Signal component (`.signal`): stepped bars that show a level such as priority, with a `Signal.astro` wrapper.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+- 6bd3fff: Added the upgrade guide for Tabler 1.6 and moved the upgrade guides to `/ui/getting-started/upgrade/` with one page per release.
+
+### Patch Changes
+
+- b295d84: Fixed `.accordion-button-toggle-plus` with sprite icons by rotating the plus into a close icon instead of hiding a path.
+- 72a95d8: Fixed `.alert` layout so headings, descriptions, lists and buttons align and stack correctly.
+- eda6503: Updated the preview navbar Sponsor button and the docs sidebar Illustrations card to an All Package link and card.
+- a13ebc3: Added `Autosize` component to `tabler.js`, with `update()` and `dispose()` methods.
+- 62408b8: Added a dependency-free `Autosize` component that fires `resized.bs.autosize`; `dist/libs/autosize` is deprecated.
+- 038000f: Added the `--tblr-btn-input-*` control scale on `:root` (padding, font size, line height, radius, min height per size).
+- 2129b0b: Added a `check:open-source` gate and the five missing attributions, including Popper, which ships inside `tabler.js`.
+- ea10f0e: Added a dependency-free `CountUp` component that respects `prefers-reduced-motion`; `dist/libs/countup.js` is deprecated.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page; Litepicker is deprecated.
+- 0905918: Updated the default gray scale (`$gray-50`…`$gray-950`) to `neutral`; `data-bs-theme-base="gray"` keeps the 1.5 look.
+- da79879: Updated accordion docs examples to use `.bg-surface` on each `.accordion-item`.
+- 7bfeb12: Added relative colors, `oklch(from …)`, to the features that set the minimum browser versions on the browser support page.
+- bcf5991: Added `integrity` and `crossorigin` attributes to the CDN snippets on the installation and plugin pages.
+- bab8f24: Updated the class reference table in the docs to use the bordered `.docs-table` box.
+- c28e848: Updated the confetti amount example to use plain `.btn` buttons instead of `.btn-outline-primary`.
+- 41e2dc7: Updated markdown tables in the docs with a bordered, scrollable `.docs-table` box and a tighter header row.
+- 5a735bc: Added a note to the installation docs that `tabler.js` already includes Bootstrap and must not be loaded next to it.
+- 7bfeb12: Added a note to the 1.5 upgrade guide that `.text-gray-*` classes, a no-op in 1.4, now set the text color.
+- 7bfeb12: Added Litepicker, `.legend` and neutral gray sections to the 1.6 upgrade guide; fixed the jsVectorMap CDN link.
+- e052821: Added `--tblr-status-color-rgb`, `pre` size, `.card-options`, `.page-section-title` and `.theme-dark` to the 1.6 upgrade guide.
+- 364ccf8: Fixed keyboard access and accessible names across preview pages, `Alert`, `Avatar`, `Rating`, `Tag` and `Wysiwyg` components.
+- 9268348: Fixed the missing icon spacing in the "Alerts with icons" example on the alert docs page.
+- 86ac4f1: Fixed the unreadable "5" badge in the avatar status docs example by adding `text-gray-100`.
+- 6f96282: Fixed the "Card on a background pattern" docs example so the preview shows the `.bg-pattern-diagonal` background.
+- 084d202: Fixed docs breadcrumbs, unresolved `site` expressions in the `.md` mirrors and the missing `play` and `rss` icons.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 0d39308: Fixed heading order, form `autocomplete` and accessible names on preview pages, `Alert`, `Button`, `Dropzone` and `Avatar`.
+- 8636174: Fixed `Trending` signs, ApexCharts 7 legend markers, marketing asset paths, `pageLibs` checks and the notifications close button.
+- 2b44251: Added the `.flag-country-yt` flag for Mayotte.
+- 57e213b: Updated `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- cc7afaf: Fixed a disabled off `.form-switch` looking the same as an enabled one by filling its track and darkening the knob.
+- a984752: Added `.legend-lg`, `.legend-unit` and `.legend-list-divided` for large legend items with a big value and a unit.
+- 7e7b2ce: Added `.navbar-floating` and the `data-bs-navbar-style="floating"` theme setting for a navbar and sidebar with a `0.5rem` gap.
+- 7e7b2ce: Added `.offcanvas-floating` and the `data-bs-offcanvas-style="floating"` theme setting for an offcanvas with a `0.5rem` gap.
+- 0fe02b3: Updated color mixing to `color-mix(in oklab)`; the `--tblr-*-rgb` variables are deprecated and stay until 2.0.
+- a984752: Added `.page-section-title` and `.page-section-description` classes for section headings inside the page body.
+- 107e493: Updated the palette to `oklch()` and masked the check, switch, toggler and carousel icons; `tabler` JS namespace is deprecated.
+- add68b2: Fixed the missing promo top banner on docs.tabler.io and preview.tabler.io by restoring the `banner.js` script.
+- 0776b88: Added a `switch-icon-loading` state and a cancelable `toggle.bs.switch-icon` event with `event.wait(promise)` for async toggles.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`.
+
 ## 1.5.1
 
 ### Patch Changes

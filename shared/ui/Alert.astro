@@ -1,4 +1,5 @@
 ---
+import type { HTMLTag } from 'astro/types'
 import Icon from './Icon.astro'
 
 /** alert-{color} — matches defaultIcons below */
@@ -11,6 +12,8 @@ interface Props {
   showClose?: boolean
   class?: string
   title?: string
+  /** heading level for the title; match it to the surrounding context */
+  titleAs?: HTMLTag
   description?: string
   list?: string[]
   action?: string
@@ -19,7 +22,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { color = 'success', variant, showClose, class: className, title, description, list, action, link, ...rest } = Astro.props
+const { color = 'success', variant, showClose, class: className, title, titleAs: Title = 'h3', description, list, action, link, ...rest } = Astro.props
 
 const defaultIcons: Record<AlertColor, string> = {
   success: 'check',
@@ -38,7 +41,7 @@ const classes = ['alert', variant && `alert-${variant}`, `alert-${color}`, showC
     description || list ? (
       <div>
         {/* set:html preserves entities like &hellip; in the title */}
-        {title && <h4 class="alert-heading" set:html={title} />}
+        {title && <Title class="alert-heading" set:html={title} />}
         <div class="alert-description">
           <Fragment set:html={description ?? ''} />
           {list && list.length > 0 && (
@@ -66,5 +69,5 @@ const classes = ['alert', variant && `alert-${variant}`, `alert-${color}`, showC
       </Fragment>
     )
   }
-  {showClose && <a class="btn-close" data-bs-dismiss="alert" aria-label="close" />}
+  {showClose && <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close" />}
 </div>

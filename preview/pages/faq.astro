@@ -18,18 +18,18 @@ const categories = faq as { name: string; questions: { question: string }[] }[]
               <h2 class="mb-3">
                 {ci + 1}. {category.name}
               </h2>
-              <div id={`faq-${ci + 1}`} class="accordion accordion-tabs" role="tablist" aria-multiselectable="true">
+              <div id={`faq-${ci + 1}`} class="accordion accordion-tabs">
                 {category.questions.map((question, qi) => (
                   <div class="accordion-item">
-                    <div class="accordion-header">
-                      <button class={`accordion-button${qi === 0 ? '' : ' collapsed'}`} data-bs-toggle="collapse" data-bs-target={`#faq-${ci + 1}-${qi + 1}`} role="tab">
+                    <h3 class="accordion-header">
+                      <button id={`faq-btn-${ci + 1}-${qi + 1}`} class={`accordion-button${qi === 0 ? '' : ' collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#faq-${ci + 1}-${qi + 1}`} aria-expanded={qi === 0 ? 'true' : 'false'} aria-controls={`faq-${ci + 1}-${qi + 1}`}>
                         {question.question}
-                        <div class="accordion-button-toggle">
+                        <span class="accordion-button-toggle">
                           <Icon name="chevron-down" />
-                        </div>
+                        </span>
                       </button>
-                    </div>
-                    <div id={`faq-${ci + 1}-${qi + 1}`} class={`accordion-collapse collapse${qi === 0 ? ' show' : ''}`} role="tabpanel" data-bs-parent={`#faq-${ci + 1}`}>
+                    </h3>
+                    <div id={`faq-${ci + 1}-${qi + 1}`} class={`accordion-collapse collapse${qi === 0 ? ' show' : ''}`} aria-labelledby={`faq-btn-${ci + 1}-${qi + 1}`} data-bs-parent={`#faq-${ci + 1}`}>
                       <div class="accordion-body pt-0">
                         <div>
                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>

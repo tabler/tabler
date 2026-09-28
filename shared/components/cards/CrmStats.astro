@@ -44,9 +44,13 @@ const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'a
         </div>
       </div>
 
-      <div class="col-auto">
-        <Trending value={changeValue as unknown as number} unit={changeValueUnit} />
-      </div>
+      {
+        changeValue !== undefined && (
+          <div class="col-auto">
+            <Trending value={changeValue} unit={changeValueUnit} />
+          </div>
+        )
+      }
     </div>
   </div>
 </div>

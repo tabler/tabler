@@ -1,0 +1,29 @@
+---
+// Signal component on its own, no card: the four priority levels side by side,
+// from no lit bars to all three, each with its label below. The number of lit
+// bars carries the level and the color only supports it, so every level gets
+// its own color. Enlarged with --tblr-signal-size so the stepped bars read at
+// picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Signal from '@ui/Signal.astro'
+
+const levels = [
+  { label: 'None', value: 0, color: undefined },
+  { label: 'Low', value: 1, color: 'green' },
+  { label: 'Normal', value: 2, color: 'blue' },
+  { label: 'Urgent', value: 3, color: 'orange' },
+]
+---
+
+<ScreenshotLayout title="Signal" columns={2}>
+  <div class="d-flex justify-content-center gap-6">
+    {
+      levels.map((level) => (
+        <div class="text-center">
+          <Signal value={level.value} color={level.color} style="--tblr-signal-size: 6rem" />
+          <div class="mt-3 fs-2 fw-medium">{level.label}</div>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

@@ -1,4 +1,5 @@
 ---
+import Strength from '@ui/Strength.astro'
 import FormGroup from '@ui/FormGroup.astro'
 ---
 
@@ -358,6 +359,21 @@ import FormGroup from '@ui/FormGroup.astro'
 </FormGroup>
 <FormGroup label="Telephone mask" for="fe5-input-mask-tel">
   <input type="text" name="input-mask" id="fe5-input-mask-tel" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true" placeholder="(00) 0000-0000" autocomplete="off" />
+</FormGroup>
+
+<FormGroup label="Password strength" for="fe5-password-strength" hint="The meter rates the password as the user types. It is a hint, not a validation.">
+  <input type="password" id="fe5-password-strength" class="form-control" placeholder="Type a password…" autocomplete="new-password" />
+  <Strength />
+</FormGroup>
+
+<FormGroup label="API key" for="fe5-clipboard-key" hint="The copy button reads the value of the field next to it.">
+  <div class="input-group">
+    <input type="text" id="fe5-clipboard-key" class="form-control" value="tblr_live_8f2c41d0a7" readonly />
+    <button type="button" class="btn" data-bs-toggle="clipboard" data-bs-target="#fe5-clipboard-key">
+      <span class="clipboard-label">Copy</span>
+      <span class="clipboard-feedback">Copied</span>
+    </button>
+  </div>
 </FormGroup>
 
 <FormGroup label="Autosize textarea" for="fe5-textarea-autosize">

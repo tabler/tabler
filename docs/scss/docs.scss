@@ -316,13 +316,92 @@ header > .navbar {
 
   // Prose links keep the primary color but gain a quiet underline, so they
   // are findable when scanning and do not rely on color alone (WCAG 1.4.1).
-  > :is(p, ul, ol, table) a:not(.btn) {
+  > :is(p, ul, ol, .docs-table) a:not(.btn) {
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--tblr-primary) 40%, transparent);
     text-underline-offset: 3px;
 
     &:hover {
       text-decoration-color: var(--tblr-primary);
+    }
+  }
+
+  // Markdown tables. The wrap-tables hast plugin (lib/satteri-wrap-tables.mjs)
+  // puts each one in a .docs-table box, so a wide table scrolls inside the
+  // column instead of pushing the page out. The wrapper also takes the table
+  // out of core's `.prose > table` rule, so the whole look is defined here:
+  // a bordered grid with a tinted header row (as on GitHub and VitePress),
+  // full width, tighter rows, and a first column that never wraps — the
+  // option or method name is what the reader scans for, and the description
+  // gets whatever is left. The border sits on the box, not the table, so the
+  // rounded corners survive a sideways scroll.
+  > .docs-table {
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    border: 1px solid var(--tblr-border-color);
+    border-radius: var(--tblr-border-radius);
+
+    > table {
+      width: 100%;
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 0.5rem 0.75rem;
+      text-align: start;
+      vertical-align: top;
+      border: 1px solid var(--tblr-border-color);
+    }
+
+    // The box already draws the outer edge.
+    tr > :first-child {
+      border-inline-start: 0;
+    }
+
+    tr > :last-child {
+      border-inline-end: 0;
+    }
+
+    // First row of the table, whether it sits in a thead or, as in the
+    // class reference, straight in the tbody.
+    > table > :first-child > tr:first-child > * {
+      border-top: 0;
+    }
+
+    tbody tr:last-child > * {
+      border-bottom: 0;
+    }
+
+    th {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      font-size: 0.8125rem;
+      font-weight: var(--tblr-font-weight-semibold);
+      color: var(--tblr-body-color);
+      white-space: nowrap;
+      background: var(--tblr-bg-surface-tertiary);
+    }
+
+    // Names, types and defaults stay on one line; only the last column wraps.
+    // Every middle cell in the docs is a short label, so the browser's even
+    // split would only spread wrapped fragments across the row.
+    td:not(:last-child) {
+      white-space: nowrap;
+    }
+
+    // On a phone the box scrolls sideways; without a floor the description
+    // column would be the one squeezed into a tall sliver instead.
+    th:last-child,
+    td:last-child {
+      min-width: 18rem;
+    }
+
+    td > p:last-child {
+      margin-bottom: 0;
     }
   }
 
@@ -405,6 +484,17 @@ header > .navbar {
     outline: 0;
     border-radius: var(--tblr-border-radius);
     box-shadow: 0 0 0 var(--tblr-focus-ring-width, 0.25rem) var(--tblr-focus-ring-color);
+  }
+}
+
+// All Package promo card under the table of contents (.card-gradient-rainbow):
+// on hover the rainbow border starts rotating, reusing core's gradient-animation.
+.docs-promo-card:hover,
+.docs-promo-card:focus-visible {
+  animation: gradient-animation 6s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }
 
@@ -605,6 +695,12 @@ html {
   scroll-padding-top: var(--docs-header-height);
 }
 
+// Table of contents rail: a fixed width, so the content column takes the rest.
+.col-docs-toc {
+  flex: 0 0 auto;
+  width: 13rem;
+}
+
 // The table of contents sticks too, so it has to clear the header (#2421).
 // A long list must not run past the viewport either: the rail is capped at the
 // space below the header and scrolls on its own (#2965).
@@ -612,4 +708,16 @@ html {
   top: var(--docs-header-height);
   max-height: calc(100vh - var(--docs-header-height));
   overflow-y: auto;
+}
+
+// The copy button on a code block turns green while `.copied` is on it
+// (core/js/src/clipboard.ts). The hover and active variants are set too: the
+// pointer is still over the button right after a click.
+.btn-dark.copied {
+  --tblr-btn-bg: var(--tblr-success);
+  --tblr-btn-hover-bg: var(--tblr-success);
+  --tblr-btn-active-bg: var(--tblr-success);
+  --tblr-btn-border-color: var(--tblr-success);
+  --tblr-btn-hover-border-color: var(--tblr-success);
+  --tblr-btn-active-border-color: var(--tblr-success);
 }

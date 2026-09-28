@@ -1,0 +1,23 @@
+---
+// Signal (.signal): a row of stepped bars showing a level — priority, strength, coverage.
+
+interface Props {
+  /** number of lit bars (`.signal-bar.active`) */
+  value?: number
+  /** total number of bars; core/scss/ui/_signal.scss styles up to $signal-max-bars (5) */
+  max?: number
+  /** core/scss/ui/_signal.scss `.signal-{color}` */
+  color?: string | undefined
+  /** accessible name; without it the signal is hidden from assistive technology */
+  ariaLabel?: string
+  class?: string
+  /** remaining attributes (id, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { value = 0, max = 3, color, ariaLabel, class: className, ...rest } = Astro.props
+
+const bars = Array.from({ length: max }, (_, index) => index < value)
+---
+
+<span class:list={['signal', color && `signal-${color}`, className]} role={ariaLabel ? 'img' : undefined} aria-label={ariaLabel} aria-hidden={ariaLabel ? undefined : 'true'} {...rest}>{bars.map((active) => <span class:list={['signal-bar', active && 'active']} />)}</span>

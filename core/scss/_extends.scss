@@ -92,8 +92,13 @@
   // primary variant is the dark palette on a primary background (see
   // layout/_navbar.scss). The default value writes no attribute and means
   // "follow the page", so there is no rule for it.
+  //
+  // The two-row navbar keeps its menu row in a collapse wrapper next to the
+  // header, so that row is matched on its own.
   html[data-bs-navbar-theme='dark'] .page > .navbar,
-  html[data-bs-navbar-theme='primary'] .page > .navbar {
+  html[data-bs-navbar-theme='primary'] .page > .navbar,
+  html[data-bs-navbar-theme='dark'] .page > [class*='navbar-expand'] .navbar,
+  html[data-bs-navbar-theme='primary'] .page > [class*='navbar-expand'] .navbar {
     @extend [data-bs-theme='dark'];
   }
 }

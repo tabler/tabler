@@ -1,7 +1,7 @@
 ---
 import { personById } from '@shared/lib/people'
 import Chart from '@shared/components/demo/Chart.astro'
-import ChartSparkline from '@ui/ChartSparkline.astro'
+import Sparkline from '@ui/Sparkline.astro'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
 import commits from '@data/commits.json'
@@ -26,7 +26,7 @@ const rows = (commits as Commit[]).slice(0, 5)
   <div class="position-relative">
     <div class="position-absolute top-0 start-0 px-3 mt-1 w-75">
       <div class="row g-2">
-        <div class="col-auto"><ChartSparkline id="activity" percentage={35} type="donut" /></div>
+        <div class="col-auto"><Sparkline id="activity" type="circle" values={[35]} size="lg" color="primary" label="auto" ariaLabel="35% of today's goal" /></div>
         <div class="col">
           <div>Today's Earning: $4,262.40</div>
           <div class="text-secondary"><Icon name="trending-up" color="green" class="icon-inline" /> +5% more than yesterday</div>

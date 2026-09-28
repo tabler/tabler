@@ -3,7 +3,6 @@
 // markdown content, excluding <!--EXAMPLE-->...<!--/EXAMPLE--> blocks).
 import Subheader from '@ui/Subheader.astro'
 import Icon from '@ui/Icon.astro'
-import illustrations from '@data/illustrations.json'
 
 export interface TocItem {
   /** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
@@ -23,7 +22,7 @@ interface Props {
 
 const { toc = [], editUrl, sourceUrl } = Astro.props
 
-const illustrationsCount = illustrations.length
+const allPackageUrl = 'https://tabler.io/pricing?ref=tabler-docs-toc#bundle'
 ---
 
 <!-- BEGIN DOCS TOC -->{
@@ -43,11 +42,13 @@ const illustrationsCount = illustrations.length
   )
 }
 
-<a href="https://r.tabler.io/illustrations" class="card card-sm shadow-none" target="_blank" rel="noopener noreferrer">
+<a href={allPackageUrl} class="card card-sm shadow-none card-gradient card-gradient-rainbow docs-promo-card" target="_blank" rel="noopener noreferrer">
   <div class="card-body">
-    <img src="/img/banner-carbon.png" class="mb-3" alt="" width="260" height="200" loading="lazy" />
+    <img src="/img/banner-all-package.png" class="mb-3 hide-theme-dark" alt="" width="296" height="160" loading="lazy" />
+    <img src="/img/banner-all-package-dark.png" class="mb-3 hide-theme-light" alt="" width="296" height="160" loading="lazy" />
 
-    <h4>{illustrationsCount} sleek illustrations for your startup's visual identity.</h4>
+    <h4>Get Admin Template, Icons, Illustrations and Emails in one bundle.</h4>
+    <div class="text-secondary">Tabler All Package — one purchase, every premium product.</div>
   </div>
 </a>
 

@@ -64,6 +64,8 @@ Put the stylesheet in `<head>` and the script at the end of `<body>`. The file t
 
 That's the whole setup. The CSS covers the layout and components, and the script adds the interactive parts such as dropdowns and modals.
 
+The `integrity` attribute lets the browser check that the file it downloaded is the one Tabler published, and `crossorigin="anonymous"` is what makes that check possible on a CDN. Each hash belongs to one file of one version, so when you move to a newer Tabler, copy the tags from this page again instead of only changing the version number in the URL.
+
 If you'd rather not depend on a CDN, you can download the files and serve them from your own project. The [Download](/ui/getting-started/download) page explains how.
 
 ### Open in your browser
@@ -71,5 +73,21 @@ If you'd rather not depend on a CDN, you can download the files and serve them f
 Save the file and open it in your browser. You should see your first page styled by Tabler. From here you can add a layout, drop in components and build up the app.
 
 </Steps>
+
+## Bootstrap is already included
+
+Tabler's JavaScript file contains Bootstrap's JavaScript. Do not load `bootstrap.bundle.js` or `import 'bootstrap'` next to it.
+
+<Warning title="Load Bootstrap only once">
+  With two copies on the page, every `data-bs-toggle` element gets two handlers. One click then opens two backdrops for a modal or an offcanvas, and dropdowns and tooltips open twice.
+</Warning>
+
+Use the components that Tabler exposes instead. With the script tag they are on the `tabler` global, for example `tabler.Modal` or `tabler.Offcanvas`. With a bundler, import them from the package:
+
+```js
+import { Modal, Offcanvas } from '@tabler/core'
+```
+
+If you need your own copy of Bootstrap's JavaScript, load only Tabler's CSS and leave `tabler.js` out.
 
 If you want to see what's possible, the demo pages at [preview.tabler.io](https://preview.tabler.io) show every layout and component in use. The rest of this documentation covers each of them in detail.

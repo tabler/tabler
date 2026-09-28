@@ -140,6 +140,26 @@ export const themeSections: ThemeSection[] = [
         ],
       },
       {
+        key: 'navbar-style',
+        legend: 'Navigation style',
+        hint: 'Attach the navigation to the edges, or let it float.',
+        control: 'tile',
+        options: [
+          { value: 'default', label: 'Attached' },
+          { value: 'floating', label: 'Floating' },
+        ],
+      },
+      {
+        key: 'offcanvas-style',
+        legend: 'Offcanvas style',
+        hint: 'Attach side panels to the edges, or let them float.',
+        control: 'tile',
+        options: [
+          { value: 'default', label: 'Attached' },
+          { value: 'floating', label: 'Floating' },
+        ],
+      },
+      {
         key: 'sidebar',
         legend: 'Sidebar',
         hint: 'How the sidebar behaves.',

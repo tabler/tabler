@@ -13,7 +13,6 @@ interface Props {
 	condensed?: boolean | undefined;
 	dark?: boolean | undefined;
 	transparent?: boolean;
-	overlap?: boolean | undefined;
 	hideBrand?: boolean | undefined;
 	/** use the sample menu (menu-sample.json) instead of the real one */
 	sample?: boolean;
@@ -41,7 +40,6 @@ const {
 	condensed = false,
 	dark = false,
 	transparent = false,
-	overlap = false,
 	hideBrand = false,
 	sample = false,
 	personId,
@@ -61,7 +59,6 @@ const breakpoint = 'md';
 const headerClass = [
 	`navbar navbar-expand-${breakpoint}`,
 	transparent ? 'navbar-transparent' : background && `bg-${background}`,
-	overlap && 'navbar-overlap',
 	className,
 	'd-print-none',
 ]
@@ -120,6 +117,7 @@ const headerClass = [
 								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
 							</nav>
 							<!-- END NAVBAR MENU -->
+							<NavbarSearch class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" />
 						</div>
 					)}
 				</div>

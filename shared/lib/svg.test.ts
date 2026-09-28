@@ -42,6 +42,10 @@ describe('freeIllustrationSource', () => {
   it('returns the auto-dark source of a bundled illustration', () => {
     expect(freeIllustrationSource('not-found')).toContain('<svg ')
   })
+
+  it('throws for a name that is not bundled instead of rendering nothing', () => {
+    expect(() => freeIllustrationSource('no-such-illustration' as never)).toThrow(/Unknown illustration/)
+  })
 })
 
 describe('illustrationSvg', () => {

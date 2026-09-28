@@ -1,6 +1,7 @@
 @use '../config' as *;
 
 .accordion {
+  // scss-docs-start accordion-css-vars
   --accordion-color: var(--body-color);
   --accordion-border-color: var(--border-color);
   --accordion-border-radius: #{$accordion-border-radius};
@@ -14,11 +15,12 @@
   --accordion-btn-padding-x: var(--accordion-padding-x);
   --accordion-btn-padding-y: #{$accordion-button-padding-y};
   --accordion-btn-font-weight: var(--font-weight-medium);
+  --accordion-btn-line-height: #{$accordion-button-line-height};
   --accordion-body-padding-x: var(--accordion-padding-x);
   --accordion-body-padding-y: #{$accordion-body-padding-y};
   --accordion-btn-gap: #{$accordion-btn-gap};
   --accordion-header-gap: #{$accordion-header-gap};
-  --accordion-btn-focus-box-shadow: #{$accordion-btn-focus-box-shadow};
+  // scss-docs-end accordion-css-vars
 
   display: flex;
   flex-direction: column;
@@ -31,18 +33,31 @@
   gap: var(--accordion-btn-gap);
   align-items: center;
   width: 100%;
-  padding: var(--accordion-btn-padding-y) var(--accordion-padding-x);
+  padding: var(--accordion-btn-padding-y) var(--accordion-btn-padding-x);
   font-size: inherit;
   font-weight: var(--accordion-btn-font-weight);
+  line-height: var(--accordion-btn-line-height);
   color: inherit;
   text-align: inherit;
-  background-color: transparent;
+  background-color: var(--accordion-btn-bg);
   border: 0;
+  @include focus-ring-transition(transform $transition-time);
+  overflow-anchor: none;
 
   &:not(.collapsed) {
     color: var(--accordion-active-color);
     border-bottom-color: transparent;
     box-shadow: none;
+  }
+
+  &:hover {
+    z-index: 2;
+  }
+
+  &:focus-visible {
+    z-index: 3;
+    @include focus-ring(true);
+    outline-offset: -1px;
   }
 }
 
@@ -57,23 +72,6 @@
   text-align: start;
   background-color: transparent;
   border: 0;
-  transition: transform $transition-time;
-  overflow-anchor: none;
-
-  &:hover {
-    z-index: 2;
-  }
-
-  &:focus {
-    z-index: 3;
-    outline: 0;
-    box-shadow: var(--accordion-btn-focus-box-shadow);
-
-    &:not(:focus-visible) {
-      outline: none;
-      box-shadow: none;
-    }
-  }
 }
 
 .accordion-button-icon {
@@ -94,17 +92,14 @@
     color: var(--accordion-active-color);
     transform: rotate(-180deg);
   }
-
-  path {
-    transition: $transition-time opacity;
-  }
 }
 
+// A plus turns into a close icon by rotating a quarter turn. Rotating the
+// toggle instead of hiding an svg path works with every icon source — inline
+// svg, a sprite `<use>`, an icon font (#2606).
 .accordion-button-toggle-plus {
   .accordion-button:not(.collapsed) & {
-    path:first-child {
-      opacity: 0;
-    }
+    transform: rotate(45deg);
   }
 }
 
@@ -127,10 +122,8 @@
   &:last-of-type {
     @include border-bottom-radius(var(--accordion-border-radius));
 
-    > .accordion-header {
-      &.collapsed {
-        @include border-bottom-radius(var(--accordion-inner-border-radius));
-      }
+    > .accordion-header:has(> .accordion-button.collapsed) {
+      @include border-bottom-radius(var(--accordion-inner-border-radius));
     }
 
     > .accordion-collapse {

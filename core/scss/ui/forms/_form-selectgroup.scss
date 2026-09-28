@@ -49,9 +49,9 @@ Select group
   border: var(--border-width) var(--border-style) $input-border-color;
   box-shadow: $input-box-shadow;
   @include border-radius(var(--border-radius));
-  @include transition(border-color $transition-time, background $transition-time, color $transition-time);
+  @include focus-ring-transition(border-color $transition-time, background $transition-time, color $transition-time);
 
-  .icon:only-child {
+  > .icon:only-child {
     margin: 0 var(--form-selectgroup-icon-margin-x);
   }
 
@@ -85,11 +85,11 @@ Select group
   }
 
   .form-selectgroup-input[type='checkbox']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-input-checked-bg-image);
+    background-image: escape-svg(svg-icon-color($form-check-input-checked-bg-image, $form-check-input-checked-color));
   }
 
   .form-selectgroup-input[type='radio']:checked + .form-selectgroup-label & {
-    background-image: escape-svg($form-check-radio-checked-bg-image);
+    background-image: escape-svg(svg-icon-color($form-check-radio-checked-bg-image, $form-check-input-checked-color));
   }
 }
 
@@ -102,7 +102,7 @@ Select group
 .form-selectgroup-input:checked + .form-selectgroup-label {
   z-index: 1;
   color: #{$active-color};
-  background: #{$active-bg};
+  background: var(--active-bg);
   border-color: #{$active-border-color};
 }
 
@@ -110,7 +110,7 @@ Select group
   z-index: 2;
   color: var(--primary);
   border-color: var(--primary);
-  box-shadow: $input-btn-focus-box-shadow;
+  @include focus-ring(true);
 }
 
 /**
@@ -118,7 +118,7 @@ Alternate version of form select group
  */
 .form-selectgroup-boxes {
   .form-selectgroup-label {
-    padding: $card-spacer-x $card-spacer-y;
+    padding: $card-spacer-y $card-spacer-x;
     color: inherit;
     text-align: start;
   }

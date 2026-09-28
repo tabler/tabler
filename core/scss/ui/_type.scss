@@ -9,10 +9,10 @@
 
 a {
   text-decoration-skip-ink: auto;
-  color: color-mix(in sRGB, transparent, var(--link-color) calc(var(--link-opacity, 1) * 100%));
+  color: color-transparent(var(--link-color), calc(var(--link-opacity, 1) * 100%));
 
   &:hover {
-    color: color-mix(in sRGB, transparent, var(--link-hover-color) calc(var(--link-opacity, 1) * 100%));
+    color: color-transparent(var(--link-hover-color), calc(var(--link-opacity, 1) * 100%));
   }
 }
 
@@ -129,12 +129,20 @@ dl {
 pre {
   --scrollbar-color: #{$pre-color};
   padding: $pre-padding;
+  font-size: $pre-font-size;
   line-height: $line-height-base;
   color: $pre-color;
   background: $pre-bg;
   @include border-radius(var(--border-radius));
 
   @include scrollbar();
+
+  // pre keeps its dark surface in both color schemes, so the light-mode
+  // selection tint (10% primary) is invisible here - use the dark-mode value
+  &::selection,
+  ::selection {
+    background-color: $pre-selection-bg;
+  }
 
   code {
     padding: 0;
@@ -210,7 +218,7 @@ a:hover:has(.icon) {
   &:hover {
     color: var(--primary);
     text-decoration: none;
-    background: color-transparent(var(--secondary), 0.04);
+    background: var(--hover-bg);
   }
 }
 
@@ -241,7 +249,7 @@ Mentions
     &:hover,
     &.hover {
       text-decoration: underline;
-      background: var(--bg-surface-secondary);
+      background: var(--hover-bg);
     }
   }
 }

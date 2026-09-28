@@ -6,9 +6,9 @@ docs-libs: [nouislider]
 description: Styled inputs, selects, checkboxes and radios, with states, sizes and layout options.
 order: 1
 related: [/ui/forms/validation, /ui/forms/helpers, /ui/forms/fieldset, /ui/plugins/date-picker, /ui/plugins/advanced-select]
+sass-vars: input
 ---
 import Example from '@components/Example.astro';
-import CodeDocs from '@components/CodeDocs.astro';
 import Icon from '@ui/Icon.astro'
 
 ## Classic inputs
@@ -163,6 +163,15 @@ Inputs come in three sizes: small, default and large.
 </div>
 </Example>
 
+The sizes come from one scale of custom properties on `:root`, shared by buttons and form controls and named as in Bootstrap 6: `--tblr-btn-input-padding-y`, `--tblr-btn-input-padding-x`, `--tblr-btn-input-font-size`, `--tblr-btn-input-line-height`, `--tblr-btn-input-border-radius` and `--tblr-btn-input-min-height`, plus a `--tblr-btn-input-sm-*`, `--tblr-btn-input-lg-*` and `--tblr-btn-input-xl-*` set for each size. Override them on `:root` to change every control at once.
+
+```css
+:root {
+  --tblr-btn-input-padding-y: 0.75rem;
+  --tblr-btn-input-border-radius: 0;
+}
+```
+
 ## Datalists
 
 Use the `datalist` element to add an autocomplete feature to your input control. The list of available options will display once a user starts to type and will make it quicker to complete form sections.
@@ -204,6 +213,17 @@ Use toggle switches for the elements of your form which require choosing between
   <label class="form-check form-switch">
     <input class="form-check-input" type="checkbox" />
     <span class="form-check-label">Option 3</span>
+  </label>
+</div>
+<div class="mb-3">
+  <div class="form-label">Disabled switches</div>
+  <label class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" checked disabled />
+    <span class="form-check-label">Disabled on</span>
+  </label>
+  <label class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" disabled />
+    <span class="form-check-label">Disabled off</span>
   </label>
 </div>
 <div class="mb-3">
@@ -471,9 +491,3 @@ Wrap the buttons that close a form in `form-footer`. It only adds the top margin
 - Group related checkboxes or radios in a `fieldset` with a `legend`. The legend is the only thing that names the group. See [fieldsets](/ui/forms/fieldset).
 - Keep `input` types honest - `email`, `tel`, `url` and `number` change the on-screen keyboard on phones and let the browser validate for you.
 - Do not disable a field to make it read-only. `disabled` removes it from the tab order and from the submitted data; `readonly` keeps both.
-
-## SCSS variables
-
-Use these SCSS variables to customize form controls. The default values are:
-
-<CodeDocs name="input-variables" file="core/scss/_variables.scss" />

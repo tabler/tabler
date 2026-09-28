@@ -2,20 +2,26 @@
 import Icon from './Icon.astro'
 
 interface Props {
-  value: number
+  /** a number, or a signed string such as "+9.5" that is rendered as written */
+  value: number | string
   unit?: string | undefined
   class?: string
 }
 
 const { value, unit = '%', class: className } = Astro.props
 
-const trendingColor = value > 0 ? 'green' : value === 0 ? 'muted' : 'red'
-const trendingIcon = value > 0 ? 'arrow-up' : value === 0 ? 'minus' : 'arrow-down'
+const amount = Number(value)
+if (Number.isNaN(amount)) {
+  throw new Error(`Trending: value "${value}" is not a number`)
+}
+
+const trendingColor = amount > 0 ? 'green' : amount === 0 ? 'muted' : 'red'
+const trendingIcon = amount > 0 ? 'arrow-up' : amount === 0 ? 'minus' : 'arrow-down'
 
 const classes = [`text-${trendingColor} d-inline-flex align-items-center lh-1`, className]
 ---
 
 <span class:list={classes}>
-  <span class="visually-hidden">{value > 0 ? 'Increased by' : value < 0 ? 'Decreased by' : 'No change,'} </span>{value}{unit}
+  <span class="visually-hidden">{amount > 0 ? 'Increased by' : amount < 0 ? 'Decreased by' : 'No change,'} </span>{value}{unit}
   <Icon name={trendingIcon} class="ms-0" size="sm" />
 </span>

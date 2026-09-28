@@ -47,7 +47,7 @@ const Element = element ?? (href && !isAction ? 'a' : 'button')
 const resolvedHref = Element === 'a' ? href : undefined
 const resolvedType = Element === 'button' ? (type ?? 'button') : undefined
 
-const classes = ['btn', color ? `btn-${variant ? `${variant}-` : ''}${color}` : variant && `btn-${variant}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon', loading && 'btn-loading']
+const classes = ['btn', color ? `btn-${variant ? `${variant}-` : ''}${color}` : variant && `btn-${variant}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon', loading && 'btn-loading', Element === 'a' && disabled && 'disabled']
 ---
 
 <Element
@@ -62,6 +62,8 @@ const classes = ['btn', color ? `btn-${variant ? `${variant}-` : ''}${color}` : 
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
   disabled={Element === 'button' && disabled ? true : undefined}
+  aria-disabled={Element === 'a' && disabled ? 'true' : undefined}
+  tabindex={Element === 'a' && disabled ? -1 : undefined}
   {...rest}
 >
   {icon && <Icon name={icon} color={iconColor} />}

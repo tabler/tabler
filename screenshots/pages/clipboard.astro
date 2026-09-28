@@ -1,0 +1,43 @@
+---
+// Clipboard in its natural place: the API keys panel of a developer settings
+// page. The last row is drawn in the state right after a click — a green check
+// where the copy icon was — with the fake cursor on it, so the picture shows
+// what the button does rather than what it looks like at rest.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Icon from '@ui/Icon.astro'
+
+const keys = [
+  { id: 'shot-key-publishable', label: 'Publishable key', value: 'tblr_pk_live_2f91c0a7d4', copied: false },
+  { id: 'shot-key-secret', label: 'Secret key', value: 'tblr_sk_live_8f2c41d0a7e6', copied: false },
+  { id: 'shot-key-webhook', label: 'Webhook signing secret', value: 'whsec_4b17ca9e02d8', copied: true },
+]
+---
+
+<ScreenshotLayout title="Clipboard" columns={2}>
+  <Card>
+    <CardBody class="p-4">
+      <CardTitle>API keys</CardTitle>
+      <CardSubtitle>Copy a key straight from the field. The secret keys are shown once.</CardSubtitle>
+      {
+        keys.map((key, index) => (
+          <FormGroup label={key.label} for={key.id} class={index === keys.length - 1 ? 'mb-0' : 'mb-3'}>
+            <div class="input-group input-group-flat">
+              <input type="text" id={key.id} class="form-control" value={key.value} readonly />
+              <span class="input-group-text">
+                <span class="link-secondary input-group-link position-relative" aria-label={`Copy the ${key.label.toLowerCase()}`}>
+                  {key.copied ? <Icon name="check" class="text-green" /> : <Icon name="clipboard" />}
+                  {key.copied && <span class="cursor" style="top: 90%; left: 70%" />}
+                </span>
+              </span>
+            </div>
+          </FormGroup>
+        ))
+      }
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

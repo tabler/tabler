@@ -10,9 +10,11 @@ interface Props {
 	class?: string;
 	height?: number;
 	label: string;
+	/** overrides the `legend` flag from charts.json, e.g. `false` when the page renders its own legend */
+	legend?: boolean | undefined;
 }
 
-const { chartId, id = chartId, size, class: classProp, height: heightProp, label } = Astro.props;
+const { chartId, id = chartId, size, class: classProp, height: heightProp, label, legend } = Astro.props;
 
 const chartsData = charts as Record<string, ChartData>;
 let data = chartsData[chartId];
@@ -21,6 +23,10 @@ let className = classProp;
 
 if (data?.extend) {
 	data = { ...chartsData[data.extend], ...chartsData[chartId] };
+}
+
+if (data && legend !== undefined) {
+	data = { ...data, legend };
 }
 
 let height = heightProp ?? data?.height ?? 10;
@@ -36,7 +42,7 @@ if (size === 'sm') {
 // The :root custom-property block stays a plain string rendered via set:html — it's
 // inert CSS text (no injection surface), not executable code.
 const style = data ? chartStyle({ id, data }) : '';
-const { config, xFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined };
+const { config, xFormatterExpr, yFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined, yFormatterExpr: undefined };
 const chartKey = `chart-${id}`;
 const elementId = `chart-${id}`;
 ---
@@ -48,7 +54,7 @@ const elementId = `chart-${id}`;
 			<Fragment set:html={style} />
 			<CaptureScript>
 				<!-- BEGIN CHART -->
-				<script is:inline define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+				<script is:inline define:vars={{ chartKey, elementId, config, xFormatterExpr, yFormatterExpr }}>
 					window.tabler_chart ??= {};
 
 					// Heatmap and treemap shade each cell by computing off the literal base color in JS
@@ -81,6 +87,10 @@ const elementId = `chart-${id}`;
 					function initChart() {
 						if (xFormatterExpr && config.xaxis?.labels) {
 							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+						}
+
+						if (yFormatterExpr && config.yaxis?.labels) {
+							config.yaxis.labels.formatter = new Function('val', `return (${yFormatterExpr})`);
 						}
 
 						if ((config.chart?.type === 'heatmap' || config.chart?.type === 'treemap') && Array.isArray(config.colors)) {

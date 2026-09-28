@@ -1,0 +1,31 @@
+// A 1.5 project that compiles Tabler from source. Every variable configured
+// here existed in 1.5; configuring one that is gone is a Sass compile error.
+@use 'scss/tabler' as tabler with (
+  $input-btn-focus-width: 0.125rem,
+  $input-btn-focus-color-opacity: 0.4,
+  $btn-focus-box-shadow: 0 0 0 3px red,
+  $form-hint-margin-top: 0.5rem,
+  $form-switch-checked-bg-position: right center,
+  $pagination-focus-outline: 0,
+  $enable-deprecation-messages: false
+);
+
+// Reading old variables and calling old helpers, as a project's own partials do.
+.fixture {
+  --fixture-width: #{tabler.$input-focus-width};
+  --fixture-primary-rgb: #{tabler.to-rgb(tabler.$primary)};
+  --fixture-has-rgb-map: #{map-has-key(tabler.$theme-colors-rgb, 'primary')};
+  color: tabler.theme-color-darker(#066fd1);
+  background: tabler.theme-color-lighter(#066fd1);
+  border-color: tabler.theme-color-lighter(tabler.$primary);
+  background-image: tabler.url-svg('<svg viewBox="0 0 1 1"/>');
+  transition-property: tabler.varify((a, b));
+
+  &:focus {
+    @include tabler.focus-ring($show-border: true);
+  }
+
+  @include tabler.media-breakpoint-down-than(md) {
+    display: none;
+  }
+}

@@ -1,0 +1,22 @@
+---
+// Large legend on its own, no card and no chart: a `divided` LegendList of
+// `size="lg"` items — colored dot and name, a big value with a small unit
+// below — with a line between them. The last item shows the `off` state of a
+// hidden series.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+
+const items = [
+  { name: 'Requests', color: 'primary', value: '1,234', unit: 'req/s' },
+  { name: 'Bandwidth', color: 'azure', value: '86.2', unit: 'MB/s' },
+  { name: 'Storage', color: 'purple', value: '56', unit: 'GB' },
+  { name: 'Warnings', color: 'orange', value: '128', off: true },
+]
+---
+
+<ScreenshotLayout title="Large legend list" columns={3.2} zoom={1.3}>
+  <LegendList divided class="justify-content-center">
+    {items.map((item) => <Legend size="lg" color={item.color} text={item.name} value={item.value} unit={item.unit} off={item.off} />)}
+  </LegendList>
+</ScreenshotLayout>

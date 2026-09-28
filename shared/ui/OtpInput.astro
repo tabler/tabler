@@ -1,0 +1,37 @@
+---
+// OTP input initializes from `data-bs-toggle="otp"` and its `data-bs-*` options (tabler.js, core/js/src/otp-input.ts).
+type OtpInputType = 'numeric' | 'alphanumeric' | 'alpha'
+type OtpInputSize = 'sm' | 'lg'
+
+interface Props {
+  /** data-bs-length: number of slots. Defaults to the input's `maxlength`, or 6. */
+  length?: number
+  /** data-bs-type: character set accepted by each slot. */
+  type?: OtpInputType
+  /** data-bs-mask: renders filled slots as a mask character instead of the real value. */
+  mask?: boolean
+  /** data-bs-groups: slot counts per visual group, e.g. [3, 3] for "123 456". */
+  groups?: number[]
+  /** data-bs-separator: character shown between groups. */
+  separator?: string
+  /** merges the slots into one connected control, no gap between them. */
+  connected?: boolean
+  size?: OtpInputSize
+  ariaLabel?: string
+  id?: string
+  name?: string
+  value?: string
+  disabled?: boolean
+  class?: string
+  /** remaining attributes (data-*, …) are forwarded to the `.otp` wrapper */
+  [key: string]: unknown
+}
+
+const { length, type, mask, groups, separator, connected, size, ariaLabel, id, name, value, disabled, class: className, ...rest } = Astro.props
+
+const wrapperClass = ['otp', size && `otp-${size}`, connected && 'otp-connected', className]
+---
+
+<div class:list={wrapperClass} data-bs-toggle="otp" data-bs-length={length} data-bs-type={type} data-bs-mask={mask ? 'true' : undefined} data-bs-groups={groups ? JSON.stringify(groups) : undefined} data-bs-separator={separator} {...rest}>
+  <input type="text" id={id} name={name} value={value} maxlength={length} disabled={disabled} aria-label={ariaLabel} />
+</div>

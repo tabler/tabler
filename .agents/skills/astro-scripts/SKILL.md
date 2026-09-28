@@ -18,6 +18,8 @@ The preview HTML is the product: users copy a page out of `preview/dist` and exp
 
 Always `<script is:inline>`. A plain `<script>` is bundled, hashed, and moved into a module chunk — invisible in the copied HTML — and a plain `<style>` makes Astro stamp `data-astro-cid-*` on every element of the component.
 
+An inline script is plain JavaScript. Type annotations, `as HTMLInputElement`, `function (this: …)` — anything the browser cannot parse — is the tell that a script is still being bundled, whatever the comment markers around it say. Two modal scripts shipped that way for months: the `BEGIN` / `END` comments wrapped nothing, and the copied modal had a validator that never ran. Use `getElementById()` with a null guard instead of a cast, and check the built page: the code must sit between its markers, not in a `_astro/*.js` chunk.
+
 ## 2. Where the script ends up
 
 Scripts render at the **end of `<body>`**, not where the component sits, so they run after their markup and after the vendor libraries in `<head>`. The route:
@@ -30,6 +32,9 @@ Scripts render at the **end of `<body>`**, not where the component sits, so they
 - `shared/layouts/BaseLayout.astro` and `docs/layouts/DocsLayout.astro` drain the registry through `<PageScripts />`.
 - Registration is **synchronous** in `CaptureScript`'s frontmatter on purpose: Astro renders siblings concurrently, so a script registered after an `await` can miss the drain. Do not make `CaptureScript` async.
 - The registry does not dedupe. Two instances of a component emit two scripts — write them so that is harmless (see section 6).
+- Both registries are keyed by `Astro.request` (a `WeakMap`, see `shared/lib/page-scripts.ts`). Astro renders pages concurrently in the build, the dev server and the `html-diff` / `check-html` crawlers, so a module-level array would hand one page's scripts to another. Keep it that way when touching the registry, and pass `Astro.request` from both the capture and the drain side.
+
+Modals take the same route: `<CaptureModal>` → `addPageModal()` → `shared/lib/page-modals.ts` → `<PageModals />` at the end of `<body>`, before the settings panel. Same rules: synchronous registration, keyed by `Astro.request`, no dedupe — a component that wraps a modal in `CaptureModal` and is rendered twice emits two modals with the same `id`, so such a component takes an `id` prop like a script does.
 
 ## 3. The standard snippet
 
@@ -112,6 +117,7 @@ An inline script that throws leaves the page looking fine but dead. Never hand o
 ## 10. Checklist
 
 - [ ] `<script is:inline>` inside `<CaptureScript>`, with `BEGIN`/`END` comments
+- [ ] Plain JavaScript inside: no type annotations, no casts, nothing the browser cannot parse
 - [ ] Required `id` prop; selectors derived from it, no class-wide queries
 - [ ] Data passed via `define:vars`, not string interpolation
 - [ ] `init…()` + `readyState` guard

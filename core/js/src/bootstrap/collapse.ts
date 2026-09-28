@@ -8,8 +8,16 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, reflow } from './util/index'
-import type { ComponentConfig, ComponentConfigType, ElementSelector } from './types'
+import { defineJQueryPlugin, getElement, reflow } from './util/index'
+import type { DelegatedEvent } from './dom/event-handler'
+import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
+
+type ComponentConfig = {
+  parent: HTMLElement | null
+  toggle: boolean
+}
+
+type ComponentConfigInput = Partial<Omit<ComponentConfig, 'parent'>> & { parent?: HTMLElement | string | null } & Record<string, unknown>
 
 const NAME = 'collapse'
 const DATA_KEY = 'bs.collapse'
@@ -40,16 +48,18 @@ const Default: ComponentConfig = {
   toggle: true,
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   parent: '(null|element)',
   toggle: 'boolean',
 }
 
 class Collapse extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _isTransitioning: boolean
   _triggerArray: HTMLElement[]
 
-  constructor(element: ElementSelector, config?: ComponentConfig) {
+  constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isTransitioning = false
@@ -81,7 +91,7 @@ class Collapse extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -237,10 +247,30 @@ class Collapse extends BaseComponent {
       element.setAttribute('aria-expanded', String(isOpen))
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    const _config: BaseComponentConfig = {}
+    if (typeof config === 'string' && /show|hide/.test(config)) {
+      _config.toggle = false
+    }
+
+    return this.each(function (this: HTMLElement) {
+      const data = Collapse.getOrCreateInstance(this, _config) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config === 'string') {
+        if (typeof data[config] === 'undefined') {
+          throw new TypeError(`No method named "${config}"`)
+        }
+
+        data[config]()
+      }
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
-  if ((event.target as HTMLElement).tagName === 'A' || ((event as any).delegateTarget && (event as any).delegateTarget.tagName === 'A')) {
+  const { delegateTarget } = event as DelegatedEvent
+  if ((event.target as HTMLElement).tagName === 'A' || (delegateTarget && delegateTarget.tagName === 'A')) {
     event.preventDefault()
   }
 
@@ -248,5 +278,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     ;(Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
   }
 })
+
+defineJQueryPlugin(Collapse)
 
 export default Collapse

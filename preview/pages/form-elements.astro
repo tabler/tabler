@@ -10,6 +10,7 @@ import FormElements6 from '@shared/components/forms/FormElements6.astro'
 import Layout from '@shared/components/cards/form/Layout.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputMask from '@ui/form/InputMask.astro'
+import OtpInput from '@ui/OtpInput.astro'
 import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
@@ -51,7 +52,7 @@ const rows = [
 ]
 ---
 
-<DefaultLayout title="Form elements" pageMenu="form.elements" pageLibs={['nouislider', 'autosize', 'tabler-flags', 'tabler-payments', 'litepicker', 'tom-select', 'imask']}>
+<DefaultLayout title="Form elements" pageMenu="form.elements" pageLibs={['nouislider', 'vanilla-calendar-pro', 'tom-select', 'imask']}>
   <DocsLink slot="page-header-actions" path="/ui/forms/elements" />
   <div class="row row-cards">
     <div class="col-12">
@@ -140,6 +141,24 @@ const rows = [
           </Card>
         </div>
         <div class="col-12 col-lg-6">
+          <Card>
+            <CardHeader title="OTP input" />
+            <CardBody>
+              <FormGroup label="Basic" for="otp-basic"><OtpInput id="otp-basic" length={6} /></FormGroup>
+              <FormGroup label="Sizes" associate={false}>
+                <div class="space-y">
+                  <OtpInput id="otp-sm" length={4} size="sm" ariaLabel="Sizes small" />
+                  <OtpInput id="otp-lg" length={4} size="lg" ariaLabel="Sizes large" />
+                </div>
+              </FormGroup>
+              <FormGroup label="Groups & separator" for="otp-groups"><OtpInput id="otp-groups" length={6} groups={[3, 3]} /></FormGroup>
+              <FormGroup label="Alphanumeric & masked" for="otp-alphanumeric"><OtpInput id="otp-alphanumeric" length={6} type="alphanumeric" mask /></FormGroup>
+              <FormGroup label="Connected" for="otp-connected"><OtpInput id="otp-connected" length={6} connected /></FormGroup>
+              <FormGroup label="Disabled" for="otp-disabled"><OtpInput id="otp-disabled" length={6} value="123456" disabled /></FormGroup>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12 col-lg-6">
           <Card as="form" class="h-100">
             <CardHeader title="My Profile" />
             <CardBody>
@@ -160,10 +179,10 @@ const rows = [
                 <input class="form-control" placeholder="your-email@domain.com" />
               </FormGroup>
               <FormGroup label="Password">
-                <input type="password" class="form-control" value="password" />
+                <input type="password" class="form-control" value="password" autocomplete="current-password" />
               </FormGroup>
             </CardBody>
-            <CardFooter class="text-end"><Button text="Save" color="primary" /></CardFooter>
+            <CardFooter class="text-end"><Button type="submit" text="Save" color="primary" /></CardFooter>
           </Card>
         </div>
       </div>
@@ -220,7 +239,7 @@ const rows = [
                       rows.map((row) => (
                         <tr>
                           <td>
-                            <select class="form-select">
+                            <select class="form-select" aria-label="Source">
                               {sources.map(([v, l]) => (
                                 <option value={v} selected={v === row.source || undefined}>
                                   {l}
@@ -229,10 +248,10 @@ const rows = [
                             </select>
                           </td>
                           <td>
-                            <input type="text" class="form-control" value={row.prop || undefined} />
+                            <input type="text" class="form-control" aria-label="Property" value={row.prop || undefined} />
                           </td>
                           <td>
-                            <select class="form-select">
+                            <select class="form-select" aria-label="Comparison">
                               {comparisons.map(([v, l]) => (
                                 <option value={v} selected={v === row.comparison || undefined}>
                                   {l}
@@ -241,7 +260,7 @@ const rows = [
                             </select>
                           </td>
                           <td>
-                            <input type="text" class="form-control" value={row.target} />
+                            <input type="text" class="form-control" aria-label="Target" value={row.target} />
                           </td>
                         </tr>
                       ))

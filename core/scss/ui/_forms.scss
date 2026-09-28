@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../config' as *;
 
 textarea {
@@ -29,37 +30,6 @@ Form label
   float: inline-end;
   font-weight: var(--font-weight-normal);
   color: $form-secondary-color;
-}
-
-/**
-Form hint
- */
-.form-hint {
-  --form-hint-margin-top: #{$form-hint-margin-top};
-  --form-hint-label-offset: #{$form-hint-label-offset};
-  --form-hint-control-margin-top: #{$form-hint-control-margin-top};
-
-  display: block;
-  color: $form-secondary-color;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  + .form-control {
-    margin-top: var(--form-hint-margin-top);
-  }
-
-  .form-label + & {
-    margin-top: var(--form-hint-label-offset);
-  }
-
-  .input-group + &,
-  .form-control + &,
-  .form-select + & {
-    margin-top: var(--form-hint-control-margin-top);
-    color: $form-secondary-color;
-  }
 }
 
 /**
@@ -99,17 +69,17 @@ Form control
 
 .form-control-dark {
   color: $white;
-  background-color: rgba($black, 0.1);
+  background-color: color-transparent(var(--black), 0.1);
   border-color: transparent;
 
   &:focus {
-    background-color: rgba($black, 0.1);
-    border-color: rgba($white, 0.24);
+    background-color: color-transparent(var(--black), 0.1);
+    border-color: color-transparent(var(--white), 0.24);
     box-shadow: none;
   }
 
   &::placeholder {
-    color: rgba($white, 0.6);
+    color: color-transparent(var(--white), 0.6);
   }
 }
 
@@ -159,6 +129,8 @@ Form help
   justify-content: center;
   width: var(--form-help-size);
   height: var(--form-help-size);
+  // `.form-help` is often a `<button>`: drop the user agent's padding and border
+  padding: 0;
   font-size: var(--form-help-font-size);
   font-weight: var(--font-weight-semibold);
   color: $form-secondary-color;
@@ -167,6 +139,7 @@ Form help
   cursor: pointer;
   user-select: none;
   background: var(--gray-100);
+  border: 0;
   @include border-radius(var(--border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
 
@@ -196,8 +169,10 @@ Input group
 }
 
 .input-group-flat {
+  @include focus-ring-transition();
   &:focus-within {
-    box-shadow: $input-focus-box-shadow;
+    --focus-ring-offset: -1px;
+    @include focus-ring(true);
     @include border-radius($input-border-radius);
 
     .form-control,
@@ -209,6 +184,7 @@ Input group
   .form-control {
     &:focus {
       border-color: $input-border-color;
+      outline: 0;
       box-shadow: none;
     }
 
@@ -236,6 +212,27 @@ Input group
       border-inline-start: 0;
     }
   }
+
+  @each $state, $data in $form-validation-states {
+    $border-color: map.get($data, 'border-color');
+    $focus-ring-color: map.get($data, 'focus-ring-color');
+
+    &:has(.form-control.is-#{$state}),
+    .was-validated &:has(.form-control:#{$state}) {
+      .input-group-text {
+        border-color: $border-color;
+      }
+
+      &:focus-within {
+        outline-color: $focus-ring-color;
+
+        .form-control,
+        .input-group-text {
+          border-color: $border-color !important;
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -244,17 +241,6 @@ Upload files
 .form-file-button {
   margin-inline-start: 0;
   border-inline-start: 0;
-}
-
-/**
-Floating inputs
- */
-// Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
-label[for='floating-input'] {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /**

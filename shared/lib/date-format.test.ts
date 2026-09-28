@@ -12,9 +12,13 @@ describe('formatCommitDate', () => {
 })
 
 describe('toUnixSeconds', () => {
-  it('shifts the wall-clock epoch by the local timezone offset', () => {
-    const date = new Date(Date.UTC(2024, 0, 1, 0, 0, 0))
-    expect(toUnixSeconds(date)).toBe(Math.floor(date.getTime() / 1000) + date.getTimezoneOffset() * 60)
+  it('returns the true epoch seconds', () => {
+    expect(toUnixSeconds(new Date(Date.UTC(2024, 0, 1, 0, 0, 0)))).toBe(1704067200)
+  })
+
+  it('does not depend on DST (summer and winter dates)', () => {
+    expect(toUnixSeconds(new Date(Date.UTC(2024, 6, 1, 12, 0, 0)))).toBe(1719835200)
+    expect(toUnixSeconds(new Date(Date.UTC(2024, 0, 1, 12, 0, 0, 999)))).toBe(1704110400)
   })
 })
 

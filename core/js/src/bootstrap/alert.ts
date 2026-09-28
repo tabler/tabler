@@ -8,6 +8,8 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
 import { enableDismissTrigger } from './util/component-functions'
+import { defineJQueryPlugin } from './util/index.js'
+import type { JQueryCollectionLike } from './types'
 
 const NAME = 'alert'
 const DATA_KEY = 'bs.alert'
@@ -41,8 +43,26 @@ class Alert extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_CLOSED)
     this.dispose()
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Alert.getOrCreateInstance(this) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config](this)
+    })
+  }
 }
 
 enableDismissTrigger(Alert, 'close')
+
+defineJQueryPlugin(Alert)
 
 export default Alert

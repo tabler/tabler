@@ -2,7 +2,7 @@
 // Validates internal links in the docs at the source level (no build needed):
 // - markdown links and `related:` frontmatter in docs/content/**/*.mdx
 // - menu/link urls in shared/data/docs.json
-// - redirect destinations in docs/astro.config.mjs
+// - redirect destinations in docs/lib/redirects.ts
 // - href string literals in docs .astro components
 // - docs paths linked from the demo site: <DocsLink path="…"> and getDocsUrl('…')
 // - asset paths that actually render: src, poster and CSS url() in mdx and in
@@ -20,6 +20,7 @@ import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sync } from 'glob'
 import GithubSlugger from 'github-slugger'
+import { redirects } from '../docs/lib/redirects.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
@@ -53,19 +54,10 @@ for (const file of sync(join(pagesDir, '**', '*.ts'))) {
 }
 
 // Redirect sources are valid link targets; their destinations must exist.
-const astroConfig = readFileSync(join(repoRoot, 'docs', 'astro.config.mjs'), 'utf8')
-const redirectSources = new Set<string>()
-const redirectDestinations: string[] = []
-// static entries: '/from': { status: 301, destination: '/to' }
-for (const match of astroConfig.matchAll(/'(\/[^']+)':\s*\{\s*status:\s*\d+,\s*destination:\s*'(\/[^']+)'/g)) {
-  redirectSources.add(match[1] ?? '')
-  redirectDestinations.push(match[2] ?? '')
-}
-// generated entries: ['alerts', 'alert'], … mapped onto /ui/components/<slug>
-for (const match of astroConfig.matchAll(/\['([a-z-]+)',\s*'([a-z-]+)'\]/g)) {
-  redirectSources.add(`/ui/components/${match[1]}`)
-  redirectDestinations.push(`/ui/components/${match[2]}`)
-}
+// The table lives in docs/lib/redirects.ts (shared with astro.config.mjs and
+// the docs middleware), so it is imported rather than parsed.
+const redirectSources = new Set<string>(Object.keys(redirects))
+const redirectDestinations: string[] = Object.values(redirects).map((redirect) => redirect.destination)
 
 // Asset urls are served from these source directories (synced by copyAssets).
 const assetRoots: Record<string, string[]> = {

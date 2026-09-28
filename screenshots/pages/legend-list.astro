@@ -1,0 +1,35 @@
+---
+// Legend component on its own, no card and no chart: a LegendList of button
+// items — colored dot, source name, its share in tabular numerals — wrapping
+// over a few rows in a narrow container. The fake cursor rests on the active
+// item so the tinted hover background is part of the picture, and the last
+// items show the `off` state of a hidden series.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+
+const sources = [
+  { name: 'Organic search', color: 'blue', value: '31%' },
+  { name: 'Direct', color: 'azure', value: '22%' },
+  { name: 'Paid search', color: 'indigo', value: '14%' },
+  { name: 'Social media', color: 'purple', value: '11%', active: true },
+  { name: 'Referral', color: 'pink', value: '8%' },
+  { name: 'Newsletter', color: 'orange', value: '6%' },
+  { name: 'Partners', color: 'teal', value: '4%' },
+  { name: 'Email', color: 'green', value: '3%', off: true },
+  { name: 'Other', color: 'lime', value: '1%', off: true },
+]
+---
+
+<ScreenshotLayout title="Legend list" columns={2}>
+  <LegendList class="justify-content-center">
+    {
+      sources.map((item) => (
+        <Legend button color={item.color} value={item.value} active={item.active} off={item.off} class="position-relative">
+          {item.name}
+          {item.active && <span class="cursor" />}
+        </Legend>
+      ))
+    }
+  </LegendList>
+</ScreenshotLayout>

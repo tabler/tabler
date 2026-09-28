@@ -41,6 +41,19 @@ Or include it from a CDN. You need both the script and its stylesheet:
 <script src="${site.cdnUrl}/dist/libs/tom-select/dist/js/tom-select.base.min.js"></script>`}
 />
 
+### Compiling the Sass sources
+
+Use the compiled `tom-select.bootstrap5.css`. Tom Select's Sass sources read Bootstrap variables such as `$border-color` and pass them to `color.adjust()`, and in Tabler those variables hold CSS custom properties like `var(--gray-200)`, so Sass stops with `$color: var(--gray-200) is not a color`. If you still want to compile it, set the variables Tom Select adjusts to plain colors first:
+
+```scss
+// `as *` keeps Tabler's variables visible to the @import below
+@use '@tabler/core/scss/tabler' as *;
+
+$select-color-text: #182433;
+$select-color-item-border: #e6e7e9;
+@import 'tom-select/dist/scss/tom-select.bootstrap5';
+```
+
 ## Usage
 
 ### Basic select

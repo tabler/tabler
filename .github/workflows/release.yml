@@ -26,21 +26,36 @@ jobs:
 
       - name: Set up the workspace
         uses: ./.github/actions/setup
+        with:
+          turbo-cache: 'false'
 
       - name: Update npm # trusted publishing requires npm >= 11.5.1
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.19.1
 
       - name: Build
         run: pnpm run build
 
+      # The last gate before npm: nothing the previous release shipped may be
+      # missing, unless compat-baseline.txt marks it as accepted. It runs here and
+      # not only on the versions pull request, because workflows on a pull request
+      # opened by the bot wait for a manual approval and may never run. On the
+      # push that publishes, the local version is not on npm yet, so the check
+      # compares with `latest`, which is the release users update from.
+      - name: Check backward compatibility
+        run: pnpm run check:compat --strict
+
       - name: Create release Pull Request or publish to NPM
         id: changesets
-        uses: changesets/action@v2
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           version-script: pnpm run version
           publish-script: pnpm run publish
           commit-message: "chore: update versions"
           pr-title: "chore: update versions"
+          # Push through git instead of the GitHub API: the API mode force-updates
+          # changeset-release/dev via a short-lived changesets-ghcommit-temp/* branch,
+          # and every one of those branches triggered a Vercel build.
+          push-with-git-cli: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

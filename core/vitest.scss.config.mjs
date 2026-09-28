@@ -6,5 +6,8 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     include: ['scss/tests/**/*.test.mjs'],
+    // These tests compile whole SCSS entry points with sass, which takes longer
+    // than vitest's 5 s default on a CI runner.
+    testTimeout: 30_000,
   },
 })

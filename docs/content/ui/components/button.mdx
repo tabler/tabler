@@ -4,6 +4,7 @@ summary: Buttons in every color, size and shape, with icons, loading states, soc
 description: Buttons in many colors, sizes and shapes, with icons, loading states and social styles.
 related: [/ui/components/dropdown]
 source: core/scss/ui/_buttons.scss
+css-vars: btn
 classnames:
   component:
     - class: btn
@@ -56,7 +57,6 @@ classnames:
 import ButtonGroup from '@ui/ButtonGroup.astro';
 import Example from '@components/Example.astro';
 import Icon from '@ui/Icon.astro';
-import CodeDocs from '@components/CodeDocs.astro';
 
 ## Button tag
 
@@ -231,7 +231,7 @@ Social buttons use the brand colors and icons of popular services, so a share or
   <a href="#" class="btn btn-instagram"> <Icon name="brand-instagram" /> Instagram </a>
   <a href="#" class="btn btn-pinterest"> <Icon name="brand-pinterest" /> Pinterest </a>
   <a href="#" class="btn btn-vk"> <Icon name="brand-vk" /> VK </a>
-  <a href="#" class="btn btn-rss"> <Icon name="brand-rss" /> RSS </a>
+  <a href="#" class="btn btn-rss"> <Icon name="rss" /> RSS </a>
   <a href="#" class="btn btn-flickr"> <Icon name="brand-flickr" /> Flickr </a>
   <a href="#" class="btn btn-bitbucket"> <Icon name="brand-bitbucket" /> Bitbucket </a>
   <a href="#" class="btn btn-tabler"> <Icon name="brand-tabler" /> Tabler </a>
@@ -467,15 +467,15 @@ Add `.btn-animate-icon` to move the icon on hover. The `-rotate`, `-shake`, `-pu
 
 <Example>
 <div class="btn-list">
-  <a class="btn btn-animate-icon"> Save <Icon name="arrow-right" class="icon-end" /> </a>
-  <a class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="plus" /> Add </a>
-  <a class="btn btn-animate-icon btn-animate-icon-shake"> <Icon name="bell" /> Notifications </a>
-  <a class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="settings" /> Settings </a>
-  <a class="btn btn-animate-icon btn-animate-icon-pulse"> <Icon name="heart" /> Love </a>
-  <a class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="x" /> Close </a>
-  <a class="btn btn-animate-icon btn-animate-icon-tada"> <Icon name="check" /> Confirm </a>
-  <a class="btn btn-animate-icon"> Next <Icon name="chevron-right" class="icon-end" /> </a>
-  <a class="btn btn-animate-icon btn-animate-icon-move-start"> <Icon name="chevron-left" /> Previous </a>
+  <button type="button" class="btn btn-animate-icon"> Save <Icon name="arrow-right" class="icon-end" /> </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="plus" /> Add </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-shake"> <Icon name="bell" /> Notifications </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="settings" /> Settings </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-pulse"> <Icon name="heart" /> Love </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-rotate"> <Icon name="x" /> Close </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-tada"> <Icon name="check" /> Confirm </button>
+  <button type="button" class="btn btn-animate-icon"> Next <Icon name="chevron-right" class="icon-end" /> </button>
+  <button type="button" class="btn btn-animate-icon btn-animate-icon-move-start"> <Icon name="chevron-left" /> Previous </button>
 </div>
 </Example>
 
@@ -572,9 +572,3 @@ Add `btn-floating` to pin a button to the bottom corner of the viewport. It stay
 - Pair `btn-loading` with `aria-busy="true"` and a disabled state. The class blanks the label with `color: transparent`, so the old text is still what a screen reader reads.
 - A button that toggles something needs `aria-pressed`; one that opens a panel needs `aria-expanded`. Bootstrap sets `aria-expanded` for you on dropdown and collapse triggers.
 - Color alone should not carry the meaning. `btn-danger` looks alarming, but the label has to say what happens.
-
-## SCSS variables
-
-Use these SCSS variables to customize buttons. The default values are:
-
-<CodeDocs name="btn-variables" file="core/scss/_variables.scss" />

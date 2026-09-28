@@ -1,0 +1,91 @@
+---
+import CaptureScript from '../CaptureScript.astro'
+
+interface Props {
+  id: string
+  title: string
+  description: string
+  value: number
+  label: string
+  count: number
+  total: number
+  countLabel?: string
+  color?: 'green' | 'yellow' | 'neutral'
+}
+
+const { id, title, description, value, label, count, total, countLabel = 'of', color = 'neutral' } = Astro.props
+
+// Needs the `apexcharts` lib on the page (pageLibs / docs-libs).
+const chartId = `chart-gauge-${id}`
+const chartColor = color === 'neutral' ? 'var(--tblr-body-color)' : `var(--tblr-${color})`
+const format = (n: number) => n.toLocaleString('en-US')
+---
+
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">{title}</h3>
+    <div id={chartId} class="position-relative mx-auto" style="width: 10rem; max-width: 100%" role="img" aria-label={`${title}: ${value}%`}></div>
+    <p class="text-secondary mt-3 mb-0" style="min-height: 2lh">{description}</p>
+  </div>
+  <div class="card-footer d-flex text-secondary">
+    <div><span class="fw-medium text-body">{format(count)}</span> {countLabel} {format(total)}</div>
+    <div class="ms-auto">{format(total - count)} remaining</div>
+  </div>
+</div>
+<CaptureScript>
+  <!-- BEGIN GAUGE -->
+  <script is:inline define:vars={{ chartId, value, label, chartColor }}>
+    function initGauge() {
+      window.tabler_chart ??= {}
+
+      window.ApexCharts &&
+        (window.tabler_chart[chartId] = new ApexCharts(document.getElementById(chartId), {
+          series: [value],
+          chart: {
+            type: 'radialBar',
+            height: 160,
+            sparkline: {
+              enabled: true,
+            },
+          },
+          plotOptions: {
+            radialBar: {
+              hollow: {
+                size: '64%',
+              },
+              track: {
+                background: 'var(--tblr-border-color)',
+              },
+              dataLabels: {
+                name: {
+                  show: true,
+                  offsetY: 18,
+                  fontSize: '12px',
+                  fontFamily: 'inherit',
+                  fontWeight: 400,
+                  color: 'var(--tblr-secondary)',
+                },
+                value: {
+                  show: true,
+                  offsetY: -12,
+                  fontSize: '24px',
+                  fontFamily: 'inherit',
+                  fontWeight: 500,
+                  color: 'var(--tblr-body-color)',
+                  formatter: (val) => `${val}%`,
+                },
+              },
+            },
+          },
+          colors: [chartColor],
+          stroke: {
+            lineCap: 'round',
+          },
+          labels: [label],
+        })).render()
+    }
+
+    document.readyState !== 'loading' ? initGauge() : document.addEventListener('DOMContentLoaded', initGauge, { once: true })
+  </script>
+  <!-- END GAUGE -->
+</CaptureScript>

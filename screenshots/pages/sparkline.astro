@@ -1,0 +1,53 @@
+---
+// Sparkline component on its own: a grid of the chart types — a plain line, a
+// filled line with the last value marked, bars (one set with negative
+// values below the zero line), a circle and a win/loss chart, then a row
+// with few and many data points — colored in palette order, since the charts draw with
+// currentColor. The
+// charts use the `sparkline-lg` size (and `sparkline-square` for the circles)
+// with a thicker stroke so they read at picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+
+const charts = [
+  { color: 'blue', type: 'line', values: '14,9,17,11,22,8,19,13,24,16,10,21' },
+  { color: 'azure', type: 'line', fill: 'auto', spot: 'last', values: '7,15,11,23,9,18,26,14,20,12,29,33' },
+  { color: 'indigo', type: 'bar', values: '5,12,8,3,14,9,6,15,4,11' },
+  { color: 'purple', type: 'circle', values: '64', label: 'auto' },
+  { color: 'pink', type: 'line', spot: 'max', values: '21,13,27,18,9,31,15,24,12,19,26,17' },
+  { color: 'orange', type: 'line', fill: 'auto', spot: 'min', values: '38,29,34,17,25,11,22,15,8,19,13,16' },
+  { color: 'teal', type: 'bar', values: '6,-3,8,-5,2,-7,9,-2,4,-6' },
+  { color: 'green', type: 'circle', values: '27', label: 'auto' },
+  { color: 'red', type: 'line', spot: 'last', values: '9,4,12,7,15' },
+  { color: 'yellow', type: 'line', fill: 'auto', values: '14,11,17,9,20,13,22,10,18,25,15,27,12,23,30,16,24,19,28,21,33,17,26,31,22,35,20,29,34,26' },
+  { color: 'lime', type: 'tristate', barGap: 3, values: '3,-2,0,5,1,-1,-4,2,0,1' },
+  { color: 'cyan', type: 'bar', barGap: 1.5, values: '3,6,2,8,5,9,4,7,10,3,8,6,11,5,9,2,7,10,4,8,6,12,5,9' },
+]
+
+const isCircle = (type: string) => type === 'circle'
+---
+
+<ScreenshotLayout title="Sparkline" columns={2.4}>
+  <div class="d-grid gap-6 justify-content-center align-items-center" style="grid-template-columns: repeat(4, auto); justify-items: center">
+    {
+      charts.map((chart) => (
+        <span
+          class:list={['sparkline', 'sparkline-lg', isCircle(chart.type) && 'sparkline-square', `text-${chart.color}`]}
+          style={isCircle(chart.type) ? '--tblr-sparkline-stroke-width: 4' : '--tblr-sparkline-stroke-width: 2.5; --tblr-sparkline-spot-size: 3'}
+          data-bs-toggle="sparkline"
+          data-bs-type={chart.type}
+          data-bs-fill={chart.fill}
+          data-bs-spot={chart.spot}
+          data-bs-values={chart.values}
+          data-bs-label={chart.label}
+          data-bs-max={isCircle(chart.type) ? 100 : undefined}
+          data-bs-width={isCircle(chart.type) ? 40 : 120}
+          data-bs-height={isCircle(chart.type) ? 40 : 40}
+          data-bs-pad={isCircle(chart.type) ? undefined : 3}
+          data-bs-bar-gap={chart.type === 'bar' || chart.type === 'tristate' ? (chart.barGap ?? 4) : undefined}
+          data-bs-bar-radius={chart.type === 'bar' || chart.type === 'tristate' ? 3 : undefined}
+          aria-label={`${chart.type} sparkline`}
+        />
+      ))
+    }
+  </div>
+</ScreenshotLayout>

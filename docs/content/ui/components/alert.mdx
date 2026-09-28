@@ -4,6 +4,7 @@ summary: Alerts report the result of an action or a problem to fix, in success, 
 description: Show alert messages that inform users about success, info, warning, or danger states, with icons, links, and dismissible options.
 related: [/ui/components/toast]
 source: core/scss/ui/_alerts.scss
+css-vars: alert
 classnames:
   component:
     - class: alert
@@ -33,7 +34,6 @@ classnames:
       desc: Any base color, for example alert-success, alert-blue or alert-muted
 ---
 import Example from '@components/Example.astro';
-import CodeDocs from '@components/CodeDocs.astro';
 import Alert from '@ui/Alert.astro';
 import Icon from '@ui/Icon.astro'
 
@@ -89,7 +89,7 @@ Add `alert-minor` for a quieter alert. It drops the tinted background and keeps 
 <div class="alert alert-minor alert-info alert-dismissible" role="alert">
   <div class="alert-heading">Did you know?</div>
   <div class="text-secondary">Here is something that you might like to know.</div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 <div class="alert alert-minor alert-success" role="alert">
   <div class="alert-heading">Everything worked</div>
@@ -102,7 +102,7 @@ Add `alert-minor` for a quieter alert. It drops the tinted background and keeps 
 Add a close button to let the user dismiss the alert. It stays on the page until they do.
 
 ```html
-<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 ```
 
 <Example>
@@ -113,60 +113,43 @@ Add a close button to let the user dismiss the alert. It stays on the page until
 
 An icon in front of the text repeats the type of the alert, which helps when several alerts are on the page.
 
-Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont) to provide the proper styling.
+Put the icon in an `alert-icon` wrapper as the first child of the alert, and the heading and text in a second element next to it. The alert lays its children out in a row, so no extra flex wrapper is needed.
 
 <Example>
 <div class="alert alert-success" role="alert">
-  <div class="d-flex">
-    <div>
-      <Icon name="check" class="alert-icon" />
-    </div>
-    <div>
-      <h4 class="alert-heading">Wow! Everything worked!</h4>
-      <div class="text-secondary">Your account has been saved!</div>
-    </div>
+  <div class="alert-icon">
+    <Icon name="check" class="alert-icon" />
+  </div>
+  <div>
+    <h4 class="alert-heading">Wow! Everything worked!</h4>
+    <div class="alert-description">Your account has been saved!</div>
   </div>
 </div>
 <div class="alert alert-info" role="alert">
-  <div class="d-flex">
-    <div>
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <circle cx="12" cy="12" r="9" />
-        <line x1="12" y1="8" x2="12.01" y2="8" />
-        <polyline points="11 12 12 12 12 16 13 16" />
-      </svg>
-    </div>
-    <div>
-      <h4 class="alert-heading">Did you know?</h4>
-      <div class="text-secondary">Here is something that you might like to know.</div>
-    </div>
+  <div class="alert-icon">
+    <Icon name="info-circle" class="alert-icon" />
+  </div>
+  <div>
+    <h4 class="alert-heading">Did you know?</h4>
+    <div class="alert-description">Here is something that you might like to know.</div>
   </div>
 </div>
 <div class="alert alert-warning" role="alert">
-  <div class="d-flex">
-    <div>
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 9v2m0 4v.01" />
-        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-      </svg>
-    </div>
-    <div>
-      <h4 class="alert-heading">Uh oh, something went wrong</h4>
-      <div class="text-secondary">Sorry! There was a problem with your request.</div>
-    </div>
+  <div class="alert-icon">
+    <Icon name="alert-triangle" class="alert-icon" />
+  </div>
+  <div>
+    <h4 class="alert-heading">Uh oh, something went wrong</h4>
+    <div class="alert-description">Sorry! There was a problem with your request.</div>
   </div>
 </div>
 <div class="alert alert-danger" role="alert">
-  <div class="d-flex">
-    <div>
-      <Icon name="alert-circle" class="alert-icon" />
-    </div>
-    <div>
-      <h4 class="alert-heading">I'm so sorry&hellip;</h4>
-      <div class="text-secondary">Your account has been deleted and can't be restored.</div>
-    </div>
+  <div class="alert-icon">
+    <Icon name="alert-circle" class="alert-icon" />
+  </div>
+  <div>
+    <h4 class="alert-heading">I'm so sorry&hellip;</h4>
+    <div class="alert-description">Your account has been deleted and can't be restored.</div>
   </div>
 </div>
 </Example>
@@ -216,40 +199,40 @@ Buttons don't inherit the alert's color, so you should set the proper class if y
 
 <Example>
 <div class="alert alert-success alert-dismissible" role="alert">
-  <h3 class="mb-1">Some Title</h3>
+  <h3 class="alert-heading">Some Title</h3>
   <p class="text-secondary">Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
   <div class="btn-list">
     <a href="#" class="btn btn-success">Okay</a>
     <a href="#" class="btn">Cancel</a>
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 <div class="alert alert-info alert-dismissible" role="alert">
-  <h3 class="mb-1">Some Title</h3>
+  <h3 class="alert-heading">Some Title</h3>
   <p class="text-secondary">Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
   <div class="btn-list">
     <a href="#" class="btn btn-info">Okay</a>
     <a href="#" class="btn">Cancel</a>
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 <div class="alert alert-warning alert-dismissible" role="alert">
-  <h3 class="mb-1">Some Title</h3>
+  <h3 class="alert-heading">Some Title</h3>
   <p class="text-secondary">Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
   <div class="btn-list">
     <a href="#" class="btn btn-warning">Okay</a>
     <a href="#" class="btn">Cancel</a>
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 <div class="alert alert-danger alert-dismissible" role="alert">
-  <h3 class="mb-1">Some Title</h3>
+  <h3 class="alert-heading">Some Title</h3>
   <p class="text-secondary">Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
   <div class="btn-list">
     <a href="#" class="btn btn-danger">Okay</a>
     <a href="#" class="btn">Cancel</a>
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 </Example>
 
@@ -265,22 +248,18 @@ You can also use other elements, like icons and dismissible buttons, with this t
 
 <Example>
 <div class="alert alert-important alert-success alert-dismissible" role="alert">
-  <div class="d-flex">
-    <div>
-      <Icon name="check" class="alert-icon" />
-    </div>
-    <div>Wow! Everything worked!</div>
+  <div class="alert-icon">
+    <Icon name="check" class="alert-icon" />
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <div>Wow! Everything worked!</div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 <div class="alert alert-important alert-danger alert-dismissible" role="alert">
-  <div class="d-flex">
-    <div>
-      <Icon name="alert-circle" class="alert-icon" />
-    </div>
-    <div>Your account has been deleted and can't be restored.</div>
+  <div class="alert-icon">
+    <Icon name="alert-circle" class="alert-icon" />
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <div>Your account has been deleted and can't be restored.</div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 </Example>
 
@@ -318,7 +297,7 @@ You're not limited to the 4 default alert colors. You can use any [base color](/
       <div>Be the first to see it!</div>
     </div>
   </div>
-  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
 </div>
 </Example>
 
@@ -328,11 +307,5 @@ You're not limited to the 4 default alert colors. You can use any [base color](/
 - The live region has to exist before the message arrives. Render the container on page load and put the text into it, rather than inserting the whole alert at the moment of the event.
 - Label the dismiss button with `aria-label="Close"`. `btn-close` has no text of its own.
 - The icon is decoration, so the alert must still read correctly with the icon ignored. Keep the meaning in the heading and the text.
-- Colour alone does not say "error". A red alert and a green one must differ in their words too.
+- Color alone does not say "error". A red alert and a green one must differ in their words too.
 - After dismissing an alert, move focus somewhere sensible. Focus left on a removed element falls back to the top of the page.
-
-## SCSS variables
-
-Use these SCSS variables to customize alerts. The default values are:
-
-<CodeDocs name="alert-variables" file="core/scss/_variables.scss" />

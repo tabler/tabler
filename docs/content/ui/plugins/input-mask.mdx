@@ -60,9 +60,32 @@ If you need more examples of input masks, you can find them in the [IMask docume
 
 ## JavaScript
 
-Tabler automatically initializes all elements with `data-mask` on page load. This is the code that runs:
+Tabler wraps the plugin in an `InputMask` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-mask`. This is the code that runs:
 
 <CodeDocs name="input-mask-init" file="core/js/src/input-mask.ts" />
+
+Create the component yourself for a field added later. The pattern comes from `data-mask`, or from the config object, which wins:
+
+```js
+const phone = new tabler.InputMask(document.getElementById('phone'), { mask: '(00) 0000-0000' });
+```
+
+`data-mask-visible="true"` shows the pattern before the user types. In the config object that is `lazy: false`.
+
+The `mask` getter returns the IMask instance, so everything from the [IMask API](https://imask.js.org/guide.html#api) is available:
+
+```js
+const phone = tabler.InputMask.getOrCreateInstance(document.getElementById('phone'));
+console.log(phone.mask.unmaskedValue);
+```
+
+| Method | Description |
+| --- | --- |
+| `update()` | Re-applies the mask after the value was changed from code. |
+| `mask` | Getter. The IMask instance, or `null` when the library is not loaded. |
+| `dispose()` | Removes the mask and the component from the element. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
 
 ## Accessibility
 

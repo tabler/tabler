@@ -8,8 +8,16 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
 import { enableDismissTrigger } from './util/component-functions'
-import { reflow } from './util/index.js'
-import type { ComponentConfig, ComponentConfigType, ElementSelector } from './types'
+import { defineJQueryPlugin, reflow } from './util/index.js'
+import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
+
+type ComponentConfig = {
+  animation: boolean
+  autohide: boolean
+  delay: number
+}
+
+type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
 const NAME = 'toast'
 const DATA_KEY = 'bs.toast'
@@ -29,7 +37,7 @@ const CLASS_NAME_HIDE = 'hide'
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_SHOWING = 'showing'
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   animation: 'boolean',
   autohide: 'boolean',
   delay: 'number',
@@ -42,11 +50,13 @@ const Default: ComponentConfig = {
 }
 
 class Toast extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _timeout: ReturnType<typeof setTimeout> | null
   _hasMouseInteraction: boolean
   _hasKeyboardInteraction: boolean
 
-  constructor(element: ElementSelector, config?: ComponentConfig) {
+  constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
 
     this._timeout = null
@@ -59,7 +69,7 @@ class Toast extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -186,8 +196,24 @@ class Toast extends BaseComponent {
     clearTimeout(this._timeout!)
     this._timeout = null
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Toast.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config === 'string') {
+        if (typeof data[config] === 'undefined') {
+          throw new TypeError(`No method named "${config}"`)
+        }
+
+        data[config](this)
+      }
+    })
+  }
 }
 
 enableDismissTrigger(Toast)
+
+defineJQueryPlugin(Toast)
 
 export default Toast

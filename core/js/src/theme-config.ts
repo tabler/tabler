@@ -7,14 +7,16 @@
  */
 export const themeDefaults = {
   'theme': 'auto',
-  'theme-base': 'gray',
+  'theme-base': 'neutral',
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',
   'layout': 'default',
   'navbar': 'default',
   'navbar-position': 'horizontal',
+  'navbar-style': 'default',
   'navbar-theme': 'default',
+  'offcanvas-style': 'default',
   'sidebar': 'default',
 } as const
 

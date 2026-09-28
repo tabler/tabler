@@ -1,0 +1,63 @@
+/*
+Password strength meter
+ */
+@use '../../config' as *;
+
+.strength {
+  --strength-height: #{$strength-height};
+  --strength-gap: #{$strength-gap};
+  --strength-bg: #{$strength-bg};
+  --strength-border-radius: #{$strength-border-radius};
+  --strength-color: #{$strength-bg};
+  --strength-margin-top: #{$strength-margin-top};
+
+  display: flex;
+  gap: var(--strength-gap);
+  width: 100%;
+
+  // Spaced like a form hint, so the meter sits under the control it rates
+  // without a utility class at every call site.
+  .form-control + &,
+  .form-select + &,
+  .input-group + &,
+  .form-hint + & {
+    margin-top: var(--strength-margin-top);
+  }
+}
+
+.strength-segment {
+  flex: 1;
+  height: var(--strength-height);
+  background: var(--strength-bg);
+  border-radius: var(--strength-border-radius);
+  transition: background-color 0.2s ease-in-out;
+
+  &.active {
+    background: var(--strength-color);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.strength + .strength-text {
+  margin-top: #{$strength-text-margin-top};
+}
+
+.strength-text {
+  font-size: $strength-text-font-size;
+  color: var(--strength-color, var(--secondary));
+
+  // An empty label must not reserve a line before the user types.
+  &:empty {
+    display: none;
+  }
+}
+
+@each $level, $color in $strength-levels {
+  .strength[data-bs-strength='#{$level}'],
+  .strength-text[data-bs-strength='#{$level}'] {
+    --strength-color: #{$color};
+  }
+}

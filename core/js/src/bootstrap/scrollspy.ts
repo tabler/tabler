@@ -8,8 +8,18 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getElement, isDisabled, isVisible, parseSelector } from './util/index'
-import type { ComponentConfig, ComponentConfigType } from './types'
+import { defineJQueryPlugin, getElement, isDisabled, isVisible, parseSelector } from './util/index'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
+
+type ComponentConfig = {
+  offset: number | null
+  rootMargin: string
+  smoothScroll: boolean
+  target: HTMLElement | null
+  threshold: number[]
+}
+
+type ComponentConfigInput = Partial<Omit<ComponentConfig, 'target' | 'threshold'>> & { target?: HTMLElement | string | null; threshold?: number[] | string } & Record<string, unknown>
 
 const NAME = 'scrollspy'
 const DATA_KEY = 'bs.scrollspy'
@@ -41,7 +51,7 @@ const Default: ComponentConfig = {
   threshold: [0.1, 0.5, 1],
 }
 
-const DefaultType: ComponentConfigType = {
+const DefaultType: Record<keyof ComponentConfig, string> = {
   offset: '(number|null)',
   rootMargin: 'string',
   smoothScroll: 'boolean',
@@ -50,6 +60,8 @@ const DefaultType: ComponentConfigType = {
 }
 
 class ScrollSpy extends BaseComponent {
+  declare _element: HTMLElement
+  declare _config: ComponentConfig
   _targetLinks: Map<string, HTMLElement>
   _observableSections: Map<string, HTMLElement>
   _rootElement: HTMLElement | null
@@ -60,7 +72,7 @@ class ScrollSpy extends BaseComponent {
     parentScrollTop: number
   }
 
-  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
+  constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._targetLinks = new Map()
@@ -79,7 +91,7 @@ class ScrollSpy extends BaseComponent {
     return Default
   }
 
-  static get DefaultType(): ComponentConfigType {
+  static get DefaultType(): Record<keyof ComponentConfig, string> {
     return DefaultType
   }
 
@@ -112,8 +124,9 @@ class ScrollSpy extends BaseComponent {
 
     config.rootMargin = config.offset ? `${config.offset}px 0px -30%` : config.rootMargin
 
-    if (typeof config.threshold === 'string') {
-      config.threshold = config.threshold.split(',').map((value: string) => Number.parseFloat(value))
+    const threshold: unknown = config.threshold
+    if (typeof threshold === 'string') {
+      config.threshold = threshold.split(',').map((value: string) => Number.parseFloat(value))
     }
 
     return config
@@ -241,6 +254,22 @@ class ScrollSpy extends BaseComponent {
       node.classList.remove(CLASS_NAME_ACTIVE)
     }
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = ScrollSpy.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
@@ -248,5 +277,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
     ScrollSpy.getOrCreateInstance(spy)
   }
 })
+
+defineJQueryPlugin(ScrollSpy)
 
 export default ScrollSpy

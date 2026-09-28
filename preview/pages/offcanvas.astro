@@ -4,46 +4,63 @@ import { ucFirst as capitalize } from '@shared/lib/string-format'
 import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
 import Offcanvas from '@ui/Offcanvas.astro'
 import OffcanvasHeader from '@ui/OffcanvasHeader.astro'
 import OffcanvasBody from '@ui/OffcanvasBody.astro'
 import DocsLink from '@ui/DocsLink.astro'
 
 const directions = ['start', 'end', 'top', 'bottom'] as const
+const variants = [
+  { id: 'offcanvas', title: 'Default', floating: false },
+  { id: 'offcanvasFloating', title: 'Floating', floating: true },
+]
 ---
 
 <DefaultLayout title="Offcanvas" pageMenu="base.offcanvas" description="An offcanvas panel slides in from an edge of the screen for navigation or supplementary content.">
   <DocsLink slot="page-header-actions" path="/ui/components/offcanvas" />
 
-  <Card>
-    <CardBody>
-      <ButtonList>
-        {
-          directions.map((direction) => (
-            <a class="btn" data-bs-toggle="offcanvas" href={`#offcanvas${capitalize(direction)}`} role="button" aria-controls={`offcanvas${capitalize(direction)}`}>
-              Toggle {direction} offcanvas
-            </a>
-          ))
-        }
-      </ButtonList>
-    </CardBody>
-  </Card>
+  <div class="row row-cards">
+    {
+      variants.map((variant) => (
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>{variant.title}</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <ButtonList>
+                {directions.map((direction) => (
+                  <a class="btn" data-bs-toggle="offcanvas" href={`#${variant.id}${capitalize(direction)}`} role="button" aria-controls={`${variant.id}${capitalize(direction)}`}>
+                    Toggle {direction} offcanvas
+                  </a>
+                ))}
+              </ButtonList>
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+  </div>
 
   {
-    directions.map((direction) => (
-      <Offcanvas direction={direction} tabindex="-1" id={`offcanvas${capitalize(direction)}`} aria-labelledby={`offcanvas${capitalize(direction)}Label`}>
-        <OffcanvasHeader title={`${capitalize(direction)} offcanvas`} titleId={`offcanvas${capitalize(direction)}Label`}>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" />
-        </OffcanvasHeader>
-        <OffcanvasBody>
-          <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda ea est, eum exercitationem fugiat illum itaque laboriosam magni necessitatibus, nemo nisi numquam quae reiciendis repellat sit soluta unde. Aut!</div>
-          <div class="mt-3">
-            <button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas">
-              Close offcanvas
-            </button>
-          </div>
-        </OffcanvasBody>
-      </Offcanvas>
-    ))
+    variants.map((variant) =>
+      directions.map((direction) => (
+        <Offcanvas direction={direction} floating={variant.floating} tabindex="-1" id={`${variant.id}${capitalize(direction)}`} aria-labelledby={`${variant.id}${capitalize(direction)}Label`}>
+          <OffcanvasHeader title={`${capitalize(direction)} offcanvas`} titleId={`${variant.id}${capitalize(direction)}Label`}>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" />
+          </OffcanvasHeader>
+          <OffcanvasBody>
+            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda ea est, eum exercitationem fugiat illum itaque laboriosam magni necessitatibus, nemo nisi numquam quae reiciendis repellat sit soluta unde. Aut!</div>
+            <div class="mt-3">
+              <button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas">
+                Close offcanvas
+              </button>
+            </div>
+          </OffcanvasBody>
+        </Offcanvas>
+      )),
+    )
   }
 </DefaultLayout>

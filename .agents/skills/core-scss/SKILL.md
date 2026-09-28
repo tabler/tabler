@@ -55,7 +55,9 @@ The module graph uses `@use` / `@forward`: a partial starts with `@use '../confi
 
 Write `--badge-bg`, not `--tblr-badge-bg`. The public `--tblr-` prefix is added at build time by `.build/css-var-prefix.ts` (a postcss pass in `build-css.ts`).
 
-The consequence to remember: **names owned by third-party libraries must not be prefixed.** `cssVarIgnore` lists them (`--bs-`, `--fc-`, `--gl-`, `--litepicker-`, `--plyr-`, `--ts-`, …). Prefixing one detaches the theming with no error anywhere — the library keeps reading its own name and simply never sees the value. When a vendor override introduces a new foreign name, add it to `cssVarIgnore`; `core/scss/tests/css-var-prefix.test.mjs` snapshots every custom property of `tabler-vendors.scss`, so a missing entry shows up as a `--tblr-`-prefixed foreign name in the snapshot diff.
+The consequence to remember: **names owned by third-party libraries must not be prefixed.** `cssVarIgnore` lists them (`--bs-`, `--fc-`, `--gl-`, `--plyr-`, `--ts-`, …). Prefixing one detaches the theming with no error anywhere — the library keeps reading its own name and simply never sees the value. When a vendor override introduces a new foreign name, add it to `cssVarIgnore`; `core/scss/tests/css-var-prefix.test.mjs` snapshots every custom property of `tabler-vendors.scss`, so a missing entry shows up as a `--tblr-`-prefixed foreign name in the snapshot diff.
+
+The snapshot moves in the other direction too. A vendor override that starts reading a Tabler name (`var(--success)`, `var(--form-valid-border-color)`) adds a correctly prefixed `--tblr-*` entry, and the test fails until the snapshot is refreshed. Read the diff: every new name is one Tabler owns → `pnpm --dir core exec vitest run --config vitest.scss.config.mjs -u` and commit the `.snap`; a name a library owns → `cssVarIgnore`, never `-u`.
 
 Global properties (`--dir`, colours, fonts, spacing) live in `_props.scss`, which emits them on `:root, :host`.
 
@@ -105,7 +107,7 @@ pnpm run lint:prettier                     # formatting
 pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tabler.min.css 75 kB)
 ```
 
-- A new entry in `$theme-colors`, `$avatar-sizes` and friends must be regenerated into `shared/lib/tokens.ts` with `pnpm run generate-tokens` — the check gate fails otherwise.
+- A new entry in `$theme-colors`, `$avatar-sizes` and friends must be regenerated into `shared/lib/tokens.ts` with `pnpm run generate:tokens` — the check gate fails otherwise.
 - An unused Sass variable fails `lint:scss`; delete it or use it.
 - Growth past a bundlewatch limit is a decision, not an accident: raise the number in `core/package.json` deliberately and say so in the PR.
 
@@ -116,6 +118,8 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 - [ ] Custom properties written bare; new foreign names added to `cssVarIgnore`
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`
 - [ ] Logical properties, or `--dir` + `/* rtl:ignore */`; no hand-written RTL
+- [ ] No class, custom property, Sass variable or mixin parameter removed or renamed without an alias (`backward-compat`)
 - [ ] sass-true test for a mixin that can break silently
 - [ ] `lint:scss`, `check:tokens`, `lint:prettier`, `test:scss` clean
+- [ ] `check:compat` clean after a core build, with no new line in `.build/compat-baseline.txt`
 - [ ] Docs page and class table updated (`write-docs`, `class-reference`), changeset written

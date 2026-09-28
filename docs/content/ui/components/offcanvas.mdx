@@ -4,6 +4,7 @@ summary: An offcanvas is a hidden panel that slides in from the edge of the scre
 description: Sidebar panel that slides in from the edge of the viewport.
 related: [/ui/components/modal]
 source: core/scss/ui/_offcanvas.scss
+css-vars: offcanvas
 classnames:
   component:
     - class: offcanvas
@@ -20,6 +21,8 @@ classnames:
   modifier:
     - class: offcanvas-narrow
       desc: Narrower panel, 20rem instead of the default width
+    - class: offcanvas-floating
+      desc: Keeps a 0.5rem gap between the panel and the viewport edges
   direction:
     - class: offcanvas-start
       desc: Slides in from the leading edge
@@ -34,7 +37,6 @@ classnames:
       desc: Behaves as an offcanvas below the breakpoint and as normal content above it
 ---
 import Example from '@components/Example.astro';
-import CodeDocs from '@components/CodeDocs.astro';
 
 An offcanvas is a panel that slides in from the left, right, top or bottom edge of the viewport. A button or a link with `data-bs-toggle="offcanvas"` and `data-bs-target` opens it, and Bootstrap's JavaScript does the rest.
 
@@ -64,6 +66,18 @@ Add `offcanvas-narrow` for a panel thinner than the default. It suits a short li
 <div class="offcanvas offcanvas-end offcanvas-narrow show position-static" tabindex="-1" id="offcanvas-narrow" aria-labelledby="offcanvas-narrow-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-narrow-label">Filters</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">Pick the filters you want to apply.</div> <div class="offcanvas-footer"> <button type="button" class="btn btn-primary w-100">Apply</button> </div> </div>
 </Example>
 
+## Floating panel
+
+Add `offcanvas-floating` to keep a gap between the panel and the edges of the screen. The panel gets a border on every side and rounded corners, so it looks like a card over the page. It works with every direction and with the responsive `offcanvas-{breakpoint}` classes.
+
+<Example raw code={`<div class="offcanvas offcanvas-end offcanvas-floating" tabindex="-1" id="offcanvas-floating" aria-labelledby="offcanvas-floating-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-floating-label">Settings</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">The panel does not touch the edges of the screen.</div> </div>`}>
+<div class="offcanvas offcanvas-end offcanvas-floating show position-static" tabindex="-1" id="offcanvas-floating" aria-labelledby="offcanvas-floating-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-floating-label">Settings</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">The panel does not touch the edges of the screen.</div> </div>
+</Example>
+
+The gap is `0.5rem` by default. Change it with the `--tblr-offcanvas-margin` variable, or with `$offcanvas-margin` in SCSS.
+
+To float every panel on the page without touching the markup, set [`data-bs-offcanvas-style="floating"`](/ui/layout/page-layouts#floating-offcanvas) on `<html>`.
+
 ## Cookies banner
 
 An offcanvas at the bottom edge also works as a cookie banner. It stays visible until the user answers, and it doesn't cover the page.
@@ -79,9 +93,3 @@ An offcanvas at the bottom edge also works as a cookie banner. It stays visible 
 - The toggle needs `aria-controls` with the panel id. Bootstrap manages `aria-expanded` itself.
 - <kbd>Escape</kbd> closes the panel unless you set `data-bs-keyboard="false"`. If you do turn it off, keep a visible close button.
 - Content behind the panel stays in the DOM. Use the backdrop, which Bootstrap marks `aria-hidden`, rather than building your own overlay.
-
-## SCSS variables
-
-Use these SCSS variables to customize the offcanvas component. The default values are:
-
-<CodeDocs name="offcanvas-variables" file="core/scss/_variables.scss" />

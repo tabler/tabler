@@ -1,0 +1,211 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Datepicker from '@ui/Datepicker.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+
+const year = new Date().getFullYear()
+const rangeStart = `${year}-06-10`
+const rangeEnd = `${year}-06-18`
+---
+
+<DefaultLayout title="Date picker" pageMenu="plugins.datepicker" pageLibs={['vanilla-calendar-pro']} description="A date picker opens a calendar under a field or a button and writes the picked date back into it.">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/date-picker" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="datepicker"</code> to a text input. The calendar opens on focus.</CardSubtitle>
+          <label class="form-label" for="datepicker-basic">Date</label>
+          <Datepicker id="basic" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With icon</CardTitle>
+          <CardSubtitle>Wrap the field in <code>.input-icon</code>. The popup lines up with the wrapper, not the input.</CardSubtitle>
+          <label class="form-label" for="datepicker-icon">Date</label>
+          <Datepicker id="icon" layout="icon" class="mb-3" />
+          <label class="form-label" for="datepicker-icon-prepend">Date</label>
+          <Datepicker id="icon-prepend" layout="icon-prepend" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Initial value</CardTitle>
+          <CardSubtitle>A <code>value</code> in <code>YYYY-MM-DD</code> is shown on load and the calendar opens on that month.</CardSubtitle>
+          <label class="form-label" for="datepicker-value">Birth date</label>
+          <Datepicker id="value" value="1990-06-20" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Min and max</CardTitle>
+          <CardSubtitle>Limit the pickable dates with <code>data-bs-date-min</code> and <code>data-bs-date-max</code>.</CardSubtitle>
+          <label class="form-label" for="datepicker-min-max">Event date ({year} only)</label>
+          <Datepicker id="min-max" dateMin={`${year}-01-01`} dateMax={`${year}-12-31`} placeholder={`Select a date in ${year}`} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Date range</CardTitle>
+          <CardSubtitle>Set <code>data-bs-selection-mode="multiple-ranged"</code> to pick a start and an end date.</CardSubtitle>
+          <label class="form-label" for="datepicker-range">Stay</label>
+          <Datepicker id="range" selectionMode="multiple-ranged" selectedDates={[rangeStart, rangeEnd]} placeholder="Select start and end" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Multiple dates</CardTitle>
+          <CardSubtitle>Set <code>data-bs-selection-mode="multiple"</code> to pick any number of dates.</CardSubtitle>
+          <label class="form-label" for="datepicker-multiple">Days off</label>
+          <Datepicker id="multiple" selectionMode="multiple" placeholder="Select dates" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Two months</CardTitle>
+          <CardSubtitle>Add <code>data-bs-display-months-count="2"</code> to show two months side by side.</CardSubtitle>
+          <label class="form-label" for="datepicker-two-months">Stay</label>
+          <Datepicker id="two-months" selectionMode="multiple-ranged" months={2} placeholder="Select start and end" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Week starts on Sunday</CardTitle>
+          <CardSubtitle>Set <code>data-bs-first-weekday="0"</code>. The default is Monday.</CardSubtitle>
+          <label class="form-label" for="datepicker-sunday">Date</label>
+          <Datepicker id="sunday" firstWeekday={0} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Placement</CardTitle>
+          <CardSubtitle>Align the popup with <code>data-bs-placement</code>: left, center, right or auto.</CardSubtitle>
+          <label class="form-label" for="datepicker-center">Centered</label>
+          <Datepicker id="center" placement="center" class="mb-3" />
+          <label class="form-label" for="datepicker-right">Right aligned</label>
+          <Datepicker id="right" placement="right" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Button trigger</CardTitle>
+          <CardSubtitle>Any element works as a trigger. Mark the text with <code>data-bs-datepicker-display</code> so the icon stays.</CardSubtitle>
+          <div class="btn-list">
+            <button type="button" class="btn" data-bs-toggle="datepicker">
+              <Icon name="calendar" />
+              <span data-bs-datepicker-display>Select date</span>
+            </button>
+            <button type="button" class="btn" data-bs-toggle="datepicker" data-bs-selection-mode="multiple-ranged">
+              <Icon name="calendar-event" />
+              <span data-bs-datepicker-display>Select range</span>
+            </button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Events</CardTitle>
+          <CardSubtitle>Listen to <code>change.bs.datepicker</code> to read the picked dates as <code>YYYY-MM-DD</code>.</CardSubtitle>
+          <label class="form-label" for="datepicker-events">Date</label>
+          <Datepicker id="events" selectionMode="multiple-ranged" placeholder="Select start and end" />
+          <div class="form-text" id="datepicker-events-output">No dates picked yet.</div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+
+  <div class="row row-cards mt-4">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline calendar</CardTitle>
+          <CardSubtitle>Add <code>data-bs-inline="true"</code> to render the calendar in place. It takes the card as its surface.</CardSubtitle>
+          <Datepicker id="inline" inline />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline range</CardTitle>
+          <CardSubtitle>Inline calendars take the same options. This one picks a start and an end date.</CardSubtitle>
+          <Datepicker id="inline-range" inline selectionMode="multiple-ranged" selectedDates={[rangeStart, rangeEnd]} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline in a form</CardTitle>
+          <CardSubtitle>A hidden input inside the calendar submits the picked dates with the form.</CardSubtitle>
+          <form onsubmit="return false">
+            <Datepicker id="inline-form" inline name="selected_date" />
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+          </form>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-12 col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline with two months</CardTitle>
+          <CardSubtitle>Add <code>data-bs-display-months-count="2"</code> for a wide calendar.</CardSubtitle>
+          <Datepicker id="inline-two-months" inline selectionMode="multiple-ranged" months={2} />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+
+  <CaptureScript>
+    <!-- BEGIN DATEPICKER EVENTS SCRIPT -->
+    <script is:inline>
+      document.getElementById('datepicker-events').addEventListener('change.bs.datepicker', (event) => {
+        const output = document.getElementById('datepicker-events-output')
+        output.textContent = event.dates.length ? `Picked: ${event.dates.join(', ')}` : 'No dates picked yet.'
+      })
+    </script>
+    <!-- END DATEPICKER EVENTS SCRIPT -->
+  </CaptureScript>
+</DefaultLayout>

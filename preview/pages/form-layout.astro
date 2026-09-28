@@ -20,7 +20,7 @@ import DocsLink from '@ui/DocsLink.astro'
 const countries = flags as { name: string }[]
 ---
 
-<DefaultLayout title="Form layout" pageHeader="Form Layout" pageMenu="form.layout" pageLibs={['litepicker']}>
+<DefaultLayout title="Form layout" pageHeader="Form Layout" pageMenu="form.layout" pageLibs={['vanilla-calendar-pro']}>
   <DocsLink slot="page-header-actions" path="/ui/forms" />
 
   <div class="row row-cards row-cols-1 row-cols-md-3">
@@ -45,12 +45,12 @@ const countries = flags as { name: string }[]
                   </FormGroup>
                 </div>
                 <FormGroup label="Password" labelClass="visually-hidden" for="basic-password" class="">
-                  <input type="password" placeholder="Password" class="form-control" id="basic-password" name="password" />
+                  <input type="password" placeholder="Password" class="form-control" id="basic-password" name="password" autocomplete="new-password" />
                 </FormGroup>
                 <FormGroup label="Confirm Password" labelClass="visually-hidden" for="basic-password-confirm" class="">
-                  <input type="password" placeholder="Confirm Password" class="form-control" id="basic-password-confirm" name="password_confirm" />
+                  <input type="password" placeholder="Confirm Password" class="form-control" id="basic-password-confirm" name="password_confirm" autocomplete="new-password" />
                 </FormGroup>
-                <div><Button color="primary" block text="Submit" /></div>
+                <div><Button type="submit" color="primary" block text="Submit" /></div>
               </form>
             </CardBody>
           </Card>
@@ -83,7 +83,7 @@ const countries = flags as { name: string }[]
                   <FormGroup label="Message" for="example-message" class="">
                     <textarea placeholder="Enter your message" rows="6" class="form-control" id="example-message" name="message"></textarea>
                   </FormGroup>
-                  <div><Button color="primary" block text="Send Message" iconEnd="arrow-right" /></div>
+                  <div><Button type="submit" color="primary" block text="Send Message" iconEnd="arrow-right" /></div>
                 </div>
               </form>
             </CardBody>
@@ -106,12 +106,12 @@ const countries = flags as { name: string }[]
               <form class="space-y">
                 <div><InputIcon icon="user" placeholder="Username" prepend /></div>
                 <div><InputIcon icon="mail" placeholder="Email address" prepend type="email" /></div>
-                <div><InputIcon icon="lock" placeholder="Password" prepend type="password" /></div>
-                <div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" /></div>
+                <div><InputIcon icon="lock" placeholder="Password" prepend type="password" autocomplete="new-password" /></div>
+                <div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" autocomplete="new-password" /></div>
                 <div>
                   <div class="row align-items-center">
                     <div class="col"><Check title="Remember me" class="m-0" /></div>
-                    <div class="col-auto"><Button color="primary" text="Create Account" iconEnd="arrow-right" /></div>
+                    <div class="col-auto"><Button type="submit" color="primary" text="Create Account" iconEnd="arrow-right" /></div>
                   </div>
                 </div>
               </form>
@@ -193,7 +193,7 @@ const countries = flags as { name: string }[]
                   </FormGroup>
                   <div><h4>Address</h4></div>
                   <FormGroup label="Street" for="example-form-street" class="">
-                    <input type="text" id="example-form-street" class="form-control" autocomplete="street-address" />
+                    <input type="text" id="example-form-street" class="form-control" autocomplete="address-line1" />
                   </FormGroup>
                   <div class="row row-cols-2 g-4">
                     <FormGroup label="City" for="example-form-city" class="">
@@ -224,7 +224,7 @@ const countries = flags as { name: string }[]
                   </div>
                   <ButtonList class="justify-content-end">
                     <Button text="Cancel" />
-                    <Button color="primary" text="Save Changes" />
+                    <Button type="submit" color="primary" text="Save Changes" />
                   </ButtonList>
                 </div>
               </form>

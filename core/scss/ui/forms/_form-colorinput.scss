@@ -19,6 +19,7 @@ Color Input
 }
 
 .form-colorinput-color {
+  @include focus-ring-transition();
   display: block;
   width: var(--form-colorinput-size);
   height: var(--form-colorinput-size);
@@ -35,7 +36,7 @@ Color Input
     height: 100%;
     content: '';
     background: no-repeat center center/$form-check-input-checked-bg-size;
-    background-image: escape-svg($form-check-input-checked-bg-image);
+    background-image: escape-svg(svg-icon-color($form-check-input-checked-bg-image, $form-check-input-checked-color));
     opacity: 0;
     @include transition(opacity $transition-time);
 
@@ -46,12 +47,12 @@ Color Input
 
   .form-colorinput-input:focus ~ & {
     border-color: var(--primary);
-    box-shadow: $input-btn-focus-box-shadow;
+    @include focus-ring(true);
   }
 
   @at-root .form-colorinput-light & {
     &::before {
-      background-image: escape-svg($form-check-input-checked-bg-image-dark);
+      background-image: escape-svg(svg-icon-color($form-check-input-checked-bg-image, $body-color));
     }
   }
 }

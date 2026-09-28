@@ -1,11 +1,11 @@
 @use '../config' as *;
 
 .btn-close {
+  @include focus-ring-transition();
   --btn-close-color: currentColor;
   --btn-close-bg: #{escape-svg($btn-close-bg)};
   --btn-close-opacity: #{$btn-close-opacity};
   --btn-close-hover-opacity: #{$btn-close-hover-opacity};
-  --btn-close-focus-shadow: #{$btn-close-focus-shadow};
   --btn-close-focus-opacity: #{$btn-close-focus-opacity};
   --btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
   --btn-close-size: #{$btn-close-width};
@@ -43,8 +43,11 @@
 
   &:focus {
     outline: 0;
-    box-shadow: var(--btn-close-focus-shadow);
     opacity: var(--btn-close-focus-opacity);
+  }
+
+  &:focus-visible {
+    @include focus-ring(true);
   }
 
   &:disabled,

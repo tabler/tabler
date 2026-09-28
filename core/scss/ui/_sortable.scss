@@ -1,0 +1,73 @@
+//
+// Sortable
+//
+@use '../config' as *;
+
+.sortable-ghost,
+.sortable-swap-highlight,
+.sortable-selected,
+.sortable-drag {
+  --sortable-ghost-bg: #{$sortable-ghost-bg};
+  --sortable-ghost-border-color: #{$sortable-ghost-border-color};
+  --sortable-ghost-opacity: #{$sortable-ghost-opacity};
+  --sortable-outline-width: #{$sortable-outline-width};
+  --sortable-selected-bg: #{$sortable-selected-bg};
+  --sortable-drag-bg: #{$sortable-drag-bg};
+  --sortable-drag-rotate: #{$sortable-drag-rotate};
+  --sortable-drag-box-shadow: #{$sortable-drag-box-shadow};
+}
+
+.sortable-ghost,
+.sortable-swap-highlight {
+  background-color: var(--sortable-ghost-bg);
+  outline: var(--sortable-outline-width) dashed var(--sortable-ghost-border-color);
+  outline-offset: calc(var(--sortable-outline-width) * -1);
+}
+
+.sortable-ghost {
+  opacity: var(--sortable-ghost-opacity);
+}
+
+tr.sortable-ghost,
+tr.sortable-swap-highlight,
+tr.sortable-selected {
+  > * {
+    --table-bg-state: var(--sortable-ghost-bg);
+  }
+}
+
+.sortable-selected {
+  background-color: var(--sortable-selected-bg);
+  outline: var(--sortable-outline-width) solid var(--sortable-ghost-border-color);
+  outline-offset: calc(var(--sortable-outline-width) * -1);
+}
+
+.list-group-item {
+  &.sortable-ghost,
+  &.sortable-swap-highlight,
+  &.sortable-selected,
+  &.sortable-drag {
+    @include border-radius(var(--list-group-border-radius));
+  }
+}
+
+.sortable-chosen {
+  cursor: grabbing;
+}
+
+.sortable-drag {
+  cursor: grabbing;
+  background-color: var(--sortable-drag-bg);
+  outline: var(--sortable-outline-width) solid var(--sortable-ghost-border-color);
+  outline-offset: calc(var(--sortable-outline-width) * -1);
+  box-shadow: var(--sortable-drag-box-shadow);
+  opacity: 1 !important; // stylelint-disable-line declaration-no-important
+  transition: none;
+
+  /* rtl:ignore */
+  rotate: calc(var(--sortable-drag-rotate) * var(--dir));
+}
+
+.card.sortable-drag {
+  box-shadow: var(--sortable-drag-box-shadow);
+}

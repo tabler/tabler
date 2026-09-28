@@ -51,6 +51,25 @@ pick:
 `pnpm run release-notes` prints the body to stdout, so you can read it before
 the release goes out. Pass a path to write it to a file instead.
 
+## After the release
+
+docs.tabler.io is built from `main`. Once the release workflow has published
+the new version, run this on `dev`:
+
+```shell
+pnpm run release:main
+```
+
+It refreshes the `integrity` hashes of the CDN snippets in
+`shared/data/sri.json` (they can only be read once the version is on npm),
+commits them, pushes `dev`, then merges `dev` into `main` and pushes `main`. The
+merge runs in a temporary worktree, so your checkout stays on `dev`. Add
+`--dry-run` to stop after the local commit.
+
+Until the hashes are refreshed the docs show the CDN tags without `integrity`.
+That is safe, just less strict. `pnpm run check:sri` compares the committed
+hashes with the CDN if you want to check them by hand.
+
 ## Fixing a published release
 
 Edit the release on GitHub. The workflow only writes the body once, right after

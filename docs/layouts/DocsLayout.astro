@@ -12,6 +12,7 @@ import DocsNavbar from '@components/DocsNavbar.astro';
 import DocsMenu from '@components/DocsMenu.astro';
 import DocsSearch from '@components/DocsSearch.astro';
 import DocsClassnames from '@components/DocsClassnames.astro';
+import DocsCssVars from '@components/DocsCssVars.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsCopyMarkdownLink from '@components/DocsCopyMarkdownLink.astro';
@@ -32,6 +33,10 @@ interface Props {
 	sourcePath?: string | undefined;
 	/** class reference table, rendered above the page body */
 	classnames?: Record<string, { class: string; desc: string; default: boolean }[]> | undefined;
+	/** front matter `css-vars`: custom-property family (`badge` for `--tblr-badge-*`), rendered below the class reference */
+	cssVars?: string | undefined;
+	/** front matter `sass-vars`: the `<name>-variables` marker in `_variables.scss`, defaults to `cssVars` */
+	sassVars?: string | undefined;
 	/** front matter: SEO description */
 	description?: string | undefined;
 	/** front matter: optional SEO description override */
@@ -66,6 +71,8 @@ const {
 	seoTitle,
 	summary,
 	classnames,
+	cssVars,
+	sassVars,
 	sourcePath,
 	description,
 	seoDescription,
@@ -87,6 +94,8 @@ const pagePlugins = [...basePlugins, ...cssPlugins.filter((plugin) => !basePlugi
 const environment = process.env.NODE_ENV || 'production';
 // Vercel preview/branch deployments must not be indexed (VERCEL_ENV is unset locally).
 const isVercelPreview = !!process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
+// The promo top banner loads on Vercel deploys (production and branch previews), never in local builds.
+const isVercelDeploy = !!process.env.VERCEL_ENV;
 
 // Strip /docs prefix (and optional .html) for the docs namespace URL.
 // Canonical form has no trailing slash (matching vercel.json trailingSlash: false);
@@ -110,7 +119,9 @@ const pageSection = inSection('/ui')
 			? 'Illustrations'
 			: inSection('/emails')
 				? 'Emails'
-				: '';
+				: inSection('/payments')
+					? 'Payments'
+					: '';
 const metaTitle = seoTitle ?? title;
 const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
@@ -129,8 +140,8 @@ const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
 const editFilePath =
 	editPath ?? (docsUrl === '/' ? 'docs/content/index.mdx' : `docs/content${docsUrl.replace(/\/$/, '')}.mdx`);
 
-// docs-libs + clipboard (always included). In dev, file names stay unchanged
-// (e.g. dist/clipboard.min.js keeps .min).
+// docs-libs for this page. In dev, file names stay unchanged
+// (e.g. dist/plyr.min.js keeps .min).
 type Lib = { npm?: string; js?: string[]; css?: string[] };
 const libEntries = Object.entries(libs as Record<string, Lib>);
 const libUrl = (lib: Lib, file: string) =>
@@ -141,7 +152,7 @@ const docsLibCss = libEntries
 	.filter(([name]) => docsLibs.includes(name))
 	.flatMap(([, lib]) => (lib.css ?? []).map((file) => libUrl(lib, file)));
 const docsLibJs = libEntries
-	.filter(([name]) => docsLibs.includes(name) || name === 'clipboard')
+	.filter(([name]) => docsLibs.includes(name))
 	.flatMap(([, lib]) => (lib.js ?? []).map((file) => libUrl(lib, file)));
 
 const opencollectiveUrl = 'https://opencollective.com/tabler';
@@ -150,13 +161,15 @@ const linkedinUrl = 'https://www.linkedin.com/company/tabler-io';
 
 const year = new Date().getFullYear();
 
-// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree;
-// top-level sections are not in the menu, so they get explicit names.
+// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree, except
+// the top-level sections: the menu labels their index pages "Introduction",
+// so they get explicit names that win over the menu.
 const sectionNames: Record<string, string> = {
 	'/ui': 'Tabler UI',
 	'/icons': 'Tabler Icons',
 	'/illustrations': 'Tabler Illustrations',
 	'/emails': 'Tabler Emails',
+	'/payments': 'Tabler Payments',
 };
 type MenuNode = { title?: string; url?: string; children?: MenuNode[] };
 const menuTitleByUrl = new Map<string, string>();
@@ -191,7 +204,7 @@ const breadcrumbs = (() => {
 	segments.forEach((segment, index) => {
 		path += `/${segment}`;
 		const isLast = index === segments.length - 1;
-		const name = isLast ? title : (menuTitleByUrl.get(path) ?? sectionNames[path] ?? segment);
+		const name = isLast ? title : (sectionNames[path] ?? menuTitleByUrl.get(path) ?? segment);
 		items.push({ name, path });
 	});
 	return items;
@@ -386,7 +399,7 @@ const relatedPages = await Promise.all(
 									tabindex="0"
 								>
 									<div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
-										<h1 class="docs-page-title mb-0">
+										<h1 class="docs-page-title">
 											{title}
 										</h1>
 
@@ -405,6 +418,8 @@ const relatedPages = await Promise.all(
 									<slot />
 
 									{classnames && <DocsClassnames classnames={classnames} />}
+
+									{(cssVars || sassVars) && <DocsCssVars cssVars={cssVars} sassVars={sassVars} />}
 
 									{relatedPages.length > 0 && (
 										<Fragment>
@@ -482,7 +497,7 @@ const relatedPages = await Promise.all(
 						</footer>
 					</div>
 					<!-- BEGIN DOCS TOC -->
-					<div class="col-2 d-none d-xxl-block">
+					<div class="col-docs-toc d-none d-xxl-block">
 						<div class="py-5 sticky-top docs-toc-sticky">
 							<DocsToc toc={toc} editUrl={`${site.githubUrl}/edit/dev/${editFilePath}`} sourceUrl={sourcePath ? `${site.githubUrl}/blob/dev/${sourcePath}` : undefined} />
 						</div>
@@ -503,50 +518,13 @@ const relatedPages = await Promise.all(
 			)
 		}
 
-		<!-- BEGIN PAGE SCRIPTS -->
-		<script is:inline>
-			document.addEventListener('DOMContentLoaded', function () {
-				const elements = document.querySelectorAll('[data-clipboard-text]');
-
-				elements.forEach(function (element) {
-					const clipboard = new ClipboardJS(element, {
-						text: function () {
-							return element.getAttribute('data-clipboard-text');
-						}
-					});
-
-					clipboard.on('success', function (e) {
-						e.clearSelection();
-						e.trigger.classList.add('btn-success');
-						e.trigger.classList.remove('btn-dark');
-						e.trigger.children[0].classList.add('d-none');
-						e.trigger.children[1].classList.remove('d-none');
-						// The checkmark is the only feedback a sighted user gets; the label
-						// carries the same message to a screen reader.
-						e.trigger.setAttribute('aria-label', 'Copied');
-
-						setTimeout(function () {
-							e.trigger.classList.remove('btn-success');
-							e.trigger.classList.add('btn-dark');
-
-							e.trigger.children[0].classList.remove('d-none');
-							e.trigger.children[1].classList.add('d-none');
-							e.trigger.setAttribute('aria-label', 'Copy code');
-						}, 2000);
-					});
-
-					clipboard.on('error', function (e) {
-						console.error('Error copying text: ', e);
-					});
-				});
-			})
-		</script>
-		<!-- END PAGE SCRIPTS -->
 
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
 		<script is:inline src="/dist/js/tabler.js" defer></script>
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
 
 		<PageScripts />
+
+		{isVercelDeploy && <script is:inline src="https://scripts.tabler.io/banner.js" defer data-tblr-ref="tabler-docs" />}
 	</body>
 </html>

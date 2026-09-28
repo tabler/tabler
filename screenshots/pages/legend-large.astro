@@ -1,0 +1,42 @@
+---
+// Large legend above a chart: a read-latency card where each percentile is a
+// `size="lg"` button item — colored dot and name on the first line, the latest
+// value with its unit below — in a `divided` list. The fake cursor rests on the
+// active item so the tinted hover background is part of the picture. Every
+// series stays on, because the chart draws all four. `legend-latency` is a four-series line chart in
+// charts.json with the ApexCharts legend left off, since the items replace it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Chart from '@components/demo/Chart.astro'
+
+// Series order and colors follow the `legend-latency` entry in charts.json.
+const series = [
+  { name: 'P99', color: 'primary', value: 124 },
+  { name: 'P95', color: 'azure', value: 76, active: true },
+  { name: 'P75', color: 'green', value: 32 },
+  { name: 'P50', color: 'yellow', value: 10 },
+]
+---
+
+<ScreenshotLayout title="Large legend" columns={2.4} pageLibs={['apexcharts']}>
+  <Card>
+    <CardHeader title="Read latency" />
+    <CardBody>
+      <LegendList divided class="mb-3">
+        {
+          series.map((item) => (
+            <Legend button size="lg" color={item.color} value={item.value} unit="ms" active={item.active} class="position-relative">
+              {item.name}
+              {item.active && <span class="cursor" />}
+            </Legend>
+          ))
+        }
+      </LegendList>
+      <Chart chartId="legend-latency" height={14} label="Read latency by percentile" />
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

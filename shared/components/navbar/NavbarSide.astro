@@ -6,7 +6,6 @@ import NavbarSideNotifications from './NavbarSideNotifications.astro'
 import NavbarSideApps from './NavbarSideApps.astro'
 import NavbarSideLanguage from './NavbarSideLanguage.astro'
 import NavbarSideUser from './NavbarSideUser.astro'
-import { site } from '@shared/lib/site'
 
 /** Bootstrap responsive breakpoint used for `d-{breakpoint}-flex` — $grid-breakpoints minus xs */
 export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
@@ -32,22 +31,27 @@ const {
   personId = 1,
   hideUsername = false,
   dark = false,
-  // show-* flags default false — sidebar only shows the Sponsor button unless set.
+  // show-* flags default false — sidebar only shows the All Package button (hosted demo) unless set.
   showThemeToggle = false,
   showNotifications = false,
   showApps = false,
   showLanguageSelector = false,
   showUser = false,
 } = Astro.props
+
+// The All Package link is an ad for tabler.io, so it only renders on the hosted demo
+// (Vercel deploys), never in local builds or the packaged template (VERCEL_ENV is unset there).
+const isVercelDeploy = !!process.env.VERCEL_ENV
+const allPackageUrl = 'https://tabler.io/pricing?ref=tabler-preview-navbar#bundle'
 ---
 
 <!-- BEGIN NAVBAR ACTIONS -->
 <div class:list={['navbar-nav flex-row', className]}>
   {
-    !condensed && (
+    !condensed && isVercelDeploy && (
       <div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
         <ButtonList>
-          <Button icon="heart" iconColor="pink" text="Sponsor" href={site.githubSponsorsUrl} external />
+          <Button icon="package" iconColor="blue" text="All Package" href={allPackageUrl} external />
         </ButtonList>
       </div>
     )

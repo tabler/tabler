@@ -117,11 +117,11 @@
 }
 .carousel-control-prev {
   inset-inline-start: 0;
-  background-image: if(sass($enable-gradients): linear-gradient(90deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
+  background-image: if(sass($enable-gradients): linear-gradient(90deg, color-transparent(var(--black), 0.25), color-transparent(var(--black), 0.001)); else: null);
 }
 .carousel-control-next {
   inset-inline-end: 0;
-  background-image: if(sass($enable-gradients): linear-gradient(270deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
+  background-image: if(sass($enable-gradients): linear-gradient(270deg, color-transparent(var(--black), 0.25), color-transparent(var(--black), 0.001)); else: null);
 }
 
 // Icons for within
@@ -130,16 +130,15 @@
   display: inline-block;
   width: $carousel-control-icon-width;
   height: $carousel-control-icon-width;
-  background-repeat: no-repeat;
-  background-position: 50%;
-  background-size: 100% 100%;
+  background-color: currentColor;
+  @include mask-icon($size: 100% 100%, $position: 50%);
 }
 
 .carousel-control-prev-icon {
-  background-image: escape-svg($carousel-control-prev-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-next-icon-bg) + '*/'};
+  mask-image: escape-svg($carousel-control-prev-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-next-icon-bg) + '*/'};
 }
 .carousel-control-next-icon {
-  background-image: escape-svg($carousel-control-next-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-prev-icon-bg) + '*/'};
+  mask-image: escape-svg($carousel-control-next-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-prev-icon-bg) + '*/'};
 }
 
 // Optional indicator pips/controls

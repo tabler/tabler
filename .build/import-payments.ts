@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 // Imports payment provider assets from the tabler/tabler-payments repo: the light
-// and dark SVGs, the $payment-providers list and the demo data.
+// and dark SVGs (minified with svgo), the $payment-providers list and the demo data.
 //
 // Run: pnpm run import:payments
-// Then: pnpm run generate-tokens — refreshes PaymentProvider in shared/lib/tokens.ts
+// Then: pnpm run generate:tokens — refreshes PaymentProvider in shared/lib/tokens.ts
 import { execFileSync } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { optimizeSvgDir } from './optimize-svg.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
@@ -62,6 +63,7 @@ try {
     copyFileSync(join(lightDir, `${name}.svg`), join(imgDir, `${name}.svg`))
     copyFileSync(join(darkDir, `${name}.svg`), join(imgDir, `${name}-dark.svg`))
   }
+  optimizeSvgDir(imgDir)
 
   const scss = readFileSync(scssFile, 'utf8')
   const listPattern = /(\$payment-providers: \(\n)[\s\S]*?(\n\);)/
@@ -86,7 +88,7 @@ try {
   console.log(`Imported ${providers.length} payment providers from ${relative(repoRoot, sourceDir)} (${added.length} added, ${removed.length} removed)`)
   if (added.length) console.log(`  added: ${added.join(', ')}`)
   if (removed.length) console.log(`  removed: ${removed.join(', ')}`)
-  console.log('Now run `pnpm run generate-tokens` to refresh shared/lib/tokens.ts')
+  console.log('Now run `pnpm run generate:tokens` to refresh shared/lib/tokens.ts')
 } finally {
   if (cloneDir) rmSync(cloneDir, { recursive: true, force: true })
 }

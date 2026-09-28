@@ -7,7 +7,7 @@ alwaysApply: true
 
 # Tabler — project rules
 
-Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical agent configuration lives in `.agents/` (`rules/` + `skills/`); `.claude/skills` is a symlink into it.
+Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical agent configuration lives in `.agents/` (`rules/` + `skills/` + `agents/`); `.claude/{skills,agents}` and `.cursor/{rules,skills,agents}` are symlinks into it.
 
 ## Project structure
 
@@ -30,6 +30,8 @@ Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the
 | `shared-lib` | moving logic into `shared/lib/` and testing it |
 | `core-scss` | writing or changing styles in `core/scss/` |
 | `core-js` | working on the framework JavaScript in `core/js/` |
+| `backward-compat` | renaming, removing or changing anything in `core/` a user can touch — minor releases must not break projects |
+| `bootstrap-component` | writing a new component class in `core/js/src/bootstrap/` (typed config, events, Data API) |
 | `demo-pages` | adding or updating a page in `preview/pages/` |
 | `write-docs` | writing or updating a page in `docs/content/` |
 | `class-reference` | a docs page needs its `classnames` table added or refreshed |

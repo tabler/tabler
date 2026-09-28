@@ -2,6 +2,7 @@
 
 // Skip-to-content link: hidden via .visually-hidden-focusable until keyboard focus reveals it
 .skip-link {
+  @include focus-ring-transition();
   position: fixed;
   inset-inline-start: 0;
   top: 0;
@@ -12,8 +13,7 @@
   background: var(--primary);
 
   &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+    @include focus-ring(true);
   }
 }
 
@@ -127,6 +127,19 @@
 
 .page-subtitle {
   margin-top: 0.25rem;
+  color: var(--secondary);
+}
+
+// Heading of a section inside the page body, e.g. between groups of cards in a `.row-cards`
+.page-section-title {
+  margin: 1rem 0 0;
+  font-size: $h2-font-size;
+  font-weight: $page-title-font-weight;
+  line-height: $h2-line-height;
+}
+
+.page-section-description {
+  margin: 0.25rem 0 0;
   color: var(--secondary);
 }
 

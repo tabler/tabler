@@ -6,27 +6,56 @@ type SwitchIconVariant = 'fade' | 'scale' | 'flip' | 'slide-up' | 'slide-down' |
 
 interface Props {
   icon?: string
+  /** icon shown in the on state; defaults to the filled variant of `icon` */
+  activeIcon?: string | undefined
   /** text-{activeColor} on the switched-on icon */
   activeColor?: string
   variant?: SwitchIconVariant | undefined
-  class?: string
+  /** initial state: active + aria-pressed="true" */
+  active?: boolean | undefined
+  /** switch-icon-loading + aria-busy: spinner instead of the icons */
+  loading?: boolean | undefined
+  /** wraps the switch in a `btn btn-action`, which then carries the toggle, hover and focus */
+  action?: boolean | undefined
+  /** accessible name of the toggle; defaults to a label matching the icon */
+  ariaLabel?: string | undefined
+  class?: string | undefined
   /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { icon = 'heart', activeColor = 'red', variant, class: className, ...rest } = Astro.props
+const { icon = 'heart', activeIcon, activeColor = 'red', variant, active, loading, action, ariaLabel, class: className, ...rest } = Astro.props
 
-// star/heart force the filled variant; otherwise no extra class.
-const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : undefined
+const defaultLabels: Record<string, string> = { 'heart': 'Like', 'star': 'Add to favorites', 'bookmark': 'Bookmark', 'bell': 'Notify me', 'thumb-up': 'Vote up' }
+const label = ariaLabel ?? defaultLabels[icon] ?? 'Toggle'
 
-const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, className]
+// Without an activeIcon, star/heart force the filled variant; otherwise no extra class.
+const resolvedIconBClass = !activeIcon && (icon === 'star' || icon === 'heart') ? 'icon-filled' : undefined
+
+const switchClass = ['switch-icon', variant && `switch-icon-${variant}`, active && 'active', loading && 'switch-icon-loading']
+const rootAttrs = { 'data-bs-toggle': 'switch-icon', 'aria-pressed': active ? ('true' as const) : ('false' as const), 'aria-busy': loading ? ('true' as const) : undefined, 'aria-label': label, ...rest }
 ---
 
-<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Favorite" {...rest}>
-  <span class="switch-icon-a text-muted">
-    <Icon name={icon} />
-  </span>
-  <span class={`switch-icon-b text-${activeColor}`}>
-    <Icon name={icon} class={resolvedIconBClass} />
-  </span>
-</button>
+{
+  action ? (
+    <button type="button" class:list={['btn btn-action', className]} {...rootAttrs}>
+      <span class:list={switchClass}>
+        <span class="switch-icon-a">
+          <Icon name={icon} />
+        </span>
+        <span class={`switch-icon-b text-${activeColor}`}>
+          <Icon name={activeIcon ?? icon} class={resolvedIconBClass} />
+        </span>
+      </span>
+    </button>
+  ) : (
+    <button type="button" class:list={[...switchClass, className]} {...rootAttrs}>
+      <span class="switch-icon-a text-muted">
+        <Icon name={icon} />
+      </span>
+      <span class={`switch-icon-b text-${activeColor}`}>
+        <Icon name={activeIcon ?? icon} class={resolvedIconBClass} />
+      </span>
+    </button>
+  )
+}

@@ -1,0 +1,262 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Badge from '@ui/Badge.astro'
+import Sparkline from '@ui/Sparkline.astro'
+import type { SparklineType } from '@ui/Sparkline.astro'
+import site from '@data/site.json'
+import { ucFirst } from '@shared/lib/string-format'
+
+const colors = Object.keys(site.colors)
+
+const metrics: { name: string; value: string; color: string; type: SparklineType; fill?: string; values: string }[] = [
+  { name: 'Revenue', value: '$12.4k', color: 'success', type: 'line', fill: 'auto', values: '5,6,7,6,8,9,10' },
+  { name: 'Orders', value: '1,352', color: 'primary', type: 'bar', values: '3,4,2,6,5,8,7' },
+  { name: 'Errors', value: '31', color: 'danger', type: 'bar', values: '2,3,5,4,8,13,21' },
+  { name: 'CPU usage', value: '72%', color: 'info', type: 'line', values: '40,55,50,70,65,80,72' },
+]
+
+const progress = [
+  { label: 'Completion 10%', value: 10, color: 'danger' },
+  { label: 'Completion 50%', value: 50, color: 'warning' },
+  { label: 'Completion 72%', value: 72, color: 'primary' },
+  { label: 'Completion 100%', value: 100, color: 'success' },
+]
+---
+
+<DefaultLayout title="Sparkline" pageMenu="base.sparkline" description="Sparklines are tiny inline SVG charts rendered from data attributes, with no chart library needed.">
+  <DocsLink slot="page-header-actions" path="/ui/components/sparkline" />
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Line</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="sparkline"</code> and a comma-separated <code>data-bs-values</code> list.</CardSubtitle>
+          <Sparkline values="3,4,2,6,5,8,7" color="primary" ariaLabel="Weekly trend" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Area with spot</CardTitle>
+          <CardSubtitle>Use <code>data-bs-fill="auto"</code> for a tinted area and <code>data-bs-spot</code> to mark the <code>last</code>, <code>min</code> or <code>max</code> value.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Sparkline values="12,14,9,18,16,22,20" color="success" fill spot="last" ariaLabel="Last value" />
+            <Sparkline values="12,14,9,18,16,22,20" color="danger" fill spot="min" ariaLabel="Lowest value" />
+            <Sparkline values="12,14,9,18,16,22,20" color="azure" fill spot="max" ariaLabel="Highest value" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Bars</CardTitle>
+          <CardSubtitle>Set <code>data-bs-type="bar"</code>. Tune the gap and rounding with <code>data-bs-bar-gap</code> and <code>data-bs-bar-radius</code>.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Sparkline values="1,2,3,2,4,3,5" type="bar" color="warning" ariaLabel="Daily activity" />
+            <Sparkline values="1,2,3,2,4,3,5" type="bar" color="purple" barGap={4} barRadius={0} ariaLabel="Daily activity, square bars" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Signed bars</CardTitle>
+          <CardSubtitle>Negative values hang below a zero line in <code>--tblr-sparkline-negative</code>, red by default; the line uses <code>--tblr-sparkline-zero</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <Sparkline values="3,-1,4,-2,5,-3,2,-1" type="bar" color="success" ariaLabel="Daily change" />
+            <Sparkline values="-2,4,-3,1,-1,5,-4,2" type="bar" color="primary" style="--tblr-sparkline-negative: var(--tblr-orange)" ariaLabel="Daily change, orange negatives" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Win/loss</CardTitle>
+          <CardSubtitle>Set <code>data-bs-type="tristate"</code>: every value is a full bar up, down or a tick on the zero line, whatever its size.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <Sparkline values="1,1,-1,1,0,-1,1,1,-1,1" type="tristate" color="green" ariaLabel="Match results" />
+            <Sparkline values="3,-2,0,5,1,-1,-4,2,0,1,6,-3" type="tristate" color="primary" size="lg" barGap={3} ariaLabel="Deployments, large" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Threshold</CardTitle>
+          <CardSubtitle>Set <code>data-bs-threshold</code> to draw a guide line at a value. Bars below it take the negative color.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <Sparkline values="62,71,68,84,79,88,92,75" color="primary" fill threshold={80} ariaLabel="CPU usage, 80% limit" />
+            <Sparkline values="99.9,99.7,99.2,99.8,99.4,99.95,99.6" type="bar" color="green" min={98} max={100} threshold={99.5} ariaLabel="Uptime, 99.5% target" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Circle</CardTitle>
+          <CardSubtitle>Use <code>data-bs-type="circle"</code> with a single value as a share of <code>data-bs-max</code>, <code>sparkline-square</code> for a round box and <code>data-bs-label="auto"</code> for the percentage in the middle.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            {progress.map((item) => <Sparkline type="circle" values={[item.value]} color={item.color} ariaLabel={item.label} />)}
+            {progress.map((item) => <Sparkline type="circle" values={[item.value]} color={item.color} size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel={item.label} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>Add <code>sparkline-disabled</code> to grey out a chart, for a series that is off or data that is stale.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <Sparkline values="12,14,9,18,16,22,20" color="primary" fill spot="last" disabled ariaLabel="Trend, disabled" />
+            <Sparkline values="3,-1,4,-2,5,-3,2" type="bar" color="warning" disabled ariaLabel="Daily change, disabled" />
+            <Sparkline type="circle" values="72" color="green" size="lg" label="auto" disabled style="--tblr-sparkline-stroke-width: 3" ariaLabel="Completion 72%, disabled" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>The chart uses <code>currentColor</code>, so any <code>text-{'{color}'}</code> utility themes it.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            {colors.map((color) => <Sparkline values="2,3,2,4,3,5,4" color={color} fill ariaLabel={ucFirst(color)} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Fixed range</CardTitle>
+          <CardSubtitle>Set <code>data-bs-min</code> and <code>data-bs-max</code> so several charts share the same scale.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Sparkline values="10,20,35,30,45,60,55" color="primary" min={0} max={100} ariaLabel="Series A, 0 to 100" />
+            <Sparkline values="5,15,25,40,70,65,80" color="danger" min={0} max={100} ariaLabel="Series B, 0 to 100" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Add <code>sparkline-sm</code> or <code>sparkline-lg</code>; for a custom box override <code>--tblr-sparkline-width</code> and <code>--tblr-sparkline-height</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <Sparkline values="2,3,2,4,3,5,4" color="info" size="sm" ariaLabel="Small" />
+            <Sparkline values="2,3,2,4,3,5,4" color="info" ariaLabel="Default" />
+            <Sparkline values="2,3,2,4,3,5,4" color="info" size="lg" ariaLabel="Large" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Stroke width</CardTitle>
+          <CardSubtitle>Change <code>--tblr-sparkline-stroke-width</code> and <code>--tblr-sparkline-spot-size</code> in SVG units.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Sparkline values="3,4,2,6,5,8,7" color="primary" spot="last" style="--tblr-sparkline-stroke-width: 1; --tblr-sparkline-spot-size: 1.5" ariaLabel="Thin" />
+            <Sparkline values="3,4,2,6,5,8,7" color="primary" spot="last" ariaLabel="Default" />
+            <Sparkline values="3,4,2,6,5,8,7" color="primary" spot="last" style="--tblr-sparkline-stroke-width: 4; --tblr-sparkline-spot-size: 3" ariaLabel="Thick" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Update from JavaScript</CardTitle>
+          <CardSubtitle>Call <code>update(values)</code> on the instance. It writes <code>data-bs-values</code> back, tweens the chart for <code>data-bs-animation</code> milliseconds and fires <code>updated.bs.sparkline</code>.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Sparkline id="sparkline-orders" values="3,4,2,6,5,8,7,9,6,8" color="primary" size="lg" fill spot="last" ariaLabel="Orders" />
+            <button id="sparkline-update" type="button" class="btn btn-sm btn-outline-primary">Randomize</button>
+            <Badge id="sparkline-updates" color="secondary" light text="0 updates" />
+          </div>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF SPARKLINE -->
+            <script is:inline>
+              /*
+              Pushes random data into a sparkline and counts the updated.bs.sparkline events.
+              tabler.js is deferred, so the instance is looked up once the DOM is ready.
+              */
+              document.addEventListener('DOMContentLoaded', () => {
+                const element = document.getElementById('sparkline-orders')
+                const sparkline = tabler.Sparkline.getOrCreateInstance(element)
+                let updates = 0
+
+                document.getElementById('sparkline-update').addEventListener('click', () => {
+                  sparkline.update(Array.from({ length: 10 }, () => Math.floor(Math.random() * 30)))
+                })
+
+                element.addEventListener('updated.bs.sparkline', () => {
+                  updates += 1
+                  document.getElementById('sparkline-updates').textContent = `${updates} update${updates === 1 ? '' : 's'}`
+                })
+              })
+            </script>
+            <!-- END SCRIPT OF SPARKLINE -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>In a table</CardTitle>
+          <CardSubtitle>A sparkline sits inline with text, so it works in table cells and stat rows.</CardSubtitle>
+          <div class="table-responsive">
+            <table class="table table-vcenter card-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th class="text-end">Value</th>
+                  <th class="text-end">Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  metrics.map((metric) => (
+                    <tr>
+                      <td>{metric.name}</td>
+                      <td class="text-end">{metric.value}</td>
+                      <td class="text-end">
+                        <Sparkline values={metric.values} type={metric.type} color={metric.color} fill={metric.fill === 'auto'} ariaLabel={`${metric.name} trend`} />
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

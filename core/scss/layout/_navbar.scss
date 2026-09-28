@@ -29,6 +29,11 @@
     .nav-link {
       justify-content: start;
       padding: var(--sidebar-nav-padding-y) var(--sidebar-nav-padding-x);
+
+      // In a vertical list the badge sits at the end of the row.
+      .badge:not(:empty) {
+        margin-inline-start: auto;
+      }
     }
 
     // One line, ellipsized — a title never wraps, so rows keep their height
@@ -344,15 +349,35 @@ Navbar
       min-height: 2.5rem;
       @include border-radius(var(--border-radius));
 
+      // A badge with text is part of the link's row, after the title. Only an
+      // empty badge is a notification dot pinned to the link's corner, so the
+      // absolute positioning is limited to `:empty` — a text badge positioned
+      // that way overlapped the title and, in a stacked list, hung past the
+      // link's edge and made the page scroll sideways.
       .badge {
-        position: absolute;
-        inset-inline-end: 0.5rem;
-        top: 0.5rem;
+        margin-inline-start: $spacer-2;
 
-        /* rtl:ignore */
-        transform: translate(calc(var(--dir) * 50%), -50%);
+        &:empty {
+          position: absolute;
+          inset-inline-end: 0.5rem;
+          top: 0.5rem;
+          margin-inline-start: 0;
+
+          /* rtl:ignore */
+          transform: translate(calc(var(--dir) * 50%), -50%);
+        }
       }
     }
+  }
+}
+
+// The vertical navbar is a vertical list at every width: the stacked mobile
+// menu below its breakpoint, the sidebar from it up. Emitted once instead of
+// inside every breakpoint of both loops; it stays ahead of them in source
+// order, so the per-breakpoint rules below still override it.
+@if $enable-navbar-vertical {
+  .navbar-vertical[class*='navbar-expand'] {
+    @include navbar-vertical-nav();
   }
 }
 
@@ -362,35 +387,37 @@ Navbar
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-        @include navbar-vertical-nav();
+      @if $next {
+        @include media-breakpoint-down($next) {
+          @include navbar-vertical-nav();
 
-        // Below the breakpoint the vertical navbar is a top bar row: toggler,
-        // brand, and whatever trails them (a user block, or nothing). Auto
-        // margins keep the brand centered either way — space-between alone
-        // would push it to the far edge when nothing follows it.
-        &.navbar-vertical .navbar-brand {
-          margin-inline: auto;
-        }
-
-        // In the stacked mobile menu nothing pins the trailing group to the
-        // bottom, so a small gap marks it as a separate part of the menu.
-        &.navbar-vertical .navbar-side {
-          margin-top: $sidebar-inset;
-        }
-
-        // Below the breakpoint the navbar-footer sits in the top bar row:
-        // the avatar alone, with its menu dropping down instead of up.
-        .navbar-footer {
-          .nav-link-title {
-            display: none;
+          // Below the breakpoint the vertical navbar is a top bar row: toggler,
+          // brand, and whatever trails them (a user block, or nothing). Auto
+          // margins keep the brand centered either way — space-between alone
+          // would push it to the far edge when nothing follows it.
+          &.navbar-vertical .navbar-brand {
+            margin-inline: auto;
           }
 
-          .dropup .dropdown-menu {
-            inset-inline-start: auto;
-            inset-inline-end: 0;
-            top: 100%;
-            bottom: auto;
+          // In the stacked mobile menu nothing pins the trailing group to the
+          // bottom, so a small gap marks it as a separate part of the menu.
+          &.navbar-vertical .navbar-side {
+            margin-top: $sidebar-inset;
+          }
+
+          // Below the breakpoint the navbar-footer sits in the top bar row:
+          // the avatar alone, with its menu dropping down instead of up.
+          .navbar-footer {
+            .nav-link-title {
+              display: none;
+            }
+
+            .dropup .dropdown-menu {
+              inset-inline-start: auto;
+              inset-inline-end: 0;
+              top: 100%;
+              bottom: auto;
+            }
           }
         }
       }
@@ -431,7 +458,7 @@ Navbar
         &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-inline-start: var(--sidebar-width);
+            margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
 
@@ -440,7 +467,7 @@ Navbar
           ~ .navbar,
           ~ .page-wrapper {
             margin-inline-start: 0;
-            margin-inline-end: var(--sidebar-width);
+            margin-inline-end: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
           }
         }
       }
@@ -504,6 +531,7 @@ Navbar toggler
   width: 1.25em;
   height: 2px;
   background: currentColor;
+  mask-image: none; // the bars below replace the masked hamburger from bootstrap/_navbar
   @include border-radius(var(--border-radius-pill));
   @include transition(top $navbar-toggler-animation-time $navbar-toggler-animation-time, bottom $navbar-toggler-animation-time $navbar-toggler-animation-time, transform $navbar-toggler-animation-time, opacity 0s $navbar-toggler-animation-time);
 
@@ -608,6 +636,12 @@ html[data-bs-navbar-theme='primary'] .page > .navbar {
   --navbar-border-color: transparent;
 }
 
+// The menu row of the two-row navbar, which is not a direct child of .page.
+html[data-bs-navbar-theme='primary'] .page > [class*='navbar-expand'] .navbar {
+  --navbar-bg: var(--primary);
+  --navbar-border-color: transparent;
+}
+
 /**
 Navbar vertical
  */
@@ -661,9 +695,12 @@ Navbar vertical
     // The hidden aside must leave no gap: its siblings offset themselves by
     // --sidebar-width, and this declaration sits on the same elements as the
     // folded copy above, so it wins by coming later.
+    // A length, not a bare 0: the offset is added up in calc(). A floating
+    // navbar keeps its own gap from the viewport edge.
     > .navbar,
     > .page-wrapper {
-      --sidebar-width: 0;
+      --sidebar-width: 0px;
+      --sidebar-gap: var(--navbar-margin, 0px);
     }
   }
 
@@ -733,11 +770,6 @@ Navbar vertical
               flex-grow: 1;
               flex-direction: column;
               min-height: auto;
-
-              .nav-link {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-              }
             }
 
             // Bottom-pinned footer area, e.g. a user block. Sits after the
@@ -791,15 +823,13 @@ Navbar vertical
               padding-inline-end: var(--sidebar-width);
             }
 
-            @include navbar-vertical-nav();
-
             // Folded state, both routes; the hover variant folds only while
             // not hovered and not holding visible keyboard focus. Plain
             // :focus-within would keep the sidebar stuck open after a mouse
             // click, because the clicked link keeps focus.
-            &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible))),
-            :where([data-bs-sidebar='folded']) &,
-            :where([data-bs-sidebar='folded-hover']) &:not(:hover):not(:has(:focus-visible)) {
+            // One :is() instead of a selector list — the mixin's rules are long
+            // and a list would repeat each of them three times.
+            &:is(.navbar-folded, .navbar-folded-hover:not(:hover):not(:has(:focus-visible)), [data-bs-sidebar='folded'] *, [data-bs-sidebar='folded-hover'] :not(:hover):not(:has(:focus-visible))) {
               @include navbar-vertical-folded();
             }
 
@@ -847,4 +877,59 @@ Navbar vertical
     background: inherit;
     box-shadow: inherit;
   }
+}
+
+/**
+Navbar floating
+ */
+// The navbar keeps a gap from the edges around it, like .offcanvas-floating,
+// with an outline on every side instead of the single border line.
+//
+// Two routes to the same state: the .navbar-floating class on the navbar
+// (static markup), or data-bs-navbar-style="floating" on <html> (the theme
+// settings), which covers whichever navigation the page shows — the menu row
+// of the two-row navbar included, which inherits the variables from its
+// navbar-expand-* wrapper.
+//
+// The variables exist only from the navbar-expand-* breakpoint up, so below it
+// every fallback applies and the navbar stays attached.
+$navbar-floating-attr: "html[data-bs-navbar-style='floating'] .page >";
+
+.navbar-floating,
+#{$navbar-floating-attr} .navbar,
+#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  margin: var(--navbar-margin, 0);
+  outline: var(--navbar-outline-width, 0) solid var(--navbar-border-color);
+  outline-offset: calc(-1 * var(--navbar-outline-width, 0px));
+  @include border-radius(var(--navbar-border-radius, 0));
+}
+
+#{$navbar-floating-attr} [class*='navbar-expand'] .navbar {
+  margin-top: 0;
+}
+
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint, $grid-breakpoints);
+  $infix: breakpoint-infix($next, $grid-breakpoints);
+
+  @include media-breakpoint-up($next) {
+    .navbar-floating.navbar-expand#{$infix},
+    #{$navbar-floating-attr} .navbar-expand#{$infix} {
+      --navbar-margin: #{$navbar-floating-margin};
+      --navbar-border-radius: #{$navbar-floating-border-radius};
+      --navbar-outline-width: var(--navbar-border-width);
+    }
+  }
+}
+
+// The page next to a floating sidebar moves over by the sidebar's two margins,
+// and a floating navbar next to any sidebar keeps its own gap from it. The
+// sibling offsets read --sidebar-gap only from the sidebar's breakpoint up.
+.navbar-vertical ~ .navbar-floating {
+  --sidebar-gap: var(--navbar-margin, 0px);
+}
+
+.navbar-floating.navbar-vertical ~ :is(.navbar, .page-wrapper),
+#{$navbar-floating-attr} .navbar-vertical ~ :is(.navbar, .page-wrapper) {
+  --sidebar-gap: calc(2 * #{$navbar-floating-margin});
 }

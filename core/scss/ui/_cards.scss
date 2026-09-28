@@ -152,7 +152,7 @@
 
   &:hover {
     text-decoration: none;
-    background: $active-bg;
+    background: var(--active-bg);
   }
 
   & + & {
@@ -192,7 +192,7 @@ Stacked card
     top: 0;
     bottom: 0;
     content: '';
-    background: rgba($dark, 0.48);
+    background: color-transparent(var(--dark), 0.48);
   }
 
   &:first-child,
@@ -302,16 +302,23 @@ Stacked card
 }
 
 // Card progress
-.card-progress {
+// `.card >` outranks ui/_progress.scss's later `.progress { position: relative; }`.
+.card > .card-progress {
   --card-progress-height: #{$card-progress-height};
-  height: var(--card-progress-height);
+  --card-progress-offset: calc(-1 * var(--card-border-width));
+  position: absolute;
+  inset: var(--card-progress-offset);
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  @include border-radius(var(--card-border-radius));
 
   &:last-child {
-    @include border-radius(0 0 2px 2px);
+    mask-image: linear-gradient(to top, #000 var(--card-progress-height), transparent var(--card-progress-height));
   }
 
   &:first-child {
-    @include border-radius(2px 2px 0 0);
+    mask-image: linear-gradient(to bottom, #000 var(--card-progress-height), transparent var(--card-progress-height));
   }
 }
 
@@ -405,8 +412,6 @@ Card optinos
 .card-options {
   --card-options-top: #{$card-options-top};
   --card-options-inset: #{$card-options-inset};
-  inset-inline-end: var(--card-options-inset);
-  top: var(--card-options-top);
   display: flex;
   margin-inline-start: auto;
 }
@@ -423,33 +428,31 @@ Card optinos
 /**
 Card status
  */
-.card-status-top {
+.card-status-top,
+.card-status-start,
+.card-status-bottom {
+  --card-status-size: #{$card-status-size};
+  --card-status-offset: #{$card-status-offset};
   position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: $card-status-offset;
-  top: $card-status-offset;
-  height: $card-status-size;
-  @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
+  inset: var(--card-status-offset);
+  pointer-events: none;
+  @include border-radius(var(--card-border-radius));
+}
+
+.card-status-top {
+  mask-image: linear-gradient(to bottom, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 .card-status-start {
-  position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: auto;
-  top: $card-status-offset;
-  bottom: $card-status-offset;
-  width: $card-status-size;
-  @include border-radius(var(--card-border-radius) 0 0 var(--card-border-radius));
+  mask-image: linear-gradient(to right, #000 var(--card-status-size), transparent var(--card-status-size));
+
+  [dir='rtl'] & {
+    mask-image: linear-gradient(to left, #000 var(--card-status-size), transparent var(--card-status-size));
+  }
 }
 
 .card-status-bottom {
-  position: absolute;
-  inset-inline-start: $card-status-offset;
-  inset-inline-end: $card-status-offset;
-  top: initial;
-  bottom: $card-status-offset;
-  height: $card-status-size;
-  @include border-radius(0 0 var(--card-border-radius) var(--card-border-radius));
+  mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
 /**
@@ -624,7 +627,7 @@ Card list group
       }
 
       &.active {
-        color: $headings-color;
+        color: var(--heading-color, var(--emphasis-color));
         background: var(--card-bg, var(--bg-surface));
         border-bottom-color: transparent;
       }
@@ -698,8 +701,8 @@ Card list group
 Card note
 */
 .card-note {
-  --card-bg: #fff7dd;
-  --card-border-color: #fff1c9;
+  --card-bg: #{mix-color-css(var(--yellow), var(--bg-surface), 12%)};
+  --card-border-color: #{mix-color-css(var(--yellow), var(--bg-surface), 20%)};
 }
 
 /**
@@ -710,14 +713,16 @@ Card gradient
 // referenced in isolation by sass-true.
 @mixin card-gradient-background {
   background:
-    radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
-    linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
+    radial-gradient(ellipse at center, var(--card-bg) 0%, color-transparent(var(--card-bg), 0) 80%) border-box,
+    linear-gradient(var(--card-gradient-direction), color-transparent(var(--card-bg), var(--card-gradient-opacity)) 0%, var(--card-bg) 40%) border-box,
     linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
 }
 
 .card-gradient {
+  // scss-docs-start card-gradient-css-vars
   --card-gradient-direction: 180deg;
   --card-gradient-opacity: 86%;
+  // scss-docs-end card-gradient-css-vars
   --card-gradient: var(--primary), var(--primary);
 
   @include card-gradient-background();

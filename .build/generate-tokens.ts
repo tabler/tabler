@@ -3,8 +3,8 @@
 // unions used by components can never drift from the stylesheet source of
 // truth. Values are read through the real Sass compiler (after every merge and
 // !default), not by parsing the source text.
-// Run: pnpm run generate-tokens        — (re)write the file
-//      pnpm run check:tokens  — fail when the committed file is stale
+// Run: pnpm run generate:tokens  — (re)write the file
+//      pnpm run check:tokens     — fail when the committed file is stale
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -18,9 +18,13 @@ const outFile = join(repoRoot, 'shared', 'lib', 'tokens.ts')
 const mode = process.argv[2] === 'check' ? 'check' : 'generate'
 
 // One entry per generated const/type; `source` is the Sass member the keys come
-// from — `kind: 'map'` reads map.keys(), `kind: 'list'` reads the list itself.
+// from — `kind: 'map'` reads map.keys(), `kind: 'list'` reads the list itself,
+// `kind: 'expression'` evaluates `expression` and documents itself with `label`.
 const TOKENS = [
   { name: 'themeColors', type: 'ThemeColor', module: 'v', variable: '$theme-colors', kind: 'map', source: 'core/scss/_variables.scss' },
+  // `$theme-colors` is the semantic map with `$extra-colors` merged in; these two split it back
+  { name: 'semanticColors', type: 'SemanticColor', module: 'v', variable: '$theme-colors', kind: 'expression', expression: 'map.keys(map.remove(v.$theme-colors, map.keys(v.$extra-colors)...))', label: 'Keys of `$theme-colors` without the `$extra-colors` keys', source: 'core/scss/_variables.scss' },
+  { name: 'extraColors', type: 'ExtraColor', module: 'v', variable: '$extra-colors', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'socialColors', type: 'SocialColor', module: 'v', variable: '$social-colors', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'avatarSizes', type: 'AvatarSize', module: 'v', variable: '$avatar-sizes', kind: 'map', source: 'core/scss/_variables.scss' },
   { name: 'aspectRatios', type: 'AspectRatio', module: 'v', variable: '$aspect-ratios', kind: 'map', source: 'core/scss/_variables.scss' },
@@ -37,7 +41,7 @@ const entry = `
 @use 'variables' as v;
 @use 'settings' as s;
 @use 'ui/patterns' as p;
-${TOKENS.map((t) => `@debug 'TOKEN ${t.name}=#{${t.kind === 'map' ? `map.keys(${t.module}.${t.variable})` : `${t.module}.${t.variable}`}}';`).join('\n')}
+${TOKENS.map((t) => `@debug 'TOKEN ${t.name}=#{${'expression' in t ? t.expression : t.kind === 'map' ? `map.keys(${t.module}.${t.variable})` : `${t.module}.${t.variable}`}}';`).join('\n')}
 `
 
 const keysByName = new Map<string, string[]>()
@@ -60,7 +64,7 @@ compileString(entry, {
 })
 
 let output = `// Generated from the core SCSS maps by .build/generate-tokens.ts — DO NOT EDIT.
-// Regenerate with: pnpm run generate-tokens
+// Regenerate with: pnpm run generate:tokens
 `
 for (const token of TOKENS) {
   const keys = keysByName.get(token.name)
@@ -69,7 +73,7 @@ for (const token of TOKENS) {
     process.exit(1)
   }
   output += `
-/** Keys of \`${token.variable}\` (${token.source}). */
+/** ${'label' in token ? token.label : `Keys of \`${token.variable}\``} (${token.source}). */
 export const ${token.name} = [${keys.map((key) => `'${key}'`).join(', ')}] as const
 export type ${token.type} = (typeof ${token.name})[number]
 `
@@ -84,7 +88,7 @@ const main = async () => {
   if (mode === 'check') {
     const current = existsSync(outFile) ? readFileSync(outFile, 'utf8') : ''
     if (current !== formatted) {
-      console.error(`✖ ${relative(repoRoot, outFile)} is stale — run "pnpm run generate-tokens" and commit the result.`)
+      console.error(`✖ ${relative(repoRoot, outFile)} is stale — run "pnpm run generate:tokens" and commit the result.`)
       process.exit(1)
     }
     console.log(`✓ ${relative(repoRoot, outFile)} is up to date.`)

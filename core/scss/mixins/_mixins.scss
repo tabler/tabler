@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
@@ -65,20 +66,52 @@
   gap: var(--list-gap);
 }
 
-@mixin focus-ring($show-border: false) {
-  outline: 0;
-  box-shadow:
-    0 0 0 2px var(--primary),
-    0 0 $focus-ring-blur $focus-ring-width color-transparent(var(--primary), 0.25);
-
-  @if ($show-border) {
-    border-color: color-transparent(var(--primary), 0.25);
+// `--focus-ring` is not set by default: composed on `:root` it would freeze the
+// width and the colour there, and an override on a component would not reach
+// the ring. Set it to replace the whole outline at once.
+//
+// deprecated(2.0): `$show-border` is the 1.5 name of the first parameter. It
+// tinted the border under the ring; drawing the ring over the border is what
+// `$offset` does, so the old argument keeps its place and feeds it.
+@mixin focus-ring($show-border: false, $color: null, $offset: $show-border) {
+  @if $color != null {
+    outline: var(--focus-ring-width) solid #{$color};
+  } @else {
+    outline: var(--focus-ring, var(--focus-ring-width) solid var(--focus-ring-color));
   }
+  @if $offset {
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+// Fades the focus ring in: `outline-color` starts from transparent instead of
+// `currentcolor`. `transition` is one property, so pass the element's other
+// transitions here instead of a second `transition()` call.
+@mixin focus-ring-transition($transitions...) {
+  outline-color: transparent;
+  @include transition(list.append($transitions, $focus-ring-transition, comma)...);
 }
 
 //
 // Print styles
 //
+// Renders an svg icon through a CSS mask so the shape is painted with the
+// element's `background-color` and follows the theme without a colour baked
+// into the data uri. Set `background-color` on the element; pass `null` for
+// `$icon` when the mask image is applied per state.
+@mixin mask-icon($icon: null, $size: contain, $position: center) {
+  @if $icon != null {
+    mask-image: $icon;
+  }
+  mask-repeat: no-repeat;
+  @if $position != null {
+    mask-position: $position;
+  }
+  @if $size != null {
+    mask-size: $size;
+  }
+}
+
 @mixin media-print {
   @media print {
     @content;

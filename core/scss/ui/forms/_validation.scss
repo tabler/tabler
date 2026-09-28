@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../../config' as *;
 
 %validation-lite {
@@ -69,5 +70,9 @@
 
   textarea.form-control.is-#{$state} {
     @extend %validation-icon-size-textarea;
+  }
+
+  .otp.is-#{$state} .otp-slot {
+    --otp-slot-border-color: #{map.get($data, 'border-color')};
   }
 }

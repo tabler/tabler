@@ -1,7 +1,7 @@
 @use '../config' as *;
 
 .nav {
-  --nav-link-hover-bg: #{color-transparent(var(--nav-link-color), 0.04)};
+  --nav-link-hover-bg: var(--hover-bg);
   // Read by `.nav-vertical .nav-link.active` below; without it that rule's
   // color declaration was invalid and the active link fell back to the
   // inherited color.
@@ -77,7 +77,7 @@
 .nav-link {
   display: flex;
   align-items: center;
-  @include transition(color $transition-time, background-color $transition-time);
+  @include transition(color $transition-time, background-color $transition-time, $focus-ring-transition);
 
   &:hover,
   &:focus {
@@ -113,7 +113,7 @@
   }
 
   .nav-link:hover & {
-    color: var(--nav-link-hover-icon-color);
+    color: var(--nav-link-hover-icon-color, #{$nav-link-hover-icon-color});
   }
 }
 

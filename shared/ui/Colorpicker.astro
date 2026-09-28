@@ -15,8 +15,10 @@ interface Props {
 const { value, id, format = false, class: className, ariaLabel } = Astro.props
 const alpha = false
 
-const colors = site.colors as Record<string, { prop: string }>
-const swatchProps = Object.values(colors).map((color) => color.prop)
+// Coloris parses hex, rgb and hsl only, and the CSS tokens are `oklch()`, so the
+// swatches use the hex values from site.json.
+const colors = site.colors as Record<string, { hex: string }>
+const swatches = Object.values(colors).map((color) => color.hex)
 
 const colorpickerId = `colorpicker-${id}`
 const colorpickerSelector = `#colorpicker-${id}`
@@ -25,11 +27,9 @@ const colorpickerSelector = `#colorpicker-${id}`
 <input type="text" class={`form-control d-block${className ? ` ${className}` : ''}`} id={colorpickerId} value={value} aria-label={ariaLabel ?? 'Color value'} />
 <CaptureScript>
   <!-- BEGIN COLORPICKER -->
-  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchProps }}>
+  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatches }}>
     function initColorpicker() {
       window.tabler_colorpicker ??= {}
-
-      const swatches = swatchProps.map((prop) => window.getComputedStyle(document.body).getPropertyValue(prop))
 
       if (window.Coloris) {
         // `el` can only be configured globally, but Coloris.setInstance() scopes the rest

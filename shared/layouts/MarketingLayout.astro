@@ -5,6 +5,7 @@ import MarketingNavbar from '@shared/components/marketing/MarketingNavbar.astro'
 import Payment from '@ui/Payment.astro'
 import Icon from '@ui/Icon.astro'
 import { site } from '@shared/lib/site'
+import { relativeBase } from '@shared/lib/url'
 
 interface Props {
   title?: string
@@ -14,7 +15,7 @@ interface Props {
 
 const { title, pageLibs } = Astro.props
 
-const base = '..'
+const base = relativeBase(Astro.url.pathname)
 ---
 
 <BaseLayout title={title} pageLibs={pageLibs} bodyClass="body-marketing body-gradient" base={base}>
@@ -130,7 +131,7 @@ const base = '..'
               <div class="col-auto">
                 <ul class="list-inline list-inline-dots">
                   <li class="list-inline-item">
-                    <a class="link-secondary" href="/terms-of-service">Terms of service</a>
+                    <a class="link-secondary" href="/terms-of-service.html">Terms of service</a>
                   </li>
                   <li class="list-inline-item">
                     <a class="link-secondary" href="#">Privacy policy</a>

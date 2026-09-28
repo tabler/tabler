@@ -9,9 +9,11 @@ interface Props {
   color?: string
   size?: IconSize | undefined
   value?: number
+  /** accessible name for the underlying select; defaults to "Rating" */
+  label?: string
 }
 
-const { id, icon = 'star', color, size, value } = Astro.props
+const { id, icon = 'star', color, size, value, label = 'Rating' } = Astro.props
 
 const starClasses = ['icon', 'gl-star-full', color && `text-${color}`, size && `icon-${size}`].filter(Boolean).join(' ')
 
@@ -21,7 +23,7 @@ const ratingSelector = `#rating-${id}`
 const ratingKey = `rating-${id}`
 ---
 
-<select id={`rating-${id}`}>
+<select id={`rating-${id}`} aria-label={label}>
   <option value="">Select a rating</option>
   <option value="5" selected={value === 5}>Excellent</option>
   <option value="4" selected={value === 4}>Very Good</option>

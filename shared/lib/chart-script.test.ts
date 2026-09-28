@@ -136,4 +136,21 @@ describe('chartConfig', () => {
     expect(xFormatterExpr).toBe('val + "K"')
     expect(JSON.stringify(config)).not.toContain('val + "K"')
   })
+
+  it('returns the y-formatter as a separate expression instead of embedding it', () => {
+    const { config, yFormatterExpr } = chartConfig({ id: 'demo', data: { 'series': [], 'y-formatter': 'val.toLocaleString("en-US")' }, height: 10 })
+    expect(yFormatterExpr).toBe('val.toLocaleString("en-US")')
+    expect(JSON.stringify(config)).not.toContain('toLocaleString')
+  })
+
+  it('uses the ApexCharts 7 legend marker options', () => {
+    const { config } = chartConfig({ id: 'demo', data: { series: [], legend: true }, height: 10 })
+    expect(config.legend).toMatchObject({ markers: { size: 5, strokeWidth: 0, shape: 'circle' } })
+  })
+
+  it('hides line points, including the hover dot, with hide-points', () => {
+    const { config } = chartConfig({ id: 'demo', data: { 'series': [], 'hide-points': true }, height: 10 })
+    expect(config.markers).toEqual({ size: 0, hover: { sizeOffset: 0 } })
+    expect(config).not.toHaveProperty('point')
+  })
 })

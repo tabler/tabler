@@ -3,7 +3,9 @@ import { site } from '@shared/lib/site'
 
 export const prerender = true
 
-// Index pages collapse to directory URLs (build.format 'file').
+// build.format 'file' emits x/index.astro as x.html (the hosting serves no
+// x/ directory), so nested index pages collapse to that file; the root index
+// stays "/".
 const pages = import.meta.glob('./**/*.astro')
 
 const urls = Object.keys(pages)
@@ -16,7 +18,7 @@ const urls = Object.keys(pages)
   })
   .map((path) => {
     if (path === 'index.html') return '/'
-    if (path.endsWith('/index.html')) return `/${path.slice(0, -'index.html'.length)}`
+    if (path.endsWith('/index.html')) return `/${path.slice(0, -'/index.html'.length)}.html`
     return `/${path}`
   })
 

@@ -16,7 +16,7 @@ interface Props {
   title: string
   /** dir="rtl" + the .rtl.css variant of tabler.css */
   rtl?: boolean
-  /** the Tabler logo above the card (+ balancing spacer below it) */
+  /** the Tabler logo at the bottom of the frame */
   showLogo?: boolean
   /** caps the [data-screenshot-target] width at columns * 320px */
   columns?: number
@@ -82,12 +82,16 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
         --tblr-font-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       }
 
-      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret. */
-      *,
-      *::before,
-      *::after {
+      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret.
+         A recording (?motion, see .build/record.ts) keeps the motion and only hides the caret. */
+      html:not([data-motion]) *,
+      html:not([data-motion]) *::before,
+      html:not([data-motion]) *::after {
         transition: none !important;
         animation: none !important;
+      }
+
+      * {
         caret-color: transparent !important;
       }
 
@@ -111,11 +115,13 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       }
 
       .screenshot-logo {
+        position: absolute;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        height: 8rem;
         padding: 0 5rem;
-        flex: 1;
       }
 
       /* fake mouse pointer, to make the static screenshot read as a live interaction */
@@ -131,12 +137,14 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
 
     <!-- loaded early, before paint, so ?theme=dark applies before first render -->
     <script is:inline src={`/dist/js/tabler-theme${min}.js`}></script>
+    <!-- ?motion keeps transitions and animations, for the video recorder -->
+    <script is:inline>
+      if (new URLSearchParams(location.search).has('motion')) document.documentElement.dataset.motion = 'true'
+    </script>
   </head>
   <body>
     <div class="page page-center align-items-center">
       <div class="screenshot d-flex flex-column justify-content-center align-items-center px-12" id="screenshot">
-        {showLogo && <div class="screenshot-logo" />}
-
         <div class:list={['screenshot-wrapper', className]} style={targetStyle} data-screenshot-target>
           <slot />
         </div>
@@ -151,7 +159,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
       </div>
 
       <!-- outside .screenshot on purpose: a screenshot tool crops to [data-screenshot-target], so this toggle never ends up in the capture -->
-      <nav class="nav-segmented mt-4">
+      <nav class="nav-segmented mt-4" data-screenshot-chrome>
         <a href="?theme=light" class="nav-link hide-theme-light">Light</a>
         <a href="?theme=light" class="nav-link active hide-theme-dark">Light</a>
         <a href="?theme=dark" class="nav-link hide-theme-dark">Dark</a>

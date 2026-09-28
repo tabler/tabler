@@ -1,0 +1,29 @@
+---
+// Signal in a menu: a priority picker shown open, each item a signal with its
+// label. The menu is written open (`show`, static position) because the capture
+// cannot click; the fake cursor rests on the active item.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Signal from '@ui/Signal.astro'
+
+const priorities = [
+  { label: 'Urgent', value: 3, color: 'orange' },
+  { label: 'Normal', value: 2, color: 'blue', active: true },
+  { label: 'Low', value: 1, color: 'green' },
+  { label: 'No priority', value: 0, color: undefined },
+]
+---
+
+<ScreenshotLayout title="Signal priority menu" columns={1} zoom={1.5} class="d-flex justify-content-center">
+  <div class="dropdown-menu show position-static">
+    <h6 class="dropdown-header">Set priority</h6>
+    {
+      priorities.map((item) => (
+        <a href="#" class:list={['dropdown-item position-relative', item.active && 'active']}>
+          <Signal value={item.value} color={item.color} class="me-2" />
+          {item.label}
+          {item.active && <span class="cursor" />}
+        </a>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

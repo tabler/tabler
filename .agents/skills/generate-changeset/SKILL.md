@@ -39,7 +39,7 @@ Include **every affected package** in the frontmatter. Omit packages with no rel
 |-------|------|
 | **patch** | Bug fixes, small improvements, style/accessibility tweaks, variable/token fixes, doc typo/format fixes |
 | **minor** | New components, new pages, new CSS classes/utilities, significant enhancements, new preview demos |
-| **major** | Breaking changes, removed APIs/classes, rewrites that break consumers (rare in this repo) |
+| **major** | Breaking changes, removed APIs/classes, rewrites that break consumers. Never on `dev`: if the honest bump is `major`, stop and follow the `backward-compat` skill |
 
 Packages can differ: e.g. `@tabler/core`: minor + `@tabler/docs`: patch is valid.
 
