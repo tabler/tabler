@@ -43,6 +43,8 @@ const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 // Vanilla Calendar Pro 3.4+ throws on an option whose extension is not registered
 const PLUGIN_EXTENSIONS = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
 
+type ExtensionOptions = { extensions?: object[] }
+
 // The public API is typed with local copies of the Vanilla Calendar Pro types.
 // `vanilla-calendar-pro` is an optional peer dependency, so the published
 // `dist/types` must not import it: a project that never loads the datepicker
@@ -559,12 +561,12 @@ class Datepicker extends BaseComponent {
   }
 
   /** @internal */
-  _buildCalendarOptions(): Options {
+  _buildCalendarOptions(): Options & ExtensionOptions {
     // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
     const vcpTheme = !theme || theme === 'auto' ? 'system' : theme
 
-    const calendarOptions: Options = {
+    const calendarOptions: Options & ExtensionOptions = {
       ...this._config.vcpOptions,
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
@@ -610,11 +612,12 @@ class Datepicker extends BaseComponent {
   }
 
   /** @internal */
-  _getPluginExtensions(): NonNullable<Options['extensions']> {
-    const extensions = [...((this._config.vcpOptions as Options).extensions ?? [])]
+  _getPluginExtensions(): object[] {
+    const extensions = [...((this._config.vcpOptions as ExtensionOptions).extensions ?? [])]
+    const plugin = window.VanillaCalendarPro as Record<string, unknown> | undefined
 
     for (const name of PLUGIN_EXTENSIONS) {
-      const extension = window.VanillaCalendarPro?.[name]
+      const extension = plugin?.[name]
       if (extension && !extensions.includes(extension)) {
         extensions.push(extension)
       }

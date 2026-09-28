@@ -154,13 +154,24 @@ describe('Datepicker', () => {
       expect(fixtureEl.querySelector('[data-vc="time"]')).not.toBeNull()
     })
 
-    it('should keep extensions passed through vcpOptions', () => {
+    it('should register the plugin extensions and keep those passed through vcpOptions', () => {
+      const months = { name: 'months' }
+      const custom = { name: 'custom' }
+      window.VanillaCalendarPro = { ...VanillaCalendarPro, months } as unknown as typeof VanillaCalendarPro
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
 
-      const instance = new Datepicker(input(), { vcpOptions: { extensions: [VanillaCalendarPro.time] } })
+      const instance = new Datepicker(input(), { vcpOptions: { extensions: [custom, months] } })
 
-      expect(instance.calendar!.extensions).toContain(VanillaCalendarPro.time)
-      expect(instance.calendar!.extensions).toContain(VanillaCalendarPro.months)
+      expect(instance._buildCalendarOptions().extensions).toEqual([custom, months])
+    })
+
+    it('should not pass extensions when the plugin has none', () => {
+      window.VanillaCalendarPro = { Calendar: VanillaCalendarPro.Calendar } as unknown as typeof VanillaCalendarPro
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+
+      expect(instance._buildCalendarOptions()).not.toHaveProperty('extensions')
     })
   })
 
