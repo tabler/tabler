@@ -1,0 +1,258 @@
+---
+title: Color picker
+order: 14
+summary: A color picker lets users pick a color from a gradient, a set of swatches or a typed value, for theme settings and tag colors.
+description: Let users pick a color in a form with the Colorpicker plugin, as a text input, a button or an inline panel.
+related: [/ui/forms/elements, /ui/forms/color-check, /ui/plugins/date-picker]
+source: core/scss/ui/forms/_colorpicker.scss
+css-vars: colorpicker
+sass-vars: colorpicker
+classnames:
+  component:
+    - class: colorpicker
+      desc: Wrapper around the text input; draws the swatch at the start of the field
+  part:
+    - class: colorpicker-preview
+      desc: Swatch inside a button trigger, painted with the picked color
+    - class: colorpicker-panel
+      desc: The panel the plugin renders, as a popup or inline
+    - class: colorpicker-area
+      desc: Saturation and brightness gradient
+    - class: colorpicker-marker
+      desc: The handle in the gradient
+    - class: colorpicker-hue
+      desc: Hue slider, a `.form-range`
+    - class: colorpicker-alpha
+      desc: Opacity slider, a `.form-range`
+    - class: colorpicker-swatches
+      desc: Row of preset colors
+    - class: colorpicker-swatch
+      desc: One preset color
+    - class: colorpicker-footer
+      desc: Value input, format select and the buttons
+  modifier:
+    - class: colorpicker-panel-inline
+      desc: Panel rendered in place, without the popup surface
+---
+
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+The color picker is a normal text input with the Colorpicker plugin from `tabler.js` attached. Add `data-bs-toggle="colorpicker"` to the input and wrap it in `.colorpicker`, and Tabler draws a swatch at the start of the field and opens a panel on focus. The value stays in the input, so the field works in a form like any other, and the plugin needs no extra script or stylesheet.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" value="#066fd1" aria-label="Color value" />
+</div>
+</Example>
+
+The panel has a gradient for saturation and brightness, a hue slider, the Tabler palette as swatches, and a field to type a value. Every part works with the keyboard.
+
+## Usage
+
+### Basic field
+
+Wrap a text input in `.colorpicker` and add `data-bs-toggle="colorpicker"`. The wrapper is what draws the swatch, so keep it even when you style the field yourself.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" value="#4299e1" aria-label="Color value" />
+</div>
+</Example>
+
+### Color format
+
+Set `data-bs-format` to choose what the input stores. Use `hex` when you save the value in a database, because it is short and easy to read. Any CSS color can be typed into the field, and the plugin writes it back in the chosen notation when the field loses focus.
+
+| Format | Value in the input |
+| --- | --- |
+| `hex` | `#066fd1` |
+| `rgb` | `rgb(6 111 209)` |
+| `hsl` | `hsl(209 94% 42%)` |
+| `oklch` | `oklch(54.6% 0.1724 254.2)` |
+| `auto` | Keeps the notation the value came in. |
+
+<Example column>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-format="rgb" value="rgb(66 153 225)" aria-label="RGB color value" />
+</div>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-format="oklch" value="oklch(64% 0.22 27)" aria-label="OKLCH color value" />
+</div>
+</Example>
+
+### Alpha channel
+
+Alpha is off by default and the value is always opaque. Set `data-bs-alpha="true"` to add the opacity slider. A hex value then gets eight digits, and the other notations a `/ alpha` part.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-alpha="true" value="#ae3ec980" aria-label="Color value with opacity" />
+</div>
+</Example>
+
+### Swatches
+
+The panel shows the Tabler palette by default, read from the `--tblr-*` custom properties, so it follows your theme. Pass your own list in `data-bs-swatches`, as a comma-separated list or a JSON array. Any CSS color works, including `oklch()`.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-swatches="#066fd1, #4299e1, #4263eb, #ae3ec9, #d6336c, #d63939" value="#4299e1" aria-label="Color value" />
+</div>
+</Example>
+
+### Swatches only
+
+Set `data-bs-swatches-only="true"` to hide the gradient and the sliders. Users can then pick only from your list. Use it when a design system allows a fixed set of colors.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-swatches-only="true" data-bs-swatches="#066fd1, #4299e1, #4263eb, #ae3ec9, #d6336c, #d63939, #f76707, #2fb344" value="#2fb344" aria-label="Color value" />
+</div>
+</Example>
+
+### Format toggle, clear and close
+
+Add a select to switch the notation inside the panel, a button that empties the field, and a button that closes the panel.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-format-toggle="true" data-bs-clear-button="true" data-bs-close-button="true" value="#f76707" aria-label="Color value" />
+</div>
+</Example>
+
+### Button trigger
+
+Any element other than an input opens the panel on click. Put a hidden input inside it to keep the value in the form, and a `.colorpicker-preview` to show the picked color. Without an input, `data-bs-value` sets the starting color.
+
+<Example>
+<button type="button" class="btn" data-bs-toggle="colorpicker">
+  <input type="hidden" name="brand-color" value="#066fd1" />
+  <span class="colorpicker-preview me-2"></span>
+  Brand color
+</button>
+</Example>
+
+### Inline panel
+
+Set `data-bs-inline="true"` to render the panel in place, right after the field. It is always open, so use it in a settings page or a sidebar where the picker is the main content.
+
+<Example>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" data-bs-inline="true" data-bs-alpha="true" value="#0ca678" aria-label="Color value" />
+</div>
+</Example>
+
+### Dark mode
+
+The panel is appended to `<body>`, outside the cascade of the field, so the plugin copies the nearest `data-bs-theme` to it and follows later changes. Set `data-bs-colorpicker-theme` to force a theme for the panel alone.
+
+## Examples
+
+### Field with a label
+
+Use the picker like any other form field: a label, the input, and a hint below it.
+
+<Example bg="surface-secondary" column>
+<div class="card">
+  <div class="card-body">
+    <div class="mb-0">
+      <label class="form-label" for="colorpicker-form">Brand color</label>
+      <div class="colorpicker">
+        <input type="text" class="form-control" id="colorpicker-form" data-bs-toggle="colorpicker" value="#d6336c" />
+      </div>
+      <div class="form-text">This color is used for buttons and links.</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## JavaScript
+
+### Via data attributes
+
+Add `data-bs-toggle="colorpicker"` and Tabler does the rest. Inputs open on focus, other elements open on click, and inline panels and fields with a value render on page load so the swatch shows right away. Every option below can be set as a `data-bs-*` attribute, for example `data-bs-swatches-only="true"`.
+
+<CodeDocs name="colorpicker-init" file="core/js/src/colorpicker.ts" />
+
+### Via JavaScript
+
+Create the picker yourself when you need options that do not fit in an attribute, such as translated labels:
+
+```js
+const colorpicker = new tabler.Colorpicker(document.getElementById('my-color'), {
+  format: 'rgb',
+  alpha: true,
+  labels: { dialog: 'Kolor', hue: 'Odcień' },
+});
+```
+
+### Options
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `format` | string | `'hex'` | Notation written to the field: `'hex'`, `'rgb'`, `'hsl'`, `'oklch'` or `'auto'`. |
+| `alpha` | boolean | `false` | Show the opacity slider and keep the alpha channel. |
+| `swatches` | array | `null` | Preset colors. `null` reads the Tabler palette from the CSS custom properties. |
+| `swatchesOnly` | boolean | `false` | Hide the gradient and the sliders. |
+| `formatToggle` | boolean | `false` | Add a select to switch the notation in the panel. |
+| `clearButton` | boolean | `false` | Add a button that empties the field. |
+| `closeButton` | boolean | `false` | Add a button that closes the panel. |
+| `inline` | boolean | `false` | Render the panel in place instead of a popup. |
+| `defaultColor` | string | `'#000000'` | Color the panel shows while the field is empty. |
+| `value` | string | `null` | Starting color for a trigger that is not an input and has no hidden input. |
+| `placement` | string | `'bottom-start'` | Where the popup lines up with the field, as a Popper placement. `start` and `end` follow the text direction. |
+| `positionElement` | string, element | `null` | Element the popup lines up with. Defaults to the `.colorpicker` wrapper, or the field itself. |
+| `container` | string, element | `'body'` | Element the popup is appended to. |
+| `colorpickerTheme` | string | `null` | Force the panel's theme to `'light'`, `'dark'` or `'auto'`. By default it follows the nearest `[data-bs-theme]`. |
+| `labels` | object | English texts | Texts read by assistive technology: `dialog`, `instruction`, `marker`, `hue`, `alpha`, `input`, `format`, `swatch`, `clear` and `close`. Keys you leave out keep the default. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `show()` | Opens the popup. Does nothing for an inline panel. |
+| `hide()` | Closes the popup. |
+| `toggle()` | Opens or closes the popup. |
+| `getValue()` | Returns the color in the configured notation, or an empty string. |
+| `setValue(color)` | Sets the color from any CSS color string. `null` or an empty string clears the field. |
+| `dispose()` | Removes the panel and the instance. |
+| `Colorpicker.getInstance(element)` | Returns the instance for an element, or `null`. |
+| `Colorpicker.getOrCreateInstance(element)` | Returns the instance, or creates one. |
+
+### Events
+
+| Event | Description |
+| --- | --- |
+| `show.bs.colorpicker` | Fires before the popup opens. Call `preventDefault()` to keep it closed. |
+| `shown.bs.colorpicker` | Fires once the popup is open. |
+| `hide.bs.colorpicker` | Fires before the popup closes. Call `preventDefault()` to keep it open. |
+| `hidden.bs.colorpicker` | Fires once the popup is closed. |
+| `change.bs.colorpicker` | Fires on every change. The event has `value`, the string written to the field, `format`, and `rgba` and `hsva` objects, both `null` when the field was cleared. |
+
+The field also gets native `input` and `change` events whenever the panel changes it, so form libraries and frameworks see the new value without listening to the plugin.
+
+```js
+document.getElementById('my-color').addEventListener('change.bs.colorpicker', (event) => {
+  console.log(event.value, event.rgba);
+});
+```
+
+## Accessibility
+
+- Always add a `<label>` linked to the input with `for` and `id`. The swatch alone does not say what the field is for.
+- Keep the text value visible. Users who cannot tell colors apart can still read and type the value.
+- Do not use the color as the only meaning. If a color marks a status, repeat the status in text.
+- The panel is a `role="dialog"`. <kbd>Tab</kbd> from the field moves into it, the arrow keys move the handle in the gradient (<kbd>Shift</kbd> for bigger steps), the sliders are native range inputs, and <kbd>Escape</kbd> closes the panel and returns focus to the field.
+- The panel closes on a click outside and when focus moves to something outside it, so keyboard users are never trapped.
+
+## Migration from Coloris
+
+Until version 1.6 the color picker was the [Coloris](https://github.com/melloware/coloris-npm) library, restyled in `tabler-vendors.css`. It still ships in `dist/libs` and keeps working, but it will be removed in 2.0. To move a field to the plugin:
+
+- Drop the Coloris script and stylesheet, and the `Coloris()` call.
+- Wrap the input in `.colorpicker` and add `data-bs-toggle="colorpicker"`.
+- Move the options to `data-bs-*` attributes. `el` and `setInstance()` are gone, because every field has its own instance. `themeMode`, `rtl` and `margin` are handled by the theme and the text direction. `selectInput` has no equivalent. `format: 'mixed'` becomes `format="auto"`.
+- Replace the `coloris:pick` listener with `change.bs.colorpicker` on the field, or with the native `input` event.

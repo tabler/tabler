@@ -5,29 +5,104 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import Colorpicker from '@ui/Colorpicker.astro'
+import FormGroup from '@ui/FormGroup.astro'
 import site from '@data/site.json'
 import DocsLink from '@ui/DocsLink.astro'
 
 const colors = Object.values(site.colors) as { hex: string; title: string }[]
+
+const formats = [
+  { format: 'hex', value: '#066fd1' },
+  { format: 'rgb', value: 'rgb(66 153 225)' },
+  { format: 'hsl', value: 'hsl(291 54% 53%)' },
+  { format: 'oklch', value: 'oklch(64% 0.22 27)' },
+] as const
 ---
 
-<DefaultLayout title="Color picker" pageMenu="plugins.colorpicker" pageLibs={['coloris.js']}>
-  <DocsLink slot="page-header-actions" path="/ui/plugins/color-picker" />
-  <Card>
-    <CardBody>
-      <CardTitle>Basic</CardTitle>
-      <CardSubtitle>Click a swatch to open the picker and choose any color.</CardSubtitle>
-      <div class="row g-3">
-        {
-          colors.map((color, index) => (
-            <div class="col-2">
-              <div>
-                <Colorpicker value={color.hex} id={`${index + 1}`} format="hex" ariaLabel={`${color.title} color value`} />
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </CardBody>
-  </Card>
+<DefaultLayout title="Color picker" pageMenu="plugins.colorpicker">
+  <DocsLink slot="page-header-actions" path="/ui/forms/color-picker" />
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Click a field to open the picker and choose any color.</CardSubtitle>
+          <div class="row g-3">
+            {
+              colors.map((color, index) => (
+                <div class="col-6 col-md-3 col-lg-2">
+                  <Colorpicker value={color.hex} id={`colorpicker-${index + 1}`} ariaLabel={`${color.title} color value`} />
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Formats</CardTitle>
+          <CardSubtitle>The value is written back in the notation you pick with <code>data-bs-format</code>.</CardSubtitle>
+          {
+            formats.map(({ format, value }) => (
+              <FormGroup label={format.toUpperCase()} for={`colorpicker-format-${format}`}>
+                <Colorpicker value={value} format={format} id={`colorpicker-format-${format}`} />
+              </FormGroup>
+            ))
+          }
+          <FormGroup label="Auto" hint="Keeps whatever notation is typed in." for="colorpicker-format-auto" class="mb-0">
+            <Colorpicker value="rgb(47 179 68)" format="auto" id="colorpicker-format-auto" />
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Options</CardTitle>
+          <CardSubtitle>Opacity, a fixed set of swatches, and the extra controls in the panel.</CardSubtitle>
+          <FormGroup label="Alpha channel" for="colorpicker-alpha">
+            <Colorpicker value="#ae3ec980" alpha id="colorpicker-alpha" />
+          </FormGroup>
+          <FormGroup label="Swatches only" for="colorpicker-swatches-only">
+            <Colorpicker value="#2fb344" swatchesOnly swatches={['#066fd1', '#4299e1', '#4263eb', '#ae3ec9', '#d6336c', '#d63939', '#f76707', '#2fb344']} id="colorpicker-swatches-only" />
+          </FormGroup>
+          <FormGroup label="Format toggle, clear and close" for="colorpicker-controls">
+            <Colorpicker value="#f76707" formatToggle clearButton closeButton id="colorpicker-controls" />
+          </FormGroup>
+          <FormGroup label="Empty" for="colorpicker-empty" hint="No value yet; the panel opens on the default color." class="mb-0">
+            <Colorpicker placeholder="Pick a color" id="colorpicker-empty" />
+          </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline</CardTitle>
+          <CardSubtitle>The panel renders in place, under the field, and never closes.</CardSubtitle>
+          <Colorpicker value="#0ca678" inline alpha id="colorpicker-inline" ariaLabel="Accent color value" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Button trigger</CardTitle>
+          <CardSubtitle>Any element opens the picker on click. The value lives in the hidden input.</CardSubtitle>
+          <div class="btn-list">
+            <button type="button" class="btn" data-bs-toggle="colorpicker">
+              <input type="hidden" name="brand-color" value="#066fd1" />
+              <span class="colorpicker-preview me-2"></span>
+              Brand color
+            </button>
+            <button type="button" class="btn btn-icon" data-bs-toggle="colorpicker" data-bs-value="#d6336c" data-bs-swatches-only="true" aria-label="Tag color">
+              <span class="colorpicker-preview"></span>
+            </button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

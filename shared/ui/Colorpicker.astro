@@ -1,52 +1,55 @@
 ---
-import site from '@data/site.json'
-import CaptureScript from '../components/CaptureScript.astro'
-
+// Color picker field: a text input the Colorpicker plugin in `tabler.js` picks
+// up through `data-bs-toggle="colorpicker"`. The `.colorpicker` wrapper draws
+// the swatch from the custom property the plugin sets on it.
 interface Props {
-  value?: string
   id: string
-  /** Coloris output format; false leaves the library default */
-  format?: 'hex' | 'rgb' | 'hsl' | 'auto' | 'mixed' | false
+  value?: string
+  name?: string
+  placeholder?: string
+  /** notation written to the field; `auto` keeps the one the value came in */
+  format?: 'hex' | 'rgb' | 'hsl' | 'oklch' | 'auto'
+  /** opacity slider and alpha channel */
+  alpha?: boolean
+  /** preset colours; the Tabler palette when omitted */
+  swatches?: string[]
+  /** hide the gradient and sliders, leaving the swatches */
+  swatchesOnly?: boolean
+  /** selector in the panel to switch the notation */
+  formatToggle?: boolean
+  clearButton?: boolean
+  closeButton?: boolean
+  /** render the panel in place instead of a popup */
+  inline?: boolean
+  disabled?: boolean
   class?: string
-  /** Accessible name for the input; falls back to a generic label when the caller doesn't wrap this in a labelled FormGroup */
+  /** accessible name for the input; falls back to a generic label when the caller doesn't wrap this in a labelled FormGroup */
   ariaLabel?: string
 }
 
-const { value, id, format = false, class: className, ariaLabel } = Astro.props
-const alpha = false
+const { id, value, name, placeholder, format, alpha, swatches, swatchesOnly, formatToggle, clearButton, closeButton, inline, disabled, class: className, ariaLabel } = Astro.props
 
-// Coloris parses hex, rgb and hsl only, and the CSS tokens are `oklch()`, so the
-// swatches use the hex values from site.json.
-const colors = site.colors as Record<string, { hex: string }>
-const swatches = Object.values(colors).map((color) => color.hex)
-
-const colorpickerId = `colorpicker-${id}`
-const colorpickerSelector = `#colorpicker-${id}`
+const flag = (enabled: boolean | undefined): 'true' | undefined => (enabled ? 'true' : undefined)
 ---
 
-<input type="text" class={`form-control d-block${className ? ` ${className}` : ''}`} id={colorpickerId} value={value} aria-label={ariaLabel ?? 'Color value'} />
-<CaptureScript>
-  <!-- BEGIN COLORPICKER -->
-  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatches }}>
-    function initColorpicker() {
-      window.tabler_colorpicker ??= {}
-
-      if (window.Coloris) {
-        // `el` can only be configured globally, but Coloris.setInstance() scopes the rest
-        // (alpha, format, swatches, ...) to this selector so multiple pickers with
-        // different options don't clobber each other's settings.
-        Coloris({ el: colorpickerSelector })
-        Coloris.setInstance(colorpickerSelector, {
-          selectInput: false,
-          alpha,
-          ...(format ? { format } : {}),
-          swatches,
-        })
-        window.tabler_colorpicker[colorpickerId] = colorpickerSelector
-      }
-    }
-
-    document.readyState !== 'loading' ? initColorpicker() : document.addEventListener('DOMContentLoaded', initColorpicker, { once: true })
-  </script>
-  <!-- END COLORPICKER -->
-</CaptureScript>
+<div class:list={['colorpicker', className]}>
+  <input
+    type="text"
+    class="form-control"
+    id={id}
+    name={name}
+    value={value}
+    placeholder={placeholder}
+    disabled={disabled}
+    aria-label={ariaLabel ?? 'Color value'}
+    data-bs-toggle="colorpicker"
+    data-bs-format={format}
+    data-bs-alpha={flag(alpha)}
+    data-bs-swatches={swatches ? JSON.stringify(swatches) : undefined}
+    data-bs-swatches-only={flag(swatchesOnly)}
+    data-bs-format-toggle={flag(formatToggle)}
+    data-bs-clear-button={flag(clearButton)}
+    data-bs-close-button={flag(closeButton)}
+    data-bs-inline={flag(inline)}
+  />
+</div>
