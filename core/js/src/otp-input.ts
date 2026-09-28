@@ -48,6 +48,9 @@ const SELECTOR_INPUT = 'input'
 // Keeps the active-slot highlight in sync with the caret as it moves without typing
 const SYNC_EVENTS = ['blur', 'keyup', 'select']
 
+// A touch focuses the input after `pointerup`, so the tap is only settled by `click`
+const POINTER_END_EVENTS = ['click', 'pointercancel']
+
 const MASK_CHARACTER = '•'
 
 // Per-type input mode, validation pattern, and a filter that strips disallowed characters
@@ -97,11 +100,31 @@ class OtpInput extends BaseComponent {
   // clicked slot instead of jumping to the first empty one
   _pointerActive = false
   _pointerIndex = 0
+  _composedValue: string | null = null
 
-  _onInput = (): void => this._handleInput()
+  _onInput = (event: Event): void => {
+    if ((event as InputEvent).isComposing) {
+      return
+    }
+
+    const composed = this._composedValue
+    this._composedValue = null
+    if (composed !== null && composed === this._input.value) {
+      return
+    }
+
+    this._handleInput()
+  }
+  _onCompositionEnd = (): void => {
+    this._handleInput()
+    this._composedValue = this._input.value
+  }
   _onBeforeInput = (event: Event): void => this._handleBeforeInput(event as InputEvent)
   _onFocus = (): void => this._handleFocus()
   _onPointerDown = (event: Event): void => this._handlePointerDown(event as PointerEvent)
+  _onPointerEnd = (): void => {
+    this._pointerActive = false
+  }
   _onSync = (): void => this._render()
   _onSelectionChange = (): void => {
     if (document.activeElement === this._input) {
@@ -163,6 +186,7 @@ class OtpInput extends BaseComponent {
   }
 
   focus(): void {
+    this._pointerActive = false
     this._input.focus()
     this._selectSlot(this._firstEmptyIndex())
     this._render()
@@ -178,6 +202,10 @@ class OtpInput extends BaseComponent {
     this._input.removeEventListener('beforeinput', this._onBeforeInput)
     this._input.removeEventListener('focus', this._onFocus)
     this._input.removeEventListener('pointerdown', this._onPointerDown)
+    this._input.removeEventListener('compositionend', this._onCompositionEnd)
+    for (const type of POINTER_END_EVENTS) {
+      this._input.removeEventListener(type, this._onPointerEnd)
+    }
     for (const type of SYNC_EVENTS) {
       this._input.removeEventListener(type, this._onSync)
     }
@@ -271,6 +299,11 @@ class OtpInput extends BaseComponent {
     this._input.addEventListener('beforeinput', this._onBeforeInput)
     this._input.addEventListener('focus', this._onFocus)
     this._input.addEventListener('pointerdown', this._onPointerDown)
+    this._input.addEventListener('compositionend', this._onCompositionEnd)
+    for (const type of POINTER_END_EVENTS) {
+      this._input.addEventListener(type, this._onPointerEnd)
+    }
+
     document.addEventListener('selectionchange', this._onSelectionChange)
 
     for (const type of SYNC_EVENTS) {
@@ -310,7 +343,8 @@ class OtpInput extends BaseComponent {
 
   // Intercepts single-character typing, Backspace and Delete so each slot is
   // overwritten in place rather than inserting and shifting the value.
-  // Anything else (paste, autofill, IME) falls through to `_handleInput`.
+  // Anything else (paste, autofill) falls through to `_handleInput`; IME
+  // composition is sanitised once on `compositionend`.
   _handleBeforeInput(event: InputEvent): void {
     const { inputType, data } = event
 
@@ -323,8 +357,9 @@ class OtpInput extends BaseComponent {
       }
 
       const index = Math.min(this._input.selectionStart ?? 0, this._length - 1)
+      const end = Math.max(this._input.selectionEnd ?? index, index + 1)
       const chars = [...this._input.value]
-      chars[index] = char
+      chars.splice(index, end - index, char)
       this._input.value = chars.join('').slice(0, this._length)
 
       this._selectSlot(index + 1)
