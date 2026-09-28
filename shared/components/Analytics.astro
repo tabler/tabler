@@ -1,13 +1,16 @@
 ---
-// PostHog web analytics for the public sites. The snippet is only armed on the
-// production hostnames below, so local builds and Vercel branch previews stay
-// silent. Requests go through the same-origin `/eat/*` proxy (see vercel.json in
-// docs/ and preview/), which rewrites to eu.i.posthog.com.
+// PostHog web analytics for the public sites. The snippet is emitted only in
+// Vercel production builds (VERCEL_ENV is unset locally and "preview" on branch
+// deployments), so the dev server, local builds and branch previews ship no
+// tracking code at all. A runtime hostname check is kept as a second guard.
+// Requests go through the same-origin `/eat/*` proxy (see vercel.json in docs/
+// and preview/), which rewrites to eu.i.posthog.com.
 //
 // The loader is PostHog's minified stub; it is assembled as a string because the
 // Astro prettier parser cannot handle it inline.
 import { site } from '@shared/lib/site'
 
+const isProduction = process.env.VERCEL_ENV === 'production'
 const key = site.posthogKey
 const hosts = ['docs.tabler.io', 'preview.tabler.io', 'dev.tabler.io']
 
@@ -19,4 +22,4 @@ const init = `if(${JSON.stringify(hosts)}.includes(window.location.hostname)){po
 const snippet = `${loader}\n${init}`
 ---
 
-{key && <script is:inline set:html={snippet} />}
+{isProduction && key && <script is:inline set:html={snippet} />}
