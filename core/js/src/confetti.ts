@@ -59,6 +59,8 @@ type Emitter = {
   stopped: boolean
   /** every piece has landed and `end` was fired */
   done: boolean
+  /** the instance was disposed: the pieces still land, but `end` is not fired */
+  detached: boolean
 }
 
 /**
@@ -134,14 +136,21 @@ const stage = {
   frame: 0,
   lastTick: 0,
 
-  add(emitter: Emitter): void {
-    this.emitters.push(emitter)
+  add(emitter: Emitter): boolean {
     this._mount()
+
+    if (!this.context) {
+      return false
+    }
+
+    this.emitters.push(emitter)
 
     if (!this.frame) {
       this.lastTick = performance.now()
       this.frame = requestAnimationFrame((now) => this._tick(now))
     }
+
+    return true
   },
 
   _mount(): void {
@@ -162,9 +171,14 @@ const stage = {
       display: 'block',
     })
 
+    const context = canvas.getContext('2d')
+    if (!context) {
+      return
+    }
+
     document.body.append(canvas)
     this.canvas = canvas
-    this.context = canvas.getContext('2d')
+    this.context = context
     this._resize()
     window.addEventListener('resize', this._onResize)
   },
@@ -192,7 +206,7 @@ const stage = {
     // The backing store is scaled for HiDPI screens; the CSS size above keeps
     // the element at the viewport size, so the drawing stays sharp and 1:1.
     const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
-    this.canvas.width = window.innerWidth * dpr
+    this.canvas.width = document.documentElement.clientWidth * dpr
     this.canvas.height = window.innerHeight * dpr
     this.context.setTransform(dpr, 0, 0, dpr, 0, 0)
   },
@@ -313,7 +327,10 @@ const stage = {
 
       this.emitters.splice(i, 1)
       emitter.done = true
-      EventHandler.trigger(emitter.element, EVENT_END)
+
+      if (!emitter.detached) {
+        EventHandler.trigger(emitter.element, EVENT_END)
+      }
     }
   },
 }
@@ -373,9 +390,13 @@ class Confetti extends BaseComponent {
       emitted: 0,
       stopped: false,
       done: false,
+      detached: false,
     }
 
-    stage.add(this._emitter)
+    if (!stage.add(this._emitter)) {
+      this._emitter = null
+      EventHandler.trigger(this._element, EVENT_END)
+    }
   }
 
   stop(): void {
@@ -387,6 +408,10 @@ class Confetti extends BaseComponent {
   }
 
   dispose(): void {
+    if (this._emitter) {
+      this._emitter.detached = true
+    }
+
     this.stop()
     super.dispose()
   }
