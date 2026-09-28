@@ -52,9 +52,8 @@ describe('Dropdown', () => {
 
       const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
       const dropdownBySelector = new Dropdown('[data-bs-toggle="dropdown"]')
-      const dropdownByElement = new Dropdown(btnDropdown)
-
       expect(dropdownBySelector._element).toBe(btnDropdown)
+      const dropdownByElement = new Dropdown(btnDropdown)
       expect(dropdownByElement._element).toBe(btnDropdown)
     })
 

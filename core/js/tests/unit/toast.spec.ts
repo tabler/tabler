@@ -31,9 +31,8 @@ describe('Toast', () => {
 
       const toastEl = fixtureEl.querySelector('.toast')!
       const toastBySelector = new Toast('.toast')
-      const toastByElement = new Toast(toastEl)
-
       expect(toastBySelector._element).toBe(toastEl)
+      const toastByElement = new Toast(toastEl)
       expect(toastByElement._element).toBe(toastEl)
     })
 

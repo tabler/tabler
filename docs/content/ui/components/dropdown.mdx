@@ -293,6 +293,15 @@ Tabler automatically initializes all elements with `data-bs-toggle="dropdown"` o
 
 <CodeDocs name="dropdown-init" file="core/js/src/dropdown.ts" />
 
+To use your own options, create the instance yourself. It replaces the one Tabler created, so only your options apply:
+
+```js
+const el = document.getElementById('my-dropdown');
+new tabler.Dropdown(el, { autoClose: 'outside' });
+```
+
+To read or control the existing instance without changing its options, use `tabler.Dropdown.getInstance(el)` or `tabler.Dropdown.getOrCreateInstance(el)`.
+
 ## Accessibility
 
 - The trigger must be a `button`, or an `a` with an `href`. Bootstrap toggles `aria-expanded` on it for you, so do not set it by hand.

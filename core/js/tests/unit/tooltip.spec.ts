@@ -62,6 +62,24 @@ describe('Tooltip', () => {
       expect(Tooltip.getInstance(el)).toBe(tooltip)
     })
 
+    it('should replace an existing instance and use the new config', () => {
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
+      const el = fixtureEl.querySelector('a')!
+      const first = Tooltip.getOrCreateInstance(el, { placement: 'auto' })
+      const firstEnter = vi.spyOn(first, '_enter')
+
+      const second = new Tooltip(el, { placement: 'bottom', customClass: 'custom' })
+      const secondEnter = vi.spyOn(second, '_enter')
+
+      el.dispatchEvent(new Event('mouseover'))
+
+      expect(Tooltip.getInstance(el)).toBe(second)
+      expect(second._config.customClass).toBe('custom')
+      expect(el.getAttribute('data-bs-original-title')).toBe('Tooltip title')
+      expect(firstEnter).not.toHaveBeenCalled()
+      expect(secondEnter).toHaveBeenCalledOnce()
+    })
+
     it('should fix title on construction', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
       const el = fixtureEl.querySelector('a')!
