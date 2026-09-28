@@ -77,9 +77,12 @@ Two known snags:
 - **Astro wraps a `define:vars` script in an IIFE.** Anything the markup calls (`onclick="setPageListItems(this)"`) must be assigned to `window` explicitly — see `shared/components/demo/AdvancedTable.astro`. If several instances define the same global, make it stateless and resolve the instance from the clicked element.
 - The type checker does not see `define:vars` bindings used inside template literals. `shared/components/marketing/hero/Side.astro` carries a `// @ts-nocheck` for exactly that; copy the comment with its explanation rather than restructuring the script.
 
-## 5. When the script has to be a string
+## 5. No caller-supplied JS
 
-If caller-supplied JS must land *inside* a function body, `define:vars` cannot do it — it injects variables, not code. Then build the script as a template string in the frontmatter and render it with `<Fragment set:html={script} />` inside `<CaptureScript>` (see `shared/ui/Signature.astro`). Serialise every interpolated value with `JSON.stringify` and keep raw-JS props documented as an escape hatch.
+Never accept JavaScript as a string — no raw-JS props, no expressions in data files turned into code with `new Function` or `set:html`. They are `eval` sinks and block a strict CSP. Instead:
+
+- Page-specific behaviour goes in the page's own `<CaptureScript>` and reaches the plugin instance through its `window.tabler_*` registry (see `preview/pages/signatures.astro`).
+- Behaviour picked from data uses a whitelist of names mapped to real functions inside the script (see the chart `x-formatter` / `y-formatter` in `shared/components/demo/Chart.astro`).
 
 ## 6. Instance registries
 

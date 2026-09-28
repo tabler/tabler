@@ -2,6 +2,10 @@
 // inert, not executable). chartConfig() returns a JSON-serializable config object,
 // rendered by Chart.astro via <script define:vars>.
 
+/** Named axis label formatters, implemented in Chart.astro. */
+export const chartFormatters = ['thousands', 'suffix-k'] as const
+export type ChartFormatter = (typeof chartFormatters)[number]
+
 type Serie = {
   'name'?: string
   /** overrides the chart type for this one serie — how a combination chart is built */
@@ -69,8 +73,8 @@ export type ChartData = {
   'stroke-curve'?: string
   'hide-grid'?: boolean
   'show-x'?: boolean
-  'x-formatter'?: string
-  'y-formatter'?: string
+  'x-formatter'?: ChartFormatter
+  'y-formatter'?: ChartFormatter
   'y-max'?: number
   'y-title'?: string
   'y-tooltip'?: boolean
@@ -173,15 +177,11 @@ export function chartStyle(opts: { id: string; data: ChartData }): string {
 
 /**
  * The ApexCharts config, as a real JSON-serializable object (rendered via
- * <script define:vars> — no string-built script). The one exception is
- * `x-formatter` / `y-formatter`: a handful of charts.json entries carry a raw JS
- * expression for an axis label formatter (e.g. `val + "K"`), which can't be represented
- * as data. It comes back as `xFormatterExpr` / `yFormatterExpr` instead of being embedded in `config`,
- * for the caller to turn into a real function with `new Function` — see
- * Chart.astro. This is data-driven (from our own charts.json, not user input),
- * same trust level as everything else here.
+ * <script define:vars> — no string-built script). Axis label formatters can't be
+ * represented as data, so `x-formatter` / `y-formatter` name one of `chartFormatters`
+ * and come back as `xFormatter` / `yFormatter`, for Chart.astro to map to a real function.
  */
-export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string | undefined; yFormatterExpr?: string | undefined } {
+export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatter?: ChartFormatter | undefined; yFormatter?: ChartFormatter | undefined } {
   const { id, data, height } = opts
   const type = data.type ?? 'bar'
   const series = data.series ?? []
@@ -468,5 +468,5 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     config.markers = { size: 2 }
   }
 
-  return { config, xFormatterExpr: data['x-formatter'], yFormatterExpr: data['y-formatter'] }
+  return { config, xFormatter: data['x-formatter'], yFormatter: data['y-formatter'] }
 }
