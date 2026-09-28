@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  */
 
-import type { Calendar, Options, Range } from 'vanilla-calendar-pro'
+import type { Calendar, CalendarExtension, Options, Range } from 'vanilla-calendar-pro'
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
@@ -39,6 +39,13 @@ const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
 const HIDE_DELAY = 100 // ms delay before hiding after selection
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
+
+// Vanilla Calendar Pro 3.4 moved several months, the time picker, week
+// numbers, popups and animation into extensions that must be registered when
+// the calendar is created, or its constructor throws. The library is loaded
+// as a whole on `window`, so every extension it exports is registered;
+// 3.3 exports none and gets no `extensions` option.
+const EXTENSION_NAMES = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
 
 // The public API is typed with local copies of the Vanilla Calendar Pro types.
 // `vanilla-calendar-pro` is an optional peer dependency, so the published
@@ -555,14 +562,35 @@ class Datepicker extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
+  // The extensions the loaded library exports, after the ones the caller
+  // registered in `vcpOptions` themselves.
+  /** @internal */
+  _calendarExtensions(own: readonly CalendarExtension[] = []): CalendarExtension[] {
+    const library = window.VanillaCalendarPro as Record<string, unknown> | undefined
+    const extensions = [...own]
+
+    for (const name of EXTENSION_NAMES) {
+      const extension = library?.[name] as CalendarExtension | undefined
+      if (extension && typeof extension === 'object' && !extensions.includes(extension)) {
+        extensions.push(extension)
+      }
+    }
+
+    return extensions
+  }
+
   /** @internal */
   _buildCalendarOptions(): Options {
     // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
     const vcpTheme = !theme || theme === 'auto' ? 'system' : theme
 
+    const vcpOptions = this._config.vcpOptions as Options
+    const extensions = this._calendarExtensions(vcpOptions.extensions)
+
     const calendarOptions: Options = {
-      ...this._config.vcpOptions,
+      ...vcpOptions,
+      ...(extensions.length > 0 ? { extensions } : {}),
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
       firstWeekday: this._config.firstWeekday,
