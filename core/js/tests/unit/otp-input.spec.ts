@@ -426,6 +426,50 @@ describe('OtpInput', () => {
       expect(fixtureEl.querySelectorAll('.otp-slot').length).toBe(32)
     })
 
+    it('forgets a tap that never focused the input', () => {
+      const instance = new OtpInput(otp())
+      layoutSlotsHorizontally(otp())
+      instance.setValue('123')
+      pointerDownOnSlot(input(), slots()[1])
+      input().dispatchEvent(new PointerEvent('pointercancel', { bubbles: true }))
+      input().focus()
+      expect(input().selectionStart).toBe(3)
+
+      input().blur()
+      pointerDownOnSlot(input(), slots()[1])
+      input().dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      input().focus()
+      expect(input().selectionStart).toBe(3)
+    })
+
+    it('replaces a multi-slot selection with the typed character', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().setSelectionRange(1, 4)
+      beforeInput(input(), { inputType: 'insertText', data: '9' })
+      expect(input().value).toBe('1956')
+      expect(input().selectionStart).toBe(2)
+    })
+
+    it('leaves the value alone during IME composition and sanitizes on compositionend', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('input.bs.otpInput', spy)
+      input().focus()
+
+      input().value = '1a'
+      input().dispatchEvent(new InputEvent('input', { bubbles: true, isComposing: true, inputType: 'insertCompositionText' }))
+      expect(input().value).toBe('1a')
+      expect(spy).not.toHaveBeenCalled()
+
+      input().dispatchEvent(new CompositionEvent('compositionend', { bubbles: true }))
+      expect(input().value).toBe('1')
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      input().dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertCompositionText' }))
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
     it('turns an email input into a text input', () => {
       fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp"><input type="email" /></div>'
       new OtpInput(otp())
