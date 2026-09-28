@@ -17,6 +17,13 @@ const formats = [
   { format: 'hsl', value: 'hsl(291 54% 53%)' },
   { format: 'oklch', value: 'oklch(64% 0.22 27)' },
 ] as const
+
+const alphaFormats = [
+  { format: 'hex', value: '#ae3ec980' },
+  { format: 'rgb', value: 'rgb(214 51 108 / 0.6)' },
+  { format: 'hsl', value: 'hsl(209 94% 42% / 0.4)' },
+  { format: 'oklch', value: 'oklch(64% 0.22 27 / 0.75)' },
+] as const
 ---
 
 <DefaultLayout title="Color picker" pageMenu="plugins.colorpicker">
@@ -61,10 +68,7 @@ const formats = [
       <Card>
         <CardBody>
           <CardTitle>Options</CardTitle>
-          <CardSubtitle>Opacity, a fixed set of swatches, and the extra controls in the panel.</CardSubtitle>
-          <FormGroup label="Alpha channel" for="colorpicker-alpha">
-            <Colorpicker value="#ae3ec980" alpha id="colorpicker-alpha" />
-          </FormGroup>
+          <CardSubtitle>A fixed set of swatches, the extra controls in the panel, and an empty field.</CardSubtitle>
           <FormGroup label="Swatches only" for="colorpicker-swatches-only">
             <Colorpicker value="#2fb344" swatchesOnly swatches={['#066fd1', '#4299e1', '#4263eb', '#ae3ec9', '#d6336c', '#d63939', '#f76707', '#2fb344']} id="colorpicker-swatches-only" />
           </FormGroup>
@@ -74,6 +78,23 @@ const formats = [
           <FormGroup label="Empty" for="colorpicker-empty" hint="No value yet; the panel opens on the default color." class="mb-0">
             <Colorpicker placeholder="Pick a color" id="colorpicker-empty" />
           </FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Alpha channel</CardTitle>
+          <CardSubtitle>
+            <code>data-bs-alpha="true"</code> adds the opacity slider and keeps the alpha in the value: eight hex digits, or a <code>/ alpha</code> part in the other notations.
+          </CardSubtitle>
+          {
+            alphaFormats.map(({ format, value }) => (
+              <FormGroup label={format.toUpperCase()} for={`colorpicker-alpha-${format}`} class={format === 'oklch' ? 'mb-0' : 'mb-3'}>
+                <Colorpicker value={value} format={format} alpha id={`colorpicker-alpha-${format}`} />
+              </FormGroup>
+            ))
+          }
         </CardBody>
       </Card>
     </div>
