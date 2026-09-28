@@ -3,6 +3,7 @@
 // Standalone layout with its own <head>; does NOT use BaseLayout.astro.
 // Development uses the unminified assets; production additionally emits the SEO metadata.
 import { site } from '@shared/lib/site';
+import Analytics from '@shared/components/Analytics.astro';
 import { isExternal } from '@shared/lib/url';
 import libs from '@tabler/core/libs.json';
 import docs from '@data/docs.json';
@@ -308,6 +309,8 @@ const relatedPages = await Promise.all(
 		<!-- BEGIN DOCS STYLES -->
 		<link rel="stylesheet" href={environment === 'development' ? '/css/docs.css' : '/css/docs.min.css'} />
 		<!-- END DOCS STYLES -->
+
+		<Analytics />
 	</head>
 
 	<body class="d-flex flex-column">
