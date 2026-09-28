@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/docs": patch
 ---
 
-Fixed `$table-sort-asc-bg-image` and `$table-sort-desc-bg-image` being drawn on the opposite `.table-sort` state.
+Documented the swapped `$table-sort-asc-bg-image` and `$table-sort-desc-bg-image` variables in the 1.6 upgrade guide.
