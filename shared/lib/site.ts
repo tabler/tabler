@@ -15,6 +15,8 @@ export const site = {
   githubSponsorsUrl: 'https://github.com/sponsors/codecalm',
   icons: { link: 'https://tabler.io/icons' },
   emails: { price: '$29', buy_link: 'https://r.tabler.io/buy-emails' },
+  // PostHog project token (public) for docs/preview analytics — see shared/components/Analytics.astro.
+  posthogKey: 'phc_Ui9ZadLvY1XWtP5iiD3LWDZoXAGYsz6yNvTAvE7wSwn',
   // Dev Google Maps API key for local development builds.
   googleMapsDevKey: 'AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw',
   // From shared/data/icons-info.json.
