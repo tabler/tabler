@@ -1,5 +1,18 @@
 # @tabler/docs
 
+## 1.6.1
+
+### Patch Changes
+
+- 4f471dd: Fixed `Datepicker` failing with `data-bs-display-months-count` on Vanilla Calendar Pro 3.4 by registering its extensions.
+- 3ab97bc: Updated the hero image on the docs homepage with a new dashboard graphic for light and dark mode.
+- 3ab97bc: Updated the table of contents rail on docs pages to a fixed `13rem` width.
+- d104e78: Fixed Confetti ignoring the trigger's `data-bs-*` options when `data-bs-target` points elsewhere.
+- 01857d2: Fixed `Sparkline` wiping author content when empty or disposed, keeping stale tween attributes and skipping single-value lines.
+- 6c1d546: Removed JS string evaluation from `Chart` axis formatters in `charts.json` and the `extraJs` prop from `Signature`.
+- 4b02b6a: Fixed `new Tooltip()`, `new Popover()` and `new Dropdown()` on auto-initialised elements ignoring options and doubling listeners.
+- 0fdf1b7: Updated the 1.6 upgrade guide with the swapped `$table-sort-asc-bg-image` and `$table-sort-desc-bg-image` variables.
+
 ## 1.6.0
 
 ### Minor Changes

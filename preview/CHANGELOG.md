@@ -1,5 +1,11 @@
 # @tabler/preview
 
+## 1.6.1
+
+### Patch Changes
+
+- 6c1d546: Removed JS string evaluation from `Chart` axis formatters in `charts.json` and the `extraJs` prop from `Signature`.
+
 ## 1.6.0
 
 ### Minor Changes
