@@ -402,4 +402,86 @@ describe('Datepicker', () => {
       await new Promise((resolve) => setTimeout(resolve, 150))
     })
   })
+
+  describe('resize and initial value', () => {
+    const groupMarkup = '<div class="input-group" style="display: flex; margin-left: 40px"><span style="width: 120px"></span><input type="text"></div>'
+
+    it('keeps the popup aligned with the wrapper after a resize', async () => {
+      fixtureEl.innerHTML = groupMarkup
+      const wrapper = fixtureEl.querySelector<HTMLElement>('.input-group')!
+      const instance = new Datepicker(input())
+      await instance.show()
+
+      window.dispatchEvent(new Event('resize'))
+
+      const expected = wrapper.getBoundingClientRect().left + window.scrollX
+      expect(instance.calendar!.context.mainElement.style.left).toBe(`${expected}px`)
+    })
+
+    it('stops aligning on resize once hidden or disposed', async () => {
+      fixtureEl.innerHTML = groupMarkup
+      const instance = new Datepicker(input())
+      const spy = vi.spyOn(instance, '_alignToPositionElement')
+      await instance.show()
+      await instance.hide()
+      spy.mockClear()
+
+      window.dispatchEvent(new Event('resize'))
+      expect(spy).not.toHaveBeenCalled()
+
+      await instance.show()
+      instance.dispose()
+      spy.mockClear()
+      window.dispatchEvent(new Event('resize'))
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('formats an initial value like a picked date', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+      const dateFormat = { year: 'numeric', month: 'long', day: 'numeric' } as const
+
+      new Datepicker(input(), { dateFormat, locale: 'en-US' })
+
+      expect(input().value).toBe('June 20, 2024')
+    })
+
+    it('writes the value, not selectedDates, when both are set', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+
+      const instance = new Datepicker(input(), { selectedDates: ['2025-01-01'], locale: 'en-US' })
+
+      expect(instance.getSelectedDates()).toEqual(['2024-06-20'])
+      expect(input().value).toBe(new Date(2024, 5, 20).toLocaleDateString('en-US'))
+    })
+
+    it('keeps a formatted value selected when the input is initialised again', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+      new Datepicker(input(), { locale: 'pl-PL' }).dispose()
+
+      const instance = new Datepicker(input(), { locale: 'pl-PL' })
+
+      expect(input().value).toBe('20.06.2024')
+      expect(instance.getSelectedDates()).toEqual(['2024-06-20'])
+    })
+
+    it('keeps a picked range selected when the input is initialised again', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const config = { locale: 'pl-PL', selectionMode: 'multiple-ranged' } as const
+      const first = new Datepicker(input(), config)
+      first.setSelectedDates(['2024-06-10', '2024-06-18'])
+      first.dispose()
+
+      const instance = new Datepicker(input(), config)
+
+      expect(instance.getSelectedDates()).toEqual(['2024-06-10', '2024-06-18'])
+    })
+
+    it('leaves an unparsable value as it is', () => {
+      fixtureEl.innerHTML = '<input type="text" value="not a date">'
+
+      new Datepicker(input())
+
+      expect(input().value).toBe('not a date')
+    })
+  })
 })
