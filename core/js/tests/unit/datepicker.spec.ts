@@ -137,6 +137,31 @@ describe('Datepicker', () => {
       expect(input().isConnected).toBe(true)
       expect(input().value).toBe('2026-03-04')
     })
+
+    it('should show two months side by side', () => {
+      fixtureEl.innerHTML = '<div data-bs-toggle="datepicker" data-bs-inline="true" data-bs-display-months-count="2"></div>'
+
+      new Datepicker(fixtureEl.querySelector('div')!)
+
+      expect(fixtureEl.querySelectorAll('[data-vc="column"]')).toHaveLength(2)
+    })
+
+    it('should enable an option that needs a plugin extension', () => {
+      fixtureEl.innerHTML = '<div data-bs-toggle="datepicker" data-bs-inline="true"></div>'
+
+      new Datepicker(fixtureEl.querySelector('div')!, { vcpOptions: { selectionTimeMode: 24 } })
+
+      expect(fixtureEl.querySelector('[data-vc="time"]')).not.toBeNull()
+    })
+
+    it('should keep extensions passed through vcpOptions', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input(), { vcpOptions: { extensions: [VanillaCalendarPro.time] } })
+
+      expect(instance.calendar!.extensions).toContain(VanillaCalendarPro.time)
+      expect(instance.calendar!.extensions).toContain(VanillaCalendarPro.months)
+    })
   })
 
   describe('show and hide', () => {

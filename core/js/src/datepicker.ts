@@ -40,6 +40,9 @@ const HIDE_DELAY = 100 // ms delay before hiding after selection
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 
+// Vanilla Calendar Pro 3.4+ throws on an option whose extension is not registered
+const PLUGIN_EXTENSIONS = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
+
 // The public API is typed with local copies of the Vanilla Calendar Pro types.
 // `vanilla-calendar-pro` is an optional peer dependency, so the published
 // `dist/types` must not import it: a project that never loads the datepicker
@@ -590,6 +593,11 @@ class Datepicker extends BaseComponent {
       calendarOptions.selectedYear = firstDate.getFullYear()
     }
 
+    const extensions = this._getPluginExtensions()
+    if (extensions.length > 0) {
+      calendarOptions.extensions = extensions
+    }
+
     if (this._config.dateMin) {
       calendarOptions.dateMin = this._config.dateMin as Options['dateMin']
     }
@@ -599,6 +607,20 @@ class Datepicker extends BaseComponent {
     }
 
     return calendarOptions
+  }
+
+  /** @internal */
+  _getPluginExtensions(): NonNullable<Options['extensions']> {
+    const extensions = [...((this._config.vcpOptions as Options).extensions ?? [])]
+
+    for (const name of PLUGIN_EXTENSIONS) {
+      const extension = window.VanillaCalendarPro?.[name]
+      if (extension && !extensions.includes(extension)) {
+        extensions.push(extension)
+      }
+    }
+
+    return extensions
   }
 
   /** @internal */
