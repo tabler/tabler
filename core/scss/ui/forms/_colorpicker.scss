@@ -1,0 +1,230 @@
+/*
+Color picker
+ */
+@use '../../config' as *;
+
+// The plugin writes the chosen colour to `--colorpicker-value` (and its opaque
+// twin `--colorpicker-color`) on the `.colorpicker` wrapper, the button and the
+// panel, so every swatch below is drawn by CSS alone.
+@mixin colorpicker-fill() {
+  background-color: var(--bg-surface);
+  background-image: linear-gradient(var(--colorpicker-value, transparent), var(--colorpicker-value, transparent)), var(--colorpicker-checkerboard);
+  background-size:
+    auto,
+    var(--colorpicker-checkerboard-size) var(--colorpicker-checkerboard-size);
+}
+
+//
+// Field
+//
+
+.colorpicker {
+  --colorpicker-swatch-size: #{$colorpicker-swatch-size};
+  --colorpicker-swatch-border-radius: #{$colorpicker-swatch-border-radius};
+  --colorpicker-checkerboard: #{$colorpicker-checkerboard};
+  --colorpicker-checkerboard-size: #{$colorpicker-checkerboard-size};
+  position: relative;
+  display: block;
+
+  // The swatch sits over the start of the field
+  &::before {
+    position: absolute;
+    inset-inline-start: calc(var(--colorpicker-swatch-size) / 3);
+    top: 50%;
+    z-index: 5;
+    width: var(--colorpicker-swatch-size);
+    height: var(--colorpicker-swatch-size);
+    pointer-events: none;
+    content: '';
+    box-shadow: inset 0 0 0 1px var(--border-color-translucent);
+    translate: 0 -50%;
+    @include colorpicker-fill();
+    @include border-radius(var(--colorpicker-swatch-border-radius));
+  }
+
+  .form-control {
+    padding-inline-start: calc(var(--colorpicker-swatch-size) * 5 / 3);
+  }
+}
+
+// A button trigger shows the value in a swatch of its own
+.colorpicker-preview {
+  --colorpicker-swatch-size: #{$colorpicker-swatch-size};
+  --colorpicker-swatch-border-radius: #{$colorpicker-swatch-border-radius};
+  --colorpicker-checkerboard: #{$colorpicker-checkerboard};
+  --colorpicker-checkerboard-size: #{$colorpicker-checkerboard-size};
+  display: inline-block;
+  width: var(--colorpicker-swatch-size);
+  height: var(--colorpicker-swatch-size);
+  vertical-align: middle;
+  box-shadow: inset 0 0 0 1px var(--border-color-translucent);
+  @include colorpicker-fill();
+  @include border-radius(var(--colorpicker-swatch-border-radius));
+}
+
+//
+// Panel
+//
+
+.colorpicker-panel {
+  // scss-docs-start colorpicker-css-vars
+  --colorpicker-width: #{$colorpicker-width};
+  --colorpicker-padding: #{$colorpicker-padding};
+  --colorpicker-gap: #{$colorpicker-gap};
+  --colorpicker-bg: #{$colorpicker-bg};
+  --colorpicker-border-radius: #{$colorpicker-border-radius};
+  --colorpicker-box-shadow: #{$colorpicker-box-shadow};
+  --colorpicker-zindex: #{$zindex-dropdown};
+  --colorpicker-area-height: #{$colorpicker-area-height};
+  --colorpicker-marker-size: #{$colorpicker-marker-size};
+  --colorpicker-swatch-size: #{$colorpicker-swatch-size};
+  --colorpicker-swatch-border-radius: #{$colorpicker-swatch-border-radius};
+  --colorpicker-checkerboard: #{$colorpicker-checkerboard};
+  --colorpicker-checkerboard-size: #{$colorpicker-checkerboard-size};
+  // Set by the plugin: the hue in degrees, the colour, and the colour without alpha
+  --colorpicker-hue: 0;
+  --colorpicker-value: transparent;
+  --colorpicker-color: transparent;
+  // scss-docs-end colorpicker-css-vars
+  position: absolute;
+  z-index: var(--colorpicker-zindex);
+  display: none;
+  flex-direction: column;
+  gap: var(--colorpicker-gap);
+  width: var(--colorpicker-width);
+  padding: var(--colorpicker-padding);
+  background-color: var(--colorpicker-bg);
+  box-shadow: var(--colorpicker-box-shadow);
+  @include border-radius(var(--colorpicker-border-radius));
+
+  &.show {
+    display: flex;
+  }
+}
+
+.colorpicker-panel-inline {
+  position: static;
+  z-index: auto;
+  border: var(--border-width) var(--border-style) var(--border-color);
+  box-shadow: none;
+}
+
+// Saturation on the inline axis, brightness on the block axis
+.colorpicker-area {
+  position: relative;
+  height: var(--colorpicker-area-height);
+  touch-action: none;
+  cursor: crosshair;
+  background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent), hsl(calc(var(--colorpicker-hue) * 1deg) 100% 50%);
+  @include border-radius(var(--colorpicker-swatch-border-radius));
+}
+
+.colorpicker-marker {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: var(--colorpicker-marker-size);
+  height: var(--colorpicker-marker-size);
+  background-color: var(--colorpicker-color);
+  border: 2px var(--border-style) var(--white);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+
+  /* rtl:ignore */
+  translate: calc(var(--dir) * -50%) -50%;
+  @include focus-ring-transition();
+
+  &:focus-visible {
+    @include focus-ring(true);
+  }
+}
+
+.colorpicker-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// The hue and opacity ranges reuse `.form-range` and only repaint the track
+.colorpicker-hue,
+.colorpicker-alpha {
+  --colorpicker-track: transparent;
+
+  &::-webkit-slider-runnable-track {
+    background-color: transparent;
+    background-image: var(--colorpicker-track), var(--colorpicker-checkerboard);
+    background-size:
+      auto,
+      var(--colorpicker-checkerboard-size) var(--colorpicker-checkerboard-size);
+  }
+
+  &::-moz-range-track {
+    background-color: transparent;
+    background-image: var(--colorpicker-track), var(--colorpicker-checkerboard);
+    background-size:
+      auto,
+      var(--colorpicker-checkerboard-size) var(--colorpicker-checkerboard-size);
+  }
+}
+
+.colorpicker-hue {
+  --colorpicker-track: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+
+  &::-webkit-slider-thumb {
+    background-color: hsl(calc(var(--colorpicker-hue) * 1deg) 100% 50%);
+  }
+
+  &::-moz-range-thumb {
+    background-color: hsl(calc(var(--colorpicker-hue) * 1deg) 100% 50%);
+  }
+}
+
+.colorpicker-alpha {
+  --colorpicker-track: linear-gradient(to right, transparent, var(--colorpicker-color));
+
+  &::-webkit-slider-thumb {
+    background-color: var(--colorpicker-value);
+  }
+
+  &::-moz-range-thumb {
+    background-color: var(--colorpicker-value);
+  }
+}
+
+.colorpicker-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.colorpicker-swatch {
+  width: var(--colorpicker-swatch-size);
+  height: var(--colorpicker-swatch-size);
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--border-color-translucent);
+  @include colorpicker-fill();
+  @include border-radius(var(--colorpicker-swatch-border-radius));
+  @include focus-ring-transition();
+
+  &:focus-visible {
+    @include focus-ring(true);
+  }
+}
+
+.colorpicker-footer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  .form-control {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .form-select {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
