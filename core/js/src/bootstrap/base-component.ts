@@ -25,10 +25,12 @@ class BaseComponent extends Config {
       return
     }
 
+    const ctor = this.constructor as unknown as BaseComponentStatic
+    Data.get<BaseComponent>(resolved, ctor.DATA_KEY)?.dispose()
+
     this._element = resolved
     this._config = this._getConfig(config)
 
-    const ctor = this.constructor as unknown as BaseComponentStatic
     Data.set(this._element, ctor.DATA_KEY, this)
   }
 
@@ -43,7 +45,15 @@ class BaseComponent extends Config {
   }
 
   _queueCallback(callback: () => void, element: HTMLElement, isAnimated = true): void {
-    executeAfterTransition(callback, element, isAnimated)
+    executeAfterTransition(
+      () => {
+        if (this._element) {
+          callback()
+        }
+      },
+      element,
+      isAnimated,
+    )
   }
 
   _getConfig(config?: ComponentConfig): ComponentConfig {
