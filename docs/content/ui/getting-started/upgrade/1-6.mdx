@@ -11,7 +11,7 @@ Tabler 1.6 is a drop-in update. A project that works on 1.5 works on 1.6 without
 
 Some of them are **deprecated**. They keep working in every 1.x release and go away in 2.0. This page lists them with the replacement, so you can move over when it suits you. Sass warns about a deprecated function when you compile; set `$enable-deprecation-messages: false` to silence it.
 
-There is one thing to check if you compile Tabler from the Sass sources and run Sass color functions on Tabler's variables: see [Variables that turned into color-mix()](#variables-that-turned-into-color-mix).
+There are two things to check if you compile Tabler from the Sass sources: if you run Sass color functions on Tabler's variables, see [Variables that turned into color-mix()](#variables-that-turned-into-color-mix), and if you override the table sort icons, see [Table sort icons match their names](#table-sort-icons-match-their-names).
 
 If you're coming from 1.4 or older, do the [1.5 upgrade](/ui/getting-started/upgrade/1-5) first.
 
@@ -380,6 +380,19 @@ In `$form-validation-states` the new key is `focus-ring-color`, and it takes a c
 
 Two defaults changed with the outline: `$focus-ring-width` went from `0.25rem` to `2px`, and `$focus-ring-opacity` from `0.25` to `0.5`.
 
+### Table sort icons match their names
+
+In 1.5 `.table-sort.asc` was drawn with `$table-sort-desc-bg-image` and `.table-sort.desc` with `$table-sort-asc-bg-image`. Now each state uses the variable with its own name. The default icons are unchanged: `.asc` still shows an up chevron and `.desc` a down chevron. If you override these variables, swap your values:
+
+```diff
+@use '@tabler/core/scss/tabler' with (
+-  $table-sort-asc-bg-image: $my-down-icon,
+-  $table-sort-desc-bg-image: $my-up-icon,
++  $table-sort-asc-bg-image: $my-up-icon,
++  $table-sort-desc-bg-image: $my-down-icon,
+);
+```
+
 ### Deprecated functions
 
 These still work and warn when you compile. They live in `scss/mixins/_deprecated.scss` and are removed in 2.0.
@@ -405,7 +418,7 @@ Two pairs of functions are new:
 
 ### Variables that turned into color-mix()
 
-This is the one change in 1.6 that can stop a Sass build, and the one exception to "nothing breaks". 69 variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property, so that they follow `--tblr-*` overrides in the browser. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families and their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark mode border colors, and a few navbar, dropdown and switch colors. The theme colors such as `$primary`, the grays, `$body-color`, `$body-bg` and `$link-color` are still Sass colors.
+This is the one change in 1.6 that can stop a Sass build. 69 variables that were plain Sass colors are now `color-mix()` expressions on top of a custom property, so that they follow `--tblr-*` overrides in the browser. `$primary-bg-subtle`, for example, used to be `tint-color($primary, 80%)`, and is now `mix-color-css(var(--white), var(--primary), 80%)`. The same happened to the `*-bg-subtle`, `*-text-emphasis` and `*-border-subtle` families and their `-dark` twins, `$body-secondary-color`, `$body-tertiary-color`, `$input-focus-border-color`, the dark mode border colors, and a few navbar, dropdown and switch colors. The theme colors such as `$primary`, the grays, `$body-color`, `$body-bg` and `$link-color` are still Sass colors.
 
 You can still override them with anything Sass accepts. But a Sass color function such as `darken()` or `rgba()` fails on their default values, because the default isn't a color, it's a string with `var()` inside. Build the value from the base color instead, with Tabler's own functions:
 
