@@ -47,6 +47,8 @@ const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 // 3.3 exports none and gets no `extensions` option.
 const EXTENSION_NAMES = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
 
+const writtenSelections = new WeakMap<HTMLElement, { text: string; dates: string[] }>()
+
 // The public API is typed with local copies of the Vanilla Calendar Pro types.
 // `vanilla-calendar-pro` is an optional peer dependency, so the published
 // `dist/types` must not import it: a project that never loads the datepicker
@@ -178,6 +180,7 @@ class Datepicker extends BaseComponent {
   _displayElement: HTMLElement | false | null = null
   _themeObserver: MutationObserver | null = null
   _onFocusIn: ((event: Event) => void) | null = null
+  _onResize = (): void => this._alignToPositionElement()
   // The plugin builds a popup lazily, so its context has no selection until
   // the first show; this mirror answers `getSelectedDates()` before that.
   _selectedDates: string[] = []
@@ -280,6 +283,7 @@ class Datepicker extends BaseComponent {
   dispose(): void {
     window.clearTimeout(this._hideTimeout)
     this._themeObserver?.disconnect()
+    window.removeEventListener('resize', this._onResize)
 
     if (this._onFocusIn) {
       EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
@@ -363,12 +367,11 @@ class Datepicker extends BaseComponent {
   }
 
   _updateDisplayWithSelectedDates(): void {
-    const { selectedDates } = this._config
-    if (!selectedDates || selectedDates.length === 0) {
+    if (this._selectedDates.length === 0) {
       return
     }
 
-    this._writeSelection(selectedDates)
+    this._writeSelection(this._selectedDates)
   }
 
   _writeSelection(selectedDates: string[]): void {
@@ -376,6 +379,7 @@ class Datepicker extends BaseComponent {
 
     if (this._isInput) {
       this._element.value = formattedDate
+      writtenSelections.set(this._element, { text: formattedDate, dates: [...selectedDates] })
     }
 
     if (this._boundInput) {
@@ -537,6 +541,8 @@ class Datepicker extends BaseComponent {
     this._isShown = true
     this._syncThemeAttribute(calendar.context.mainElement)
     this._alignToPositionElement()
+    window.removeEventListener('resize', this._onResize)
+    window.addEventListener('resize', this._onResize)
 
     if (!wasShown) {
       EventHandler.trigger(this._element, EVENT_SHOWN)
@@ -559,6 +565,7 @@ class Datepicker extends BaseComponent {
     }
 
     this._isShown = false
+    window.removeEventListener('resize', this._onResize)
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
@@ -698,6 +705,13 @@ class Datepicker extends BaseComponent {
   _parseInputValue(): void {
     const value = this._element.value.trim()
     if (!value) {
+      return
+    }
+
+    const written = writtenSelections.get(this._element)
+    if (written && written.text.trim() === value) {
+      this._selectedDates = [...written.dates]
+      this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
       return
     }
 
