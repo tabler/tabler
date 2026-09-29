@@ -274,6 +274,31 @@ describe('Combobox', () => {
       return { select, toggle: select.nextElementSibling as HTMLElement, menu: fixtureEl.querySelector<HTMLElement>('.dropdown-menu')!, combobox }
     }
 
+    it('should open a long menu at the chosen item', () => {
+      const { menu, combobox } = setupSelect('', '', { search: false })
+      const list = menu.querySelector<HTMLElement>('.combobox-list')!
+      Object.assign(list.style, { maxHeight: '60px', overflowY: 'auto', position: 'relative' })
+      for (const item of menu.querySelectorAll<HTMLElement>('.dropdown-item')) {
+        Object.assign(item.style, { display: 'block', height: '30px' })
+      }
+
+      combobox._select!.value = 'c'
+      combobox.sync()
+      combobox.show()
+
+      expect(list.scrollTop).toBeGreaterThan(0)
+    })
+
+    it('should make the menu at least as wide as the toggle', () => {
+      const { toggle, menu, combobox } = setupSelect()
+
+      toggle.style.display = 'block'
+      toggle.style.width = '240px'
+      combobox.show()
+
+      expect(Number.parseFloat(menu.style.minWidth)).toBeGreaterThanOrEqual(240)
+    })
+
     it('should build the toggle and menu from options and optgroups', () => {
       const { select, toggle, menu } = setupSelect()
 

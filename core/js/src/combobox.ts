@@ -131,6 +131,7 @@ class Combobox extends BaseComponent {
   _menu: HTMLElement
   _valueDisplay: HTMLElement
   _searchInput: HTMLInputElement | null
+  _list: HTMLElement
   _noResults: HTMLElement | null
   _hiddenInput: HTMLInputElement | null
   _popper: Popper.Instance | null
@@ -153,6 +154,7 @@ class Combobox extends BaseComponent {
       this._valueDisplay = SelectorEngine.findOne(SELECTOR_VALUE, this._toggle) as HTMLElement
       this._menu = document.createElement('div')
       this._menu.className = 'dropdown-menu'
+      this._list = this._createList()
       this._noResults = null
       this._searchInput = null
       this._buildMenu()
@@ -164,6 +166,7 @@ class Combobox extends BaseComponent {
       this._valueDisplay = SelectorEngine.findOne(SELECTOR_VALUE, this._toggle) as HTMLElement
       this._searchInput = SelectorEngine.findOne(SELECTOR_SEARCH_INPUT, this._menu) as HTMLInputElement | null
       this._noResults = SelectorEngine.findOne(SELECTOR_NO_RESULTS, this._menu)
+      this._list = this._createList()
       this._createHiddenInput()
     }
 
@@ -204,7 +207,8 @@ class Combobox extends BaseComponent {
       return
     }
 
-    this._menu.style.minWidth = `${this._toggle.offsetWidth}px`
+    this._menu.style.minWidth = ''
+    this._menu.style.minWidth = `${Math.max(Number.parseFloat(getComputedStyle(this._menu).minWidth) || 0, this._toggle.offsetWidth)}px`
     this._popper = Popper.createPopper(this._toggle, this._menu, this._getPopperConfig())
 
     this._menu.classList.add(CLASS_NAME_SHOW)
@@ -217,6 +221,7 @@ class Combobox extends BaseComponent {
       this._searchInput.focus()
     }
 
+    this._scrollToSelected()
     this._addOutsideListeners()
     EventHandler.trigger(this._element, EVENT_SHOWN)
   }
@@ -243,6 +248,11 @@ class Combobox extends BaseComponent {
 
   update(): void {
     this._popper?.update()
+  }
+
+  // Re-reads the chosen option of the `<select>` without rebuilding the menu.
+  sync(): void {
+    this._syncInitialSelection()
   }
 
   // Rebuilds the menu from the `<select>` after its options changed, or re-reads its value after it was set from code.
@@ -280,6 +290,37 @@ class Combobox extends BaseComponent {
   }
 
   // Private
+  // A long menu opens at the chosen item instead of at the top.
+  _scrollToSelected(): void {
+    const [selected] = this._getSelectedItems()
+
+    if (selected && this._list.scrollHeight > this._list.clientHeight) {
+      this._list.scrollTop = Math.max(0, selected.offsetTop - (this._list.clientHeight - selected.offsetHeight) / 2)
+    }
+  }
+
+  // The items sit in their own wrapper, so only the list scrolls and the search field stays in place above it.
+  _createList(): HTMLElement {
+    const existing = SelectorEngine.findOne('.combobox-list', this._menu)
+
+    if (existing) {
+      return existing
+    }
+
+    const list = Object.assign(document.createElement('div'), { className: 'combobox-list' })
+    const search = this._searchInput?.closest('.combobox-search')
+
+    for (const child of Array.from(this._menu.children)) {
+      if (child !== search && child !== this._noResults) {
+        list.append(child)
+      }
+    }
+
+    this._menu.insertBefore(list, this._noResults)
+
+    return list
+  }
+
   _isShown(): boolean {
     return this._menu.classList.contains(CLASS_NAME_SHOW)
   }
@@ -344,26 +385,22 @@ class Combobox extends BaseComponent {
 
   _buildMenu(): void {
     const select = this._select!
-    const menu = this._menu
 
-    for (const element of SelectorEngine.find(`${SELECTOR_ITEM}, .dropdown-header`, menu)) {
+    for (const element of SelectorEngine.find(`${SELECTOR_ITEM}, .dropdown-header`, this._list)) {
       element.remove()
     }
 
     this._optionByItem.clear()
 
-    const anchor = this._noResults ?? null
-
     for (const child of Array.from(select.children)) {
       if (child instanceof HTMLOptGroupElement) {
-        const header = Object.assign(document.createElement('div'), { className: 'dropdown-header', textContent: child.label })
-        menu.insertBefore(header, anchor)
+        this._list.append(Object.assign(document.createElement('div'), { className: 'dropdown-header', textContent: child.label }))
 
         for (const option of Array.from(child.children)) {
-          this._appendOption(option as HTMLOptionElement, child.disabled, anchor)
+          this._appendOption(option as HTMLOptionElement, child.disabled)
         }
       } else if (child instanceof HTMLOptionElement) {
-        this._appendOption(child, false, anchor)
+        this._appendOption(child, false)
       }
     }
 
@@ -372,7 +409,7 @@ class Combobox extends BaseComponent {
     }
   }
 
-  _appendOption(option: HTMLOptionElement, groupDisabled: boolean, anchor: Element | null): void {
+  _appendOption(option: HTMLOptionElement, groupDisabled: boolean): void {
     if (option.value === '') {
       return
     }
@@ -392,10 +429,19 @@ class Combobox extends BaseComponent {
       item.append(indicator)
     }
 
+    if (option.dataset.display) {
+      item.dataset.bsDisplay = option.dataset.display
+    }
+
     item.append(Object.assign(document.createElement('span'), { className: 'dropdown-item-label', textContent: option.textContent }))
+
+    if (option.dataset.hint) {
+      item.append(Object.assign(document.createElement('span'), { className: 'dropdown-item-hint', textContent: option.dataset.hint }))
+    }
+
     item.insertAdjacentHTML('beforeend', CHECK_ICON)
 
-    this._menu.insertBefore(item, anchor)
+    this._list.append(item)
     this._optionByItem.set(item, option)
   }
 
@@ -403,7 +449,7 @@ class Combobox extends BaseComponent {
     const wrapper = Object.assign(document.createElement('div'), { className: 'combobox-search' })
     const input = Object.assign(document.createElement('input'), {
       type: 'text',
-      className: 'form-control combobox-search-input',
+      className: 'form-control form-control-sm combobox-search-input',
       placeholder: this._config.searchPlaceholder,
       autocomplete: 'off',
     })
@@ -626,7 +672,7 @@ class Combobox extends BaseComponent {
       nodes.push(indicator.cloneNode(true))
     }
 
-    nodes.push(Object.assign(document.createElement('span'), { className: 'text-truncate', textContent: this._getItemLabel(item) }))
+    nodes.push(Object.assign(document.createElement('span'), { className: 'text-truncate', textContent: item.dataset.bsDisplay ?? this._getItemLabel(item) }))
 
     for (const addon of SelectorEngine.children(item, 'kbd, .badge')) {
       nodes.push(addon.cloneNode(true))
@@ -761,7 +807,7 @@ class Combobox extends BaseComponent {
     let header: HTMLElement | null = null
     let headerHasMatch = false
 
-    for (const element of Array.from(this._menu.children) as HTMLElement[]) {
+    for (const element of Array.from(this._list.children) as HTMLElement[]) {
       if (element.matches('.dropdown-header')) {
         header?.style.setProperty('display', headerHasMatch ? '' : 'none')
         header = element

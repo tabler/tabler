@@ -50,9 +50,14 @@
 
 .combobox-menu {
   z-index: $zindex-popover;
+}
+
+.combobox-list {
+  position: relative;
   max-height: var(--combobox-menu-max-height, #{$combobox-menu-max-height});
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 .combobox-native {
@@ -114,11 +119,7 @@
 }
 
 .combobox-search {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  padding: $dropdown-padding-y $dropdown-item-padding-x;
-  background-color: var(--dropdown-bg);
+  padding: 0 calc(0.75 * #{$dropdown-padding-y}) calc(0.75 * #{$dropdown-padding-y});
 }
 
 .combobox-search-input {
@@ -147,6 +148,16 @@
 .dropdown-item-description {
   font-size: $font-size-sm;
   color: var(--tertiary);
+}
+
+.dropdown-item-hint {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--secondary);
+}
+
+.dropdown-item-hint + .dropdown-item-check {
+  margin-inline-start: 0;
 }
 
 .dropdown-item-check {
