@@ -3,17 +3,263 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
-import Datagrid from '@shared/components/parts/Datagrid.astro'
+import CardFooter from '@ui/CardFooter.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import DatagridDemo from '@shared/components/parts/Datagrid.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+
+const customer = requireIndex(people, 2)
+const owner = requireIndex(people, 4)
 ---
 
 <DefaultLayout title="Data grid" pageMenu="base.datagrid" description="A data grid lays out label/value pairs in a compact, aligned grid.">
   <DocsLink slot="page-header-actions" path="/ui/components/datagrid" />
 
-  <Card>
-    <CardHeader title="Base info" />
-    <CardBody>
-      <Datagrid />
-    </CardBody>
-  </Card>
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardHeader title="Base info" />
+        <CardBody>
+          <DatagridDemo />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A <code>.datagrid</code> with plain text values.</CardSubtitle>
+          <Datagrid>
+            <DatagridItem title="Plan">Business</DatagridItem>
+            <DatagridItem title="Billing period">Monthly</DatagridItem>
+            <DatagridItem title="Next invoice">October 18, 2026</DatagridItem>
+            <DatagridItem title="Seats">8 of 10 used</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Description list</CardTitle>
+          <CardSubtitle>Use <code>dl</code>, <code>dt</code> and <code>dd</code> so screen readers announce the pairs.</CardSubtitle>
+          <Datagrid as="dl">
+            <DatagridItem list title="Company">Tabler Ltd.</DatagridItem>
+            <DatagridItem list title="Tax ID">EU123456789</DatagridItem>
+            <DatagridItem list title="Billing email">billing@tabler.io</DatagridItem>
+            <DatagridItem list title="Country">Poland</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Narrow columns</CardTitle>
+          <CardSubtitle>Lower <code>--tblr-datagrid-item-width</code> to fit more columns in a row.</CardSubtitle>
+          <Datagrid itemWidth="7rem">
+            <DatagridItem title="CPU">8 cores</DatagridItem>
+            <DatagridItem title="Memory">32 GB</DatagridItem>
+            <DatagridItem title="Storage">512 GB</DatagridItem>
+            <DatagridItem title="Region">eu-central</DatagridItem>
+            <DatagridItem title="Uptime">99.98%</DatagridItem>
+            <DatagridItem title="Backups">Daily</DatagridItem>
+            <DatagridItem title="IPv6">Enabled</DatagridItem>
+            <DatagridItem title="Port">3306</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Compact gap</CardTitle>
+          <CardSubtitle>Lower <code>--tblr-datagrid-padding</code> to bring the items closer together.</CardSubtitle>
+          <Datagrid itemWidth="7rem" gap="0.75rem">
+            <DatagridItem title="CPU">8 cores</DatagridItem>
+            <DatagridItem title="Memory">32 GB</DatagridItem>
+            <DatagridItem title="Storage">512 GB</DatagridItem>
+            <DatagridItem title="Region">eu-central</DatagridItem>
+            <DatagridItem title="Uptime">99.98%</DatagridItem>
+            <DatagridItem title="Backups">Daily</DatagridItem>
+            <DatagridItem title="IPv6">Enabled</DatagridItem>
+            <DatagridItem title="Port">3306</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Horizontal</CardTitle>
+          <CardSubtitle>Add <code>.datagrid-horizontal</code> to put the label beside the value.</CardSubtitle>
+          <Datagrid variant="horizontal" gap="1rem">
+            <DatagridItem title="Plan">Business</DatagridItem>
+            <DatagridItem title="Status"><span class="status status-green">Active</span></DatagridItem>
+            <DatagridItem title="Next invoice">October 18, 2026</DatagridItem>
+            <DatagridItem title="Address">44 Harbor Street, Portland, OR 97209, United States</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Horizontal in columns</CardTitle>
+          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> and <code>--tblr-datagrid-title-width</code> to fit more pairs in a row.</CardSubtitle>
+          <Datagrid variant="horizontal" itemWidth="12rem" titleWidth="5rem" gap="1rem">
+            <DatagridItem title="CPU">8 cores</DatagridItem>
+            <DatagridItem title="Memory">32 GB</DatagridItem>
+            <DatagridItem title="Storage">512 GB</DatagridItem>
+            <DatagridItem title="Region">eu-central</DatagridItem>
+            <DatagridItem title="Uptime">99.98%</DatagridItem>
+            <DatagridItem title="Backups">Daily</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Single column</CardTitle>
+          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> to <code>100%</code> to stack the items.</CardSubtitle>
+          <Datagrid itemWidth="100%" gap="1rem">
+            <DatagridItem title="Customer">
+              <div class="d-flex align-items-center">
+                <Avatar person={customer} size="xs" class="me-2" />
+                {customer.full_name}
+              </div>
+            </DatagridItem>
+            <DatagridItem title="Email"><a href="#">{customer.email}</a></DatagridItem>
+            <DatagridItem title="Shipping address">44 Harbor Street, Portland, OR 97209, United States</DatagridItem>
+            <DatagridItem title="Notes"><span class="text-secondary">Not set</span></DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Two columns</CardTitle>
+          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> to <code>40%</code> to keep two columns at any width.</CardSubtitle>
+          <Datagrid itemWidth="40%" gap="1rem">
+            <DatagridItem title="Order">#48213</DatagridItem>
+            <DatagridItem title="Status"><Badge color="green" light text="Paid" /></DatagridItem>
+            <DatagridItem title="Placed">September 12, 2026</DatagridItem>
+            <DatagridItem title="Delivery">September 16, 2026</DatagridItem>
+            <DatagridItem title="Items">3</DatagridItem>
+            <DatagridItem title="Total"><strong>$248.00</strong></DatagridItem>
+            <DatagridItem title="Payment">Visa ending 4242</DatagridItem>
+            <DatagridItem title="Carrier">DHL Express</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Statuses and progress</CardTitle>
+          <CardSubtitle>A value can hold a status, a badge or a progress bar.</CardSubtitle>
+          <Datagrid itemWidth="40%" gap="1rem">
+            <DatagridItem title="State"><span class="status status-green">Running</span></DatagridItem>
+            <DatagridItem title="Health"><span class="status status-yellow">Degraded</span></DatagridItem>
+            <DatagridItem title="Environment"><Badge color="blue" light text="Production" /></DatagridItem>
+            <DatagridItem title="Version"><code>v1.6.1</code></DatagridItem>
+            <DatagridItem title="Disk usage">
+              <div class="mb-1">68%</div>
+              <Progress value={68} size="sm" />
+            </DatagridItem>
+            <DatagridItem title="Memory usage">
+              <div class="mb-1">41%</div>
+              <Progress value={41} size="sm" color="green" />
+            </DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardHeader title="Domain details">
+          <CardActions>
+            <Button text="Edit" icon="pencil" size="sm" />
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <Datagrid itemWidth="12rem">
+            <DatagridItem title="Domain"><a href="#">tabler.io <Icon name="external-link" /></a></DatagridItem>
+            <DatagridItem title="Registrar">Third Party</DatagridItem>
+            <DatagridItem title="SSL certificate">
+              <Icon name="lock" color="green" />
+              Valid until May 2, 2027
+            </DatagridItem>
+            <DatagridItem title="Auto renew">
+              <label class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" checked />
+                <span class="form-check-label">Enabled</span>
+              </label>
+            </DatagridItem>
+            <DatagridItem title="Owner">
+              <div class="d-flex align-items-center">
+                <Avatar person={owner} size="xs" class="me-2" />
+                {owner.full_name}
+              </div>
+            </DatagridItem>
+            <DatagridItem title="Expiration date">–</DatagridItem>
+          </Datagrid>
+        </CardBody>
+        <CardFooter>
+          <ButtonList class="justify-content-end">
+            <Button text="Transfer" variant="ghost" color="secondary" />
+            <Button text="Renew domain" color="primary" />
+          </ButtonList>
+        </CardFooter>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardHeader title="API credentials" />
+        <CardBody>
+          <CardSubtitle>Pair a value with an action, such as a copy button.</CardSubtitle>
+          <Datagrid itemWidth="100%" gap="1rem">
+            <DatagridItem title="Client ID">
+              <div class="d-flex align-items-center gap-2">
+                <code class="text-truncate">tblr_live_8f3a2c91d7e4</code>
+                <Button iconOnly icon="copy" text="Copy client ID" class="btn-action" size="sm" />
+              </div>
+            </DatagridItem>
+            <DatagridItem title="Webhook URL">
+              <div class="d-flex align-items-center gap-2">
+                <code class="text-truncate">https://example.com/hooks/tabler</code>
+                <Button iconOnly icon="copy" text="Copy webhook URL" class="btn-action" size="sm" />
+              </div>
+            </DatagridItem>
+            <DatagridItem title="Last used">2 hours ago</DatagridItem>
+          </Datagrid>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

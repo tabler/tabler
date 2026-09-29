@@ -9,6 +9,7 @@
   --datagrid-padding: #{$datagrid-padding};
   --datagrid-item-width: #{$datagrid-item-width};
   --datagrid-title-margin-bottom: #{$datagrid-title-margin-bottom};
+  --datagrid-title-width: #{$datagrid-title-width};
   // scss-docs-end datagrid-css-vars
 
   display: grid;
@@ -19,4 +20,20 @@
 .datagrid-title {
   @include subheader();
   margin-bottom: var(--datagrid-title-margin-bottom);
+}
+
+.datagrid-content {
+  margin: 0;
+}
+
+.datagrid-horizontal {
+  --datagrid-item-width: 100%;
+  --datagrid-title-margin-bottom: 0;
+
+  .datagrid-item {
+    display: grid;
+    grid-template-columns: var(--datagrid-title-width) 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
 }
