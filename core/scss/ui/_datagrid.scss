@@ -27,13 +27,20 @@
 }
 
 .datagrid-horizontal {
-  --datagrid-item-width: 100%;
   --datagrid-title-margin-bottom: 0;
+
+  grid-template-columns: minmax(0, 1fr);
 
   .datagrid-item {
     display: grid;
     grid-template-columns: var(--datagrid-title-width) 1fr;
     gap: 1rem;
     align-items: baseline;
+  }
+}
+
+@for $i from 1 through $datagrid-columns {
+  .datagrid-cols-#{$i} {
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
   }
 }

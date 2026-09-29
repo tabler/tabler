@@ -124,8 +124,8 @@ const owner = requireIndex(people, 4)
       <Card>
         <CardBody>
           <CardTitle>Horizontal in columns</CardTitle>
-          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> and <code>--tblr-datagrid-title-width</code> to fit more pairs in a row.</CardSubtitle>
-          <Datagrid variant="horizontal" itemWidth="12rem" titleWidth="5rem" gap="1rem">
+          <CardSubtitle>Add <code>.datagrid-cols-2</code> and lower <code>--tblr-datagrid-title-width</code> to fit two pairs in a row.</CardSubtitle>
+          <Datagrid variant="horizontal" columns={2} titleWidth="5rem" gap="1rem">
             <DatagridItem title="CPU">8 cores</DatagridItem>
             <DatagridItem title="Memory">32 GB</DatagridItem>
             <DatagridItem title="Storage">512 GB</DatagridItem>
@@ -141,8 +141,8 @@ const owner = requireIndex(people, 4)
       <Card>
         <CardBody>
           <CardTitle>Single column</CardTitle>
-          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> to <code>100%</code> to stack the items.</CardSubtitle>
-          <Datagrid itemWidth="100%" gap="1rem">
+          <CardSubtitle>Add <code>.datagrid-cols-1</code> to stack the items.</CardSubtitle>
+          <Datagrid columns={1} gap="1rem">
             <DatagridItem title="Customer">
               <div class="d-flex align-items-center">
                 <Avatar person={customer} size="xs" class="me-2" />
@@ -161,8 +161,8 @@ const owner = requireIndex(people, 4)
       <Card>
         <CardBody>
           <CardTitle>Two columns</CardTitle>
-          <CardSubtitle>Set <code>--tblr-datagrid-item-width</code> to <code>40%</code> to keep two columns at any width.</CardSubtitle>
-          <Datagrid itemWidth="40%" gap="1rem">
+          <CardSubtitle>Add <code>.datagrid-cols-2</code> to keep two columns at any width.</CardSubtitle>
+          <Datagrid columns={2} gap="1rem">
             <DatagridItem title="Order">#48213</DatagridItem>
             <DatagridItem title="Status"><Badge color="green" light text="Paid" /></DatagridItem>
             <DatagridItem title="Placed">September 12, 2026</DatagridItem>
@@ -181,7 +181,7 @@ const owner = requireIndex(people, 4)
         <CardBody>
           <CardTitle>Statuses and progress</CardTitle>
           <CardSubtitle>A value can hold a status, a badge or a progress bar.</CardSubtitle>
-          <Datagrid itemWidth="40%" gap="1rem">
+          <Datagrid columns={2} gap="1rem">
             <DatagridItem title="State"><span class="status status-green">Running</span></DatagridItem>
             <DatagridItem title="Health"><span class="status status-yellow">Degraded</span></DatagridItem>
             <DatagridItem title="Environment"><Badge color="blue" light text="Production" /></DatagridItem>
@@ -242,18 +242,26 @@ const owner = requireIndex(people, 4)
       <Card>
         <CardHeader title="API credentials" />
         <CardBody>
-          <CardSubtitle>Pair a value with an action, such as a copy button.</CardSubtitle>
-          <Datagrid itemWidth="100%" gap="1rem">
+          <CardSubtitle>Add a <code>data-bs-toggle="clipboard"</code> button to let users copy a value.</CardSubtitle>
+          <Datagrid columns={1} gap="1rem">
             <DatagridItem title="Client ID">
               <div class="d-flex align-items-center gap-2">
-                <code class="text-truncate">tblr_live_8f3a2c91d7e4</code>
-                <Button iconOnly icon="copy" text="Copy client ID" class="btn-action" size="sm" />
+                <code id="datagrid-client-id" class="text-truncate">tblr_live_8f3a2c91d7e4</code>
+                <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-client-id" aria-label="Copy the client ID">
+                  <Icon name="clipboard" class="clipboard-label" />
+                  <Icon name="check" class="clipboard-feedback text-green" />
+                  <span class="clipboard-feedback visually-hidden">Copied</span>
+                </button>
               </div>
             </DatagridItem>
             <DatagridItem title="Webhook URL">
               <div class="d-flex align-items-center gap-2">
-                <code class="text-truncate">https://example.com/hooks/tabler</code>
-                <Button iconOnly icon="copy" text="Copy webhook URL" class="btn-action" size="sm" />
+                <code id="datagrid-webhook-url" class="text-truncate">https://example.com/hooks/tabler</code>
+                <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-webhook-url" aria-label="Copy the webhook URL">
+                  <Icon name="clipboard" class="clipboard-label" />
+                  <Icon name="check" class="clipboard-feedback text-green" />
+                  <span class="clipboard-feedback visually-hidden">Copied</span>
+                </button>
               </div>
             </DatagridItem>
             <DatagridItem title="Last used">2 hours ago</DatagridItem>

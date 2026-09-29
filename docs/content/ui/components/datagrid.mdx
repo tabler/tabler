@@ -2,7 +2,7 @@
 title: Data grid
 summary: Use the data grid component to display detailed information about your product. The data is displayed as a column of items consisting of a title and content.
 description: Display labeled data in a compact datagrid - a responsive list of title and content pairs, ideal for detail panels and summaries.
-related: [/ui/components/table]
+related: [/ui/components/table, /ui/plugins/clipboard]
 source: core/scss/ui/_datagrid.scss
 css-vars: datagrid
 classnames:
@@ -16,6 +16,9 @@ classnames:
       desc: Label of a value, styled as a subheader
     - class: datagrid-content
       desc: Value of the pair, with the margin reset so a dd fits
+  modifier:
+    - class: datagrid-cols-{n}
+      desc: Fixed number of columns, from 1 to 4
   direction:
     - class: datagrid-horizontal
       desc: Puts the label beside the value and shows one pair per row
@@ -144,10 +147,10 @@ Add the `.datagrid-horizontal` class to put the label beside the value. Each pai
 </div>
 </Example>
 
-Set `--tblr-datagrid-title-width` to change the width of the label column. Set `--tblr-datagrid-item-width` to a fixed value to show several pairs in a row.
+Set `--tblr-datagrid-title-width` to change the width of the label column. Add a `.datagrid-cols-{n}` class to show several pairs in a row.
 
 <Example>
-<div class="datagrid datagrid-horizontal" style="--tblr-datagrid-item-width: 12rem; --tblr-datagrid-title-width: 5rem">
+<div class="datagrid datagrid-horizontal datagrid-cols-2" style="--tblr-datagrid-title-width: 5rem">
   <div class="datagrid-item">
     <div class="datagrid-title">CPU</div>
     <div class="datagrid-content">8 cores</div>
@@ -210,10 +213,10 @@ Use a lower item width for short values, such as numbers or single words. More c
 
 ### Fixed number of columns
 
-A percentage width keeps the same number of columns at any container width. Use `100%` for one column, `40%` for two and `30%` for three. The value is a minimum, so it has to leave room for the gap: two columns of `50%` plus a gap do not fit in one row.
+Add a `.datagrid-cols-{n}` class to keep the same number of columns at any container width. The classes go from `.datagrid-cols-1` to `.datagrid-cols-4`. The item width is ignored then.
 
 <Example>
-<div class="datagrid" style="--tblr-datagrid-item-width: 40%">
+<div class="datagrid datagrid-cols-2">
   <div class="datagrid-item">
     <div class="datagrid-title">Order</div>
     <div class="datagrid-content">#48213</div>
@@ -236,7 +239,7 @@ A percentage width keeps the same number of columns at any container width. Use 
 A single column works well in a narrow sidebar or an offcanvas.
 
 <Example>
-<div class="datagrid" style="--tblr-datagrid-item-width: 100%">
+<div class="datagrid datagrid-cols-1">
   <div class="datagrid-item">
     <div class="datagrid-title">Email</div>
     <div class="datagrid-content"><a href="#">billing@tabler.io</a></div>
@@ -351,24 +354,32 @@ Show the state of a resource with a [status](/ui/components/status), a [badge](/
 </div>
 </Example>
 
-### Values with actions
+### Values to copy
 
-Pair a value with an action, such as a copy button. Give an icon button an `aria-label` that names the value it acts on.
+Add a [clipboard](/ui/plugins/clipboard) button next to a value that users copy, such as an API key. Point `data-bs-target` at the element with the value and give the button an `aria-label` that names it.
 
 <Example>
-<div class="datagrid" style="--tblr-datagrid-item-width: 100%">
+<div class="datagrid datagrid-cols-1">
   <div class="datagrid-item">
     <div class="datagrid-title">Client ID</div>
     <div class="datagrid-content d-flex align-items-center gap-2">
-      <code>tblr_live_8f3a2c91d7e4</code>
-      <button type="button" class="btn btn-sm btn-icon btn-action" aria-label="Copy client ID"><Icon name="copy" /></button>
+      <code id="datagrid-client-id">tblr_live_8f3a2c91d7e4</code>
+      <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-client-id" aria-label="Copy the client ID">
+        <Icon name="clipboard" class="clipboard-label" />
+        <Icon name="check" class="clipboard-feedback text-green" />
+        <span class="clipboard-feedback visually-hidden">Copied</span>
+      </button>
     </div>
   </div>
   <div class="datagrid-item">
     <div class="datagrid-title">Webhook URL</div>
     <div class="datagrid-content d-flex align-items-center gap-2">
-      <code>https://example.com/hooks/tabler</code>
-      <button type="button" class="btn btn-sm btn-icon btn-action" aria-label="Copy webhook URL"><Icon name="copy" /></button>
+      <code id="datagrid-webhook-url">https://example.com/hooks/tabler</code>
+      <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-webhook-url" aria-label="Copy the webhook URL">
+        <Icon name="clipboard" class="clipboard-label" />
+        <Icon name="check" class="clipboard-feedback text-green" />
+        <span class="clipboard-feedback visually-hidden">Copied</span>
+      </button>
     </div>
   </div>
 </div>

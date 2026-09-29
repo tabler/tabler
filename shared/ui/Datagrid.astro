@@ -6,6 +6,8 @@ type PolymorphicProps = { as?: 'div' | 'dl' }
 interface Props extends PolymorphicProps {
   /** core/scss/ui/_datagrid.scss `.datagrid-horizontal`: label beside the value, one pair per row */
   variant?: 'horizontal' | undefined
+  /** `.datagrid-cols-{n}`: a fixed number of columns instead of as many as fit */
+  columns?: 1 | 2 | 3 | 4 | undefined
   /** sets --tblr-datagrid-item-width, the minimum width of a column (e.g. `10rem`) */
   itemWidth?: string | undefined
   /** sets --tblr-datagrid-padding, the gap between items (e.g. `1rem`) */
@@ -17,11 +19,11 @@ interface Props extends PolymorphicProps {
   [key: string]: unknown
 }
 
-const { as: Tag = 'div', variant, itemWidth, gap, titleWidth, class: className, ...rest }: Props = Astro.props
+const { as: Tag = 'div', variant, columns, itemWidth, gap, titleWidth, class: className, ...rest }: Props = Astro.props
 
 const style = [itemWidth && `--tblr-datagrid-item-width: ${itemWidth}`, gap && `--tblr-datagrid-padding: ${gap}`, titleWidth && `--tblr-datagrid-title-width: ${titleWidth}`].filter(Boolean).join('; ')
 ---
 
-<Tag class:list={['datagrid', variant && `datagrid-${variant}`, className]} style={style || undefined} {...rest}>
+<Tag class:list={['datagrid', variant && `datagrid-${variant}`, columns && `datagrid-cols-${columns}`, className]} style={style || undefined} {...rest}>
   <slot />
 </Tag>

@@ -4,4 +4,4 @@
 "@tabler/docs": minor
 ---
 
-Added `.datagrid-horizontal` variant, `--tblr-datagrid-title-width` variable and more datagrid examples and docs.
+Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
