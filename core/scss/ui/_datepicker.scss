@@ -19,6 +19,8 @@
   --calendar-font-size: #{$datepicker-calendar-font-size};
   --calendar-header-font-weight: #{$datepicker-calendar-header-font-weight};
   --calendar-weekday-color: var(--secondary);
+  --calendar-week-number-color: var(--secondary);
+  --calendar-week-number-border-color: var(--border-color);
   --calendar-day-hover-bg: var(--hover-bg);
   --calendar-day-selected-bg: var(--primary);
   --calendar-day-selected-color: var(--primary-fg);
@@ -151,6 +153,12 @@
   }
 }
 
+// Holds the week numbers column, when enabled, next to the month
+[data-vc='wrapper'] {
+  display: flex;
+  flex-grow: 1;
+}
+
 [data-vc='content'] {
   display: flex;
   flex-grow: 1;
@@ -250,6 +258,46 @@
 
 button[data-vc-week-day] {
   cursor: pointer;
+}
+
+// Week numbers: a column in front of the month, with a title that lines up
+// with the weekday header and one number for each row of dates.
+[data-vc-week='numbers'] {
+  display: flex;
+  flex-direction: column;
+  padding-inline-end: 0.5rem;
+  margin-inline-end: 0.5rem;
+  border-inline-end: var(--border-width) solid var(--calendar-week-number-border-color);
+}
+
+[data-vc-week-numbers='title'] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  font-size: var(--calendar-day-font-size);
+  font-weight: var(--calendar-header-font-weight);
+  line-height: 1rem;
+  color: var(--calendar-week-number-color);
+}
+
+[data-vc-week-numbers='content'] {
+  display: grid;
+  grid-auto-rows: calc(var(--calendar-day-size) + 0.25rem);
+  align-items: center;
+  justify-items: center;
+}
+
+[data-vc-week-number] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: var(--calendar-day-size);
+  font-size: var(--calendar-day-font-size);
+  font-weight: $font-weight-normal;
+  line-height: 1rem;
+  color: var(--calendar-week-number-color);
 }
 
 // Dates grid

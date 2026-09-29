@@ -115,6 +115,24 @@ describe('Datepicker', () => {
       expect(instance._config.firstWeekday).toBe(0)
     })
 
+    it('should turn week numbers on from a data attribute', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-week-numbers="true">'
+
+      const instance = new Datepicker(input())
+
+      expect(Datepicker.Default.weekNumbers).toBe(false)
+      expect(instance._config.weekNumbers).toBe(true)
+      expect(instance._buildCalendarOptions().enableWeekNumbers).toBe(true)
+    })
+
+    it('should keep week numbers enabled through vcpOptions', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input(), { vcpOptions: { enableWeekNumbers: true } })
+
+      expect(instance._buildCalendarOptions().enableWeekNumbers).toBe(true)
+    })
+
     it('should let a passed config win over data attributes', () => {
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-first-weekday="0">'
 
