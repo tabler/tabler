@@ -154,6 +154,29 @@ Set `data-bs-inline="true"` to render the panel in place, right under the field.
 </div>
 </Example>
 
+### Sizes and states
+
+The swatch follows `.form-control-sm` and `.form-control-lg`, and the field keeps its disabled and validation styles.
+
+<Example column>
+<div class="colorpicker">
+  <input type="text" class="form-control form-control-sm" data-bs-toggle="colorpicker" value="#4263eb" aria-label="Small color field" />
+</div>
+<div class="colorpicker">
+  <input type="text" class="form-control form-control-lg" data-bs-toggle="colorpicker" value="#d6336c" aria-label="Large color field" />
+</div>
+<div class="colorpicker">
+  <input type="text" class="form-control" data-bs-toggle="colorpicker" value="#f59f00" aria-label="Disabled color field" disabled />
+</div>
+<div class="colorpicker">
+  <input type="text" class="form-control is-invalid" data-bs-toggle="colorpicker" value="#d63939" aria-label="Invalid color field" aria-invalid="true" />
+</div>
+</Example>
+
+### In a modal
+
+Inside a modal or an offcanvas the panel is appended to that dialog instead of `<body>`, so it opens above it and stays inside its focus trap. <kbd>Escape</kbd> closes the panel first, and the dialog on the next press.
+
 ### Dark mode
 
 The panel is appended to `<body>`, outside the cascade of the field, so the plugin copies the nearest `data-bs-theme` to it and follows later changes. Set `data-bs-colorpicker-theme` to force a theme for the panel alone.
@@ -214,7 +237,7 @@ const colorpicker = new tabler.Colorpicker(document.getElementById('my-color'), 
 | `value` | string | `null` | Starting color for a trigger that is not an input and has no hidden input. |
 | `placement` | string | `'bottom-start'` | Where the popup lines up with the field, as a Popper placement. `start` and `end` follow the text direction. |
 | `positionElement` | string, element | `null` | Element the popup lines up with. Defaults to the `.colorpicker` wrapper, or the field itself. |
-| `container` | string, element | `'body'` | Element the popup is appended to. |
+| `container` | string, element | `null` | Element the popup is appended to. By default the modal or offcanvas the field is in, or `<body>`. |
 | `colorpickerTheme` | string | `null` | Force the panel's theme to `'light'`, `'dark'` or `'auto'`. By default it follows the nearest `[data-bs-theme]`. |
 | `labels` | object | English texts | Texts read by assistive technology: `dialog`, `instruction`, `marker`, `hue`, `alpha`, `input`, `format`, `swatch`, `clear` and `close`. Keys you leave out keep the default. |
 

@@ -8,6 +8,9 @@ import Colorpicker from '@ui/Colorpicker.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import site from '@data/site.json'
 import DocsLink from '@ui/DocsLink.astro'
+import Button from '@ui/Button.astro'
+import Modal from '@shared/components/modals/Modal.astro'
+import CaptureModal from '@shared/components/CaptureModal.astro'
 
 const colors = Object.values(site.colors) as { hex: string; title: string }[]
 
@@ -129,5 +132,60 @@ const alphaFormats = [
         </CardBody>
       </Card>
     </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes and states</CardTitle>
+          <CardSubtitle>The swatch follows the size of the field, and the field keeps its disabled and invalid styles.</CardSubtitle>
+          <FormGroup label="Small" for="colorpicker-size-sm">
+            <Colorpicker value="#4263eb" size="sm" id="colorpicker-size-sm" />
+          </FormGroup>
+          <FormGroup label="Default" for="colorpicker-size-md">
+            <Colorpicker value="#ae3ec9" id="colorpicker-size-md" />
+          </FormGroup>
+          <FormGroup label="Large" for="colorpicker-size-lg">
+            <Colorpicker value="#d6336c" size="lg" id="colorpicker-size-lg" />
+          </FormGroup>
+          <FormGroup label="Disabled" for="colorpicker-disabled">
+            <Colorpicker value="#f59f00" disabled id="colorpicker-disabled" />
+          </FormGroup>
+          <div class="mb-0">
+            <label class="form-label" for="colorpicker-invalid">Invalid</label>
+            <Colorpicker value="#d63939" invalid id="colorpicker-invalid" />
+            <div class="invalid-feedback d-block">This color does not have enough contrast with the background.</div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>In a modal</CardTitle>
+          <CardSubtitle>The panel opens over the modal and closes before the modal does.</CardSubtitle>
+          <Button text="Edit label" modalId="colorpicker" />
+        </CardBody>
+      </Card>
+    </div>
   </div>
+
+  <CaptureModal>
+    <Modal modalId="colorpicker">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-colorpicker-title">Edit label</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <FormGroup label="Name" for="colorpicker-modal-name">
+          <input type="text" class="form-control" id="colorpicker-modal-name" value="Bug" />
+        </FormGroup>
+        <FormGroup label="Color" for="colorpicker-modal-color" class="mb-0">
+          <Colorpicker value="#d63939" id="colorpicker-modal-color" />
+        </FormGroup>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+      </div>
+    </Modal>
+  </CaptureModal>
 </DefaultLayout>
