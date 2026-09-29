@@ -77,12 +77,14 @@
 // `--control-*` tokens: read them and every size follows on its own. The
 // multi-value control follows the preset's formula: take the item's 1px
 // padding, 1px border and 3px bottom margin out of the control's padding so
-// the chips fill the same height.
+// the chips fill the same height. The font size is `!important` because the
+// preset sets its own on `.form-select-sm.has-items .ts-control`, which
+// outranks this selector.
 .ts-wrapper.form-control,
 .ts-wrapper.form-select {
   .ts-control {
     padding: var(--control-padding-y) var(--control-padding-x);
-    font-size: var(--control-font-size);
+    font-size: var(--control-font-size) !important;
     line-height: var(--control-line-height);
   }
 
