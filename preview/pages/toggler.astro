@@ -48,12 +48,12 @@ const colors = ['blue-lt', 'green-lt', 'orange-lt'] as const
       <Card>
         <CardBody>
           <CardTitle>Multiple elements</CardTitle>
-          <CardSubtitle>A class selector toggles every match, each with its own value.</CardSubtitle>
-          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target=".toggler-target">Toggle all</button>
+          <CardSubtitle>A selector with many matches toggles every one, each with its own value.</CardSubtitle>
+          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="[data-toggler-demo]">Toggle all</button>
           <div class="space-y-2">
             {
               colors.map((color) => (
-                <div class="toggler-target p-3 rounded border" data-bs-value={`bg-${color}`}>
+                <div class="p-3 rounded border" data-toggler-demo data-bs-value={`bg-${color}`}>
                   Toggles <code>bg-{color}</code>
                 </div>
               ))
