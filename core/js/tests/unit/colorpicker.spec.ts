@@ -376,6 +376,8 @@ describe('Colorpicker', () => {
       const instance = new Colorpicker(input)
 
       await instance.show()
+      expect(panels()[0]!.querySelectorAll('.colorpicker-actions > button')).toHaveLength(2)
+      expect(panels()[0]!.querySelector('.colorpicker-footer button')).toBeNull()
       panels()[0]!.querySelector<HTMLElement>('.colorpicker-clear')!.click()
       expect(input.value).toBe('')
 

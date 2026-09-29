@@ -105,6 +105,7 @@ const CLASS_NAME_ALPHA = `${NAME}-alpha`
 const CLASS_NAME_SWATCHES = `${NAME}-swatches`
 const CLASS_NAME_SWATCH = `${NAME}-swatch`
 const CLASS_NAME_FOOTER = `${NAME}-footer`
+const CLASS_NAME_ACTIONS = `${NAME}-actions`
 const CLASS_NAME_INPUT = `${NAME}-input`
 const CLASS_NAME_FORMAT = `${NAME}-format`
 const CLASS_NAME_CLEAR = `${NAME}-clear`
@@ -523,22 +524,28 @@ class Colorpicker extends BaseComponent {
       footer.append(this._formatSelect)
     }
 
+    // The buttons get a row of their own: next to the value field they would
+    // squeeze it out of the panel
+    const actions = create('div', CLASS_NAME_ACTIONS)
+
     if (clearButton) {
       const button = create('button', `btn btn-sm ${CLASS_NAME_CLEAR}`, { type: 'button' })
       button.textContent = labels.clear
       EventHandler.on(button, EVENT_CLICK, () => this._clear())
-      footer.append(button)
+      actions.append(button)
     }
 
     if (closeButton) {
       const button = create('button', `btn btn-sm btn-primary ${CLASS_NAME_CLOSE}`, { type: 'button' })
       button.textContent = labels.close
       EventHandler.on(button, EVENT_CLICK, () => this.hide())
-      footer.append(button)
+      actions.append(button)
     }
 
-    if (footer.childElementCount > 0) {
-      panel.append(footer)
+    for (const row of [footer, actions]) {
+      if (row.childElementCount > 0) {
+        panel.append(row)
+      }
     }
 
     EventHandler.on(panel, EVENT_KEYDOWN, (event: KeyboardEvent) => this._handlePanelKeydown(event))
