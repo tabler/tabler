@@ -138,8 +138,19 @@ class SwitchIcon extends BaseComponent {
       .finally(() => this.#setLoading(false))
   }
 
+  dispose(): void {
+    // A wait() still pending must not leave the spinner on the button.
+    this.#setLoading(false)
+    super.dispose()
+  }
+
   // Private
   #setActive(active: boolean): void {
+    // A pending wait() may settle after dispose().
+    if (!this._element) {
+      return
+    }
+
     this.#iconElement.classList.toggle(CLASS_NAME_ACTIVE, active)
     this._element.setAttribute('aria-pressed', String(active))
 
@@ -147,6 +158,10 @@ class SwitchIcon extends BaseComponent {
   }
 
   #setLoading(loading: boolean): void {
+    if (!this._element) {
+      return
+    }
+
     this.#iconElement.classList.toggle(CLASS_NAME_LOADING, loading)
     if (loading) {
       this._element.setAttribute('aria-busy', 'true')

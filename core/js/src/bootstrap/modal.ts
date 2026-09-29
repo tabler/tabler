@@ -11,8 +11,9 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { isRTL, isVisible, reflow } from './util/index'
+import { defineJQueryPlugin, isRTL, isVisible, reflow } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
  * Constants
@@ -318,6 +319,22 @@ class Modal extends BaseComponent {
     this._element.style.paddingLeft = ''
     this._element.style.paddingRight = ''
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown, relatedTarget?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Modal.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config](relatedTarget)
+    })
+  }
 }
 
 /**
@@ -358,5 +375,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 })
 
 enableDismissTrigger(Modal)
+
+defineJQueryPlugin(Modal)
 
 export default Modal

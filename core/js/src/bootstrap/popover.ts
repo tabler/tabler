@@ -7,6 +7,8 @@
 
 import Tooltip from './tooltip'
 import type { TooltipConfig, TooltipContent, TooltipContentMap } from './tooltip'
+import { defineJQueryPlugin } from './util/index'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
  * Constants
@@ -75,6 +77,24 @@ class Popover extends Tooltip {
   _getContent(): string | HTMLElement | null {
     return this._resolvePossibleFunction(this._config.content)
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Popover.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (typeof data[config] === 'undefined') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
+
+defineJQueryPlugin(Popover)
 
 export default Popover

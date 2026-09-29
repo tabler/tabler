@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { chartStyle, chartConfig, type ChartData } from './chart-script'
+import charts from '../data/charts.json'
+import { chartStyle, chartConfig, chartFormatters, type ChartData } from './chart-script'
 
 describe('chartStyle', () => {
   it('emits an id-scoped color custom property per serie', () => {
@@ -131,16 +132,21 @@ describe('chartConfig', () => {
     })
   })
 
-  it('returns the x-formatter as a separate expression instead of embedding it', () => {
-    const { config, xFormatterExpr } = chartConfig({ id: 'demo', data: { 'series': [], 'x-formatter': 'val + "K"' }, height: 10 })
-    expect(xFormatterExpr).toBe('val + "K"')
-    expect(JSON.stringify(config)).not.toContain('val + "K"')
+  it('returns the formatter names separately instead of embedding them', () => {
+    const { config, xFormatter, yFormatter } = chartConfig({ id: 'demo', data: { 'series': [], 'x-formatter': 'suffix-k', 'y-formatter': 'thousands' }, height: 10 })
+    expect(xFormatter).toBe('suffix-k')
+    expect(yFormatter).toBe('thousands')
+    expect(JSON.stringify(config)).not.toMatch(/suffix-k|thousands/)
   })
 
-  it('returns the y-formatter as a separate expression instead of embedding it', () => {
-    const { config, yFormatterExpr } = chartConfig({ id: 'demo', data: { 'series': [], 'y-formatter': 'val.toLocaleString("en-US")' }, height: 10 })
-    expect(yFormatterExpr).toBe('val.toLocaleString("en-US")')
-    expect(JSON.stringify(config)).not.toContain('toLocaleString')
+  it('only uses known formatter names in charts.json', () => {
+    const used = Object.values(charts as Record<string, Record<string, unknown>>)
+      .flatMap((chart) => [chart['x-formatter'], chart['y-formatter']])
+      .filter((name) => name !== undefined)
+    expect(used.length).toBeGreaterThan(0)
+    for (const name of used) {
+      expect(chartFormatters).toContain(name)
+    }
   })
 
   it('uses the ApexCharts 7 legend marker options', () => {

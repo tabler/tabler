@@ -19,7 +19,8 @@ interface IMaskInstance {
 }
 
 type ComponentConfig = {
-  mask: string
+  /** an IMask mask: a pattern string, `Number`, `Date`, a RegExp or a mask object */
+  mask: unknown
   lazy: boolean
 }
 
@@ -42,7 +43,7 @@ const Default: ComponentConfig = {
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
-  mask: 'string',
+  mask: '(string|function|regexp|object|array)',
   lazy: 'boolean',
 }
 
@@ -65,10 +66,8 @@ class InputMask extends BaseComponent {
       return
     }
 
-    this._mask = new window.IMask(this._element, {
-      mask: this._config.mask,
-      lazy: this._config.lazy,
-    })
+    // Every option from the config reaches IMask, not only the two typed ones.
+    this._mask = new window.IMask(this._element, { ...this._config })
   }
 
   // Getters
@@ -110,8 +109,9 @@ class InputMask extends BaseComponent {
       dataOptions.mask = mask
     }
 
+    // A bare `data-mask-visible` means visible, like `="true"`.
     if (element?.hasAttribute(ATTRIBUTE_VISIBLE)) {
-      dataOptions.lazy = element.getAttribute(ATTRIBUTE_VISIBLE) !== 'true'
+      dataOptions.lazy = element.getAttribute(ATTRIBUTE_VISIBLE) === 'false'
     }
 
     return super._mergeConfigObj({ ...dataOptions, ...config }, element)

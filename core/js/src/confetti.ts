@@ -7,6 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
+import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { isDisabled } from './bootstrap/util/index'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
@@ -58,6 +59,8 @@ type Emitter = {
   stopped: boolean
   /** every piece has landed and `end` was fired */
   done: boolean
+  /** the instance was disposed: the pieces still land, but `end` is not fired */
+  detached: boolean
 }
 
 /**
@@ -133,14 +136,21 @@ const stage = {
   frame: 0,
   lastTick: 0,
 
-  add(emitter: Emitter): void {
-    this.emitters.push(emitter)
+  add(emitter: Emitter): boolean {
     this._mount()
+
+    if (!this.context) {
+      return false
+    }
+
+    this.emitters.push(emitter)
 
     if (!this.frame) {
       this.lastTick = performance.now()
       this.frame = requestAnimationFrame((now) => this._tick(now))
     }
+
+    return true
   },
 
   _mount(): void {
@@ -161,9 +171,14 @@ const stage = {
       display: 'block',
     })
 
+    const context = canvas.getContext('2d')
+    if (!context) {
+      return
+    }
+
     document.body.append(canvas)
     this.canvas = canvas
-    this.context = canvas.getContext('2d')
+    this.context = context
     this._resize()
     window.addEventListener('resize', this._onResize)
   },
@@ -191,7 +206,7 @@ const stage = {
     // The backing store is scaled for HiDPI screens; the CSS size above keeps
     // the element at the viewport size, so the drawing stays sharp and 1:1.
     const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
-    this.canvas.width = window.innerWidth * dpr
+    this.canvas.width = document.documentElement.clientWidth * dpr
     this.canvas.height = window.innerHeight * dpr
     this.context.setTransform(dpr, 0, 0, dpr, 0, 0)
   },
@@ -312,7 +327,10 @@ const stage = {
 
       this.emitters.splice(i, 1)
       emitter.done = true
-      EventHandler.trigger(emitter.element, EVENT_END)
+
+      if (!emitter.detached) {
+        EventHandler.trigger(emitter.element, EVENT_END)
+      }
     }
   },
 }
@@ -372,9 +390,13 @@ class Confetti extends BaseComponent {
       emitted: 0,
       stopped: false,
       done: false,
+      detached: false,
     }
 
-    stage.add(this._emitter)
+    if (!stage.add(this._emitter)) {
+      this._emitter = null
+      EventHandler.trigger(this._element, EVENT_END)
+    }
   }
 
   stop(): void {
@@ -386,6 +408,10 @@ class Confetti extends BaseComponent {
   }
 
   dispose(): void {
+    if (this._emitter) {
+      this._emitter.detached = true
+    }
+
     this.stop()
     super.dispose()
   }
@@ -432,7 +458,16 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   const target = SelectorEngine.getElementFromSelector(this) || this
-  const instance = Confetti.getOrCreateInstance(target) as Confetti
+  const config = Manipulator.getDataAttributes(this)
+  const instance = Confetti.getOrCreateInstance(target, config) as Confetti
+
+  // The instance lives on the target and keeps the config it was created
+  // with, so re-read the trigger's options on every click; several triggers
+  // can then share one target with their own look.
+  if (target !== this) {
+    instance._config = instance._getConfig(config) as ComponentConfig
+  }
+
   instance.burst()
 })
 

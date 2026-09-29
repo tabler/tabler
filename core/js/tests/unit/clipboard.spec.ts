@@ -157,4 +157,55 @@ describe('Clipboard', () => {
       expect(hidden(feedback())).toBe(false)
     })
   })
+
+  describe('text sources', () => {
+    it('copies data-bs-text as written', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="clipboard" data-bs-text="007"></button>'
+      const instance = new Clipboard(trigger())
+
+      await instance.copy()
+
+      expect(written).toEqual(['007'])
+    })
+
+    it('copies data-bs-text that looks like JSON as written', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="clipboard" data-bs-text=\'{"a":1}\'></button>'
+      const instance = new Clipboard(trigger())
+
+      await instance.copy()
+
+      expect(written).toEqual(['{"a":1}'])
+    })
+
+    it('skips hidden text and keeps line breaks from an element target', async () => {
+      fixtureEl.innerHTML = '<div id="addr">Line 1<br>Line 2 <span style="display:none">(copy)</span></div><button type="button" data-bs-toggle="clipboard" data-bs-target="#addr"></button>'
+      const instance = new Clipboard(trigger())
+
+      await instance.copy()
+
+      expect(written).toEqual(['Line 1\nLine 2'])
+    })
+
+    it('finds a target whose id needs escaping', async () => {
+      fixtureEl.innerHTML = '<input id="key:1" value="x"><button type="button" data-bs-toggle="clipboard" data-bs-target="#key:1"></button>'
+      const instance = new Clipboard(trigger())
+
+      await instance.copy()
+
+      expect(written).toEqual(['x'])
+    })
+  })
+
+  describe('reset', () => {
+    it('ends the copied state kept by delay 0', async () => {
+      const instance = new Clipboard(trigger(), { delay: 0 })
+      await instance.copy()
+      expect(hidden(feedback())).toBe(false)
+
+      instance.reset()
+
+      expect(hidden(feedback())).toBe(true)
+      expect(hidden(label())).toBe(false)
+    })
+  })
 })

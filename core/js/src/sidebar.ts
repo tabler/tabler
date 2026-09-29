@@ -1,11 +1,12 @@
 import { Dropdown } from './bootstrap'
+import { onDOMContentLoaded } from './bootstrap/util/index'
 
 /*
 Folded sidebar toggle
  */
 // js-docs-start sidebar-folded-toggle
 const syncSidebarToggles = (folded: boolean): void => {
-  for (const toggle of document.querySelectorAll('[data-bs-toggle="sidebar-folded"]')) {
+  for (const toggle of document.querySelectorAll('[data-bs-toggle="sidebar-folded"], [data-tblr-toggle="sidebar-folded"]')) {
     toggle.setAttribute('aria-pressed', String(folded))
   }
 }
@@ -28,8 +29,9 @@ document.addEventListener('click', (event: MouseEvent) => {
     return
   }
 
-  const target = event.target as Element
-  if (target.closest('.navbar-vertical .dropdown-menu')) {
+  // A synthetic click dispatched on the document has no Element target.
+  const target = event.target
+  if (!(target instanceof Element) || target.closest('.navbar-vertical .dropdown-menu')) {
     return
   }
 
@@ -60,7 +62,8 @@ document.addEventListener(
 // The folded state may come pre-render from localStorage (tabler-theme.js), so
 // align the toggle buttons with it once the DOM is available. Server-rendered
 // open submenus are also closed, so they don't hang as open flyouts.
-document.addEventListener('DOMContentLoaded', () => {
+// onDOMContentLoaded runs at once when the script loads after the event.
+onDOMContentLoaded(() => {
   const folded = (document.documentElement.getAttribute('data-bs-sidebar') ?? '').startsWith('folded')
   syncSidebarToggles(folded)
 
@@ -73,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 document.addEventListener('click', (event: MouseEvent) => {
-  const trigger = (event.target as Element).closest('[data-bs-toggle="sidebar-folded"]')
+  const trigger = event.target instanceof Element ? event.target.closest('[data-bs-toggle="sidebar-folded"], [data-tblr-toggle="sidebar-folded"]') : null
   if (!trigger) {
     return
   }
@@ -89,7 +92,12 @@ document.addEventListener('click', (event: MouseEvent) => {
     html.removeAttribute('data-bs-sidebar')
   }
 
-  localStorage.setItem('tabler-sidebar', willFold ? 'folded-hover' : 'default')
+  // Storage may be blocked by the browser; the fold still applies to this page.
+  try {
+    localStorage.setItem('tabler-sidebar', willFold ? 'folded-hover' : 'default')
+  } catch {
+    // ignore
+  }
   syncSidebarToggles(willFold)
 
   // Close open sidebar dropdowns so an inline submenu doesn't turn into a

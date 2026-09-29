@@ -115,4 +115,39 @@ describe('sidebar folded toggle', () => {
     expect(document.documentElement.hasAttribute('data-bs-sidebar')).toBe(false)
     expect(localStorage.getItem('tabler-sidebar')).toBeNull()
   })
+
+  describe('robustness', () => {
+    it('still syncs the toggle when storage is blocked', () => {
+      const original = Object.getOwnPropertyDescriptor(window, 'localStorage')!
+      Object.defineProperty(window, 'localStorage', {
+        configurable: true,
+        get() {
+          throw new DOMException('blocked', 'SecurityError')
+        },
+      })
+
+      try {
+        expect(() => trigger().click()).not.toThrow()
+        expect(document.documentElement.getAttribute('data-bs-sidebar')).toBe('folded-hover')
+        expect(trigger().getAttribute('aria-pressed')).toBe('true')
+      } finally {
+        Object.defineProperty(window, 'localStorage', original)
+      }
+    })
+
+    it('ignores a synthetic click without an element target', () => {
+      document.documentElement.setAttribute('data-bs-sidebar', 'folded')
+
+      expect(() => document.dispatchEvent(new MouseEvent('click', { bubbles: true }))).not.toThrow()
+    })
+
+    it('reads the data-tblr-toggle alias', () => {
+      fixtureEl.innerHTML = '<button type="button" data-tblr-toggle="sidebar-folded" aria-pressed="false">Toggle</button>'
+
+      trigger().click()
+
+      expect(document.documentElement.getAttribute('data-bs-sidebar')).toBe('folded-hover')
+      expect(trigger().getAttribute('aria-pressed')).toBe('true')
+    })
+  })
 })

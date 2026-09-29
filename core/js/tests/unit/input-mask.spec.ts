@@ -101,4 +101,26 @@ describe('InputMask', () => {
       expect(plugin).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('config passthrough', () => {
+    it('hands every config option to IMask', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      new InputMask(input(), { mask: '000', placeholderChar: '#' })
+
+      expect(plugin).toHaveBeenCalledWith(input(), { mask: '000', lazy: true, placeholderChar: '#' })
+    })
+
+    it('accepts a non-string mask', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      expect(() => new InputMask(input(), { mask: Number })).not.toThrow()
+      expect(() => new InputMask(fixtureEl.appendChild(document.createElement('input')), { mask: /^\d+$/ })).not.toThrow()
+    })
+
+    it('treats a bare data-mask-visible as visible', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="00" data-mask-visible>'
+      new InputMask(input())
+
+      expect(plugin).toHaveBeenCalledWith(input(), { mask: '00', lazy: false })
+    })
+  })
 })

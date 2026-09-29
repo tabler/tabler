@@ -67,9 +67,8 @@ describe('ScrollSpy', () => {
 
       const sSpyEl = fixtureEl.querySelector('.content')!
       const sSpyBySelector = new ScrollSpy('.content')
-      const sSpyByElement = new ScrollSpy(sSpyEl)
-
       expect(sSpyBySelector._element).toBe(sSpyEl)
+      const sSpyByElement = new ScrollSpy(sSpyEl)
       expect(sSpyByElement._element).toBe(sSpyEl)
     })
 

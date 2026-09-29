@@ -147,6 +147,7 @@ class CountUp extends BaseComponent {
   _elapsed = 0
   _running = false
   _paused = false
+  _started = false
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -175,13 +176,7 @@ class CountUp extends BaseComponent {
       return
     }
 
-    this._observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        this._observer?.disconnect()
-        this._observer = null
-        this.start()
-      }
-    })
+    this._observer = new IntersectionObserver((entries) => this._observerCallback(entries))
     this._observer.observe(this._element)
   }
 
@@ -205,6 +200,8 @@ class CountUp extends BaseComponent {
 
   reset(): void {
     this._stop()
+    // Lets the observer start the animation again when the element comes into view.
+    this._started = false
     this._value = this._config.startVal
     this._print(this._value)
   }
@@ -244,7 +241,11 @@ class CountUp extends BaseComponent {
 
     if (raw) {
       try {
-        dataOptions = JSON.parse(raw)
+        const parsed: unknown = JSON.parse(raw)
+        // Only an object carries options; `null`, a number or an array is ignored.
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          dataOptions = parsed as Record<string, unknown>
+        }
       } catch {
         // ignore invalid JSON
       }
@@ -253,8 +254,21 @@ class CountUp extends BaseComponent {
     return super._mergeConfigObj({ ...coerceOptions(dataOptions), ...config }, element)
   }
 
+  _observerCallback(entries: IntersectionObserverEntry[]): void {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      this._observer?.disconnect()
+      this._observer = null
+
+      // update() may have already animated it while it was off screen.
+      if (!this._started) {
+        this.start()
+      }
+    }
+  }
+
   _animate(from: number, to: number): void {
     this._stop()
+    this._started = true
 
     // Users who asked for less motion get the final number at once.
     if (from === to || this._config.duration <= 0 || reducedMotion()) {
@@ -317,14 +331,18 @@ class CountUp extends BaseComponent {
     }
 
     if (format === 'time') {
-      const minutes = Math.round(Math.abs(value))
-      return `${value < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
+      // Rounded away from zero on both sides, so -90.5 and 90.5 give the same
+      // minutes; a value that rounds to 0 stays unsigned (-0 < 0 is false).
+      const rounded = Math.sign(value) * Math.round(Math.abs(value))
+      const minutes = Math.abs(rounded)
+      return `${rounded < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`
     }
 
-    const [integer, fraction] = Math.abs(value).toFixed(decimalPlaces).split('.') as [string, string | undefined]
+    const fixed = value.toFixed(decimalPlaces)
+    const [integer, fraction] = fixed.replace('-', '').split('.') as [string, string | undefined]
     const grouped = useGrouping ? integer.replace(/\B(?=(\d{3})+(?!\d))/g, separator) : integer
 
-    return `${value < 0 ? '-' : ''}${prefix}${grouped}${fraction ? decimal + fraction : ''}${suffix}`
+    return `${Number(fixed) < 0 ? '-' : ''}${prefix}${grouped}${fraction ? decimal + fraction : ''}${suffix}`
   }
 }
 

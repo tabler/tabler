@@ -156,9 +156,42 @@ describe('Sparkline', () => {
     it('should render nothing without values', () => {
       fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline"></span>'
 
+      const spy = vi.fn()
+      el().addEventListener('rendered.bs.sparkline', spy)
       new Sparkline(el())
 
       expect(el().innerHTML).toBe('')
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should keep author content when rendering without values', () => {
+      fixtureEl.innerHTML = '<span class="sparkline"><b class="note">n/a</b></span>'
+
+      const sparkline = new Sparkline(el(), { values: [1, 2], label: 'x' })
+      sparkline.update([])
+
+      expect(el().querySelector('svg')).toBeNull()
+      expect(el().querySelector('.sparkline-label')).toBeNull()
+      expect(el().querySelector('.note')).not.toBeNull()
+    })
+
+    it('should draw a flat line for a single value', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-fill="auto" data-bs-spot="last" data-bs-values="5"></span>'
+
+      new Sparkline(el())
+
+      const y = el().querySelector('polyline')!.getAttribute('points')!.split(' ')[0].split(',')[1]
+      expect(el().querySelector('polyline')!.getAttribute('points')).toBe(`0,${y} 80,${y}`)
+      expect(el().querySelector('path')!.getAttribute('d')).toBe(`M 0 ${y} L 80 ${y} L 80 24 L 0 24 Z`)
+      expect(el().querySelector('circle')!.getAttribute('cx')).toBe('40')
+    })
+
+    it('should fall back to a stroke width of 2 without computed styles', () => {
+      const element = document.createElement('span')
+
+      new Sparkline(element, { type: 'circle', values: [50] })
+
+      expect(element.querySelector('circle')!.getAttribute('stroke-width')).toBe('2')
     })
 
     it('should accept values from the config object', () => {
@@ -209,6 +242,35 @@ describe('Sparkline', () => {
       expect(heights).toEqual(['24', '12'])
     })
 
+    it('should drop attributes the new element does not have', async () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-type="bar" data-bs-threshold="1.5" data-bs-animation="50" data-bs-values="1,2"></span>'
+
+      const sparkline = new Sparkline(el())
+      const line = el().querySelector('line')!
+      expect(line.getAttribute('stroke-dasharray')).toBe('3 2')
+
+      el().removeAttribute('data-bs-threshold')
+      sparkline.update([1, -2])
+      await new Promise((resolve) => setTimeout(resolve, 200))
+
+      expect(el().querySelector('line')).toBe(line)
+      expect(line.hasAttribute('stroke-dasharray')).toBe(false)
+    })
+
+    it('should stop a running tween when the values are cleared', async () => {
+      fixtureEl.innerHTML = '<span class="sparkline"></span>'
+
+      const sparkline = new Sparkline(el(), { type: 'bar', values: [1, 2], animation: 1000 })
+      const rect = el().querySelector('rect')!
+      sparkline.update([2, 1])
+      sparkline.update([])
+      const height = rect.getAttribute('height')
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      expect(rect.isConnected).toBe(false)
+      expect(rect.getAttribute('height')).toBe(height)
+    })
+
     it('should replace the svg when the shape changes or animation is off', () => {
       fixtureEl.innerHTML = '<span class="sparkline"></span>'
 
@@ -221,13 +283,13 @@ describe('Sparkline', () => {
   })
 
   describe('dispose', () => {
-    it('should empty the element and drop the instance', () => {
-      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-values="1,2"></span>'
+    it('should remove the chart and drop the instance', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-label="auto" data-bs-values="1,2"><b class="note">n/a</b></span>'
 
       const sparkline = new Sparkline(el())
       sparkline.dispose()
 
-      expect(el().innerHTML).toBe('')
+      expect(el().innerHTML).toBe('<b class="note">n/a</b>')
       expect(Sparkline.getInstance(el())).toBeNull()
     })
   })

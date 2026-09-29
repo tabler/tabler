@@ -20,23 +20,23 @@ describe('Manipulator', () => {
   })
 
   describe('setDataAttribute', () => {
-    it('should set a data-tblr-* attribute', () => {
+    it('should set a data-bs-* attribute', () => {
       Manipulator.setDataAttribute(div, 'key', 'value')
 
-      expect(div.getAttribute('data-tblr-key')).toBe('value')
+      expect(div.getAttribute('data-bs-key')).toBe('value')
     })
 
     it('should convert camelCase keys to kebab-case', () => {
       Manipulator.setDataAttribute(div, 'testKey', '123')
 
-      expect(div.getAttribute('data-tblr-test-key')).toBe('123')
+      expect(div.getAttribute('data-bs-test-key')).toBe('123')
     })
 
     it('should overwrite existing value', () => {
       Manipulator.setDataAttribute(div, 'key', 'old')
       Manipulator.setDataAttribute(div, 'key', 'new')
 
-      expect(div.getAttribute('data-tblr-key')).toBe('new')
+      expect(div.getAttribute('data-bs-key')).toBe('new')
     })
   })
 

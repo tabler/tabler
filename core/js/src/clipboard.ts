@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
+import { getElement } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = {
@@ -38,6 +39,8 @@ const CLASS_NAME_COPIED = 'copied'
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 const SELECTOR_LABEL = `.${NAME}-label`
 const SELECTOR_FEEDBACK = `.${NAME}-feedback`
+const ATTRIBUTE_TEXT = 'data-bs-text'
+const ATTRIBUTE_TEXT_ALIAS = 'data-tblr-text'
 
 const Default: ComponentConfig = {
   target: null,
@@ -130,12 +133,18 @@ class Clipboard extends BaseComponent {
       return String(text)
     }
 
-    const source = target ? SelectorEngine.findOne(target) : null
+    const source = target ? getElement(target) : null
     if (!source) {
       return ''
     }
 
-    return source instanceof HTMLInputElement || source instanceof HTMLTextAreaElement ? source.value : (source.textContent ?? '').trim()
+    if (source instanceof HTMLInputElement || source instanceof HTMLTextAreaElement) {
+      return source.value
+    }
+
+    // innerText keeps line breaks and skips hidden text such as a
+    // visually-hidden label; textContent is the fallback for SVG.
+    return (source instanceof HTMLElement ? source.innerText : ((source as Element).textContent ?? '')).trim()
   }
 
   // Public
@@ -158,12 +167,27 @@ class Clipboard extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_COPIED)
   }
 
+  /** Ends the copied state, for a `delay` of 0 or an early reset. */
+  reset(): void {
+    window.clearTimeout(this._timeout)
+    this._toggleCopied(false)
+  }
+
   dispose(): void {
     window.clearTimeout(this._timeout)
     super.dispose()
   }
 
   // Private
+  _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
+    // The text is copied as written: `data-bs-text="007"` or `"true"` must not
+    // be read as a number or a boolean the way other data attributes are.
+    const raw = element?.getAttribute(ATTRIBUTE_TEXT) ?? element?.getAttribute(ATTRIBUTE_TEXT_ALIAS)
+    const dataOptions: Record<string, unknown> = raw === null || raw === undefined ? {} : { text: raw }
+
+    return super._mergeConfigObj({ ...dataOptions, ...config }, element)
+  }
+
   _showCopied(): void {
     window.clearTimeout(this._timeout)
     this._toggleCopied(true)

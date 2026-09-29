@@ -45,6 +45,15 @@ Tabler automatically initializes all elements with `data-bs-toggle="tooltip"` on
 
 <CodeDocs name="tooltip-init" file="core/js/src/tooltip.ts" />
 
+To use your own options, create the instance yourself. It replaces the one Tabler created, so only your options apply:
+
+```js
+const el = document.getElementById('my-tooltip');
+new tabler.Tooltip(el, { customClass: 'tooltip-wide', delay: 300 });
+```
+
+To read or control the existing instance without changing its options, use `tabler.Tooltip.getInstance(el)` or `tabler.Tooltip.getOrCreateInstance(el)`.
+
 ## Accessibility
 
 - A tooltip only describes; it never replaces a name. The trigger still needs its own text or `aria-label`.

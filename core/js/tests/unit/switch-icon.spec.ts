@@ -220,4 +220,22 @@ describe('SwitchIcon', () => {
       expect(SwitchIcon.getInstance(button())).toBeNull()
     })
   })
+
+  describe('dispose while waiting', () => {
+    it('ignores a wait() that settles after dispose', async () => {
+      const instance = new SwitchIcon(button())
+      let settle!: () => void
+      button().addEventListener('toggle.bs.switch-icon', (event) => {
+        ;(event as ToggleEvent).wait(new Promise<void>((resolve) => (settle = resolve)))
+      })
+      instance.toggle()
+      const element = button()
+
+      instance.dispose()
+      settle()
+      await tick()
+
+      expect(element.classList.contains('switch-icon-loading')).toBe(false)
+    })
+  })
 })

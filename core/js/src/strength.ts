@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
+import { getElement } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
 type StrengthLevel = 'weak' | 'fair' | 'good' | 'strong'
@@ -164,17 +165,29 @@ class Strength extends BaseComponent {
   }
 
   // Private
+  _configAfterMerge(config: ComponentConfig): ComponentConfig {
+    // A partial `messages` or `weights` overrides only the keys it names.
+    return {
+      ...config,
+      messages: { ...Default.messages, ...config.messages },
+      weights: { ...Default.weights, ...config.weights },
+    }
+  }
+
   _getInput(): HTMLInputElement | null {
     const { input } = this._config
     if (input) {
-      return SelectorEngine.findOne(input) as HTMLInputElement | null
+      return getElement(input) as HTMLInputElement | null
     }
 
-    // Without an explicit selector only the meter's own parent is searched, so
-    // a form with several password fields cannot bind the wrong one.
+    // Without an explicit selector only the meter's own parent is searched.
+    // The nearest field before the meter wins, so a confirm-password field
+    // placed after it is never mistaken for the one being rated; a meter
+    // placed above its field falls back to the first field after it.
     const parent = this._element.parentElement
     const fields = parent ? (SelectorEngine.find(SELECTOR_PASSWORD, parent) as HTMLInputElement[]) : []
-    return fields[fields.length - 1] ?? null
+    const precedingFields = fields.filter((field) => Boolean(field.compareDocumentPosition(this._element) & Node.DOCUMENT_POSITION_FOLLOWING))
+    return precedingFields[precedingFields.length - 1] ?? fields[0] ?? null
   }
 
   _getText(): HTMLElement | null {

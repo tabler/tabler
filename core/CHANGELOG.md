@@ -1,5 +1,119 @@
 # @tabler/core
 
+## 1.6.1
+
+### Patch Changes
+
+- e3da90e: Fixed Autosize adding a phantom line after shrinking past `max-height` and wrong heights on `content-box` textareas.
+- e3da90e: Fixed Clipboard reading `data-bs-text` as a number or JSON, copying hidden text, and added `reset()` for a `delay` of 0.
+- 7748029: Fixed CountUp firing `complete.bs.countup` twice when `update()` ran before it scrolled into view.
+- 0a9edcb: Fixed CountUp printing `-0` when a value crosses or rounds to zero.
+- e3da90e: Fixed CountUp `reset()` blocking a later viewport start and `data-countup` or `data-sortable` JSON that is not an object.
+- e3da90e: Fixed Datepicker `dispose()` swapping the input for a stale clone, a hide timer after dispose and `Date` values for `dateMin`.
+- 6199b80: Fixed published types requiring the optional `vanilla-calendar-pro` peer dependency to be installed.
+- 4f471dd: Fixed `Datepicker` failing with `data-bs-display-months-count` on Vanilla Calendar Pro 3.4 by registering its extensions.
+- e3da90e: Fixed Datepicker keeping a deselected date in the field, `setSelectedDates()` not writing it and not opening on the value's month.
+- 0f6e843: Fixed tab, tooltip, popover, dropdown and toast init running before `DOMContentLoaded`, dropping early listeners.
+- e3da90e: Fixed an open dropdown with a disabled toggle being closed by outside clicks, matching Bootstrap.
+- c89bf8d: Fixed autosize not resizing a `position: fixed` textarea.
+- 70b8372: Fixed `.card-progress` to keep a 2px bar fallback when it isn't a direct child of `.card`.
+- ee3843e: Fixed `Confetti` firing `end` after `dispose()`, stalling without a 2D context and sizing its canvas with the scrollbar width.
+- d104e78: Fixed Confetti ignoring the trigger's `data-bs-*` options when `data-bs-target` points elsewhere.
+- 29818fc: Fixed `Manipulator.setDataAttribute()` writing `data-tblr-*` attributes instead of `data-bs-*`.
+- 9fc77b9: Fixed `Datepicker` popup snapping back to the input on resize and an initial `value` not being formatted.
+- e2da442: Fixed the OTP input ignoring `groups` for its length when neither `length` nor `maxlength` is set.
+- 01857d2: Fixed `Sparkline` wiping author content when empty or disposed, keeping stale tween attributes and skipping single-value lines.
+- e3da90e: Fixed InputMask dropping options other than `mask` and `lazy`, rejecting non-string masks and a bare `data-mask-visible`.
+- e3da90e: Fixed Bootstrap components rejecting a jQuery collection passed as the element, `container`, `parent` or `target`.
+- e3da90e: Fixed tooltip, popover, dropdown, toast and tab auto-init stopping the bundle on one bad element and ignoring `data-tblr-toggle`.
+- e3da90e: Fixed OTP input firing `complete` on every edit of a full value, events on no-op keys, invalid `length` and `type="email"` fields.
+- 3d10e24: Fixed the Delete key in `.otp` jumping to the last slot; it now removes the character under the caret and keeps it in place.
+- dee65f2: Fixed `OtpInput` reusing a stale tap position, overwriting only one slot of a selection and breaking IME composition.
+- 4b02b6a: Fixed `new Tooltip()`, `new Popover()` and `new Dropdown()` on auto-initialised elements ignoring options and doubling listeners.
+- e3da90e: Fixed Clipboard `target`, Strength `input` and Datepicker `positionElement` selectors failing on ids like `#user:1`.
+- e3da90e: Fixed sidebar toggles not syncing when `tabler.js` loads after `DOMContentLoaded` and errors on synthetic clicks.
+- e3da90e: Fixed a partial `messages` or `weights` config on the Strength meter dropping the default entries.
+- f7c3956: Fixed the strength meter rating a confirm-password field after it instead of the password field before it.
+- e3da90e: Fixed SwitchIcon throwing and staying in the loading state when a `wait()` promise settles after `dispose()`.
+- e3da90e: Fixed the theme switcher and sidebar toggle failing when `localStorage` is blocked, and ignored unsafe `?theme=` URL values.
+- e3da90e: Fixed `data-bs-delay` on tooltips and popovers being overridden by the default delay.
+
+## 1.6.0
+
+### Minor Changes
+
+- a13ebc3: Added `Autosize` component to `tabler.js`, with `update()` and `dispose()` methods.
+- 038000f: Added the `--tblr-btn-input-*` control scale on `:root` (padding, font size, line height, radius, min height per size).
+- 0e2faa0: Added a `Clipboard` copy button built on the browser API; `dist/libs/clipboard` is deprecated.
+- e63fe34: Added a `Confetti` component with `data-bs-toggle="confetti"`, a demo page and docs.
+- 118380d: Added `Datepicker` plugin built on Vanilla Calendar Pro with a `datepicker` preview page; Litepicker is deprecated.
+- 0905918: Updated the default gray scale (`$gray-50`…`$gray-950`) to `neutral`; `data-bs-theme-base="gray"` keeps the 1.5 look.
+- 2b44251: Added the `.flag-country-yt` flag for Mayotte.
+- 744a09c: Updated the focus indicator from a `box-shadow` to an `outline`; the `$*-focus-box-shadow` variables and tokens are deprecated.
+- c1373d7: Added `--tblr-hover-bg` variable and used it for the hover background of buttons, nav links, dropdown items and list groups.
+- be30919: Updated `.legend` into a legend item with `.legend-dot`, `.legend-value`, `.legend-off` and `.legend-list`, plus a `Legend` component.
+- a984752: Added `.legend-lg`, `.legend-unit` and `.legend-list-divided` for large legend items with a big value and a unit.
+- c1786b5: Added `dialog::backdrop` styling so a native `<dialog>` uses the same backdrop as modals.
+- 7e7b2ce: Added `.navbar-floating` and the `data-bs-navbar-style="floating"` theme setting for a navbar and sidebar with a `0.5rem` gap.
+- 7e7b2ce: Added `.offcanvas-floating` and the `data-bs-offcanvas-style="floating"` theme setting for an offcanvas with a `0.5rem` gap.
+- 0fe02b3: Updated color mixing to `color-mix(in oklab)`; the `--tblr-*-rgb` variables are deprecated and stay until 2.0.
+- a744b84: Added the `OtpInput` component with grouped slots, masking, and validation states.
+- a984752: Added `.page-section-title` and `.page-section-description` classes for section headings inside the page body.
+- 107e493: Updated the palette to `oklch()` and masked the check, switch, toggler and carousel icons; `tabler` JS namespace is deprecated.
+- a9efcc2: Added the Signal component (`.signal`): stepped bars that show a level such as priority, with a `Signal.astro` wrapper.
+- bd60d5f: Added SortableJS drag styles; set `forceFallback` to `true` on a `data-sortable` list to drag a styled, tilted copy.
+- 5d5be36: Added `Sparkline` component: inline SVG line, bar and circle charts from `data-bs-values`, with size classes and signed bars.
+- 9669c0a: Added a `Strength` password meter with a segmented bar, configurable scoring and `change.bs.strength`.
+- 0776b88: Added a `switch-icon-loading` state and a cancelable `toggle.bs.switch-icon` event with `event.wait(promise)` for async toggles.
+- bd5c010: Added `SwitchIcon`, `CountUp`, `InputMask` and `Sortable` components to `tabler.js`.
+
+### Patch Changes
+
+- da79879: Updated `.accordion-button` line height to `1.25rem` via the `--tblr-accordion-btn-line-height` variable.
+- b295d84: Fixed `.accordion-button-toggle-plus` with sprite icons by rotating the plus into a close icon instead of hiding a path.
+- 72a95d8: Fixed `.alert` layout so headings, descriptions, lists and buttons align and stack correctly.
+- 62408b8: Added a dependency-free `Autosize` component that fires `resized.bs.autosize`; `dist/libs/autosize` is deprecated.
+- 3b8bf55: Updated the button, list group, `bg-pattern-*` and color utility styles to cut 72 kB from `tabler.min.css`.
+- 58e03a9: Fixed `CountUp` rejecting numbers and booleans written as strings in `data-countup`, which countUp.js accepted.
+- ea10f0e: Added a dependency-free `CountUp` component that respects `prefers-reduced-motion`; `dist/libs/countup.js` is deprecated.
+- 58e03a9: Updated `theme-color-lighter()`, `url-svg()`, `varify()` and five more Sass helpers to deprecated; they warn when used.
+- 18a8a49: Fixed `.dropdown-menu-arrow` border rendering on Firefox by trimming the clipped edges.
+- 58e03a9: Added `$enable-deprecated`; set it to `false` to leave the deprecated aliases and `--tblr-*-rgb` variables out of the CSS.
+- f778fcf: Removed the `js/tests` and `scss/tests` folders from the published `@tabler/core` package.
+- 7bfeb12: Fixed `.alert-link` changing color on hover.
+- cac3179: Fixed the ApexCharts tooltip arrow staying white in Safari by painting `.apexcharts-tooltip-arrow` directly.
+- 7bfeb12: Fixed `.card-options` being taken out of the `.card-header` flow by `position: absolute`.
+- 79796ab: Fixed `.card-progress` to overlay the card like `.card-status`, so its rounded corners match the card's radius exactly.
+- db903c3: Fixed `.card-status-*` strip corners not matching the card's `border-radius`.
+- 7bfeb12: Fixed `Datepicker` reopening on a second trigger click, its `show` and `hide` events, and its color scheme on light pages.
+- 7bfeb12: Fixed `--tblr-focus-ring-width` and `--tblr-focus-ring-color` overrides having no effect when set on a component.
+- ce52364: Fixed the default browser border and padding on `.form-help` when it is a `<button>`.
+- 7bfeb12: Fixed the `.form-switch` knob not moving in RTL and its size in `.form-switch-lg`.
+- 7bfeb12: Fixed `tabler.js` stopping on page load when one element has an invalid `data-*` config; the error is logged instead.
+- 67a3795: Fixed `.input-group-flat` so `.input-group-text` follows the `.is-valid` and `.is-invalid` border and focus colors.
+- 531529a: Fixed jQuery `.on()` listeners not receiving Bootstrap events like `show.bs.dropdown` in all components.
+- 127c56b: Fixed the empty gutter to the right of the navbar on non-scrolling pages by dropping `scrollbar-gutter: stable` from `html`.
+- 7e7b2ce: Fixed the menu row of the two-row navbar staying light with `data-bs-navbar-theme` set to `dark` or `primary`.
+- 7bfeb12: Fixed missing `IMaskInstance` and `SortableInstance` in `dist/types`; `vanilla-calendar-pro` is an optional peer dependency.
+- 64dd529: Fixed the `.form-selectgroup-label` icon-only margin applying to icons nested deeper inside the label.
+- 9268348: Fixed `.stretched-link` on a `.btn` so the link covers its whole container instead of only the button.
+- 61b492e: Fixed `.table-striped` and `.table-striped-columns` repainting rows and cells that set a `.bg-*`, `.table-*` or inline background.
+- fa70c03: Fixed missing border between `.card-table` and `.card-footer` when wrapped in `.table-responsive`.
+- a9efcc2: Fixed Tom Select growing taller on focus when the selected item has an indicator (avatar, flag, badge).
+- c99a436: Fixed `.is-valid` and `.is-invalid` border colors and focus ring on Tom Select `.form-select` fields.
+- 57e213b: Updated `.form-hint` to Bootstrap's `.form-text`, with `.form-hint` kept as a deprecated alias.
+- cc7afaf: Fixed a disabled off `.form-switch` looking the same as an enabled one by filling its track and darkening the knob.
+- 03985e3: Fixed text badges in navbar `.nav-link` overlapping the title and causing horizontal scroll in the stacked menu.
+- 0460291: Updated the `.navbar-vertical` styles to be generated once instead of per breakpoint, cutting 36 kB from `tabler.min.css`.
+- 2b44251: Updated the flag, payment and social SVGs in `dist/img` to be minified with svgo, and copied only the images the CSS uses.
+- 41e2dc7: Updated `pre` font size to 13px with a new `$pre-font-size` variable, and `$markdown-pre-font-size` for `.markdown`.
+- 2b99ed5: Fixed invisible text selection inside `pre` blocks in light mode.
+- c1786b5: Added `overscroll-behavior: contain` to `.modal`, `.modal-body`, `.offcanvas-body` and `.dropdown-menu-scrollable`.
+- 3e60b18: Fixed `.navbar-expand`, `.btn-link:hover`, `--*-darken`, `.ribbon` fold colors, `.avatar-brand` z-index and dark mode literals.
+- 1ffbeec: Updated the Bootstrap component port to strict TypeScript with typed `ComponentConfig` types and added `eventActionOnPlugin`.
+- 3e60b18: Fixed light theme islands losing `data-bs-theme-primary` and radius, and added `.theme-dark` to the dark mode selectors.
+- 8db40cd: Fixed Tom Select controls being shorter than `.form-control` by using Tabler input metrics in all sizes.
+
 ## 1.5.1
 
 ### Patch Changes

@@ -39,9 +39,8 @@ describe('Collapse', () => {
 
       const collapseEl = fixtureEl.querySelector('div.my-collapse')!
       const collapseBySelector = new Collapse('div.my-collapse')
-      const collapseByElement = new Collapse(collapseEl)
-
       expect(collapseBySelector._element).toBe(collapseEl)
+      const collapseByElement = new Collapse(collapseEl)
       expect(collapseByElement._element).toBe(collapseEl)
     })
 

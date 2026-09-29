@@ -5,12 +5,12 @@
  * --------------------------------------------------------------------------
  */
 
-import type { Calendar, DateAny, DateMode, DatesArr, MonthsCount, Options, PositionToInput, Range, WeekDayID } from 'vanilla-calendar-pro'
+import type { Calendar, CalendarExtension, Options, Range } from 'vanilla-calendar-pro'
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
-import { isDisabled } from './bootstrap/util/index'
+import { getElement, isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
 /**
@@ -40,10 +40,45 @@ const HIDE_DELAY = 100 // ms delay before hiding after selection
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 
-// The date, weekday, month-count and placement options are handed straight to
-// Vanilla Calendar Pro, so they use its own literal unions rather than the wider
-// `string` / `number`. That keeps a bad value a compile error here instead of a
-// silent no-op inside the calendar.
+// Vanilla Calendar Pro 3.4 moved several months, the time picker, week
+// numbers, popups and animation into extensions that must be registered when
+// the calendar is created, or its constructor throws. The library is loaded
+// as a whole on `window`, so every extension it exports is registered;
+// 3.3 exports none and gets no `extensions` option.
+const EXTENSION_NAMES = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
+
+const writtenSelections = new WeakMap<HTMLElement, { text: string; dates: string[] }>()
+
+// The public API is typed with local copies of the Vanilla Calendar Pro types.
+// `vanilla-calendar-pro` is an optional peer dependency, so the published
+// `dist/types` must not import it: a project that never loads the datepicker
+// would otherwise fail to type-check with TS2307. The unions match the
+// plugin's own, so a bad value is still a compile error. Members that need the
+// plugin's full types carry an internal JSDoc tag and are left out of
+// `dist/types` by `stripInternal` (the tag must not appear in plain comments,
+// or TypeScript strips the declaration that follows).
+type DateAny = Date | number | `${number}-${string}-${string}` | 'today'
+type DatesArr = Array<Date | number | string>
+type DateMode = 'single' | 'multiple' | 'multiple-ranged'
+type MonthsCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+type PositionToInput = 'auto' | 'left' | 'center' | 'right' | ['bottom' | 'top', 'left' | 'center' | 'right']
+type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+/**
+ * The part of a Vanilla Calendar Pro instance the `calendar` getter promises.
+ * Cast it to `Calendar` from `vanilla-calendar-pro` for the full type.
+ */
+interface CalendarInstance {
+  // Loosely typed on purpose: the plugin's context is large and version-specific.
+  context: Record<string, any>
+  init(): unknown
+  update(resetOptions?: object): unknown
+  set(options: object, resetOptions?: object): unknown
+  show(): unknown
+  hide(): unknown
+  destroy(): unknown
+}
+
 type ComponentConfig = {
   /** 'light', 'dark' or 'auto' for the popup only; null inherits from the nearest `[data-bs-theme]` */
   datepickerTheme: string | null
@@ -66,7 +101,7 @@ type ComponentConfig = {
   selectionMode: DateMode
   placement: PositionToInput
   /** pass-through for any Vanilla Calendar Pro option */
-  vcpOptions: Options
+  vcpOptions: object
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -92,8 +127,8 @@ const Default: ComponentConfig = {
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   datepickerTheme: '(null|string)',
-  dateMin: '(null|string|number|object)',
-  dateMax: '(null|string|number|object)',
+  dateMin: '(null|string|number|object|date)',
+  dateMax: '(null|string|number|object|date)',
   dateFormat: '(null|object|function)',
   displayElement: '(null|string|element|boolean)',
   displayMonthsCount: 'number',
@@ -126,6 +161,7 @@ const afterPluginTimers = (callback: () => void): void => {
 class Datepicker extends BaseComponent {
   declare _element: HTMLElement & { value: string }
   declare _config: ComponentConfig
+  /** @internal */
   _calendar: Calendar | null = null
   _isShown = false
   // The plugin opens and closes the popup on its own too (its click and focus
@@ -136,6 +172,7 @@ class Datepicker extends BaseComponent {
   _isSilent = false
   _skipPluginShow = false
   _resolveShown: (() => void) | null = null
+  _hideTimeout = 0
   _isInput = false
   _isInline = false
   _boundInput: HTMLInputElement | null = null
@@ -143,6 +180,7 @@ class Datepicker extends BaseComponent {
   _displayElement: HTMLElement | false | null = null
   _themeObserver: MutationObserver | null = null
   _onFocusIn: ((event: Event) => void) | null = null
+  _onResize = (): void => this._alignToPositionElement()
   // The plugin builds a popup lazily, so its context has no selection until
   // the first show; this mirror answers `getSelectedDates()` before that.
   _selectedDates: string[] = []
@@ -171,7 +209,7 @@ class Datepicker extends BaseComponent {
   }
 
   /** The Vanilla Calendar Pro instance, for options the component does not expose. */
-  get calendar(): Calendar | null {
+  get calendar(): CalendarInstance | null {
     return this._calendar
   }
 
@@ -243,13 +281,35 @@ class Datepicker extends BaseComponent {
   }
 
   dispose(): void {
+    window.clearTimeout(this._hideTimeout)
     this._themeObserver?.disconnect()
+    window.removeEventListener('resize', this._onResize)
 
     if (this._onFocusIn) {
       EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
     }
 
-    this._calendar?.destroy()
+    if (this._calendar) {
+      this._calendar.destroy()
+
+      // The plugin swaps the element for a clone taken at init, which has the
+      // value and listeners from back then. The live element goes back in;
+      // an inline calendar keeps the clone (its original children), so only
+      // the bound input moves back into it.
+      const clone = this._calendar.context.mainElement as HTMLElement | undefined
+      if (clone && clone !== this._element && clone.isConnected) {
+        if (this._isInput) {
+          clone.replaceWith(this._element)
+        } else if (this._boundInput) {
+          const copy = SelectorEngine.findOne(SELECTOR_BOUND_INPUT, clone)
+          if (copy) {
+            copy.replaceWith(this._boundInput)
+          } else {
+            clone.append(this._boundInput)
+          }
+        }
+      }
+    }
 
     super.dispose()
   }
@@ -260,8 +320,9 @@ class Datepicker extends BaseComponent {
   }
 
   setSelectedDates(dates: DatesArr): void {
-    this._selectedDates = dates.map(String)
-    this._calendar?.set({ selectedDates: dates })
+    this._selectedDates = dates.map((date) => this._toIsoDate(date))
+    this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+    this._writeSelection(this._selectedDates)
   }
 
   // Private
@@ -306,12 +367,11 @@ class Datepicker extends BaseComponent {
   }
 
   _updateDisplayWithSelectedDates(): void {
-    const { selectedDates } = this._config
-    if (!selectedDates || selectedDates.length === 0) {
+    if (this._selectedDates.length === 0) {
       return
     }
 
-    this._writeSelection(selectedDates)
+    this._writeSelection(this._selectedDates)
   }
 
   _writeSelection(selectedDates: string[]): void {
@@ -319,6 +379,7 @@ class Datepicker extends BaseComponent {
 
     if (this._isInput) {
       this._element.value = formattedDate
+      writtenSelections.set(this._element, { text: formattedDate, dates: [...selectedDates] })
     }
 
     if (this._boundInput) {
@@ -334,7 +395,7 @@ class Datepicker extends BaseComponent {
     let { positionElement } = this._config
 
     if (typeof positionElement === 'string') {
-      positionElement = SelectorEngine.findOne(positionElement)
+      positionElement = getElement(positionElement)
     }
 
     // Use the input's wrapper when it sits in an icon or group wrapper
@@ -349,7 +410,7 @@ class Datepicker extends BaseComponent {
     const { displayElement } = this._config
 
     if (typeof displayElement === 'string') {
-      return SelectorEngine.findOne(displayElement)
+      return getElement(displayElement)
     }
 
     // For buttons/non-inputs (not inline), look for a display child
@@ -480,6 +541,8 @@ class Datepicker extends BaseComponent {
     this._isShown = true
     this._syncThemeAttribute(calendar.context.mainElement)
     this._alignToPositionElement()
+    window.removeEventListener('resize', this._onResize)
+    window.addEventListener('resize', this._onResize)
 
     if (!wasShown) {
       EventHandler.trigger(this._element, EVENT_SHOWN)
@@ -502,16 +565,39 @@ class Datepicker extends BaseComponent {
     }
 
     this._isShown = false
+    window.removeEventListener('resize', this._onResize)
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
+  // The extensions the loaded library exports, after the ones the caller
+  // registered in `vcpOptions` themselves.
+  /** @internal */
+  _calendarExtensions(own: readonly CalendarExtension[] = []): CalendarExtension[] {
+    const library = window.VanillaCalendarPro as Record<string, unknown> | undefined
+    const extensions = [...own]
+
+    for (const name of EXTENSION_NAMES) {
+      const extension = library?.[name] as CalendarExtension | undefined
+      if (extension && typeof extension === 'object' && !extensions.includes(extension)) {
+        extensions.push(extension)
+      }
+    }
+
+    return extensions
+  }
+
+  /** @internal */
   _buildCalendarOptions(): Options {
     // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
     const vcpTheme = !theme || theme === 'auto' ? 'system' : theme
 
+    const vcpOptions = this._config.vcpOptions as Options
+    const extensions = this._calendarExtensions(vcpOptions.extensions)
+
     const calendarOptions: Options = {
-      ...this._config.vcpOptions,
+      ...vcpOptions,
+      ...(extensions.length > 0 ? { extensions } : {}),
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
       firstWeekday: this._config.firstWeekday,
@@ -540,23 +626,24 @@ class Datepicker extends BaseComponent {
     }
 
     if (this._config.dateMin) {
-      calendarOptions.dateMin = this._config.dateMin
+      calendarOptions.dateMin = this._config.dateMin as Options['dateMin']
     }
 
     if (this._config.dateMax) {
-      calendarOptions.dateMax = this._config.dateMax
+      calendarOptions.dateMax = this._config.dateMax as Options['dateMax']
     }
 
     return calendarOptions
   }
 
+  /** @internal */
   _handleDateClick(self: Calendar, event: MouseEvent): void {
     const selectedDates = [...self.context.selectedDates]
     this._selectedDates = selectedDates
 
-    if (selectedDates.length > 0) {
-      this._writeSelection(selectedDates)
-    }
+    // Written even when empty: clicking the picked day again deselects it, and
+    // the field must not keep submitting the old date.
+    this._writeSelection(selectedDates)
 
     const args: ChangeEventArgs = { dates: selectedDates, event }
     EventHandler.trigger(this._element, EVENT_CHANGE, args)
@@ -572,7 +659,8 @@ class Datepicker extends BaseComponent {
     const shouldHide = (this._config.selectionMode === 'single' && selectedDates.length > 0) || (this._config.selectionMode === 'multiple-ranged' && selectedDates.length >= 2)
 
     if (shouldHide) {
-      setTimeout(() => this.hide(), HIDE_DELAY)
+      window.clearTimeout(this._hideTimeout)
+      this._hideTimeout = window.setTimeout(() => this.hide(), HIDE_DELAY)
     }
   }
 
@@ -620,6 +708,13 @@ class Datepicker extends BaseComponent {
       return
     }
 
+    const written = writtenSelections.get(this._element)
+    if (written && written.text.trim() === value) {
+      this._selectedDates = [...written.dates]
+      this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+      return
+    }
+
     // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
     // UTC midnight and land on the previous day west of Greenwich.
     const date = DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
@@ -627,11 +722,36 @@ class Datepicker extends BaseComponent {
       return
     }
 
+    this._selectedDates = [this._toIsoDate(date)]
+    // The calendar opens on the month of the value, not on today.
+    this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+  }
+
+  _toIsoDate(value: DateAny | string): string {
+    if (typeof value === 'string' && DATE_PATTERN.test(value)) {
+      return value
+    }
+
+    const date = value instanceof Date ? value : typeof value === 'string' && DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
+    if (Number.isNaN(date.getTime())) {
+      return String(value)
+    }
+
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
-    this._selectedDates = [`${year}-${month}-${day}`]
-    this._calendar?.set({ selectedDates: this._selectedDates })
+    return `${year}-${month}-${day}`
+  }
+
+  /** @internal */
+  _monthOf(value: string | undefined): Pick<Options, 'selectedMonth' | 'selectedYear'> {
+    if (!value || !DATE_PATTERN.test(value)) {
+      return {}
+    }
+
+    const date = this._parseDate(value)
+    // `getMonth()` is always 0-11, which TypeScript cannot narrow on its own
+    return { selectedMonth: date.getMonth() as Range<12>, selectedYear: date.getFullYear() }
   }
 }
 

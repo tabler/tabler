@@ -48,6 +48,9 @@ const SELECTOR_INPUT = 'input'
 // Keeps the active-slot highlight in sync with the caret as it moves without typing
 const SYNC_EVENTS = ['blur', 'keyup', 'select']
 
+// A touch focuses the input after `pointerup`, so the tap is only settled by `click`
+const POINTER_END_EVENTS = ['click', 'pointercancel']
+
 const MASK_CHARACTER = '•'
 
 // Per-type input mode, validation pattern, and a filter that strips disallowed characters
@@ -56,6 +59,9 @@ const TYPES: Record<OtpInputType, { inputmode: string; pattern: string; filter: 
   alphanumeric: { inputmode: 'text', pattern: '[A-Za-z0-9]*', filter: /[^A-Za-z0-9]/g },
   alpha: { inputmode: 'text', pattern: '[A-Za-z]*', filter: /[^A-Za-z]/g },
 }
+
+// Upper bound for the slot count, whatever the config asks for.
+const MAX_LENGTH = 32
 
 const Default: ComponentConfig = {
   groups: null,
@@ -87,17 +93,38 @@ class OtpInput extends BaseComponent {
   _input!: HTMLInputElement
   _type!: (typeof TYPES)[OtpInputType]
   _length = 0
+  _wasComplete = false
   _slots: HTMLElement[] = []
   _slotsContainer: HTMLElement | null = null
   // Tracks a tap so focus (fired natively by the browser) can respect the
   // clicked slot instead of jumping to the first empty one
   _pointerActive = false
   _pointerIndex = 0
+  _composedValue: string | null = null
 
-  _onInput = (): void => this._handleInput()
+  _onInput = (event: Event): void => {
+    if ((event as InputEvent).isComposing) {
+      return
+    }
+
+    const composed = this._composedValue
+    this._composedValue = null
+    if (composed !== null && composed === this._input.value) {
+      return
+    }
+
+    this._handleInput()
+  }
+  _onCompositionEnd = (): void => {
+    this._handleInput()
+    this._composedValue = this._input.value
+  }
   _onBeforeInput = (event: Event): void => this._handleBeforeInput(event as InputEvent)
   _onFocus = (): void => this._handleFocus()
   _onPointerDown = (event: Event): void => this._handlePointerDown(event as PointerEvent)
+  _onPointerEnd = (): void => {
+    this._pointerActive = false
+  }
   _onSync = (): void => this._render()
   _onSelectionChange = (): void => {
     if (document.activeElement === this._input) {
@@ -125,6 +152,7 @@ class OtpInput extends BaseComponent {
     this._renderSlots()
     this._addEventListeners()
     this._render()
+    this._wasComplete = this._input.value.length === this._length
   }
 
   // Getters
@@ -158,6 +186,7 @@ class OtpInput extends BaseComponent {
   }
 
   focus(): void {
+    this._pointerActive = false
     this._input.focus()
     this._selectSlot(this._firstEmptyIndex())
     this._render()
@@ -173,6 +202,10 @@ class OtpInput extends BaseComponent {
     this._input.removeEventListener('beforeinput', this._onBeforeInput)
     this._input.removeEventListener('focus', this._onFocus)
     this._input.removeEventListener('pointerdown', this._onPointerDown)
+    this._input.removeEventListener('compositionend', this._onCompositionEnd)
+    for (const type of POINTER_END_EVENTS) {
+      this._input.removeEventListener(type, this._onPointerEnd)
+    }
     for (const type of SYNC_EVENTS) {
       this._input.removeEventListener(type, this._onSync)
     }
@@ -186,12 +219,22 @@ class OtpInput extends BaseComponent {
 
   // Private
   _resolveLength(): number {
-    if (this._config.length) {
-      return this._config.length
+    const candidates: unknown[] = [this._config.length, Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)]
+
+    const { groups } = this._config
+    if (Array.isArray(groups) && groups.length > 0) {
+      candidates.push(groups.reduce<number>((sum, group) => sum + Number(group), 0))
     }
 
-    const maxLength = Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)
-    return Number.isNaN(maxLength) || maxLength < 1 ? 6 : maxLength
+    // The first usable value wins; a negative, fractional, or huge length
+    // would render no slots or flood the DOM.
+    for (const candidate of candidates) {
+      if (typeof candidate === 'number' && Number.isInteger(candidate) && candidate > 0) {
+        return Math.min(candidate, MAX_LENGTH)
+      }
+    }
+
+    return 6
   }
 
   _setupInput(): void {
@@ -199,7 +242,8 @@ class OtpInput extends BaseComponent {
 
     // A single text field backs the whole control so screen readers, password
     // managers, and SMS autofill treat it like any other input.
-    if (input.type === 'number' || input.type === 'password') {
+    // Only text-like types support the selection API the slots rely on.
+    if (input.type !== 'text' && input.type !== 'tel') {
       input.type = 'text'
     }
 
@@ -255,6 +299,11 @@ class OtpInput extends BaseComponent {
     this._input.addEventListener('beforeinput', this._onBeforeInput)
     this._input.addEventListener('focus', this._onFocus)
     this._input.addEventListener('pointerdown', this._onPointerDown)
+    this._input.addEventListener('compositionend', this._onCompositionEnd)
+    for (const type of POINTER_END_EVENTS) {
+      this._input.addEventListener(type, this._onPointerEnd)
+    }
+
     document.addEventListener('selectionchange', this._onSelectionChange)
 
     for (const type of SYNC_EVENTS) {
@@ -292,9 +341,10 @@ class OtpInput extends BaseComponent {
     this._afterValueChange()
   }
 
-  // Intercepts single-character typing and backspace so each slot is
+  // Intercepts single-character typing, Backspace and Delete so each slot is
   // overwritten in place rather than inserting and shifting the value.
-  // Anything else (paste, autofill, IME) falls through to `_handleInput`.
+  // Anything else (paste, autofill) falls through to `_handleInput`; IME
+  // composition is sanitised once on `compositionend`.
   _handleBeforeInput(event: InputEvent): void {
     const { inputType, data } = event
 
@@ -307,8 +357,9 @@ class OtpInput extends BaseComponent {
       }
 
       const index = Math.min(this._input.selectionStart ?? 0, this._length - 1)
+      const end = Math.max(this._input.selectionEnd ?? index, index + 1)
       const chars = [...this._input.value]
-      chars[index] = char
+      chars.splice(index, end - index, char)
       this._input.value = chars.join('').slice(0, this._length)
 
       this._selectSlot(index + 1)
@@ -318,6 +369,8 @@ class OtpInput extends BaseComponent {
 
     if (inputType === 'deleteContentBackward') {
       event.preventDefault()
+
+      const before = this._input.value
 
       const start = this._input.selectionStart ?? 0
       const end = this._input.selectionEnd ?? start
@@ -333,7 +386,29 @@ class OtpInput extends BaseComponent {
         this._selectSlot(start - 1)
       }
 
-      this._afterValueChange()
+      this._afterValueChange(before)
+      return
+    }
+
+    if (inputType === 'deleteContentForward') {
+      event.preventDefault()
+
+      const before = this._input.value
+
+      const start = this._input.selectionStart ?? 0
+      const end = this._input.selectionEnd ?? start
+      const chars = [...this._input.value]
+
+      if (end > start) {
+        chars.splice(start, end - start)
+        this._input.value = chars.join('')
+      } else if (start < chars.length) {
+        chars.splice(start, 1)
+        this._input.value = chars.join('')
+      }
+
+      this._selectSlot(start)
+      this._afterValueChange(before)
     }
   }
 
@@ -378,8 +453,15 @@ class OtpInput extends BaseComponent {
     return null
   }
 
-  _afterValueChange(): void {
+  // `before` is the value ahead of the edit: a Backspace in the first slot or
+  // a Delete past the last one changes nothing and fires no event.
+  _afterValueChange(before?: string): void {
     this._render()
+
+    if (before !== undefined && before === this._input.value) {
+      return
+    }
+
     EventHandler.trigger(this._element, EVENT_INPUT, { value: this._input.value })
     this._checkComplete()
   }
@@ -413,11 +495,16 @@ class OtpInput extends BaseComponent {
     }
   }
 
+  // Fires once when the value becomes full, not on every edit of a full value.
   _checkComplete(): void {
     const { value } = this._input
-    if (value.length === this._length) {
+    const complete = value.length === this._length
+
+    if (complete && !this._wasComplete) {
       EventHandler.trigger(this._element, EVENT_COMPLETE, { value })
     }
+
+    this._wasComplete = complete
   }
 }
 

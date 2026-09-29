@@ -100,6 +100,51 @@ describe('Confetti', () => {
       expect(canvas()).toBeNull()
       expect(end).toHaveBeenCalledTimes(1)
     })
+
+    it('should end at once without a canvas when there is no 2D context', () => {
+      fixtureEl.innerHTML = '<button type="button"></button>'
+      reduceMotion(false)
+      vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
+
+      const end = vi.fn()
+      button().addEventListener('end.bs.confetti', end)
+      new Confetti(button(), QUICK).burst()
+
+      expect(canvas()).toBeNull()
+      expect(end).toHaveBeenCalledTimes(1)
+    })
+
+    it('should size the backing store to the viewport without the scrollbar', () => {
+      fixtureEl.innerHTML = '<button type="button"></button>'
+      reduceMotion(false)
+      document.documentElement.style.overflowY = 'scroll'
+
+      try {
+        new Confetti(button(), QUICK).burst()
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        expect(canvas()!.width).toBe(document.documentElement.clientWidth * dpr)
+      } finally {
+        document.documentElement.style.overflowY = ''
+      }
+    })
+  })
+
+  describe('dispose', () => {
+    it('should not fire end once the instance is disposed', async () => {
+      fixtureEl.innerHTML = '<button type="button"></button>'
+      reduceMotion(false)
+
+      const end = vi.fn()
+      button().addEventListener('end.bs.confetti', end)
+
+      const instance = new Confetti(button(), QUICK)
+      instance.burst()
+      instance.dispose()
+
+      await vi.waitFor(() => expect(canvas()).toBeNull(), { timeout: 3000 })
+      expect(end).not.toHaveBeenCalled()
+    })
   })
 
   describe('stop', () => {
@@ -169,6 +214,33 @@ describe('Confetti', () => {
       expect(event.defaultPrevented).toBe(true)
       expect(start).toHaveBeenCalledTimes(1)
       expect(Confetti.getInstance(fixtureEl.querySelector('a')!)).toBeNull()
+    })
+
+    it('should read options from the trigger even when data-bs-target points elsewhere', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5" data-bs-colors="#f00"></button><div id="order"></div>'
+      reduceMotion(true)
+
+      button().click()
+
+      const instance = Confetti.getInstance(fixtureEl.querySelector('#order')!) as Confetti
+      expect(instance).not.toBeNull()
+      expect(instance._config.count).toBe(5)
+      expect(instance._config.colors).toEqual(['#f00'])
+    })
+
+    it("should apply each trigger's own options when several share a target", () => {
+      fixtureEl.innerHTML = '<button type="button" id="small" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="5"></button><button type="button" id="big" data-bs-toggle="confetti" data-bs-target="#order" data-bs-count="600"></button><div id="order"></div>'
+      reduceMotion(true)
+      const target = fixtureEl.querySelector('#order')!
+
+      fixtureEl.querySelector<HTMLElement>('#small')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(5)
+
+      fixtureEl.querySelector<HTMLElement>('#big')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(600)
+
+      fixtureEl.querySelector<HTMLElement>('#small')!.click()
+      expect((Confetti.getInstance(target) as Confetti)._config.count).toBe(5)
     })
 
     it('should ignore a disabled trigger', () => {

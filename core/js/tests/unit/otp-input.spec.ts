@@ -75,6 +75,20 @@ describe('OtpInput', () => {
       expect(input().getAttribute('maxlength')).toBe('8')
     })
 
+    it('should default the length to the sum of groups when length is not set', () => {
+      otp().setAttribute('data-bs-groups', '[4,4]')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(8)
+      expect(input().getAttribute('maxlength')).toBe('8')
+    })
+
+    it('should let the native maxlength override the sum of groups', () => {
+      input().setAttribute('maxlength', '6')
+      otp().setAttribute('data-bs-groups', '[3]')
+      new OtpInput(otp())
+      expect(slots()).toHaveLength(6)
+    })
+
     it('should set inputmode and pattern from the type option', () => {
       otp().setAttribute('data-bs-type', 'alphanumeric')
       new OtpInput(otp())
@@ -210,6 +224,33 @@ describe('OtpInput', () => {
       expect(input().value).toBe('')
     })
 
+    it('should clear a selected slot on delete without shifting the caret', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().setSelectionRange(3, 4)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(input().value).toBe('12356')
+      expect(input().selectionStart).toBe(3)
+    })
+
+    it('should delete the next character on delete with a collapsed caret', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123')
+      input().setSelectionRange(1, 1)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(input().value).toBe('13')
+      expect(input().selectionStart).toBe(1)
+    })
+
+    it('should do nothing on delete at the end of the value', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123')
+      input().setSelectionRange(3, 3)
+      const event = beforeInput(input(), { inputType: 'deleteContentForward' })
+      expect(event.defaultPrevented).toBe(true)
+      expect(input().value).toBe('123')
+    })
+
     it('should select the first empty slot on keyboard focus', () => {
       const instance = new OtpInput(otp())
       instance.setValue('12')
@@ -337,6 +378,104 @@ describe('OtpInput', () => {
 
       const event = beforeInput(input(), { inputType: 'insertText', data: '1' })
       expect(event.defaultPrevented).toBe(false)
+    })
+  })
+
+  describe('audit fixes', () => {
+    it('fires complete once when the value becomes full', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('complete.bs.otpInput', spy)
+
+      typeInto(input(), '123456')
+      input().setSelectionRange(5, 6)
+      beforeInput(input(), { inputType: 'insertText', data: '9' })
+
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      input().setSelectionRange(5, 6)
+      beforeInput(input(), { inputType: 'deleteContentBackward' })
+      input().setSelectionRange(5, 5)
+      beforeInput(input(), { inputType: 'insertText', data: '7' })
+
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it('fires no input event for a Delete past the end or a Backspace at the start', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('input.bs.otpInput', spy)
+      typeInto(input(), '12')
+      spy.mockClear()
+
+      input().setSelectionRange(2, 2)
+      beforeInput(input(), { inputType: 'deleteContentForward' })
+      input().setSelectionRange(0, 0)
+      beforeInput(input(), { inputType: 'deleteContentBackward' })
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('clamps an unusable length to a sane slot count', () => {
+      otp().setAttribute('data-bs-length', '-3')
+      new OtpInput(otp())
+      expect(fixtureEl.querySelectorAll('.otp-slot').length).toBe(6)
+
+      fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp" data-bs-length="1000000"><input type="text" /></div>'
+      new OtpInput(otp())
+      expect(fixtureEl.querySelectorAll('.otp-slot').length).toBe(32)
+    })
+
+    it('forgets a tap that never focused the input', () => {
+      const instance = new OtpInput(otp())
+      layoutSlotsHorizontally(otp())
+      instance.setValue('123')
+      pointerDownOnSlot(input(), slots()[1])
+      input().dispatchEvent(new PointerEvent('pointercancel', { bubbles: true }))
+      input().focus()
+      expect(input().selectionStart).toBe(3)
+
+      input().blur()
+      pointerDownOnSlot(input(), slots()[1])
+      input().dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      input().focus()
+      expect(input().selectionStart).toBe(3)
+    })
+
+    it('replaces a multi-slot selection with the typed character', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().setSelectionRange(1, 4)
+      beforeInput(input(), { inputType: 'insertText', data: '9' })
+      expect(input().value).toBe('1956')
+      expect(input().selectionStart).toBe(2)
+    })
+
+    it('leaves the value alone during IME composition and sanitizes on compositionend', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('input.bs.otpInput', spy)
+      input().focus()
+
+      input().value = '1a'
+      input().dispatchEvent(new InputEvent('input', { bubbles: true, isComposing: true, inputType: 'insertCompositionText' }))
+      expect(input().value).toBe('1a')
+      expect(spy).not.toHaveBeenCalled()
+
+      input().dispatchEvent(new CompositionEvent('compositionend', { bubbles: true }))
+      expect(input().value).toBe('1')
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      input().dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertCompositionText' }))
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('turns an email input into a text input', () => {
+      fixtureEl.innerHTML = '<div class="otp" data-bs-toggle="otp"><input type="email" /></div>'
+      new OtpInput(otp())
+
+      expect(input().type).toBe('text')
+      expect(() => input().setSelectionRange(0, 0)).not.toThrow()
     })
   })
 })

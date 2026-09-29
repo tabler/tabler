@@ -9,7 +9,8 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import { getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
+import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 import Swipe from './util/swipe'
 
 type ComponentConfig = {
@@ -393,6 +394,25 @@ class Carousel extends BaseComponent {
 
     return order === ORDER_PREV ? DIRECTION_RIGHT : DIRECTION_LEFT
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Carousel.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config === 'number') {
+        data.to(config)
+        return
+      }
+
+      if (typeof config === 'string') {
+        if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+          throw new TypeError(`No method named "${config}"`)
+        }
+
+        data[config]()
+      }
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (this: HTMLElement, event: Event) {
@@ -430,5 +450,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
     Carousel.getOrCreateInstance(carousel)
   }
 })
+
+defineJQueryPlugin(Carousel)
 
 export default Carousel

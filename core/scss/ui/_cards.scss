@@ -152,7 +152,7 @@
 
   &:hover {
     text-decoration: none;
-    background: $active-bg;
+    background: var(--active-bg);
   }
 
   & + & {
@@ -312,6 +312,25 @@ Stacked card
 
   &:first-child {
     @include border-radius(2px 2px 0 0);
+  }
+}
+
+// `.card >` outranks the fallback above and ui/_progress.scss's later `.progress { position: relative; }`.
+.card > .card-progress {
+  --card-progress-offset: calc(-1 * var(--card-border-width));
+  position: absolute;
+  inset: var(--card-progress-offset);
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  @include border-radius(var(--card-border-radius));
+
+  &:last-child {
+    mask-image: linear-gradient(to top, #000 var(--card-progress-height), transparent var(--card-progress-height));
+  }
+
+  &:first-child {
+    mask-image: linear-gradient(to bottom, #000 var(--card-progress-height), transparent var(--card-progress-height));
   }
 }
 

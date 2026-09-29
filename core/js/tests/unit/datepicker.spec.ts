@@ -58,6 +58,28 @@ describe('Datepicker', () => {
       expect(instance._isInput).toBe(true)
     })
 
+    it('should register the extensions the library exports', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-display-months-count="2">'
+
+      const instance = new Datepicker(input())
+
+      const calendar = instance.calendar as VanillaCalendarPro.Calendar
+      expect(calendar.extensions).toContain(VanillaCalendarPro.months)
+      expect(calendar.extensions).toContain(VanillaCalendarPro.time)
+      expect(calendar.type).toBe('multiple')
+      expect(calendar.displayMonthsCount).toBe(2)
+    })
+
+    it('should keep the extensions passed in vcpOptions once', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input(), { vcpOptions: { extensions: [VanillaCalendarPro.months] } })
+
+      const extensions = (instance.calendar as VanillaCalendarPro.Calendar).extensions
+      expect(extensions.filter((extension) => extension === VanillaCalendarPro.months)).toHaveLength(1)
+      expect(extensions).toContain(VanillaCalendarPro.motion)
+    })
+
     it('should stay inert without the plugin', () => {
       delete window.VanillaCalendarPro
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
@@ -305,6 +327,161 @@ describe('Datepicker', () => {
       expect(instance._isShown).toBe(true)
       expect(instance.calendar!.context.isShowInInputMode).toBe(true)
       expect(seen).toEqual(['shown'])
+    })
+  })
+
+  describe('audit fixes', () => {
+    it('accepts a Date for dateMin and dateMax', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      expect(() => new Datepicker(input(), { dateMin: new Date(2024, 0, 1), dateMax: new Date(2024, 11, 31) })).not.toThrow()
+    })
+
+    it('keeps the live input in the DOM after dispose', () => {
+      fixtureEl.innerHTML = '<input type="text" id="picker">'
+      const original = input()
+      const instance = new Datepicker(original)
+      instance.setSelectedDates(['2024-06-20'])
+
+      instance.dispose()
+
+      expect(document.querySelector('#picker')).toBe(original)
+      expect(original.value).not.toBe('')
+    })
+
+    it('keeps a single bound input for an inline calendar after dispose', () => {
+      fixtureEl.innerHTML = '<div data-bs-toggle="datepicker" data-bs-inline="true"><input type="hidden" name="d"></div>'
+      const instance = new Datepicker(fixtureEl.firstElementChild as HTMLElement)
+      instance.setSelectedDates(['2024-06-20'])
+
+      instance.dispose()
+
+      const bound = fixtureEl.querySelectorAll('input[name="d"]')
+      expect(bound.length).toBe(1)
+      expect((bound[0] as HTMLInputElement).value).toBe('2024-06-20')
+    })
+
+    it('writes the field and opens on the month of setSelectedDates', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+
+      instance.setSelectedDates([new Date(1990, 5, 20)])
+
+      expect(instance.getSelectedDates()).toEqual(['1990-06-20'])
+      expect(input().value).not.toBe('')
+      expect(instance.calendar!.context.selectedMonth).toBe(5)
+      expect(instance.calendar!.context.selectedYear).toBe(1990)
+    })
+
+    it('opens on the month of an initial value', () => {
+      fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
+      const instance = new Datepicker(input())
+
+      expect(instance.calendar!.context.selectedMonth).toBe(5)
+      expect(instance.calendar!.context.selectedYear).toBe(1990)
+    })
+
+    it('clears the field when the picked date is deselected', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      instance.setSelectedDates(['2024-06-20'])
+      expect(input().value).not.toBe('')
+
+      instance._calendar!.context.selectedDates = []
+      instance._handleDateClick(instance._calendar!, new MouseEvent('click'))
+
+      expect(input().value).toBe('')
+    })
+
+    it('does not run the hide timer after dispose', async () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      instance._calendar!.context.selectedDates = ['2024-06-20']
+      instance._handleDateClick(instance._calendar!, new MouseEvent('click'))
+
+      instance.dispose()
+      await new Promise((resolve) => setTimeout(resolve, 150))
+    })
+  })
+
+  describe('resize and initial value', () => {
+    const groupMarkup = '<div class="input-group" style="display: flex; margin-left: 40px"><span style="width: 120px"></span><input type="text"></div>'
+
+    it('keeps the popup aligned with the wrapper after a resize', async () => {
+      fixtureEl.innerHTML = groupMarkup
+      const wrapper = fixtureEl.querySelector<HTMLElement>('.input-group')!
+      const instance = new Datepicker(input())
+      await instance.show()
+
+      window.dispatchEvent(new Event('resize'))
+
+      const expected = wrapper.getBoundingClientRect().left + window.scrollX
+      expect(instance.calendar!.context.mainElement.style.left).toBe(`${expected}px`)
+    })
+
+    it('stops aligning on resize once hidden or disposed', async () => {
+      fixtureEl.innerHTML = groupMarkup
+      const instance = new Datepicker(input())
+      const spy = vi.spyOn(instance, '_alignToPositionElement')
+      await instance.show()
+      await instance.hide()
+      spy.mockClear()
+
+      window.dispatchEvent(new Event('resize'))
+      expect(spy).not.toHaveBeenCalled()
+
+      await instance.show()
+      instance.dispose()
+      spy.mockClear()
+      window.dispatchEvent(new Event('resize'))
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('formats an initial value like a picked date', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+      const dateFormat = { year: 'numeric', month: 'long', day: 'numeric' } as const
+
+      new Datepicker(input(), { dateFormat, locale: 'en-US' })
+
+      expect(input().value).toBe('June 20, 2024')
+    })
+
+    it('writes the value, not selectedDates, when both are set', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+
+      const instance = new Datepicker(input(), { selectedDates: ['2025-01-01'], locale: 'en-US' })
+
+      expect(instance.getSelectedDates()).toEqual(['2024-06-20'])
+      expect(input().value).toBe(new Date(2024, 5, 20).toLocaleDateString('en-US'))
+    })
+
+    it('keeps a formatted value selected when the input is initialised again', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2024-06-20">'
+      new Datepicker(input(), { locale: 'pl-PL' }).dispose()
+
+      const instance = new Datepicker(input(), { locale: 'pl-PL' })
+
+      expect(input().value).toBe('20.06.2024')
+      expect(instance.getSelectedDates()).toEqual(['2024-06-20'])
+    })
+
+    it('keeps a picked range selected when the input is initialised again', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const config = { locale: 'pl-PL', selectionMode: 'multiple-ranged' } as const
+      const first = new Datepicker(input(), config)
+      first.setSelectedDates(['2024-06-10', '2024-06-18'])
+      first.dispose()
+
+      const instance = new Datepicker(input(), config)
+
+      expect(instance.getSelectedDates()).toEqual(['2024-06-10', '2024-06-18'])
+    })
+
+    it('leaves an unparsable value as it is', () => {
+      fixtureEl.innerHTML = '<input type="text" value="not a date">'
+
+      new Datepicker(input())
+
+      expect(input().value).toBe('not a date')
     })
   })
 })

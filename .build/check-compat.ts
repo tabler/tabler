@@ -20,11 +20,16 @@
 // longer breaks, so fixing one means deleting its line. `--strict` also fails
 // while any unaccepted line is left: the release runs it that way.
 //
+// The baseline names the release it was written against (`# against: 1.6.0`).
+// Once a newer release is on npm, every listed break shipped in it, so none of
+// them can break against it: the check ignores the stale list and only warns.
+// `--reset` empties the list and points it at the current release.
+//
 // Needs `core/dist`, so run it after the core build. See the `backward-compat`
 // skill for how to fix what it reports.
 //
-// Usage: tsx .build/check-compat.ts [--strict]
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+// Usage: tsx .build/check-compat.ts [--strict | --reset]
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { compileString } from 'sass'
 import { pkgName, releasedPackage } from './released-package'
@@ -32,6 +37,8 @@ import { pkgName, releasedPackage } from './released-package'
 const coreDir = 'core'
 const baselineFile = '.build/compat-baseline.txt'
 const strict = process.argv.includes('--strict')
+const reset = process.argv.includes('--reset')
+const againstPattern = /^#\s*against:\s*(\S+)\s*$/
 
 function walk(root: string, dir = root): string[] {
   if (!existsSync(dir)) return []
@@ -210,12 +217,28 @@ async function main() {
   const { dir: released, version } = await releasedPackage()
   const breaks = new Set([...cssBreaks(released, coreDir), ...sassBreaks(released, coreDir), ...sassTypeBreaks(released, coreDir), ...jsBreaks(released, coreDir), ...fileBreaks(released, coreDir)])
 
+  const lines = readFileSync(baselineFile, 'utf8').split('\n')
+  const againstIndex = lines.findIndex((line) => againstPattern.test(line))
+  if (againstIndex === -1) throw new Error(`${baselineFile} has no \`# against: <version>\` line`)
+  const against = againstPattern.exec(lines[againstIndex]!)![1]!
+
+  if (reset) {
+    writeFileSync(baselineFile, [...lines.slice(0, againstIndex), `# against: ${version}`, ''].join('\n'))
+    console.log(`${baselineFile} emptied and pointed at ${pkgName}@${version}.`)
+    return
+  }
+
+  // Written against an older release: every listed break shipped in the current one.
+  const stale = against !== version
   const baseline = new Map<string, boolean>() // key → accepted
-  for (const line of readFileSync(baselineFile, 'utf8').split('\n')) {
+  for (const line of stale ? [] : lines) {
     const [entry, comment = ''] = line.split(' # ')
     const key = entry!.trim()
     if (!key || key.startsWith('#')) continue
     baseline.set(key, comment.trim().startsWith('accepted:'))
+  }
+  if (stale) {
+    console.warn(`${baselineFile} was written against ${pkgName}@${against}, npm has ${version}: its entries no longer apply. Run \`pnpm run check:compat --reset\` and commit the file.\n`)
   }
 
   const added = [...breaks].filter((key) => !baseline.has(key)).sort()

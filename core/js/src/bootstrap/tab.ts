@@ -8,7 +8,8 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { getNextActiveElement, isDisabled } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isDisabled } from './util/index'
+import type { JQueryCollectionLike } from './types'
 
 const NAME = 'tab'
 const DATA_KEY = 'bs.tab'
@@ -245,6 +246,22 @@ class Tab extends BaseComponent {
   _getOuterElement(elem: HTMLElement): HTMLElement {
     return elem.closest(SELECTOR_OUTER) || elem
   }
+
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = Tab.getOrCreateInstance(this) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
+  }
 }
 
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
@@ -264,5 +281,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
     Tab.getOrCreateInstance(element)
   }
 })
+
+defineJQueryPlugin(Tab)
 
 export default Tab

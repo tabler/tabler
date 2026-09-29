@@ -9,75 +9,78 @@ interface Props {
   width?: number
   height?: number
   event?: string
-  /** raw JS appended inside the init callback */
-  extraJs?: string
 }
 
-const { id, class: className, clear, width = 400, height = 400, event = 'DOMContentLoaded', extraJs } = Astro.props
+const { id, class: className, clear = false, width = 400, height = 400, event = 'DOMContentLoaded' } = Astro.props
 
 const signatureClass = ['signature position-relative', className]
-
-const clearSnippet = clear
-  ? `		document.querySelector(${JSON.stringify(`#signature-${id}-clear`)}).addEventListener("click", function () {
-		  signaturePad.clear();
-		});
-`
-  : ''
-
-// extraJs is a documented escape hatch for raw JS (see Props) — not user data, so it
-// stays interpolated verbatim rather than JSON-serialized.
-const extraSnippet = extraJs
-  ? `${extraJs}
-`
-  : ''
-
-// set:html (below) is genuinely required here: extraJs is a documented raw-JS escape
-// hatch that must land *inside* the init callback body (it references canvas /
-// signaturePad), so the whole script has to be assembled as text — <script define:vars>
-// can only inject variables, not splice caller-supplied code into the function body.
-const script = `<!-- BEGIN SIGNATURE PAD -->
-<script>
-  document.addEventListener(${JSON.stringify(event)}, function () {
-    const canvas = document.getElementById(${JSON.stringify(`signature-${id}`)});
-
-    if (canvas) {
-      const signaturePad = new SignaturePad(canvas, {
-        backgroundColor: "transparent",
-		  penColor: getComputedStyle(canvas).color
-      });
-
-${clearSnippet}
-		function resizeCanvas() {
-        const ratio = Math.max(window.devicePixelRatio || 1, 1);
-
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
-        signaturePad.fromData(signaturePad.toData());
-      }
-
-		window.addEventListener("resize", resizeCanvas);
-		resizeCanvas();
-
-${extraSnippet}
-    }
-  });
-</script>
-<!-- END SIGNATURE PAD -->`
+const signatureKey = id
+const canvasId = `signature-${id}`
+const clearId = `signature-${id}-clear`
 ---
 
 <div class:list={signatureClass}>
   {
     clear && (
       <div class="position-absolute top-0 end-0 p-2">
-        <button type="button" class="btn btn-icon" id={`signature-${id}-clear`} title="Clear signature" aria-label="Clear signature" data-bs-toggle="tooltip">
+        <button type="button" class="btn btn-icon" id={clearId} title="Clear signature" aria-label="Clear signature" data-bs-toggle="tooltip">
           <Icon name="trash" />{' '}
         </button>
       </div>
     )
   }
-  <canvas id={`signature-${id}`} width={width} height={height} class="signature-canvas"></canvas>
+  <canvas id={canvasId} width={width} height={height} class="signature-canvas"></canvas>
 </div>
 <CaptureScript>
-  <Fragment set:html={script} />
+  <!-- BEGIN SIGNATURE PAD -->
+  <script is:inline define:vars={{ signatureKey, canvasId, clearId, clear, event }}>
+    window.tabler_signature ??= {}
+
+    function resizeCanvas(canvas, signaturePad) {
+      const ratio = Math.max(window.devicePixelRatio || 1, 1)
+
+      canvas.width = canvas.offsetWidth * ratio
+      canvas.height = canvas.offsetHeight * ratio
+      canvas.getContext('2d').scale(ratio, ratio)
+      signaturePad.fromData(signaturePad.toData())
+    }
+
+    function initSignature() {
+      const canvas = document.getElementById(canvasId)
+
+      if (!canvas) {
+        return
+      }
+
+      let signaturePad = window.tabler_signature[signatureKey]
+
+      if (!signaturePad) {
+        signaturePad = new SignaturePad(canvas, {
+          backgroundColor: 'transparent',
+          penColor: getComputedStyle(canvas).color,
+        })
+
+        window.tabler_signature[signatureKey] = signaturePad
+
+        if (clear) {
+          document.getElementById(clearId)?.addEventListener('click', function () {
+            signaturePad.clear()
+          })
+        }
+
+        window.addEventListener('resize', function () {
+          resizeCanvas(canvas, signaturePad)
+        })
+      }
+
+      resizeCanvas(canvas, signaturePad)
+    }
+
+    if (event === 'DOMContentLoaded') {
+      document.readyState !== 'loading' ? initSignature() : document.addEventListener('DOMContentLoaded', initSignature, { once: true })
+    } else {
+      document.addEventListener(event, initSignature)
+    }
+  </script>
+  <!-- END SIGNATURE PAD -->
 </CaptureScript>

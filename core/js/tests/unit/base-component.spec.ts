@@ -79,6 +79,16 @@ describe('BaseComponent', () => {
       const inst = new DummyClass('#nonexistent')
       expect(inst._element).toBeUndefined()
     })
+
+    it('should dispose an existing instance on the same element', () => {
+      createInstance()
+      const spy = vi.spyOn(instance, 'dispose')
+
+      const second = new DummyClass(element)
+
+      expect(spy).toHaveBeenCalledOnce()
+      expect(DummyClass.getInstance(element)).toBe(second)
+    })
   })
 
   describe('dispose', () => {
@@ -161,6 +171,15 @@ describe('BaseComponent', () => {
       expect(callback).not.toHaveBeenCalled()
       element.dispatchEvent(new Event('transitionend'))
       expect(callback).toHaveBeenCalledOnce()
+    })
+
+    it('should skip the callback when the instance is disposed before the transition ends', () => {
+      createInstance()
+      const callback = vi.fn()
+      instance._queueCallback(callback, element, true)
+      instance.dispose()
+      element.dispatchEvent(new Event('transitionend'))
+      expect(callback).not.toHaveBeenCalled()
     })
   })
 })
