@@ -46,6 +46,21 @@ describe('Toggler', () => {
       expect(togglerEl.classList.contains('bg-warning')).toBe(false)
     })
 
+    it('should toggle every class from a space separated value', () => {
+      fixtureEl.innerHTML = '<div class="bg-info" data-bs-toggle="toggler" data-bs-value="bg-warning  bg-info"></div>'
+
+      const togglerEl = fixtureEl.querySelector<HTMLElement>('[data-bs-toggle="toggler"]')!
+      const toggler = new Toggler(togglerEl)
+
+      toggler.toggle()
+      expect(togglerEl.classList.contains('bg-warning')).toBe(true)
+      expect(togglerEl.classList.contains('bg-info')).toBe(false)
+
+      toggler.toggle()
+      expect(togglerEl.classList.contains('bg-warning')).toBe(false)
+      expect(togglerEl.classList.contains('bg-info')).toBe(true)
+    })
+
     it('should toggle attribute on the element', () => {
       fixtureEl.innerHTML = '<div data-bs-toggle="toggler" data-bs-value="true" data-bs-attribute="hidden"></div>'
 
@@ -264,6 +279,7 @@ describe('Toggler', () => {
       triggerEl.click()
       expect(targetEl.classList.contains('active')).toBe(false)
     })
+
     it('should work with the data-tblr- prefix', () => {
       fixtureEl.innerHTML = ['<button data-tblr-toggle="toggler" data-tblr-target="#target-tblr"></button>', '<div id="target-tblr" data-tblr-value="active"></div>'].join('')
 
