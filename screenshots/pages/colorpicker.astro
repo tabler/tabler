@@ -1,32 +1,23 @@
 ---
-// The Colorpicker plugin added in 1.7: a label form with the color field and
-// its panel open under it, opacity slider and format select included. The
-// panel is opened here rather than left to a focus the capture tool cannot
-// make, and the fake cursor rests on the handle in the gradient.
+// The Colorpicker plugin added in 1.7, on its own: the color field with its
+// panel open under it, opacity slider and format select included. The panel
+// is opened here rather than left to a focus the capture tool cannot make,
+// and the fake cursor rests on the handle in the gradient.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
-import Card from '@ui/Card.astro'
-import CardBody from '@ui/CardBody.astro'
 import Colorpicker from '@ui/Colorpicker.astro'
-import FormGroup from '@ui/FormGroup.astro'
 ---
 
-<ScreenshotLayout title="Color picker" columns={1}>
-  <Card>
-    <CardBody>
-      <FormGroup label="Name" for="colorpicker-name">
-        <input type="text" class="form-control" id="colorpicker-name" value="Design" />
-      </FormGroup>
-      <FormGroup label="Color" for="colorpicker-color" class="mb-0">
-        <Colorpicker value="#ae3ec9cc" alpha formatToggle id="colorpicker-color" />
-      </FormGroup>
-    </CardBody>
-  </Card>
+<ScreenshotLayout title="Color picker" zoom={1.25}>
+  <Colorpicker value="#ae3ec9cc" alpha formatToggle id="colorpicker-color" ariaLabel="Label color" />
 
-  <!-- The panel hangs below the card, so the card moves up to keep the pair
-  centred in the frame and the panel clear of the logo. -->
+  <!-- The field is as wide as the panel, so the two read as one piece. The
+  panel hangs below the field, so the field moves up to keep the pair centred
+  in the frame and the panel clear of the logo. -->
   <style is:inline>
     [data-screenshot-target] {
-      margin-bottom: 23rem;
+      position: relative;
+      width: 15rem;
+      margin-bottom: 26rem;
     }
   </style>
 
@@ -35,10 +26,10 @@ import FormGroup from '@ui/FormGroup.astro'
       const input = document.getElementById('colorpicker-color')
       if (!input || !window.tabler?.Colorpicker) return
 
-      // The panel lives in the card, not in <body>: the capture hides the
-      // theme toggle after the page is ready, which moves the frame, and a
-      // panel placed against <body> would stay where the field used to be.
-      new window.tabler.Colorpicker(input, { container: input.closest('.card') }).show().then(() => {
+      // The panel lives next to the field, not in <body>: the capture hides
+      // the theme toggle after the page is ready, which moves the frame, and
+      // the picture is taken before the panel has a frame to follow the field.
+      new window.tabler.Colorpicker(input, { container: input.closest('[data-screenshot-target]') }).show().then(() => {
         const marker = document.querySelector('.colorpicker-panel .colorpicker-marker')
         if (!marker) return
 
