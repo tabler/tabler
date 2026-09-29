@@ -1,0 +1,131 @@
+@use '../../config' as *;
+
+.combobox-toggle {
+  // scss-docs-start combobox-css-vars
+  --combobox-menu-max-height: #{$combobox-menu-max-height};
+  --combobox-placeholder-color: #{$input-placeholder-color};
+  // scss-docs-end combobox-css-vars
+  text-align: start;
+  cursor: pointer;
+
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+}
+
+.combobox-has-tags {
+  padding-block: calc(#{$input-padding-y} - (#{$tag-height} - 1lh) / 2);
+
+  &.form-select-sm {
+    padding-block: calc(#{$input-padding-y-sm} - (#{$tag-height} - 1lh) / 2);
+  }
+
+  &.form-select-lg {
+    padding-block: calc(#{$input-padding-y-lg} - (#{$tag-height} - 1lh) / 2);
+  }
+}
+
+.combobox-menu {
+  z-index: $zindex-popover;
+  max-height: var(--combobox-menu-max-height, #{$combobox-menu-max-height});
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.combobox-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  pointer-events: none;
+  border: 0;
+  opacity: 0;
+}
+
+.combobox-value {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.combobox-tags {
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+}
+
+.combobox-tags-wrap {
+  flex-wrap: wrap;
+  white-space: normal;
+}
+
+.combobox-tag,
+.combobox-tag-more {
+  flex-shrink: 0;
+  max-width: 100%;
+
+  .text-truncate {
+    min-width: 0;
+  }
+}
+
+.tag.combobox-tag,
+.tag.combobox-tag-more {
+  background: var(--bg-surface-secondary);
+}
+
+.combobox-tag-more {
+  color: var(--secondary);
+}
+
+.combobox-placeholder {
+  color: var(--combobox-placeholder-color);
+}
+
+.combobox-search {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: $dropdown-padding-y $dropdown-item-padding-x;
+  background-color: var(--dropdown-bg);
+}
+
+.combobox-no-results {
+  padding: $spacer;
+  color: var(--tertiary);
+  text-align: center;
+}
+
+.dropdown-item-content {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dropdown-item-description {
+  font-size: $font-size-sm;
+  color: var(--tertiary);
+}
+
+.dropdown-item-check {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  visibility: hidden;
+
+  .selected > & {
+    visibility: visible;
+  }
+}
