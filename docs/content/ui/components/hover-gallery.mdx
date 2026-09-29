@@ -1,0 +1,91 @@
+---
+title: Hover gallery
+summary: A set of images that shows one at a time and switches as the pointer moves across it.
+description: Show several photos in the space of one with the hover gallery component - a good fit for product cards, portfolios and listings.
+related: [/ui/components/carousel, /ui/components/card]
+source: core/scss/ui/_hover-gallery.scss
+css-vars: hover-gallery
+classnames:
+  component:
+    - class: hover-gallery
+      desc: Container element with a fixed aspect ratio
+  part:
+    - class: hover-gallery-item
+      desc: Wraps one image and makes one hover column
+  modifier:
+    - class: hover-gallery-indicators
+      desc: Adds a bar for each item at the bottom edge and lights the one on display
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+A hover gallery holds several images in one box. The first image shows by default. Each item is an invisible column, and the image of the column under the pointer covers the whole gallery. It works without JavaScript.
+
+## Basic example
+
+Wrap each image in a `.hover-gallery-item` and put the items in a `.hover-gallery`. Use as many items as you need.
+
+<Example centered>
+<div class="hover-gallery rounded w-33">
+  <div class="hover-gallery-item"><img src="/static/products/product-1.jpg" alt="Product photo 1" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-2.jpg" alt="Product photo 2" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-3.jpg" alt="Product photo 3" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-4.jpg" alt="Product photo 4" /></div>
+</div>
+</Example>
+
+## Indicators
+
+Add `.hover-gallery-indicators` to show a bar for each image. The bar of the image on display is lit.
+
+<Example centered>
+<div class="hover-gallery hover-gallery-indicators rounded w-33">
+  <div class="hover-gallery-item"><img src="/static/products/product-1.jpg" alt="Product photo 1" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-2.jpg" alt="Product photo 2" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-3.jpg" alt="Product photo 3" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-4.jpg" alt="Product photo 4" /></div>
+</div>
+</Example>
+
+The bars are dark by default. On dark photos, set `--tblr-hover-gallery-indicator-color` to a light color.
+
+## Aspect ratio
+
+The gallery is a square by default and the images are cropped to fill it. Set `--tblr-hover-gallery-aspect-ratio` to change the shape.
+
+<Example centered>
+<div class="hover-gallery hover-gallery-indicators rounded w-50" style="--tblr-hover-gallery-aspect-ratio: 16 / 9">
+  <div class="hover-gallery-item"><img src="/static/products/product-5.jpg" alt="Product photo 5" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-6.jpg" alt="Product photo 6" /></div>
+  <div class="hover-gallery-item"><img src="/static/products/product-7.jpg" alt="Product photo 7" /></div>
+</div>
+</Example>
+
+## In a card
+
+Add `.card-img-top` to use the gallery in place of the card image.
+
+<Example centered>
+<div class="card w-33">
+  <div class="hover-gallery hover-gallery-indicators card-img-top">
+    <div class="hover-gallery-item"><img src="/static/products/product-5.jpg" alt="Product photo 5" /></div>
+    <div class="hover-gallery-item"><img src="/static/products/product-6.jpg" alt="Product photo 6" /></div>
+    <div class="hover-gallery-item"><img src="/static/products/product-7.jpg" alt="Product photo 7" /></div>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">Product name</h3>
+    <div class="text-secondary">$25</div>
+  </div>
+</div>
+</Example>
+
+## Touch devices
+
+On devices without hover, the gallery becomes a horizontal strip. Users swipe to see the next image, and each image snaps into place. The indicators are hidden there.
+
+## Accessibility
+
+- Give every image an `alt` text that says what this photo shows, not only the product name.
+- Keyboard users see only the first image. Do not put information in the other images that is missing elsewhere on the page.
+- When the gallery sits inside a link, the whole gallery leads to one place. Do not link single images to different pages.

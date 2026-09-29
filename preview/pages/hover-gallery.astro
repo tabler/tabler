@@ -1,0 +1,63 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import HoverGallery from '@ui/HoverGallery.astro'
+import { staticPath } from '@shared/lib/assets'
+
+const photos = (from: number, count: number) =>
+  Array.from({ length: count }, (_, index) => ({
+    src: staticPath(`products/product-${from + index}.jpg`),
+    alt: `Product photo ${index + 1}`,
+  }))
+---
+
+<DefaultLayout title="Hover gallery" pageMenu="base.hover-gallery" description="Hover galleries show one image and switch to the next ones as the pointer moves across.">
+  <DocsLink slot="page-header-actions" path="/ui/components/hover-gallery" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Wrap each image in <code>.hover-gallery-item</code>; every item is one hover column.</CardSubtitle>
+          <HoverGallery images={photos(1, 4)} class="rounded" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With indicators</CardTitle>
+          <CardSubtitle>Add <code>.hover-gallery-indicators</code> to show which image is on display.</CardSubtitle>
+          <HoverGallery images={photos(1, 4)} showIndicators class="rounded" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Aspect ratio</CardTitle>
+          <CardSubtitle>Set <code>--tblr-hover-gallery-aspect-ratio</code> to change the shape; any number of items works.</CardSubtitle>
+          <HoverGallery images={photos(1, 12)} showIndicators aspectRatio="16 / 9" class="rounded" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <HoverGallery images={photos(5, 5)} showIndicators class="card-img-top" />
+        <CardBody>
+          <CardTitle>Product card</CardTitle>
+          <CardSubtitle>Use the gallery with <code>.card-img-top</code> in place of the card image.</CardSubtitle>
+          <div class="h3 m-0">$25</div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

@@ -1,0 +1,101 @@
+@use '../config' as *;
+
+// Every item is an equal, invisible column; hovering a column shows its image over the whole gallery
+.hover-gallery {
+  // scss-docs-start hover-gallery-css-vars
+  --hover-gallery-aspect-ratio: #{$hover-gallery-aspect-ratio};
+  --hover-gallery-indicator-size: #{$hover-gallery-indicator-size};
+  --hover-gallery-indicator-gap: #{$hover-gallery-indicator-gap};
+  --hover-gallery-indicator-padding: #{$hover-gallery-indicator-padding};
+  --hover-gallery-indicator-color: #{$hover-gallery-indicator-color};
+  --hover-gallery-indicator-inactive-opacity: #{$hover-gallery-indicator-inactive-opacity};
+  // scss-docs-end hover-gallery-css-vars
+  position: relative;
+  display: flex;
+  aspect-ratio: var(--hover-gallery-aspect-ratio);
+  overflow: hidden;
+}
+
+.hover-gallery-item {
+  flex: 1;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    object-fit: cover;
+    opacity: 0;
+  }
+
+  &:first-child img,
+  &:hover img {
+    opacity: 1;
+  }
+
+  &:hover img {
+    z-index: 1;
+  }
+}
+
+// One bar per item at the bottom edge, lit for the image on display
+.hover-gallery-indicators {
+  gap: var(--hover-gallery-indicator-gap);
+  padding: var(--hover-gallery-indicator-padding);
+
+  .hover-gallery-item {
+    display: flex;
+    align-items: flex-end;
+
+    // The gap between columns must not drop the hover, so the item reaches over it
+    padding-inline: calc(var(--hover-gallery-indicator-gap) * 0.5);
+    margin-inline: calc(var(--hover-gallery-indicator-gap) * -0.5);
+
+    &::after {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      height: var(--hover-gallery-indicator-size);
+      content: '';
+      background: var(--hover-gallery-indicator-color);
+      opacity: var(--hover-gallery-indicator-inactive-opacity);
+      @include border-radius(var(--hover-gallery-indicator-size));
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+  }
+
+  &:not(:hover) .hover-gallery-item:first-child::after {
+    opacity: 1;
+  }
+}
+
+// Without hover the same markup becomes a swipeable strip
+@media (hover: none) {
+  .hover-gallery {
+    gap: 0;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .hover-gallery .hover-gallery-item {
+    flex: 0 0 100%;
+    padding: 0;
+    margin: 0;
+    scroll-snap-align: start;
+
+    img {
+      position: static;
+      opacity: 1;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
