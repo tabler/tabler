@@ -7,6 +7,7 @@ related: [/ui/forms/elements, /ui/forms/color-check, /ui/plugins/date-picker]
 source: core/scss/ui/forms/_colorpicker.scss
 css-vars: colorpicker
 sass-vars: colorpicker
+added-in: '1.7.0'
 classnames:
   component:
     - class: colorpicker
@@ -179,9 +180,51 @@ The swatch follows `.form-control-sm` and `.form-control-lg`, and the field keep
 
 Inside a modal or an offcanvas the panel is appended to that dialog instead of `<body>`, so it opens above it and stays inside its focus trap. <kbd>Escape</kbd> closes the panel first, and the dialog on the next press.
 
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#colorpicker-modal">Edit label</button>
+<div class="modal" id="colorpicker-modal" tabindex="-1" aria-labelledby="colorpicker-modal-title">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="colorpicker-modal-title">Edit label</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="colorpicker-modal-color">Color</label>
+        <div class="colorpicker">
+          <input type="text" class="form-control" id="colorpicker-modal-color" data-bs-toggle="colorpicker" value="#d63939" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+Set `data-bs-container` to a selector when the panel has to live somewhere else, for example in a wrapper with its own stacking order.
+
 ### Dark mode
 
 The panel is appended to `<body>`, outside the cascade of the field, so the plugin copies the nearest `data-bs-theme` to it and follows later changes. Set `data-bs-colorpicker-theme` to force a theme for the panel alone.
+
+### Right-to-left
+
+Nothing to set up. In a page with `dir="rtl"` the swatch moves to the other end of the field, the gradient and the sliders are mirrored, and the arrow keys follow the direction of the text.
+
+### Use the color in CSS
+
+The plugin writes the picked color to the `--tblr-colorpicker-value` custom property on the `.colorpicker` wrapper, or on the trigger when it is a button. That is what paints the swatch, and your own styles can read it too. The property is removed while the field is empty.
+
+```css
+.my-label-preview {
+  background-color: var(--tblr-colorpicker-value, transparent);
+}
+```
+
+The element has to be inside the wrapper or the button to see the value. For anything else on the page, listen to the `change.bs.colorpicker` event, as in the live preview below.
 
 ## Examples
 
@@ -202,6 +245,38 @@ Use the picker like any other form field: a label, the input, and a hint below i
   </div>
 </div>
 </Example>
+
+### Live preview
+
+Listen to `change.bs.colorpicker` on the field to use the color as it changes. Here the value becomes the primary color of the elements below.
+
+<Example column>
+<div class="colorpicker">
+  <input type="text" class="form-control" id="colorpicker-live" data-bs-toggle="colorpicker" value="#066fd1" aria-label="Primary color" />
+</div>
+<div class="d-flex flex-wrap align-items-center gap-3" id="colorpicker-live-preview">
+  <button type="button" class="btn btn-primary">Button</button>
+  <span class="badge bg-primary text-primary-fg">Badge</span>
+  <span class="status status-primary">Status</span>
+  <label class="form-check form-switch m-0">
+    <input class="form-check-input" type="checkbox" checked />
+    <span class="form-check-label">Switch</span>
+  </label>
+</div>
+</Example>
+
+```js
+const field = document.getElementById('colorpicker-live');
+const preview = document.getElementById('colorpicker-live-preview');
+
+field.addEventListener('change.bs.colorpicker', (event) => {
+  if (event.value) {
+    preview.style.setProperty('--tblr-primary', event.value);
+  } else {
+    preview.style.removeProperty('--tblr-primary');
+  }
+});
+```
 
 ## JavaScript
 
@@ -283,6 +358,19 @@ document.getElementById('my-color').addEventListener('change.bs.colorpicker', (e
 - The panel is a `role="dialog"`. <kbd>Tab</kbd> from the field moves into it, the arrow keys move the handle in the gradient (<kbd>Shift</kbd> for bigger steps), the sliders are native range inputs, and <kbd>Escape</kbd> closes the panel and returns focus to the field.
 - The panel closes on a click outside and when focus moves to something outside it, so keyboard users are never trapped.
 
+### Keyboard
+
+| Key | Where | What it does |
+| --- | --- | --- |
+| <kbd>Tab</kbd> | Field | Moves focus into the open panel. |
+| <kbd>Tab</kbd> | Last control in the panel | Closes the panel and returns focus to the field. |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | First control in the panel | Returns focus to the field and keeps the panel open. |
+| Arrow keys | Handle in the gradient | Change saturation and brightness by 1. |
+| <kbd>Shift</kbd> + arrow keys | Handle in the gradient | Change saturation and brightness by 10. |
+| Arrow keys | Hue and opacity sliders | Move the slider, as in any range input. |
+| <kbd>Enter</kbd> or <kbd>Space</kbd> | Swatch | Picks that color. |
+| <kbd>Escape</kbd> | Anywhere | Closes the panel. Inside a modal, the modal stays open. |
+
 ## Migration from Coloris
 
 Until version 1.6 the color picker was the [Coloris](https://github.com/melloware/coloris-npm) library, restyled in `tabler-vendors.css`. It still ships in `dist/libs` and keeps working, but it will be removed in 2.0. To move a field to the plugin:
@@ -291,3 +379,20 @@ Until version 1.6 the color picker was the [Coloris](https://github.com/mellowar
 - Wrap the input in `.colorpicker` and add `data-bs-toggle="colorpicker"`.
 - Move the options to `data-bs-*` attributes. `el` and `setInstance()` are gone, because every field has its own instance. `themeMode`, `rtl` and `margin` are handled by the theme and the text direction. `selectInput` has no equivalent. `format: 'mixed'` becomes `format="auto"`.
 - Replace the `coloris:pick` listener with `change.bs.colorpicker` on the field, or with the native `input` event.
+
+<script>{`
+window.addEventListener('load', function () {
+	const field = document.getElementById('colorpicker-live');
+	const preview = document.getElementById('colorpicker-live-preview');
+
+	if (!field || !preview) return;
+
+	field.addEventListener('change.bs.colorpicker', function (event) {
+		if (event.value) {
+			preview.style.setProperty('--tblr-primary', event.value);
+		} else {
+			preview.style.removeProperty('--tblr-primary');
+		}
+	});
+});
+`}</script>
