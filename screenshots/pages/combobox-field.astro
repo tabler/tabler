@@ -1,0 +1,46 @@
+---
+// A single combobox field on its own, open: a country picker with a flag next
+// to every name. The capture never clicks, so the open state is written into
+// the markup (`show` on the toggle and the menu); the menu sits right under the
+// field. Poland is already chosen; Spain is drawn in its hover state, with the fake cursor on it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import FormGroup from '@ui/FormGroup.astro'
+
+const countries: [string, string][] = [
+  ['us', 'United States'],
+  ['gb', 'United Kingdom'],
+  ['de', 'Germany'],
+  ['fr', 'France'],
+  ['pl', 'Poland'],
+  ['es', 'Spain'],
+  ['jp', 'Japan'],
+]
+const check = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
+---
+
+<ScreenshotLayout title="Combobox field" columns={1.5} zoom={1.4} cssPlugins={['flags']}>
+  <FormGroup label="Country" for="shot-country" class="mb-0">
+    <div class="position-relative" style="padding-bottom: 290px">
+      <button class="form-select combobox-toggle show" type="button" id="shot-country" data-bs-toggle="combobox" data-bs-placeholder="Pick a country">
+        <span class="combobox-value"></span>
+      </button>
+      <div class="dropdown-menu show w-100">
+        <div class="combobox-search">
+          <input type="text" class="form-control combobox-search-input" placeholder="Search…" autocomplete="off" aria-label="Search countries" />
+        </div>
+        {
+          countries.map(([code, name]) => (
+            <button class:list={['dropdown-item', 'position-relative', code === 'pl' && 'selected']} type="button" data-bs-value={code} aria-selected={code === 'pl' ? 'true' : undefined} style={code === 'es' ? 'background-color: var(--tblr-dropdown-link-hover-bg)' : undefined}>
+              <span class="dropdown-item-indicator">
+                <span class={`flag flag-xs flag-country-${code}`} />
+              </span>
+              <span class="dropdown-item-label">{name}</span>
+              <Fragment set:html={check} />
+              {code === 'es' && <span class="cursor" style="top: 60%; left: 40%" />}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </FormGroup>
+</ScreenshotLayout>

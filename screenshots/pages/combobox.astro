@@ -1,0 +1,88 @@
+---
+// Combobox in context: the "New task" form of an issue tracker, with the
+// assignee field open. The capture never clicks, so the open state is written
+// into the markup (`show` on the toggle and the menu); the menu sits right
+// under the field and covers the next one, like the real thing. The menu holds
+// avatars with a name and a role, a search field and a check on the person
+// who is already chosen. The fake cursor points at the next person.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Avatar from '@ui/Avatar.astro'
+import { personById } from '@shared/lib/people'
+
+const team = [1, 4, 2, 6].map((id) => personById(id))
+const labels = ['Bug', 'Backend', 'Urgent', 'Design', 'Docs']
+const check = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
+---
+
+<ScreenshotLayout title="Combobox" columns={2}>
+  <Card>
+    <CardBody class="p-4 pb-6">
+      <CardTitle>New task</CardTitle>
+      <CardSubtitle>Pick who works on it. Search by name, or use the arrow keys.</CardSubtitle>
+
+      <FormGroup label="Title" for="shot-task-title" class="mb-3">
+        <input type="text" id="shot-task-title" class="form-control" value="Fix the broken password reset link" readonly />
+      </FormGroup>
+
+      <div class="mb-3">
+        <label class="form-label" for="shot-task-labels">Labels</label>
+        <select class="form-select" id="shot-task-labels" multiple data-bs-toggle="combobox" data-placeholder="Add labels">
+          {
+            labels.map((label, index) => (
+              <option value={label.toLowerCase()} selected={index < 3}>
+                {label}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" id="shot-assignee-label">Assignee</label>
+        <div class="position-relative">
+          <button class="form-select combobox-toggle show" type="button" data-bs-toggle="combobox" data-bs-placeholder="Assign to…" aria-labelledby="shot-assignee-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu show w-100">
+            <div class="combobox-search">
+              <input type="text" class="form-control combobox-search-input" placeholder="Search…" autocomplete="off" aria-label="Search people" />
+            </div>
+            {
+              team.map((person, index) => (
+                <button class:list={['dropdown-item', 'position-relative', index === 0 && 'selected']} type="button" data-bs-value={String(person?.id)} aria-selected={index === 0 ? 'true' : undefined}>
+                  <span class="dropdown-item-indicator">
+                    <Avatar size="xs" person={person} />
+                  </span>
+                  <span class="dropdown-item-content">
+                    <span>{person?.full_name}</span>
+                    <small class="dropdown-item-description">{person?.job_title}</small>
+                  </span>
+                  <Fragment set:html={check} />
+                  {index === 2 && <span class="cursor" style="top: 60%; left: 50%" />}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <FormGroup label="Due date" for="shot-task-due" class="mb-3">
+        <input type="text" id="shot-task-due" class="form-control" value="Friday, October 2" readonly />
+      </FormGroup>
+
+      <FormGroup label="Estimate" for="shot-task-estimate" class="mb-5">
+        <input type="text" id="shot-task-estimate" class="form-control" value="3 days" readonly />
+      </FormGroup>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn">Cancel</button>
+        <button type="button" class="btn btn-primary">Create task</button>
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>
