@@ -5,6 +5,7 @@
   --combobox-menu-max-height: #{$combobox-menu-max-height};
   --combobox-placeholder-color: #{$input-placeholder-color};
   // scss-docs-end combobox-css-vars
+  --dropdown-item-icon-size: #{$icon-size};
   text-align: start;
   cursor: pointer;
 
@@ -29,6 +30,13 @@
   &.form-select-lg {
     padding-block: calc(#{$input-padding-y-lg} - (#{$tag-height} - 1lh) / 2);
   }
+}
+
+.combobox-toggle .dropdown-item-indicator > img,
+.combobox-menu .dropdown-item-indicator > img {
+  width: var(--dropdown-item-icon-size);
+  height: var(--dropdown-item-icon-size);
+  object-fit: contain;
 }
 
 .combobox-menu {
@@ -57,6 +65,8 @@
   gap: 0.5rem;
   align-items: center;
   min-width: 0;
+  padding: 4px;
+  margin: -4px;
   overflow: hidden;
   white-space: nowrap;
 }

@@ -312,6 +312,17 @@ describe('Combobox', () => {
       expect(menu.classList.contains('show')).toBe(false)
     })
 
+    it('should show a shortcut and a badge of the item in the toggle', () => {
+      fixtureEl.innerHTML = markup().replace('>Alpha</button>', '><span class="dropdown-item-label">Alpha</span><kbd class="ms-auto">ctrl + A</kbd><span class="badge">3</span></button>')
+      const toggle = fixtureEl.querySelector<HTMLElement>('.combobox-toggle')!
+      new Combobox(toggle)
+      item('a').click()
+
+      expect(toggle.querySelector('.combobox-value kbd')!.textContent).toBe('ctrl + A')
+      expect(toggle.querySelector('.combobox-value .badge')!.textContent).toBe('3')
+      expect(toggle.querySelector('.combobox-value .text-truncate')!.textContent).toBe('Alpha')
+    })
+
     it('should show the option markup in the toggle', () => {
       const { menu, toggle, combobox } = setupSelect()
       combobox.show()

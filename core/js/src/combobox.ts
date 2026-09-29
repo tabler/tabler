@@ -305,26 +305,14 @@ class Combobox extends BaseComponent {
 
   _createToggle(select: HTMLSelectElement): HTMLElement {
     const multiple = select.multiple
-    const toggle = document.createElement(multiple ? 'div' : 'button')
+    const toggle = document.createElement('button')
 
+    toggle.type = 'button'
     toggle.className = `${select.className} form-select combobox-toggle`
     toggle.append(Object.assign(document.createElement('span'), { className: 'combobox-value' }))
 
-    if (multiple) {
-      toggle.setAttribute('role', 'combobox')
-      toggle.tabIndex = 0
-    } else {
-      toggle.setAttribute('type', 'button')
-    }
-
     if (select.disabled) {
-      toggle.classList.add('disabled')
-      toggle.setAttribute('aria-disabled', 'true')
-      toggle.tabIndex = -1
-
-      if (!multiple) {
-        toggle.setAttribute('disabled', '')
-      }
+      toggle.disabled = true
     }
 
     const label = select.id ? document.querySelector(`label[for="${CSS.escape(select.id)}"]`) : null
@@ -638,6 +626,11 @@ class Combobox extends BaseComponent {
     }
 
     nodes.push(Object.assign(document.createElement('span'), { className: 'text-truncate', textContent: this._getItemLabel(item) }))
+
+    for (const addon of SelectorEngine.children(item, 'kbd, .badge')) {
+      nodes.push(addon.cloneNode(true))
+    }
+
     return nodes
   }
 

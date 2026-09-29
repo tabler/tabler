@@ -7,6 +7,7 @@ description: Add a customizable combobox (select replacement) with search, multi
 related: [/ui/forms/elements, /ui/components/dropdowns, /ui/forms/validation]
 source: core/scss/ui/forms/_combobox.scss
 css-vars: combobox
+css-plugins: [flags, payments]
 classnames:
   component:
     - class: combobox-toggle
@@ -300,9 +301,9 @@ Put markup in a `data-custom-properties` attribute to show an avatar, flag or ba
 <Example column overflow="visible">
 <div class="w-100">
   <select class="form-select" data-bs-toggle="combobox" data-placeholder="Assign to…">
-    <option value="1" data-custom-properties='<span class="avatar avatar-xs">JD</span>'>Jane Doe</option>
-    <option value="2" data-custom-properties='<span class="avatar avatar-xs">MS</span>'>Mark Smith</option>
-    <option value="3" data-custom-properties='<span class="avatar avatar-xs">AK</span>'>Amy Kim</option>
+    <option value="1" data-custom-properties="<span class='avatar avatar-xs'>JD</span>">Jane Doe</option>
+    <option value="2" data-custom-properties="<span class='avatar avatar-xs'>MS</span>">Mark Smith</option>
+    <option value="3" data-custom-properties="<span class='avatar avatar-xs'>AK</span>">Amy Kim</option>
   </select>
 </div>
 </Example>
@@ -332,6 +333,291 @@ tabler.Combobox.getInstance(select).refresh()
 | `onChange` | The native `change` event on the `<select>` |
 | `sync()` | `refresh()` |
 | `create`, remote `load`, other plugins | Not supported yet |
+
+## Examples
+
+Since the items are ordinary HTML, a combobox can show much more than text. On a `<select>`, put the extra markup in `data-custom-properties`. In markup mode, wrap it in `.dropdown-item-indicator`. Either way it is also shown in the toggle once the item is chosen.
+
+### Flags
+
+Use the [flags](/ui/plugins/flags) plugin for a country picker. The search field finds a country by its name.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <select class="form-select" data-bs-toggle="combobox" data-placeholder="Pick a country" data-bs-search-normalize="true">
+    <option value="us" data-custom-properties="<span class='flag flag-xs flag-country-us'></span>">United States</option>
+    <option value="gb" data-custom-properties="<span class='flag flag-xs flag-country-gb'></span>">United Kingdom</option>
+    <option value="de" data-custom-properties="<span class='flag flag-xs flag-country-de'></span>">Germany</option>
+    <option value="fr" data-custom-properties="<span class='flag flag-xs flag-country-fr'></span>">France</option>
+    <option value="pl" data-custom-properties="<span class='flag flag-xs flag-country-pl'></span>">Poland</option>
+    <option value="es" data-custom-properties="<span class='flag flag-xs flag-country-es'></span>">Spain</option>
+    <option value="it" data-custom-properties="<span class='flag flag-xs flag-country-it'></span>">Italy</option>
+    <option value="nl" data-custom-properties="<span class='flag flag-xs flag-country-nl'></span>">Netherlands</option>
+    <option value="se" data-custom-properties="<span class='flag flag-xs flag-country-se'></span>">Sweden</option>
+    <option value="jp" data-custom-properties="<span class='flag flag-xs flag-country-jp'></span>">Japan</option>
+    <option value="br" data-custom-properties="<span class='flag flag-xs flag-country-br'></span>">Brazil</option>
+    <option value="ca" data-custom-properties="<span class='flag flag-xs flag-country-ca'></span>">Canada</option>
+  </select>
+</div>
+</Example>
+
+### Payment methods
+
+Use the [payments](/payments/css) icons to pick a card or a wallet.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <select class="form-select" data-bs-toggle="combobox" data-placeholder="Payment method">
+    <option value="visa" data-custom-properties="<span class='payment payment-xs payment-provider-visa'></span>" selected>Visa</option>
+    <option value="mastercard" data-custom-properties="<span class='payment payment-xs payment-provider-mastercard'></span>">Mastercard</option>
+    <option value="americanexpress" data-custom-properties="<span class='payment payment-xs payment-provider-americanexpress'></span>">American Express</option>
+    <option value="paypal" data-custom-properties="<span class='payment payment-xs payment-provider-paypal'></span>">PayPal</option>
+    <option value="stripe" data-custom-properties="<span class='payment payment-xs payment-provider-stripe'></span>">Stripe</option>
+    <option value="applepay" data-custom-properties="<span class='payment payment-xs payment-provider-applepay'></span>">Apple Pay</option>
+  </select>
+</div>
+</Example>
+
+### Keyboard shortcuts
+
+Wrap the label in `.dropdown-item-label` and add a `<kbd class="ms-auto">` after it. The shortcut is shown in the toggle too, once the item is chosen.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Choose an action…" data-bs-name="action">
+    <span class="combobox-value"></span>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" type="button" data-bs-value="cut">
+      <span class="dropdown-item-label">Cut</span>
+      <kbd class="ms-auto">ctrl + X</kbd>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="copy">
+      <span class="dropdown-item-label">Copy</span>
+      <kbd class="ms-auto">ctrl + C</kbd>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="paste">
+      <span class="dropdown-item-label">Paste</span>
+      <kbd class="ms-auto">ctrl + V</kbd>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="all">
+      <span class="dropdown-item-label">Select all</span>
+      <kbd class="ms-auto">ctrl + A</kbd>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="find">
+      <span class="dropdown-item-label">Find</span>
+      <kbd class="ms-auto">ctrl + F</kbd>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="save">
+      <span class="dropdown-item-label">Save</span>
+      <kbd class="ms-auto">ctrl + S</kbd>
+    </button>
+  </div>
+</div>
+</Example>
+
+### Avatars
+
+Show the person next to the name.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <select class="form-select" data-bs-toggle="combobox" data-placeholder="Assign to…">
+    <option value="1" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/000m.jpg)'></span>">Paweł Kuna</option>
+    <option value="2" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/001f.jpg)'></span>">Jeffie Lewzey</option>
+    <option value="3" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/002m.jpg)'></span>">Mallory Hulme</option>
+    <option value="4" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/003f.jpg)'></span>">Dunn Slane</option>
+    <option value="5" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/004f.jpg)'></span>">Emmy Levet</option>
+    <option value="6" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/005f.jpg)'></span>">Maryjo Lebarree</option>
+  </select>
+</div>
+</Example>
+
+Add a name and an email with `.dropdown-item-content` and `.dropdown-item-description`.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Select a person…" data-bs-name="person">
+    <span class="combobox-value"></span>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" type="button" data-bs-value="1">
+      <span class="dropdown-item-indicator"><span class="avatar avatar-xs" style="background-image: url(/static/avatars/000m.jpg)"></span></span>
+      <span class="dropdown-item-content">
+        <span>Paweł Kuna</span>
+        <small class="dropdown-item-description">pawel@example.com</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="2">
+      <span class="dropdown-item-indicator"><span class="avatar avatar-xs" style="background-image: url(/static/avatars/001f.jpg)"></span></span>
+      <span class="dropdown-item-content">
+        <span>Jeffie Lewzey</span>
+        <small class="dropdown-item-description">jeffie@example.com</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="3">
+      <span class="dropdown-item-indicator"><span class="avatar avatar-xs" style="background-image: url(/static/avatars/002m.jpg)"></span></span>
+      <span class="dropdown-item-content">
+        <span>Mallory Hulme</span>
+        <small class="dropdown-item-description">mallory@example.com</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="4">
+      <span class="dropdown-item-indicator"><span class="avatar avatar-xs" style="background-image: url(/static/avatars/003f.jpg)"></span></span>
+      <span class="dropdown-item-content">
+        <span>Dunn Slane</span>
+        <small class="dropdown-item-description">dunn@example.com</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+  </div>
+</div>
+</Example>
+
+On a multiple `<select>` the avatars go into the tags, so the field reads as a list of people.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <select class="form-select" data-bs-toggle="combobox" data-placeholder="Add reviewers" multiple>
+    <option value="1" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/000m.jpg)'></span>" selected>Paweł Kuna</option>
+    <option value="2" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/001f.jpg)'></span>" selected>Jeffie Lewzey</option>
+    <option value="3" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/002m.jpg)'></span>" selected>Mallory Hulme</option>
+    <option value="4" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/003f.jpg)'></span>" selected>Dunn Slane</option>
+    <option value="5" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/004f.jpg)'></span>" selected>Emmy Levet</option>
+    <option value="6" data-custom-properties="<span class='avatar avatar-xs' style='background-image: url(/static/avatars/005f.jpg)'></span>">Maryjo Lebarree</option>
+  </select>
+</div>
+</Example>
+
+### Status
+
+An empty [badge](/ui/components/badge) works as a status dot.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Set status…">
+    <span class="combobox-value"></span>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" type="button" data-bs-value="online">
+      <span class="dropdown-item-indicator"><span class="badge bg-green"></span></span>
+      <span class="dropdown-item-label">Online</span>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="away">
+      <span class="dropdown-item-indicator"><span class="badge bg-yellow"></span></span>
+      <span class="dropdown-item-label">Away</span>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="busy">
+      <span class="dropdown-item-indicator"><span class="badge bg-red"></span></span>
+      <span class="dropdown-item-label">Busy</span>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="offline">
+      <span class="dropdown-item-indicator"><span class="badge bg-secondary"></span></span>
+      <span class="dropdown-item-label">Offline</span>
+    </button>
+  </div>
+</div>
+</Example>
+
+### Logos
+
+Any image works, for example the browser logos.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <select class="form-select" data-bs-toggle="combobox" data-placeholder="Default browser">
+    <option value="chrome" data-custom-properties="<img src='/static/browsers/chrome.svg' width='20' height='20' alt=''>">Chrome</option>
+    <option value="firefox" data-custom-properties="<img src='/static/browsers/firefox.svg' width='20' height='20' alt=''>">Firefox</option>
+    <option value="safari" data-custom-properties="<img src='/static/browsers/safari.svg' width='20' height='20' alt=''>">Safari</option>
+    <option value="edge" data-custom-properties="<img src='/static/browsers/edge.svg' width='20' height='20' alt=''>">Edge</option>
+    <option value="opera" data-custom-properties="<img src='/static/browsers/opera.svg' width='20' height='20' alt=''>">Opera</option>
+    <option value="brave" data-custom-properties="<img src='/static/browsers/brave.svg' width='20' height='20' alt=''>">Brave</option>
+  </select>
+</div>
+</Example>
+
+### Icons with descriptions
+
+Put an image in `.dropdown-item-indicator` and a second line in `.dropdown-item-description`.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Select a currency…" data-bs-name="currency">
+    <span class="combobox-value"></span>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" type="button" data-bs-value="bitcoin">
+      <span class="dropdown-item-indicator"><img src="/static/crypto-currencies/bitcoin.svg" width="20" height="20" alt="" /></span>
+      <span class="dropdown-item-content">
+        <span>Bitcoin</span>
+        <small class="dropdown-item-description">BTC</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="ethereum">
+      <span class="dropdown-item-indicator"><img src="/static/crypto-currencies/ethereum.svg" width="20" height="20" alt="" /></span>
+      <span class="dropdown-item-content">
+        <span>Ethereum</span>
+        <small class="dropdown-item-description">ETH</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="litecoin">
+      <span class="dropdown-item-indicator"><img src="/static/crypto-currencies/litecoin.svg" width="20" height="20" alt="" /></span>
+      <span class="dropdown-item-content">
+        <span>Litecoin</span>
+        <small class="dropdown-item-description">LTC</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="ripple">
+      <span class="dropdown-item-indicator"><img src="/static/crypto-currencies/ripple.svg" width="20" height="20" alt="" /></span>
+      <span class="dropdown-item-content">
+        <span>Ripple</span>
+        <small class="dropdown-item-description">XRP</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="cardano">
+      <span class="dropdown-item-indicator"><img src="/static/crypto-currencies/cardano.svg" width="20" height="20" alt="" /></span>
+      <span class="dropdown-item-content">
+        <span>Cardano</span>
+        <small class="dropdown-item-description">ADA</small>
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>
+    </button>
+  </div>
+</div>
+</Example>
+
+### Badges
+
+Push a badge to the end of the item with `.ms-auto`, for example to show a count. Like a shortcut, a badge that is a direct child of the item is shown in the toggle too.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Priority…">
+    <span class="combobox-value"></span>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" type="button" data-bs-value="low">
+      <span class="dropdown-item-label">Low</span>
+      <span class="badge bg-blue-lt ms-auto">12</span>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="medium">
+      <span class="dropdown-item-label">Medium</span>
+      <span class="badge bg-yellow-lt ms-auto">5</span>
+    </button>
+    <button class="dropdown-item" type="button" data-bs-value="high">
+      <span class="dropdown-item-label">High</span>
+      <span class="badge bg-red-lt ms-auto">2</span>
+    </button>
+  </div>
+</div>
+</Example>
 
 ## Form submission
 
