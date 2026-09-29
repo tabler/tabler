@@ -88,12 +88,13 @@
   }
 }
 
-// A size moves padding, font size and radius only: the line height stays, as
-// it always did for `.form-select`.
+// A size moves the same tokens as `.form-control-sm/-lg`, line height
+// included, so a select and an input of one size are equally tall.
 .form-select-sm {
   --control-padding-y: #{var-if-default($form-select-padding-y-sm, $input-btn-padding-y-sm, '--btn-input-sm-padding-y')};
   --control-padding-x: #{var-if-default($form-select-padding-x-sm, $input-btn-padding-x-sm, '--btn-input-sm-padding-x')};
   @include rfs(var-if-default($form-select-font-size-sm, $input-btn-font-size-sm, '--btn-input-sm-font-size'), --control-font-size);
+  --control-line-height: #{var-if-default($input-line-height-sm, $input-btn-line-height-sm, '--btn-input-sm-line-height')};
   --control-border-radius: #{var-if-default($form-select-border-radius-sm, var(--border-radius-sm), '--btn-input-sm-border-radius')};
 }
 
@@ -101,6 +102,7 @@
   --control-padding-y: #{var-if-default($form-select-padding-y-lg, $input-btn-padding-y-lg, '--btn-input-lg-padding-y')};
   --control-padding-x: #{var-if-default($form-select-padding-x-lg, $input-btn-padding-x-lg, '--btn-input-lg-padding-x')};
   @include rfs(var-if-default($form-select-font-size-lg, $input-btn-font-size-lg, '--btn-input-lg-font-size'), --control-font-size);
+  --control-line-height: #{var-if-default($input-line-height-lg, $input-btn-line-height-lg, '--btn-input-lg-line-height')};
   --control-border-radius: #{var-if-default($form-select-border-radius-lg, var(--border-radius-lg), '--btn-input-lg-border-radius')};
 }
 
