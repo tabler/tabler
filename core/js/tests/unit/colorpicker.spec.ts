@@ -354,7 +354,21 @@ describe('Colorpicker', () => {
 
       expect(panel.querySelector('.colorpicker-area')).toBeNull()
       expect(panel.querySelector('.colorpicker-hue')).toBeNull()
+      expect(panel.querySelector('.colorpicker-input')).toBeNull()
+      expect(panel.querySelector('.colorpicker-footer')).toBeNull()
       expect(panel.querySelectorAll('.colorpicker-swatch').length).toBeGreaterThan(0)
+    })
+
+    it('keeps the buttons but not the format select with swatchesOnly', async () => {
+      const input = field('data-bs-swatches-only="true" data-bs-format-toggle="true" data-bs-close-button="true"')
+      const instance = new Colorpicker(input)
+
+      await instance.show()
+      const panel = panels()[0]!
+
+      expect(panel.querySelector('.colorpicker-format')).toBeNull()
+      expect(panel.querySelector('.colorpicker-input')).toBeNull()
+      expect(panel.querySelector('.colorpicker-close')).not.toBeNull()
     })
 
     it('adds the clear and close buttons on request', async () => {
@@ -369,16 +383,25 @@ describe('Colorpicker', () => {
       expect(panels()[0]!.classList.contains('show')).toBe(false)
     })
 
-    it('renders inline right after the field and never hides', async () => {
+    it('renders inline right after the wrapper and never hides', async () => {
       const input = field('data-bs-inline="true"')
       const instance = new Colorpicker(input)
 
-      const panel = input.nextElementSibling as HTMLElement
+      expect(input.nextElementSibling).toBeNull()
+      const panel = input.closest('.colorpicker')!.nextElementSibling as HTMLElement
       expect(panel.classList.contains('colorpicker-panel-inline')).toBe(true)
       expect(panel.classList.contains('show')).toBe(true)
 
       await instance.hide()
       expect(panel.classList.contains('show')).toBe(true)
+    })
+
+    it('renders inline right after a field without the wrapper', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="colorpicker" data-bs-inline="true" value="#fff">'
+      const input = fixtureEl.querySelector('input')!
+      new Colorpicker(input)
+
+      expect(input.nextElementSibling!.classList.contains('colorpicker-panel-inline')).toBe(true)
     })
 
     it('copies the theme of the nearest ancestor to the panel and follows changes', async () => {
@@ -434,6 +457,39 @@ describe('Colorpicker', () => {
 
       button.click()
       expect(panels()[0]!.classList.contains('show')).toBe(false)
+    })
+
+    it('tells assistive technology about the popup and its state', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="colorpicker" data-bs-value="#00f">Color</button>'
+      const button = fixtureEl.querySelector('button')!
+      const instance = new Colorpicker(button)
+
+      expect(button.getAttribute('aria-haspopup')).toBe('dialog')
+      expect(button.getAttribute('aria-expanded')).toBe('false')
+
+      await instance.show()
+      expect(button.getAttribute('aria-expanded')).toBe('true')
+
+      await instance.hide()
+      expect(button.getAttribute('aria-expanded')).toBe('false')
+    })
+
+    it('writes the value to the display element', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="colorpicker" data-bs-value="#00f"><span data-bs-colorpicker-display>Pick</span></button>'
+      const display = fixtureEl.querySelector('span')!
+      const instance = new Colorpicker(fixtureEl.querySelector('button')!)
+
+      expect(display.textContent).toBe('#0000ff')
+
+      instance.setValue('#ff0000')
+      expect(display.textContent).toBe('#ff0000')
+    })
+
+    it('leaves the display text alone while there is no value', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="colorpicker"><span data-bs-colorpicker-display>Pick a color</span></button>'
+      new Colorpicker(fixtureEl.querySelector('button')!)
+
+      expect(fixtureEl.querySelector('span')!.textContent).toBe('Pick a color')
     })
 
     it('starts from the value option without an input', () => {
