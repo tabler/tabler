@@ -5,8 +5,18 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
 
 const links = ['Home', 'Dashboard', 'Products', 'Services', 'Analytics', 'Reports', 'Settings', 'Help']
+
+const navbarLinks = [
+  { title: 'Home', icon: 'home' },
+  { title: 'Analytics', icon: 'chart-bar' },
+  { title: 'Products', icon: 'package' },
+  { title: 'Customers', icon: 'users' },
+  { title: 'Reports', icon: 'file-text' },
+  { title: 'Settings', icon: 'settings' },
+]
 ---
 
 <DefaultLayout title="Nav overflow" pageMenu="base.nav-overflow" description="Nav overflow moves nav items that do not fit into a More dropdown.">
@@ -120,6 +130,74 @@ const links = ['Home', 'Dashboard', 'Products', 'Services', 'Analytics', 'Report
                 ))
               }
             </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>In a navbar</CardTitle>
+          <CardSubtitle>Wrap the <code>.navbar-nav</code> of a navbar in <code>.nav-overflow</code>.</CardSubtitle>
+          <div class="navbar navbar-expand rounded border">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Brand</a>
+              <nav class="nav-overflow" data-bs-toggle="nav-overflow" aria-label="Demo">
+                <ul class="navbar-nav">
+                  {
+                    navbarLinks.map((link, index) => (
+                      <li class:list={['nav-item', index === 0 && 'active']}>
+                        <a class="nav-link" href="#" aria-current={index === 0 ? 'page' : undefined}>
+                          <span class="nav-link-icon">
+                            <Icon name={link.icon} />
+                          </span>
+                          <span class="nav-link-title">{link.title}</span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                      <span class="nav-link-icon">
+                        <Icon name="help" />
+                      </span>
+                      <span class="nav-link-title">Help</span>
+                    </a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Documentation</a>
+                      <a class="dropdown-item" href="#">Changelog</a>
+                      <a class="dropdown-item" href="#">Support</a>
+                    </div>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Colored navbar</CardTitle>
+          <CardSubtitle>The overflow menu follows the theme of the navbar, here <code>data-bs-theme="dark"</code>.</CardSubtitle>
+          <div class="navbar navbar-expand rounded bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Brand</a>
+              <nav class="nav-overflow" data-bs-toggle="nav-overflow" aria-label="Colored demo">
+                <ul class="navbar-nav">
+                  {
+                    navbarLinks.map((link, index) => (
+                      <li class:list={['nav-item', index === 0 && 'active']}>
+                        <a class="nav-link" href="#" aria-current={index === 0 ? 'page' : undefined}>
+                          <span class="nav-link-title">{link.title}</span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </nav>
+            </div>
           </div>
         </CardBody>
       </Card>
