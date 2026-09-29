@@ -229,6 +229,8 @@ class Colorpicker extends BaseComponent {
   _valueInput: HTMLInputElement | null = null
   _formatSelect: HTMLSelectElement | null = null
   _popper: Popper.Instance | null = null
+  _positionFrame = 0
+  _positionRect = ''
   _themeObserver: MutationObserver | null = null
   _isShown = false
   _isEmpty = true
@@ -294,7 +296,9 @@ class Colorpicker extends BaseComponent {
     this._syncTheme()
     this._render()
     panel.classList.add(CLASS_NAME_SHOW)
-    this._popper = Popper.createPopper(this._getPositionElement(), panel, this._getPopperConfig())
+    const reference = this._getPositionElement()
+    this._popper = Popper.createPopper(reference, panel, this._getPopperConfig())
+    this._watchPosition(reference)
     this._isShown = true
     this._element.setAttribute('aria-expanded', 'true')
 
@@ -317,6 +321,7 @@ class Colorpicker extends BaseComponent {
     const focusWasInside = this._panel?.contains(document.activeElement) ?? false
 
     this._panel?.classList.remove(CLASS_NAME_SHOW)
+    cancelAnimationFrame(this._positionFrame)
     this._popper?.destroy()
     this._popper = null
     this._isShown = false
@@ -366,6 +371,7 @@ class Colorpicker extends BaseComponent {
       document.removeEventListener('keydown', this._onDocumentKeydown, true)
     }
 
+    cancelAnimationFrame(this._positionFrame)
     this._popper?.destroy()
     this._panel?.remove()
 
@@ -847,6 +853,30 @@ class Colorpicker extends BaseComponent {
   _getPositionElement(): HTMLElement {
     const { positionElement } = this._config
     return (typeof positionElement === 'string' ? getElement(positionElement) : positionElement) ?? this._wrapper ?? this._element
+  }
+
+  // Popper follows scroll and resize only. Content that loads, opens or
+  // closes around the field moves it without either, so while the panel is
+  // open the field's box is compared once a frame and the panel follows.
+  _watchPosition(reference: HTMLElement): void {
+    const check = (): void => {
+      if (!this._popper) {
+        return
+      }
+
+      const { left, top, width, height } = reference.getBoundingClientRect()
+      const rect = `${left},${top},${width},${height}`
+      if (rect !== this._positionRect) {
+        this._positionRect = rect
+        this._popper.update()
+      }
+
+      this._positionFrame = requestAnimationFrame(check)
+    }
+
+    this._positionRect = ''
+    cancelAnimationFrame(this._positionFrame)
+    this._positionFrame = requestAnimationFrame(check)
   }
 
   _getPopperConfig(): Partial<Popper.Options> {
