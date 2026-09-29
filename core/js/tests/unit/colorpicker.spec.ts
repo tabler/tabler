@@ -452,6 +452,24 @@ describe('Colorpicker', () => {
       expect(panels()[0]!.getAttribute('data-bs-theme')).toBe('light')
     })
 
+    it('resolves the auto theme to the system setting', async () => {
+      const instance = new Colorpicker(field('data-bs-colorpicker-theme="auto"'))
+
+      await instance.show()
+
+      const expected = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      expect(panels()[0]!.getAttribute('data-bs-theme')).toBe(expected)
+    })
+
+    it('renders inline after a button, not inside it', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="colorpicker" data-bs-inline="true" data-bs-value="#00f">Color</button>'
+      const button = fixtureEl.querySelector('button')!
+      new Colorpicker(button)
+
+      expect(button.querySelector('.colorpicker-panel')).toBeNull()
+      expect(button.nextElementSibling!.classList.contains('colorpicker-panel-inline')).toBe(true)
+    })
+
     it('honours colorpickerTheme over the ancestor', async () => {
       fixtureEl.innerHTML = '<div data-bs-theme="dark"><input type="text" data-bs-toggle="colorpicker" data-bs-colorpicker-theme="light" value="#fff"></div>'
       const instance = new Colorpicker(fixtureEl.querySelector('input')!)
@@ -595,6 +613,34 @@ describe('Colorpicker', () => {
       expect(panels()).toHaveLength(0)
       expect(Colorpicker.getInstance(input)).toBeNull()
       document.body.click()
+    })
+
+    it('leaves no listener on the field after dispose', () => {
+      const input = field()
+      const instance = new Colorpicker(input)
+      const errors: unknown[] = []
+      const onError = (event: ErrorEvent): void => {
+        errors.push(event.error)
+        event.preventDefault()
+      }
+      window.addEventListener('error', onError)
+
+      instance.dispose()
+      typeInto(input, '#ff0000')
+      commit(input)
+      window.removeEventListener('error', onError)
+
+      expect(errors).toHaveLength(0)
+      expect(input.value).toBe('#ff0000')
+    })
+
+    it('leaves no listener on a bound hidden input after dispose', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="colorpicker"><input type="hidden" value="#00f"></button>'
+      const hidden = fixtureEl.querySelector('input')!
+      const remove = vi.spyOn(hidden, 'removeEventListener')
+      new Colorpicker(fixtureEl.querySelector('button')!).dispose()
+
+      expect(remove.mock.calls.map((call) => call[0])).toEqual(['input', 'change'])
     })
 
     it('exposes the defaults', () => {

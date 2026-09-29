@@ -239,6 +239,10 @@ class Colorpicker extends BaseComponent {
   _isRestoringFocus = false
   _hsva: HSVA = { h: 0, s: 0, v: 0, a: 1 }
   _format: ColorFormat = 'hex'
+  _themeMedia: MediaQueryList | null = null
+  _onThemeMedia = (): void => this._syncTheme()
+  _onFieldInput = (): void => this._handleFieldInput()
+  _onFieldChange = (): void => this._handleFieldChange()
   _onDocumentClick = (event: Event): void => this._handleDocumentClick(event)
   _onDocumentFocusIn = (event: Event): void => this._handleDocumentFocusIn(event)
   _onDocumentKeydown = (event: KeyboardEvent): void => this._handleDocumentKeydown(event)
@@ -375,8 +379,11 @@ class Colorpicker extends BaseComponent {
     this._popper?.destroy()
     this._panel?.remove()
 
-    if (this._input && this._input !== this._element) {
-      EventHandler.off(this._input, EVENT_KEY)
+    this._themeMedia?.removeEventListener('change', this._onThemeMedia)
+
+    if (this._input) {
+      this._input.removeEventListener(EVENT_INPUT, this._onFieldInput)
+      this._input.removeEventListener(EVENT_NATIVE_CHANGE, this._onFieldChange)
     }
 
     super.dispose()
@@ -424,9 +431,11 @@ class Colorpicker extends BaseComponent {
 
     this._writePreview()
 
+    // Native listeners with stable callbacks: `input` and `change` cannot carry
+    // the namespace `dispose()` clears, so they are removed by reference there
     if (this._input) {
-      EventHandler.on(this._input, EVENT_INPUT, () => this._handleFieldInput())
-      EventHandler.on(this._input, EVENT_NATIVE_CHANGE, () => this._handleFieldChange())
+      this._input.addEventListener(EVENT_INPUT, this._onFieldInput)
+      this._input.addEventListener(EVENT_NATIVE_CHANGE, this._onFieldChange)
     }
 
     if (this._isInput) {
@@ -438,9 +447,10 @@ class Colorpicker extends BaseComponent {
     if (this._config.inline) {
       const panel = this._getPanel()
       panel.classList.add(CLASS_NAME_PANEL_INLINE, CLASS_NAME_SHOW)
-      if (this._isInput) {
+      if (this._isInput || this._element.tagName === 'BUTTON') {
         // After the wrapper, not inside it: the wrapper centres the swatch on
-        // its own height and pads its `.form-control`, which must stay the field's
+        // its own height and pads its `.form-control`, which must stay the
+        // field's. A button cannot hold the panel's inputs and buttons either.
         ;(this._wrapper ?? this._element).after(panel)
       } else {
         this._element.append(panel)
@@ -900,7 +910,13 @@ class Colorpicker extends BaseComponent {
       return
     }
 
-    const theme = this._config.colorpickerTheme || this._getThemeAncestor()?.getAttribute('data-bs-theme') || null
+    let theme = this._config.colorpickerTheme || this._getThemeAncestor()?.getAttribute('data-bs-theme') || null
+
+    // The stylesheet knows `light` and `dark` only, so `auto` is resolved here
+    if (theme === 'auto') {
+      theme = this._themeMedia?.matches ? 'dark' : 'light'
+    }
+
     if (theme) {
       this._panel.setAttribute('data-bs-theme', theme)
     } else {
@@ -910,6 +926,9 @@ class Colorpicker extends BaseComponent {
 
   /** The panel lives in the container, outside the theme's cascade, so it copies the attribute. */
   _setupThemeObserver(): void {
+    this._themeMedia = window.matchMedia('(prefers-color-scheme: dark)')
+    this._themeMedia.addEventListener('change', this._onThemeMedia)
+
     const ancestor = this._getThemeAncestor()
     if (!ancestor || this._config.colorpickerTheme) {
       return
