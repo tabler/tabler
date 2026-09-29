@@ -158,6 +158,39 @@ describe('Colorpicker', () => {
       expect(document.activeElement).toBe(input)
     })
 
+    it('follows the field when the layout around it moves', async () => {
+      const frames = (): Promise<void> => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 50))))
+      const input = field()
+      const instance = new Colorpicker(input)
+
+      await instance.show()
+      await frames()
+      const panel = panels()[0]!
+      const before = panel.getBoundingClientRect().top - input.getBoundingClientRect().bottom
+
+      const spacer = document.createElement('div')
+      spacer.style.height = '120px'
+      fixtureEl.prepend(spacer)
+      const fieldTop = input.getBoundingClientRect().top
+      await frames()
+
+      expect(input.getBoundingClientRect().top).toBe(fieldTop)
+      expect(panel.getBoundingClientRect().top - input.getBoundingClientRect().bottom).toBeCloseTo(before, 0)
+    })
+
+    it('stops following once the panel is hidden', async () => {
+      const cancel = vi.spyOn(window, 'cancelAnimationFrame')
+      const instance = new Colorpicker(field())
+
+      await instance.show()
+      const frame = instance._positionFrame
+      await instance.hide()
+
+      expect(frame).toBeGreaterThan(0)
+      expect(cancel).toHaveBeenCalled()
+      cancel.mockRestore()
+    })
+
     it('opens on focus and toggles on click through the Data API', () => {
       const input = field()
       input.focus()
