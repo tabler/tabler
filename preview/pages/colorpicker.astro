@@ -11,6 +11,7 @@ import DocsLink from '@ui/DocsLink.astro'
 import Button from '@ui/Button.astro'
 import Modal from '@shared/components/modals/Modal.astro'
 import CaptureModal from '@shared/components/CaptureModal.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
 
 const colors = Object.values(site.colors) as { hex: string; title: string }[]
 
@@ -166,7 +167,57 @@ const alphaFormats = [
         </CardBody>
       </Card>
     </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Live preview</CardTitle>
+          <CardSubtitle>The <code>change.bs.colorpicker</code> event carries the new value, here set as the primary color of the preview.</CardSubtitle>
+          <FormGroup label="Primary color" for="colorpicker-live">
+            <Colorpicker value="#066fd1" id="colorpicker-live" />
+          </FormGroup>
+          <div class="d-flex flex-wrap align-items-center gap-3" id="colorpicker-live-preview">
+            <button type="button" class="btn btn-primary">Button</button>
+            <span class="badge bg-primary text-primary-fg">Badge</span>
+            <span class="status status-primary">Status</span>
+            <label class="form-check form-switch m-0">
+              <input class="form-check-input" type="checkbox" checked />
+              <span class="form-check-label">Switch</span>
+            </label>
+            <div class="progress w-100">
+              <div class="progress-bar" style="width: 60%" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="60% complete"></div>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
   </div>
+
+  <CaptureScript>
+    <!-- BEGIN COLORPICKER LIVE PREVIEW -->
+    <script is:inline>
+      function initColorpickerPreview() {
+        const field = document.getElementById('colorpicker-live')
+        const preview = document.getElementById('colorpicker-live-preview')
+
+        if (!field || !preview) {
+          return
+        }
+
+        field.addEventListener('change.bs.colorpicker', (event) => {
+          if (event.value) {
+            preview.style.setProperty('--tblr-primary', event.value)
+            preview.style.setProperty('--tblr-primary-rgb', `${event.rgba.r}, ${event.rgba.g}, ${event.rgba.b}`)
+          } else {
+            preview.style.removeProperty('--tblr-primary')
+            preview.style.removeProperty('--tblr-primary-rgb')
+          }
+        })
+      }
+
+      document.readyState !== 'loading' ? initColorpickerPreview() : document.addEventListener('DOMContentLoaded', initColorpickerPreview, { once: true })
+    </script>
+    <!-- END COLORPICKER LIVE PREVIEW -->
+  </CaptureScript>
 
   <CaptureModal>
     <Modal modalId="colorpicker">
