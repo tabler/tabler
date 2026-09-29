@@ -37,12 +37,12 @@ Use `data-bs-target` to change another element. Put `data-bs-value` on the targe
 
 ### Multiple elements
 
-A class selector in `data-bs-target` toggles every matching element. Each one can have its own value.
+When the selector in `data-bs-target` matches many elements, Toggler changes every one of them. Each one can have its own value.
 
 <Example>
-<button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target=".toggler-target">Toggle all</button>
-<div class="toggler-target p-3 mb-2 rounded border" data-bs-value="bg-blue-lt">Toggles bg-blue-lt</div>
-<div class="toggler-target p-3 rounded border" data-bs-value="bg-green-lt">Toggles bg-green-lt</div>
+<button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="[data-toggler-demo]">Toggle all</button>
+<div class="p-3 mb-2 rounded border" data-toggler-demo data-bs-value="bg-blue-lt">Toggles bg-blue-lt</div>
+<div class="p-3 rounded border" data-toggler-demo data-bs-value="bg-green-lt">Toggles bg-green-lt</div>
 </Example>
 
 ### Toggle an attribute
@@ -63,7 +63,7 @@ You can use the same pattern to toggle `disabled` on a `fieldset` and lock all c
 | `data-bs-toggle="toggler"` | Turns the element into a trigger. |
 | `data-bs-target` | Optional CSS selector of the element to change. Without it, the trigger changes itself. |
 | `data-bs-attribute` | Attribute to toggle. Default is `class`. |
-| `data-bs-value` | Class name or attribute value to toggle. Without it, nothing happens. |
+| `data-bs-value` | Class name or attribute value to toggle. You can give several class names separated by spaces. Without it, nothing happens. |
 
 ### JavaScript
 
@@ -92,6 +92,8 @@ toggler.toggle()
 | `toggle.bs.toggler` | Fires before the change. Call `event.preventDefault()` to stop it. |
 | `toggled.bs.toggler` | Fires after the change. |
 
+Both events fire on the element that changes. With `data-bs-target`, this is the target, not the trigger.
+
 ```js
 document.getElementById('my-element').addEventListener('toggled.bs.toggler', () => {
   // do something
@@ -101,5 +103,5 @@ document.getElementById('my-element').addEventListener('toggled.bs.toggler', () 
 ## Accessibility
 
 - Use a `<button>` as the trigger, so it works with the keyboard.
-- Toggler does not change ARIA attributes. If the change shows or hides content, keep `aria-expanded` or `aria-pressed` in sync in a `toggled.bs.toggler` listener, or use [Collapse](/ui/components/accordion) instead.
+- Toggler does not change ARIA attributes. If the change shows or hides content, keep `aria-expanded` or `aria-pressed` in sync in a `toggled.bs.toggler` listener, or use [Accordion](/ui/components/accordion) instead.
 - A trigger with the `disabled` attribute or the `.disabled` class does nothing.

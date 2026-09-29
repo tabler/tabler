@@ -94,7 +94,10 @@ class Toggler extends BaseComponent {
     }
 
     if (attribute === 'class') {
-      this._element.classList.toggle(String(value))
+      for (const className of String(value).split(/\s+/).filter(Boolean)) {
+        this._element.classList.toggle(className)
+      }
+
       return
     }
 
