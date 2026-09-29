@@ -24,7 +24,12 @@ const HEX_PATTERN = /^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i
 // run of spaces backtrack; the arguments are trimmed by `splitArguments` instead
 const FUNCTION_PATTERN = /^(rgba?|hsla?|oklch)\(([^)]*)\)$/i
 
+const NUMBER_PATTERN = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i
+
 const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max)
+
+/** `parseFloat` reads `255oops` as 255; a token counts only when all of it is a number. */
+const toNumber = (token: string): number => (NUMBER_PATTERN.test(token) ? Number.parseFloat(token) : Number.NaN)
 
 const round = (value: number, decimals = 0): number => {
   const factor = 10 ** decimals
@@ -38,7 +43,7 @@ const channel = (token: string, scale: number, max: number): number | null => {
   }
 
   const percent = token.endsWith('%')
-  const number = Number.parseFloat(percent ? token.slice(0, -1) : token)
+  const number = toNumber(percent ? token.slice(0, -1) : token)
   if (Number.isNaN(number)) {
     return null
   }
@@ -51,12 +56,12 @@ const hue = (token: string): number | null => {
     return 0
   }
 
-  const match = /^(-?[\d.]+)(deg|grad|rad|turn)?$/i.exec(token)
-  if (!match) {
+  const match = /^([^a-z]+)(deg|grad|rad|turn)?$/i.exec(token)
+  const number = match ? toNumber(match[1]!) : Number.NaN
+  if (!match || Number.isNaN(number)) {
     return null
   }
 
-  const number = Number.parseFloat(match[1]!)
   const factor = { deg: 1, grad: 0.9, rad: 180 / Math.PI, turn: 360 }[(match[2] ?? 'deg').toLowerCase() as 'deg' | 'grad' | 'rad' | 'turn']
 
   return (((number * factor) % 360) + 360) % 360

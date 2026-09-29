@@ -67,7 +67,7 @@ Wrap a text input in `.colorpicker` and add `data-bs-toggle="colorpicker"`. The 
 
 ### Color format
 
-Set `data-bs-format` to choose what the input stores. Use `hex` when you save the value in a database, because it is short and easy to read. Any CSS color can be typed into the field, and the plugin writes it back in the chosen notation when the field loses focus.
+Set `data-bs-format` to choose what the input stores. Use `hex` when you save the value in a database, because it is short and easy to read. The field accepts a color written as hex, `rgb()`, `hsl()` or `oklch()`, or a named color such as `red`, and the plugin writes it back in the chosen notation when the field loses focus. A reference such as `var(--tblr-blue)` is not a color value and is not accepted.
 
 | Format | Value in the input |
 | --- | --- |
@@ -98,7 +98,7 @@ Alpha is off by default and the value is always opaque. Set `data-bs-alpha="true
 
 ### Swatches
 
-The panel shows the Tabler palette by default, read from the `--tblr-*` custom properties, so it follows your theme. Pass your own list in `data-bs-swatches`, as a comma-separated list or a JSON array. Any CSS color works, including `oklch()`.
+The panel shows the Tabler palette by default, read from the `--tblr-*` custom properties, so it follows your theme. Pass your own list in `data-bs-swatches`, as a comma-separated list or a JSON array. Write each color as hex, `rgb()`, `hsl()`, `oklch()` or a named color.
 
 <Example>
 <div class="colorpicker">
@@ -315,7 +315,7 @@ const colorpicker = new tabler.Colorpicker(document.getElementById('my-color'), 
 | `placement` | string | `'bottom-start'` | Where the popup lines up with the field, as a Popper placement. `start` and `end` follow the text direction. The popup follows the field when the page around it moves. |
 | `positionElement` | string, element | `null` | Element the popup lines up with. Defaults to the `.colorpicker` wrapper, or the field itself. |
 | `container` | string, element | `null` | Element the popup is appended to. By default the modal or offcanvas the field is in, or `<body>`. |
-| `colorpickerTheme` | string | `null` | Force the panel's theme to `'light'`, `'dark'` or `'auto'`. By default it follows the nearest `[data-bs-theme]`. |
+| `colorpickerTheme` | string | `null` | Force the panel's theme to `'light'`, `'dark'` or `'auto'`, which follows the system setting. By default it follows the nearest `[data-bs-theme]`. |
 | `labels` | object | English texts | Texts read by assistive technology: `dialog`, `instruction`, `marker`, `hue`, `alpha`, `input`, `format`, `swatch`, `clear` and `close`. Keys you leave out keep the default. |
 
 ### Methods
@@ -326,7 +326,7 @@ const colorpicker = new tabler.Colorpicker(document.getElementById('my-color'), 
 | `hide()` | Closes the popup. |
 | `toggle()` | Opens or closes the popup. |
 | `getValue()` | Returns the color in the configured notation, or an empty string. |
-| `setValue(color)` | Sets the color from any CSS color string. `null` or an empty string clears the field. |
+| `setValue(color)` | Sets the color from a hex, `rgb()`, `hsl()`, `oklch()` or named color string. `null` or an empty string clears the field. |
 | `dispose()` | Removes the panel and the instance. |
 | `Colorpicker.getInstance(element)` | Returns the instance for an element, or `null`. |
 | `Colorpicker.getOrCreateInstance(element)` | Returns the instance, or creates one. |

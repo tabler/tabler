@@ -53,6 +53,21 @@ describe('util/color', () => {
       expect(parseColor('rgb(1 2)')).toBeNull()
       expect(parseColor('var(--tblr-blue)')).toBeNull()
     })
+
+    it('rejects a number with anything after it', () => {
+      expect(parseColor('rgb(255oops 0 0)')).toBeNull()
+      expect(parseColor('rgb(255 0 0 / 50%%)')).toBeNull()
+      expect(parseColor('rgb(1.2.3 0 0)')).toBeNull()
+      expect(parseColor('hsl(120xdeg 100% 50%)')).toBeNull()
+      expect(parseColor('hsl(1..2 100% 50%)')).toBeNull()
+      expect(parseColor('oklch(50%x 0.1 20)')).toBeNull()
+    })
+
+    it('still reads signs, decimals and exponents', () => {
+      expect(parseColor('rgb(+255 .0 0.0)')).toEqual({ r: 255, g: 0, b: 0, a: 1 })
+      expect(parseColor('rgb(2.55e2 0 0)')).toEqual({ r: 255, g: 0, b: 0, a: 1 })
+      expect(parseColor('hsl(-240 100% 50%)')).toEqual({ r: 0, g: 255, b: 0, a: 1 })
+    })
   })
 
   describe('detectColorFormat', () => {
