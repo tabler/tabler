@@ -81,7 +81,7 @@ const SELECTOR_VALUE = '.combobox-value'
 const SELECTOR_SEARCH_INPUT = '.combobox-search-input'
 const SELECTOR_NO_RESULTS = '.combobox-no-results'
 
-const CHECK_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon icon-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
+const CHECK_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
 
 const Default: ComponentConfig = {
   boundary: 'clippingParents',
