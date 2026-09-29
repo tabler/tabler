@@ -51,11 +51,12 @@ const CLASS_NAME_HIDDEN = 'd-none'
 const CLASS_NAME_KEEP = 'nav-overflow-keep'
 const CLASS_NAME_INITIALIZED = 'nav-overflow-initialized'
 const CLASS_NAME_SUBMENU = 'dropend'
+const CLASS_NAME_SUBMENU_START = 'dropstart'
 const CLASS_NAME_DROPUP = 'dropup'
 const CLASS_NAME_MENU_END = 'dropdown-menu-end'
 const CLASS_NAME_SHOW = 'show'
 
-const SELECTOR_NAV = '.nav'
+const SELECTOR_NAV = '.nav, .navbar-nav'
 const SELECTOR_NAV_ITEM = '.nav-item'
 const SELECTOR_NAV_LINK = '.nav-link'
 const SELECTOR_OVERFLOW_TOGGLE = '.nav-overflow-toggle'
@@ -333,6 +334,11 @@ class NavOverflow extends BaseComponent {
   }
 
   _getItemsToOverflow(overflowItem: HTMLElement | null): HTMLElement[] {
+    // A vertical nav, like a collapsed navbar, has room for every item
+    if (getComputedStyle(this._nav).flexDirection.startsWith('column')) {
+      return []
+    }
+
     const availableWidth = this._availableWidth()
     const candidates = this._items.filter((item) => !item.classList.contains(CLASS_NAME_KEEP))
 
@@ -447,8 +453,9 @@ class NavOverflow extends BaseComponent {
       nextSibling: menu.nextSibling,
     })
 
+    // An end-aligned menu sits at the inline end, so its submenus open towards the start
     const submenu = document.createElement('div')
-    submenu.className = CLASS_NAME_SUBMENU
+    submenu.className = this._overflowMenu?.classList.contains(CLASS_NAME_MENU_END) ? CLASS_NAME_SUBMENU_START : CLASS_NAME_SUBMENU
     submenu.append(this._cloneAsMenuItem(link, true), menu)
 
     return submenu
@@ -459,7 +466,7 @@ class NavOverflow extends BaseComponent {
     clonedLink.className = 'dropdown-item'
     clonedLink.removeAttribute('id')
 
-    if (link.classList.contains('active')) {
+    if (link.classList.contains('active') || link.closest(SELECTOR_NAV_ITEM)?.classList.contains('active')) {
       clonedLink.classList.add('active')
     }
 

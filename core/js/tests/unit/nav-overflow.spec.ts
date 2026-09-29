@@ -12,7 +12,7 @@ vi.mock('@popperjs/core', () => ({
 }))
 
 const STYLE = `<style>
-  .nav { display: flex; margin: 0; padding: 0; list-style: none; }
+  .nav, .navbar-nav { display: flex; margin: 0; padding: 0; list-style: none; }
   .nav-item { flex-shrink: 0; width: 100px; }
   .nav-overflow-item { width: 50px; }
   .d-none { display: none !important; }
@@ -36,7 +36,7 @@ describe('NavOverflow', () => {
   })
 
   const wrapper = (): HTMLElement => fixtureEl.querySelector('.nav-overflow')!
-  const hidden = (): HTMLElement[] => [...fixtureEl.querySelectorAll<HTMLElement>('.nav > .nav-item[data-bs-nav-overflow="true"]')]
+  const hidden = (): HTMLElement[] => [...fixtureEl.querySelectorAll<HTMLElement>('.nav-overflow > ul > .nav-item[data-bs-nav-overflow="true"]')]
   const menuItems = (): HTMLElement[] => [...fixtureEl.querySelectorAll<HTMLElement>('.nav-overflow-menu > .dropdown-item')]
   const toggleItem = (): HTMLElement => fixtureEl.querySelector('.nav-overflow-item')!
 
@@ -137,6 +137,31 @@ describe('NavOverflow', () => {
       expect(hidden().map((item) => item.textContent)).toEqual(['Link 4', 'Link 5', 'Link 6'])
       expect(menuItems().map((item) => item.textContent)).toEqual(['Link 4', 'Link 5', 'Link 6'])
       expect(toggleItem()).not.toHaveClass('d-none')
+    })
+
+    it('should collapse a .navbar-nav', () => {
+      fixtureEl.innerHTML = nav(360, links(6)).replace('class="nav"', 'class="navbar-nav"')
+
+      new NavOverflow(wrapper())
+
+      expect(hidden()).toHaveLength(3)
+    })
+
+    it('should not collapse a vertical nav', () => {
+      fixtureEl.innerHTML = nav(360, links(6)).replace('class="nav"', 'class="nav" style="flex-direction: column"')
+
+      new NavOverflow(wrapper())
+
+      expect(hidden()).toHaveLength(0)
+      expect(toggleItem()).toHaveClass('d-none')
+    })
+
+    it('should copy the active state from the nav item', () => {
+      fixtureEl.innerHTML = nav(160, links(3, { 2: '<li class="nav-item active"><a class="nav-link" href="#">Current</a></li>' }))
+
+      new NavOverflow(wrapper())
+
+      expect(menuItems().at(-1)).toHaveClass('active')
     })
 
     it('should keep nav-overflow-keep items visible', () => {
@@ -385,12 +410,12 @@ describe('NavOverflow', () => {
   describe('dropdowns', () => {
     const DROPDOWN_ITEM = '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="products" href="#" data-bs-toggle="dropdown" aria-expanded="false">Products</a><div class="dropdown-menu" id="products-menu"><a class="dropdown-item" href="#">Laptops</a></div></li>'
 
-    it('should move an overflowing dropdown into the menu as a nested dropend', () => {
+    it('should move an overflowing dropdown into the menu as a nested dropstart', () => {
       fixtureEl.innerHTML = nav(260, links(4, { 3: DROPDOWN_ITEM }))
 
       new NavOverflow(wrapper())
 
-      const submenu = fixtureEl.querySelector('.nav-overflow-menu > .dropend')!
+      const submenu = fixtureEl.querySelector('.nav-overflow-menu > .dropstart')!
       const toggle = submenu.firstElementChild as HTMLElement
       expect(toggle).toHaveClass('dropdown-item')
       expect(toggle).toHaveClass('dropdown-toggle')
@@ -404,12 +429,21 @@ describe('NavOverflow', () => {
       expect(overflow._config.autoClose).toEqual('outside')
     })
 
+    it('should open submenus towards the end when the menu is start-aligned', () => {
+      fixtureEl.innerHTML = nav(260, links(4, { 3: DROPDOWN_ITEM }))
+
+      new NavOverflow(wrapper(), { menuPlacement: 'bottom-start' })
+
+      expect(fixtureEl.querySelector('.nav-overflow-menu > .dropend')).not.toBeNull()
+      expect(fixtureEl.querySelector('.nav-overflow-menu > .dropstart')).toBeNull()
+    })
+
     it('should open the nested dropdown from the overflow menu', () => {
       fixtureEl.innerHTML = nav(260, links(4, { 3: DROPDOWN_ITEM }))
 
       new NavOverflow(wrapper())
 
-      const toggle = fixtureEl.querySelector<HTMLElement>('.nav-overflow-menu > .dropend > .dropdown-toggle')!
+      const toggle = fixtureEl.querySelector<HTMLElement>('.nav-overflow-menu > .dropstart > .dropdown-toggle')!
       toggle.click()
 
       expect(fixtureEl.querySelector('#products-menu')).toHaveClass('show')
@@ -424,7 +458,7 @@ describe('NavOverflow', () => {
 
       const menu = fixtureEl.querySelector('#products-menu')!
       expect(menu.previousElementSibling!.id).toEqual('products')
-      expect(fixtureEl.querySelector('.nav-overflow-menu .dropend')).toBeNull()
+      expect(fixtureEl.querySelector('.nav-overflow-menu .dropstart')).toBeNull()
     })
   })
 
