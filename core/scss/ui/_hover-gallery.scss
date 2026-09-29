@@ -8,6 +8,8 @@
   --hover-gallery-indicator-gap: #{$hover-gallery-indicator-gap};
   --hover-gallery-indicator-padding: #{$hover-gallery-indicator-padding};
   --hover-gallery-indicator-color: #{$hover-gallery-indicator-color};
+  --hover-gallery-indicator-scrim-height: #{$hover-gallery-indicator-scrim-height};
+  --hover-gallery-indicator-scrim-bg: #{$hover-gallery-indicator-scrim-bg};
   --hover-gallery-indicator-inactive-opacity: #{$hover-gallery-indicator-inactive-opacity};
   // scss-docs-end hover-gallery-css-vars
   position: relative;
@@ -43,6 +45,17 @@
 .hover-gallery-indicators {
   gap: var(--hover-gallery-indicator-gap);
   padding: var(--hover-gallery-indicator-padding);
+
+  // Darkens the bottom edge so the bars stay visible on any image
+  &::after {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    height: var(--hover-gallery-indicator-scrim-height);
+    pointer-events: none;
+    content: '';
+    background: var(--hover-gallery-indicator-scrim-bg);
+  }
 
   .hover-gallery-item {
     display: flex;
@@ -81,6 +94,10 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+  }
+
+  .hover-gallery::after {
+    display: none;
   }
 
   .hover-gallery .hover-gallery-item {

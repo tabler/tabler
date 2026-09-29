@@ -6,13 +6,22 @@ import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
 import HoverGallery from '@ui/HoverGallery.astro'
+import photos from '@data/photos.json'
 import { staticPath } from '@shared/lib/assets'
 
-const photos = (from: number, count: number) =>
-  Array.from({ length: count }, (_, index) => ({
-    src: staticPath(`products/product-${from + index}.jpg`),
-    alt: `Product photo ${index + 1}`,
-  }))
+const backpack = ['Black leather backpack, front view', 'Black leather backpack, view from the front left', 'Black leather backpack, side view', 'Black leather backpack, back view with the shoulder straps', 'Brass buckle and leather grain of the backpack'].map((alt, index) => ({
+  src: staticPath(`products/backpack-${index + 1}.jpg`),
+  alt,
+}))
+
+const watch = ['Steel watch with a black dial, front view', 'Steel watch with a black dial, view from the front left', 'Steel watch, side view with the crown', 'Steel watch, back view with the case back and buckle', 'Close-up of the watch dial, bezel and crown'].map((alt, index) => ({
+  src: staticPath(`products/watch-${index + 1}.jpg`),
+  alt,
+}))
+
+const landscapeFiles = ['blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg', 'city-lights-reflected-in-the-water-at-night.jpg', 'colorful-exotic-flowers-and-greenery.jpg']
+
+const landscapes = photos.filter((photo) => landscapeFiles.includes(photo.file)).map((photo) => ({ src: staticPath(`photos/${photo.file}`), alt: photo.title }))
 ---
 
 <DefaultLayout title="Hover gallery" pageMenu="base.hover-gallery" description="Hover galleries show one image and switch to the next ones as the pointer moves across.">
@@ -24,7 +33,7 @@ const photos = (from: number, count: number) =>
         <CardBody>
           <CardTitle>Basic</CardTitle>
           <CardSubtitle>Wrap each image in <code>.hover-gallery-item</code>; every item is one hover column.</CardSubtitle>
-          <HoverGallery images={photos(1, 4)} class="rounded" />
+          <HoverGallery images={backpack} class="rounded" />
         </CardBody>
       </Card>
     </div>
@@ -34,7 +43,7 @@ const photos = (from: number, count: number) =>
         <CardBody>
           <CardTitle>With indicators</CardTitle>
           <CardSubtitle>Add <code>.hover-gallery-indicators</code> to show which image is on display.</CardSubtitle>
-          <HoverGallery images={photos(1, 4)} showIndicators class="rounded" />
+          <HoverGallery images={watch} showIndicators class="rounded" />
         </CardBody>
       </Card>
     </div>
@@ -43,19 +52,19 @@ const photos = (from: number, count: number) =>
       <Card>
         <CardBody>
           <CardTitle>Aspect ratio</CardTitle>
-          <CardSubtitle>Set <code>--tblr-hover-gallery-aspect-ratio</code> to change the shape; any number of items works.</CardSubtitle>
-          <HoverGallery images={photos(1, 12)} showIndicators aspectRatio="16 / 9" class="rounded" />
+          <CardSubtitle>Set <code>--tblr-hover-gallery-aspect-ratio</code> to change the shape.</CardSubtitle>
+          <HoverGallery images={landscapes} showIndicators aspectRatio="16 / 9" class="rounded" />
         </CardBody>
       </Card>
     </div>
 
     <div class="col-md-6 col-lg-4">
       <Card>
-        <HoverGallery images={photos(5, 5)} showIndicators class="card-img-top" />
+        <HoverGallery images={backpack} showIndicators class="card-img-top" />
         <CardBody>
           <CardTitle>Product card</CardTitle>
           <CardSubtitle>Use the gallery with <code>.card-img-top</code> in place of the card image.</CardSubtitle>
-          <div class="h3 m-0">$25</div>
+          <div class="h3 m-0">$189</div>
         </CardBody>
       </Card>
     </div>
