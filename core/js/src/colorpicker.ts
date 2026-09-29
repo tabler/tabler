@@ -37,8 +37,8 @@ type ComponentConfig = {
   closeButton: boolean
   /** 'light', 'dark' or 'auto' for the panel only; null inherits from the nearest `[data-bs-theme]` */
   colorpickerTheme: string | null
-  /** element the panel is appended to */
-  container: string | HTMLElement
+  /** element the panel is appended to; null picks the modal or offcanvas the element is in, or `<body>` */
+  container: string | HTMLElement | null
   /** colour the panel shows while the field is empty */
   defaultColor: string
   /** notation written to the field; 'auto' keeps the one the value came in */
@@ -112,6 +112,7 @@ const CLASS_NAME_CLOSE = `${NAME}-close`
 
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 const SELECTOR_WRAPPER = `.${NAME}`
+const SELECTOR_DIALOG = '.modal, .offcanvas'
 const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
 const SELECTOR_DISPLAY = `[data-bs-${NAME}-display], [data-tblr-${NAME}-display]`
 const SELECTOR_FOCUSABLE = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex="0"]'
@@ -161,7 +162,7 @@ const Default: ComponentConfig = {
   clearButton: false,
   closeButton: false,
   colorpickerTheme: null,
-  container: 'body',
+  container: null,
   defaultColor: '#000000',
   format: 'hex',
   formatToggle: false,
@@ -179,7 +180,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   clearButton: 'boolean',
   closeButton: 'boolean',
   colorpickerTheme: '(null|string)',
-  container: '(string|element)',
+  container: '(null|string|element)',
   defaultColor: 'string',
   format: 'string',
   formatToggle: 'boolean',
@@ -284,7 +285,7 @@ class Colorpicker extends BaseComponent {
     }
 
     const panel = this._getPanel()
-    const container = getElement(this._config.container) ?? document.body
+    const container = this._getContainer()
     if (panel.parentElement !== container) {
       container.append(panel)
     }
@@ -298,7 +299,7 @@ class Colorpicker extends BaseComponent {
 
     EventHandler.on(document, EVENT_CLICK, this._onDocumentClick)
     EventHandler.on(document, EVENT_FOCUSIN, this._onDocumentFocusIn)
-    EventHandler.on(document, EVENT_KEYDOWN, this._onDocumentKeydown)
+    document.addEventListener('keydown', this._onDocumentKeydown, true)
 
     EventHandler.trigger(this._element, EVENT_SHOWN)
   }
@@ -322,7 +323,7 @@ class Colorpicker extends BaseComponent {
 
     EventHandler.off(document, EVENT_CLICK, this._onDocumentClick)
     EventHandler.off(document, EVENT_FOCUSIN, this._onDocumentFocusIn)
-    EventHandler.off(document, EVENT_KEYDOWN, this._onDocumentKeydown)
+    document.removeEventListener('keydown', this._onDocumentKeydown, true)
 
     if (focusWasInside) {
       this._isRestoringFocus = true
@@ -361,7 +362,7 @@ class Colorpicker extends BaseComponent {
     if (this._isShown) {
       EventHandler.off(document, EVENT_CLICK, this._onDocumentClick)
       EventHandler.off(document, EVENT_FOCUSIN, this._onDocumentFocusIn)
-      EventHandler.off(document, EVENT_KEYDOWN, this._onDocumentKeydown)
+      document.removeEventListener('keydown', this._onDocumentKeydown, true)
     }
 
     this._popper?.destroy()
@@ -798,9 +799,12 @@ class Colorpicker extends BaseComponent {
     }
   }
 
+  // Runs in the capture phase and stops the event, so Escape closes the panel
+  // and not the modal or offcanvas around it
   _handleDocumentKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
       event.preventDefault()
+      event.stopPropagation()
       this.hide()
     }
   }
@@ -826,6 +830,12 @@ class Colorpicker extends BaseComponent {
   }
 
   // Position and theme
+
+  // Inside a modal or an offcanvas the panel has to live in it: on `<body>` it
+  // would sit under the dialog, and the dialog's focus trap would take focus back
+  _getContainer(): HTMLElement {
+    return getElement(this._config.container) ?? this._element.closest<HTMLElement>(SELECTOR_DIALOG) ?? document.body
+  }
 
   _getPositionElement(): HTMLElement {
     const { positionElement } = this._config

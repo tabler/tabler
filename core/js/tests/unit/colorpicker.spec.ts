@@ -426,6 +426,40 @@ describe('Colorpicker', () => {
       expect(panels()[0]!.getAttribute('data-bs-theme')).toBe('light')
     })
 
+    it('opens inside the modal the field is in', async () => {
+      fixtureEl.innerHTML = '<div class="modal"><div class="colorpicker"><input type="text" data-bs-toggle="colorpicker" value="#fff"></div></div>'
+      const instance = new Colorpicker(fixtureEl.querySelector('input')!)
+
+      await instance.show()
+
+      expect(panels()[0]!.parentElement).toBe(fixtureEl.querySelector('.modal'))
+    })
+
+    it('honours an explicit container over the modal', async () => {
+      fixtureEl.innerHTML = '<div class="modal"><input type="text" data-bs-toggle="colorpicker" data-bs-container="body" value="#fff"></div>'
+      const instance = new Colorpicker(fixtureEl.querySelector('input')!)
+
+      await instance.show()
+
+      expect(panels()[0]!.parentElement).toBe(document.body)
+    })
+
+    it('keeps Escape from the elements around it', async () => {
+      const input = field()
+      const instance = new Colorpicker(input)
+      const outer = vi.fn()
+      fixtureEl.addEventListener('keydown', outer)
+
+      await instance.show()
+      keydown(input, 'Escape')
+      expect(panels()[0]!.classList.contains('show')).toBe(false)
+      expect(outer).not.toHaveBeenCalled()
+
+      keydown(input, 'Escape')
+      expect(outer).toHaveBeenCalledTimes(1)
+      fixtureEl.removeEventListener('keydown', outer)
+    })
+
     it('replaces the labels', async () => {
       const input = field()
       const instance = new Colorpicker(input, { labels: { dialog: 'Kolor', hue: 'Odcień' } })

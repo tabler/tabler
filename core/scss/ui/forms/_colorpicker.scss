@@ -23,6 +23,7 @@ Color picker
   --colorpicker-swatch-border-radius: #{$colorpicker-swatch-border-radius};
   --colorpicker-checkerboard: #{$colorpicker-checkerboard};
   --colorpicker-checkerboard-size: #{$colorpicker-checkerboard-size};
+  --colorpicker-disabled-opacity: #{$colorpicker-disabled-opacity};
   position: relative;
   display: block;
 
@@ -44,6 +45,18 @@ Color picker
 
   > .form-control {
     padding-inline-start: calc(var(--colorpicker-swatch-size) * 5 / 3);
+  }
+
+  &:has(> .form-control-sm) {
+    --colorpicker-swatch-size: #{$colorpicker-swatch-size-sm};
+  }
+
+  &:has(> .form-control-lg) {
+    --colorpicker-swatch-size: #{$colorpicker-swatch-size-lg};
+  }
+
+  &:has(> :disabled)::before {
+    opacity: var(--colorpicker-disabled-opacity);
   }
 }
 
