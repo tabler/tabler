@@ -9,9 +9,9 @@ import BaseComponent from './base-component'
 import Dropdown from './dropdown'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { onDOMContentLoaded } from './util/index'
+import { defineJQueryPlugin, onDOMContentLoaded } from './util/index'
 import { DefaultIconAllowlist, sanitizeHtml } from './util/sanitizer'
-import type { ElementSelector } from './types'
+import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
 type MenuPlacement = 'bottom-end' | 'bottom-start' | 'top-end' | 'top-start'
 
@@ -44,6 +44,8 @@ const EVENT_KEY = `.${DATA_KEY}`
 const EVENT_UPDATE = `update${EVENT_KEY}`
 const EVENT_OVERFLOW = `overflow${EVENT_KEY}`
 const EVENT_RESIZE = `resize${EVENT_KEY}`
+const EVENT_CLICK = `click${EVENT_KEY}`
+const EVENT_TAB_SHOWN = 'shown.bs.tab'
 
 const CLASS_NAME_OVERFLOW = 'nav-overflow'
 const CLASS_NAME_OVERFLOW_MENU = 'nav-overflow-menu'
@@ -55,6 +57,7 @@ const CLASS_NAME_SUBMENU_START = 'dropstart'
 const CLASS_NAME_DROPUP = 'dropup'
 const CLASS_NAME_MENU_END = 'dropdown-menu-end'
 const CLASS_NAME_SHOW = 'show'
+const CLASS_NAME_ACTIVE = 'active'
 
 const SELECTOR_NAV = '.nav, .navbar-nav'
 const SELECTOR_NAV_ITEM = '.nav-item'
@@ -64,6 +67,7 @@ const SELECTOR_OVERFLOW_MENU = '.nav-overflow-menu'
 const SELECTOR_CUSTOM_ICON = '[data-bs-overflow-icon], [data-tblr-overflow-icon]'
 const SELECTOR_MENU = '.dropdown-menu'
 const SELECTOR_MENU_TOGGLE = '[data-bs-toggle="dropdown"], [data-tblr-toggle="dropdown"]'
+const SELECTOR_ANY_TOGGLE = '[data-bs-toggle], [data-tblr-toggle]'
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="nav-overflow"], [data-tblr-toggle="nav-overflow"]'
 
 const DEFAULT_TEXT = 'More'
@@ -103,6 +107,8 @@ class NavOverflow extends BaseComponent {
   _overflowMenu: HTMLElement | null
   _overflowToggle: HTMLElement | null
   _ownsToggle: boolean
+  _ownsClass: boolean
+  _clones: Map<HTMLElement, HTMLElement>
   _resizeObserver: ResizeObserver | null
   _resizeHandler: (() => void) | null
   _collapseBelow: number
@@ -125,6 +131,8 @@ class NavOverflow extends BaseComponent {
     this._overflowMenu = null
     this._overflowToggle = null
     this._ownsToggle = false
+    this._ownsClass = false
+    this._clones = new Map()
     this._resizeObserver = null
     this._resizeHandler = null
     this._collapseBelow = 0
@@ -160,6 +168,7 @@ class NavOverflow extends BaseComponent {
       EventHandler.off(window, EVENT_RESIZE, this._resizeHandler)
     }
 
+    EventHandler.off(this._element, EVENT_KEY)
     this._restoreItems()
 
     if (this._ownsToggle) {
@@ -168,23 +177,29 @@ class NavOverflow extends BaseComponent {
 
     this._element.classList.remove(CLASS_NAME_INITIALIZED)
 
+    if (this._ownsClass) {
+      this._element.classList.remove(CLASS_NAME_OVERFLOW)
+    }
+
     super.dispose()
   }
 
   // Private
   _init(): void {
+    this._ownsClass = !this._element.classList.contains(CLASS_NAME_OVERFLOW)
     this._element.classList.add(CLASS_NAME_OVERFLOW)
 
     this._items = SelectorEngine.find(SELECTOR_NAV_ITEM, this._nav).filter((item) => item.parentElement === this._nav && !item.querySelector(SELECTOR_OVERFLOW_TOGGLE))
 
-    for (const [index, item] of this._items.entries()) {
-      item.dataset.bsNavOrder = String(index)
-
+    for (const item of this._items) {
       const link = SelectorEngine.findOne(SELECTOR_NAV_LINK, item)
       if (link?.matches(SELECTOR_MENU_TOGGLE)) {
         this._findItemMenu(item, link)
       }
     }
+
+    // Tabs switch on the original link, so copy the new state to the menu
+    EventHandler.on(this._element, `${EVENT_TAB_SHOWN}${EVENT_KEY}`, () => this._syncStates())
 
     this._collapseBelow = this._resolveCollapseBelow()
     this._createOverflowMenu()
@@ -418,8 +433,7 @@ class NavOverflow extends BaseComponent {
       return hasSubmenu
     }
 
-    this._overflowMenu.replaceChildren()
-    this._overflowItems = []
+    this._clearMenu()
 
     for (const item of items) {
       const link = SelectorEngine.findOne(SELECTOR_NAV_LINK, item)
@@ -433,7 +447,7 @@ class NavOverflow extends BaseComponent {
         this._overflowMenu.append(this._relocateAsSubmenu(item, link, menu))
         hasSubmenu = true
       } else {
-        this._overflowMenu.append(this._cloneAsMenuItem(link))
+        this._overflowMenu.append(this._cloneAsProxy(link))
       }
 
       this._overflowItems.push(item)
@@ -461,13 +475,49 @@ class NavOverflow extends BaseComponent {
     return submenu
   }
 
+  // A link that drives a plugin, like a tab, acts through the original, which holds the state
+  _cloneAsProxy(link: HTMLElement): HTMLElement {
+    const clonedLink = this._cloneAsMenuItem(link)
+
+    if (link.matches(SELECTOR_ANY_TOGGLE)) {
+      this._removeDataAttributes(clonedLink)
+
+      EventHandler.on(clonedLink, EVENT_CLICK, (event: Event) => {
+        event.preventDefault()
+        link.click()
+        this._syncStates()
+      })
+    }
+
+    return clonedLink
+  }
+
+  _removeDataAttributes(element: HTMLElement): void {
+    for (const name of element.getAttributeNames()) {
+      if ((name.startsWith('data-bs-') || name.startsWith('data-tblr-')) && !name.endsWith('-theme')) {
+        element.removeAttribute(name)
+      }
+    }
+  }
+
+  _isActive(link: HTMLElement): boolean {
+    return link.classList.contains(CLASS_NAME_ACTIVE) || Boolean(link.closest(SELECTOR_NAV_ITEM)?.classList.contains(CLASS_NAME_ACTIVE))
+  }
+
+  _syncStates(): void {
+    for (const [clonedLink, link] of this._clones) {
+      clonedLink.classList.toggle(CLASS_NAME_ACTIVE, this._isActive(link))
+    }
+  }
+
   _cloneAsMenuItem(link: HTMLElement, submenu = false): HTMLElement {
     const clonedLink = link.cloneNode(true) as HTMLElement
     clonedLink.className = 'dropdown-item'
     clonedLink.removeAttribute('id')
+    this._clones.set(clonedLink, link)
 
-    if (link.classList.contains('active') || link.closest(SELECTOR_NAV_ITEM)?.classList.contains('active')) {
-      clonedLink.classList.add('active')
+    if (this._isActive(link)) {
+      clonedLink.classList.add(CLASS_NAME_ACTIVE)
     }
 
     if (link.classList.contains('disabled') || link.hasAttribute('disabled')) {
@@ -475,11 +525,7 @@ class NavOverflow extends BaseComponent {
     }
 
     if (submenu) {
-      for (const name of clonedLink.getAttributeNames()) {
-        if ((name.startsWith('data-bs-') || name.startsWith('data-tblr-')) && !name.endsWith('-theme')) {
-          clonedLink.removeAttribute(name)
-        }
-      }
+      this._removeDataAttributes(clonedLink)
 
       clonedLink.classList.add('dropdown-toggle')
       clonedLink.removeAttribute('href')
@@ -558,8 +604,34 @@ class NavOverflow extends BaseComponent {
     this._restoreRelocatedMenus()
     this._setHidden([], this._overflowToggle?.closest<HTMLElement>(SELECTOR_NAV_ITEM) ?? null, false)
 
+    this._clearMenu()
+  }
+
+  _clearMenu(): void {
+    for (const clonedLink of this._clones.keys()) {
+      EventHandler.off(clonedLink, EVENT_KEY)
+    }
+
+    this._clones.clear()
     this._overflowMenu?.replaceChildren()
     this._overflowItems = []
+  }
+
+  // Static
+  static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
+    return this.each(function (this: HTMLElement) {
+      const data = NavOverflow.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>
+
+      if (typeof config !== 'string') {
+        return
+      }
+
+      if (data[config] === undefined || config.startsWith('_') || config === 'constructor') {
+        throw new TypeError(`No method named "${config}"`)
+      }
+
+      data[config]()
+    })
   }
 }
 
@@ -574,5 +646,11 @@ onDOMContentLoaded(() => {
   }
 })
 // js-docs-end nav-overflow-init
+
+/**
+ * jQuery
+ */
+
+defineJQueryPlugin(NavOverflow)
 
 export default NavOverflow

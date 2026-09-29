@@ -100,13 +100,15 @@ describe('NavOverflow', () => {
       expect(toggle.nextElementSibling).toHaveClass('dropdown-menu-end')
     })
 
-    it('should store order data on nav items', () => {
-      fixtureEl.innerHTML = nav(1000, links(3))
+    it('should add the wrapper class and remove it on dispose when it was missing', () => {
+      fixtureEl.innerHTML = `${STYLE}<div id="bare" style="width: 1000px"><ul class="nav">${links(3)}</ul></div>`
 
-      new NavOverflow(wrapper())
+      const bare = fixtureEl.querySelector<HTMLElement>('#bare')!
+      const navOverflow = new NavOverflow(bare)
+      expect(bare).toHaveClass('nav-overflow')
 
-      const orders = [...fixtureEl.querySelectorAll<HTMLElement>('.nav > .nav-item:not(.nav-overflow-item)')].map((item) => item.dataset.bsNavOrder)
-      expect(orders).toEqual(['0', '1', '2'])
+      navOverflow.dispose()
+      expect(bare).not.toHaveClass('nav-overflow')
     })
   })
 
@@ -459,6 +461,60 @@ describe('NavOverflow', () => {
       const menu = fixtureEl.querySelector('#products-menu')!
       expect(menu.previousElementSibling!.id).toEqual('products')
       expect(fixtureEl.querySelector('.nav-overflow-menu .dropstart')).toBeNull()
+    })
+  })
+
+  describe('proxy links', () => {
+    const tabs = (): string => links(6, { 5: '<li class="nav-item"><a class="nav-link" id="last" href="#pane" data-bs-toggle="tab">Last</a></li>' })
+
+    it('should send a click on a moved plugin link to the original', () => {
+      fixtureEl.innerHTML = nav(360, tabs())
+
+      new NavOverflow(wrapper())
+      const original = fixtureEl.querySelector<HTMLElement>('#last')!
+      const spy = vi.fn()
+      original.addEventListener('click', spy)
+
+      const cloned = menuItems().at(-1)!
+      expect(cloned.hasAttribute('data-bs-toggle')).toBe(false)
+
+      cloned.click()
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should copy the active state to the menu after the click', () => {
+      fixtureEl.innerHTML = nav(360, tabs())
+
+      new NavOverflow(wrapper())
+      const original = fixtureEl.querySelector<HTMLElement>('#last')!
+      original.addEventListener('click', () => original.classList.add('active'))
+
+      const cloned = menuItems().at(-1)!
+      cloned.click()
+
+      expect(cloned).toHaveClass('active')
+    })
+
+    it('should keep plain links as they are', () => {
+      fixtureEl.innerHTML = nav(360, links(6))
+
+      new NavOverflow(wrapper())
+
+      expect(menuItems().at(-1)!.getAttribute('href')).toEqual('#')
+    })
+  })
+
+  describe('jQueryInterface', () => {
+    it('should create an instance and call a method', () => {
+      fixtureEl.innerHTML = nav(1000, links(3))
+
+      const element = wrapper()
+      const collection = { each: (callback: (this: HTMLElement) => void) => callback.call(element) }
+
+      NavOverflow.jQueryInterface.call(collection as never, 'update')
+
+      expect(NavOverflow.getInstance(element)).not.toBeNull()
+      expect(() => NavOverflow.jQueryInterface.call(collection as never, 'nope')).toThrow(TypeError)
     })
   })
 

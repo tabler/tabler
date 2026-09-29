@@ -53,6 +53,8 @@ How it works:
 - The component watches the size of the wrapper, not of the window. It works in a card, a sidebar or any container that changes width.
 - It measures the wrapper, not the nav. Moving items changes the width of the nav, so measuring the nav would feed the result back in.
 - Moved items are copied into the menu as `.dropdown-item`, and the originals are hidden. The `.active` and `.disabled` states are copied too.
+- A link with `data-bs-toggle`, like a tab, works from the menu. The copy sends the click to the original link, and the `.active` state follows.
+- Until the script runs, the nav is clipped to one line but stays visible, so it still works without JavaScript.
 - It works with every nav style: plain, `.nav-pills`, `.nav-tabs` and `.nav-underline`.
 - It also works with the `.navbar-nav` of a navbar. A vertical nav, like the collapsed navbar on a phone, keeps every item visible.
 
@@ -229,6 +231,11 @@ document.querySelector('.nav-overflow').addEventListener('overflow.bs.navoverflo
   console.log(`${event.overflowCount} items in the menu, ${event.visibleCount} visible`);
 });
 ```
+
+## Limitations
+
+- An event listener added to a plain nav link is not copied to the menu. Add the listener to the nav or to the wrapper and check `event.target`, so it works for both.
+- A plain link in the menu keeps its `href`, but not its `id`.
 
 ## Accessibility
 
