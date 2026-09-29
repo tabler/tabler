@@ -100,6 +100,8 @@ type ComponentConfig = {
   selectedDates: string[]
   selectionMode: DateMode
   placement: PositionToInput
+  /** show the ISO week number in front of each row */
+  weekNumbers: boolean
   /** pass-through for any Vanilla Calendar Pro option */
   vcpOptions: object
 }
@@ -122,6 +124,7 @@ const Default: ComponentConfig = {
   selectedDates: [],
   selectionMode: 'single',
   placement: 'left',
+  weekNumbers: false,
   vcpOptions: {},
 }
 
@@ -139,6 +142,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   selectedDates: 'array',
   selectionMode: 'string',
   placement: 'string',
+  weekNumbers: 'boolean',
   vcpOptions: 'object',
 }
 
@@ -605,6 +609,7 @@ class Datepicker extends BaseComponent {
       selectionDatesMode: this._config.selectionMode,
       selectedDates: this._config.selectedDates,
       displayMonthsCount: this._config.displayMonthsCount,
+      enableWeekNumbers: this._config.weekNumbers || Boolean(vcpOptions.enableWeekNumbers),
       type: this._config.displayMonthsCount > 1 ? 'multiple' : 'default',
       selectedTheme: vcpTheme,
       themeAttrDetect: '[data-bs-theme]',

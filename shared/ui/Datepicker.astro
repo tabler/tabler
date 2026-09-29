@@ -25,6 +25,8 @@ interface Props {
   /** 0 = Sunday, 1 = Monday */
   firstWeekday?: 0 | 1 | 2 | 3 | 4 | 5 | 6
   placement?: 'left' | 'center' | 'right' | 'auto'
+  /** show the week number in front of each row */
+  weekNumbers?: boolean
   /** name of the hidden input an inline calendar submits with a form */
   name?: string
 }
@@ -43,6 +45,7 @@ const {
   dateMax,
   firstWeekday,
   placement,
+  weekNumbers = false,
   name,
 } = Astro.props
 
@@ -58,6 +61,7 @@ const dataAttributes = {
   'data-bs-date-max': dateMax,
   'data-bs-first-weekday': firstWeekday,
   'data-bs-placement': placement,
+  'data-bs-week-numbers': weekNumbers ? 'true' : undefined,
 }
 
 ---
