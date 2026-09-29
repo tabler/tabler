@@ -42,7 +42,7 @@ Color picker
     @include border-radius(var(--colorpicker-swatch-border-radius));
   }
 
-  .form-control {
+  > .form-control {
     padding-inline-start: calc(var(--colorpicker-swatch-size) * 5 / 3);
   }
 }
@@ -60,6 +60,18 @@ Color picker
   box-shadow: inset 0 0 0 1px var(--border-color-translucent);
   @include colorpicker-fill();
   @include border-radius(var(--colorpicker-swatch-border-radius));
+}
+
+// In a button the swatch is sized and spaced like an icon, so the button
+// keeps its height and needs no spacing utility
+.btn .colorpicker-preview {
+  --colorpicker-swatch-size: var(--btn-icon-size);
+  margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
+  vertical-align: bottom;
+}
+
+.btn-icon .colorpicker-preview {
+  margin: calc(-1 * var(--btn-padding-x));
 }
 
 //
@@ -105,6 +117,7 @@ Color picker
 .colorpicker-panel-inline {
   position: static;
   z-index: auto;
+  margin-block-start: 0.5rem;
   border: var(--border-width) var(--border-style) var(--border-color);
   box-shadow: none;
 }
@@ -182,12 +195,14 @@ Color picker
 .colorpicker-alpha {
   --colorpicker-track: linear-gradient(to right, transparent, var(--colorpicker-color));
 
+  // The thumb takes the colour without its alpha, or it would fade out
+  // together with the value it sets
   &::-webkit-slider-thumb {
-    background-color: var(--colorpicker-value);
+    background-color: var(--colorpicker-color);
   }
 
   &::-moz-range-thumb {
-    background-color: var(--colorpicker-value);
+    background-color: var(--colorpicker-color);
   }
 }
 

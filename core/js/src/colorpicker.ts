@@ -113,6 +113,7 @@ const CLASS_NAME_CLOSE = `${NAME}-close`
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 const SELECTOR_WRAPPER = `.${NAME}`
 const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
+const SELECTOR_DISPLAY = `[data-bs-${NAME}-display], [data-tblr-${NAME}-display]`
 const SELECTOR_FOCUSABLE = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex="0"]'
 
 // Shipped (`--tblr-`-prefixed) custom properties. The build prefixes the SCSS
@@ -217,6 +218,7 @@ class Colorpicker extends BaseComponent {
   _isInput = false
   _input: HTMLInputElement | null = null
   _wrapper: HTMLElement | null = null
+  _displayElement: HTMLElement | null = null
   _panel: HTMLElement | null = null
   _area: HTMLElement | null = null
   _marker: HTMLElement | null = null
@@ -292,6 +294,7 @@ class Colorpicker extends BaseComponent {
     panel.classList.add(CLASS_NAME_SHOW)
     this._popper = Popper.createPopper(this._getPositionElement(), panel, this._getPopperConfig())
     this._isShown = true
+    this._element.setAttribute('aria-expanded', 'true')
 
     EventHandler.on(document, EVENT_CLICK, this._onDocumentClick)
     EventHandler.on(document, EVENT_FOCUSIN, this._onDocumentFocusIn)
@@ -315,6 +318,7 @@ class Colorpicker extends BaseComponent {
     this._popper?.destroy()
     this._popper = null
     this._isShown = false
+    this._element.setAttribute('aria-expanded', 'false')
 
     EventHandler.off(document, EVENT_CLICK, this._onDocumentClick)
     EventHandler.off(document, EVENT_FOCUSIN, this._onDocumentFocusIn)
@@ -392,6 +396,12 @@ class Colorpicker extends BaseComponent {
     this._isInput = this._element.tagName === 'INPUT'
     this._input = this._isInput ? (this._element as HTMLInputElement) : (SelectorEngine.findOne(SELECTOR_BOUND_INPUT, this._element) as HTMLInputElement | null)
     this._wrapper = this._element.closest<HTMLElement>(SELECTOR_WRAPPER)
+    this._displayElement = this._isInput ? null : SelectorEngine.findOne(SELECTOR_DISPLAY, this._element)
+
+    if (!this._config.inline) {
+      this._element.setAttribute('aria-haspopup', 'dialog')
+      this._element.setAttribute('aria-expanded', 'false')
+    }
     this._format = this._config.format === 'auto' ? 'hex' : this._config.format
 
     const initial = this._input?.value || this._config.value || ''
@@ -421,7 +431,9 @@ class Colorpicker extends BaseComponent {
       const panel = this._getPanel()
       panel.classList.add(CLASS_NAME_PANEL_INLINE, CLASS_NAME_SHOW)
       if (this._isInput) {
-        this._element.after(panel)
+        // After the wrapper, not inside it: the wrapper centres the swatch on
+        // its own height and pads its `.form-control`, which must stay the field's
+        ;(this._wrapper ?? this._element).after(panel)
       } else {
         this._element.append(panel)
       }
@@ -484,12 +496,17 @@ class Colorpicker extends BaseComponent {
     }
 
     const footer = create('div', CLASS_NAME_FOOTER)
-    this._valueInput = create('input', `form-control form-control-sm ${CLASS_NAME_INPUT}`, { 'type': 'text', 'spellcheck': 'false', 'autocomplete': 'off', 'aria-label': labels.input })
-    footer.append(this._valueInput)
-    EventHandler.on(this._valueInput, EVENT_INPUT, () => this._handlePanelInput())
-    EventHandler.on(this._valueInput, EVENT_NATIVE_CHANGE, () => this._render())
 
-    if (formatToggle) {
+    // A fixed list of colours leaves nothing to type: the value field and the
+    // notation select would let the user leave the list.
+    if (!swatchesOnly) {
+      this._valueInput = create('input', `form-control form-control-sm ${CLASS_NAME_INPUT}`, { 'type': 'text', 'spellcheck': 'false', 'autocomplete': 'off', 'aria-label': labels.input })
+      footer.append(this._valueInput)
+      EventHandler.on(this._valueInput, EVENT_INPUT, () => this._handlePanelInput())
+      EventHandler.on(this._valueInput, EVENT_NATIVE_CHANGE, () => this._render())
+    }
+
+    if (formatToggle && !swatchesOnly) {
       this._formatSelect = create('select', `form-select form-select-sm ${CLASS_NAME_FORMAT}`, { 'aria-label': labels.format })
       for (const format of FORMATS) {
         const option = document.createElement('option')
@@ -519,7 +536,10 @@ class Colorpicker extends BaseComponent {
       footer.append(button)
     }
 
-    panel.append(footer)
+    if (footer.childElementCount > 0) {
+      panel.append(footer)
+    }
+
     EventHandler.on(panel, EVENT_KEYDOWN, (event: KeyboardEvent) => this._handlePanelKeydown(event))
 
     this._panel = panel
@@ -623,6 +643,12 @@ class Colorpicker extends BaseComponent {
   /** The swatch in the field and the button variant read the value from this custom property. */
   _writePreview(): void {
     const target = this._wrapper ?? this._element
+
+    // An empty value leaves the display element with the text from the markup
+    if (this._displayElement && !this._isEmpty) {
+      this._displayElement.textContent = this.getValue()
+    }
+
     if (this._isEmpty) {
       target.style.removeProperty(PROPERTY_VALUE)
       return

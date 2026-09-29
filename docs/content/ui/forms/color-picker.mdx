@@ -105,7 +105,7 @@ The panel shows the Tabler palette by default, read from the `--tblr-*` custom p
 
 ### Swatches only
 
-Set `data-bs-swatches-only="true"` to hide the gradient and the sliders. Users can then pick only from your list. Use it when a design system allows a fixed set of colors.
+Set `data-bs-swatches-only="true"` to hide the gradient, the sliders and the value field in the panel. Users can then pick only from your list. Use it when a design system allows a fixed set of colors.
 
 <Example>
 <div class="colorpicker">
@@ -130,14 +130,23 @@ Any element other than an input opens the panel on click. Put a hidden input ins
 <Example>
 <button type="button" class="btn" data-bs-toggle="colorpicker">
   <input type="hidden" name="brand-color" value="#066fd1" />
-  <span class="colorpicker-preview me-2"></span>
+  <span class="colorpicker-preview"></span>
   Brand color
+</button>
+</Example>
+
+Add an element with `data-bs-colorpicker-display` to show the value as text. It keeps its own text while nothing is picked.
+
+<Example>
+<button type="button" class="btn" data-bs-toggle="colorpicker" data-bs-value="#2fb344">
+  <span class="colorpicker-preview"></span>
+  <span data-bs-colorpicker-display>Pick a color</span>
 </button>
 </Example>
 
 ### Inline panel
 
-Set `data-bs-inline="true"` to render the panel in place, right after the field. It is always open, so use it in a settings page or a sidebar where the picker is the main content.
+Set `data-bs-inline="true"` to render the panel in place, right under the field. It is always open, so use it in a settings page or a sidebar where the picker is the main content.
 
 <Example>
 <div class="colorpicker">
@@ -196,7 +205,7 @@ const colorpicker = new tabler.Colorpicker(document.getElementById('my-color'), 
 | `format` | string | `'hex'` | Notation written to the field: `'hex'`, `'rgb'`, `'hsl'`, `'oklch'` or `'auto'`. |
 | `alpha` | boolean | `false` | Show the opacity slider and keep the alpha channel. |
 | `swatches` | array | `null` | Preset colors. `null` reads the Tabler palette from the CSS custom properties. |
-| `swatchesOnly` | boolean | `false` | Hide the gradient and the sliders. |
+| `swatchesOnly` | boolean | `false` | Hide the gradient, the sliders, the value field and the format select, leaving the swatches. |
 | `formatToggle` | boolean | `false` | Add a select to switch the notation in the panel. |
 | `clearButton` | boolean | `false` | Add a button that empties the field. |
 | `closeButton` | boolean | `false` | Add a button that closes the panel. |
@@ -245,6 +254,7 @@ document.getElementById('my-color').addEventListener('change.bs.colorpicker', (e
 - Always add a `<label>` linked to the input with `for` and `id`. The swatch alone does not say what the field is for.
 - Keep the text value visible. Users who cannot tell colors apart can still read and type the value.
 - Do not use the color as the only meaning. If a color marks a status, repeat the status in text.
+- The field or button gets `aria-haspopup="dialog"` and `aria-expanded`, kept in sync with the panel.
 - The panel is a `role="dialog"`. <kbd>Tab</kbd> from the field moves into it, the arrow keys move the handle in the gradient (<kbd>Shift</kbd> for bigger steps), the sliders are native range inputs, and <kbd>Escape</kbd> closes the panel and returns focus to the field.
 - The panel closes on a click outside and when focus moves to something outside it, so keyboard users are never trapped.
 
