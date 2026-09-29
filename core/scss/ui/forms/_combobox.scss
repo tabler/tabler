@@ -21,14 +21,23 @@
 }
 
 .combobox-has-tags {
-  padding-block: calc(#{$input-padding-y} - (#{$tag-height} - 1lh) / 2);
+  --combobox-content-height: #{$tag-height};
+}
+
+.combobox-has-indicator {
+  --combobox-content-height: var(--dropdown-item-icon-size);
+}
+
+.combobox-has-tags,
+.combobox-has-indicator {
+  padding-block: calc(#{$input-padding-y} - max(0px, (var(--combobox-content-height) - 1lh) / 2));
 
   &.form-select-sm {
-    padding-block: calc(#{$input-padding-y-sm} - (#{$tag-height} - 1lh) / 2);
+    padding-block: calc(#{$input-padding-y-sm} - max(0px, (var(--combobox-content-height) - 1lh) / 2));
   }
 
   &.form-select-lg {
-    padding-block: calc(#{$input-padding-y-lg} - (#{$tag-height} - 1lh) / 2);
+    padding-block: calc(#{$input-padding-y-lg} - max(0px, (var(--combobox-content-height) - 1lh) / 2));
   }
 }
 

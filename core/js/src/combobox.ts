@@ -66,6 +66,7 @@ const CLASS_NAME_SELECTED = 'selected'
 const CLASS_NAME_PLACEHOLDER = 'combobox-placeholder'
 const CLASS_NAME_TAGS = 'combobox-tags'
 const CLASS_NAME_HAS_TAGS = 'combobox-has-tags'
+const CLASS_NAME_HAS_INDICATOR = 'combobox-has-indicator'
 const CLASS_NAME_TAGS_WRAP = 'combobox-tags-wrap'
 const CLASS_NAME_TAG_MORE = 'combobox-tag-more'
 const CLASS_NAME_HIDDEN = 'd-none'
@@ -646,6 +647,7 @@ class Combobox extends BaseComponent {
     this._valueDisplay.classList.toggle(CLASS_NAME_TAGS, this._isMultipleTags())
     this._valueDisplay.classList.toggle(CLASS_NAME_TAGS_WRAP, this._isMultipleTags() && this._config.tagsOverflow === 'wrap')
     this._toggle.classList.toggle(CLASS_NAME_HAS_TAGS, this._isMultipleTags())
+    this._toggle.classList.remove(CLASS_NAME_HAS_INDICATOR)
 
     if (this._isMultipleTags()) {
       this._valueDisplay.replaceChildren(...selectedItems.map((item) => this._createTag(item)))
@@ -655,6 +657,7 @@ class Combobox extends BaseComponent {
       this._layoutList(selectedItems.map((item) => this._getItemLabel(item)))
     } else {
       this._valueDisplay.replaceChildren(...this._labelNodes(selectedItems[0]))
+      this._toggle.classList.toggle(CLASS_NAME_HAS_INDICATOR, this._valueDisplay.querySelector(SELECTOR_ITEM_INDICATOR) !== null)
     }
   }
 
@@ -730,7 +733,7 @@ class Combobox extends BaseComponent {
 
   _showPlaceholder(): void {
     this._valueDisplay.classList.remove(CLASS_NAME_TAGS)
-    this._toggle.classList.remove(CLASS_NAME_HAS_TAGS)
+    this._toggle.classList.remove(CLASS_NAME_HAS_TAGS, CLASS_NAME_HAS_INDICATOR)
     this._valueDisplay.classList.add(CLASS_NAME_PLACEHOLDER)
     this._valueDisplay.replaceChildren(this._config.placeholder)
   }
