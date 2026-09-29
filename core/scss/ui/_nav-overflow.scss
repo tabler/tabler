@@ -1,0 +1,47 @@
+@use '../config' as *;
+
+// The wrapper is measured, so it must never size to the nav inside it
+.nav-overflow {
+  contain: inline-size;
+  flex: 1 1 0;
+  min-width: 0;
+
+  &:not(.nav-overflow-initialized) {
+    overflow: clip;
+
+    > .nav {
+      visibility: hidden;
+    }
+  }
+
+  > .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    min-width: 0;
+
+    > .nav-item {
+      flex-shrink: 0;
+    }
+  }
+
+  [data-bs-nav-overflow='true'] {
+    display: none;
+  }
+}
+
+.nav-overflow-item {
+  margin-inline-start: auto;
+}
+
+.nav-overflow-toggle {
+  gap: var(--nav-link-icon-margin-end);
+}
+
+.nav-overflow-icon {
+  display: flex;
+
+  .icon {
+    width: var(--nav-link-icon-width, #{$nav-link-icon-size});
+    height: var(--nav-link-icon-height, #{$nav-link-icon-size});
+  }
+}

@@ -1,0 +1,128 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+
+const links = ['Home', 'Dashboard', 'Products', 'Services', 'Analytics', 'Reports', 'Settings', 'Help']
+---
+
+<DefaultLayout title="Nav overflow" pageMenu="base.nav-overflow" description="Nav overflow moves nav items that do not fit into a More dropdown.">
+  <DocsLink slot="page-header-actions" path="/ui/components/nav-overflow" />
+
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Pills</CardTitle>
+          <CardSubtitle>Wrap a <code>.nav</code> in <code>.nav-overflow</code> with <code>data-bs-toggle="nav-overflow"</code>.</CardSubtitle>
+          <div class="nav-overflow" data-bs-toggle="nav-overflow">
+            <ul class="nav nav-pills">
+              {
+                links.map((link, index) => (
+                  <li class="nav-item">
+                    <a class:list={['nav-link', index === 0 && 'active']} aria-current={index === 0 ? 'page' : undefined} href="#">
+                      {link}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Tabs</CardTitle>
+          <CardSubtitle>Works with <code>.nav-tabs</code> and keeps <code>.active</code> and <code>.disabled</code> in the menu.</CardSubtitle>
+          <div class="nav-overflow" data-bs-toggle="nav-overflow">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Overview</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Details</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">History</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Activity</a></li>
+              <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Comments</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Attachments</a></li>
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Keep items visible</CardTitle>
+          <CardSubtitle>Add <code>.nav-overflow-keep</code> to items that must never move to the menu.</CardSubtitle>
+          <div class="nav-overflow" data-bs-toggle="nav-overflow">
+            <ul class="nav nav-underline">
+              <li class="nav-item nav-overflow-keep"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+              <li class="nav-item nav-overflow-keep"><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>With dropdowns</CardTitle>
+          <CardSubtitle>A nav item with a dropdown becomes a nested <code>.dropend</code> in the menu.</CardSubtitle>
+          <div class="nav-overflow" data-bs-toggle="nav-overflow">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">Products</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Laptops</a>
+                  <a class="dropdown-item" href="#">Phones</a>
+                  <a class="dropdown-item" href="#">Tablets</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">Company</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">About</a>
+                  <a class="dropdown-item" href="#">Careers</a>
+                  <a class="dropdown-item" href="#">Press</a>
+                </div>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Icon-only toggle</CardTitle>
+          <CardSubtitle>Set <code>data-bs-more-text="false"</code> to show only the icon.</CardSubtitle>
+          <div class="nav-overflow" data-bs-toggle="nav-overflow" data-bs-more-text="false">
+            <ul class="nav nav-pills">
+              {
+                links.map((link, index) => (
+                  <li class="nav-item">
+                    <a class:list={['nav-link', index === 0 && 'active']} aria-current={index === 0 ? 'page' : undefined} href="#">
+                      {link}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
