@@ -114,7 +114,7 @@
 
 .otp-input:disabled ~ .otp-slots .otp-slot {
   color: var(--disabled-color);
-  background-color: $input-disabled-bg;
+  background-color: #{var-if-default($input-disabled-bg, var(--bg-forms-disabled), '--control-disabled-bg')};
 }
 
 // Zero gap with shared, merged borders; only the first and last slot keep a
@@ -149,12 +149,12 @@
 }
 
 .otp-sm {
-  --otp-size: #{$input-height-sm};
+  --otp-size: #{input-height-token('sm')};
   --otp-font-size: #{$input-font-size-sm};
 }
 
 .otp-lg {
-  --otp-size: #{$input-height-lg};
+  --otp-size: #{input-height-token('lg')};
   --otp-font-size: #{$input-font-size-lg};
 }
 
