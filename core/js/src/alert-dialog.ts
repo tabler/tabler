@@ -1,13 +1,15 @@
 import { Modal } from './bootstrap'
 
+const VARIANTS = ['primary', 'secondary', 'success', 'info', 'warning', 'danger'] as const
+
 export type AlertDialogOptions = {
   title?: string
   message?: string
   confirmText?: string
   cancelText?: string
-  variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'
+  variant?: (typeof VARIANTS)[number]
   focus?: 'confirm' | 'cancel'
-  icon?: string
+  icon?: string | Element
   align?: 'center' | 'start'
 }
 
@@ -19,29 +21,60 @@ const ICONS: Record<string, string> = {
   'help-circle': 'M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0M12 16v.01M12 13a2 2 0 0 0 .914-3.782a1.98 1.98 0 0 0-2.414.483',
 }
 
-const iconHtml = (icon: string, variant: string): string => {
-  const svg = icon.startsWith('<') ? icon : `<svg class="icon icon-lg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[icon] ?? ''}"/></svg>`
-  return `<span class="avatar avatar-lg bg-${variant}-lt flex-shrink-0">${svg}</span>`
+const SVG_NS = 'http://www.w3.org/2000/svg'
+
+const createIcon = (icon: string | Element, variant: string): HTMLElement => {
+  const badge = document.createElement('span')
+  badge.className = 'avatar avatar-lg flex-shrink-0'
+  badge.classList.add(`bg-${variant}-lt`)
+
+  if (icon instanceof Element) {
+    badge.append(icon.cloneNode(true))
+    return badge
+  }
+
+  const svg = document.createElementNS(SVG_NS, 'svg')
+  const path = document.createElementNS(SVG_NS, 'path')
+  const attributes = { 'class': 'icon icon-lg', 'width': '24', 'height': '24', 'viewBox': '0 0 24 24', 'fill': 'none', 'stroke': 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+  for (const [name, value] of Object.entries(attributes)) {
+    svg.setAttribute(name, value)
+  }
+  path.setAttribute('d', ICONS[icon] ?? '')
+  svg.append(path)
+  badge.append(svg)
+  return badge
 }
 
 let counter = 0
+let queue: Promise<unknown> = Promise.resolve()
 
-const open = (input: string | AlertDialogOptions, withCancel: boolean): Promise<boolean> =>
+const waitForOpenModal = (): Promise<void> =>
+  new Promise((resolve) => {
+    const openModal = document.querySelector('.modal.show')
+    if (!openModal) {
+      resolve()
+      return
+    }
+    openModal.addEventListener('hidden.bs.modal', () => resolve(), { once: true })
+  })
+
+const show = (input: string | AlertDialogOptions, withCancel: boolean): Promise<boolean> =>
   new Promise((resolve) => {
     const { title = withCancel ? 'Are you sure?' : 'Notice', message = '', confirmText = 'OK', cancelText = 'Cancel', variant = 'primary', focus = 'confirm', icon = '', align = 'center' } = typeof input === 'string' ? { title: input } : input
+    const color = VARIANTS.includes(variant) ? variant : 'primary'
     const id = `tblr-alert-dialog-${++counter}`
     const root = document.createElement('div')
     const start = align === 'start'
-    const media = icon ? iconHtml(icon, variant) : ''
-    const text = `<h3 id="${id}-title"></h3><div id="${id}-description" class="text-secondary"></div>`
     const btn = start ? 'btn' : 'btn w-100'
-    const cancel = withCancel ? `<div class="col${start ? '-auto' : ''}"><button type="button" class="${btn}" data-cancel></button></div>` : ''
+    const col = start ? 'col-auto' : 'col'
+    const cancel = withCancel ? `<div class="${col}"><button type="button" class="${btn}" data-cancel></button></div>` : ''
+    const opener = document.activeElement as HTMLElement | null
 
     root.className = 'modal modal-blur fade'
     root.tabIndex = -1
     root.setAttribute('aria-labelledby', `${id}-title`)
     root.setAttribute('aria-describedby', `${id}-description`)
-    root.innerHTML = `<div class="modal-dialog ${start ? '' : 'modal-sm '}modal-dialog-centered" style="transition-duration: 0.15s"><div class="modal-content"><div class="modal-body py-4 ${start ? 'd-flex gap-3' : 'text-center'}">${start ? `${media}<div>${text}</div>` : `${media ? `<div class="mb-3">${media}</div>` : ''}${text}`}</div><div class="modal-footer" style="--tblr-modal-footer-padding-y: 0.375rem"><div class="row gx-2 ${start ? 'ms-auto' : 'w-100'}">${cancel}<div class="col${start ? '-auto' : ''}"><button type="button" class="${btn} btn-${variant}" data-confirm></button></div></div></div></div></div>`
+    root.innerHTML = `<div class="modal-dialog ${start ? '' : 'modal-sm '}modal-dialog-centered" style="transition-duration: 0.15s"><div class="modal-content"><div class="modal-body py-4 ${start ? 'd-flex gap-3' : 'text-center'}">${start ? '<div>' : ''}<h3 id="${id}-title"></h3><div id="${id}-description" class="text-secondary"></div>${start ? '</div>' : ''}</div><div class="modal-footer" style="--tblr-modal-footer-padding-y: 0.375rem"><div class="row gx-2 ${start ? 'ms-auto' : 'w-100'}">${cancel}<div class="${col}"><button type="button" class="${btn}" data-confirm></button></div></div></div></div></div>`
 
     const set = (selector: string, text: string) => {
       root.querySelector(selector)!.textContent = text
@@ -49,34 +82,76 @@ const open = (input: string | AlertDialogOptions, withCancel: boolean): Promise<
     set('h3', title)
     set(`#${id}-description`, message)
     set('[data-confirm]', confirmText)
+    root.querySelector('[data-confirm]')!.classList.add(`btn-${color}`)
     if (withCancel) {
       set('[data-cancel]', cancelText)
+    }
+
+    if (icon) {
+      const badge = createIcon(icon, color)
+      const body = root.querySelector('.modal-body')!
+      if (start) {
+        body.prepend(badge)
+      } else {
+        const wrapper = document.createElement('div')
+        wrapper.className = 'mb-3'
+        wrapper.append(badge)
+        body.prepend(wrapper)
+      }
     }
 
     document.body.append(root)
 
     const modal = new Modal(root, { backdrop: 'static', keyboard: true })
     let result = false
+    let isShown = false
+    let dismissRequested = false
+
+    const dismiss = () => {
+      if (isShown) {
+        modal.hide()
+      } else {
+        dismissRequested = true
+      }
+    }
 
     root.addEventListener('click', (event) => {
       const button = (event.target as Element).closest<HTMLElement>('[data-confirm], [data-cancel]')
       if (button) {
         result = 'confirm' in button.dataset
-        modal.hide()
+        dismiss()
+      }
+    })
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        dismiss()
       }
     })
     root.addEventListener('shown.bs.modal', () => {
+      isShown = true
       root.setAttribute('role', 'alertdialog')
       root.querySelector<HTMLElement>(focus === 'cancel' ? '[data-cancel]' : '[data-confirm]')?.focus()
+      if (dismissRequested) {
+        modal.hide()
+      }
     })
     root.addEventListener('hidden.bs.modal', () => {
       modal.dispose()
       root.remove()
+      if (opener?.isConnected) {
+        opener.focus()
+      }
       resolve(result)
     })
 
     modal.show()
   })
+
+const open = (input: string | AlertDialogOptions, withCancel: boolean): Promise<boolean> => {
+  const result = queue.then(waitForOpenModal).then(() => show(input, withCancel))
+  queue = result.catch(() => undefined)
+  return result
+}
 
 // js-docs-start alert-dialog-init
 const AlertDialog = {

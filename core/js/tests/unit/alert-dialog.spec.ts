@@ -73,11 +73,57 @@ describe('AlertDialog', () => {
     await promise
   })
 
-  it('accepts icon markup', async () => {
-    const promise = AlertDialog.alert({ title: 'Hi', icon: '<svg id="custom-icon"></svg>' })
+  it('accepts an icon element', async () => {
+    const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    icon.id = 'custom-icon'
+    const promise = AlertDialog.alert({ title: 'Hi', icon })
     const el = await shown()
-    expect(el.querySelector('#custom-icon')).not.toBeNull()
+    expect(el.querySelector('.avatar #custom-icon')).not.toBeNull()
     el.querySelector('button')!.click()
     await promise
+  })
+
+  it('does not put an unknown variant into the markup', async () => {
+    const promise = AlertDialog.confirm({ title: 'Hi', icon: 'trash', variant: 'x" onmouseover="alert(1)' as never })
+    const el = await shown()
+    expect(el.querySelector('[data-confirm]')?.className).toBe('btn w-100 btn-primary')
+    expect(el.querySelector('.avatar')?.className).toBe('avatar avatar-lg flex-shrink-0 bg-primary-lt')
+    expect(el.querySelector('[onmouseover]')).toBeNull()
+    el.querySelector<HTMLElement>('[data-cancel]')!.click()
+    await promise
+  })
+
+  it('opens dialogs one at a time', async () => {
+    const first = AlertDialog.confirm('First')
+    const second = AlertDialog.confirm('Second')
+    const el = await shown()
+    expect(el.querySelector('h3')?.textContent).toBe('First')
+    expect(document.querySelectorAll('.modal')).toHaveLength(1)
+    el.querySelector<HTMLElement>('[data-confirm]')!.click()
+    expect(await first).toBe(true)
+
+    const next = await shown()
+    expect(next.querySelector('h3')?.textContent).toBe('Second')
+    next.querySelector<HTMLElement>('[data-cancel]')!.click()
+    expect(await second).toBe(false)
+  })
+
+  it('settles when dismissed while it is still opening', async () => {
+    const promise = AlertDialog.confirm('Quick')
+    const button = await waitFor('[data-confirm]')
+    button.click()
+    expect(await promise).toBe(true)
+  })
+
+  it('returns focus to the opener', async () => {
+    const opener = document.createElement('button')
+    document.body.append(opener)
+    opener.focus()
+    const promise = AlertDialog.confirm('Focus')
+    const el = await shown()
+    expect(el.contains(document.activeElement)).toBe(true)
+    el.querySelector<HTMLElement>('[data-cancel]')!.click()
+    await promise
+    expect(document.activeElement).toBe(opener)
   })
 })
