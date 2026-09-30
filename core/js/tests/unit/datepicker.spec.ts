@@ -502,4 +502,99 @@ describe('Datepicker', () => {
       expect(input().value).toBe('not a date')
     })
   })
+
+  describe('format pattern and bound input', () => {
+    it('writes an ISO value with the iso keyword whatever the locale', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-locale="pl-PL" data-bs-date-format="iso" value="2026-09-30">'
+
+      const instance = new Datepicker(input())
+
+      expect(instance._config.dateFormat).toBe('iso')
+      expect(input().value).toBe('2026-09-30')
+      expect(instance._config.locale).toBe('pl-PL')
+    })
+
+    it('writes a token pattern from a data attribute', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-date-format="D/M/YYYY">'
+
+      const instance = new Datepicker(input())
+      instance.setSelectedDates(['2026-03-04'])
+
+      expect(input().value).toBe('4/3/2026')
+    })
+
+    it('joins a range written with a pattern', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+
+      const instance = new Datepicker(input(), { dateFormat: 'DD.MM.YYYY', selectionMode: 'multiple-ranged' })
+      instance.setSelectedDates(['2026-06-10', '2026-06-18'])
+
+      expect(input().value).toBe('10.06.2026 – 18.06.2026')
+    })
+
+    it('reads a value written with the pattern back', () => {
+      fixtureEl.innerHTML = '<input type="text" value="30.09.2026">'
+
+      const instance = new Datepicker(input(), { dateFormat: 'DD.MM.YYYY' })
+
+      expect(instance.getSelectedDates()).toEqual(['2026-09-30'])
+      expect(input().value).toBe('30.09.2026')
+    })
+
+    it('reads a range written with the pattern back', () => {
+      fixtureEl.innerHTML = '<input type="text" value="10.06.2026 – 18.06.2026">'
+
+      const instance = new Datepicker(input(), { dateFormat: 'DD.MM.YYYY', selectionMode: 'multiple-ranged' })
+
+      expect(instance.getSelectedDates()).toEqual(['2026-06-10', '2026-06-18'])
+    })
+
+    it('does not read a day that does not exist', () => {
+      fixtureEl.innerHTML = '<input type="text" value="31.02.2026">'
+
+      const instance = new Datepicker(input(), { dateFormat: 'DD.MM.YYYY' })
+
+      expect(instance.getSelectedDates()).toEqual([])
+      expect(input().value).toBe('31.02.2026')
+    })
+
+    it('still reads an ISO value with another pattern', () => {
+      fixtureEl.innerHTML = '<input type="text" value="2026-09-30">'
+
+      const instance = new Datepicker(input(), { dateFormat: 'DD.MM.YYYY' })
+
+      expect(instance.getSelectedDates()).toEqual(['2026-09-30'])
+      expect(input().value).toBe('30.09.2026')
+    })
+
+    it('writes ISO dates into a bound input next to a popup field', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due"><input type="hidden" id="due" name="due">'
+      const hidden = fixtureEl.querySelector<HTMLInputElement>('#due')!
+
+      const instance = new Datepicker(input())
+      instance.setSelectedDates(['2026-09-30'])
+
+      expect(input().value).toBe('30.09.2026')
+      expect(hidden.value).toBe('2026-09-30')
+    })
+
+    it('selects the dates of a bound input the server filled in', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due"><input type="hidden" id="due" name="due" value="2026-09-30">'
+
+      const instance = new Datepicker(input())
+
+      expect(instance.getSelectedDates()).toEqual(['2026-09-30'])
+      expect(input().value).toBe('30.09.2026')
+    })
+
+    it('leaves a bound input outside the element in place on dispose', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-bound-input="#due">Pick</button><input type="hidden" id="due" name="due">'
+      const hidden = fixtureEl.querySelector<HTMLInputElement>('#due')!
+
+      new Datepicker(fixtureEl.querySelector('button')!).dispose()
+
+      expect(hidden.parentElement).toBe(fixtureEl)
+      expect(fixtureEl.querySelector('button')!.contains(hidden)).toBe(false)
+    })
+  })
 })

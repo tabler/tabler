@@ -39,6 +39,8 @@ const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
 const HIDE_DELAY = 100 // ms delay before hiding after selection
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
+const FORMAT_TOKENS = /YYYY|MM|M|DD|D/g
+const ISO_FORMAT = 'YYYY-MM-DD'
 
 // Vanilla Calendar Pro 3.4 moved several months, the time picker, week
 // numbers, popups and animation into extensions that must be registered when
@@ -84,8 +86,13 @@ type ComponentConfig = {
   datepickerTheme: string | null
   dateMin: DateAny | null
   dateMax: DateAny | null
-  /** `Intl.DateTimeFormat` options, or a function(date, locale) returning the text shown in the field */
-  dateFormat: Intl.DateTimeFormatOptions | ((date: Date, locale: string | undefined) => string) | null
+  /** input that receives the picked dates as `YYYY-MM-DD`, comma-separated; an inline calendar finds a hidden one inside */
+  boundInput: string | HTMLInputElement | null
+  /**
+   * How the date is written into the field: a pattern such as `'DD.MM.YYYY'` (tokens `YYYY`, `MM`, `M`, `DD`, `D`),
+   * `'iso'`, `Intl.DateTimeFormat` options, or a function(date, locale) returning the text
+   */
+  dateFormat: string | Intl.DateTimeFormatOptions | ((date: Date, locale: string | undefined) => string) | null
   /** element that shows the formatted date; a button uses itself or its `[data-bs-datepicker-display]` child */
   displayElement: string | HTMLElement | boolean | null
   displayMonthsCount: MonthsCount
@@ -111,6 +118,7 @@ type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 type ChangeEventArgs = { dates: string[]; event: MouseEvent }
 
 const Default: ComponentConfig = {
+  boundInput: null,
   datepickerTheme: null,
   dateMin: null,
   dateMax: null,
@@ -129,10 +137,11 @@ const Default: ComponentConfig = {
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
+  boundInput: '(null|string|element)',
   datepickerTheme: '(null|string)',
   dateMin: '(null|string|number|object|date)',
   dateMax: '(null|string|number|object|date)',
-  dateFormat: '(null|object|function)',
+  dateFormat: '(null|string|object|function)',
   displayElement: '(null|string|element|boolean)',
   displayMonthsCount: 'number',
   firstWeekday: 'number',
@@ -144,6 +153,43 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   placement: 'string',
   weekNumbers: 'boolean',
   vcpOptions: 'object',
+}
+
+const pad = (value: number, length = 2): string => String(value).padStart(length, '0')
+
+const formatPattern = (date: Date, pattern: string): string => {
+  const parts: Record<string, string> = {
+    YYYY: pad(date.getFullYear(), 4),
+    MM: pad(date.getMonth() + 1),
+    M: String(date.getMonth() + 1),
+    DD: pad(date.getDate()),
+    D: String(date.getDate()),
+  }
+
+  return pattern.replace(FORMAT_TOKENS, (token) => parts[token]!)
+}
+
+// Reads text written with `pattern` back into `YYYY-MM-DD`, or null when it
+// does not match or names a day that does not exist.
+const parsePattern = (value: string, pattern: string): string | null => {
+  const order: string[] = []
+  const source = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(FORMAT_TOKENS, (token) => {
+    order.push(token[0]!)
+    return token === 'YYYY' ? '(\\d{4})' : token.length === 2 ? '(\\d{2})' : '(\\d{1,2})'
+  })
+  const match = new RegExp(`^${source}$`).exec(value)
+  if (!match) {
+    return null
+  }
+
+  const parts: Record<string, number> = { Y: 0, M: 1, D: 1 }
+  order.forEach((key, index) => {
+    parts[key] = Number(match[index + 1])
+  })
+
+  const { Y: year = 0, M: month = 1, D: day = 1 } = parts
+  const date = new Date(year, month - 1, day)
+  return date.getMonth() === month - 1 && date.getDate() === day ? `${pad(year, 4)}-${pad(month)}-${pad(day)}` : null
 }
 
 // Delegated Data API handlers run in the capture phase, before the plugin's
@@ -180,6 +226,7 @@ class Datepicker extends BaseComponent {
   _isInput = false
   _isInline = false
   _boundInput: HTMLInputElement | null = null
+  _boundInputInside = false
   _positionElement: HTMLElement | null = null
   _displayElement: HTMLElement | false | null = null
   _themeObserver: MutationObserver | null = null
@@ -304,7 +351,7 @@ class Datepicker extends BaseComponent {
       if (clone && clone !== this._element && clone.isConnected) {
         if (this._isInput) {
           clone.replaceWith(this._element)
-        } else if (this._boundInput) {
+        } else if (this._boundInput && this._boundInputInside) {
           const copy = SelectorEngine.findOne(SELECTOR_BOUND_INPUT, clone)
           if (copy) {
             copy.replaceWith(this._boundInput)
@@ -324,8 +371,7 @@ class Datepicker extends BaseComponent {
   }
 
   setSelectedDates(dates: DatesArr): void {
-    this._selectedDates = dates.map((date) => this._toIsoDate(date))
-    this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+    this._select(dates.map((date) => this._toIsoDate(date)))
     this._writeSelection(this._selectedDates)
   }
 
@@ -334,10 +380,8 @@ class Datepicker extends BaseComponent {
     this._isInput = this._element.tagName === 'INPUT'
     this._isInline = this._config.inline
 
-    // For inline mode, look for a hidden input child to bind to
-    if (this._isInline && !this._isInput) {
-      this._boundInput = SelectorEngine.findOne(SELECTOR_BOUND_INPUT, this._element) as HTMLInputElement | null
-    }
+    this._boundInput = this._resolveBoundInput()
+    this._boundInputInside = Boolean(this._boundInput && this._element.contains(this._boundInput))
 
     this._positionElement = this._resolvePositionElement()
     this._displayElement = this._resolveDisplayElement()
@@ -364,6 +408,13 @@ class Datepicker extends BaseComponent {
     // Set initial value if input has a value
     if (this._isInput && this._element.value) {
       this._parseInputValue()
+    }
+
+    // The field shows localized text the next page load cannot read back, so
+    // a value the server rendered into the bound input selects the dates.
+    const boundDates = this._boundInput?.value.split(',').filter((date) => DATE_PATTERN.test(date))
+    if (this._selectedDates.length === 0 && boundDates?.length) {
+      this._select(boundDates)
     }
 
     // Populate input/display with preselected dates
@@ -393,6 +444,17 @@ class Datepicker extends BaseComponent {
     if (this._displayElement) {
       this._displayElement.textContent = formattedDate
     }
+  }
+
+  _resolveBoundInput(): HTMLInputElement | null {
+    const { boundInput } = this._config
+
+    if (boundInput) {
+      return getElement(boundInput) as HTMLInputElement | null
+    }
+
+    // An inline calendar submits through a hidden input inside it
+    return this._isInline && !this._isInput ? (SelectorEngine.findOne(SELECTOR_BOUND_INPUT, this._element) as HTMLInputElement | null) : null
   }
 
   _resolvePositionElement(): HTMLElement {
@@ -679,6 +741,11 @@ class Datepicker extends BaseComponent {
     const locale = this._config.locale === 'default' ? undefined : this._config.locale
     const { dateFormat } = this._config
 
+    // Token pattern, independent of the locale
+    if (typeof dateFormat === 'string') {
+      return formatPattern(date, this._formatPattern()!)
+    }
+
     // Custom function formatter
     if (typeof dateFormat === 'function') {
       return dateFormat(date, locale)
@@ -693,6 +760,20 @@ class Datepicker extends BaseComponent {
     return date.toLocaleDateString(locale)
   }
 
+  _formatPattern(): string | null {
+    const { dateFormat } = this._config
+
+    if (typeof dateFormat !== 'string') {
+      return null
+    }
+
+    return dateFormat.toLowerCase() === 'iso' ? ISO_FORMAT : dateFormat
+  }
+
+  _dateSeparator(): string {
+    return this._config.selectionMode === 'multiple-ranged' ? ' – ' : ', '
+  }
+
   _formatDateForInput(dates: string[]): string {
     if (dates.length === 0) {
       return ''
@@ -703,8 +784,7 @@ class Datepicker extends BaseComponent {
     }
 
     // For date ranges, use en-dash; for multiple dates, use comma
-    const separator = this._config.selectionMode === 'multiple-ranged' ? ' – ' : ', '
-    return dates.map((date) => this._formatDate(date)).join(separator)
+    return dates.map((date) => this._formatDate(date)).join(this._dateSeparator())
   }
 
   _parseInputValue(): void {
@@ -715,9 +795,19 @@ class Datepicker extends BaseComponent {
 
     const written = writtenSelections.get(this._element)
     if (written && written.text.trim() === value) {
-      this._selectedDates = [...written.dates]
-      this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
+      this._select(written.dates)
       return
+    }
+
+    // A pattern reads back what it wrote, e.g. a value the server sent again
+    const pattern = this._formatPattern()
+    if (pattern) {
+      const parts = this._config.selectionMode === 'single' ? [value] : value.split(this._dateSeparator())
+      const dates = parts.map((part) => parsePattern(part.trim(), pattern))
+      if (dates.every(Boolean)) {
+        this._select(dates as string[])
+        return
+      }
     }
 
     // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
@@ -727,8 +817,12 @@ class Datepicker extends BaseComponent {
       return
     }
 
-    this._selectedDates = [this._toIsoDate(date)]
-    // The calendar opens on the month of the value, not on today.
+    this._select([this._toIsoDate(date)])
+  }
+
+  _select(dates: string[]): void {
+    this._selectedDates = [...dates]
+    // The calendar opens on the month of the selection, not on today.
     this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
   }
 
@@ -788,7 +882,7 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
 initAll(SELECTOR_DATA_TOGGLE, Datepicker, (element) => {
   const { dataset } = element
 
-  return dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || Boolean((element as HTMLInputElement).value)
+  return dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || 'bsBoundInput' in dataset || 'tblrBoundInput' in dataset || Boolean((element as HTMLInputElement).value)
 })
 // js-docs-end datepicker-init
 
