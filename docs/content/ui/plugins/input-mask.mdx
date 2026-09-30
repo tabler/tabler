@@ -50,6 +50,44 @@ Every other character is a literal, and Tabler adds it for the user as they type
 <input type="text" id="mask-plate" class="form-control" data-mask="aa-0000" data-mask-visible="true" autocomplete="off" />
 </Example>
 
+## Numbers
+
+For amounts and other numbers, use `data-mask-type="number"` instead of a pattern. The user types freely and Tabler groups the thousands, keeps the fraction to `scale` digits and drops everything that is not a number.
+
+<Example column>
+<label class="form-label" for="mask-number">Number</label>
+<input type="text" id="mask-number" class="form-control mb-3" data-mask-type="number" data-mask-scale="0" data-mask-thousands-separator=" " placeholder="1 234 567" autocomplete="off" />
+<label class="form-label" for="mask-money">Money</label>
+<input type="text" id="mask-money" class="form-control mb-3" data-mask-type="number" data-mask-prefix="$" data-mask-thousands-separator="," data-mask-min="0" data-mask-pad-fractional-zeros="true" placeholder="$0.00" autocomplete="off" />
+<label class="form-label" for="mask-percent">Percent</label>
+<input type="text" id="mask-percent" class="form-control" data-mask-type="number" data-mask-suffix=" %" data-mask-scale="1" data-mask-min="0" data-mask-max="100" placeholder="0 %" autocomplete="off" />
+</Example>
+
+```html
+<input
+  type="text"
+  class="form-control"
+  data-mask-type="number"
+  data-mask-prefix="$"
+  data-mask-thousands-separator=","
+  data-mask-min="0"
+  data-mask-pad-fractional-zeros="true"
+/>
+```
+
+| Option | Attribute | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `data-mask-type="number"` | | Turns the mask into a number mask. |
+| `scale` | `data-mask-scale` | `2` | Digits after the radix. Use `0` for whole numbers. |
+| `radix` | `data-mask-radix` | `.` | The fractional separator. |
+| `thousandsSeparator` | `data-mask-thousands-separator` | none | The character that groups thousands. |
+| `mapToRadix` | | `,` for `.`, `.` for `,` | Other characters that the user can type as the radix. |
+| `min`, `max` | `data-mask-min`, `data-mask-max` | none | The range. A `min` of `0` or more also removes the minus sign. |
+| `prefix`, `suffix` | `data-mask-prefix`, `data-mask-suffix` | none | Text around the number, such as a currency symbol. |
+| `padFractionalZeros` | `data-mask-pad-fractional-zeros` | `false` | Adds zeros up to `scale` when the field loses focus. |
+
+`unmaskedValue` is the number as plain text, with a `.` as the radix and no separators, so `parseFloat(unmaskedValue)` works whatever the format on screen. A value above `max` is cut down to `max` as the user types, and a value below `min` is raised to it when the field loses focus.
+
 ## Options
 
 | Option | Attribute | Default | Description |
