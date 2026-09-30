@@ -87,10 +87,10 @@ Set `icon` to add a round icon above the text. The icon takes the color of the v
   </button>
 </Example>
 
-To use another icon, pass its markup, for example an inline `<svg>`. The string is inserted as HTML, so pass only markup you wrote yourself.
+To use another icon, pass a DOM element, for example an `<svg>` you created or found in the page. The element is cloned into the dialog.
 
 ```js
-tabler.AlertDialog.alert({ icon: '<svg class="icon icon-lg">…</svg>', title: 'Done' })
+tabler.AlertDialog.alert({ icon: document.querySelector('#my-icon'), title: 'Done' })
 ```
 
 ## Layout
@@ -116,16 +116,16 @@ The message is optional. A dialog with only a title is fine for a short question
 
 ## Options
 
-| Option        | Default                                                 | Description                                                                              |
-| ------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `title`       | `Are you sure?` for `confirm()`, `Notice` for `alert()` | The heading of the dialog.                                                               |
-| `message`     | none                                                    | A line of text under the title. It is set as plain text, so HTML is not rendered.        |
-| `confirmText` | `OK`                                                    | The label of the confirm button.                                                         |
-| `cancelText`  | `Cancel`                                                | The label of the cancel button. `confirm()` only.                                        |
-| `variant`     | `primary`                                               | The color of the confirm button.                                                         |
-| `icon`        | none                                                    | A built-in icon name or icon markup, shown in a round badge in the color of the variant. |
-| `align`       | `center`                                                | `center` or `start`. See [Layout](#layout).                                              |
-| `focus`       | `confirm`                                               | Which button gets focus when the dialog opens: `confirm` or `cancel`. `confirm()` only.  |
+| Option        | Default                                                 | Description                                                                                |
+| ------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `title`       | `Are you sure?` for `confirm()`, `Notice` for `alert()` | The heading of the dialog.                                                                 |
+| `message`     | none                                                    | A line of text under the title. It is set as plain text, so HTML is not rendered.          |
+| `confirmText` | `OK`                                                    | The label of the confirm button.                                                           |
+| `cancelText`  | `Cancel`                                                | The label of the cancel button. `confirm()` only.                                          |
+| `variant`     | `primary`                                               | The color of the confirm button.                                                           |
+| `icon`        | none                                                    | A built-in icon name or a DOM element, shown in a round badge in the color of the variant. |
+| `align`       | `center`                                                | `center` or `start`. See [Layout](#layout).                                                |
+| `focus`       | `confirm`                                               | Which button gets focus when the dialog opens: `confirm` or `cancel`. `confirm()` only.    |
 
 For a destructive action, set `focus: 'cancel'` so a stray <kbd>Enter</kbd> does not confirm it.
 
@@ -133,5 +133,6 @@ For a destructive action, set `focus: 'cancel'` so a stray <kbd>Enter</kbd> does
 
 - The dialog has `role="alertdialog"` and is named and described by its title and message with `aria-labelledby` and `aria-describedby`.
 - Focus moves into the dialog when it opens and stays inside until it closes, then returns to the element that opened it.
+- Only one dialog is open at a time. If you call `confirm()` or `alert()` while another dialog or modal is open, the new dialog waits and opens after the other one closes.
 - <kbd>Esc</kbd> cancels the dialog. Clicking the backdrop does nothing, so an answer is never given by accident.
 - Keep the title short and the button labels specific, for example `Delete` instead of `Yes`.
