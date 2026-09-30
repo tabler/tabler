@@ -50,6 +50,36 @@ Every other character is a literal, and Tabler adds it for the user as they type
 <input type="text" id="mask-plate" class="form-control" data-mask="aa-0000" data-mask-visible="true" autocomplete="off" />
 </Example>
 
+## Dates and times
+
+`data-mask-type="date"` builds a pattern from a format and keeps every part in its range. The parts are `YYYY`, `MM` (month), `DD`, `HH`, `mm` (minutes) and `ss`. A digit that cannot start a valid part gets a `0` in front, so typing `4` in the day gives `04`. A part that is too high is pulled back to the highest value, and the day stays inside the month, with leap years.
+
+<Example column>
+<label class="form-label" for="mask-date-type">Date</label>
+<input type="text" id="mask-date-type" class="form-control mb-3" data-mask-type="date" data-mask-format="DD/MM/YYYY" data-mask-visible="true" autocomplete="off" />
+<label class="form-label" for="mask-datetime">Date and time</label>
+<input type="text" id="mask-datetime" class="form-control" data-mask-type="date" data-mask-format="YYYY-MM-DD HH:mm" data-mask-visible="true" autocomplete="off" />
+</Example>
+
+```html
+<input type="text" class="form-control" data-mask-type="date" data-mask-format="YYYY-MM-DD HH:mm" />
+```
+
+## Ranges
+
+To limit the groups of digits of any other pattern, add `data-mask-ranges` with one `min-max` for every group, in order. Here every part of an IP address stays between 0 and 255:
+
+<Example column>
+<label class="form-label" for="mask-ip">IP address</label>
+<input type="text" id="mask-ip" class="form-control" data-mask="000.000.000.000" data-mask-ranges="0-255 0-255 0-255 0-255" data-mask-visible="true" autocomplete="off" />
+</Example>
+
+```html
+<input type="text" class="form-control" data-mask="000.000.000.000" data-mask-ranges="0-255 0-255 0-255 0-255" />
+```
+
+In JavaScript, `ranges` is an array: `ranges: [[0, 255], [0, 255], [0, 255], [0, 255]]`. A group has a fixed length, so write `001` and not `1`.
+
 ## Numbers
 
 For amounts and other numbers, use `data-mask-type="number"` instead of a pattern. The user types freely and Tabler groups the thousands, keeps the fraction to `scale` digits and drops everything that is not a number.
@@ -95,6 +125,9 @@ For amounts and other numbers, use `data-mask-type="number"` instead of a patter
 | `mask` | `data-mask` | `''` | The pattern, or a function that gets the unmasked value and returns the pattern. |
 | `lazy` | `data-mask-visible="true"` | `true` | With `data-mask-visible` the whole pattern shows before the user types. |
 | `placeholderChar` | `data-mask-placeholder-char` | `_` | The character for an empty slot when the pattern is visible. |
+| `type` | `data-mask-type` | | `date` or `number`, instead of a pattern. |
+| `format` | `data-mask-format` | `DD/MM/YYYY` | The date format, for `type: 'date'`. |
+| `ranges` | `data-mask-ranges` | none | The range of every group of digits in the pattern. |
 | `tokens` | | `{}` | Extra pattern characters, each with the RegExp one character has to match. |
 
 ## JavaScript
