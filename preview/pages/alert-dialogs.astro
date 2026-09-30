@@ -1,0 +1,154 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+---
+
+<DefaultLayout title="Alert dialogs" pageMenu="base.alert-dialogs" description="Alert dialogs replace the browser's confirm() and alert() with a modal that returns a Promise.">
+  <DocsLink slot="page-header-actions" path="/ui/components/alert-dialog" />
+  <CaptureScript>
+    <!-- BEGIN ALERT DIALOG -->
+    <script is:inline>
+      function initAlertDialogs() {
+        const result = document.getElementById('alert-dialog-result')
+
+        document.querySelectorAll('[data-alert-dialog]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const options = JSON.parse(button.dataset.alertDialog)
+            if (options.alert) {
+              tabler.AlertDialog.alert(options).then(() => {
+                result.textContent = 'Alert closed'
+              })
+              return
+            }
+            tabler.AlertDialog.confirm(options).then((ok) => {
+              result.textContent = ok ? 'Confirmed' : 'Cancelled'
+            })
+          })
+        })
+      }
+
+      document.readyState !== 'loading' ? initAlertDialogs() : document.addEventListener('DOMContentLoaded', initAlertDialogs, { once: true })
+    </script>
+    <!-- END ALERT DIALOG -->
+  </CaptureScript>
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Title, message and two buttons. <code>confirm()</code> resolves to <code>true</code> or <code>false</code>.</CardSubtitle>
+          <ButtonList>
+            <Button text="Confirm" data-alert-dialog={JSON.stringify({ title: 'Publish this page?', message: 'It will be visible to everyone.', confirmText: 'Publish' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Alert</CardTitle>
+          <CardSubtitle><code>alert()</code> shows one button and resolves when it is closed.</CardSubtitle>
+          <ButtonList>
+            <Button text="Alert" data-alert-dialog={JSON.stringify({ alert: true, title: 'Changes saved', message: 'Your changes are live.' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Title only</CardTitle>
+          <CardSubtitle>The message is optional.</CardSubtitle>
+          <ButtonList>
+            <Button text="Title only" data-alert-dialog={JSON.stringify({ title: 'Discard the draft?', confirmText: 'Discard' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With icon</CardTitle>
+          <CardSubtitle>Set <code>icon</code> to a built-in icon name. The icon sits above the text.</CardSubtitle>
+          <ButtonList>
+            <Button text="Help" data-alert-dialog={JSON.stringify({ icon: 'help-circle', title: 'Send feedback?', message: 'We read every message.', confirmText: 'Send' })} />
+            <Button text="Info" data-alert-dialog={JSON.stringify({ alert: true, icon: 'info-circle', title: 'New version available', message: 'Refresh the page to update.' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Icon on the left</CardTitle>
+          <CardSubtitle>Set <code>align: 'start'</code> for a wider dialog with the icon next to the text and the buttons on the right.</CardSubtitle>
+          <ButtonList>
+            <Button color="danger" text="Delete" data-alert-dialog={JSON.stringify({ icon: 'trash', variant: 'danger', align: 'start', title: 'Delete 84 items?', message: 'What you have done cannot be undone.', confirmText: 'Delete', focus: 'cancel' })} />
+            <Button text="Info" data-alert-dialog={JSON.stringify({ icon: 'info-circle', align: 'start', title: 'Enable notifications?', message: 'We will only send important updates.', confirmText: 'Enable' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Left aligned</CardTitle>
+          <CardSubtitle>Without an icon, <code>align: 'start'</code> left aligns the text.</CardSubtitle>
+          <ButtonList>
+            <Button text="Left aligned" data-alert-dialog={JSON.stringify({ align: 'start', title: 'Sign out?', message: 'You will need to sign in again.', confirmText: 'Sign out' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Variants</CardTitle>
+          <CardSubtitle>Set <code>variant</code> to color the confirm button.</CardSubtitle>
+          <ButtonList>
+            <Button color="danger" text="Danger" data-alert-dialog={JSON.stringify({ title: 'Delete 84 items?', message: 'What you have done cannot be undone.', confirmText: 'Delete', variant: 'danger', focus: 'cancel' })} />
+            <Button color="warning" text="Warning" data-alert-dialog={JSON.stringify({ title: 'Leave this page?', message: 'You have unsaved changes.', confirmText: 'Leave', variant: 'warning' })} />
+            <Button color="success" text="Success" data-alert-dialog={JSON.stringify({ alert: true, title: 'Payment received', message: 'Thank you for your order.', variant: 'success' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Variants with icon</CardTitle>
+          <CardSubtitle>The icon takes the color of the variant.</CardSubtitle>
+          <ButtonList>
+            <Button color="danger" text="Danger" data-alert-dialog={JSON.stringify({ icon: 'trash', title: 'Delete account?', message: 'All your data will be removed.', confirmText: 'Delete', variant: 'danger', focus: 'cancel' })} />
+            <Button color="warning" text="Warning" data-alert-dialog={JSON.stringify({ icon: 'alert-triangle', title: 'Leave this page?', message: 'You have unsaved changes.', confirmText: 'Leave', variant: 'warning' })} />
+            <Button color="success" text="Success" data-alert-dialog={JSON.stringify({ alert: true, icon: 'circle-check', title: 'Payment received', message: 'Thank you for your order.', variant: 'success' })} />
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Result</CardTitle>
+          <CardSubtitle>The answer of the last dialog.</CardSubtitle>
+          <div id="alert-dialog-result" class="text-secondary" aria-live="polite">No dialog opened yet</div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
