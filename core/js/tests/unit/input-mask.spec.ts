@@ -277,6 +277,89 @@ describe('InputMask', () => {
     })
   })
 
+  describe('date type', () => {
+    const date = (attributes: string): HTMLInputElement => {
+      fixtureEl.innerHTML = `<input type="text" data-mask-type="date" ${attributes}>`
+      new InputMask(input())
+
+      return input()
+    }
+
+    it('should format a date with the default format', () => {
+      const el = date('')
+
+      type(el, '31122026')
+
+      expect(el.value).toBe('31/12/2026')
+      expect(InputMask.getInstance(el)!.unmaskedValue).toBe('31122026')
+    })
+
+    it('should add a zero before a digit that cannot start a day or a month', () => {
+      const el = date('')
+
+      type(el, '4')
+      expect(el.value).toBe('04')
+
+      type(el, '04/2')
+      expect(el.value).toBe('04/02')
+    })
+
+    it('should pull a day and a month back into their range', () => {
+      const el = date('')
+
+      type(el, '3113')
+      expect(el.value).toBe('31/12')
+    })
+
+    it('should keep the day inside the month', () => {
+      const el = date('')
+
+      type(el, '3102')
+      expect(el.value).toBe('29/02')
+
+      type(el, '31022027')
+      expect(el.value).toBe('28/02/2027')
+    })
+
+    it('should follow the format', () => {
+      const el = date('data-mask-format="YYYY-MM-DD HH:mm"')
+
+      type(el, '20261231 2559')
+
+      expect(el.value).toBe('2026-12-31 23:59')
+    })
+
+    it('should show the placeholders with data-mask-visible', () => {
+      const el = date('data-mask-format="HH:mm:ss" data-mask-visible')
+
+      expect(el.value).toBe('__:__:__')
+    })
+
+    it('should keep the caret after an inserted zero', () => {
+      const el = date('')
+      el.focus()
+
+      type(el, '5')
+
+      expect(el.value).toBe('05')
+      expect(el.selectionStart).toBe(2)
+    })
+  })
+
+  describe('ranges', () => {
+    it('should limit each group of digits, like an IP address', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="000.000.000.000" data-mask-ranges="0-255 0-255 0-255 0-255">'
+      const el = input()
+      new InputMask(el)
+
+      type(el, '192168001001')
+      expect(el.value).toBe('192.168.001.001')
+
+      type(el, '300999256.1')
+      expect(el.value).toBe('030.099.092.056')
+    })
+  })
+
   describe('events', () => {
     it('should fire accept with the values', () => {
       const el = input()
