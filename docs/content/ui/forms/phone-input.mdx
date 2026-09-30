@@ -1,0 +1,210 @@
+---
+title: Phone input
+seoTitle: Phone number input with country picker
+order: 15
+summary: A telephone field with a country picker in front of it, showing flags and dial codes, with search, number formatting and international number output.
+description: Add a phone number input with a searchable country picker, flags and dial codes. Formats the number as you type, detects the country from a pasted number and gives the full international number.
+related: [/ui/forms/combobox, /ui/forms/elements, /ui/forms/validation]
+source: core/scss/ui/forms/_phone-input.scss
+css-plugins: [flags]
+classnames:
+  component:
+    - class: phone-input
+      desc: Wrapper the script puts around the input; holds the hidden country select
+    - class: phone-input-group
+      desc: The input group that holds the country picker and the input
+    - class: phone-input-menu
+      desc: The country menu; wide enough for a country name and its dial code
+---
+
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+A phone input turns a normal `<input type="tel">` into a field with a country picker in front of it. The picker is a [combobox](/ui/forms/combobox), so it has search, keyboard support and a flag next to every country. The input stays a plain text field. It holds the national number, and the script gives you the full number in the international format.
+
+The country flags come from the [flags](/ui/plugins/flags) plugin, so include `tabler-flags.css` on the page. Country names come from the browser, in the language of the page.
+
+Add `data-bs-toggle="phone-input"` to the input and pick the start country with `data-bs-country`.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-basic">Phone number</label>
+  <input type="tel" class="form-control" id="phone-basic" placeholder="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" />
+</div>
+</Example>
+
+## Usage
+
+### Preferred countries
+
+List the countries your users come from first. The rest follow in alphabetical order. Pass two-letter country codes separated by commas.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-preferred">Phone number</label>
+  <input type="tel" class="form-control" id="phone-preferred" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="de" data-bs-preferred-countries="de,at,ch,pl" />
+</div>
+</Example>
+
+### Only some countries
+
+Limit the list with `data-bs-only-countries`.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-only">Phone number</label>
+  <input type="tel" class="form-control" id="phone-only" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="fr" data-bs-only-countries="fr,be,ch,lu,mc" />
+</div>
+</Example>
+
+### Number with a dial code
+
+A number that starts with `+` selects its country and the dial code is removed from the input. This makes pasting an international number work. Set `data-bs-auto-detect="false"` to turn it off.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-detect">Phone number</label>
+  <input type="tel" class="form-control" id="phone-detect" value="+44 7911 123456" data-bs-toggle="phone-input" data-bs-country="us" />
+</div>
+</Example>
+
+### Formatting
+
+The number is written the way people write it in the chosen country, while the user types. A US number becomes `(202) 555-0100`, a Polish one `600 100 200`. The cursor stays next to the same digit when you edit the middle of the number, and a number that does not fit the pattern continues in groups of three. About 40 countries have their own pattern; the others use a generic one.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-format">Phone number</label>
+  <input type="tel" class="form-control" id="phone-format" value="2025550100" data-bs-toggle="phone-input" data-bs-country="us" />
+</div>
+</Example>
+
+Set `data-bs-format="false"` to keep what the user typed. Only digits, spaces, dashes, dots and brackets are allowed then.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-no-format">Phone number</label>
+  <input type="tel" class="form-control" id="phone-no-format" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-format="false" />
+</div>
+</Example>
+
+### Full number in a form
+
+The input holds only the national number. To submit the full number, set `data-bs-hidden-input` to a field name. The script adds a hidden input with that name and keeps the number in the international format, for example `+48600100200`, in it.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-hidden">Phone number</label>
+  <input type="tel" class="form-control" id="phone-hidden" placeholder="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-hidden-input="phone" />
+</div>
+</Example>
+
+### Sizes
+
+The picker follows `.form-control-sm` and `.form-control-lg` of the input.
+
+<Example column overflow="visible">
+<div class="w-100 mb-3">
+  <label class="form-label" for="phone-size-sm">Small</label>
+  <input type="tel" class="form-control form-control-sm" id="phone-size-sm" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="us" />
+</div>
+<div class="w-100 mb-3">
+  <label class="form-label" for="phone-size-default">Default</label>
+  <input type="tel" class="form-control" id="phone-size-default" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="us" />
+</div>
+<div class="w-100 mb-3">
+  <label class="form-label" for="phone-size-lg">Large</label>
+  <input type="tel" class="form-control form-control-lg" id="phone-size-lg" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="us" />
+</div>
+</Example>
+
+### Validation
+
+Add `.is-valid` or `.is-invalid` to the input. The feedback shows below the whole field.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <div class="mb-3">
+    <label class="form-label" for="phone-valid">Valid</label>
+    <input type="tel" class="form-control is-valid" id="phone-valid" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" />
+    <div class="valid-feedback">Looks good.</div>
+  </div>
+  <div>
+    <label class="form-label" for="phone-invalid">Invalid</label>
+    <input type="tel" class="form-control is-invalid" id="phone-invalid" value="12" data-bs-toggle="phone-input" data-bs-country="pl" />
+    <div class="invalid-feedback">Enter a full phone number.</div>
+  </div>
+</div>
+</Example>
+
+### Disabled
+
+Add `disabled` to the input. The picker is disabled too.
+
+<Example column overflow="visible">
+<div class="w-100">
+  <label class="form-label" for="phone-disabled">Phone number</label>
+  <input type="tel" class="form-control" id="phone-disabled" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" disabled />
+</div>
+</Example>
+
+## JavaScript
+
+### Initialization
+
+The script starts on every `[data-bs-toggle="phone-input"]` on page load.
+
+<CodeDocs name="phone-input-init" file="core/js/src/phone-input.ts" />
+
+### Options
+
+Pass options as `data-bs-*` attributes on the input, or as an object when creating the instance.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `country` | string | `'us'` | Two-letter code of the country shown first. |
+| `preferredCountries` | array \| string | `[]` | Codes of the countries listed first. |
+| `onlyCountries` | array \| string \| null | `null` | Limits the list to these countries. |
+| `autoDetect` | boolean | `true` | Selects the country of a number that starts with `+`. |
+| `format` | boolean | `true` | Writes the number in the format of the chosen country while typing. |
+| `hiddenInput` | string \| null | `null` | Name of a hidden input that gets the full number. |
+| `locale` | string \| null | `null` | Language of the country names. Uses the `lang` of the page when empty. |
+| `countryLabel` | string | `'Country'` | Accessible name of the picker. |
+| `searchPlaceholder` | string | `'Search…'` | Placeholder of the search field in the menu. |
+| `container` | string \| element | `null` | Where to append the menu, for example `'body'`. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `getNumber()` | The full number, for example `+48600100200`, or an empty string. Leading zeros of the national number are dropped. |
+| `getCountry()` | The two-letter code of the chosen country, in lower case. |
+| `getDialCode()` | The dial code of the chosen country, without `+`. |
+| `setCountry(code)` | Selects a country. An unknown code is ignored. |
+| `setNumber(number)` | Sets the number. A dial code at the start selects the country. |
+| `isValid()` | A quick length check: 4 to 15 digits in total. It does not know the numbering plan of each country. |
+| `dispose()` | Puts the input back where it was and removes the picker. |
+| `getInstance(element)` | Static. Returns the instance bound to the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the existing instance, or creates one. |
+
+### Events
+
+Events fire on the input.
+
+| Event | Description |
+| --- | --- |
+| `countrychange.bs.phoneInput` | Fires when the country changes, from the menu, from a number with a dial code or from `setCountry()`. `event.country` and `event.dialCode` hold the new values. |
+
+```javascript
+input.addEventListener('countrychange.bs.phoneInput', (event) => {
+  console.log(event.country, event.dialCode)
+})
+```
+
+## Accessibility
+
+- Give the input a visible `<label>` with `for`, like any other field. The picker has its own name from the `countryLabel` option; translate it when the page is not in English.
+- The picker is a button with a listbox menu, so it works with the keyboard as described on the [combobox](/ui/forms/combobox) page. After a country is picked, the focus goes to the input.
+- Use `type="tel"` on the input so phones show the number keyboard. Add `autocomplete="tel-national"` when the browser should fill only the national part.

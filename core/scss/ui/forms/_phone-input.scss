@@ -1,0 +1,32 @@
+@use '../../config' as *;
+
+.phone-input {
+  position: relative;
+}
+
+.phone-input-group {
+  // A fixed width, so the field does not move when the dial code gets longer (+1 to +351)
+  > .combobox-toggle {
+    flex: 0 0 8.5rem;
+    width: 8.5rem;
+
+    &.form-select-sm {
+      flex-basis: 8rem;
+      width: 8rem;
+    }
+
+    &.form-select-lg {
+      flex-basis: 9rem;
+      width: 9rem;
+    }
+  }
+
+  &:has(.is-valid) ~ .valid-feedback,
+  &:has(.is-invalid) ~ .invalid-feedback {
+    display: block;
+  }
+}
+
+.phone-input-menu {
+  min-width: 18rem;
+}
