@@ -177,6 +177,106 @@ describe('InputMask', () => {
     })
   })
 
+  describe('number type', () => {
+    const number = (attributes: string): HTMLInputElement => {
+      fixtureEl.innerHTML = `<input type="text" data-mask-type="number" ${attributes}>`
+      new InputMask(input())
+
+      return input()
+    }
+
+    it('should group thousands and cut the fraction to the scale', () => {
+      const el = number('data-mask-thousands-separator=" "')
+
+      type(el, '1234567.891')
+
+      expect(el.value).toBe('1 234 567.89')
+      expect(InputMask.getInstance(el)!.unmaskedValue).toBe('1234567.89')
+    })
+
+    it('should map the other separator to the radix', () => {
+      const el = number('data-mask-radix="," data-mask-thousands-separator=" "')
+
+      type(el, '1234.5')
+
+      expect(el.value).toBe('1 234,5')
+      expect(InputMask.getInstance(el)!.unmaskedValue).toBe('1234.5')
+    })
+
+    it('should keep a typed radix and the minus sign', () => {
+      const el = number('')
+
+      type(el, '-')
+      expect(el.value).toBe('-')
+
+      type(el, '-12.')
+      expect(el.value).toBe('-12.')
+
+      type(el, '.5')
+      expect(el.value).toBe('0.5')
+    })
+
+    it('should support integers with a scale of 0', () => {
+      const el = number('data-mask-scale="0"')
+
+      type(el, '12.5')
+
+      expect(el.value).toBe('125')
+    })
+
+    it('should forbid the minus sign when min is not negative', () => {
+      const el = number('data-mask-min="0"')
+
+      type(el, '-5')
+
+      expect(el.value).toBe('5')
+    })
+
+    it('should cut the value down to max', () => {
+      const el = number('data-mask-max="100"')
+
+      type(el, '250')
+
+      expect(el.value).toBe('100')
+    })
+
+    it('should wrap the number in a prefix and a suffix', () => {
+      const el = number('data-mask-prefix="$" data-mask-suffix=" USD" data-mask-thousands-separator=","')
+
+      type(el, '$1234.5 USD')
+
+      expect(el.value).toBe('$1,234.5 USD')
+      expect(InputMask.getInstance(el)!.unmaskedValue).toBe('1234.5')
+    })
+
+    it('should pad the fraction and raise to min on blur', () => {
+      const el = number('data-mask-pad-fractional-zeros="true" data-mask-min="10"')
+
+      type(el, '5')
+      el.dispatchEvent(new Event('blur'))
+
+      expect(el.value).toBe('10.00')
+    })
+
+    it('should remove the digit next to a deleted separator', () => {
+      const el = number('data-mask-thousands-separator=" "')
+
+      type(el, '1234')
+      expect(el.value).toBe('1 234')
+
+      type(el, '1234', 'deleteContentBackward', 1)
+
+      expect(el.value).toBe('234')
+    })
+
+    it('should format a value set before the component was created', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask-type="number" data-mask-thousands-separator=" " value="1234.5">'
+      new InputMask(input())
+
+      expect(input().value).toBe('1 234.5')
+    })
+  })
+
   describe('events', () => {
     it('should fire accept with the values', () => {
       const el = input()
