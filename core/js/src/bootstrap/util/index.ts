@@ -13,7 +13,7 @@ const TRANSITION_END = 'transitionend'
 
 const parseSelector = (selector: string): string => {
   if (selector && typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
-    selector = selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`)
+    selector = selector.replace(/#([^\s"#']+)/g, (_match, id) => `#${CSS.escape(id)}`)
   }
 
   return selector

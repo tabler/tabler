@@ -396,11 +396,11 @@ class Tooltip extends BaseComponent {
   }
 
   _isAnimated(): boolean {
-    return this._config.animation || (this.tip !== null && this.tip.classList.contains(CLASS_NAME_FADE))
+    return this._config.animation || (this.tip?.classList.contains(CLASS_NAME_FADE) ?? false)
   }
 
   _isShown(): boolean {
-    return this.tip !== null && this.tip.classList.contains(CLASS_NAME_SHOW)
+    return this.tip?.classList.contains(CLASS_NAME_SHOW) ?? false
   }
 
   _createPopper(tip: HTMLElement): Popper.Instance {

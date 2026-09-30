@@ -38,12 +38,12 @@ for (const key in themeDefaults) {
   let selectedValue: string
 
   if (param && VALUE_PATTERN.test(param)) {
-    storage.set('tabler-' + key, param)
+    storage.set(`tabler-${key}`, param)
     selectedValue = param
   } else {
     // A stored choice wins; otherwise a server-rendered attribute is the starting value.
-    const storedTheme = storage.get('tabler-' + key)
-    const serverValue = document.documentElement.getAttribute('data-bs-' + key)
+    const storedTheme = storage.get(`tabler-${key}`)
+    const serverValue = document.documentElement.getAttribute(`data-bs-${key}`)
     selectedValue = storedTheme ?? serverValue ?? themeDefaults[key as ThemeKey]
   }
 
@@ -52,9 +52,9 @@ for (const key in themeDefaults) {
   }
 
   if (selectedValue !== themeDefaults[key as ThemeKey]) {
-    document.documentElement.setAttribute('data-bs-' + key, selectedValue)
+    document.documentElement.setAttribute(`data-bs-${key}`, selectedValue)
   } else {
-    document.documentElement.removeAttribute('data-bs-' + key)
+    document.documentElement.removeAttribute(`data-bs-${key}`)
   }
 }
 

@@ -30,7 +30,7 @@ for (const file of sync(join(pagesDir, '**', '*.astro'))) {
     relative(pagesDir, file)
       .replace(/\/?index\.astro$/, '')
       .replace(/\.astro$/, '')
-  routes.set((url === '/' ? 'index' : url.slice(1)).replaceAll('/', '_') + '.html', url)
+  routes.set(`${(url === '/' ? 'index' : url.slice(1)).replaceAll('/', '_')}.html`, url)
 }
 
 // The footer stamps the render time into every page, and the dev server injects

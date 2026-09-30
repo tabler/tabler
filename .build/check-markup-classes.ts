@@ -90,7 +90,7 @@ const main = async () => {
   )
   if (updateBaseline) {
     const header = '# Classes used in the rendered html that no stylesheet defines on purpose:\n# JavaScript hooks and demo-only markers. One per line; delete a line when the hook goes.\n'
-    writeFileSync(BASELINE, header + [...used.keys()].sort().join('\n') + '\n')
+    writeFileSync(BASELINE, `${header + [...used.keys()].sort().join('\n')}\n`)
     console.log(`wrote ${used.size} classes to ${BASELINE}`)
     return
   }

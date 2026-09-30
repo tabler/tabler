@@ -168,7 +168,11 @@ function addHandler(element: EventTarget | null, originalTypeEvent: string, hand
   }
 
   const events = getElementEvents(element)
-  const handlers = events[typeEvent] || (events[typeEvent] = {})
+  if (!events[typeEvent]) {
+    events[typeEvent] = {}
+  }
+
+  const handlers = events[typeEvent]
   const previousFunction = findHandler(handlers, callable, isDelegated ? (handler as string) : null)
 
   if (previousFunction) {

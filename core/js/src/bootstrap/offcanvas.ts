@@ -96,7 +96,11 @@ class Offcanvas extends BaseComponent {
   }
 
   toggle(relatedTarget?: HTMLElement): void {
-    return this._isShown ? this.hide() : this.show(relatedTarget)
+    if (this._isShown) {
+      this.hide()
+    } else {
+      this.show(relatedTarget)
+    }
   }
 
   show(relatedTarget?: HTMLElement): void {

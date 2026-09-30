@@ -174,7 +174,7 @@ describe('Modal', () => {
 
     it('should pass relatedTarget in show event', () => {
       return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = createModalHTML() + '<button id="trigger">Open</button>'
+        fixtureEl.innerHTML = `${createModalHTML()}<button id="trigger">Open</button>`
         const modalEl = fixtureEl.querySelector('.modal')!
         const trigger = fixtureEl.querySelector('#trigger') as HTMLElement
         const modal = new Modal(modalEl)

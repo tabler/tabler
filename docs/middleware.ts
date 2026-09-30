@@ -27,7 +27,7 @@ export default function middleware(request: Request) {
 
   // renamed pages fall through to their 301; negotiation reruns on the target
   // not Object.hasOwn — Vercel's middleware type-check runs with a pre-es2022 lib
-  if (Object.prototype.hasOwnProperty.call(redirects, path)) return next()
+  if (Object.hasOwn(redirects, path)) return next()
 
   const format = preferredFormat(request.headers.get('accept'))
 

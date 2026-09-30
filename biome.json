@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": ["core/js/**/*.{js,ts}", "core/.build/**/*.{ts,mts,mjs}", ".build/**/*.{ts,mts}", "screenshots/.build/**/*.ts", "{preview,docs,screenshots}/**/*.{mjs,mts,ts}", "shared/**/*.{js,mjs,mts,ts}", "!**/dist", "!**/public", "!**/tmp-assets", "!**/.astro"]
+  },
+  "formatter": { "enabled": false },
+  "assist": { "enabled": false },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "style": { "noNonNullAssertion": "off" },
+      "complexity": { "noThisInStatic": "off" },
+      "suspicious": { "noUndeclaredEnvVars": "off" }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/tests/**", "**/*.test.ts", "**/*.spec.ts", ".build/**"],
+      "linter": { "rules": { "suspicious": { "noExplicitAny": "off" } } }
+    }
+  ]
+}

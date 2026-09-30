@@ -170,7 +170,7 @@ async function processFiles(): Promise<void> {
         // its output when it rewrapped the same tags it was given.
         if (tagSequence(formattedHtml) !== tagSequence(m3)) return m
 
-        return m1 + formattedHtml.trim() + '\n' + m4
+        return `${m1 + formattedHtml.trim()}\n${m4}`
       }
       return m.trim()
     })

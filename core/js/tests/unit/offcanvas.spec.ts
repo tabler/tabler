@@ -157,7 +157,7 @@ describe('Offcanvas', () => {
 
     it('should pass relatedTarget in show event', () => {
       return new Promise<void>((resolve) => {
-        fixtureEl.innerHTML = createOffcanvasHTML() + '<button id="trigger">Open</button>'
+        fixtureEl.innerHTML = `${createOffcanvasHTML()}<button id="trigger">Open</button>`
         const el = fixtureEl.querySelector('.offcanvas')!
         const trigger = fixtureEl.querySelector('#trigger') as HTMLElement
         const instance = new Offcanvas(el)

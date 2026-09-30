@@ -72,7 +72,9 @@ describe('SelectorEngine', () => {
       const result = SelectorEngine.children(parent, 'span')
 
       expect(result).toHaveLength(2)
-      result.forEach((el) => expect(el.tagName).toBe('SPAN'))
+      for (const el of result) {
+        expect(el.tagName).toBe('SPAN')
+      }
     })
 
     it('should return an empty array when no children match', () => {

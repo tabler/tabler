@@ -418,7 +418,7 @@ class Carousel extends BaseComponent {
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (this: HTMLElement, event: Event) {
   const target = SelectorEngine.getElementFromSelector(this)
 
-  if (!target || !target.classList.contains(CLASS_NAME_CAROUSEL)) {
+  if (!target?.classList.contains(CLASS_NAME_CAROUSEL)) {
     return
   }
 

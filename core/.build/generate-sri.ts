@@ -123,7 +123,7 @@ function generateSRI(): void {
     hashes[configPropertyName] = integrity
   }
 
-  writeFileSync(configFile, JSON.stringify({ version, hashes } satisfies SriData, null, 2) + '\n', 'utf8')
+  writeFileSync(configFile, `${JSON.stringify({ version, hashes } satisfies SriData, null, 2)}\n`, 'utf8')
 }
 
 try {

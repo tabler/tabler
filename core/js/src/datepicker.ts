@@ -69,7 +69,7 @@ type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
  * Cast it to `Calendar` from `vanilla-calendar-pro` for the full type.
  */
 interface CalendarInstance {
-  // Loosely typed on purpose: the plugin's context is large and version-specific.
+  // biome-ignore lint/suspicious/noExplicitAny: loosely typed on purpose, the plugin's context is large and version-specific
   context: Record<string, any>
   init(): unknown
   update(resetOptions?: object): unknown

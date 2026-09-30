@@ -34,8 +34,10 @@
     "check:open-source": "tsx .build/check-open-source.ts",
     "check:html": "tsx .build/check-html.ts",
     "check:markup-classes": "tsx .build/check-markup-classes.ts",
-    "lint": "pnpm run lint:md && pnpm run check:docs-links && pnpm run lint:prettier && pnpm run lint:scss && pnpm run check:css-vars && pnpm run check:open-source && pnpm run check:tokens",
-    "lint:fix": "pnpm run lint:md:fix && pnpm run lint:scss:fix && pnpm run format:prettier",
+    "lint": "pnpm run lint:md && pnpm run check:docs-links && pnpm run lint:prettier && pnpm run lint:js && pnpm run lint:scss && pnpm run check:css-vars && pnpm run check:open-source && pnpm run check:tokens",
+    "lint:fix": "pnpm run lint:md:fix && pnpm run lint:js:fix && pnpm run lint:scss:fix && pnpm run format:prettier",
+    "lint:js": "biome lint",
+    "lint:js:fix": "biome lint --write",
     "lint:scss": "pnpm --filter @tabler/core lint",
     "lint:scss:fix": "pnpm --filter @tabler/core lint:scss:fix",
     "lint:md": "markdownlint --config .markdownlint-docs.json \"docs/content/**/*.mdx\"",
@@ -55,6 +57,7 @@
     "shx": "^0.4.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.14",
     "@changesets/cli": "^3.0.1",
     "@mdx-js/mdx": "^3.1.1",
     "@stylistic/stylelint-config": "^2.0.0",
