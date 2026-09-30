@@ -6,6 +6,7 @@ interface Props {
   type?: 'number' | 'date'
   format?: string
   ranges?: string
+  placeholderChar?: string
   scale?: number
   radix?: string
   thousandsSeparator?: string
@@ -16,7 +17,7 @@ interface Props {
   padFractionalZeros?: boolean
 }
 
-const { mask, visible, placeholder, type, format, ranges, scale, radix, thousandsSeparator, min, max, prefix, suffix, padFractionalZeros } = Astro.props
+const { mask, visible, placeholder, type, format, ranges, placeholderChar, scale, radix, thousandsSeparator, min, max, prefix, suffix, padFractionalZeros } = Astro.props
 const name = 'mask'
 const pattern = type ? undefined : (mask ?? '00/00/0000')
 ---
@@ -30,6 +31,7 @@ const pattern = type ? undefined : (mask ?? '00/00/0000')
   data-mask-type={type}
   data-mask-format={format}
   data-mask-ranges={ranges}
+  data-mask-placeholder-char={placeholderChar}
   data-mask-scale={scale}
   data-mask-radix={radix}
   data-mask-thousands-separator={thousandsSeparator}
