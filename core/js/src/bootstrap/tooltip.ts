@@ -138,7 +138,7 @@ class Tooltip extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
   _isEnabled: boolean
-  _timeout: ReturnType<typeof setTimeout> | number
+  _timeout: ReturnType<typeof setTimeout>
   _isHovered: boolean | null
   _activeTrigger: Record<string, boolean>
   _popper: Popper.Instance | null
@@ -259,7 +259,7 @@ class Tooltip extends BaseComponent {
 
     this._popper = this._createPopper(tip)
 
-    tip!.classList.add(CLASS_NAME_SHOW)
+    tip.classList.add(CLASS_NAME_SHOW)
 
     if ('ontouchstart' in document.documentElement) {
       for (const element of Array.from(document.body.children)) {
@@ -322,7 +322,7 @@ class Tooltip extends BaseComponent {
 
   update(): void {
     if (this._popper) {
-      this._popper.update()
+      void this._popper.update()
     }
   }
 
@@ -511,7 +511,7 @@ class Tooltip extends BaseComponent {
       return
     }
 
-    if (!this._element.getAttribute('aria-label') && !this._element.textContent!.trim()) {
+    if (!this._element.getAttribute('aria-label') && !this._element.textContent.trim()) {
       this._element.setAttribute('aria-label', title)
     }
 

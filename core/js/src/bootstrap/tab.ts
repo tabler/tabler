@@ -153,7 +153,7 @@ class Tab extends BaseComponent {
       nextActiveElement = children[event.key === HOME_KEY ? 0 : children.length - 1]
     } else {
       const isNext = [ARROW_RIGHT_KEY, ARROW_DOWN_KEY].includes(event.key)
-      nextActiveElement = getNextActiveElement(children, event.target as HTMLElement, isNext, true) as HTMLElement
+      nextActiveElement = getNextActiveElement<HTMLElement>(children, event.target as HTMLElement, isNext, true)
     }
 
     if (nextActiveElement) {

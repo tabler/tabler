@@ -16,7 +16,6 @@ const Data = {
     const instanceMap = elementMap.get(element)!
 
     if (!instanceMap.has(key) && instanceMap.size !== 0) {
-      // eslint-disable-next-line no-console
       console.error(`Bootstrap doesn't allow more than one instance per element. Bound instance: ${Array.from(instanceMap.keys())[0]}.`)
       return
     }

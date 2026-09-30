@@ -137,9 +137,9 @@ class ScrollSpy extends BaseComponent {
       return
     }
 
-    EventHandler.off(this._config.target as HTMLElement, EVENT_CLICK)
+    EventHandler.off(this._config.target, EVENT_CLICK)
 
-    EventHandler.on(this._config.target as HTMLElement, EVENT_CLICK, SELECTOR_TARGET_LINKS, (event: Event) => {
+    EventHandler.on(this._config.target, EVENT_CLICK, SELECTOR_TARGET_LINKS, (event: Event) => {
       const observableSection = this._observableSections.get((event.target as HTMLAnchorElement).hash)
       if (observableSection) {
         event.preventDefault()
@@ -158,8 +158,8 @@ class ScrollSpy extends BaseComponent {
   _getNewObserver(): IntersectionObserver {
     const options: IntersectionObserverInit = {
       root: this._rootElement,
-      threshold: this._config.threshold as number[],
-      rootMargin: this._config.rootMargin as string,
+      threshold: this._config.threshold,
+      rootMargin: this._config.rootMargin,
     }
 
     return new IntersectionObserver((entries) => this._observerCallback(entries), options)

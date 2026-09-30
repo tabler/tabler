@@ -70,6 +70,7 @@ type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
  */
 interface CalendarInstance {
   // Loosely typed on purpose: the plugin's context is large and version-specific.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: Record<string, any>
   init(): unknown
   update(resetOptions?: object): unknown
@@ -258,6 +259,8 @@ class Datepicker extends BaseComponent {
     this._isShowing = false
   }
 
+  // `async` like `show()`, so a plugin error reaches the caller as a rejection
+  // eslint-disable-next-line @typescript-eslint/require-await
   async hide(): Promise<void> {
     if (this._config.inline) {
       return // Inline calendars are always visible
@@ -512,7 +515,7 @@ class Datepicker extends BaseComponent {
         return
       }
 
-      this.hide()
+      void this.hide()
     }
 
     EventHandler.on(document, EVENT_FOCUSIN, this._onFocusIn)
@@ -665,7 +668,7 @@ class Datepicker extends BaseComponent {
 
     if (shouldHide) {
       window.clearTimeout(this._hideTimeout)
-      this._hideTimeout = window.setTimeout(() => this.hide(), HIDE_DELAY)
+      this._hideTimeout = window.setTimeout(() => void this.hide(), HIDE_DELAY)
     }
   }
 
@@ -699,7 +702,7 @@ class Datepicker extends BaseComponent {
     }
 
     if (dates.length === 1) {
-      return this._formatDate(dates[0]!)
+      return this._formatDate(dates[0])
     }
 
     // For date ranges, use en-dash; for multiple dates, use comma
@@ -732,7 +735,7 @@ class Datepicker extends BaseComponent {
     this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
   }
 
-  _toIsoDate(value: DateAny | string): string {
+  _toIsoDate(value: Date | number | string): string {
     if (typeof value === 'string' && DATE_PATTERN.test(value)) {
       return value
     }
@@ -772,7 +775,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   event.preventDefault()
-  ;(Datepicker.getOrCreateInstance(this) as Datepicker).toggle()
+  void (Datepicker.getOrCreateInstance(this) as Datepicker).toggle()
 })
 
 EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement) {
@@ -780,7 +783,7 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
     return
   }
 
-  ;(Datepicker.getOrCreateInstance(this) as Datepicker).show()
+  void (Datepicker.getOrCreateInstance(this) as Datepicker).show()
 })
 
 // Render on load what cannot wait for a focus or a click: inline calendars,

@@ -430,7 +430,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
   }
 
   if (data.datetime) {
-    const count = Array.isArray(series[0]?.data) ? (series[0].data as number[]).length : 0
+    const count = Array.isArray(series[0]?.data) ? series[0].data.length : 0
     config.labels = datetimeLabels(data['start-date'] ?? '2020-06-20', count)
   }
 
