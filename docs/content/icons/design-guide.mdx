@@ -1,0 +1,160 @@
+---
+title: Icon design guide
+summary: The rules every Tabler icon follows — a 24×24 canvas, a 2 px centered stroke, round joins and caps, and fixed padding, radius and spacing. It also covers the SVG format, icon names and how to request a new icon.
+description: Design rules for Tabler Icons. Canvas size, stroke, corner radius and spacing, plus the SVG format, naming and icon requests.
+---
+
+import { Image } from 'astro:assets'
+import guide1 from '../../images/icons-guide/guide-1.png'
+import guide1Dark from '../../images/icons-guide/guide-1-dark.png'
+import guide2 from '../../images/icons-guide/guide-2.png'
+import guide2Dark from '../../images/icons-guide/guide-2-dark.png'
+import guide3 from '../../images/icons-guide/guide-3.png'
+import guide3Dark from '../../images/icons-guide/guide-3-dark.png'
+import guide4 from '../../images/icons-guide/guide-4.png'
+import guide4Dark from '../../images/icons-guide/guide-4-dark.png'
+import guide5 from '../../images/icons-guide/guide-5.png'
+import guide5Dark from '../../images/icons-guide/guide-5-dark.png'
+import guide6 from '../../images/icons-guide/guide-6.png'
+import guide6Dark from '../../images/icons-guide/guide-6-dark.png'
+import guide7 from '../../images/icons-guide/guide-7.png'
+import guide7Dark from '../../images/icons-guide/guide-7-dark.png'
+import guide8 from '../../images/icons-guide/guide-8.png'
+import guide8Dark from '../../images/icons-guide/guide-8-dark.png'
+import guide9 from '../../images/icons-guide/guide-9.png'
+import guide9Dark from '../../images/icons-guide/guide-9-dark.png'
+
+All Tabler Icons follow the same set of design rules. This keeps the collection consistent, so icons look like they belong together at any size. Follow these rules when you draw your own icons to use next to Tabler Icons, or when you sketch an icon for a [request](#request-an-icon).
+
+## Canvas
+
+Design every icon on a 24×24 pixel canvas. This is the standard size for most icon sets and the one best supported in web and mobile apps. The same canvas for every icon keeps the set uniform and easy to scale.
+
+<figure>
+	<Image src={guide1} alt="An icon drawn on a 24×24 pixel grid" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide1Dark} alt="An icon drawn on a 24×24 pixel grid" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Padding
+
+Leave at least 1 pixel of padding between the icon and the edge of the canvas. The icon then never touches its container and stays clear at small sizes.
+
+<figure>
+	<Image src={guide2} alt="A 1 pixel padding around the icon inside the canvas" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide2Dark} alt="A 1 pixel padding around the icon inside the canvas" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Stroke width
+
+Draw icons with a 2 pixel stroke. The same line weight across the set makes icons look balanced and easy to read.
+
+<figure>
+	<Image src={guide3} alt="An icon drawn with a 2 pixel stroke" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide3Dark} alt="An icon drawn with a 2 pixel stroke" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Round joins
+
+Use round joins where lines meet. Corners between lines and curves then look smooth and match the rest of the set.
+
+<figure>
+	<Image src={guide4} alt="Round joins where the lines of an icon meet" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide4Dark} alt="Round joins where the lines of an icon meet" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Round caps
+
+Use round caps at the open ends of lines. They give icons a soft, friendly look.
+
+<figure>
+	<Image src={guide5} alt="Round caps at the ends of lines" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide5Dark} alt="Round caps at the ends of lines" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Centered strokes
+
+Center the stroke on the path, not inside or outside it. This keeps shapes symmetric and their size predictable.
+
+<figure>
+	<Image src={guide6} alt="A stroke centered on the path" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide6Dark} alt="A stroke centered on the path" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Corner radius
+
+Give shapes such as rectangles a 2 pixel corner radius. Soft corners match the round joins and caps.
+
+<figure>
+	<Image src={guide7} alt="A rectangle with a 2 pixel corner radius" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide7Dark} alt="A rectangle with a 2 pixel corner radius" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Spacing
+
+Keep 2 pixels of space between separate elements of an icon. The parts stay distinct and the icon stays readable at small sizes.
+
+<figure>
+	<Image src={guide8} alt="2 pixels of space between separate elements" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide8Dark} alt="2 pixels of space between separate elements" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Accessibility
+
+Make icons easy to tell apart, including for people with low vision. Use shapes with clear contrast and avoid icons that differ only in small details.
+
+<figure>
+	<Image src={guide9} alt="The accessibility icon drawn with high contrast on the grid" class="hide-theme-dark" width={480} densities={[1, 2]} />
+	<Image src={guide9Dark} alt="The accessibility icon drawn with high contrast on the grid" class="hide-theme-light" width={480} densities={[1, 2]} />
+</figure>
+
+## Export to SVG
+
+Save every icon as a plain SVG file. Put the stroke settings on the `<svg>` element, so the icon takes its color from the text around it and can be restyled with CSS:
+
+- Set `width`, `height` and `viewBox` to `24` and `0 0 24 24`.
+- Set `fill="none"` and `stroke="currentColor"`. Do not use fixed colors.
+- Set `stroke-width="2"`, `stroke-linecap="round"` and `stroke-linejoin="round"`.
+- Draw every shape as a `<path>`, including circles and rectangles.
+- Remove groups, transforms, masks, clip paths and IDs that your design tool adds.
+
+This is the `ghost` icon from the set:
+
+```html
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 11a7 7 0 0 1 14 0v7a1.78 1.78 0 0 1 -3.1 1.4a1.65 1.65 0 0 0 -2.6 0a1.65 1.65 0 0 1 -2.6 0a1.65 1.65 0 0 0 -2.6 0a1.78 1.78 0 0 1 -3.1 -1.4v-7" />
+  <path d="M10 10l.01 0" />
+  <path d="M14 10l.01 0" />
+  <path d="M10 14a3.5 3.5 0 0 0 4 0" />
+</svg>
+```
+
+A dot, such as an eye, is a very short line (`l.01 0`). The round caps turn it into a 2 pixel circle.
+
+## Naming
+
+Name icons after what they show, not after what they do in one app. Use lowercase words joined with hyphens, and put the main object first:
+
+- `arrow-left`, `alert-circle`, `user-plus`: object first, then the shape or detail.
+- `bell-off`, `folder-plus`, `circle-check`: common suffixes for a crossed out, added or checked version.
+- `brand-github`: every logo starts with `brand-`.
+- `ghost-2`, `ghost-3`: a number marks another drawing of the same object.
+
+## Request an icon
+
+If an icon is missing from the set, request it in the [Tabler Icons issue tracker](https://github.com/tabler/tabler-icons/issues/new?template=01-icon_request.yml). First search [tabler.io/icons](https://tabler.io/icons) and the existing issues, including closed ones. If someone already asked for the same icon, add a 👍 to that issue instead.
+
+The request form asks for:
+
+- **Icon name**: what the icon should show.
+- **Use cases**: at least two real situations where you need it.
+- **Design ideas**: simple examples from other icon sets, or your own sketch drawn with the rules on this page.
