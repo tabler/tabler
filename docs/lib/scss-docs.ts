@@ -30,7 +30,7 @@ function sources() {
   cachedSources ??= Promise.all(
     Object.entries(scssSources)
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(async ([key, load]) => ({ path: key.replace('../../', ''), source: (await load()) as string })),
+      .map(async ([key, load]) => ({ path: key.replace('../../', ''), source: await load() })),
   )
   return cachedSources
 }

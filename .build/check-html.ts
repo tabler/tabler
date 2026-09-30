@@ -52,7 +52,7 @@ const CONSOLE_IGNORE = [/GL Driver Message/, /Google Maps JavaScript API/, /allo
 type PageReport = { url: string; errors: string[]; warnings: string[] }
 
 const resolveFile = (root: string, urlPath: string): string | null => {
-  const clean = decodeURIComponent(urlPath.split('?')[0]!.split('#')[0]!)
+  const clean = decodeURIComponent(urlPath.split('?')[0].split('#')[0])
   // `/x/` and `/x/index.html` also resolve to x.html: Astro's file format
   // collapses x/index.astro to x.html and the hosting serves it under both.
   const collapsed = clean.replace(/\/(index\.html)?$/, '')
@@ -87,7 +87,7 @@ const serve = (root: string): Promise<{ server: Server; base: string }> =>
 
 const sitemapPaths = async (base: string, dir?: string): Promise<string[]> => {
   const xml = dir ? readFileSync(join(dir, 'sitemap.xml'), 'utf8') : await (await fetch(`${base}/sitemap.xml`)).text()
-  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(/^https?:\/\/[^/]+/, '')).filter((p) => p.startsWith('/'))
+  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+/, '')).filter((p) => p.startsWith('/'))
 }
 
 // Runs in the page as plain JavaScript (a string, so no bundler helpers such as
@@ -162,14 +162,14 @@ const crawl = async (browser: Browser, base: string, paths: string[]) => {
         await page.goto(base + path, { waitUntil: 'load', timeout: 60_000 })
         await page.waitForTimeout(500)
         if (onSite()) {
-          const r = (await page.evaluate(INSPECT)) as Inspection
+          const r = await page.evaluate<Inspection>(INSPECT)
           for (const id of r.duplicateIds) if (!VENDOR_ID_PREFIXES.some((p) => id.startsWith(p))) report.errors.push(`duplicate id "${id}"`)
           for (const t of r.missingTargets) report.errors.push(`no element for ${t}`)
           for (const n of r.nested) report.errors.push(`nested interactive: ${n}`)
           for (const src of r.imgNoAlt) report.warnings.push(`img without alt: ${src}`)
           for (const html of r.unnamed) report.warnings.push(`no accessible name: ${html}`)
           for (const href of r.links) {
-            const key = href.split(/[?#]/)[0]!
+            const key = href.split(/[?#]/)[0]
             if (!links.has(key)) links.set(key, path)
           }
         }

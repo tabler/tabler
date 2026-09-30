@@ -34,13 +34,13 @@ class Config {
   }
 
   _mergeConfigObj(config?: ComponentConfig, element?: HTMLElement): ComponentConfig {
-    const jsonConfig = isElement(element) ? Manipulator.getDataAttribute(element!, 'config') : {}
+    const jsonConfig = isElement(element) ? Manipulator.getDataAttribute(element, 'config') : {}
     const ctor = this.constructor as unknown as ConfigStatic
 
     return {
       ...ctor.Default,
       ...(typeof jsonConfig === 'object' ? jsonConfig : {}),
-      ...(isElement(element) ? Manipulator.getDataAttributes(element!) : {}),
+      ...(isElement(element) ? Manipulator.getDataAttributes(element) : {}),
       ...(typeof config === 'object' ? config : {}),
     }
   }

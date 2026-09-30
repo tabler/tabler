@@ -81,6 +81,8 @@ class ScrollBarHelper {
       }
 
       Manipulator.removeDataAttribute(element, styleProperty)
+      // The attribute holds the CSS value `_saveInitialAttribute()` stored
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       element.style.setProperty(styleProperty, String(value))
     }
 
