@@ -3,7 +3,9 @@ interface Props {
   mask?: string
   visible?: boolean
   placeholder?: string
-  type?: 'number'
+  type?: 'number' | 'date'
+  format?: string
+  ranges?: string
   scale?: number
   radix?: string
   thousandsSeparator?: string
@@ -14,9 +16,9 @@ interface Props {
   padFractionalZeros?: boolean
 }
 
-const { mask, visible, placeholder, type, scale, radix, thousandsSeparator, min, max, prefix, suffix, padFractionalZeros } = Astro.props
+const { mask, visible, placeholder, type, format, ranges, scale, radix, thousandsSeparator, min, max, prefix, suffix, padFractionalZeros } = Astro.props
 const name = 'mask'
-const pattern = type === 'number' ? undefined : (mask ?? '00/00/0000')
+const pattern = type ? undefined : (mask ?? '00/00/0000')
 ---
 
 <input
@@ -26,6 +28,8 @@ const pattern = type === 'number' ? undefined : (mask ?? '00/00/0000')
   data-mask={pattern}
   data-mask-visible={visible ? 'true' : undefined}
   data-mask-type={type}
+  data-mask-format={format}
+  data-mask-ranges={ranges}
   data-mask-scale={scale}
   data-mask-radix={radix}
   data-mask-thousands-separator={thousandsSeparator}
@@ -34,6 +38,6 @@ const pattern = type === 'number' ? undefined : (mask ?? '00/00/0000')
   data-mask-prefix={prefix}
   data-mask-suffix={suffix}
   data-mask-pad-fractional-zeros={padFractionalZeros ? 'true' : undefined}
-  placeholder={placeholder ?? pattern}
+  placeholder={placeholder ?? pattern ?? format}
   autocomplete="off"
 />

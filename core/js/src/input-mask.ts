@@ -31,7 +31,11 @@ type ComponentConfig = {
   /** extra pattern characters, each with the RegExp one typed character has to match */
   tokens: Record<string, RegExp>
   /** `'number'` formats a number instead of a fixed pattern */
-  type?: 'pattern' | 'number'
+  type?: 'pattern' | 'number' | 'date'
+  /** date: the format, from `YYYY`, `MM`, `DD`, `HH`, `mm` and `ss` (default `DD/MM/YYYY`) */
+  format?: string
+  /** pattern: the allowed range of each group of digits, in order, such as `[[0, 255], [0, 255]]` */
+  ranges?: [number, number][]
   /** number: digits after the radix, `0` for integers (default `2`) */
   scale?: number
   /** number: the fractional separator (default `.`) */
@@ -71,6 +75,9 @@ const ATTRIBUTE_PLACEHOLDER_CHAR = 'data-mask-placeholder-char'
 const ATTRIBUTE_TYPE = 'data-mask-type'
 
 // `data-mask-<name>` attributes of the number type, by option name and value type
+const ATTRIBUTE_FORMAT = 'data-mask-format'
+const ATTRIBUTE_RANGES = 'data-mask-ranges'
+
 const NUMBER_ATTRIBUTES: Record<string, 'number' | 'string' | 'boolean'> = {
   scale: 'number',
   radix: 'string',
@@ -82,7 +89,7 @@ const NUMBER_ATTRIBUTES: Record<string, 'number' | 'string' | 'boolean'> = {
   padFractionalZeros: 'boolean',
 }
 
-const SELECTOR_DATA_MASK = `[${ATTRIBUTE_MASK}], [${ATTRIBUTE_TYPE}="number"]`
+const SELECTOR_DATA_MASK = `[${ATTRIBUTE_MASK}], [${ATTRIBUTE_TYPE}="number"], [${ATTRIBUTE_TYPE}="date"]`
 
 const ESCAPE = '\\'
 
@@ -114,6 +121,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   prefix: '(string|undefined)',
   suffix: '(string|undefined)',
   padFractionalZeros: '(boolean|undefined)',
+  format: '(string|undefined)',
+  ranges: '(array|undefined)',
 }
 
 const isLegacyMask = (mask: unknown): boolean => typeof mask !== 'string' && (typeof mask !== 'function' || mask === Number || mask === Date)
@@ -229,6 +238,99 @@ const displayNumber = (canon: string, o: NumberOptions): string => {
   return `${canon.startsWith('-') ? '-' : ''}${o.prefix}${grouped}${frac === undefined ? '' : o.radix + frac}${o.suffix}`
 }
 
+// A group of digits with the range it has to stay in; `kind` marks the day, month and year of a date
+type Segment = { length: number; min: number; max: number; kind: '' | 'D' | 'M' | 'Y' }
+
+const DATE_PARTS: Record<string, Segment> = {
+  YYYY: { length: 4, min: 1, max: 9999, kind: 'Y' },
+  MM: { length: 2, min: 1, max: 12, kind: 'M' },
+  DD: { length: 2, min: 1, max: 31, kind: 'D' },
+  HH: { length: 2, min: 0, max: 23, kind: '' },
+  mm: { length: 2, min: 0, max: 59, kind: '' },
+  ss: { length: 2, min: 0, max: 59, kind: '' },
+}
+
+const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+const isLeapYear = (year: number): boolean => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+
+// Turns a date format into a pattern of zeros and the segments behind it
+const parseDateFormat = (format: string): { mask: string; segments: Segment[] } => {
+  const segments: Segment[] = []
+  const mask = format.replace(/YYYY|MM|DD|HH|mm|ss/g, (part) => {
+    segments.push(DATE_PARTS[part])
+    return '0'.repeat(part.length)
+  })
+
+  return { mask, segments }
+}
+
+// The lengths of the runs of token slots in a pattern, paired with the given ranges
+const segmentsFromRanges = (slots: Slot[], ranges: [number, number][]): Segment[] => {
+  const lengths: number[] = []
+  let run = 0
+
+  for (const slot of slots) {
+    if (slot.token) {
+      run++
+    } else if (run) {
+      lengths.push(run)
+      run = 0
+    }
+  }
+
+  if (run) {
+    lengths.push(run)
+  }
+
+  return ranges.slice(0, lengths.length).map(([min, max], i) => ({ length: lengths[i], min, max, kind: '' }))
+}
+
+// Keeps every group of digits inside its range as the user types: a first digit that cannot start a valid
+// number gets a `0` in front, and a full group is pulled back into the range.
+const fixSegments = (digits: string, segments: Segment[]): string => {
+  const parts: string[] = []
+  let rest = digits
+
+  for (const { length, min, max } of segments) {
+    if (!rest) {
+      break
+    }
+
+    if (length > 1 && Number(rest[0]) * 10 ** (length - 1) > max) {
+      rest = `0${rest}`
+    }
+
+    let part = rest.slice(0, length)
+
+    rest = rest.slice(length)
+
+    if (part.length < length) {
+      part = Number(part) * 10 ** (length - part.length) > max ? `0${part}` : part
+    } else {
+      const value = Number(part)
+      part = value > max ? String(max).padStart(length, '0') : value < min ? String(min).padStart(length, '0') : part
+    }
+
+    parts.push(part)
+  }
+
+  const day = segments.findIndex((segment) => segment.kind === 'D')
+  const month = segments.findIndex((segment) => segment.kind === 'M')
+  const year = segments.findIndex((segment) => segment.kind === 'Y')
+
+  if (day > -1 && month > -1 && parts[day]?.length === segments[day].length && parts[month]?.length === segments[month].length) {
+    const common = year > -1 && parts[year]?.length === 4 && !isLeapYear(Number(parts[year]))
+    const days = Number(parts[month]) === 2 && common ? 28 : DAYS_IN_MONTH[Number(parts[month]) - 1]
+
+    if (Number(parts[day]) > days) {
+      parts[day] = String(days)
+    }
+  }
+
+  return parts.join('') + rest
+}
+
 /**
  * Class definition
  *
@@ -244,6 +346,8 @@ class InputMask extends BaseComponent {
   _unmasked = ''
   _complete = false
   _number: NumberOptions | null = null
+  _mask = ''
+  _segments: Segment[] = []
   _onBlur = (): void => this._finish()
   _onInput = (event: Event): void => this._handleInput(event as InputEvent)
 
@@ -263,7 +367,16 @@ class InputMask extends BaseComponent {
       return
     }
 
-    if (!this._config.mask) {
+    this._mask = this._config.mask as string
+
+    if (this._config.type === 'date') {
+      const { mask, segments } = parseDateFormat(this._config.format ?? 'DD/MM/YYYY')
+
+      this._mask = mask
+      this._segments = segments
+    }
+
+    if (!this._mask) {
       return
     }
 
@@ -276,6 +389,10 @@ class InputMask extends BaseComponent {
       }
 
       return
+    }
+
+    if (this._config.ranges && typeof this._mask === 'string') {
+      this._segments = segmentsFromRanges(parse(this._mask, { ...TOKENS, ...this._config.tokens }), this._config.ranges)
     }
 
     this._element.addEventListener('input', this._onInput)
@@ -312,7 +429,7 @@ class InputMask extends BaseComponent {
 
   // deprecated(2.0): the IMask instance; the component itself answers the same members
   get mask(): this | IMaskInstance | null {
-    return this._legacy ?? (this._config.mask || this._number ? this : null)
+    return this._legacy ?? (this._mask || this._number ? this : null)
   }
 
   // Public
@@ -345,7 +462,8 @@ class InputMask extends BaseComponent {
 
   // Private
   _slots(unmasked: string): Slot[] {
-    const { mask, tokens } = this._config
+    const mask = this._mask || this._config.mask
+    const { tokens } = this._config
 
     return parse(typeof mask === 'function' ? mask(unmasked) : mask, { ...TOKENS, ...tokens })
   }
@@ -395,6 +513,16 @@ class InputMask extends BaseComponent {
         position++
         slots = this._slots(unmasked)
       }
+    }
+
+    if (this._segments.length) {
+      const fixed = fixSegments(unmasked, this._segments).slice(0, slots.filter((slot) => slot.token).length)
+
+      if (count !== null) {
+        count = count === unmasked.length ? fixed.length : Math.min(fixed.length, count + fixed.length - unmasked.length)
+      }
+
+      unmasked = fixed
     }
 
     return { unmasked, count }
@@ -537,6 +665,21 @@ class InputMask extends BaseComponent {
           dataOptions[name] = type === 'number' ? Number(value) : type === 'boolean' ? value !== 'false' : value
         }
       }
+    }
+
+    if (element?.getAttribute(ATTRIBUTE_TYPE) === 'date') {
+      dataOptions.type = 'date'
+    }
+
+    const format = element?.getAttribute(ATTRIBUTE_FORMAT)
+    const ranges = element?.getAttribute(ATTRIBUTE_RANGES)
+
+    if (format) {
+      dataOptions.format = format
+    }
+
+    if (ranges) {
+      dataOptions.ranges = ranges.split(/[\s,]+/).map((range) => range.split('-').map(Number))
     }
 
     // A bare `data-mask-visible` means visible, like `="true"`.
