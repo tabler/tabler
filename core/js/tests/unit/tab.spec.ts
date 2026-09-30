@@ -296,7 +296,7 @@ describe('Tab', () => {
       fixtureEl.innerHTML = ['<ul class="nav">', '  <li class="nav-link" data-bs-toggle="tab"></li>', '</ul>'].join('')
 
       const tabEl = fixtureEl.querySelector('.nav-link')!
-      const tab = new Tab(tabEl)
+      new Tab(tabEl)
 
       const spyStop = vi.spyOn(Event.prototype, 'stopPropagation')
       const spyPrevent = vi.spyOn(Event.prototype, 'preventDefault')
@@ -326,6 +326,7 @@ describe('Tab', () => {
       tabEl1.dispatchEvent(keydown)
 
       expect(spyFocus2).toHaveBeenCalled()
+      expect(spyFocus3).not.toHaveBeenCalled()
     })
 
     it('should handle left/up arrow', () => {
