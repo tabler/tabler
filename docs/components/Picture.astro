@@ -1,0 +1,23 @@
+---
+// An image in a framed box: the same surface, border and radius as an <Example>
+// demo, so pictures and demos look alike on a page. The image itself should have
+// a transparent background. With `srcDark` the box swaps images with the theme.
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+interface Props {
+  src: ImageMetadata
+  /** version shown in dark mode; without it `src` is shown in both modes */
+  srcDark?: ImageMetadata
+  alt: string
+  /** display width in pixels; the image is also rendered at 2x */
+  width?: number
+}
+
+const { src, srcDark, alt, width = 480 } = Astro.props
+---
+
+<figure class="docs-picture d-flex justify-content-center my-5 border rounded bg-surface-secondary overflow-hidden">
+  <Image src={src} alt={alt} width={width} densities={[1, 2]} class:list={[srcDark && 'hide-theme-dark']} />
+  {srcDark && <Image src={srcDark} alt={alt} width={width} densities={[1, 2]} class="hide-theme-light" />}
+</figure>
