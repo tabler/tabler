@@ -29,3 +29,6 @@ jobs:
         uses: calibreapp/image-actions@26d5b54006db4da7a1b29903f33404a6f77b58cf # main, 2026-09-02
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # docs images go through astro:assets, which makes the webp files at build
+          # time; lossy PNG compression here only degrades the source
+          ignorePaths: 'node_modules/**,docs/images/**'
