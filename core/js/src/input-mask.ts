@@ -30,6 +30,26 @@ type ComponentConfig = {
   placeholderChar: string
   /** extra pattern characters, each with the RegExp one typed character has to match */
   tokens: Record<string, RegExp>
+  /** `'number'` formats a number instead of a fixed pattern */
+  type?: 'pattern' | 'number'
+  /** number: digits after the radix, `0` for integers (default `2`) */
+  scale?: number
+  /** number: the fractional separator (default `.`) */
+  radix?: string
+  /** number: the character that groups thousands (default none) */
+  thousandsSeparator?: string
+  /** number: other characters typed as the radix (default `,` for `.` and `.` for `,`) */
+  mapToRadix?: string[]
+  /** number: the lowest value; a `min` of `0` or more also forbids the minus sign */
+  min?: number
+  /** number: the highest value */
+  max?: number
+  /** number: text before the number, such as a currency symbol */
+  prefix?: string
+  /** number: text after the number */
+  suffix?: string
+  /** number: add zeros up to `scale` when the field loses focus */
+  padFractionalZeros?: boolean
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -48,8 +68,21 @@ const EVENT_COMPLETE = `complete${EVENT_KEY}`
 const ATTRIBUTE_MASK = 'data-mask'
 const ATTRIBUTE_VISIBLE = 'data-mask-visible'
 const ATTRIBUTE_PLACEHOLDER_CHAR = 'data-mask-placeholder-char'
+const ATTRIBUTE_TYPE = 'data-mask-type'
 
-const SELECTOR_DATA_MASK = `[${ATTRIBUTE_MASK}]`
+// `data-mask-<name>` attributes of the number type, by option name and value type
+const NUMBER_ATTRIBUTES: Record<string, 'number' | 'string' | 'boolean'> = {
+  scale: 'number',
+  radix: 'string',
+  thousandsSeparator: 'string',
+  min: 'number',
+  max: 'number',
+  prefix: 'string',
+  suffix: 'string',
+  padFractionalZeros: 'boolean',
+}
+
+const SELECTOR_DATA_MASK = `[${ATTRIBUTE_MASK}], [${ATTRIBUTE_TYPE}="number"]`
 
 const ESCAPE = '\\'
 
@@ -71,6 +104,16 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   lazy: 'boolean',
   placeholderChar: 'string',
   tokens: 'object',
+  type: '(string|undefined)',
+  scale: '(number|undefined)',
+  radix: '(string|undefined)',
+  thousandsSeparator: '(string|undefined)',
+  mapToRadix: '(array|undefined)',
+  min: '(number|undefined)',
+  max: '(number|undefined)',
+  prefix: '(string|undefined)',
+  suffix: '(string|undefined)',
+  padFractionalZeros: '(boolean|undefined)',
 }
 
 const isLegacyMask = (mask: unknown): boolean => typeof mask !== 'string' && (typeof mask !== 'function' || mask === Number || mask === Date)
@@ -94,11 +137,104 @@ const parse = (mask: string, tokens: Record<string, RegExp>): Slot[] => {
   return slots
 }
 
+type NumberOptions = {
+  scale: number
+  radix: string
+  thousandsSeparator: string
+  radixChars: string[]
+  min: number | null
+  max: number | null
+  prefix: string
+  suffix: string
+  pad: boolean
+}
+
+const numberOptions = (config: ComponentConfig): NumberOptions => {
+  const radix = config.radix ?? '.'
+  const thousandsSeparator = config.thousandsSeparator ?? ''
+  const mapToRadix = config.mapToRadix ?? [radix === '.' ? ',' : '.']
+
+  return {
+    scale: config.scale ?? 2,
+    radix,
+    thousandsSeparator,
+    radixChars: [radix, ...mapToRadix.filter((char) => char !== thousandsSeparator)],
+    min: config.min ?? null,
+    max: config.max ?? null,
+    prefix: config.prefix ?? '',
+    suffix: config.suffix ?? '',
+    pad: config.padFractionalZeros ?? false,
+  }
+}
+
+// The canonical number: an optional `-`, digits and a `.`, whatever the radix shown. `-` and `12.` are valid while typing.
+const scanNumber = (text: string, o: NumberOptions, final = false): string => {
+  const signed = o.min === null || o.min < 0
+  let sign = ''
+  let int = ''
+  let frac = ''
+  let radix = false
+
+  for (const char of o.prefix ? text.replace(o.prefix, '') : text) {
+    if (char >= '0' && char <= '9') {
+      if (!radix) {
+        int += char
+      } else if (frac.length < o.scale) {
+        frac += char
+      }
+    } else if (char === '-' && signed && !int && !radix) {
+      sign = '-'
+    } else if (!radix && o.scale > 0 && o.radixChars.includes(char)) {
+      radix = true
+    }
+  }
+
+  int = int.replace(/^0+(?=\d)/, '')
+
+  if (radix && !int) {
+    int = '0'
+  }
+
+  let canon = sign + int + (radix ? `.${frac}` : '')
+  const value = parseFloat(canon)
+
+  if (o.max !== null && value > o.max) {
+    canon = String(o.max)
+  } else if (o.min !== null && value < (final ? o.min : Math.min(o.min, 0))) {
+    canon = String(o.min)
+  }
+
+  if (final) {
+    canon = canon.replace(/\.$/, '')
+
+    if (o.pad && o.scale > 0 && /\d/.test(canon)) {
+      const [whole, decimals = ''] = canon.split('.')
+      canon = `${whole}.${decimals.padEnd(o.scale, '0')}`
+    }
+  }
+
+  return canon
+}
+
+const displayNumber = (canon: string, o: NumberOptions): string => {
+  const body = canon.replace('-', '')
+
+  if (!body) {
+    return canon
+  }
+
+  const [int, frac] = body.split('.')
+  const grouped = o.thousandsSeparator ? int.replace(/\B(?=(\d{3})+(?!\d))/g, () => o.thousandsSeparator) : int
+
+  return `${canon.startsWith('-') ? '-' : ''}${o.prefix}${grouped}${frac === undefined ? '' : o.radix + frac}${o.suffix}`
+}
+
 /**
  * Class definition
  *
  * A native input mask. Pattern characters: `0` a digit, `a` a letter, `*` any
  * character; `\` makes the next one a literal. Add more with the `tokens` option.
+ * With `type: 'number'` it formats a number instead.
  */
 
 class InputMask extends BaseComponent {
@@ -107,12 +243,27 @@ class InputMask extends BaseComponent {
   _legacy: IMaskInstance | null = null
   _unmasked = ''
   _complete = false
+  _number: NumberOptions | null = null
+  _onBlur = (): void => this._finish()
   _onInput = (event: Event): void => this._handleInput(event as InputEvent)
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
 
-    if (!this._element || !this._config.mask) {
+    if (!this._element) {
+      return
+    }
+
+    if (this._config.type === 'number') {
+      this._number = numberOptions(this._config)
+      this._element.addEventListener('input', this._onInput)
+      this._element.addEventListener('blur', this._onBlur)
+      this._element.inputMode ||= 'decimal'
+      this.update()
+      return
+    }
+
+    if (!this._config.mask) {
       return
     }
 
@@ -161,7 +312,7 @@ class InputMask extends BaseComponent {
 
   // deprecated(2.0): the IMask instance; the component itself answers the same members
   get mask(): this | IMaskInstance | null {
-    return this._legacy ?? (this._config.mask ? this : null)
+    return this._legacy ?? (this._config.mask || this._number ? this : null)
   }
 
   // Public
@@ -188,6 +339,7 @@ class InputMask extends BaseComponent {
   dispose(): void {
     this._legacy?.destroy()
     this._element.removeEventListener('input', this._onInput)
+    this._element.removeEventListener('blur', this._onBlur)
     super.dispose()
   }
 
@@ -199,6 +351,13 @@ class InputMask extends BaseComponent {
   }
 
   _extract(raw: string, caret: number | null = null): { unmasked: string; count: number | null } {
+    if (this._number) {
+      const o = this._number
+      const before = caret === null ? null : raw.slice(0, caret)
+
+      return { unmasked: scanNumber(raw, o), count: before === null ? null : [...before].filter((char) => /[\d-]/.test(char) || o.radixChars.includes(char)).length }
+    }
+
     // A dynamic mask is resolved by what the value holds, so the first pass reads it with the previous mask
     let slots = this._slots(this._unmasked)
     let unmasked = ''
@@ -242,6 +401,19 @@ class InputMask extends BaseComponent {
   }
 
   _format(unmasked: string): { text: string; ends: number[]; complete: boolean } {
+    if (this._number) {
+      const text = displayNumber(unmasked, this._number)
+      const ends: number[] = []
+
+      for (let i = 0; i < text.length; i++) {
+        if (/[\d-]/.test(text[i]) || this._number.radixChars.includes(text[i])) {
+          ends.push(i + 1)
+        }
+      }
+
+      return { text, ends, complete: false }
+    }
+
     const slots = this._slots(unmasked)
     const { lazy, placeholderChar } = this._config
     const ends: number[] = []
@@ -314,6 +486,11 @@ class InputMask extends BaseComponent {
 
       if (at < unmasked.length) {
         unmasked = unmasked.slice(0, at) + unmasked.slice(at + 1)
+
+        if (this._number) {
+          unmasked = scanNumber(unmasked.replace('.', this._number.radix), this._number)
+        }
+
         typed = at
       }
     }
@@ -324,6 +501,15 @@ class InputMask extends BaseComponent {
     if (unmasked !== previous) {
       EventHandler.trigger(this._element, EVENT_ACCEPT, { value: this._element.value, unmaskedValue: unmasked })
     }
+  }
+
+  _finish(): void {
+    if (!this._number) {
+      return
+    }
+
+    this._unmasked = scanNumber(this._element.value, this._number, true)
+    this._element.value = displayNumber(this._unmasked, this._number)
   }
 
   _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
@@ -339,6 +525,18 @@ class InputMask extends BaseComponent {
 
     if (placeholderChar) {
       dataOptions.placeholderChar = placeholderChar
+    }
+
+    if (element?.getAttribute(ATTRIBUTE_TYPE) === 'number') {
+      dataOptions.type = 'number'
+
+      for (const [name, type] of Object.entries(NUMBER_ATTRIBUTES)) {
+        const value = element.getAttribute(`data-mask-${name.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`)}`)
+
+        if (value !== null) {
+          dataOptions[name] = type === 'number' ? Number(value) : type === 'boolean' ? value !== 'false' : value
+        }
+      }
     }
 
     // A bare `data-mask-visible` means visible, like `="true"`.
