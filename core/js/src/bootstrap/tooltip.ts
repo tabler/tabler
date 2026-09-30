@@ -138,7 +138,7 @@ class Tooltip extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
   _isEnabled: boolean
-  _timeout: ReturnType<typeof setTimeout> | number
+  _timeout: ReturnType<typeof setTimeout>
   _isHovered: boolean | null
   _activeTrigger: Record<string, boolean>
   _popper: Popper.Instance | null
