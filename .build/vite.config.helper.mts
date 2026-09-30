@@ -40,7 +40,7 @@ export function createViteConfig({ entry, name, fileName, formats, outDir, banne
       rollupOptions: {
         output: rollupOutput,
       },
-      target: 'es2015',
+      target: 'es2022',
       minify: minify,
     },
     define: {

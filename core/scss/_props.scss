@@ -3,16 +3,16 @@
 
 :root,
 :host {
-  /** Direction multiplier for physical transforms (1 = LTR, -1 = RTL) */
+  // Direction multiplier for physical transforms (1 = LTR, -1 = RTL)
   --dir: 1;
 
-  /** Fonts */
+  // Fonts
   --font-monospace: #{$font-family-monospace};
   --font-sans-serif: #{$font-family-sans-serif};
   --font-serif: #{$font-family-serif};
   --font-comic: #{$font-family-comic};
 
-  /** Gray colors */
+  // Gray colors
   --gray-50: #{$gray-50};
   --gray-100: #{$gray-100};
   --gray-200: #{$gray-200};
@@ -38,10 +38,10 @@
   --dark: #{$dark};
   --light: #{$light};
 
-  /** Brand colors */
+  // Brand colors
   --brand: #{$primary};
 
-  /** Theme colors */
+  // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
     --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
@@ -50,20 +50,20 @@
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
   }
 
-  /** Gray colors */
+  // Gray colors
   @each $name, $color in $gray-colors {
     --#{$name}-fg: var(--#{$name});
   }
 
-  /** Spacers */
+  // Spacers
   @each $name, $value in $spacers {
     --spacer-#{$name}: #{$value};
   }
 
-  /** Icons */
+  // Icons
   --icon-size: #{$icon-size};
 
-  /** Font sizes */
+  // Font sizes
   @each $name, $value in $font-weights {
     --font-weight-#{$name}: #{$value};
   }
@@ -76,13 +76,13 @@
     --line-height-#{$name}: #{$value};
   }
 
-  /** Shadows */
+  // Shadows
   --shadow-color: #{$box-shadow-color};
   @each $name, $value in $box-shadows {
     --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
 
-  /** Border radiuses */
+  // Border radiuses
   --border-radius-scale: 1;
   @each $name, $value in $border-radiuses {
     @if $name {
@@ -92,7 +92,7 @@
     }
   }
 
-  /** Buttons and form controls: one scale, in the names Bootstrap 6 uses */
+  // Buttons and form controls: one scale, in the names Bootstrap 6 uses
   // scss-docs-start btn-input-css-vars
   --btn-input-fg: var(--body-color);
   --btn-input-bg: var(--bg-forms);
@@ -125,7 +125,7 @@
   --btn-input-xl-min-height: calc(var(--btn-input-xl-line-height) + var(--btn-input-xl-padding-y) * 2 + #{$input-btn-border-width} * 2);
   // scss-docs-end btn-input-css-vars
 
-  /** Checks, radios and switches: shared state colors, in the names Bootstrap 6 uses */
+  // Checks, radios and switches: shared state colors, in the names Bootstrap 6 uses
   // scss-docs-start control-state-css-vars
   --control-checked-bg: #{$form-check-input-checked-bg-color};
   --control-checked-border-color: #{$form-check-input-checked-border-color};
@@ -133,7 +133,7 @@
   --control-disabled-opacity: #{$form-check-input-disabled-opacity};
   // scss-docs-end control-state-css-vars
 
-  /** Backdrops */
+  // Backdrops
   --backdrop-opacity: #{$backdrop-opacity};
   --backdrop-bg: #{$backdrop-bg};
   @each $name, $value in $backdrops {
