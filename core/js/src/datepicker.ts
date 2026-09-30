@@ -244,18 +244,22 @@ class Datepicker extends BaseComponent {
 
     this._isShowing = true
     this._skipPluginShow = false
-    this._calendar.show()
 
-    // The first show builds the popup and opens it a tick later
-    if (!this._isShown) {
-      await new Promise<void>((resolve) => {
-        this._resolveShown = resolve
-        afterPluginTimers(resolve)
-      })
+    // Reset even if the plugin throws, or every later `show()` returns early
+    try {
+      this._calendar.show()
+
+      // The first show builds the popup and opens it a tick later
+      if (!this._isShown) {
+        await new Promise<void>((resolve) => {
+          this._resolveShown = resolve
+          afterPluginTimers(resolve)
+        })
+      }
+    } finally {
+      this._resolveShown = null
+      this._isShowing = false
     }
-
-    this._resolveShown = null
-    this._isShowing = false
   }
 
   async hide(): Promise<void> {
@@ -280,8 +284,11 @@ class Datepicker extends BaseComponent {
     })
 
     this._isHiding = true
-    this._calendar.hide()
-    this._isHiding = false
+    try {
+      this._calendar.hide()
+    } finally {
+      this._isHiding = false
+    }
   }
 
   dispose(): void {
