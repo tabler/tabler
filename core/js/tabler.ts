@@ -20,6 +20,7 @@ import './src/strength'
 export * from './src/bootstrap'
 
 // Tabler's own components
+export { default as AlertDialog } from './src/alert-dialog'
 export { default as Autosize } from './src/autosize'
 export { default as Clipboard } from './src/clipboard'
 export { default as Confetti } from './src/confetti'
