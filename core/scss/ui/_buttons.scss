@@ -116,7 +116,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   .btn-ghost-#{$color} {
     --btn-variant: var(--#{$color});
     --btn-variant-fg: var(--#{$color}-fg);
-    --btn-variant-text: var(--#{$color}-text);
+    --btn-variant-text: var(--#{$color}#{if(sass(map.has-key($social-colors, $color)): ''; else: '-text')});
     --btn-variant-darken: var(--#{$color}-darken);
   }
 }

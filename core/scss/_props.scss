@@ -45,7 +45,9 @@
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
     --#{$name}-fg: #{if(sass(contrast-ratio($color) >= $min-contrast-ratio): var(--light); else: var(--dark))};
-    --#{$name}-text: #{if(sass($name == 'light'): $color; else: text-color-on($color, $text-surface, $text-min-contrast-ratio))};
+    @if not map.has-key($social-colors, $name) {
+      --#{$name}-text: #{if(sass($name == 'light'): $color; else: text-color-on($color, $text-surface, $text-min-contrast-ratio))};
+    }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
