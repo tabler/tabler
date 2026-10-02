@@ -7,9 +7,7 @@ textarea {
   }
 }
 
-/**
-Form label
- */
+// Form label
 .col-form-label,
 .form-label {
   --form-label-required-gap: #{$form-label-required-gap};
@@ -32,18 +30,14 @@ Form label
   color: $form-secondary-color;
 }
 
-/**
-Form select
- */
+// Form select
 .form-select {
   &:-moz-focusring {
     color: var(--body-color);
   }
 }
 
-/**
-Form control
- */
+// Form control
 .form-control {
   &:-webkit-autofill {
     color: var(--body-color);
@@ -53,7 +47,7 @@ Form control
 
   &:disabled,
   &.disabled {
-    color: $form-secondary-color;
+    color: var(--control-disabled-color);
     user-select: none;
   }
 
@@ -117,9 +111,7 @@ fieldset:empty {
   display: none;
 }
 
-/**
-Form help
- */
+// Form help
 .form-help {
   --form-help-size: #{$form-help-size};
   --form-help-font-size: #{$form-help-font-size};
@@ -150,12 +142,10 @@ Form help
   }
 }
 
-/**
-Input group
- */
+// Input group
 .input-group {
   box-shadow: $input-box-shadow;
-  @include border-radius($input-border-radius);
+  @include border-radius(var(--input-group-addon-border-radius));
 
   .form-control,
   .form-select,
@@ -173,7 +163,7 @@ Input group
   &:focus-within {
     --focus-ring-offset: -1px;
     @include focus-ring(true);
-    @include border-radius($input-border-radius);
+    @include border-radius(var(--input-group-addon-border-radius));
 
     .form-control,
     .input-group-text {
@@ -183,7 +173,7 @@ Input group
 
   .form-control {
     &:focus {
-      border-color: $input-border-color;
+      border-color: var(--control-border-color);
       outline: 0;
       box-shadow: none;
     }
@@ -199,7 +189,7 @@ Input group
 
   .input-group-text {
     z-index: 10;
-    background: $form-check-input-bg;
+    background: #{var-if-default($form-check-input-bg, var(--bg-forms), '--btn-input-bg')};
     @include transition($input-transition);
 
     &:first-child {
@@ -235,17 +225,13 @@ Input group
   }
 }
 
-/**
-Upload files
- */
+// Upload files
 .form-file-button {
   margin-inline-start: 0;
   border-inline-start: 0;
 }
 
-/**
-Forms on mobile devices 
-  */
+// Forms on mobile devices
 .form-control,
 .form-select {
   --form-control-mobile-font-size: #{$form-control-mobile-font-size};

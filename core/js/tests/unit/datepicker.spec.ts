@@ -115,6 +115,24 @@ describe('Datepicker', () => {
       expect(instance._config.firstWeekday).toBe(0)
     })
 
+    it('should turn week numbers on from a data attribute', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-week-numbers="true">'
+
+      const instance = new Datepicker(input())
+
+      expect(Datepicker.Default.weekNumbers).toBe(false)
+      expect(instance._config.weekNumbers).toBe(true)
+      expect(instance._buildCalendarOptions().enableWeekNumbers).toBe(true)
+    })
+
+    it('should keep week numbers enabled through vcpOptions', () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input(), { vcpOptions: { enableWeekNumbers: true } })
+
+      expect(instance._buildCalendarOptions().enableWeekNumbers).toBe(true)
+    })
+
     it('should let a passed config win over data attributes', () => {
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker" data-bs-first-weekday="0">'
 
@@ -215,6 +233,38 @@ describe('Datepicker', () => {
       await instance.show()
       fixtureEl.querySelector('button')!.focus()
 
+      expect(instance._isShown).toBe(false)
+    })
+
+    it('should show again after the plugin throws while showing', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+      const pluginShow = vi.spyOn(instance.calendar!, 'show').mockImplementationOnce(() => {
+        throw new Error('plugin failed')
+      })
+
+      await expect(instance.show()).rejects.toThrow('plugin failed')
+      expect(instance._isShowing).toBe(false)
+
+      await instance.show()
+      expect(pluginShow).toHaveBeenCalledTimes(2)
+      expect(instance._isShown).toBe(true)
+    })
+
+    it('should hide again after the plugin throws while hiding', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+      await instance.show()
+      vi.spyOn(instance.calendar!, 'hide').mockImplementationOnce(() => {
+        throw new Error('plugin failed')
+      })
+
+      await expect(instance.hide()).rejects.toThrow('plugin failed')
+      expect(instance._isHiding).toBe(false)
+
+      await instance.hide()
       expect(instance._isShown).toBe(false)
     })
   })

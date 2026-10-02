@@ -113,7 +113,7 @@ function lineBalance(line: string): number {
   let depth = 0
   for (const m of line.matchAll(/<(\/)?([a-zA-Z][\w.-]*)((?:"[^"]*"|'[^']*'|[^<>"'])*?)(\/)?>/g)) {
     if (m[1]) depth--
-    else if (!m[4] && !voidTags.has(m[2]!.toLowerCase())) depth++
+    else if (!m[4] && !voidTags.has(m[2].toLowerCase())) depth++
   }
   return depth
 }
@@ -121,7 +121,7 @@ function lineBalance(line: string): number {
 const hasText = (line: string): boolean => line.replace(/<[^<>]*>/g, '').trim().length > 0
 
 /** The tags of a fragment in order, for comparing markup before and after formatting. */
-const tagSequence = (html: string): string => [...html.matchAll(/<(\/?)([a-zA-Z][\w.-]*)/g)].map((m) => `${m[1]}${m[2]!.toLowerCase()}`).join(',')
+const tagSequence = (html: string): string => [...html.matchAll(/<(\/?)([a-zA-Z][\w.-]*)/g)].map((m) => `${m[1]}${m[2].toLowerCase()}`).join(',')
 
 /**
  * Merge raw-text lines back into their markup (see formatExamples). MDX parses
@@ -145,8 +145,8 @@ function glueTextLines(formatted: string): string {
     else out.push(line)
     // A text line can also land after a closing tag whose opener sits on an
     // earlier line (label after a multi-line svg) — pull those lines up too.
-    while (out.length > 1 && hasText(out[out.length - 1]!) && lineBalance(out[out.length - 1]!) < 0) {
-      const merged = `${out[out.length - 2]} ${out[out.length - 1]!.trim()}`
+    while (out.length > 1 && hasText(out[out.length - 1]) && lineBalance(out[out.length - 1]) < 0) {
+      const merged = `${out[out.length - 2]} ${out[out.length - 1].trim()}`
       out.splice(out.length - 2, 2, merged)
     }
   }

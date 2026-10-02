@@ -78,7 +78,7 @@ const allowedAttribute = (attribute: Attr, allowedAttributeList: (string | RegEx
     return true
   }
 
-  return allowedAttributeList.filter((attributeRegex) => attributeRegex instanceof RegExp).some((regex) => (regex as RegExp).test(attributeName))
+  return allowedAttributeList.filter((attributeRegex) => attributeRegex instanceof RegExp).some((regex) => regex.test(attributeName))
 }
 
 export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeFunction?: SanitizeFn): string {

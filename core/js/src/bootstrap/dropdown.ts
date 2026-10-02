@@ -123,7 +123,11 @@ class Dropdown extends BaseComponent {
   }
 
   toggle(): void {
-    this._isShown() ? this.hide() : this.show()
+    if (this._isShown()) {
+      this.hide()
+    } else {
+      this.show()
+    }
   }
 
   show(): void {
@@ -180,7 +184,7 @@ class Dropdown extends BaseComponent {
   update(): void {
     this._inNavbar = this._detectNavbar()
     if (this._popper) {
-      this._popper.update()
+      void this._popper.update()
     }
   }
 
@@ -210,7 +214,7 @@ class Dropdown extends BaseComponent {
   _getConfig(config?: ComponentConfigInput): ComponentConfig {
     const merged = super._getConfig(config) as ComponentConfig
 
-    if (typeof merged.reference === 'object' && !isElement(merged.reference) && typeof (merged.reference as Popper.VirtualElement).getBoundingClientRect !== 'function') {
+    if (typeof merged.reference === 'object' && !isElement(merged.reference) && typeof merged.reference.getBoundingClientRect !== 'function') {
       throw new TypeError(`${NAME.toUpperCase()}: Option "reference" provided type "object" without a required "getBoundingClientRect" method.`)
     }
 
@@ -227,9 +231,9 @@ class Dropdown extends BaseComponent {
     if (this._config.reference === 'parent') {
       referenceElement = this._parent
     } else if (isElement(this._config.reference)) {
-      referenceElement = getElement(this._config.reference as HTMLElement | string)!
+      referenceElement = getElement(this._config.reference)!
     } else if (typeof this._config.reference === 'object') {
-      referenceElement = this._config.reference as Popper.VirtualElement
+      referenceElement = this._config.reference
     }
 
     const popperConfig = this._getPopperConfig()
@@ -383,7 +387,7 @@ class Dropdown extends BaseComponent {
 
     const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as DelegatedEvent<KeyboardEvent>).delegateTarget.parentNode as Element)
 
-    const instance = Dropdown.getOrCreateInstance(getToggleButton!) as Dropdown
+    const instance = Dropdown.getOrCreateInstance(getToggleButton) as Dropdown
 
     if (isUpOrDownEvent) {
       event.stopPropagation()
@@ -395,7 +399,7 @@ class Dropdown extends BaseComponent {
     if (instance._isShown()) {
       event.stopPropagation()
       instance.hide()
-      getToggleButton!.focus()
+      getToggleButton.focus()
     }
   }
 

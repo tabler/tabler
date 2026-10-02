@@ -70,6 +70,7 @@ type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
  */
 interface CalendarInstance {
   // Loosely typed on purpose: the plugin's context is large and version-specific.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: Record<string, any>
   init(): unknown
   update(resetOptions?: object): unknown
@@ -100,6 +101,8 @@ type ComponentConfig = {
   selectedDates: string[]
   selectionMode: DateMode
   placement: PositionToInput
+  /** show the ISO week number in front of each row */
+  weekNumbers: boolean
   /** pass-through for any Vanilla Calendar Pro option */
   vcpOptions: object
 }
@@ -122,6 +125,7 @@ const Default: ComponentConfig = {
   selectedDates: [],
   selectionMode: 'single',
   placement: 'left',
+  weekNumbers: false,
   vcpOptions: {},
 }
 
@@ -139,6 +143,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   selectedDates: 'array',
   selectionMode: 'string',
   placement: 'string',
+  weekNumbers: 'boolean',
   vcpOptions: 'object',
 }
 
@@ -240,20 +245,26 @@ class Datepicker extends BaseComponent {
 
     this._isShowing = true
     this._skipPluginShow = false
-    this._calendar.show()
 
-    // The first show builds the popup and opens it a tick later
-    if (!this._isShown) {
-      await new Promise<void>((resolve) => {
-        this._resolveShown = resolve
-        afterPluginTimers(resolve)
-      })
+    // Reset even if the plugin throws, or every later `show()` returns early
+    try {
+      this._calendar.show()
+
+      // The first show builds the popup and opens it a tick later
+      if (!this._isShown) {
+        await new Promise<void>((resolve) => {
+          this._resolveShown = resolve
+          afterPluginTimers(resolve)
+        })
+      }
+    } finally {
+      this._resolveShown = null
+      this._isShowing = false
     }
-
-    this._resolveShown = null
-    this._isShowing = false
   }
 
+  // `async` like `show()`, so a plugin error reaches the caller as a rejection
+  // eslint-disable-next-line @typescript-eslint/require-await
   async hide(): Promise<void> {
     if (this._config.inline) {
       return // Inline calendars are always visible
@@ -276,8 +287,11 @@ class Datepicker extends BaseComponent {
     })
 
     this._isHiding = true
-    this._calendar.hide()
-    this._isHiding = false
+    try {
+      this._calendar.hide()
+    } finally {
+      this._isHiding = false
+    }
   }
 
   dispose(): void {
@@ -508,7 +522,7 @@ class Datepicker extends BaseComponent {
         return
       }
 
-      this.hide()
+      void this.hide()
     }
 
     EventHandler.on(document, EVENT_FOCUSIN, this._onFocusIn)
@@ -605,6 +619,7 @@ class Datepicker extends BaseComponent {
       selectionDatesMode: this._config.selectionMode,
       selectedDates: this._config.selectedDates,
       displayMonthsCount: this._config.displayMonthsCount,
+      enableWeekNumbers: this._config.weekNumbers || Boolean(vcpOptions.enableWeekNumbers),
       type: this._config.displayMonthsCount > 1 ? 'multiple' : 'default',
       selectedTheme: vcpTheme,
       themeAttrDetect: '[data-bs-theme]',
@@ -660,7 +675,7 @@ class Datepicker extends BaseComponent {
 
     if (shouldHide) {
       window.clearTimeout(this._hideTimeout)
-      this._hideTimeout = window.setTimeout(() => this.hide(), HIDE_DELAY)
+      this._hideTimeout = window.setTimeout(() => void this.hide(), HIDE_DELAY)
     }
   }
 
@@ -694,7 +709,7 @@ class Datepicker extends BaseComponent {
     }
 
     if (dates.length === 1) {
-      return this._formatDate(dates[0]!)
+      return this._formatDate(dates[0])
     }
 
     // For date ranges, use en-dash; for multiple dates, use comma
@@ -727,7 +742,7 @@ class Datepicker extends BaseComponent {
     this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
   }
 
-  _toIsoDate(value: DateAny | string): string {
+  _toIsoDate(value: Date | number | string): string {
     if (typeof value === 'string' && DATE_PATTERN.test(value)) {
       return value
     }
@@ -767,7 +782,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   event.preventDefault()
-  ;(Datepicker.getOrCreateInstance(this) as Datepicker).toggle()
+  void (Datepicker.getOrCreateInstance(this) as Datepicker).toggle()
 })
 
 EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement) {
@@ -775,7 +790,7 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
     return
   }
 
-  ;(Datepicker.getOrCreateInstance(this) as Datepicker).show()
+  void (Datepicker.getOrCreateInstance(this) as Datepicker).show()
 })
 
 // Render on load what cannot wait for a focus or a click: inline calendars,
