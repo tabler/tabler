@@ -1,0 +1,139 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+
+const sizes: [string, string][] = [
+  ['sm', 'Small'],
+  ['', 'Default'],
+  ['lg', 'Large'],
+]
+---
+
+<DefaultLayout title="Phone input" pageMenu="form.phone-input" description="A phone input adds a country picker with flags and dial codes in front of a telephone field.">
+  <DocsLink slot="page-header-actions" path="/ui/forms/phone-input" />
+
+  <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="phone-input"</code> to a <code>type="tel"</code> input and pick the start country with <code>data-bs-country</code>.</CardSubtitle>
+          <label class="form-label" for="phone-basic">Phone number</label>
+          <input type="tel" class="form-control" id="phone-basic" placeholder="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Preferred countries</CardTitle>
+          <CardSubtitle>List the countries your users come from first with <code>data-bs-preferred-countries</code>.</CardSubtitle>
+          <label class="form-label" for="phone-preferred">Phone number</label>
+          <input type="tel" class="form-control" id="phone-preferred" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="de" data-bs-preferred-countries="de,at,ch,pl" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Only some countries</CardTitle>
+          <CardSubtitle>Limit the list with <code>data-bs-only-countries</code>.</CardSubtitle>
+          <label class="form-label" for="phone-only">Phone number</label>
+          <input type="tel" class="form-control" id="phone-only" placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="fr" data-bs-only-countries="fr,be,ch,lu,mc" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Number with a dial code</CardTitle>
+          <CardSubtitle>A number that starts with <code>+</code> selects its country. Paste one to try it.</CardSubtitle>
+          <label class="form-label" for="phone-detect">Phone number</label>
+          <input type="tel" class="form-control" id="phone-detect" value="+44 7911 123456" data-bs-toggle="phone-input" data-bs-country="us" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Full number in a form</CardTitle>
+          <CardSubtitle>Set <code>data-bs-hidden-input="phone"</code> to submit the number as <code>+48600100200</code>.</CardSubtitle>
+          <label class="form-label" for="phone-hidden">Phone number</label>
+          <input type="tel" class="form-control" id="phone-hidden" placeholder="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-hidden-input="phone" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>The picker follows <code>.form-control-sm</code> and <code>.form-control-lg</code> of the input.</CardSubtitle>
+          <div class="d-flex flex-column gap-3">
+            {
+              sizes.map(([size, label]) => (
+                <div>
+                  <label class="form-label" for={`phone-size-${size || 'default'}`}>
+                    {label}
+                  </label>
+                  <input type="tel" class={`form-control${size ? ` form-control-${size}` : ''}`} id={`phone-size-${size || 'default'}`} placeholder="Phone number" data-bs-toggle="phone-input" data-bs-country="us" />
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Validation</CardTitle>
+          <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code> to the input.</CardSubtitle>
+          <div class="mb-3">
+            <label class="form-label" for="phone-valid">Valid</label>
+            <input type="tel" class="form-control is-valid" id="phone-valid" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" />
+            <div class="valid-feedback">Looks good.</div>
+          </div>
+          <div>
+            <label class="form-label" for="phone-invalid">Invalid</label>
+            <input type="tel" class="form-control is-invalid" id="phone-invalid" value="12" data-bs-toggle="phone-input" data-bs-country="pl" />
+            <div class="invalid-feedback">Enter a full phone number.</div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Formatting</CardTitle>
+          <CardSubtitle>The number is written in the format of the country while typing. Set <code>data-bs-format="false"</code> to turn it off.</CardSubtitle>
+          <label class="form-label" for="phone-format">Formatted</label>
+          <input type="tel" class="form-control mb-3" id="phone-format" value="2025550100" data-bs-toggle="phone-input" data-bs-country="us" />
+          <label class="form-label" for="phone-no-format">Not formatted</label>
+          <input type="tel" class="form-control" id="phone-no-format" value="2025550100" data-bs-toggle="phone-input" data-bs-country="us" data-bs-format="false" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>Add <code>disabled</code> to the input. The picker is disabled too.</CardSubtitle>
+          <label class="form-label" for="phone-disabled">Phone number</label>
+          <input type="tel" class="form-control" id="phone-disabled" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" disabled />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
