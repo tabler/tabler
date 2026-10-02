@@ -1,0 +1,23 @@
+// `.btn-outline-gradient-*` presets share one selector list with the base
+// class, so a preset works without `.btn-outline-gradient` next to it. The
+// stops come from the shared `$gradients` map, so a card and a button with the
+// same name show the same gradient.
+@use 'sass:list';
+@use 'sass:map';
+@use '../config' as *;
+@use '../ui/buttons' as buttons;
+
+@include describe('btn-outline-gradient') {
+  @include it('shares the named gradient stops with .card-gradient') {
+    @include assert-equal(map.get($gradients, 'sun'), (#fd1d1d, #fcb045));
+    @include assert-true(map.has-key($gradients, 'rainbow'));
+  }
+
+  @include it('lists the base class and every color and gradient preset') {
+    $selectors: buttons.btn-gradient-selectors();
+    @include assert-equal(list.nth($selectors, 1), '.btn-outline-gradient');
+    @include assert-true(list.index($selectors, '.btn-outline-gradient-primary') != null);
+    @include assert-true(list.index($selectors, '.btn-outline-gradient-rainbow') != null);
+    @include assert-equal(list.length($selectors), 1 + list.length(map.keys($theme-colors)) + list.length(map.keys($gradients)));
+  }
+}
