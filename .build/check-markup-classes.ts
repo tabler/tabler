@@ -30,7 +30,7 @@ const CLASS_SELECTOR = new RegExp(String.raw`\.(-?(?:${ESCAPE}|[_a-zA-Z\u00a0-\u
 
 const decodeIdent = (ident: string): string => ident.replace(/\\([0-9a-fA-F]{1,6})[ \t\r\n\f]?|\\(.)/g, (_, hex: string | undefined, char: string | undefined) => (hex === undefined ? char! : String.fromCodePoint(parseInt(hex, 16))))
 
-const classNamesIn = (css: string): string[] => [...css.matchAll(CLASS_SELECTOR)].map((m) => decodeIdent(m[1]!))
+const classNamesIn = (css: string): string[] => [...css.matchAll(CLASS_SELECTOR)].map((m) => decodeIdent(m[1]))
 
 const args = process.argv.slice(2)
 const htmlTargets: string[] = []
@@ -84,7 +84,7 @@ const main = async () => {
       pageCount++
       // Page-level <style> blocks define classes too (demo pages style their own markup).
       const inline = new Set<string>()
-      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const cls of classNamesIn(block[1]!)) inline.add(cls)
+      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const cls of classNamesIn(block[1])) inline.add(cls)
       for (const m of html.matchAll(/class="([^"]*)"/g)) {
         for (const cls of m[1].split(/\s+/).filter(Boolean)) {
           if (defined.has(cls) || inline.has(cls)) continue

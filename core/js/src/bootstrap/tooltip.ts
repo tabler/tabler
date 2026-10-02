@@ -61,7 +61,7 @@ export type TooltipConfig = {
   allowList: AllowList
   animation: boolean
   // A string is Popper's `clippingParents`, kept for v5 markup and mapped to `clippingAncestors`.
-  boundary: Boundary | string
+  boundary: Exclude<Boundary, string> | string
   container: HTMLElement | string | false
   customClass: string | ((this: HTMLElement, element: HTMLElement) => string)
   delay: TooltipDelay

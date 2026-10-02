@@ -20,7 +20,7 @@ type FloatingConfigFunction = (defaultConfig: FloatingConfig) => Partial<Floatin
 type ComponentConfig = {
   autoClose: boolean | 'inside' | 'outside'
   // A string is Popper's `clippingParents`, kept for v5 markup and mapped to `clippingAncestors`.
-  boundary: Boundary | string
+  boundary: Exclude<Boundary, string> | string
   display: 'dynamic' | 'static'
   offset: number[] | string | ((state: MiddlewareState, element: HTMLElement) => number[])
   popperConfig: Partial<FloatingConfig> | FloatingConfigFunction | null
@@ -210,7 +210,7 @@ class Dropdown extends BaseComponent {
   _getConfig(config?: ComponentConfigInput): ComponentConfig {
     const merged = super._getConfig(config) as ComponentConfig
 
-    if (typeof merged.reference === 'object' && !isElement(merged.reference) && typeof (merged.reference as VirtualElement).getBoundingClientRect !== 'function') {
+    if (typeof merged.reference === 'object' && !isElement(merged.reference) && typeof merged.reference.getBoundingClientRect !== 'function') {
       throw new TypeError(`${NAME.toUpperCase()}: Option "reference" provided type "object" without a required "getBoundingClientRect" method.`)
     }
 

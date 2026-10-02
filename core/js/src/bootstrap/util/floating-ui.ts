@@ -118,7 +118,7 @@ class FloatingUi {
     }
 
     if (isElement(reference)) {
-      return getElement(reference as HTMLElement | string)!
+      return getElement(reference)!
     }
 
     if (typeof reference === 'object' && reference !== null) {
@@ -166,12 +166,12 @@ function normalizeOffset(value: unknown): OffsetValue {
   }
 
   if (Array.isArray(raw)) {
-    const [crossAxis = 0, mainAxis = 0] = raw
+    const [crossAxis = 0, mainAxis = 0] = raw as number[]
     return { mainAxis, crossAxis }
   }
 
   if (typeof raw === 'number' || (typeof raw === 'object' && raw !== null)) {
-    return raw as OffsetValue
+    return raw
   }
 
   return 0
