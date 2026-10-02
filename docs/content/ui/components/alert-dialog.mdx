@@ -1,0 +1,138 @@
+---
+title: Alert dialog
+summary: An alert dialog is a small modal that interrupts the user to confirm an action or to show a short message. Use it instead of the browser's confirm() and alert().
+description: Replace window.confirm() and window.alert() with a styled modal opened from JavaScript that returns a Promise.
+added-in: '1.7.0'
+related: [/ui/components/modal, /ui/components/alert, /ui/components/toast]
+source: core/js/src/alert-dialog.ts
+---
+
+import Example from '@components/Example.astro'
+
+## Overview
+
+`AlertDialog` builds a small modal at run time and gives you the answer as a Promise. There is no markup to write. It is made for two jobs: asking the user to confirm something, and telling the user something they must acknowledge.
+
+Unlike a normal [modal](/ui/components/modal), an alert dialog does not close when the user clicks the backdrop. The user has to choose a button, or press <kbd>Esc</kbd> to cancel.
+
+<Example centered>
+  <button type="button" class="btn btn-primary" onclick="tabler.AlertDialog.confirm({ title: 'Delete this project?', message: 'This cannot be undone.', confirmText: 'Delete', variant: 'danger' })">
+    Delete project
+  </button>
+</Example>
+
+## Usage
+
+`AlertDialog.confirm()` returns a Promise that resolves to `true` when the user confirms and to `false` when the user cancels or presses <kbd>Esc</kbd>.
+
+```js
+const ok = await tabler.AlertDialog.confirm({
+  title: 'Delete 84 items?',
+  message: 'What you have done cannot be undone.',
+  confirmText: 'Delete',
+  variant: 'danger',
+})
+
+if (ok) {
+  deleteItems()
+}
+```
+
+`AlertDialog.alert()` shows one button and resolves when the user closes the dialog.
+
+```js
+await tabler.AlertDialog.alert({ title: 'Saved', message: 'Your changes are live.', variant: 'success' })
+```
+
+Both methods also accept a string. It is used as the title.
+
+```js
+if (await tabler.AlertDialog.confirm('Discard the draft?')) {
+  discard()
+}
+```
+
+## Variants
+
+The `variant` option sets the color of the confirm button. It accepts `primary` (default), `secondary`, `success`, `info`, `warning` and `danger`. Use `danger` for actions that destroy data.
+
+<Example centered>
+  <button type="button" class="btn btn-danger" onclick="tabler.AlertDialog.confirm({ title: 'Delete account?', message: 'All your data will be removed.', confirmText: 'Delete', variant: 'danger', focus: 'cancel' })">
+    Danger
+  </button>
+  <button type="button" class="btn btn-warning" onclick="tabler.AlertDialog.confirm({ title: 'Leave this page?', message: 'You have unsaved changes.', confirmText: 'Leave', variant: 'warning' })">
+    Warning
+  </button>
+  <button type="button" class="btn btn-success" onclick="tabler.AlertDialog.alert({ title: 'Payment received', message: 'Thank you for your order.', variant: 'success' })">
+    Success
+  </button>
+</Example>
+
+## Icons
+
+Set `icon` to add a round icon above the text. The icon takes the color of the variant. Use one of the built-in names: `trash`, `alert-triangle`, `circle-check`, `info-circle` or `help-circle`.
+
+<Example centered>
+  <button type="button" class="btn" onclick="tabler.AlertDialog.confirm({ icon: 'help-circle', title: 'Send feedback?', message: 'We read every message.', confirmText: 'Send' })">
+    Default
+  </button>
+  <button type="button" class="btn btn-danger" onclick="tabler.AlertDialog.confirm({ icon: 'trash', title: 'Delete account?', message: 'All your data will be removed.', confirmText: 'Delete', variant: 'danger', focus: 'cancel' })">
+    Danger
+  </button>
+  <button type="button" class="btn btn-warning" onclick="tabler.AlertDialog.confirm({ icon: 'alert-triangle', title: 'Leave this page?', message: 'You have unsaved changes.', confirmText: 'Leave', variant: 'warning' })">
+    Warning
+  </button>
+  <button type="button" class="btn btn-success" onclick="tabler.AlertDialog.alert({ icon: 'circle-check', title: 'Payment received', message: 'Thank you for your order.', variant: 'success' })">
+    Success
+  </button>
+</Example>
+
+To use another icon, pass a DOM element, for example an `<svg>` you created or found in the page. The element is cloned into the dialog.
+
+```js
+tabler.AlertDialog.alert({ icon: document.querySelector('#my-icon'), title: 'Done' })
+```
+
+## Layout
+
+By default the dialog is small and centered: the icon is on top, the text is centered and the buttons fill the width. Set `align: 'start'` for a wider dialog with the text aligned to the left, the icon next to the text and the buttons on the right.
+
+<Example centered>
+  <button type="button" class="btn" onclick="tabler.AlertDialog.confirm({ align: 'start', title: 'Sign out?', message: 'You will need to sign in again.', confirmText: 'Sign out' })">
+    Left aligned
+  </button>
+  <button type="button" class="btn btn-danger" onclick="tabler.AlertDialog.confirm({ align: 'start', icon: 'trash', title: 'Delete 84 items?', message: 'What you have done cannot be undone.', confirmText: 'Delete', variant: 'danger', focus: 'cancel' })">
+    With icon
+  </button>
+</Example>
+
+The message is optional. A dialog with only a title is fine for a short question.
+
+<Example centered>
+  <button type="button" class="btn" onclick="tabler.AlertDialog.confirm({ title: 'Discard the draft?', confirmText: 'Discard' })">
+    Title only
+  </button>
+</Example>
+
+## Options
+
+| Option        | Default                                                 | Description                                                                                |
+| ------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `title`       | `Are you sure?` for `confirm()`, `Notice` for `alert()` | The heading of the dialog.                                                                 |
+| `message`     | none                                                    | A line of text under the title. It is set as plain text, so HTML is not rendered.          |
+| `confirmText` | `OK`                                                    | The label of the confirm button.                                                           |
+| `cancelText`  | `Cancel`                                                | The label of the cancel button. `confirm()` only.                                          |
+| `variant`     | `primary`                                               | The color of the confirm button.                                                           |
+| `icon`        | none                                                    | A built-in icon name or a DOM element, shown in a round badge in the color of the variant. |
+| `align`       | `center`                                                | `center` or `start`. See [Layout](#layout).                                                |
+| `focus`       | `confirm`                                               | Which button gets focus when the dialog opens: `confirm` or `cancel`. `confirm()` only.    |
+
+For a destructive action, set `focus: 'cancel'` so a stray <kbd>Enter</kbd> does not confirm it.
+
+## Accessibility
+
+- The dialog has `role="alertdialog"` and is named and described by its title and message with `aria-labelledby` and `aria-describedby`.
+- Focus moves into the dialog when it opens and stays inside until it closes, then returns to the element that opened it.
+- Only one dialog is open at a time. If you call `confirm()` or `alert()` while another dialog or modal is open, the new dialog waits and opens after the other one closes.
+- <kbd>Esc</kbd> cancels the dialog. Clicking the backdrop does nothing, so an answer is never given by accident.
+- Keep the title short and the button labels specific, for example `Delete` instead of `Yes`.
