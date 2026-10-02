@@ -41,7 +41,7 @@ describe('other components render from their token map', () => {
   it('renders $alert-tokens on .alert and takes an override', () => {
     const src = `@use 'ui/alerts' with ($alert-tokens: (--alert-padding-x: 2rem));`
     const { css } = compileString(src, { loadPaths: [scssDir, 'node_modules'], style: 'expanded' })
-    const rule = css.match(/\n\.alert \{\n[\s\S]*?\n\}/)[0]
+    const rule = css.match(/(?:^|\n)\.alert \{\n[\s\S]*?\n\}/)[0]
     expect(rule).toContain('--alert-padding-x: 2rem;')
     expect(rule).toMatch(/--alert-bg: color-mix\(/)
   })

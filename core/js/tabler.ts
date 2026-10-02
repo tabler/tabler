@@ -31,3 +31,6 @@ export { default as Sortable } from './src/sortable'
 export { default as Sparkline } from './src/sparkline'
 export { default as Strength } from './src/strength'
 export { default as SwitchIcon } from './src/switch-icon'
+
+// deprecated(2.0): the `tabler` namespace with `getColor()`, `hexToRgba()` and `prefix`
+export * as tabler from './src/deprecated'

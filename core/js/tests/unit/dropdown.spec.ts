@@ -502,7 +502,7 @@ describe('Dropdown', () => {
 
       dropdown._createFloatingUi()
 
-      expect(menu.getAttribute('data-tblr-popper')).toBe('static')
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
       expect(dropdown._floatingUi._cleanup).toBeNull()
     })
 
@@ -515,7 +515,7 @@ describe('Dropdown', () => {
 
       dropdown._createFloatingUi()
 
-      expect(menu.getAttribute('data-tblr-popper')).toBe('static')
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
       expect(dropdown._floatingUi._cleanup).toBeNull()
     })
   })
