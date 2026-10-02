@@ -6,17 +6,31 @@
 //
 @use '../config' as *;
 
+// stylelint-disable custom-property-no-missing-var-function -- token-map keys are dashed-idents by design, not unwrapped var() references
+
+// scss-docs-start btn-css-vars
+$btn-tokens: () !default;
+$btn-tokens: defaults(
+  (
+    --btn-icon-size: $input-btn-icon-size,
+    --btn-icon-color: inherit,
+    --btn-bg: var(--bg-surface),
+    --btn-color: var(--body-color),
+    --btn-border-color: $btn-border-color,
+    --btn-hover-bg: var(--hover-bg),
+    --btn-hover-border-color: var(--border-active-color),
+    --btn-active-color: $active-color,
+    --btn-active-bg: var(--active-bg),
+    --btn-active-border-color: $active-border-color,
+  ),
+  $btn-tokens
+);
+// scss-docs-end btn-css-vars
+
+// stylelint-enable custom-property-no-missing-var-function
+
 .btn {
-  --btn-icon-size: #{$input-btn-icon-size};
-  --btn-icon-color: inherit;
-  --btn-bg: var(--bg-surface);
-  --btn-color: var(--body-color);
-  --btn-border-color: #{$btn-border-color};
-  --btn-hover-bg: var(--hover-bg);
-  --btn-hover-border-color: var(--border-active-color);
-  --btn-active-color: #{$active-color};
-  --btn-active-bg: var(--active-bg);
-  --btn-active-border-color: #{$active-border-color};
+  @include tokens($btn-tokens);
   position: relative;
 
   display: inline-flex;
@@ -67,7 +81,7 @@
   // here would leave a disabled link button with the default surface and border.
   --btn-bg: transparent;
   --btn-border-color: transparent;
-  color: #{adjust-lightness-css(var(--primary), 5%)};
+  color: var(--link-color);
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -77,7 +91,7 @@
   }
 
   &:hover {
-    color: #{$btn-link-hover-color};
+    color: var(--link-hover-color);
     border-color: transparent;
   }
 }
@@ -297,7 +311,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 // Action button
 //
 .btn-action {
-  --border-color: transparent;
+  --btn-border-color: transparent;
   --btn-bg: transparent;
   --btn-disabled-color: var(--secondary);
   color: var(--secondary);
@@ -347,7 +361,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 
 .btn-animate-icon {
   .icon {
-    transition: transform 0.3s ease;
+    transition: transform $transition-time ease;
   }
 
   &:hover,

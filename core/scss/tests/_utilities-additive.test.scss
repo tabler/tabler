@@ -1,0 +1,185 @@
+// Guards the additive Bootstrap v6 utilities wired into `$utilities`
+// (scss/_utilities.scss): container-query containment, grid column/flow/place
+// utilities and the extended shadow scale. Each `it` pulls the real submap out
+// of `$utilities` and asserts the classes `generate-utility` produces from it,
+// so a dropped or renamed key fails here instead of silently vanishing from the
+// bundle. `--tblr-` prefixing happens later in the css pipeline, so custom
+// properties are expected bare.
+
+@use 'sass:map';
+@use '../config' as *;
+
+@include describe('additive v6 utilities') {
+  @include it('container-query containment emits .contains-inline / .contains-size') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'container'));
+      }
+      @include expect() {
+        .contains-inline {
+          container-type: inline-size !important;
+        }
+        .contains-size {
+          container-type: size !important;
+        }
+      }
+    }
+  }
+
+  @include it('grid column counts emit .grid-cols-1…6 and .grid-cols-subgrid') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'grid-column-counts'));
+      }
+      @include expect() {
+        .grid-cols-1 {
+          grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-3 {
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-6 {
+          grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+        }
+        .grid-cols-subgrid {
+          grid-template-columns: subgrid !important;
+        }
+      }
+    }
+  }
+
+  @include it('grid column span emits .grid-cols-fill') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'grid-columns'));
+      }
+      @include expect() {
+        .grid-cols-fill {
+          grid-column: #{'1 / -1'} !important;
+        }
+      }
+    }
+  }
+
+  @include it('grid auto-flow emits .grid-auto-flow-row/column/dense') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'grid-auto-flow'));
+      }
+      @include expect() {
+        .grid-auto-flow-row {
+          grid-auto-flow: row !important;
+        }
+        .grid-auto-flow-column {
+          grid-auto-flow: column !important;
+        }
+        .grid-auto-flow-dense {
+          grid-auto-flow: dense !important;
+        }
+      }
+    }
+  }
+
+  @include it('justify-items and place-items emit start/end/center/stretch') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'justify-items'));
+        @include generate-utility(map.get($utilities, 'place-items'));
+      }
+      @include expect() {
+        .justify-items-start {
+          justify-items: start !important;
+        }
+        .justify-items-end {
+          justify-items: end !important;
+        }
+        .justify-items-center {
+          justify-items: center !important;
+        }
+        .justify-items-stretch {
+          justify-items: stretch !important;
+        }
+        .place-items-start {
+          place-items: start !important;
+        }
+        .place-items-end {
+          place-items: end !important;
+        }
+        .place-items-center {
+          place-items: center !important;
+        }
+        .place-items-stretch {
+          place-items: stretch !important;
+        }
+      }
+    }
+  }
+
+  @include it('shadow scale gains xs / md / xl / 2xl reading the --shadow-* tokens') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'shadow'));
+      }
+      @include expect() {
+        .shadow {
+          box-shadow: var(--box-shadow) !important;
+        }
+        .shadow-xs {
+          box-shadow: var(--shadow-xs) !important;
+        }
+        .shadow-sm {
+          box-shadow: var(--box-shadow-sm) !important;
+        }
+        .shadow-md {
+          box-shadow: var(--shadow-md) !important;
+        }
+        .shadow-lg {
+          box-shadow: var(--box-shadow-lg) !important;
+        }
+        .shadow-xl {
+          box-shadow: var(--shadow-xl) !important;
+        }
+        .shadow-2xl {
+          box-shadow: var(--shadow-2xl) !important;
+        }
+        .shadow-none {
+          box-shadow: none !important;
+        }
+      }
+    }
+  }
+
+  @include it('border-width utility gains .border-keyline from the token') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(map.get($utilities, 'border-width'));
+      }
+      @include expect() {
+        .border-1 {
+          border-width: 1px !important;
+        }
+        .border-2 {
+          border-width: 2px !important;
+        }
+        .border-3 {
+          border-width: 3px !important;
+        }
+        .border-4 {
+          border-width: 4px !important;
+        }
+        .border-5 {
+          border-width: 5px !important;
+        }
+        .border-keyline {
+          border-width: var(--border-width-keyline) !important;
+        }
+      }
+    }
+  }
+}
