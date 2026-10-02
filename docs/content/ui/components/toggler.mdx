@@ -1,0 +1,107 @@
+---
+title: Toggler
+summary: Toggler switches a class or an attribute on click. It needs only data attributes, so you do not have to write small one-off scripts.
+description: Toggle a class or any attribute on click with data attributes only - no custom JavaScript needed.
+added-in: '1.7.0'
+related: [/ui/components/switch-icon, /ui/components/button]
+source: core/js/src/bootstrap/toggler.ts
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+Add `data-bs-toggle="toggler"` to an element and put the class name in `data-bs-value`. Each click adds the class, and the next click removes it.
+
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="toggler" data-bs-value="btn-primary">Toggle btn-primary</button>
+</Example>
+
+## Usage
+
+### Remove an existing class
+
+If the element already has the class, the first click removes it.
+
+<Example centered>
+<button type="button" class="btn btn-primary" data-bs-toggle="toggler" data-bs-value="btn-primary">Starts with btn-primary</button>
+</Example>
+
+### Target element
+
+Use `data-bs-target` to change another element. Put `data-bs-value` on the target, not on the button.
+
+<Example>
+<button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="#toggler-target">Toggle</button>
+<div id="toggler-target" class="p-3 rounded border" data-bs-value="bg-primary-lt">The button toggles bg-primary-lt here.</div>
+</Example>
+
+### Multiple elements
+
+When the selector in `data-bs-target` matches many elements, Toggler changes every one of them. Each one can have its own value.
+
+<Example>
+<button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="[data-toggler-demo]">Toggle all</button>
+<div class="p-3 mb-2 rounded border" data-toggler-demo data-bs-value="bg-blue-lt">Toggles bg-blue-lt</div>
+<div class="p-3 rounded border" data-toggler-demo data-bs-value="bg-green-lt">Toggles bg-green-lt</div>
+</Example>
+
+### Toggle an attribute
+
+Set `data-bs-attribute` to toggle an attribute instead of a class. The attribute gets the value from `data-bs-value`, and the next click removes the attribute.
+
+<Example>
+<button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="#toggler-hidden">Show or hide</button>
+<div id="toggler-hidden" class="p-3 rounded border" data-bs-attribute="hidden" data-bs-value="true">Now you see me.</div>
+</Example>
+
+You can use the same pattern to toggle `disabled` on a `fieldset` and lock all controls inside it. Every attribute works except `id`.
+
+### Data attributes
+
+| Attribute | Description |
+| --- | --- |
+| `data-bs-toggle="toggler"` | Turns the element into a trigger. |
+| `data-bs-target` | Optional CSS selector of the element to change. Without it, the trigger changes itself. |
+| `data-bs-attribute` | Attribute to toggle. Default is `class`. |
+| `data-bs-value` | Class name or attribute value to toggle. You can give several class names separated by spaces. Without it, nothing happens. |
+
+### JavaScript
+
+Toggler is made to avoid writing JavaScript, but you can also use it from code.
+
+```js
+const toggler = tabler.Toggler.getOrCreateInstance('#my-element', {
+  attribute: 'class',
+  value: 'active',
+})
+
+toggler.toggle()
+```
+
+| Method | Description |
+| --- | --- |
+| `toggle()` | Toggles the class or the attribute. |
+| `dispose()` | Removes the instance from the element. |
+| `getInstance()` | Static. Returns the instance of an element, or `null`. |
+| `getOrCreateInstance()` | Static. Returns the instance of an element, or creates one. |
+
+### Events
+
+| Event | Description |
+| --- | --- |
+| `toggle.bs.toggler` | Fires before the change. Call `event.preventDefault()` to stop it. |
+| `toggled.bs.toggler` | Fires after the change. |
+
+Both events fire on the element that changes. With `data-bs-target`, this is the target, not the trigger.
+
+```js
+document.getElementById('my-element').addEventListener('toggled.bs.toggler', () => {
+  // do something
+})
+```
+
+## Accessibility
+
+- Use a `<button>` as the trigger, so it works with the keyboard.
+- Toggler does not change ARIA attributes. If the change shows or hides content, keep `aria-expanded` or `aria-pressed` in sync in a `toggled.bs.toggler` listener, or use [Accordion](/ui/components/accordion) instead.
+- A trigger with the `disabled` attribute or the `.disabled` class does nothing.
