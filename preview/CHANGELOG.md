@@ -1,5 +1,19 @@
 # @tabler/preview
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+
+### Patch Changes
+
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- ba4e87a: Added `.icon-inline` to icons that sit in a line of text in the demo cards, preview pages and docs examples.
+- ed41f04: Updated the promo top banner to load only on production deploys, not on branch previews.
+
 ## 1.6.1
 
 ### Patch Changes

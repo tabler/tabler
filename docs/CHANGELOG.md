@@ -1,5 +1,24 @@
 # @tabler/docs
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- 6cd45d0: Added the Icon design guide page to the Tabler Icons docs, with the SVG format, naming rules and icon requests.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+
+### Patch Changes
+
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- 8f00eab: Added `--tblr-form-check-*` and `--tblr-form-switch-*` variables, with shared `--tblr-control-checked-bg` and disabled tokens on `:root`.
+- 8f00eab: Added `--tblr-control-*` variables to `.form-control` and `.form-select`; sizes and the file button now follow them.
+- 8f00eab: Added the Forms → CSS variables page: the control scale, state colors and every `--tblr-control-*`, add-on, floating, range, check and switch token.
+- ba4e87a: Added `.icon-inline` to icons that sit in a line of text in the demo cards, preview pages and docs examples.
+- 8f00eab: Added `--tblr-input-group-addon-*`, `--tblr-form-floating-*` and `--tblr-range-*` variables to input groups, floating labels and range inputs.
+- ed41f04: Updated the promo top banner to load only on production deploys, not on branch previews.
+
 ## 1.6.1
 
 ### Patch Changes

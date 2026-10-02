@@ -1,5 +1,26 @@
 # @tabler/core
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 8f00eab: Added `--tblr-form-check-*` and `--tblr-form-switch-*` variables, with shared `--tblr-control-checked-bg` and disabled tokens on `:root`.
+- 8f00eab: Added `--tblr-control-*` variables to `.form-control` and `.form-select`; sizes and the file button now follow them.
+- 8f00eab: Updated icon addons, select groups, `.col-form-label`, validation icons, OTP and Tom Select to read the `--tblr-control-*` and `--tblr-btn-input-*` variables.
+- 8f00eab: Fixed `.form-select-sm` and `.form-select-lg` height to match `.form-control-sm` and `.form-control-lg`. Small buttons, inputs and selects are now 32px tall instead of 28px. Fixed the font size of a small Tom Select to match a small native select.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- 8f00eab: Added `--tblr-input-group-addon-*`, `--tblr-form-floating-*` and `--tblr-range-*` variables to input groups, floating labels and range inputs.
+
+### Patch Changes
+
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- a1b46ae: Fixed `Datepicker` getting stuck closed after the calendar plugin throws in `show()` or `hide()`.
+- 252c914: Updated the `tabler.js` build target from ES2015 to ES2022, making `tabler.min.js` about 1.5 kB smaller (gzip).
+- 252c914: Removed Sass doc comments from `tabler.css` and `tabler.rtl.css` by switching them to `//` comments.
+- 2726bc4: Updated the terser build of `tabler.min.js` to use two compress passes and ES2020 output.
+
 ## 1.6.1
 
 ### Patch Changes
