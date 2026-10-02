@@ -28,6 +28,9 @@ export const cdnCssTag = (): string => cdnLinkTag('dist/css/tabler.min.css')
 /** `<script>` for the core bundle. */
 export const cdnJsTag = (): string => cdnScriptTag('dist/js/tabler.min.js')
 
+/** `<script>` for the smaller core bundle, without the datepicker, sparkline, OTP input, confetti, countup and strength. */
+export const cdnCoreJsTag = (): string => cdnScriptTag('dist/js/tabler.core.min.js')
+
 /** `<script>` for the color mode script, as shown on the Color modes page. */
 export const cdnThemeJsTag = (): string => cdnScriptTag('dist/js/tabler-theme.min.js')
 

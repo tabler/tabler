@@ -8,7 +8,7 @@ description: 'Set up Tabler in a plain HTML file with the CSS and JavaScript fro
 import Example from '@components/Example.astro'
 import CdnImportPackage from '@components/CdnImportPackage.astro'
 import { Code } from 'astro:components'
-import { cdnCssTag, cdnJsTag } from '@lib/cdn-snippets.ts'
+import { cdnCssTag, cdnJsTag, cdnCoreJsTag } from '@lib/cdn-snippets.ts'
 import Steps from '@components/Steps.astro'
 
 Using a framework? See [Tabler framework integration guides](/ui/getting-started/frameworks).
@@ -73,6 +73,16 @@ If you'd rather not depend on a CDN, you can download the files and serve them f
 Save the file and open it in your browser. You should see your first page styled by Tabler. From here you can add a layout, drop in components and build up the app.
 
 </Steps>
+
+## Smaller JavaScript bundle
+
+`tabler.min.js` includes every plugin. If your page does not use the datepicker, sparkline, OTP input, confetti, countup or password strength plugins, load `tabler.core.min.js` instead. It is about 29% smaller (26 KB instead of 37 KB, gzipped).
+
+<Code lang="html" code={cdnCoreJsTag()} />
+
+`tabler.core.min.js` has everything else from `tabler.min.js`: Bootstrap's components, the `tabler` global and the other plugins. Only load one of the two files, never both.
+
+With a bundler, the same bundle is available as `@tabler/core/dist/js/tabler.core.esm.js`.
 
 ## Bootstrap is already included
 

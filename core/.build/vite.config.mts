@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const baseName = process.env.BASE_NAME || 'tabler'
 const entryFile = baseName
-const libraryName = baseName
+const libraryName = process.env.LIB_NAME || baseName
 
 const bannerText = getBanner()
 
