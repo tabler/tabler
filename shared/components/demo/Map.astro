@@ -1,6 +1,7 @@
 ---
 // MapLibre GL map on OpenFreeMap tiles: no account and no access token.
 // The map follows the page theme: `style` in light mode, `darkStyle` in dark.
+// With <MapPalette /> on the page, the default styles get softer colors.
 // Markers written in HTML go in the default slot: each child has `data-lng`
 // and `data-lat`, holds the marker element, and optionally a `<template>` with
 // the popup content. Renders nothing unless maps[mapId] exists or `center` is set.
@@ -45,6 +46,8 @@ const mapContainerId = `map-${mapId}`;
 const styleUrl = (name: string) => `https://tiles.openfreemap.org/styles/${name}`;
 const style = styleUrl(data?.style ?? 'positron');
 const darkStyle = styleUrl(data?.darkStyle ?? 'dark');
+// The softer palette (MapPalette.astro) is made for these two styles only
+const palette = { light: !data?.style || data.style === 'positron', dark: !data?.darkStyle || data.darkStyle === 'dark' };
 const controls = data?.controls ?? false;
 const zoom = data?.zoom ?? 13;
 const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
@@ -74,17 +77,25 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapContainerId, style, darkStyle, controls, globe, zoom, center, markers }}>
+			<script is:inline define:vars={{ mapContainerId, style, darkStyle, palette, controls, globe, zoom, center, markers }}>
 				window.tabler_map ??= {};
 
 				function initMap() {
-					const themeStyle = () => (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? darkStyle : style);
+					const theme = () => (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light');
+					const themeStyle = () => (theme() === 'dark' ? darkStyle : style);
 
 					const map = new maplibregl.Map({
 						container: mapContainerId,
 						style: themeStyle(),
 						zoom,
 						center,
+					});
+
+					// Softer map colors, when the page has the palette script
+					map.on('style.load', () => {
+						if (window.tablerMapPalette && palette[theme()]) {
+							window.tablerMapPalette(map, theme());
+						}
 					});
 
 					if (controls) {
