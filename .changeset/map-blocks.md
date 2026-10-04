@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Added the Map blocks page: a store locator, a delivery tracker, a live users map and a users by country card.
+Added the Map blocks page with seven blocks, among them a store locator, a delivery tracker and a server status map.

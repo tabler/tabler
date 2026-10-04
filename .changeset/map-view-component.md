@@ -1,7 +1,6 @@
 ---
 "@tabler/core": minor
-"@tabler/preview": minor
 "@tabler/docs": minor
 ---
 
-Added the `MapView` component: `data-bs-toggle="map"` turns an element into a themed MapLibre map with HTML markers and popups.
+Added the `MapView` component in `tabler-map.js`: `data-bs-toggle="map"` makes a themed MapLibre map with markers and popups.

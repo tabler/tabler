@@ -4,4 +4,4 @@
 "@tabler/docs": minor
 ---
 
-Added MapLibre GL JS to `dist/libs` and moved the map demos and docs to it from Mapbox GL and Google Maps.
+Added MapLibre GL JS 6 to `dist/libs` and moved the map demos and docs to it from Mapbox GL and Google Maps.
