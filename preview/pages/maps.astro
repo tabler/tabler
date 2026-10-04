@@ -10,9 +10,56 @@ import DocsLink from '@ui/DocsLink.astro'
 import Avatar from '@ui/Avatar.astro'
 import Icon from '@ui/Icon.astro'
 import { staticPath } from '@shared/lib/assets'
+import CaptureScript from '@shared/components/CaptureScript.astro'
 
 type MapData = { title?: string; card?: boolean }
 const mapEntries = Object.entries(maps as Record<string, MapData>)
+
+const route = [
+  [13.3695, 52.5251],
+  [13.3777, 52.5208],
+  [13.388, 52.5186],
+  [13.3989, 52.5176],
+  [13.405, 52.5192],
+  [13.4132, 52.5219],
+  [13.4215, 52.5165],
+  [13.43, 52.5105],
+  [13.4397, 52.505],
+]
+
+const area = [
+  [13.37, 52.53],
+  [13.42, 52.535],
+  [13.445, 52.52],
+  [13.43, 52.505],
+  [13.385, 52.503],
+  [13.365, 52.515],
+  [13.37, 52.53],
+]
+
+const cities = [
+  { name: 'Berlin', lng: 13.405, lat: 52.52, users: 820 },
+  { name: 'London', lng: -0.1276, lat: 51.5072, users: 1240 },
+  { name: 'New York', lng: -74.006, lat: 40.7128, users: 1580 },
+  { name: 'Tokyo', lng: 139.6917, lat: 35.6895, users: 960 },
+  { name: 'São Paulo', lng: -46.6333, lat: -23.5505, users: 540 },
+  { name: 'Sydney', lng: 151.2093, lat: -33.8688, users: 310 },
+  { name: 'Lagos', lng: 3.3792, lat: 6.5244, users: 420 },
+  { name: 'Mumbai', lng: 72.8777, lat: 19.076, users: 1100 },
+]
+
+// Stores scattered around a few European cities; the offsets are fixed, so every build draws the same map
+const storeCities: [number, number][] = [
+  [13.405, 52.52],
+  [2.3522, 48.8566],
+  [-0.1276, 51.5072],
+  [12.4964, 41.9028],
+  [-3.7038, 40.4168],
+  [21.0122, 52.2297],
+  [16.3738, 48.2082],
+  [4.9041, 52.3676],
+]
+const stores = storeCities.flatMap(([lng, lat], city) => Array.from({ length: 5 + (city % 4) }, (_, index) => [lng + Math.sin(city * 7 + index * 3) * 0.6, lat + Math.cos(city * 5 + index * 2) * 0.4]))
 
 const places = [
   { name: 'Museum Island', text: 'Five museums on the Spree, open daily.', photo: 'a-visit-to-the-bookstore.jpg', lat: 52.5169, lng: 13.4019, open: true },
@@ -23,6 +70,24 @@ const places = [
 
 <DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['maplibre-gl']} description="Interactive MapLibre maps — plain, styled, with custom markers and popups.">
   <DocsLink slot="page-header-actions" path="/ui/components/map" />
+  <CaptureScript>
+    <script is:inline>
+      // MapLibre draws on a canvas, so a layer needs a plain rgb() color instead of a CSS variable
+      window.tablerMapColor = (name) => {
+        const context = document.createElement('canvas').getContext('2d')
+        const probe = document.body.appendChild(document.createElement('span'))
+
+        probe.style.color = `var(${name})`
+        context.fillStyle = getComputedStyle(probe).color
+        context.fillRect(0, 0, 1, 1)
+        probe.remove()
+
+        const [red, green, blue] = context.getImageData(0, 0, 1, 1).data
+
+        return `rgb(${red}, ${green}, ${blue})`
+      }
+    </script>
+  </CaptureScript>
   <div class="row row-cards">
     {
       mapEntries.map(([mapId, data]) =>
@@ -89,6 +154,201 @@ const places = [
               ))
             }
           </Map>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Route</CardTitle>
+          <CardSubtitle>Draw a path with a GeoJSON line layer, and mark its ends with markers.</CardSubtitle>
+          <Map mapId="route" title="Route" center={[52.513, 13.4046]} zoom={11.6}>
+            <div data-lng="13.3695" data-lat="52.5251"><span class="map-marker map-marker-dot"></span></div>
+            <div data-lng="13.4397" data-lat="52.505" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="map-pin" /></span></div>
+          </Map>
+          <CaptureScript>
+            <script is:inline define:vars={{ route }}>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-route']
+
+                // Layers are part of the style, so add them again each time the style loads
+                map.on('style.load', () => {
+                  map.addSource('route', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: route } } })
+                  map.addLayer({
+                    id: 'route',
+                    type: 'line',
+                    source: 'route',
+                    layout: { 'line-cap': 'round', 'line-join': 'round' },
+                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 4 },
+                  })
+                })
+              })
+            </script>
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Area</CardTitle>
+          <CardSubtitle>Show a zone with a GeoJSON polygon: a fill layer and a line layer for its outline.</CardSubtitle>
+          <Map mapId="area" title="Area" center={[52.519, 13.405]} zoom={11} />
+          <CaptureScript>
+            <script is:inline define:vars={{ area }}>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-area']
+
+                map.on('style.load', () => {
+                  const color = tablerMapColor('--tblr-primary')
+
+                  map.addSource('area', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [area] } } })
+                  map.addLayer({ id: 'area-fill', type: 'fill', source: 'area', paint: { 'fill-color': color, 'fill-opacity': 0.16 } })
+                  map.addLayer({ id: 'area-outline', type: 'line', source: 'area', paint: { 'line-color': color, 'line-width': 2 } })
+                })
+              })
+            </script>
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Clusters</CardTitle>
+          <CardSubtitle>Group many points into clusters that split as you zoom in. Click a cluster to zoom to it.</CardSubtitle>
+          <Map mapId="clusters" title="Clusters" center={[48.5, 9]} zoom={3} style="positron" controls />
+          <CaptureScript>
+            <script is:inline define:vars={{ stores }}>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-clusters']
+
+                map.on('style.load', () => {
+                  const color = tablerMapColor('--tblr-primary')
+                  const border = tablerMapColor('--tblr-bg-surface')
+
+                  map.addSource('stores', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: stores.map((coordinates) => ({ type: 'Feature', geometry: { type: 'Point', coordinates } })) },
+                    cluster: true,
+                    clusterRadius: 40,
+                  })
+                  map.addLayer({
+                    id: 'clusters',
+                    type: 'circle',
+                    source: 'stores',
+                    filter: ['has', 'point_count'],
+                    paint: { 'circle-color': color, 'circle-radius': ['step', ['get', 'point_count'], 14, 10, 18, 25, 24], 'circle-stroke-width': 2, 'circle-stroke-color': border },
+                  })
+                  map.addLayer({
+                    id: 'cluster-count',
+                    type: 'symbol',
+                    source: 'stores',
+                    filter: ['has', 'point_count'],
+                    layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
+                    paint: { 'text-color': tablerMapColor('--tblr-primary-fg') },
+                  })
+                  map.addLayer({
+                    id: 'store',
+                    type: 'circle',
+                    source: 'stores',
+                    filter: ['!', ['has', 'point_count']],
+                    paint: { 'circle-color': color, 'circle-radius': 6, 'circle-stroke-width': 2, 'circle-stroke-color': border },
+                  })
+                })
+
+                map.on('click', 'clusters', (event) => {
+                  const cluster = event.features[0]
+
+                  map
+                    .getSource('stores')
+                    .getClusterExpansionZoom(cluster.properties.cluster_id)
+                    .then((zoom) => map.easeTo({ center: cluster.geometry.coordinates, zoom }))
+                })
+              })
+            </script>
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>City switcher</CardTitle>
+          <CardSubtitle>Move the map to a place with <code>flyTo</code> when a button is clicked.</CardSubtitle>
+          <div class="btn-group w-100 mb-3" role="group" aria-label="City" id="map-cities-switcher">
+            {
+              cities.slice(0, 4).map((city, index) => (
+                <button type="button" class:list={['btn', index === 0 && 'active']} data-lng={city.lng} data-lat={city.lat}>
+                  {city.name}
+                </button>
+              ))
+            }
+          </div>
+          <Map mapId="cities" title="City switcher" center={[52.52, 13.405]} zoom={10} ratio="21x9" />
+          <CaptureScript>
+            <script is:inline>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-cities']
+                const buttons = document.querySelectorAll('#map-cities-switcher .btn')
+
+                buttons.forEach((button) => {
+                  button.addEventListener('click', () => {
+                    buttons.forEach((item) => item.classList.toggle('active', item === button))
+                    map.flyTo({ center: [Number(button.dataset.lng), Number(button.dataset.lat)], zoom: 10 })
+                  })
+                })
+              })
+            </script>
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Bubble map</CardTitle>
+          <CardSubtitle>Size circles by a value, for example users per city. Hover a circle to see the number.</CardSubtitle>
+          <Map mapId="bubbles" title="Bubble map" center={[20, 20]} zoom={1} style="positron" ratio="21x9" />
+          <CaptureScript>
+            <script is:inline define:vars={{ cities }}>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-bubbles']
+                const popup = new maplibregl.Popup({ closeButton: false, offset: 12 })
+
+                map.on('style.load', () => {
+                  const color = tablerMapColor('--tblr-primary')
+
+                  map.addSource('cities', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: cities.map((city) => ({ type: 'Feature', properties: city, geometry: { type: 'Point', coordinates: [city.lng, city.lat] } })) },
+                  })
+                  map.addLayer({
+                    id: 'cities',
+                    type: 'circle',
+                    source: 'cities',
+                    paint: { 'circle-color': color, 'circle-opacity': 0.4, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 4, 1600, 28], 'circle-stroke-width': 1, 'circle-stroke-color': color },
+                  })
+                })
+
+                map.on('mousemove', 'cities', (event) => {
+                  const city = event.features[0].properties
+
+                  map.getCanvas().style.cursor = 'pointer'
+                  popup.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
+                })
+                map.on('mouseleave', 'cities', () => {
+                  map.getCanvas().style.cursor = ''
+                  popup.remove()
+                })
+              })
+            </script>
+          </CaptureScript>
         </CardBody>
       </Card>
     </div>

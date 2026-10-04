@@ -284,6 +284,118 @@ new MutationObserver(function () {
 
 Markers and popups stay on the map when the style changes. The maps on this page follow the theme this way.
 
+### Layers
+
+Lines, areas and large sets of points are drawn as layers. A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in the `style.load` event. It runs when the map starts and again each time the style changes, for example on a theme change.
+
+```js
+map.on('style.load', function () {
+  map.addSource('route', {
+    type: 'geojson',
+    data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [[13.3695, 52.5251], [13.4132, 52.5219], [13.4397, 52.505]] } },
+  })
+  map.addLayer({
+    id: 'route',
+    type: 'line',
+    source: 'route',
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+    paint: { 'line-color': '#066fd1', 'line-width': 4 },
+  })
+})
+```
+
+For an area, use a `Polygon` geometry with a `fill` layer, and a `line` layer for its outline:
+
+```js
+map.addLayer({ id: 'area-fill', type: 'fill', source: 'area', paint: { 'fill-color': '#066fd1', 'fill-opacity': 0.16 } })
+map.addLayer({ id: 'area-outline', type: 'line', source: 'area', paint: { 'line-color': '#066fd1', 'line-width': 2 } })
+```
+
+### Theme colors in layers
+
+MapLibre draws layers on a canvas, so a CSS variable does not work in `paint`, and neither do the `oklch()` values Tabler colors are written in. Turn the variable into a plain `rgb()` color first:
+
+```js
+function mapColor(name) {
+  const context = document.createElement('canvas').getContext('2d')
+  const probe = document.body.appendChild(document.createElement('span'))
+
+  probe.style.color = 'var(' + name + ')'
+  context.fillStyle = getComputedStyle(probe).color
+  context.fillRect(0, 0, 1, 1)
+  probe.remove()
+
+  const pixel = context.getImageData(0, 0, 1, 1).data
+
+  return 'rgb(' + pixel[0] + ', ' + pixel[1] + ', ' + pixel[2] + ')'
+}
+
+map.addLayer({ id: 'route', type: 'line', source: 'route', paint: { 'line-color': mapColor('--tblr-primary'), 'line-width': 4 } })
+```
+
+Call it inside `style.load`, so the colors are read again after a theme change.
+
+### Clusters
+
+HTML markers work well for up to a few hundred places. For more, put the points in a GeoJSON source with `cluster: true`. MapLibre then groups nearby points and splits the groups as you zoom in.
+
+```js
+map.addSource('stores', { type: 'geojson', data: stores, cluster: true, clusterRadius: 40 })
+
+// Circle for each cluster, larger for more points
+map.addLayer({
+  id: 'clusters',
+  type: 'circle',
+  source: 'stores',
+  filter: ['has', 'point_count'],
+  paint: { 'circle-color': '#066fd1', 'circle-radius': ['step', ['get', 'point_count'], 14, 10, 18, 25, 24] },
+})
+
+// Number of points in the cluster
+map.addLayer({
+  id: 'cluster-count',
+  type: 'symbol',
+  source: 'stores',
+  filter: ['has', 'point_count'],
+  layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
+  paint: { 'text-color': '#ffffff' },
+})
+
+// Single points
+map.addLayer({ id: 'store', type: 'circle', source: 'stores', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': '#066fd1', 'circle-radius': 6 } })
+```
+
+`text-font` has to be a font the map style provides. All OpenFreeMap styles have `Noto Sans Regular`.
+
+### Bubble map
+
+To size circles by a value, read it from the feature with `['get', ...]` and map it to a radius with `interpolate`:
+
+```js
+map.addLayer({
+  id: 'cities',
+  type: 'circle',
+  source: 'cities',
+  paint: {
+    'circle-color': '#066fd1',
+    'circle-opacity': 0.4,
+    'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 4, 1600, 28],
+  },
+})
+```
+
+### Moving the map
+
+Move to another place with `flyTo`, for example from a row of buttons:
+
+```js
+button.addEventListener('click', function () {
+  map.flyTo({ center: [139.6917, 35.6895], zoom: 10 })
+})
+```
+
+Live versions of the route, area, clusters, bubble map and city switcher are on the [maps preview page](https://preview.tabler.io/maps.html).
+
 ### Attribution
 
 MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap requires it, so do not hide it.
