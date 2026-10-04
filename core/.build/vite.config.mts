@@ -8,7 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const baseName = process.env.BASE_NAME || 'tabler'
 const entryFile = baseName
-const libraryName = baseName
+// `tabler-map` is an add-on to the main bundle: its UMD build extends the
+// `tabler` global instead of creating one of its own.
+const isAddon = baseName === 'tabler-map'
+const libraryName = isAddon ? 'tabler' : baseName
 
 const bannerText = getBanner()
 
@@ -26,4 +29,5 @@ export default createViteConfig({
   outDir: path.resolve(__dirname, '../dist/js'),
   banner: bannerText,
   minify: false,
+  extend: isAddon,
 })

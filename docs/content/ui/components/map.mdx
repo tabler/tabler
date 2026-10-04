@@ -61,12 +61,15 @@ MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the sty
   // The map component looks for the library here
   window.maplibregl = maplibregl
 </script>
-<script src="${site.cdnUrl}/dist/js/tabler.min.js" defer></script>`}
+<script src="${site.cdnUrl}/dist/js/tabler.min.js" defer></script>
+<script src="${site.cdnUrl}/dist/js/tabler-map.min.js" defer></script>`}
 />
+
+The map component is not part of `tabler.js`. It ships as a small add-on, `tabler-map.js`, so pages without a map do not carry it. Load it after `tabler.js`; it adds `MapView` to the `tabler` object.
 
 The library loads two more files from the same folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together when you host them yourself.
 
-With a bundler, install the package and set the global before you import Tabler:
+With a bundler, install the package, set the global, and then import the add-on:
 
 ```bash
 npm install maplibre-gl
@@ -77,7 +80,11 @@ import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 window.maplibregl = maplibregl
+
+const { MapView } = await import('@tabler/core/dist/js/tabler-map.esm.js')
 ```
+
+The add-on is imported after the global is set, because it turns the map elements on the page into maps as soon as it loads.
 
 <Danger title="Use version 6.4.1 or newer">
   Older versions, including all of version 5, have a known security issue in the code that cleans the attribution text.
@@ -316,7 +323,7 @@ Live versions of a route, an area, clusters, a bubble map, a globe with arcs and
 
 ### Via data attributes
 
-An element with `data-bs-toggle="map"` becomes a map when the Tabler script loads:
+An element with `data-bs-toggle="map"` becomes a map when the `tabler-map.js` script loads:
 
 <CodeDocs name="map-init" file="core/js/src/map.ts" />
 

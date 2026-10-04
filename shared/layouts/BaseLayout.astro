@@ -39,7 +39,7 @@ const isProduction = process.env.VERCEL_ENV === 'production'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
 
-type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string } }
+type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string }; addon?: string }
 const unknownLibs = pageLibs.filter((name) => !(name in libs))
 if (unknownLibs.length > 0) {
   throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
@@ -52,6 +52,8 @@ const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((fil
 // handed to the classic page scripts as a global. Module scripts are deferred,
 // so the global is set before DOMContentLoaded.
 const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * as lib from '${libHref(lib, lib.module.file)}'\n      window.${lib.module.global} = lib`] : []))
+// Tabler add-on bundles (dist/js) that a library needs, loaded after tabler.js
+const libAddons = pageLibEntries.flatMap(([, lib]) => (lib.addon ? [lib.addon] : []))
 const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean(lib.head) === head).flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
 ---
 
@@ -137,6 +139,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
+    {libAddons.map((addon) => <script is:inline src={`${base}/dist/js/${addon}${min}.js`} defer />)}
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <PageScripts />
