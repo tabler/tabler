@@ -3,21 +3,25 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import CaptureScript from '@shared/components/CaptureScript.astro'
 ---
 
-<DefaultLayout title="Full Size Map" pageHeader={false} pageMenu="plugins.map-fullsize" pageLibs={['google-maps']} navbarPosition="vertical" wrapperFull>
+<DefaultLayout title="Full Size Map" pageHeader={false} pageMenu="plugins.map-fullsize" pageLibs={['maplibre-gl']} navbarPosition="vertical" wrapperFull>
   <h1 class="visually-hidden">Full Size Map</h1>
-  <div class="map flex-fill" id="map-google"></div>
+  <div class="map flex-fill" id="map-fullsize" role="img" aria-label="Map of Berlin"></div>
   <CaptureScript>
     <!-- BEGIN MAP SCRIPT -->
     <script is:inline>
       window.tabler_map ??= {}
 
       function initMap() {
-        const map = new google.maps.Map(document.getElementById('map-google'), {
-          center: { lat: -34.397, lng: 150.644 },
-          zoom: 8,
+        const map = new maplibregl.Map({
+          container: 'map-fullsize',
+          style: 'https://tiles.openfreemap.org/styles/liberty',
+          zoom: 12,
+          center: [13.4049, 52.518827],
         })
 
-        window.tabler_map['map-google'] = map
+        map.addControl(new maplibregl.NavigationControl())
+
+        window.tabler_map['map-fullsize'] = map
       }
 
       document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true })
