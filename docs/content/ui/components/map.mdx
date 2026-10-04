@@ -1,8 +1,9 @@
 ---
 title: Map
-summary: A map shows places and markers on an interactive world map. Tabler provides the markup and the setup code, and the map itself is rendered by Mapbox GL JS.
-description: Show interactive maps with markers using Mapbox GL JS. Tabler provides the container markup and setup code to get you started.
+summary: A map shows places and markers on an interactive world map. Tabler provides the markup and the setup code, and the map itself is rendered by MapLibre GL JS.
+description: Show interactive maps with markers using MapLibre GL JS and free map tiles. No account or access token is needed.
 related: [/ui/plugins/vector-map]
+docs-libs: [maplibre-gl]
 source: core/scss/_utilities.scss
 classnames:
   component:
@@ -13,33 +14,31 @@ classnames:
       desc: The aspect to hold, for example ratio-16x9 or ratio-21x9
 ---
 import Example from '@components/Example.astro';
+import Map from '@shared/components/demo/Map.astro';
 import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
-The map is a small wrapper around [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/). Tabler gives you the container markup and a short init script. Mapbox draws the tiles, handles zoom, and renders the markers.
+The map is a small wrapper around [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/), an open-source map library. Tabler gives you the container markup and a short init script. MapLibre draws the tiles, handles zoom, and renders the markers.
 
-A Mapbox account and an access token are needed, because every map load calls the Mapbox API. If you only need a simple map of countries or regions, use the [vector map](/ui/plugins/vector-map) instead. It needs no account and no network calls.
+The demos load their map tiles from [OpenFreeMap](https://openfreemap.org/). It needs no account and no access token, and it can be used in commercial projects. If you only need a simple map of countries or regions, use the [vector map](/ui/plugins/vector-map) instead. It makes no network calls at all.
 
 ## Installation
 
-Add the Mapbox GL JS script and stylesheet to your page. Tabler uses version 1.8.0:
+Install MapLibre GL JS with npm. Tabler uses version 5, the last one that ships a classic script file:
+
+```bash
+npm install maplibre-gl@5
+```
+
+Or include it from a CDN. You need two files: the stylesheet and the library.
 
 <Code
 	lang="html"
-	code={`<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet" />
-<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.js"></script>`}
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.css" />
+<script src="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.js"></script>`}
 />
-
-Then create a free account on [mapbox.com](https://www.mapbox.com/) and copy your public access token. It starts with `pk.`. Set it once, before you create a map:
-
-```js
-mapboxgl.accessToken = 'pk.your-token-here'
-```
-
-<Danger title="Use a public token only">
-  A secret token (`sk.`) must never be sent to the browser. Limit the token to your own domains in the Mapbox dashboard.
-</Danger>
 
 ## Usage
 
@@ -61,28 +60,38 @@ Create the map after the DOM is ready. Pass the id of your container, a style, a
 
 ```js
 document.addEventListener('DOMContentLoaded', function () {
-  mapboxgl.accessToken = 'pk.your-token-here'
-
-  const map = new mapboxgl.Map({
+  const map = new maplibregl.Map({
     container: 'map-simple',
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'https://tiles.openfreemap.org/styles/liberty',
     zoom: 13,
     center: [13.4049, 52.518827],
   })
 })
 ```
 
-`center` takes the longitude first and the latitude second. This is the Mapbox order, and it is the opposite of what most map services show.
+<Example>
+<Map mapId="simple" />
+</Example>
+
+`center` takes the longitude first and the latitude second. This is the opposite of what most map services show.
 
 ### Map styles
 
-Set `style` to any Mapbox style URL. These three are used in the Tabler demos:
+Set `style` to the URL of any MapLibre style. OpenFreeMap has five of them:
 
 | Style | Result |
 | --- | --- |
-| `mapbox://styles/mapbox/streets-v11` | Default street map. |
-| `mapbox://styles/mapbox/light-v10` | Light map, good under charts and markers. |
-| `mapbox://styles/mapbox/satellite-v9` | Satellite photos. |
+| `https://tiles.openfreemap.org/styles/liberty` | Default street map. |
+| `https://tiles.openfreemap.org/styles/bright` | Street map with stronger colors. |
+| `https://tiles.openfreemap.org/styles/positron` | Light gray map, good under charts and markers. |
+| `https://tiles.openfreemap.org/styles/dark` | Dark map. |
+| `https://tiles.openfreemap.org/styles/fiord` | Dark blue map. |
+
+<Example>
+<Map mapId="light" />
+</Example>
+
+Styles from other providers work the same way, as long as they follow the MapLibre style format. Check the terms of each provider, as many of them need an API key or a paid plan.
 
 ### Markers
 
@@ -96,11 +105,19 @@ const cities = [
 ]
 
 cities.forEach(function (coords) {
-  new mapboxgl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map)
+  new maplibregl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map)
 })
 ```
 
+<Example>
+<Map mapId="markers" />
+</Example>
+
 The `color` option is written to the `fill` attribute of the marker icon. A CSS variable works there, so `var(--tblr-primary)` keeps the markers in your theme color, including after a theme change.
+
+### Attribution
+
+MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap requires it, so do not hide it.
 
 ## Examples
 
@@ -132,6 +149,10 @@ Drop the card body to let the map fill the whole card. Add `rounded` to the cont
 </Example>
 
 Live versions of these maps are on the [maps preview page](https://preview.tabler.io/maps.html).
+
+## Using Mapbox GL JS
+
+MapLibre GL JS started as a fork of Mapbox GL JS, so the two share most of their API. To use Mapbox instead, load its script and stylesheet, replace `maplibregl` with `mapboxgl`, set `mapboxgl.accessToken` to your public token, and use a `mapbox://` style URL.
 
 ## Accessibility
 

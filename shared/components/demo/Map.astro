@@ -1,8 +1,6 @@
 ---
-// Mapbox GL map. Access token from the MAPBOX_KEY environment variable (.env or
-// the host's settings), never from the source. Renders nothing unless
-// maps[mapId] exists; without a token the container renders but the map is not
-// initialised (Mapbox GL throws on a missing token).
+// MapLibre GL map on OpenFreeMap tiles: no account and no access token.
+// Renders nothing unless maps[mapId] exists.
 import maps from '@data/maps.json';
 import CaptureScript from '../CaptureScript.astro';
 
@@ -14,12 +12,11 @@ interface Props {
 
 const { mapId, ratio } = Astro.props;
 
-const mapboxKey = import.meta.env.MAPBOX_KEY ?? process.env.MAPBOX_KEY ?? '';
-
 type MapData = {
 	title?: string;
 	ratio?: string;
 	card?: boolean;
+	/** OpenFreeMap style name: liberty (default), bright, positron, dark or fiord */
 	style?: string;
 	zoom?: number;
 	center?: [number, number];
@@ -29,7 +26,7 @@ type MapData = {
 const data = (maps as unknown as Record<string, MapData>)[mapId];
 
 const mapContainerId = `map-${mapId}`;
-const style = data ? (data.style ?? 'streets-v11') : undefined;
+const style = `https://tiles.openfreemap.org/styles/${data?.style ?? 'liberty'}`;
 const zoom = data?.zoom ?? 13;
 const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
 const markers = (data?.markers ?? []).map((marker) => [marker.center[1], marker.center[0]]);
@@ -47,23 +44,22 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	)
 }
 {
-	data && mapboxKey && (
+	data && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapboxKey, mapContainerId, style, zoom, center, markers }}>
+			<script is:inline define:vars={{ mapContainerId, style, zoom, center, markers }}>
 				window.tabler_map ??= {};
 
 				function initMap() {
-					mapboxgl.accessToken = mapboxKey;
-					const map = new mapboxgl.Map({
+					const map = new maplibregl.Map({
 						container: mapContainerId,
-						style: `mapbox://styles/mapbox/${style}`,
+						style,
 						zoom,
 						center,
 					});
 
 					markers.forEach((coords) => {
-						new mapboxgl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map);
+						new maplibregl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map);
 					});
 
 					window.tabler_map[mapContainerId] = map;
