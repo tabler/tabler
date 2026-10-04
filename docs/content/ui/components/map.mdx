@@ -48,19 +48,37 @@ The demos load their map tiles from [OpenFreeMap](https://openfreemap.org/). It 
 
 ## Installation
 
-Install MapLibre GL JS with npm. Tabler uses version 5, the last one that ships a classic script file:
-
-```bash
-npm install maplibre-gl@5
-```
-
-Or include it from a CDN. You need two files: the stylesheet and the library.
+MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the stylesheet, then import the library in a module script:
 
 <Code
 	lang="html"
 	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.css" />
-<script src="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.js"></script>`}
+<script type="module">
+  import * as maplibregl from '${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.mjs'
+
+  // Makes the library available to the other scripts on the page
+  window.maplibregl = maplibregl
+</script>`}
 />
+
+A module script runs before the `DOMContentLoaded` event, so the code examples on this page can use the `maplibregl` global. The library loads two more files from the same folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together when you host them yourself.
+
+With a bundler, install the package and import it in your code:
+
+```bash
+npm install maplibre-gl
+```
+
+```js
+import * as maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
+```
+
+<Danger title="Use version 6.4.1 or newer">
+  Older versions, including all of version 5, have a known security issue in the code that cleans the attribution text.
+</Danger>
+
+Browsers do not load ES modules from a page opened straight from the disk. Use a local server to see the maps while you work.
 
 Tabler styles the map controls, popups and attribution to match the interface, in light and dark mode. These styles are in `tabler-vendors.css`, so load it after the MapLibre stylesheet:
 
