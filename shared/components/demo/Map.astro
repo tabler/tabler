@@ -1,34 +1,42 @@
 ---
 // MapLibre GL map on OpenFreeMap tiles: no account and no access token.
 // The map follows the page theme: `style` in light mode, `darkStyle` in dark.
-// Renders nothing unless maps[mapId] exists.
+// Markers written in HTML go in the default slot: each child has `data-lng`
+// and `data-lat`, holds the marker element, and optionally a `<template>` with
+// the popup content. Renders nothing unless maps[mapId] exists or `center` is set.
 import maps from '@data/maps.json';
 import CaptureScript from '../CaptureScript.astro';
 
 interface Props {
-	/** Key into the maps data */
+	/** Key into the maps data; also the suffix of the container id */
 	mapId: string;
 	ratio?: string;
+	/** for a map with no entry in the maps data: [latitude, longitude] */
+	center?: [number, number];
+	zoom?: number;
+	title?: string;
+	style?: string;
 }
 
-const { mapId, ratio } = Astro.props;
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp } = Astro.props;
 
 type MapData = {
-	title?: string;
+	title?: string | undefined;
 	ratio?: string;
 	card?: boolean;
 	/** OpenFreeMap style name: liberty (default), bright, positron, dark or fiord */
-	style?: string;
+	style?: string | undefined;
 	/** style used in dark mode, `dark` by default */
 	darkStyle?: string;
 	/** adds the zoom and compass buttons */
 	controls?: boolean;
-	zoom?: number;
+	zoom?: number | undefined;
 	center?: [number, number];
 	markers?: { name?: string; center: [number, number] }[];
 };
 
-const data = (maps as unknown as Record<string, MapData>)[mapId];
+const data: MapData | undefined = (maps as unknown as Record<string, MapData>)[mapId] ?? (centerProp ? { title, center: centerProp, zoom: zoomProp, style: styleProp } : undefined);
+const hasHtmlMarkers = Astro.slots.has('default');
 
 const mapContainerId = `map-${mapId}`;
 const styleUrl = (name: string) => `https://tiles.openfreemap.org/styles/${name}`;
@@ -48,6 +56,13 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 			<div>
 				<div id={mapContainerId} class={`w-100 h-100${data.card ? ' rounded' : ''}`} role="img" aria-label={data.title ?? 'Map'} />
 			</div>
+		</div>
+	)
+}
+{
+	data && hasHtmlMarkers && (
+		<div id={`${mapContainerId}-markers`} hidden>
+			<slot />
 		</div>
 	)
 }
@@ -77,6 +92,23 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 							.setLngLat(marker.coords)
 							.setPopup(new maplibregl.Popup({ offset: 32 }).setText(marker.name))
 							.addTo(map);
+					});
+
+					// Markers written in HTML: the first child is the marker, a <template> is its popup
+					document.querySelectorAll(`#${mapContainerId}-markers > [data-lng]`).forEach((item) => {
+						const anchor = item.dataset.anchor ?? 'center';
+						const marker = new maplibregl.Marker({ element: item.firstElementChild, anchor, draggable: 'draggable' in item.dataset });
+						const popup = item.querySelector('template');
+
+						if (popup) {
+							marker.setPopup(new maplibregl.Popup({ offset: anchor === 'bottom' ? 40 : 20, className: popup.className, maxWidth: 'none', focusAfterOpen: !('open' in item.dataset) }).setDOMContent(popup.content));
+						}
+
+						marker.setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)]).addTo(map);
+
+						if (popup && 'open' in item.dataset) {
+							marker.togglePopup();
+						}
 					});
 
 					// Change the map style when the page theme changes
