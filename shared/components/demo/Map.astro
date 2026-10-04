@@ -17,15 +17,17 @@ interface Props {
 	title?: string;
 	style?: string;
 	controls?: boolean;
+	/** draws the map as a 3D globe instead of a flat map */
+	globe?: boolean;
 }
 
-const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp } = Astro.props;
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false } = Astro.props;
 
 type MapData = {
 	title?: string | undefined;
 	ratio?: string;
 	card?: boolean;
-	/** OpenFreeMap style name: liberty (default), bright, positron, dark or fiord */
+	/** OpenFreeMap style name: positron (default), liberty, bright, dark or fiord */
 	style?: string | undefined;
 	/** style used in dark mode, `dark` by default */
 	darkStyle?: string;
@@ -41,7 +43,7 @@ const hasHtmlMarkers = Astro.slots.has('default');
 
 const mapContainerId = `map-${mapId}`;
 const styleUrl = (name: string) => `https://tiles.openfreemap.org/styles/${name}`;
-const style = styleUrl(data?.style ?? 'liberty');
+const style = styleUrl(data?.style ?? 'positron');
 const darkStyle = styleUrl(data?.darkStyle ?? 'dark');
 const controls = data?.controls ?? false;
 const zoom = data?.zoom ?? 13;
@@ -55,7 +57,8 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<div class={`ratio ratio-${ratioClass}`}>
 			<div>
-				<div id={mapContainerId} class={`w-100 h-100${data.card ? ' rounded' : ''}`} role="img" aria-label={data.title ?? 'Map'} />
+				<div id={mapContainerId} class="w-100 h-100 rounded" role="img" aria-label={data.title ?? 'Map'} />
+				<slot name="overlay" />
 			</div>
 		</div>
 	)
@@ -71,7 +74,7 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapContainerId, style, darkStyle, controls, zoom, center, markers }}>
+			<script is:inline define:vars={{ mapContainerId, style, darkStyle, controls, globe, zoom, center, markers }}>
 				window.tabler_map ??= {};
 
 				function initMap() {
@@ -88,11 +91,16 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 						map.addControl(new maplibregl.NavigationControl());
 					}
 
+					if (globe) {
+						// The projection is part of the style, so set it again each time the style loads
+						map.on('style.load', () => map.setProjection({ type: 'globe' }));
+					}
+
 					markers.forEach((marker) => {
-						new maplibregl.Marker({ color: 'var(--tblr-primary)' })
-							.setLngLat(marker.coords)
-							.setPopup(new maplibregl.Popup({ offset: 32 }).setText(marker.name))
-							.addTo(map);
+						const element = document.createElement('span');
+
+						element.className = 'map-marker map-marker-dot';
+						new maplibregl.Marker({ element }).setLngLat(marker.coords).setPopup(new maplibregl.Popup({ offset: 16, closeButton: false }).setText(marker.name)).addTo(map);
 					});
 
 					// Markers written in HTML: the first child is the marker, a <template> is its popup
@@ -102,7 +110,7 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 						const popup = item.querySelector('template');
 
 						if (popup) {
-							marker.setPopup(new maplibregl.Popup({ offset: anchor === 'bottom' ? 40 : 20, className: popup.className, maxWidth: 'none', focusAfterOpen: !('open' in item.dataset) }).setDOMContent(popup.content));
+							marker.setPopup(new maplibregl.Popup({ offset: anchor === 'bottom' ? 40 : 16, className: popup.className, maxWidth: 'none', focusAfterOpen: !('open' in item.dataset) }).setDOMContent(popup.content));
 						}
 
 						marker.setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)]).addTo(map);

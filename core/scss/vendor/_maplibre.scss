@@ -65,9 +65,9 @@
   border-color: var(--body-color);
 }
 
-// Popup
-.maplibregl-popup-content {
-  padding: 0.75rem 1rem;
+// Popup: a small bordered panel with no arrow
+.maplibregl-popup .maplibregl-popup-content {
+  padding: 0.75rem;
   color: var(--body-color);
   background: var(--bg-surface);
   box-shadow:
@@ -76,21 +76,25 @@
   @include border-radius(var(--border-radius));
 }
 
+.maplibregl-popup-tip {
+  display: none;
+}
+
 // Room for the close button, which MapLibre pins to the right edge in both directions
-.maplibregl-popup-content:has(.maplibregl-popup-close-button) {
+.maplibregl-popup .maplibregl-popup-content:has(.maplibregl-popup-close-button) {
   /* rtl:ignore */
-  padding-right: 2.25rem;
+  padding-right: 2rem;
 }
 
 .maplibregl-popup-close-button {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   padding: 0;
-  margin: 0.375rem;
+  margin: 0.25rem;
   font-size: 1rem;
   line-height: 1;
   color: var(--secondary);
-  @include border-radius(var(--border-radius));
+  @include border-radius(var(--border-radius-sm));
 
   &:hover {
     color: var(--body-color);
@@ -98,32 +102,17 @@
   }
 }
 
-.maplibregl-popup-anchor-top,
-.maplibregl-popup-anchor-top-left,
-.maplibregl-popup-anchor-top-right {
-  .maplibregl-popup-tip {
-    border-bottom-color: var(--bg-surface);
-  }
-}
-
-.maplibregl-popup-anchor-bottom,
-.maplibregl-popup-anchor-bottom-left,
-.maplibregl-popup-anchor-bottom-right {
-  .maplibregl-popup-tip {
-    border-top-color: var(--bg-surface);
-  }
-}
-
-.maplibregl-popup-anchor-left .maplibregl-popup-tip {
-  border-right-color: var(--bg-surface);
-}
-
-.maplibregl-popup-anchor-right .maplibregl-popup-tip {
-  border-left-color: var(--bg-surface);
+// Popup used as a tooltip: a short inverted label, shown on hover
+.map-tooltip .maplibregl-popup-content {
+  padding: 0.25rem 0.5rem;
+  color: var(--text-inverted);
+  pointer-events: none;
+  background: var(--bg-surface-inverted);
+  box-shadow: #{$box-shadow-md};
 }
 
 // Popup that holds a card-like block: an image on top, padded content below
-.map-popup-card {
+.map-popup-card.maplibregl-popup {
   .maplibregl-popup-content {
     width: #{$map-popup-card-width};
     padding: 0;
@@ -161,7 +150,6 @@
   line-height: 1;
   color: var(--map-marker-color);
   cursor: pointer;
-  filter: #{$map-marker-shadow};
 
   &::before {
     position: absolute;
@@ -169,6 +157,7 @@
     z-index: -1;
     content: '';
     background: var(--map-marker-bg);
+    filter: #{$map-marker-shadow};
     border: var(--map-marker-border-width) solid var(--map-marker-border-color);
     @include border-radius(var(--border-radius-pill));
   }
@@ -185,6 +174,24 @@
 
 .map-marker-dot {
   --map-marker-size: #{$map-marker-dot-size};
+}
+
+// Short text under a marker
+.map-marker-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 0.125rem;
+  font-size: $h6-font-size;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  color: var(--body-color);
+  text-shadow:
+    0 0 2px var(--bg-surface),
+    0 0 2px var(--bg-surface),
+    0 0 4px var(--bg-surface);
+  white-space: nowrap;
+  transform: translateX(-50%);
 }
 
 // Teardrop: a square with one sharp corner, turned to point down. Its tip
