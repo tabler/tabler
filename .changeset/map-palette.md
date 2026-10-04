@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Updated the map demos with softer map colors: a `tablerMapPalette()` script recolors the `positron` and `dark` styles.
+Updated the default `positron` and `dark` map styles with softer colors: near-white land, pale water and muted labels.
