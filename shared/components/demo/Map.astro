@@ -16,9 +16,10 @@ interface Props {
 	zoom?: number;
 	title?: string;
 	style?: string;
+	controls?: boolean;
 }
 
-const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp } = Astro.props;
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp } = Astro.props;
 
 type MapData = {
 	title?: string | undefined;
@@ -29,13 +30,13 @@ type MapData = {
 	/** style used in dark mode, `dark` by default */
 	darkStyle?: string;
 	/** adds the zoom and compass buttons */
-	controls?: boolean;
+	controls?: boolean | undefined;
 	zoom?: number | undefined;
 	center?: [number, number];
 	markers?: { name?: string; center: [number, number] }[];
 };
 
-const data: MapData | undefined = (maps as unknown as Record<string, MapData>)[mapId] ?? (centerProp ? { title, center: centerProp, zoom: zoomProp, style: styleProp } : undefined);
+const data: MapData | undefined = (maps as unknown as Record<string, MapData>)[mapId] ?? (centerProp ? { title, center: centerProp, zoom: zoomProp, style: styleProp, controls: controlsProp } : undefined);
 const hasHtmlMarkers = Astro.slots.has('default');
 
 const mapContainerId = `map-${mapId}`;
