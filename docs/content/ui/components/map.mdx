@@ -33,9 +33,12 @@ classnames:
 ---
 import Example from '@components/Example.astro';
 import Map from '@shared/components/demo/Map.astro';
+import MapPalette from '@shared/components/demo/MapPalette.astro';
 import Icon from '@ui/Icon.astro';
 import { Code } from 'astro:components';
 import { site } from '@shared/lib/site.ts';
+
+<MapPalette />
 
 ## Overview
 
@@ -107,7 +110,7 @@ Set `style` to the URL of any MapLibre style. OpenFreeMap has five of them:
 
 | Style | Result |
 | --- | --- |
-| `https://tiles.openfreemap.org/styles/positron` | Light gray map, used by the Tabler demos. Markers and data stand out on it. |
+| `https://tiles.openfreemap.org/styles/positron` | Light gray map, used by the Tabler demos with [softer colors](#map-colors). Markers and data stand out on it. |
 | `https://tiles.openfreemap.org/styles/dark` | Dark gray map, used by the demos in dark mode. |
 | `https://tiles.openfreemap.org/styles/liberty` | Street map in color. |
 | `https://tiles.openfreemap.org/styles/bright` | Street map with stronger colors. |
@@ -116,6 +119,20 @@ Set `style` to the URL of any MapLibre style. OpenFreeMap has five of them:
 <Example>
 <Map mapId="light" />
 </Example>
+
+### Map colors
+
+The Tabler demos make the `positron` and `dark` styles softer: near-white land, pale water and muted labels in light mode, and blue-gray water and roads in dark mode. They do it by changing the paint values of the style layers after the style loads:
+
+```js
+map.on('style.load', function () {
+  map.setPaintProperty('background', 'background-color', '#fafaf8')
+  map.setPaintProperty('water', 'fill-color', '#d4dadc')
+  map.setPaintProperty('boundary_2', 'line-color', '#e3cdd0')
+})
+```
+
+The full list of colors for both modes is in the `tablerMapPalette()` function in the source of the [maps preview page](https://preview.tabler.io/maps.html). Copy it to get the same look. The layer names belong to the OpenFreeMap styles, so the function works only with them.
 
 Styles from other providers work the same way, as long as they follow the MapLibre style format. Check the terms of each provider, as many of them need an API key or a paid plan.
 
