@@ -1,0 +1,87 @@
+---
+// A delivery on a map: the route, the courier position and the order status.
+// Needs <MapPalette /> on the page, before this card.
+import Map from '../demo/Map.astro'
+import CaptureScript from '../CaptureScript.astro'
+import Avatar from '@ui/Avatar.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import Subheader from '@ui/Subheader.astro'
+import { staticPath } from '@shared/lib/assets'
+
+// The courier is at the sixth point of the route: the part behind them is done
+const route = [
+  [13.3695, 52.5251],
+  [13.3777, 52.5208],
+  [13.388, 52.5186],
+  [13.3989, 52.5176],
+  [13.405, 52.5192],
+  [13.4132, 52.5219],
+  [13.4215, 52.5165],
+  [13.43, 52.5105],
+  [13.4397, 52.505],
+]
+const courierAt = 5
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Delivery tracker</CardTitle>
+  </CardHeader>
+  <Map mapId="delivery" title="Delivery tracker" center={[52.5215, 13.4046]} zoom={11.6} height="20rem" rounded={false}>
+    <div slot="overlay" class="card card-sm position-absolute top-0 start-0 m-3 shadow" style="width: 15rem">
+      <div class="card-body">
+        <Subheader>Order #4821</Subheader>
+        <div class="h3 mb-2">Arriving in 12 min</div>
+        <Progress value={62} size="sm" color="green" />
+      </div>
+    </div>
+    <div data-lng={route[0]?.[0]} data-lat={route[0]?.[1]}><span class="map-marker map-marker-dot"></span></div>
+    <div data-lng={route[courierAt]?.[0]} data-lat={route[courierAt]?.[1]}>
+      <span class="map-marker map-marker-green"><Icon name="truck-delivery" /></span>
+    </div>
+    <div data-lng={route.at(-1)?.[0]} data-lat={route.at(-1)?.[1]} data-anchor="bottom">
+      <span class="map-marker map-marker-pin"><Icon name="home" /></span>
+    </div>
+  </Map>
+  <CaptureScript>
+    <script is:inline define:vars={{ route, courierAt }}>
+      document.addEventListener('DOMContentLoaded', () => {
+        const map = window.tabler_map['map-delivery']
+        const line = (coordinates) => ({ type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } })
+
+        map.on('style.load', () => {
+          const color = tablerMapColor('--tblr-primary')
+
+          // The part of the route still to drive is dashed, the part already driven is solid
+          map.addSource('route-left', line(route.slice(courierAt)))
+          map.addLayer({ id: 'route-left', type: 'line', source: 'route-left', paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.6, 'line-dasharray': [1, 2] } })
+          map.addSource('route-done', line(route.slice(0, courierAt + 1)))
+          map.addLayer({ id: 'route-done', type: 'line', source: 'route-done', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': color, 'line-width': 3 } })
+        })
+      })
+    </script>
+  </CaptureScript>
+  <CardBody>
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <Avatar src={staticPath('avatars/002m.jpg')} />
+      </div>
+      <div class="col">
+        <div class="fw-medium">Mateusz Nowak</div>
+        <div class="text-secondary">Your courier</div>
+      </div>
+      <div class="col-auto text-end">
+        <div class="fw-medium">3.4 km</div>
+        <div class="text-secondary">left to go</div>
+      </div>
+      <div class="col-auto">
+        <a href="#" class="btn btn-icon" aria-label="Call the courier"><Icon name="phone" /></a>
+      </div>
+    </div>
+  </CardBody>
+</Card>

@@ -22,9 +22,11 @@ interface Props {
 	globe?: boolean;
 	/** rounded corners; turn off when the map fills a box that has its own corners */
 	rounded?: boolean;
+	/** fixed height (any CSS length) instead of an aspect ratio */
+	height?: string;
 }
 
-const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false, rounded = true } = Astro.props;
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false, rounded = true, height } = Astro.props;
 
 type MapData = {
 	title?: string | undefined;
@@ -60,8 +62,8 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 
 {
 	data && (
-		<div class={`ratio ratio-${ratioClass}`}>
-			<div>
+		<div class:list={height ? 'position-relative' : `ratio ratio-${ratioClass}`} style={height ? `height: ${height}` : undefined}>
+			<div class:list={[height && 'h-100']}>
 				<div id={mapContainerId} class:list={['w-100 h-100', rounded && 'rounded']} role="img" aria-label={data.title ?? 'Map'} />
 				<slot name="overlay" />
 			</div>

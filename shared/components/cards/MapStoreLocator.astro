@@ -1,0 +1,114 @@
+---
+// A list of stores next to a map: picking a store moves the map and opens its popup.
+// Needs <MapPalette /> on the page, before this card.
+import Map from '../demo/Map.astro'
+import CaptureScript from '../CaptureScript.astro'
+import Badge from '@ui/Badge.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+
+const stores = [
+  { name: 'Tabler Store Mitte', address: 'Friedrichstraße 112, 10117 Berlin', distance: '0.4 km', open: true, lng: 13.3889, lat: 52.5246 },
+  { name: 'Tabler Store Alexanderplatz', address: 'Karl-Liebknecht-Straße 9, 10178 Berlin', distance: '1.2 km', open: true, lng: 13.4094, lat: 52.5219 },
+  { name: 'Tabler Store Kreuzberg', address: 'Oranienstraße 34, 10999 Berlin', distance: '2.6 km', open: true, lng: 13.4197, lat: 52.5009 },
+  { name: 'Tabler Store Charlottenburg', address: 'Kantstraße 54, 10627 Berlin', distance: '4.8 km', open: false, lng: 13.3087, lat: 52.5063 },
+  { name: 'Tabler Store Prenzlauer Berg', address: 'Kastanienallee 21, 10435 Berlin', distance: '2.1 km', open: true, lng: 13.4098, lat: 52.5385 },
+  { name: 'Tabler Store Friedrichshain', address: 'Warschauer Straße 58, 10243 Berlin', distance: '3.9 km', open: false, lng: 13.4492, lat: 52.5083 },
+]
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Store locator</CardTitle>
+  </CardHeader>
+  <div class="row g-0">
+    <div class="col-lg-4 border-end">
+      <div class="p-3 border-bottom">
+        <div class="input-icon">
+          <span class="input-icon-addon"><Icon name="search" /></span>
+          <input type="search" class="form-control" id="stores-search" placeholder="Search stores…" aria-label="Search stores" />
+        </div>
+      </div>
+      <div class="list-group list-group-flush overflow-auto" id="stores-list" style="height: 24rem">
+        {
+          stores.map((store, index) => (
+            <button type="button" class:list={['list-group-item list-group-item-action', index === 0 && 'active']} data-lng={store.lng} data-lat={store.lat} data-address={store.address}>
+              <div class="d-flex align-items-center gap-2">
+                <span class="fw-medium" data-name>
+                  {store.name}
+                </span>
+                <Badge color={store.open ? 'green' : 'secondary'} light class="ms-auto" text={store.open ? 'Open' : 'Closed'} />
+              </div>
+              <div class="text-secondary">{store.address}</div>
+              <div class="text-secondary small mt-1">
+                <Icon name="map-pin" class="icon-inline" /> {store.distance}
+              </div>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <Map mapId="stores" title="Store locator" center={[52.519, 13.39]} zoom={11.3} height="28.5rem" rounded={false} controls />
+    </div>
+  </div>
+  <CaptureScript>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const map = window.tabler_map['map-stores']
+        const items = [...document.querySelectorAll('#stores-list [data-lng]')]
+
+        // One marker with a popup for each store in the list
+        const markers = items.map((item) => {
+          const element = document.createElement('span')
+          const popup = document.createElement('div')
+
+          element.className = 'map-marker map-marker-pin'
+          element.innerHTML = item.querySelector('.icon').outerHTML
+          popup.innerHTML = '<div class="fw-medium"></div><div class="text-secondary"></div>'
+          popup.firstChild.textContent = item.querySelector('[data-name]').textContent
+          popup.lastChild.textContent = item.dataset.address
+
+          return new maplibregl.Marker({ element, anchor: 'bottom' })
+            .setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)])
+            .setPopup(new maplibregl.Popup({ offset: 40, closeButton: false, focusAfterOpen: false }).setDOMContent(popup))
+            .addTo(map)
+        })
+
+        const select = (index, move) => {
+          items.forEach((item, position) => item.classList.toggle('active', position === index))
+          markers.forEach((marker, position) => marker.getPopup().isOpen() !== (position === index) && marker.togglePopup())
+
+          if (move) {
+            map.flyTo({ center: markers[index].getLngLat(), zoom: 13 })
+          }
+        }
+
+        items.forEach((item, index) => item.addEventListener('click', () => select(index, true)))
+        markers.forEach((marker, index) =>
+          marker.getElement().addEventListener('click', (event) => {
+            event.stopPropagation()
+            select(index, false)
+            items[index].scrollIntoView({ block: 'nearest' })
+          }),
+        )
+
+        // Search hides the stores, and their markers, that do not match
+        document.getElementById('stores-search').addEventListener('input', (event) => {
+          const query = event.target.value.trim().toLowerCase()
+
+          items.forEach((item, index) => {
+            const hidden = !item.textContent.toLowerCase().includes(query)
+
+            item.hidden = hidden
+            markers[index].getElement().hidden = hidden
+          })
+        })
+
+        select(0, false)
+      })
+    </script>
+  </CaptureScript>
+</Card>

@@ -1,0 +1,65 @@
+---
+// A vector world map shaded by users, next to a table of the top countries.
+import MapVector from '../demo/MapVector.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Flag from '@ui/Flag.astro'
+import Progress from '@ui/Progress.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
+
+const countries: { name: string; flag: FlagCountry; users: string; share: number }[] = [
+  { name: 'United States', flag: 'us', users: '12,480', share: 32 },
+  { name: 'Brazil', flag: 'br', users: '7,120', share: 18 },
+  { name: 'Germany', flag: 'de', users: '5,930', share: 15 },
+  { name: 'India', flag: 'in', users: '4,360', share: 11 },
+  { name: 'Australia', flag: 'au', users: '3,540', share: 9 },
+  { name: 'Poland', flag: 'pl', users: '2,210', share: 6 },
+]
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Users by country</CardTitle>
+  </CardHeader>
+  <div class="row g-0">
+    <div class="col-lg-7 border-end">
+      <CardBody>
+        <MapVector mapId="world" ratio="16x9" />
+      </CardBody>
+    </div>
+    <div class="col-lg-5">
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th class="text-end">Users</th>
+              <th class="w-33">Share</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              countries.map((country) => (
+                <tr>
+                  <td>
+                    <Flag flag={country.flag} size="xs" class="me-2" />
+                    {country.name}
+                  </td>
+                  <td class="text-end">{country.users}</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="text-secondary">{country.share}%</span>
+                      <Progress value={country.share} size="sm" class="flex-fill" />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</Card>
