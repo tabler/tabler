@@ -122,6 +122,91 @@
   border-left-color: var(--bg-surface);
 }
 
+// Popup that holds a card-like block: an image on top, padded content below
+.map-popup-card {
+  .maplibregl-popup-content {
+    width: #{$map-popup-card-width};
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .maplibregl-popup-close-button {
+    color: var(--body-color);
+    background-color: var(--bg-surface);
+  }
+}
+
+// Marker drawn in HTML. MapLibre moves the marker with `transform`, so the
+// shape is drawn by the pseudo-element and the root keeps no transform.
+.map-marker {
+  // scss-docs-start map-marker-css-vars
+  --map-marker-size: #{$map-marker-size};
+  --map-marker-bg: #{$map-marker-bg};
+  --map-marker-color: #{$map-marker-color};
+  --map-marker-border-width: #{$map-marker-border-width};
+  --map-marker-border-color: #{$map-marker-border-color};
+  --map-marker-font-size: #{$map-marker-font-size};
+  --map-marker-icon-size: #{$map-marker-icon-size};
+  // scss-docs-end map-marker-css-vars
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--map-marker-size);
+  min-height: var(--map-marker-size);
+  padding: var(--map-marker-border-width);
+  font-size: var(--map-marker-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  color: var(--map-marker-color);
+  cursor: pointer;
+  filter: #{$map-marker-shadow};
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background: var(--map-marker-bg);
+    border: var(--map-marker-border-width) solid var(--map-marker-border-color);
+    @include border-radius(var(--border-radius-pill));
+  }
+
+  .icon {
+    --icon-size: var(--map-marker-icon-size);
+  }
+}
+
+.map-marker-dot {
+  --map-marker-size: #{$map-marker-dot-size};
+}
+
+// Teardrop: a square with one sharp corner, turned to point down. Its tip
+// reaches 20.7% below the circle, so the root is that much taller.
+.map-marker-pin {
+  box-sizing: content-box;
+  width: var(--map-marker-size);
+  min-width: 0;
+  height: var(--map-marker-size);
+  min-height: 0;
+  padding: 0 0 calc(var(--map-marker-size) * 0.207);
+
+  &::before {
+    bottom: auto;
+    height: var(--map-marker-size);
+    @include border-radius(50% 50% 50% 0);
+    transform: rotate(-45deg);
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .map-marker-#{$name} {
+    --map-marker-bg: var(--#{$name});
+    --map-marker-color: var(--#{$name}-fg);
+  }
+}
+
 // The control icons are black SVG images
 @if $enable-dark-mode {
   @include color-mode(dark) {

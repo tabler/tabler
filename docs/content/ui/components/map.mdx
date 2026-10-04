@@ -4,17 +4,31 @@ summary: A map shows places and markers on an interactive world map. Tabler prov
 description: Show interactive maps with markers using MapLibre GL JS and free map tiles. No account or access token is needed.
 related: [/ui/plugins/vector-map]
 docs-libs: [maplibre-gl]
-source: core/scss/_utilities.scss
+source: core/scss/vendor/_maplibre.scss
+css-vars: map-marker
 classnames:
   component:
     - class: ratio
-      desc: Wrapper that keeps the embed at a fixed aspect ratio
+      desc: Wrapper that keeps the map at a fixed aspect ratio
+    - class: map-marker
+      desc: Marker drawn in HTML, a circle that can hold an icon, a count or an avatar
+  modifier:
+    - class: map-marker-dot
+      desc: Small dot with no content
+    - class: map-marker-pin
+      desc: Teardrop pin that points down, used with the bottom anchor
+    - class: map-popup-card
+      desc: Popup with no padding and a fixed width, for an image above the text
+  color:
+    - class: map-marker-{color}
+      desc: Any theme color, for example map-marker-red or map-marker-green
   size:
     - class: ratio-{ratio}
       desc: The aspect to hold, for example ratio-16x9 or ratio-21x9
 ---
 import Example from '@components/Example.astro';
 import Map from '@shared/components/demo/Map.astro';
+import Icon from '@ui/Icon.astro';
 import { Code } from 'astro:components';
 import { site } from '@shared/lib/site.ts';
 
@@ -122,6 +136,69 @@ cities.forEach(function (coords) {
 
 The `color` option is written to the `fill` attribute of the marker icon. A CSS variable works there, so `var(--tblr-primary)` keeps the markers in your theme color, including after a theme change.
 
+### Custom markers
+
+To draw a marker in HTML, create an element with the `.map-marker` class and pass it as `element`. The marker is a circle in the primary color. Put an icon, a short count or an avatar inside it.
+
+```js
+const element = document.createElement('span')
+element.className = 'map-marker map-marker-green'
+element.textContent = '12'
+
+new maplibregl.Marker({ element: element }).setLngLat([13.35, 52.512]).addTo(map)
+```
+
+Add `.map-marker-dot` for a small dot, or `.map-marker-pin` for a pin that points down. A pin needs `anchor: 'bottom'`, so its tip sits on the place. Change the color with `.map-marker-{color}`.
+
+```js
+const pin = document.createElement('span')
+pin.className = 'map-marker map-marker-pin map-marker-red'
+
+new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([13.47, 52.518]).addTo(map)
+```
+
+<Example>
+<Map mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11}>
+  <div data-lng="13.345" data-lat="52.54"><span class="map-marker map-marker-dot"></span></div>
+  <div data-lng="13.39" data-lat="52.545"><span class="map-marker map-marker-dot map-marker-red"></span></div>
+  <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /></span></div>
+  <div data-lng="13.35" data-lat="52.512"><span class="map-marker map-marker-green">12</span></div>
+  <div data-lng="13.405" data-lat="52.522" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="home" /></span></div>
+  <div data-lng="13.47" data-lat="52.518" data-anchor="bottom"><span class="map-marker map-marker-pin map-marker-red"><Icon name="star" /></span></div>
+  <div data-lng="13.43" data-lat="52.508"><span class="map-marker"><span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span></span></div>
+</Map>
+</Example>
+
+You can also write the markers in the page and move them to the map. The preview pages do this: each marker sits in a hidden element with `data-lng` and `data-lat`, and a short loop passes it to MapLibre.
+
+```html
+<div id="map-markers" hidden>
+  <div data-lng="13.405" data-lat="52.522">
+    <span class="map-marker map-marker-pin">...</span>
+  </div>
+</div>
+```
+
+```js
+document.querySelectorAll('#map-markers > [data-lng]').forEach(function (item) {
+  new maplibregl.Marker({ element: item.firstElementChild, anchor: 'bottom' })
+    .setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)])
+    .addTo(map)
+})
+```
+
+### Draggable markers
+
+Pass `draggable: true` to let people move a marker, for example to pick an address. Read the new position in the `dragend` event.
+
+```js
+const marker = new maplibregl.Marker({ element: pin, anchor: 'bottom', draggable: true }).setLngLat([13.405, 52.52]).addTo(map)
+
+marker.on('dragend', function () {
+  console.log(marker.getLngLat())
+})
+```
+
 ### Popups
 
 Attach a popup to a marker with `setPopup`. It opens when the marker is clicked. Click a marker on the map above to see one.
@@ -134,6 +211,44 @@ new maplibregl.Marker({ color: 'var(--tblr-primary)' })
 ```
 
 Use `setHTML` instead of `setText` for richer content. Only pass HTML you trust, as it is not escaped.
+
+### Popup card
+
+For a popup with an image, add the `map-popup-card` class with the `className` option. It removes the padding and sets a fixed width, so the image reaches the edges. Keep the content in a `<template>` and pass it with `setDOMContent`.
+
+```html
+<template id="popup-museum">
+  <div class="img-responsive img-responsive-21x9" style="background-image: url(...)"></div>
+  <div class="p-3">
+    <div class="fw-medium">Museum Island</div>
+    <div class="text-secondary mb-3">Five museums on the Spree, open daily.</div>
+    <a href="#" class="btn btn-primary btn-sm">View details</a>
+  </div>
+</template>
+```
+
+```js
+const popup = new maplibregl.Popup({ offset: 40, className: 'map-popup-card', maxWidth: 'none' })
+  .setDOMContent(document.getElementById('popup-museum').content)
+
+new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([13.4019, 52.5169]).setPopup(popup).addTo(map)
+```
+
+<Example>
+<Map mapId="popup-card" title="Popup card" center={[52.546, 13.4]} zoom={11} ratio="4x3">
+  <div data-lng="13.4019" data-lat="52.5169" data-anchor="bottom" data-open>
+    <span class="map-marker map-marker-pin"><Icon name="map-pin" /></span>
+    <template class="map-popup-card">
+      <div class="img-responsive img-responsive-21x9" style="background-image: url(/static/photos/a-visit-to-the-bookstore.jpg)"></div>
+      <div class="p-3">
+        <div class="fw-medium">Museum Island</div>
+        <div class="text-secondary mb-3">Five museums on the Spree, open daily.</div>
+        <a href="#" class="btn btn-primary btn-sm">View details</a>
+      </div>
+    </template>
+  </div>
+</Map>
+</Example>
 
 ### Controls
 

@@ -5,13 +5,23 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import maps from '@data/maps.json'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import Avatar from '@ui/Avatar.astro'
+import Icon from '@ui/Icon.astro'
+import { staticPath } from '@shared/lib/assets'
 
 type MapData = { title?: string; card?: boolean }
 const mapEntries = Object.entries(maps as Record<string, MapData>)
+
+const places = [
+  { name: 'Museum Island', text: 'Five museums on the Spree, open daily.', photo: 'a-visit-to-the-bookstore.jpg', lat: 52.5169, lng: 13.4019, open: true },
+  { name: 'Bellevue Palace', text: 'Residence by the Tiergarten park.', photo: 'book-on-the-grass.jpg', lat: 52.5176, lng: 13.3531, open: false },
+  { name: 'Weissensee', text: 'A lake with a beach in the north-east.', photo: 'brainstorming-session-with-creative-designers.jpg', lat: 52.5546, lng: 13.4633, open: false },
+]
 ---
 
-<DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['maplibre-gl']} description="Interactive MapLibre maps — plain, styled, or full-card with markers.">
+<DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['maplibre-gl']} description="Interactive MapLibre maps — plain, styled, with custom markers and popups.">
   <DocsLink slot="page-header-actions" path="/ui/components/map" />
   <div class="row row-cards">
     {
@@ -34,5 +44,65 @@ const mapEntries = Object.entries(maps as Record<string, MapData>)
         ),
       )
     }
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Marker styles</CardTitle>
+          <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar.</CardSubtitle>
+          <Map mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11} ratio="4x3">
+            <div data-lng="13.345" data-lat="52.54"><span class="map-marker map-marker-dot"></span></div>
+            <div data-lng="13.39" data-lat="52.545"><span class="map-marker map-marker-dot map-marker-red"></span></div>
+            <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /></span></div>
+            <div data-lng="13.35" data-lat="52.512"><span class="map-marker map-marker-green">12</span></div>
+            <div data-lng="13.405" data-lat="52.52" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="home" /></span></div>
+            <div data-lng="13.47" data-lat="52.518" data-anchor="bottom"><span class="map-marker map-marker-pin map-marker-red"><Icon name="star" /></span></div>
+            <div data-lng="13.43" data-lat="52.503"><span class="map-marker"><Avatar size="sm" src={staticPath('avatars/000m.jpg')} /></span></div>
+          </Map>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Popup card</CardTitle>
+          <CardSubtitle>Put the popup content in a <code>&lt;template&gt;</code> next to the marker. <code>.map-popup-card</code> makes room for an image.</CardSubtitle>
+          <Map mapId="popup-card" title="Popup card" center={[52.546, 13.4]} zoom={11} ratio="4x3">
+            {
+              places.map((place) => (
+                <div data-lng={place.lng} data-lat={place.lat} data-anchor="bottom" data-open={place.open ? '' : undefined}>
+                  <span class="map-marker map-marker-pin">
+                    <Icon name="map-pin" />
+                  </span>
+                  <template class="map-popup-card">
+                    <div class="img-responsive img-responsive-21x9" style={`background-image: url(${staticPath(`photos/${place.photo}`)})`} />
+                    <div class="p-3">
+                      <div class="fw-medium">{place.name}</div>
+                      <div class="text-secondary mb-3">{place.text}</div>
+                      <a href="#" class="btn btn-primary btn-sm">
+                        View details
+                      </a>
+                    </div>
+                  </template>
+                </div>
+              ))
+            }
+          </Map>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Draggable marker</CardTitle>
+          <CardSubtitle>Add <code>draggable: true</code> to let people move a marker, for example to pick an address.</CardSubtitle>
+          <Map mapId="draggable" title="Draggable marker" center={[52.52, 13.405]} zoom={12} ratio="21x9">
+            <div data-lng="13.405" data-lat="52.52" data-anchor="bottom" data-draggable><span class="map-marker map-marker-pin"><Icon name="map-pin" /></span></div>
+          </Map>
+        </CardBody>
+      </Card>
+    </div>
   </div>
 </DefaultLayout>
