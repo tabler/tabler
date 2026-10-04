@@ -1,0 +1,133 @@
+@use '../config' as *;
+
+.maplibregl-map {
+  font-family: inherit;
+  font-size: $h5-font-size;
+  line-height: $line-height-base;
+}
+
+// Controls: zoom, compass, fullscreen, locate
+.maplibregl-ctrl-group {
+  overflow: hidden;
+  background: var(--bg-surface);
+  @include border-radius(var(--border-radius));
+
+  &:not(:empty) {
+    box-shadow:
+      0 0 0 var(--border-width) var(--border-color),
+      #{$card-box-shadow};
+  }
+
+  button {
+    width: 2rem;
+    height: 2rem;
+
+    + button {
+      border-top: var(--border-width) var(--border-style) var(--border-color);
+    }
+
+    &:focus:focus-visible {
+      outline-offset: calc(-1 * var(--focus-ring-width));
+      box-shadow: none;
+      @include focus-ring();
+    }
+  }
+}
+
+.maplibregl-ctrl button:not(:disabled):hover,
+.maplibregl-ctrl button:not(:disabled):active {
+  background-color: var(--bg-surface-secondary);
+}
+
+// Attribution
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
+  color: var(--secondary);
+  background-color: color-transparent(var(--bg-surface), 0.7);
+
+  a {
+    color: inherit;
+  }
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  color: var(--secondary);
+  background-color: var(--bg-surface);
+}
+
+.maplibregl-ctrl-attrib-button:focus {
+  box-shadow: none;
+  @include focus-ring();
+}
+
+.maplibregl-ctrl-scale {
+  color: var(--body-color);
+  background-color: color-transparent(var(--bg-surface), 0.75);
+  border-color: var(--body-color);
+}
+
+// Popup
+.maplibregl-popup-content {
+  padding: 0.75rem 1rem;
+  color: var(--body-color);
+  background: var(--bg-surface);
+  box-shadow:
+    0 0 0 var(--border-width) var(--border-color),
+    #{$box-shadow-md};
+  @include border-radius(var(--border-radius));
+}
+
+// Room for the close button, which MapLibre pins to the right edge in both directions
+.maplibregl-popup-content:has(.maplibregl-popup-close-button) {
+  /* rtl:ignore */
+  padding-right: 2.25rem;
+}
+
+.maplibregl-popup-close-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  margin: 0.375rem;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--secondary);
+  @include border-radius(var(--border-radius));
+
+  &:hover {
+    color: var(--body-color);
+    background-color: var(--bg-surface-secondary);
+  }
+}
+
+.maplibregl-popup-anchor-top,
+.maplibregl-popup-anchor-top-left,
+.maplibregl-popup-anchor-top-right {
+  .maplibregl-popup-tip {
+    border-bottom-color: var(--bg-surface);
+  }
+}
+
+.maplibregl-popup-anchor-bottom,
+.maplibregl-popup-anchor-bottom-left,
+.maplibregl-popup-anchor-bottom-right {
+  .maplibregl-popup-tip {
+    border-top-color: var(--bg-surface);
+  }
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: var(--bg-surface);
+}
+
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: var(--bg-surface);
+}
+
+// The control icons are black SVG images
+@if $enable-dark-mode {
+  @include color-mode(dark) {
+    .maplibregl-ctrl-icon,
+    .maplibregl-ctrl-attrib-button {
+      @include autodark-image();
+    }
+  }
+}

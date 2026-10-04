@@ -40,6 +40,13 @@ Or include it from a CDN. You need two files: the stylesheet and the library.
 <script src="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.js"></script>`}
 />
 
+Tabler styles the map controls, popups and attribution to match the interface, in light and dark mode. These styles are in `tabler-vendors.css`, so load it after the MapLibre stylesheet:
+
+<Code
+	lang="html"
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-vendors.min.css" />`}
+/>
+
 ## Usage
 
 ### Markup
@@ -114,6 +121,53 @@ cities.forEach(function (coords) {
 </Example>
 
 The `color` option is written to the `fill` attribute of the marker icon. A CSS variable works there, so `var(--tblr-primary)` keeps the markers in your theme color, including after a theme change.
+
+### Popups
+
+Attach a popup to a marker with `setPopup`. It opens when the marker is clicked. Click a marker on the map above to see one.
+
+```js
+new maplibregl.Marker({ color: 'var(--tblr-primary)' })
+  .setLngLat([16.366667, 48.2])
+  .setPopup(new maplibregl.Popup({ offset: 32 }).setText('Vienna'))
+  .addTo(map)
+```
+
+Use `setHTML` instead of `setText` for richer content. Only pass HTML you trust, as it is not escaped.
+
+### Controls
+
+Add the zoom and compass buttons with `NavigationControl`. They go to the top right corner by default.
+
+```js
+map.addControl(new maplibregl.NavigationControl())
+```
+
+MapLibre also has `FullscreenControl`, `GeolocateControl` and `ScaleControl`. Pass a corner as the second argument, for example `'bottom-left'`.
+
+### Dark mode
+
+A map style does not change with the page theme on its own. Pick the style from the `data-bs-theme` attribute, and set it again when the attribute changes:
+
+```js
+const themeStyle = function () {
+  const dark = document.documentElement.getAttribute('data-bs-theme') === 'dark'
+  return 'https://tiles.openfreemap.org/styles/' + (dark ? 'dark' : 'liberty')
+}
+
+const map = new maplibregl.Map({
+  container: 'map-simple',
+  style: themeStyle(),
+  zoom: 13,
+  center: [13.4049, 52.518827],
+})
+
+new MutationObserver(function () {
+  map.setStyle(themeStyle())
+}).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] })
+```
+
+Markers and popups stay on the map when the style changes. The maps on this page follow the theme this way.
 
 ### Attribution
 
