@@ -9,18 +9,24 @@ interface CreateViteConfigOptions {
   outDir: string
   banner?: string
   minify?: boolean | 'esbuild'
+  /** UMD only: add the exports to an existing global of the same name instead of replacing it */
+  extend?: boolean
 }
 
 /**
  * Creates a Vite configuration for building libraries
  */
-export function createViteConfig({ entry, name, fileName, formats, outDir, banner, minify = false }: CreateViteConfigOptions): UserConfig {
+export function createViteConfig({ entry, name, fileName, formats, outDir, banner, minify = false, extend = false }: CreateViteConfigOptions): UserConfig {
   // Vite 8 (Rolldown) always emits const bindings and no longer accepts the
   // Rollup-only generatedCode.constBindings option
-  const rollupOutput: { banner?: string } = {}
+  const rollupOutput: { banner?: string; extend?: boolean } = {}
 
   if (banner) {
     rollupOutput.banner = banner
+  }
+
+  if (extend) {
+    rollupOutput.extend = true
   }
 
   const config: UserConfig = {

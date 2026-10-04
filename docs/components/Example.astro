@@ -27,9 +27,11 @@ interface Props {
   columnFullWidth?: boolean
   hideCode?: boolean
   codeOnly?: boolean
+  /** no padding around the demo, for content that fills the whole area, such as a map */
+  flush?: boolean
 }
 
-const { html: htmlProp, code, raw, overflow = 'auto', background = 'surface-secondary', class: className, height, column, centered, vertical, columnFullWidth, hideCode, codeOnly } = Astro.props
+const { html: htmlProp, code, raw, overflow = 'auto', background = 'surface-secondary', class: className, height, column, centered, vertical, columnFullWidth, hideCode, codeOnly, flush } = Astro.props
 
 const backgroundClasses: Record<ExampleBackground, string> = {
   'surface-secondary': 'bg-surface-secondary',
@@ -52,7 +54,7 @@ const hasDemo = !codeOnly
 const hasCode = !hideCode
 const exampleClasses = ['example fs-base border', hasCode ? 'rounded-top' : 'rounded', !raw && 'd-flex flex-wrap justify-content-center', `overflow-${overflow}`, 'position-relative', backgroundClasses[background], className]
 
-const innerClasses = ['p-6 w-full', column && 'd-flex gap-3 flex-column', !column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`, columnFullWidth && 'd-flex flex-fill flex-column gap-2']
+const innerClasses = [flush ? 'p-0' : 'p-6', 'w-full', column && 'd-flex gap-3 flex-column', !column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`, columnFullWidth && 'd-flex flex-fill flex-column gap-2']
 
 const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? html), 'html')
 ---

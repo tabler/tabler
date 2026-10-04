@@ -7,14 +7,17 @@ description: >-
 
 # The framework JavaScript
 
-`core/js` builds two shipped bundles. Everything here is public API and is bound by a size budget.
+`core/js` builds three shipped bundles. Everything here is public API and is bound by a size budget.
 
-## 1. Two entry points
+## 1. Three entry points
 
 | Entry                | Ships as                           | Holds                                                                        |
 | -------------------- | ---------------------------------- | ---------------------------------------------------------------------------- |
 | `js/tabler.ts`       | `tabler.js` / `.esm.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper namespace |
 | `js/tabler-theme.ts` | `tabler-theme.js` (+ variants)     | the colour-mode/theme switcher only                                          |
+| `js/tabler-map.ts`   | `tabler-map.js` (+ variants)       | the `MapView` component, as an add-on that extends the `tabler` global       |
+
+`tabler-map.js` is loaded after `tabler.js`, and only on pages with a map: a component that few pages use goes in an add-on bundle like this one, not in `tabler.js`. Its UMD build uses `extend` (`core/.build/vite.config.mts`), so it adds its exports to the existing `tabler` global.
 
 `tabler-theme.js` is loaded right after `<body>` and **not deferred**, so the chosen theme applies before the first paint. It stays tiny on purpose (bundlewatch: 1 kB raw, 800 B minified) — do not add anything to it that is not needed before paint.
 
