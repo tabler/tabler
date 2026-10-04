@@ -39,6 +39,7 @@ import Icon from '@ui/Icon.astro';
 import CodeDocs from '@components/CodeDocs.astro';
 import { Code } from 'astro:components';
 import { site } from '@shared/lib/site.ts';
+import { cdnJsTag, cdnMapJsTag, cdnPluginSnippet } from '@lib/cdn-snippets.ts';
 
 ## Overview
 
@@ -61,8 +62,8 @@ MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the sty
   // The map component looks for the library here
   window.maplibregl = maplibregl
 </script>
-<script src="${site.cdnUrl}/dist/js/tabler.min.js" defer></script>
-<script src="${site.cdnUrl}/dist/js/tabler-map.min.js" defer></script>`}
+${cdnJsTag()}
+${cdnMapJsTag()}`}
 />
 
 The map component is not part of `tabler.js`. It ships as a small add-on, `tabler-map.js`, so pages without a map do not carry it. Load it after `tabler.js`; it adds `MapView` to the `tabler` object.
@@ -94,10 +95,7 @@ Browsers do not load ES modules from a page opened straight from the disk. Use a
 
 Tabler styles the map controls, popups and attribution to match the interface, in light and dark mode. These styles are in `tabler-vendors.css`, so load it after the MapLibre stylesheet:
 
-<Code
-	lang="html"
-	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-vendors.min.css" />`}
-/>
+<Code lang="html" code={cdnPluginSnippet(['vendors'])} />
 
 ## Usage
 
@@ -196,6 +194,12 @@ Add `data-bs-controls="true"` for zoom buttons in the top corner of the map. The
 <div class="w-100 h-100" data-bs-toggle="map" data-bs-center="13.405,52.52" data-bs-zoom="12" data-bs-controls="zoom,north,locate,fullscreen"></div>
 ```
 
+The buttons have English names for screen readers. Change them with the `labels` option, by action:
+
+```html
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-controls="true" data-bs-labels='{"zoom-in": "Przybliż", "zoom-out": "Oddal"}'></div>
+```
+
 You can also write the buttons yourself. Any button with `data-bs-map-action` works on the map it is inside, or on the map its `data-bs-target` points at. The actions are `zoom-in`, `zoom-out`, `north`, `locate` and `fullscreen`. A button with no content gets a matching icon; put the buttons in a `.map-controls` element to place them in the top corner.
 
 ```html
@@ -208,6 +212,27 @@ You can also write the buttons yourself. Any button with `data-bs-map-action` wo
 
 <button type="button" class="btn" data-bs-map-action="locate" data-bs-target="#map-office">Find me</button>
 ```
+
+### Route
+
+Draw a path with `data-bs-route`: a list of `[longitude, latitude]` points. The line takes the primary color and is drawn again after a theme change. Mark its ends with markers.
+
+```html
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-center="13.4046,52.513" data-bs-zoom="11.6" data-bs-route="[[13.3695,52.5251],[13.4132,52.5219],[13.4397,52.505]]">
+  <span class="map-marker map-marker-dot" data-bs-lng="13.3695" data-bs-lat="52.5251"></span>
+  <span class="map-marker map-marker-pin" data-bs-lng="13.4397" data-bs-lat="52.505" data-bs-anchor="bottom"></span>
+</div>
+```
+
+### Areas and other shapes
+
+`data-bs-geojson` draws [GeoJSON](https://geojson.org/) over the map: areas with a light fill and an outline, lines, and points as small circles. Pass the GeoJSON itself, or the URL of a file.
+
+```html
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-center="13.405,52.519" data-bs-zoom="11" data-bs-geojson="/data/delivery-zone.geojson"></div>
+```
+
+Both use the primary color. Set `data-bs-layer-color` to another color, for example `--tblr-red` or `#d63939`.
 
 ### Globe
 
@@ -239,7 +264,7 @@ MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap 
 
 ## Layers
 
-Lines, areas and large sets of points are drawn as map layers. For these, take the MapLibre map from the component and use its own API. The `map` property is the [MapLibre map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/).
+The route and GeoJSON options cover simple shapes. For anything more, such as clusters, dashed lines or circles sized by a value, take the MapLibre map from the component and use its own API. The `map` property is the [MapLibre map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/).
 
 A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in the `style.load` event. It runs when the map starts and again each time the style changes, for example on a theme change.
 
@@ -352,6 +377,10 @@ Pass options as data attributes, with the name written in kebab case after `data
 | `mapTheme` | string | `'auto'` | `'auto'` follows the nearest `[data-bs-theme]`; `'light'` or `'dark'` keeps one look. |
 | `palette` | boolean | `true` | Softer colors for the `positron` and `dark` styles. Other styles are left as they are. |
 | `controls` | boolean, string | `false` | Buttons over the map: `true` for zoom, or a list of `zoom`, `north`, `locate` and `fullscreen`. |
+| `labels` | object | `{}` | Names of the buttons for screen readers, by action: `zoom-in`, `zoom-out`, `north`, `locate`, `fullscreen`. |
+| `route` | array | `null` | A path drawn as a line: a list of `[longitude, latitude]` points. |
+| `geojson` | object, string | `null` | GeoJSON drawn over the map: an object, or the URL of a file. |
+| `layerColor` | string | `'--tblr-primary'` | Color of the route and the GeoJSON shapes: a CSS color or a custom property. |
 | `globe` | boolean | `false` | Draw the map as a 3D globe. |
 | `mapOptions` | object | `{}` | Any [MapLibre map option](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions/), passed straight through. |
 

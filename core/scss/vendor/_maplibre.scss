@@ -6,39 +6,6 @@
   line-height: $line-height-base;
 }
 
-// Controls: zoom, compass, fullscreen, locate
-.maplibregl-ctrl-group {
-  overflow: hidden;
-  background: var(--bg-surface);
-  @include border-radius(var(--border-radius));
-
-  &:not(:empty) {
-    box-shadow:
-      0 0 0 var(--border-width) var(--border-color),
-      #{$card-box-shadow};
-  }
-
-  button {
-    width: 2rem;
-    height: 2rem;
-
-    + button {
-      border-top: var(--border-width) var(--border-style) var(--border-color);
-    }
-
-    &:focus:focus-visible {
-      outline-offset: calc(-1 * var(--focus-ring-width));
-      box-shadow: none;
-      @include focus-ring();
-    }
-  }
-}
-
-.maplibregl-ctrl button:not(:disabled):hover,
-.maplibregl-ctrl button:not(:disabled):active {
-  background-color: var(--bg-surface-secondary);
-}
-
 // Tabler buttons over the map, in the top end corner
 .map-controls {
   position: absolute;
@@ -271,10 +238,9 @@
   }
 }
 
-// The control icons are black SVG images
+// The attribution icon is a black SVG image
 @if $enable-dark-mode {
   @include color-mode(dark) {
-    .maplibregl-ctrl-icon,
     .maplibregl-ctrl-attrib-button {
       @include autodark-image();
     }

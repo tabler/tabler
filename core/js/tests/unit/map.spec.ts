@@ -14,6 +14,8 @@ class FakeMap {
   styles: string[] = []
   paint: Record<string, Record<string, string>> = {}
   calls: string[] = []
+  sources: Record<string, Record<string, unknown>> = {}
+  addedLayers: Record<string, unknown>[] = []
   flownTo: { center: [number, number]; zoom: number } | null = null
   projection: { type: string } | null = null
   removed = false
@@ -70,6 +72,14 @@ class FakeMap {
 
   resetNorthPitch(): void {
     this.calls.push('resetNorthPitch')
+  }
+
+  addSource(id: string, source: Record<string, unknown>): void {
+    this.sources[id] = source
+  }
+
+  addLayer(layer: Record<string, unknown>): void {
+    this.addedLayers.push(layer)
   }
 
   getZoom(): number {
@@ -379,6 +389,15 @@ describe('MapView', () => {
       expect(element.querySelectorAll('.map-controls > .btn')).toHaveLength(3)
     })
 
+    it('should use the labels from the options', () => {
+      const element = mount('<div></div>')
+
+      new MapView(element, { controls: 'zoom', labels: { 'zoom-in': 'Przybliż' } })
+
+      expect(element.querySelector('[data-bs-map-action="zoom-in"]')?.getAttribute('aria-label')).toBe('Przybliż')
+      expect(element.querySelector('[data-bs-map-action="zoom-out"]')?.getAttribute('aria-label')).toBe('Zoom out')
+    })
+
     it('should run the action of a clicked button on its map', () => {
       const element = mount('<div data-bs-toggle="map" data-bs-controls="zoom,north"></div>')
 
@@ -415,6 +434,72 @@ describe('MapView', () => {
       navigator.geolocation.getCurrentPosition = original
 
       expect(FakeMap.last.flownTo).toEqual({ center: [21.01, 52.23], zoom: 14 })
+    })
+  })
+
+  describe('layers', () => {
+    it('should add nothing without a route or GeoJSON', () => {
+      new MapView(mount('<div></div>'))
+      FakeMap.last.fire('style.load')
+
+      expect(FakeMap.last.sources).toEqual({})
+      expect(FakeMap.last.addedLayers).toEqual([])
+    })
+
+    it('should draw the route as a line each time a style loads', () => {
+      new MapView(mount('<div data-bs-route="[[13.3,52.5],[13.4,52.6]]"></div>'))
+      FakeMap.last.fire('style.load')
+
+      expect(FakeMap.last.sources['tabler-route']).toEqual({
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [13.3, 52.5],
+              [13.4, 52.6],
+            ],
+          },
+        },
+      })
+      expect(FakeMap.last.addedLayers).toHaveLength(1)
+      expect(FakeMap.last.addedLayers[0]).toMatchObject({ id: 'tabler-route', type: 'line', source: 'tabler-route' })
+
+      FakeMap.last.fire('style.load')
+
+      expect(FakeMap.last.addedLayers).toHaveLength(2)
+    })
+
+    it('should draw GeoJSON as fill, line and point layers in the layer color', () => {
+      const geojson = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [0, 0],
+              [1, 0],
+              [1, 1],
+              [0, 0],
+            ],
+          ],
+        },
+      }
+
+      new MapView(mount('<div></div>'), { geojson, layerColor: '#ff0000' })
+      FakeMap.last.fire('style.load')
+
+      expect(FakeMap.last.sources['tabler-data']).toEqual({ type: 'geojson', data: geojson })
+      expect(FakeMap.last.addedLayers.map((layer) => layer.type)).toEqual(['fill', 'line', 'circle'])
+      expect(FakeMap.last.addedLayers[0]?.paint).toMatchObject({ 'fill-color': 'rgb(255, 0, 0)' })
+    })
+
+    it('should pass a GeoJSON URL through', () => {
+      new MapView(mount('<div data-bs-geojson="/data/zones.geojson"></div>'))
+      FakeMap.last.fire('style.load')
+
+      expect(FakeMap.last.sources['tabler-data']?.data).toBe('/data/zones.geojson')
     })
   })
 
