@@ -45,11 +45,13 @@ const rtlSuffix = rtl ? '.rtl' : ''
 // build instead of hardcoding one variant.
 const min = import.meta.env.DEV ? '' : '.min'
 
-type Lib = { npm?: string; js?: string[]; css?: string[] }
+type Lib = { npm?: string; js?: string[]; css?: string[]; module?: { file: string; global: string } }
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
 const libHref = (lib: Lib, file: string) => `/dist/libs/${lib.npm}/${file}`
 const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((file) => libHref(lib, file)))
 const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
+// ES-module-only libraries: imported in a module script and exposed as a global (see BaseLayout)
+const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * as lib from '${libHref(lib, lib.module.file)}'; window.${lib.module.global} = lib`] : []))
 ---
 
 <!doctype html>
@@ -168,6 +170,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
     </div>
 
     {libJsFiles.map((src) => <script is:inline src={src} defer />)}
+    {libModules.map((code) => <Fragment set:html={`<script type="module">${code}</script>`} />)}
     <script is:inline src={`/dist/js/tabler${min}.js`} defer></script>
 
     <!-- components that render via CaptureScript (e.g. Chart) queue their init script
