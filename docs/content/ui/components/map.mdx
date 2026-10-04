@@ -20,6 +20,8 @@ classnames:
   modifier:
     - class: map-marker-dot
       desc: Small dot with no content
+    - class: map-marker-pulse
+      desc: Ring that grows out of the marker and fades, for a live position
     - class: map-marker-pin
       desc: Teardrop pin that points down, used with the bottom anchor
     - class: map-popup-card
@@ -51,26 +53,18 @@ If you only need a simple map of countries or regions, use the [vector map](/ui/
 
 ## Installation
 
-MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the stylesheet, then import the library in a module script, before the Tabler script:
+The map component is not part of `tabler.js`. It ships as a small add-on, `tabler-map.js`, so pages without a map do not carry it. Load the MapLibre stylesheet, and the add-on after `tabler.js`; it adds `MapView` to the `tabler` object:
 
 <Code
 	lang="html"
 	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.css" />
-<script type="module">
-  import * as maplibregl from '${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.mjs'
-
-  // The map component looks for the library here
-  window.maplibregl = maplibregl
-</script>
 ${cdnJsTag()}
 ${cdnMapJsTag()}`}
 />
 
-The map component is not part of `tabler.js`. It ships as a small add-on, `tabler-map.js`, so pages without a map do not carry it. Load it after `tabler.js`; it adds `MapView` to the `tabler` object.
+The add-on loads MapLibre GL JS by itself, from `dist/libs/maplibre-gl` next to the Tabler scripts. Tabler uses version 6, which is published as an ES module. When your files are somewhere else, point the `library` option at the module: `data-bs-library="/vendor/maplibre-gl.mjs"`. The library loads two more files from its own folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together.
 
-The library loads two more files from the same folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together when you host them yourself.
-
-With a bundler, install the package, set the global, and then import the add-on:
+If the page sets `window.maplibregl` before the add-on runs, the component uses that and loads nothing. This is the way to go with a bundler:
 
 ```bash
 npm install maplibre-gl
@@ -84,8 +78,6 @@ window.maplibregl = maplibregl
 
 const { MapView } = await import('@tabler/core/dist/js/tabler-map.esm.js')
 ```
-
-The add-on is imported after the global is set, because it turns the map elements on the page into maps as soon as it loads.
 
 <Danger title="Use version 6.4.1 or newer">
   Older versions, including all of version 5, have a known security issue in the code that cleans the attribution text.
@@ -149,13 +141,13 @@ Add `.map-marker-dot` for a small dot, or `.map-marker-pin` for a pin that point
 </Map>
 </Example>
 
-Add `data-bs-draggable="true"` to let people move a marker, for example to pick an address.
+Add `data-bs-draggable="true"` to let people move a marker, for example to pick an address. Add `.map-marker-pulse` for a ring that grows out of the marker, for a live position or a place that needs attention.
 
 HTML markers work well for up to a few hundred places. For more, use [clusters](#clusters).
 
 ### Popups
 
-Add `data-bs-popup` to a marker for a short text that opens when the marker is clicked. Tabler draws the popup as a small bordered panel with no arrow.
+Add `data-bs-popup` to a marker for a short text that opens when the marker is clicked. Tabler draws the popup as a small bordered panel with no arrow, and fades it in.
 
 <Example flush>
 <Map rounded={false} mapId="markers" />
@@ -224,6 +216,12 @@ Draw a path with `data-bs-route`: a list of `[longitude, latitude]` points. The 
 </div>
 ```
 
+To show how far along a path something is, add `data-bs-route-progress` with the index of the point reached so far, counted from 0. The path up to that point stays solid and the rest is dashed.
+
+```html
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-route="[[13.3695,52.5251],[13.4132,52.5219],[13.4397,52.505]]" data-bs-route-progress="1"></div>
+```
+
 ### Areas and other shapes
 
 `data-bs-geojson` draws [GeoJSON](https://geojson.org/) over the map: areas with a light fill and an outline, lines, and points as small circles. Pass the GeoJSON itself, or the URL of a file.
@@ -266,23 +264,26 @@ MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap 
 
 The route and GeoJSON options cover simple shapes. For anything more, such as clusters, dashed lines or circles sized by a value, take the MapLibre map from the component and use its own API. The `map` property is the [MapLibre map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/).
 
-A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in the `style.load` event. It runs when the map starts and again each time the style changes, for example on a theme change.
+A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in `onStyle()`. It runs when the style has loaded, and again each time the style changes, for example on a theme change.
 
 ```js
 document.addEventListener('DOMContentLoaded', function () {
-  const map = tabler.MapView.getInstance('#map-route').map
+  const view = tabler.MapView.getInstance('#map-stores')
 
-  map.on('style.load', function () {
-    map.addSource('route', {
-      type: 'geojson',
-      data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [[13.3695, 52.5251], [13.4132, 52.5219], [13.4397, 52.505]] } },
-    })
+  view.onStyle(function (map) {
+    map.addSource('stores', { type: 'geojson', data: stores })
     map.addLayer({
-      id: 'route',
-      type: 'line',
-      source: 'route',
-      layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': tabler.MapView.color('--tblr-primary'), 'line-width': 3 },
+      id: 'stores',
+      type: 'circle',
+      source: 'stores',
+      paint: { 'circle-color': tabler.MapView.color('--tblr-primary'), 'circle-radius': 6 },
+    })
+  })
+
+  // Runs once the map exists: the library may load a moment after the page
+  view.ready(function (map) {
+    map.on('click', 'stores', function (event) {
+      console.log(event.features[0].properties)
     })
   })
 })
@@ -292,7 +293,7 @@ For an area, use a `Polygon` geometry with a `fill` layer, and a `line` layer fo
 
 ### Theme colors in layers
 
-MapLibre draws layers on a canvas, so a CSS variable does not work in `paint`, and neither do the `oklch()` values Tabler colors are written in. `MapView.color()` turns a variable, or any CSS color, into a plain `rgb()` color. Call it inside `style.load`, so the colors are read again after a theme change.
+MapLibre draws layers on a canvas, so a CSS variable does not work in `paint`, and neither do the `oklch()` values Tabler colors are written in. `MapView.color()` turns a variable, or any CSS color, into a plain `rgb()` color. Call it inside `onStyle()`, so the colors are read again after a theme change.
 
 ```js
 tabler.MapView.color('--tblr-primary') // 'rgb(6, 111, 209)'
@@ -342,7 +343,7 @@ map.on('mouseleave', 'cities', function () {
 })
 ```
 
-Live versions of a route, an area, clusters, a bubble map, a globe with arcs and a city switcher are on the [maps preview page](https://preview.tabler.io/maps.html). The [map blocks page](https://preview.tabler.io/map-blocks.html) has larger examples: a store locator, a delivery tracker, a map of live users and a vector map of users by country.
+Live versions of a route, an area, clusters, a bubble map, a globe with arcs and a city switcher are on the [maps preview page](https://preview.tabler.io/maps.html). The [map blocks page](https://preview.tabler.io/map-blocks.html) has larger examples: a store locator, a list of homes with prices on the map, a delivery tracker, an address form with a draggable pin, a server status map, a map of live users and a vector map of users by country.
 
 ## JavaScript
 
@@ -370,6 +371,7 @@ Pass options as data attributes, with the name written in kebab case after `data
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| `library` | string | MapLibre in `dist/libs` | URL of the MapLibre GL JS module, loaded when `window.maplibregl` is not set. A relative URL starts at the Tabler script. `null` turns the loading off. |
 | `center` | array, string | `[0, 0]` | Center of the map: `[longitude, latitude]`, or the two numbers in a string such as `"13.405,52.52"`. |
 | `zoom` | number | `1` | Zoom level, from 0 for the whole world to about 20 for a building. |
 | `mapStyle` | string | `'positron'` | Name of an OpenFreeMap style, or the URL of a MapLibre style. |
@@ -379,6 +381,7 @@ Pass options as data attributes, with the name written in kebab case after `data
 | `controls` | boolean, string | `false` | Buttons over the map: `true` for zoom, or a list of `zoom`, `north`, `locate` and `fullscreen`. |
 | `labels` | object | `{}` | Names of the buttons for screen readers, by action: `zoom-in`, `zoom-out`, `north`, `locate`, `fullscreen`. |
 | `route` | array | `null` | A path drawn as a line: a list of `[longitude, latitude]` points. |
+| `routeProgress` | number | `null` | Index of the route point reached so far. The path up to it is solid, the rest is dashed. |
 | `geojson` | object, string | `null` | GeoJSON drawn over the map: an object, or the URL of a file. |
 | `layerColor` | string | `'--tblr-primary'` | Color of the route and the GeoJSON shapes: a CSS color or a custom property. |
 | `globe` | boolean | `false` | Draw the map as a 3D globe. |
@@ -398,7 +401,9 @@ A marker element takes these attributes:
 
 | Name | Description |
 | --- | --- |
-| `map` | The MapLibre map, for layers, events and everything else the options do not cover. |
+| `map` | The MapLibre map, for layers, events and everything else the options do not cover. `null` until the library has loaded. |
+| `ready(callback)` | Runs the callback with the MapLibre map once it exists. |
+| `onStyle(callback)` | Runs the callback with the map each time a style loads. The place to add layers. |
 | `markers` | The MapLibre markers made from the child elements, in document order. |
 | `zoomIn()`, `zoomOut()` | Zooms the map by one level. |
 | `resetNorth()` | Turns the map back to north up, with no tilt. |

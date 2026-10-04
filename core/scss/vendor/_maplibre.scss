@@ -92,6 +92,22 @@
   display: none;
 }
 
+// A popup fades in and grows a little as it opens
+.maplibregl-popup-content {
+  animation: map-popup-in 0.2s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes map-popup-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
 // Room for the close button, which MapLibre pins to the right edge in both directions
 .maplibregl-popup .maplibregl-popup-content:has(.maplibregl-popup-close-button) {
   /* rtl:ignore */
@@ -193,6 +209,32 @@
 
 .map-marker-dot {
   --map-marker-size: #{$map-marker-dot-size};
+}
+
+// A ring that grows out of the marker and fades, for a live position
+.map-marker-pulse::after {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  content: '';
+  background: var(--map-marker-bg);
+  animation: map-marker-pulse 1.6s ease-out infinite;
+  @include border-radius(var(--border-radius-pill));
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes map-marker-pulse {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
 }
 
 // Short text under a marker

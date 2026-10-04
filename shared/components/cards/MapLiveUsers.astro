@@ -37,10 +37,9 @@ const cities = [
   <CaptureScript>
     <script is:inline define:vars={{ cities }}>
       document.addEventListener('DOMContentLoaded', () => {
-        const map = tabler.MapView.getInstance('#map-live-users').map
-        const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
+        const view = tabler.MapView.getInstance('#map-live-users')
 
-        map.on('style.load', () => {
+        view.onStyle((map) => {
           map.addSource('cities', {
             type: 'geojson',
             data: { type: 'FeatureCollection', features: cities.map((city) => ({ type: 'Feature', properties: city, geometry: { type: 'Point', coordinates: [city.lng, city.lat] } })) },
@@ -53,15 +52,20 @@ const cities = [
           })
         })
 
-        map.on('mousemove', 'cities', (event) => {
-          const city = event.features[0].properties
+        // The handlers need the map and the library, which may load a moment after the page
+        view.ready((map) => {
+          const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
 
-          map.getCanvas().style.cursor = 'pointer'
-          tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
-        })
-        map.on('mouseleave', 'cities', () => {
-          map.getCanvas().style.cursor = ''
-          tooltip.remove()
+          map.on('mousemove', 'cities', (event) => {
+            const city = event.features[0].properties
+
+            map.getCanvas().style.cursor = 'pointer'
+            tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
+          })
+          map.on('mouseleave', 'cities', () => {
+            map.getCanvas().style.cursor = ''
+            tooltip.remove()
+          })
         })
       })
     </script>

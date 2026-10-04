@@ -66,41 +66,44 @@ const stores = [
   <CaptureScript>
     <script is:inline>
       document.addEventListener('DOMContentLoaded', () => {
-        // The markers are in the same order as the stores in the list
-        const { map, markers } = tabler.MapView.getInstance('#map-stores')
-        const items = [...document.querySelectorAll('#stores-list .list-group-item')]
+        // The markers exist once the map does, which may be a moment after the page has loaded
+        tabler.MapView.getInstance('#map-stores').ready((map) => {
+          // The markers are in the same order as the stores in the list
+          const { markers } = tabler.MapView.getInstance('#map-stores')
+          const items = [...document.querySelectorAll('#stores-list .list-group-item')]
 
-        const select = (index, move) => {
-          items.forEach((item, position) => item.classList.toggle('active', position === index))
-          markers.forEach((marker, position) => marker.getPopup().isOpen() !== (position === index) && marker.togglePopup())
+          const select = (index, move) => {
+            items.forEach((item, position) => item.classList.toggle('active', position === index))
+            markers.forEach((marker, position) => marker.getPopup().isOpen() !== (position === index) && marker.togglePopup())
 
-          if (move) {
-            map.flyTo({ center: markers[index].getLngLat(), zoom: 13 })
+            if (move) {
+              map.flyTo({ center: markers[index].getLngLat(), zoom: 13 })
+            }
           }
-        }
 
-        items.forEach((item, index) => item.addEventListener('click', () => select(index, true)))
-        markers.forEach((marker, index) =>
-          marker.getElement().addEventListener('click', (event) => {
-            event.stopPropagation()
-            select(index, false)
-            items[index].scrollIntoView({ block: 'nearest' })
-          }),
-        )
+          items.forEach((item, index) => item.addEventListener('click', () => select(index, true)))
+          markers.forEach((marker, index) =>
+            marker.getElement().addEventListener('click', (event) => {
+              event.stopPropagation()
+              select(index, false)
+              items[index].scrollIntoView({ block: 'nearest' })
+            }),
+          )
 
-        // Search hides the stores, and their markers, that do not match
-        document.getElementById('stores-search').addEventListener('input', (event) => {
-          const query = event.target.value.trim().toLowerCase()
+          // Search hides the stores, and their markers, that do not match
+          document.getElementById('stores-search').addEventListener('input', (event) => {
+            const query = event.target.value.trim().toLowerCase()
 
-          items.forEach((item, index) => {
-            const hidden = !item.textContent.toLowerCase().includes(query)
+            items.forEach((item, index) => {
+              const hidden = !item.textContent.toLowerCase().includes(query)
 
-            item.hidden = hidden
-            markers[index].getElement().hidden = hidden
+              item.hidden = hidden
+              markers[index].getElement().hidden = hidden
+            })
           })
-        })
 
-        select(0, false)
+          select(0, false)
+        })
       })
     </script>
   </CaptureScript>

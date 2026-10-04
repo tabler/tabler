@@ -41,6 +41,7 @@ const POPUP_OFFSET_PIN = 40
 
 const SOURCE_DATA = 'tabler-data'
 const SOURCE_ROUTE = 'tabler-route'
+const SOURCE_ROUTE_REST = 'tabler-route-rest'
 
 // The public API is typed with local copies of the MapLibre GL JS types.
 // `maplibre-gl` is loaded separately as `window.maplibregl`, so the published
@@ -52,6 +53,7 @@ type LngLat = [number, number]
 type MapInstance = {
   on(type: string, listener: () => void): unknown
   loaded(): boolean
+  isStyleLoaded(): boolean | void
   remove(): void
   setStyle(style: string): unknown
   getStyle(): { layers: { id: string }[] }
@@ -92,6 +94,11 @@ type MapAction = 'zoom-in' | 'zoom-out' | 'north' | 'locate' | 'fullscreen'
 type MapTheme = 'auto' | 'light' | 'dark'
 
 type ComponentConfig = {
+  /**
+   * URL of the MapLibre GL JS module, loaded when `window.maplibregl` is not set.
+   * A relative URL is resolved against the Tabler script; `null` turns the loading off.
+   */
+  library: string | null
   /** `[longitude, latitude]`, or the two numbers as a `"13.4,52.5"` string */
   center: LngLat | string
   zoom: number
@@ -111,6 +118,8 @@ type ComponentConfig = {
   globe: boolean
   /** a path drawn as a line: a list of `[longitude, latitude]` points */
   route: LngLat[] | null
+  /** index of the route point reached so far: the path up to it is solid, the rest is dashed */
+  routeProgress: number | null
   /** GeoJSON drawn over the map, as an object or the URL of a file: areas, lines and points */
   geojson: object | string | null
   /** color of the route and the GeoJSON shapes: a CSS color or a custom property */
@@ -124,6 +133,7 @@ type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 type PaletteRule = [RegExp, Record<string, string>]
 
 const Default: ComponentConfig = {
+  library: '../libs/maplibre-gl/dist/maplibre-gl.mjs',
   center: [0, 0],
   zoom: 1,
   mapStyle: 'positron',
@@ -134,12 +144,14 @@ const Default: ComponentConfig = {
   labels: {},
   globe: false,
   route: null,
+  routeProgress: null,
   geojson: null,
   layerColor: '--tblr-primary',
   mapOptions: {},
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
+  library: '(null|string)',
   center: '(array|string)',
   zoom: 'number',
   mapStyle: 'string',
@@ -150,6 +162,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   labels: 'object',
   globe: 'boolean',
   route: '(null|array)',
+  routeProgress: '(null|number)',
   geojson: '(null|object|string)',
   layerColor: 'string',
   mapOptions: 'object',
@@ -225,8 +238,9 @@ const Palette: Record<'light' | 'dark', PaletteRule[]> = {
 /**
  * Class definition
  *
- * Wraps MapLibre GL JS (https://maplibre.org), loaded separately as
- * `window.maplibregl`. Without the library the component is inert.
+ * Wraps MapLibre GL JS (https://maplibre.org). It uses `window.maplibregl`
+ * when a page has loaded the library itself, and otherwise imports the module
+ * the `library` option points at, so the map is created a moment later.
  */
 
 class MapView extends BaseComponent {
@@ -235,15 +249,35 @@ class MapView extends BaseComponent {
   _map: MapInstance | null = null
   _markers: MapMarkerInstance[] = []
   _themeObserver: MutationObserver | null = null
+  _readyCallbacks: ((map: MapInstance) => void)[] = []
+  _styleCallbacks: ((map: MapInstance) => void)[] = []
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
 
-    if (!this._element || !window.maplibregl) {
+    if (!this._element) {
       return
     }
 
-    this._initMap(window.maplibregl)
+    const { library } = this._config
+
+    if (window.maplibregl) {
+      this._initMap(window.maplibregl)
+    } else if (library) {
+      // The specifier is only known at run time, so the bundler must leave this import alone
+      import(/* @vite-ignore */ library).then(
+        (module: MapLibrary) => {
+          // Scripts on the page reach the library the same way as when the page loads it
+          window.maplibregl ??= module
+
+          // Disposed while the library was loading
+          if (this._element) {
+            this._initMap(window.maplibregl)
+          }
+        },
+        () => console.warn(`Tabler map: could not load MapLibre GL JS from "${library}". Set window.maplibregl or the "library" option.`),
+      )
+    }
   }
 
   // Getters
@@ -299,6 +333,28 @@ class MapView extends BaseComponent {
   }
 
   // Public
+
+  /** Runs the callback once the MapLibre map exists: right away, or after the library has loaded. */
+  ready(callback: (map: MapInstance) => void): void {
+    if (this._map) {
+      callback(this._map)
+    } else {
+      this._readyCallbacks.push(callback)
+    }
+  }
+
+  /**
+   * Runs the callback each time a map style loads, and right away if one already has.
+   * Layers are part of the style, so this is the place to add them.
+   */
+  onStyle(callback: (map: MapInstance) => void): void {
+    this._styleCallbacks.push(callback)
+
+    if (this._map?.isStyleLoaded()) {
+      callback(this._map)
+    }
+  }
+
   zoomIn(): void {
     this._map?.zoomIn()
   }
@@ -336,6 +392,8 @@ class MapView extends BaseComponent {
     }
 
     this._markers = []
+    this._readyCallbacks = []
+    this._styleCallbacks = []
     this._map?.remove()
     this._map = null
 
@@ -367,6 +425,10 @@ class MapView extends BaseComponent {
       if (globe) {
         map.setProjection({ type: 'globe' })
       }
+
+      for (const callback of this._styleCallbacks) {
+        callback(map)
+      }
     })
 
     map.on('load', () => {
@@ -379,6 +441,10 @@ class MapView extends BaseComponent {
 
     this._markers = markerElements.map((element) => this._createMarker(library, map, element))
     this._setupThemeObserver()
+
+    for (const callback of this._readyCallbacks.splice(0)) {
+      callback(map)
+    }
   }
 
   // Tabler buttons over the map. The icons come from the stylesheet, by action.
@@ -493,7 +559,7 @@ class MapView extends BaseComponent {
 
   // The `route` and `geojson` options, drawn in the layer color
   _addLayers(): void {
-    const { route, geojson, layerColor } = this._config
+    const { route, routeProgress, geojson, layerColor } = this._config
     const map = this._map
 
     if (!map || (!route && !geojson)) {
@@ -517,8 +583,17 @@ class MapView extends BaseComponent {
     }
 
     if (route) {
-      map.addSource(SOURCE_ROUTE, { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: route } } })
-      map.addLayer({ id: SOURCE_ROUTE, type: 'line', source: SOURCE_ROUTE, layout, paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.8 } })
+      const line = (coordinates: LngLat[]): Record<string, unknown> => ({ type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } })
+      const reached = routeProgress === null ? route.length : routeProgress + 1
+
+      // The part still ahead is dashed, and added first so the solid part covers its start
+      if (reached < route.length) {
+        map.addSource(SOURCE_ROUTE_REST, line(route.slice(reached - 1)))
+        map.addLayer({ id: SOURCE_ROUTE_REST, type: 'line', source: SOURCE_ROUTE_REST, paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.6, 'line-dasharray': [1, 2] } })
+      }
+
+      map.addSource(SOURCE_ROUTE, line(route.slice(0, reached)))
+      map.addLayer({ id: SOURCE_ROUTE, type: 'line', source: SOURCE_ROUTE, layout, paint: { 'line-color': color, 'line-width': 3, 'line-opacity': routeProgress === null ? 0.8 : 1 } })
     }
   }
 

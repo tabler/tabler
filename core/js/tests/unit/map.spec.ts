@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import MapView from '../../src/map'
 import type { MapLibrary } from '../../src/map'
@@ -40,6 +40,12 @@ class FakeMap {
 
   loaded(): boolean {
     return true
+  }
+
+  styleLoaded = false
+
+  isStyleLoaded(): boolean {
+    return this.styleLoaded
   }
 
   remove(): void {
@@ -184,13 +190,42 @@ describe('MapView', () => {
   })
 
   describe('constructor', () => {
-    it('should stay inert without the library', () => {
+    it('should stay inert without the library and with loading turned off', () => {
       delete window.maplibregl
 
-      const view = new MapView(mount('<div></div>'))
+      const view = new MapView(mount('<div></div>'), { library: null })
 
       expect(view.map).toBeNull()
       expect(view.markers).toEqual([])
+    })
+
+    it('should load the library from the library option and then create the map', async () => {
+      delete window.maplibregl
+      ;(window as unknown as { fakeMapLibrary: MapLibrary }).fakeMapLibrary = library
+
+      const element = mount('<div data-bs-zoom="7"><span data-bs-lng="1" data-bs-lat="2"></span></div>')
+      const view = new MapView(element, { library: 'data:text/javascript,export const { Map, Marker, Popup } = window.fakeMapLibrary' })
+      const ready = new Promise((resolve) => view.ready(resolve))
+
+      expect(view.map).toBeNull()
+
+      await ready
+
+      expect(view.map).toBe(FakeMap.last)
+      expect(FakeMap.last.options.zoom).toBe(7)
+      expect(view.markers).toHaveLength(1)
+    })
+
+    it('should warn when the library cannot be loaded', async () => {
+      delete window.maplibregl
+
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const view = new MapView(mount('<div></div>'), { library: 'data:text/javascript,throw new Error("no library")' })
+
+      await vi.waitFor(() => expect(warn).toHaveBeenCalled())
+
+      expect(view.map).toBeNull()
+      warn.mockRestore()
     })
 
     it('should create a map with the default style and the options from data attributes', () => {
@@ -437,6 +472,41 @@ describe('MapView', () => {
     })
   })
 
+  describe('hooks', () => {
+    it('should run a ready callback right away when the map exists', () => {
+      const view = new MapView(mount('<div></div>'))
+      let received: unknown = null
+
+      view.ready((map) => (received = map))
+
+      expect(received).toBe(FakeMap.last)
+    })
+
+    it('should run a style callback on each style load', () => {
+      const view = new MapView(mount('<div></div>'))
+      let runs = 0
+
+      view.onStyle(() => runs++)
+
+      expect(runs).toBe(0)
+
+      FakeMap.last.fire('style.load')
+      FakeMap.last.fire('style.load')
+
+      expect(runs).toBe(2)
+    })
+
+    it('should run a style callback right away when a style has loaded already', () => {
+      const view = new MapView(mount('<div></div>'))
+      let runs = 0
+
+      FakeMap.last.styleLoaded = true
+      view.onStyle(() => runs++)
+
+      expect(runs).toBe(1)
+    })
+  })
+
   describe('layers', () => {
     it('should add nothing without a route or GeoJSON', () => {
       new MapView(mount('<div></div>'))
@@ -469,6 +539,32 @@ describe('MapView', () => {
       FakeMap.last.fire('style.load')
 
       expect(FakeMap.last.addedLayers).toHaveLength(2)
+    })
+
+    it('should split the route at the point reached so far', () => {
+      new MapView(mount('<div></div>'), {
+        route: [
+          [1, 1],
+          [2, 2],
+          [3, 3],
+          [4, 4],
+        ],
+        routeProgress: 1,
+      })
+      FakeMap.last.fire('style.load')
+
+      const coordinates = (id: string): unknown => (FakeMap.last.sources[id]?.data as { geometry: { coordinates: unknown } }).geometry.coordinates
+
+      expect(coordinates('tabler-route')).toEqual([
+        [1, 1],
+        [2, 2],
+      ])
+      expect(coordinates('tabler-route-rest')).toEqual([
+        [2, 2],
+        [3, 3],
+        [4, 4],
+      ])
+      expect(FakeMap.last.addedLayers.map((layer) => layer.id)).toEqual(['tabler-route-rest', 'tabler-route'])
     })
 
     it('should draw GeoJSON as fill, line and point layers in the layer color', () => {

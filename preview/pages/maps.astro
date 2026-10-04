@@ -104,12 +104,13 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Marker styles</CardTitle>
-          <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar. Add <code>.map-marker-label</code> for a short text.</CardSubtitle>
+          <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar. Add <code>.map-marker-label</code> for a short text, and <code>.map-marker-pulse</code> for a live position.</CardSubtitle>
           <Map mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11} ratio="4x3">
             <span class="map-marker map-marker-dot" data-bs-lng="13.345" data-bs-lat="52.54"></span>
             <span class="map-marker map-marker-dot map-marker-red" data-bs-lng="13.39" data-bs-lat="52.545"></span>
             <span class="map-marker" data-bs-lng="13.445" data-bs-lat="52.538"><Icon name="building-store" /><span class="map-marker-label">Store</span></span>
             <span class="map-marker map-marker-green" data-bs-lng="13.35" data-bs-lat="52.512">12</span>
+            <span class="map-marker map-marker-dot map-marker-green map-marker-pulse" data-bs-lng="13.375" data-bs-lat="52.535"></span>
             <span class="map-marker map-marker-pin" data-bs-lng="13.405" data-bs-lat="52.52" data-bs-anchor="bottom"><Icon name="home" /></span>
             <span class="map-marker map-marker-pin map-marker-red" data-bs-lng="13.47" data-bs-lat="52.518" data-bs-anchor="bottom"><Icon name="star" /></span>
             <span class="map-marker" data-bs-lng="13.43" data-bs-lat="52.503"><Avatar size="sm" src={staticPath('avatars/000m.jpg')} /></span>
@@ -169,6 +170,18 @@ const places = [
       </Card>
     </div>
 
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Shapes from a file</CardTitle>
+          <CardSubtitle>
+            Point <code>data-bs-geojson</code> at a GeoJSON file to draw its areas, lines and points. <code>data-bs-layer-color</code> sets their color, and <code>data-bs-labels</code> names the buttons.
+          </CardSubtitle>
+          <Map mapId="geojson-file" title="Shapes from a file" center={[52.5135, 13.39]} zoom={12.2} ratio="21x9" geojson={staticPath('maps/berlin-places.geojson')} layerColor="--tblr-green" controls labels={{ 'zoom-in': 'Closer', 'zoom-out': 'Farther' }} />
+        </CardBody>
+      </Card>
+    </div>
+
     <div class="col-lg-6">
       <Card>
         <CardBody>
@@ -178,9 +191,9 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ stores }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-clusters').map
+                const view = tabler.MapView.getInstance('#map-clusters')
 
-                map.on('style.load', () => {
+                view.onStyle((map) => {
                   const color = tabler.MapView.color('--tblr-primary')
                   const border = tabler.MapView.color('--tblr-bg-surface')
 
@@ -214,13 +227,15 @@ const places = [
                   })
                 })
 
-                map.on('click', 'clusters', (event) => {
-                  const cluster = event.features[0]
+                view.ready((map) => {
+                  map.on('click', 'clusters', (event) => {
+                    const cluster = event.features[0]
 
-                  map
-                    .getSource('stores')
-                    .getClusterExpansionZoom(cluster.properties.cluster_id)
-                    .then((zoom) => map.easeTo({ center: cluster.geometry.coordinates, zoom }))
+                    map
+                      .getSource('stores')
+                      .getClusterExpansionZoom(cluster.properties.cluster_id)
+                      .then((zoom) => map.easeTo({ center: cluster.geometry.coordinates, zoom }))
+                  })
                 })
               })
             </script>
@@ -248,7 +263,7 @@ const places = [
           <CaptureScript>
             <script is:inline>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-cities').map
+                const view = tabler.MapView.getInstance('#map-cities')
                 const buttons = document.querySelectorAll('#map-cities-switcher .btn')
 
                 buttons.forEach((button) => {
@@ -257,7 +272,7 @@ const places = [
                       item.classList.toggle('btn-primary', item === button)
                       item.setAttribute('aria-pressed', item === button)
                     })
-                    map.flyTo({ center: [Number(button.dataset.lng), Number(button.dataset.lat)], zoom: 10 })
+                    view.map.flyTo({ center: [Number(button.dataset.lng), Number(button.dataset.lat)], zoom: 10 })
                   })
                 })
               })
@@ -276,10 +291,9 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ cities }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-bubbles').map
-                const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
+                const view = tabler.MapView.getInstance('#map-bubbles')
 
-                map.on('style.load', () => {
+                view.onStyle((map) => {
                   const color = tabler.MapView.color('--tblr-primary')
 
                   map.addSource('cities', {
@@ -294,15 +308,20 @@ const places = [
                   })
                 })
 
-                map.on('mousemove', 'cities', (event) => {
-                  const city = event.features[0].properties
+                // The handlers need the map and the library, which may load a moment after the page
+                view.ready((map) => {
+                  const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
 
-                  map.getCanvas().style.cursor = 'pointer'
-                  tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
-                })
-                map.on('mouseleave', 'cities', () => {
-                  map.getCanvas().style.cursor = ''
-                  tooltip.remove()
+                  map.on('mousemove', 'cities', (event) => {
+                    const city = event.features[0].properties
+
+                    map.getCanvas().style.cursor = 'pointer'
+                    tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
+                  })
+                  map.on('mouseleave', 'cities', () => {
+                    map.getCanvas().style.cursor = ''
+                    tooltip.remove()
+                  })
                 })
               })
             </script>
@@ -331,7 +350,7 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ hub, destinations }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-globe').map
+                const view = tabler.MapView.getInstance('#map-globe')
 
                 // Points along the shortest path between two places on the globe
                 const arc = (from, to, steps = 64) => {
@@ -349,7 +368,7 @@ const places = [
                   })
                 }
 
-                map.on('style.load', () => {
+                view.onStyle((map) => {
                   // Hide the place names of the map style, so only the marker labels are left
                   map
                     .getStyle()
