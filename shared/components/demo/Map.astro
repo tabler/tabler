@@ -1,5 +1,6 @@
 ---
 // MapLibre GL map on OpenFreeMap tiles: no account and no access token.
+// The map follows the page theme: `style` in light mode, `darkStyle` in dark.
 // Renders nothing unless maps[mapId] exists.
 import maps from '@data/maps.json';
 import CaptureScript from '../CaptureScript.astro';
@@ -18,6 +19,10 @@ type MapData = {
 	card?: boolean;
 	/** OpenFreeMap style name: liberty (default), bright, positron, dark or fiord */
 	style?: string;
+	/** style used in dark mode, `dark` by default */
+	darkStyle?: string;
+	/** adds the zoom and compass buttons */
+	controls?: boolean;
 	zoom?: number;
 	center?: [number, number];
 	markers?: { name?: string; center: [number, number] }[];
@@ -26,10 +31,13 @@ type MapData = {
 const data = (maps as unknown as Record<string, MapData>)[mapId];
 
 const mapContainerId = `map-${mapId}`;
-const style = `https://tiles.openfreemap.org/styles/${data?.style ?? 'liberty'}`;
+const styleUrl = (name: string) => `https://tiles.openfreemap.org/styles/${name}`;
+const style = styleUrl(data?.style ?? 'liberty');
+const darkStyle = styleUrl(data?.darkStyle ?? 'dark');
+const controls = data?.controls ?? false;
 const zoom = data?.zoom ?? 13;
 const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
-const markers = (data?.markers ?? []).map((marker) => [marker.center[1], marker.center[0]]);
+const markers = (data?.markers ?? []).map((marker) => ({ name: marker.name, coords: [marker.center[1], marker.center[0]] }));
 
 const ratioClass = data?.ratio ?? ratio ?? '16x9';
 ---
@@ -47,20 +55,32 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<CaptureScript>
 			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapContainerId, style, zoom, center, markers }}>
+			<script is:inline define:vars={{ mapContainerId, style, darkStyle, controls, zoom, center, markers }}>
 				window.tabler_map ??= {};
 
 				function initMap() {
+					const themeStyle = () => (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? darkStyle : style);
+
 					const map = new maplibregl.Map({
 						container: mapContainerId,
-						style,
+						style: themeStyle(),
 						zoom,
 						center,
 					});
 
-					markers.forEach((coords) => {
-						new maplibregl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map);
+					if (controls) {
+						map.addControl(new maplibregl.NavigationControl());
+					}
+
+					markers.forEach((marker) => {
+						new maplibregl.Marker({ color: 'var(--tblr-primary)' })
+							.setLngLat(marker.coords)
+							.setPopup(new maplibregl.Popup({ offset: 32 }).setText(marker.name))
+							.addTo(map);
 					});
+
+					// Change the map style when the page theme changes
+					new MutationObserver(() => map.setStyle(themeStyle())).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] });
 
 					window.tabler_map[mapContainerId] = map;
 				}

@@ -12,14 +12,19 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
       window.tabler_map ??= {}
 
       function initMap() {
+        const themeStyle = () => `https://tiles.openfreemap.org/styles/${document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'liberty'}`
+
         const map = new maplibregl.Map({
           container: 'map-fullsize',
-          style: 'https://tiles.openfreemap.org/styles/liberty',
+          style: themeStyle(),
           zoom: 12,
           center: [13.4049, 52.518827],
         })
 
         map.addControl(new maplibregl.NavigationControl())
+
+        // Change the map style when the page theme changes
+        new MutationObserver(() => map.setStyle(themeStyle())).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] })
 
         window.tabler_map['map-fullsize'] = map
       }
