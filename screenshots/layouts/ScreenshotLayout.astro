@@ -64,11 +64,12 @@ const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * 
 
     <link rel="icon" href="./favicon-dev.ico" type="image/x-icon" />
 
+    {/* Library styles first, so the Tabler overrides in tabler-vendors.css win (same order as BaseLayout) */}
+    {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
+
     <link href={`./dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
 
     {stylePlugins.map((plugin) => <link href={`./dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
-
-    {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
 
     <!-- Inter for the captures: Tabler ships system font stacks (no web font),
     and the body's cv03/cv04/cv11 feature settings were tuned for Inter, so the
@@ -188,7 +189,20 @@ const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * 
         if (document.readyState !== 'loading') resolve(undefined)
         else document.addEventListener('DOMContentLoaded', () => resolve(undefined), { once: true })
       })
-      Promise.all([document.fonts.ready, domReady]).then(() => {
+      // Maps draw their tiles after the page is ready, so wait until each one has loaded.
+      // The first check is delayed: the maps are created in DOMContentLoaded handlers.
+      const mapsReady = () =>
+        new Promise((resolve) => {
+          const check = () => {
+            const maps = Object.values((window as { tabler_map?: Record<string, { loaded(): boolean }> }).tabler_map ?? {})
+
+            if (maps.every((map) => map.loaded())) resolve(undefined)
+            else setTimeout(check, 100)
+          }
+
+          setTimeout(check, 100)
+        })
+      Promise.all([document.fonts.ready, domReady, mapsReady()]).then(() => {
         requestAnimationFrame(() => requestAnimationFrame(() => (document.documentElement.dataset.screenshotReady = 'true')))
       })
     </script>

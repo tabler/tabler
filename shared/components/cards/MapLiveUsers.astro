@@ -1,0 +1,86 @@
+---
+// A world map of active users, with the total in a card over the map.
+// Needs <MapPalette /> on the page, before this card.
+import Map from '../demo/Map.astro'
+import CaptureScript from '../CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Subheader from '@ui/Subheader.astro'
+import Trending from '@ui/Trending.astro'
+
+const cities = [
+  { name: 'Berlin', lng: 13.405, lat: 52.52, users: 820 },
+  { name: 'London', lng: -0.1276, lat: 51.5072, users: 1240 },
+  { name: 'New York', lng: -74.006, lat: 40.7128, users: 1580 },
+  { name: 'Tokyo', lng: 139.6917, lat: 35.6895, users: 960 },
+  { name: 'São Paulo', lng: -46.6333, lat: -23.5505, users: 540 },
+  { name: 'Sydney', lng: 151.2093, lat: -33.8688, users: 310 },
+  { name: 'Lagos', lng: 3.3792, lat: 6.5244, users: 420 },
+  { name: 'Mumbai', lng: 72.8777, lat: 19.076, users: 1100 },
+]
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Live users</CardTitle>
+  </CardHeader>
+  <Map mapId="live-users" title="Live users" center={[32, 30]} zoom={0.45} height="20rem" rounded={false}>
+    <div slot="overlay" class="card card-sm position-absolute top-0 end-0 m-3 shadow">
+      <div class="card-body">
+        <Subheader>Active users</Subheader>
+        <div class="h1 mb-1">3,544</div>
+        <div class="text-secondary"><Trending value="+12.5" /> vs last hour</div>
+      </div>
+    </div>
+  </Map>
+  <CaptureScript>
+    <script is:inline define:vars={{ cities }}>
+      document.addEventListener('DOMContentLoaded', () => {
+        const map = window.tabler_map['map-live-users']
+        const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
+
+        map.on('style.load', () => {
+          map.addSource('cities', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: cities.map((city) => ({ type: 'Feature', properties: city, geometry: { type: 'Point', coordinates: [city.lng, city.lat] } })) },
+          })
+          map.addLayer({
+            id: 'cities',
+            type: 'circle',
+            source: 'cities',
+            paint: { 'circle-color': tablerMapColor('--tblr-primary'), 'circle-opacity': 0.6, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 3, 1600, 14] },
+          })
+        })
+
+        map.on('mousemove', 'cities', (event) => {
+          const city = event.features[0].properties
+
+          map.getCanvas().style.cursor = 'pointer'
+          tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
+        })
+        map.on('mouseleave', 'cities', () => {
+          map.getCanvas().style.cursor = ''
+          tooltip.remove()
+        })
+      })
+    </script>
+  </CaptureScript>
+  <CardBody>
+    <div class="row text-center">
+      <div class="col">
+        <div class="fw-medium">1,580</div>
+        <div class="text-secondary">New York</div>
+      </div>
+      <div class="col">
+        <div class="fw-medium">1,240</div>
+        <div class="text-secondary">London</div>
+      </div>
+      <div class="col">
+        <div class="fw-medium">1,100</div>
+        <div class="text-secondary">Mumbai</div>
+      </div>
+    </div>
+  </CardBody>
+</Card>

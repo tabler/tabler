@@ -80,24 +80,6 @@ const places = [
 <DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['maplibre-gl']} description="Interactive MapLibre maps — plain, styled, with custom markers and popups.">
   <DocsLink slot="page-header-actions" path="/ui/components/map" />
   <MapPalette />
-  <CaptureScript>
-    <script is:inline>
-      // MapLibre draws on a canvas, so a layer needs a plain rgb() color instead of a CSS variable
-      window.tablerMapColor = (name) => {
-        const context = document.createElement('canvas').getContext('2d')
-        const probe = document.body.appendChild(document.createElement('span'))
-
-        probe.style.color = `var(${name})`
-        context.fillStyle = getComputedStyle(probe).color
-        context.fillRect(0, 0, 1, 1)
-        probe.remove()
-
-        const [red, green, blue] = context.getImageData(0, 0, 1, 1).data
-
-        return `rgb(${red}, ${green}, ${blue})`
-      }
-    </script>
-  </CaptureScript>
   <div class="row row-cards">
     {
       mapEntries.map(([mapId, data]) =>

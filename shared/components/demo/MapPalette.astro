@@ -2,12 +2,29 @@
 // Softer colors for the OpenFreeMap `positron` and `dark` map styles: near-white
 // land, pale water and muted labels. Defines `window.tablerMapPalette(map, mode)`;
 // put it on the page once, before the maps. `Map.astro` calls it on each style load.
+// Also defines `window.tablerMapColor(name)`, which turns a CSS variable into a
+// plain rgb() color for a map layer.
 import CaptureScript from '../CaptureScript.astro';
 ---
 
 <CaptureScript>
 	<!-- BEGIN MAP PALETTE -->
 	<script is:inline>
+		// MapLibre draws on a canvas, so a layer needs a plain rgb() color instead of a CSS variable
+		window.tablerMapColor = (name) => {
+			const context = document.createElement('canvas').getContext('2d');
+			const probe = document.body.appendChild(document.createElement('span'));
+
+			probe.style.color = `var(${name})`;
+			context.fillStyle = getComputedStyle(probe).color;
+			context.fillRect(0, 0, 1, 1);
+			probe.remove();
+
+			const [red, green, blue] = context.getImageData(0, 0, 1, 1).data;
+
+			return `rgb(${red}, ${green}, ${blue})`;
+		};
+
 		// Paint values by layer id: the first rule that matches a layer is used
 		window.tablerMapPalette = (map, mode) => {
 			const palettes = {
