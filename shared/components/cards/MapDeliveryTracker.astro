@@ -1,7 +1,6 @@
 ---
 // A delivery on a map: the route, the courier position and the order status.
 import Map from '../demo/Map.astro'
-import CaptureScript from '../CaptureScript.astro'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
@@ -31,7 +30,7 @@ const courierAt = 5
   <CardHeader>
     <CardTitle>Delivery tracker</CardTitle>
   </CardHeader>
-  <Map mapId="delivery" title="Delivery tracker" center={[52.5215, 13.4046]} zoom={11.6} height="20rem" rounded={false}>
+  <Map mapId="delivery" title="Delivery tracker" center={[52.5215, 13.4046]} zoom={11.6} height="20rem" rounded={false} route={route} routeProgress={courierAt}>
     <div slot="overlay" class="card card-sm position-absolute top-0 start-0 m-3 shadow" style="width: 15rem">
       <div class="card-body">
         <Subheader>Order #4821</Subheader>
@@ -40,27 +39,9 @@ const courierAt = 5
       </div>
     </div>
     <span class="map-marker map-marker-dot" data-bs-lng={route[0]?.[0]} data-bs-lat={route[0]?.[1]}></span>
-    <span class="map-marker map-marker-green" data-bs-lng={route[courierAt]?.[0]} data-bs-lat={route[courierAt]?.[1]}><Icon name="truck-delivery" /></span>
+    <span class="map-marker map-marker-green map-marker-pulse" data-bs-lng={route[courierAt]?.[0]} data-bs-lat={route[courierAt]?.[1]}><Icon name="truck-delivery" /></span>
     <span class="map-marker map-marker-pin" data-bs-lng={route.at(-1)?.[0]} data-bs-lat={route.at(-1)?.[1]} data-bs-anchor="bottom"><Icon name="home" /></span>
   </Map>
-  <CaptureScript>
-    <script is:inline define:vars={{ route, courierAt }}>
-      document.addEventListener('DOMContentLoaded', () => {
-        const map = tabler.MapView.getInstance('#map-delivery').map
-        const line = (coordinates) => ({ type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } })
-
-        map.on('style.load', () => {
-          const color = tabler.MapView.color('--tblr-primary')
-
-          // The part of the route still to drive is dashed, the part already driven is solid
-          map.addSource('route-left', line(route.slice(courierAt)))
-          map.addLayer({ id: 'route-left', type: 'line', source: 'route-left', paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.6, 'line-dasharray': [1, 2] } })
-          map.addSource('route-done', line(route.slice(0, courierAt + 1)))
-          map.addLayer({ id: 'route-done', type: 'line', source: 'route-done', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': color, 'line-width': 3 } })
-        })
-      })
-    </script>
-  </CaptureScript>
   <CardBody>
     <div class="row align-items-center">
       <div class="col-auto">

@@ -25,11 +25,17 @@ interface Props {
 	height?: string;
 	/** a path drawn as a line: [longitude, latitude] points */
 	route?: number[][];
+	/** index of the route point reached so far: the rest of the path is dashed */
+	routeProgress?: number;
+	/** color of the route and the GeoJSON shapes */
+	layerColor?: string;
+	/** accessible names of the control buttons, by action */
+	labels?: Record<string, string>;
 	/** GeoJSON drawn over the map: an object, or the URL of a file */
 	geojson?: object | string;
 }
 
-const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false, rounded = true, height, route, geojson } = Astro.props;
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false, rounded = true, height, route, routeProgress, layerColor, labels, geojson } = Astro.props;
 
 type MapData = {
 	title?: string | undefined;
@@ -70,6 +76,9 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 					data-bs-controls={data.controls ? String(data.controls) : undefined}
 					data-bs-globe={globe ? 'true' : undefined}
 					data-bs-route={route ? JSON.stringify(route) : undefined}
+					data-bs-route-progress={routeProgress}
+					data-bs-layer-color={layerColor}
+					data-bs-labels={labels ? JSON.stringify(labels) : undefined}
 					data-bs-geojson={typeof geojson === 'object' ? JSON.stringify(geojson) : geojson}
 				>
 					{(data.markers ?? []).map((marker) => <span class="map-marker map-marker-dot" data-bs-lng={marker.center[1]} data-bs-lat={marker.center[0]} data-bs-popup={marker.name} />)}
