@@ -39,6 +39,9 @@ const STYLE_URL = 'https://tiles.openfreemap.org/styles/'
 const POPUP_OFFSET = 16
 const POPUP_OFFSET_PIN = 40
 
+const SOURCE_DATA = 'tabler-data'
+const SOURCE_ROUTE = 'tabler-route'
+
 // The public API is typed with local copies of the MapLibre GL JS types.
 // `maplibre-gl` is loaded separately as `window.maplibregl`, so the published
 // `dist/types` must not import it: a project that never shows a map would
@@ -59,6 +62,8 @@ type MapInstance = {
   resetNorthPitch(): unknown
   getZoom(): number
   flyTo(options: { center: LngLat; zoom: number }): unknown
+  addSource(id: string, source: Record<string, unknown>): unknown
+  addLayer(layer: Record<string, unknown>): unknown
 }
 
 /** The part of a MapLibre GL JS marker the `markers` getter promises. */
@@ -100,8 +105,16 @@ type ComponentConfig = {
   palette: boolean
   /** buttons over the map: `true` for zoom, or a list of `zoom`, `north`, `locate` and `fullscreen` */
   controls: boolean | string
+  /** accessible names of the buttons, by action: `zoom-in`, `zoom-out`, `north`, `locate`, `fullscreen` */
+  labels: Partial<Record<MapAction, string>>
   /** draws the map as a 3D globe */
   globe: boolean
+  /** a path drawn as a line: a list of `[longitude, latitude]` points */
+  route: LngLat[] | null
+  /** GeoJSON drawn over the map, as an object or the URL of a file: areas, lines and points */
+  geojson: object | string | null
+  /** color of the route and the GeoJSON shapes: a CSS color or a custom property */
+  layerColor: string
   /** pass-through for any MapLibre GL JS map option */
   mapOptions: object
 }
@@ -118,7 +131,11 @@ const Default: ComponentConfig = {
   mapTheme: 'auto',
   palette: true,
   controls: false,
+  labels: {},
   globe: false,
+  route: null,
+  geojson: null,
+  layerColor: '--tblr-primary',
   mapOptions: {},
 }
 
@@ -130,19 +147,28 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   mapTheme: 'string',
   palette: 'boolean',
   controls: '(boolean|string)',
+  labels: 'object',
   globe: 'boolean',
+  route: '(null|array)',
+  geojson: '(null|object|string)',
+  layerColor: 'string',
   mapOptions: 'object',
 }
 
-// The buttons each name in the `controls` option stands for, with their labels
-const Controls: Record<string, [MapAction, string][]> = {
-  zoom: [
-    ['zoom-in', 'Zoom in'],
-    ['zoom-out', 'Zoom out'],
-  ],
-  north: [['north', 'Reset north']],
-  locate: [['locate', 'Show my location']],
-  fullscreen: [['fullscreen', 'Full screen']],
+// The buttons each name in the `controls` option stands for
+const Controls: Record<string, MapAction[]> = {
+  zoom: ['zoom-in', 'zoom-out'],
+  north: ['north'],
+  locate: ['locate'],
+  fullscreen: ['fullscreen'],
+}
+
+const Labels: Record<MapAction, string> = {
+  'zoom-in': 'Zoom in',
+  'zoom-out': 'Zoom out',
+  'north': 'Reset north',
+  'locate': 'Show my location',
+  'fullscreen': 'Full screen',
 }
 
 // Paint values by layer id of the OpenFreeMap `positron` and `dark` styles:
@@ -332,10 +358,11 @@ class MapView extends BaseComponent {
 
     this._map = map
 
-    // The palette and the projection are part of the style, so they are set
-    // again each time a style loads, for example after a theme change.
+    // The palette, the layers and the projection are part of the style, so they
+    // are set again each time a style loads, for example after a theme change.
     map.on('style.load', () => {
       this._applyPalette()
+      this._addLayers()
 
       if (globe) {
         map.setProjection({ type: 'globe' })
@@ -368,13 +395,13 @@ class MapView extends BaseComponent {
         group.className = CLASS_NAME_CONTROL_GROUP
       }
 
-      for (const [action, label] of buttons) {
+      for (const action of buttons) {
         const button = group.appendChild(document.createElement('button'))
 
         button.type = 'button'
         button.className = CLASS_NAME_CONTROL
         button.setAttribute('data-bs-map-action', action)
-        button.setAttribute('aria-label', label)
+        button.setAttribute('aria-label', this._config.labels[action] ?? Labels[action])
       }
     }
 
@@ -461,6 +488,37 @@ class MapView extends BaseComponent {
       for (const [property, value] of Object.entries(rule?.[1] ?? {})) {
         this._map.setPaintProperty(id, property, value)
       }
+    }
+  }
+
+  // The `route` and `geojson` options, drawn in the layer color
+  _addLayers(): void {
+    const { route, geojson, layerColor } = this._config
+    const map = this._map
+
+    if (!map || (!route && !geojson)) {
+      return
+    }
+
+    const color = MapView.color(layerColor, this._element)
+    const layout = { 'line-cap': 'round', 'line-join': 'round' }
+
+    if (geojson) {
+      map.addSource(SOURCE_DATA, { type: 'geojson', data: geojson })
+      map.addLayer({ id: `${SOURCE_DATA}-fill`, type: 'fill', source: SOURCE_DATA, filter: ['==', '$type', 'Polygon'], paint: { 'fill-color': color, 'fill-opacity': 0.16 } })
+      map.addLayer({ id: `${SOURCE_DATA}-line`, type: 'line', source: SOURCE_DATA, filter: ['!=', '$type', 'Point'], layout, paint: { 'line-color': color, 'line-width': 2 } })
+      map.addLayer({
+        id: `${SOURCE_DATA}-point`,
+        type: 'circle',
+        source: SOURCE_DATA,
+        filter: ['==', '$type', 'Point'],
+        paint: { 'circle-color': color, 'circle-radius': 5, 'circle-stroke-width': 2, 'circle-stroke-color': MapView.color('--tblr-bg-surface', this._element) },
+      })
+    }
+
+    if (route) {
+      map.addSource(SOURCE_ROUTE, { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: route } } })
+      map.addLayer({ id: SOURCE_ROUTE, type: 'line', source: SOURCE_ROUTE, layout, paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.8 } })
     }
   }
 

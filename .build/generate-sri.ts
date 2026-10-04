@@ -30,7 +30,16 @@ const dataFile = join(repoRoot, 'shared/data/sri.json')
 
 // The files the docs hand out as CDN tags. The plugin bundles in `dist/libs/` are not here: they
 // are third-party packages the docs only link to, and each one has its own version.
-const files = ['dist/css/tabler.min.css', 'dist/css/tabler.rtl.min.css', 'dist/js/tabler.min.js', 'dist/js/tabler-theme.min.js', ...site.cssPlugins.flatMap((plugin) => [`dist/css/tabler-${plugin}.min.css`, `dist/css/tabler-${plugin}.rtl.min.css`])]
+const files = ['dist/css/tabler.min.css', 'dist/css/tabler.rtl.min.css', 'dist/js/tabler.min.js', 'dist/js/tabler-theme.min.js', 'dist/js/tabler-map.min.js', ...site.cssPlugins.flatMap((plugin) => [`dist/css/tabler-${plugin}.min.css`, `dist/css/tabler-${plugin}.rtl.min.css`])]
+
+// Files that a release added. An older version does not have them on the CDN, so they are left
+// out until that release is the current one; the docs render their tags without `integrity`.
+const addedIn: Record<string, string> = { 'dist/js/tabler-map.min.js': '1.7.0' }
+
+const isBefore = (version: string, other: string): boolean => version.localeCompare(other, undefined, { numeric: true }) < 0
+
+/** The files the current version of the package has. */
+const publishedFiles = (): string[] => files.filter((file) => !(file in addedIn) || !isBefore(site.version, addedIn[file] ?? ''))
 
 /** One GET, retried once: a single dropped connection should not fail a CI job. */
 async function get(url: string): Promise<Response> {
@@ -70,7 +79,7 @@ async function hashFile(file: string): Promise<string> {
 }
 
 async function collectHashes(): Promise<SriData> {
-  const hashes = await Promise.all(files.map(async (file) => [file, await hashFile(file)] as const))
+  const hashes = await Promise.all(publishedFiles().map(async (file) => [file, await hashFile(file)] as const))
 
   return { version: site.version, algorithm, files: Object.fromEntries(hashes) }
 }
@@ -104,7 +113,7 @@ async function check(): Promise<void> {
   const current = await collectHashes()
   const problems: string[] = []
 
-  for (const file of files) {
+  for (const file of publishedFiles()) {
     if (committed.files[file] !== current.files[file]) {
       problems.push(`${file}: ${committed.files[file] ?? 'missing'} committed, ${current.files[file]} on the CDN`)
     }
@@ -116,7 +125,7 @@ async function check(): Promise<void> {
     return
   }
 
-  console.log(`check:sri: ${files.length} hashes match @tabler/core v${current.version}`)
+  console.log(`check:sri: ${publishedFiles().length} hashes match @tabler/core v${current.version}`)
 }
 
 /**
@@ -155,7 +164,7 @@ async function generate(wait: boolean): Promise<void> {
 
   writeFileSync(dataFile, `${JSON.stringify(data, null, 2)}\n`)
 
-  console.log(`generate:sri: wrote ${files.length} ${algorithm} hashes for @tabler/core v${data.version}`)
+  console.log(`generate:sri: wrote ${publishedFiles().length} ${algorithm} hashes for @tabler/core v${data.version}`)
 }
 
 // Wrapped in main() because the root package is CJS (no top-level await).

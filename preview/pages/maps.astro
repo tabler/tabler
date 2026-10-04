@@ -150,30 +150,11 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Route</CardTitle>
-          <CardSubtitle>Draw a path with a GeoJSON line layer, and mark its ends with markers.</CardSubtitle>
-          <Map mapId="route" title="Route" center={[52.513, 13.4046]} zoom={11.6}>
+          <CardSubtitle>Draw a path with <code>data-bs-route</code>, a list of points, and mark its ends with markers.</CardSubtitle>
+          <Map mapId="route" title="Route" center={[52.513, 13.4046]} zoom={11.6} route={route}>
             <span class="map-marker map-marker-dot" data-bs-lng="13.3695" data-bs-lat="52.5251"></span>
             <span class="map-marker map-marker-pin" data-bs-lng="13.4397" data-bs-lat="52.505" data-bs-anchor="bottom"><Icon name="map-pin" /></span>
           </Map>
-          <CaptureScript>
-            <script is:inline define:vars={{ route }}>
-              document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-route').map
-
-                // Layers are part of the style, so add them again each time the style loads
-                map.on('style.load', () => {
-                  map.addSource('route', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: route } } })
-                  map.addLayer({
-                    id: 'route',
-                    type: 'line',
-                    source: 'route',
-                    layout: { 'line-cap': 'round', 'line-join': 'round' },
-                    paint: { 'line-color': tabler.MapView.color('--tblr-primary'), 'line-width': 3, 'line-opacity': 0.8 },
-                  })
-                })
-              })
-            </script>
-          </CaptureScript>
         </CardBody>
       </Card>
     </div>
@@ -182,23 +163,8 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Area</CardTitle>
-          <CardSubtitle>Show a zone with a GeoJSON polygon: a fill layer and a line layer for its outline.</CardSubtitle>
-          <Map mapId="area" title="Area" center={[52.519, 13.405]} zoom={11} />
-          <CaptureScript>
-            <script is:inline define:vars={{ area }}>
-              document.addEventListener('DOMContentLoaded', () => {
-                const map = tabler.MapView.getInstance('#map-area').map
-
-                map.on('style.load', () => {
-                  const color = tabler.MapView.color('--tblr-primary')
-
-                  map.addSource('area', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [area] } } })
-                  map.addLayer({ id: 'area-fill', type: 'fill', source: 'area', paint: { 'fill-color': color, 'fill-opacity': 0.16 } })
-                  map.addLayer({ id: 'area-outline', type: 'line', source: 'area', paint: { 'line-color': color, 'line-width': 2 } })
-                })
-              })
-            </script>
-          </CaptureScript>
+          <CardSubtitle>Show a zone, a line or points with <code>data-bs-geojson</code>: a GeoJSON object, or the URL of a file.</CardSubtitle>
+          <Map mapId="area" title="Area" center={[52.519, 13.405]} zoom={11} geojson={{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [area] } }} />
         </CardBody>
       </Card>
     </div>
