@@ -13,7 +13,8 @@ class FakeMap {
   listeners: Record<string, Listener[]> = {}
   styles: string[] = []
   paint: Record<string, Record<string, string>> = {}
-  controls: unknown[] = []
+  calls: string[] = []
+  flownTo: { center: [number, number]; zoom: number } | null = null
   projection: { type: string } | null = null
   removed = false
   layers = [{ id: 'background' }, { id: 'water' }, { id: 'label_city' }, { id: 'place_city' }, { id: 'unknown_layer' }]
@@ -59,8 +60,24 @@ class FakeMap {
     this.projection = projection
   }
 
-  addControl(control: unknown): void {
-    this.controls.push(control)
+  zoomIn(): void {
+    this.calls.push('zoomIn')
+  }
+
+  zoomOut(): void {
+    this.calls.push('zoomOut')
+  }
+
+  resetNorthPitch(): void {
+    this.calls.push('resetNorthPitch')
+  }
+
+  getZoom(): number {
+    return this.options.zoom as number
+  }
+
+  flyTo(options: { center: [number, number]; zoom: number }): void {
+    this.flownTo = options
   }
 }
 
@@ -125,9 +142,7 @@ class FakeMarker {
   }
 }
 
-class FakeNavigationControl {}
-
-const library = { Map: FakeMap, Marker: FakeMarker, Popup: FakePopup, NavigationControl: FakeNavigationControl } as unknown as MapLibrary
+const library = { Map: FakeMap, Marker: FakeMarker, Popup: FakePopup } as unknown as MapLibrary
 
 describe('MapView', () => {
   let fixtureEl: HTMLElement
@@ -190,13 +205,6 @@ describe('MapView', () => {
       new MapView(mount('<div></div>'), { mapStyle: 'https://example.com/style.json' })
 
       expect(FakeMap.last.options.style).toBe('https://example.com/style.json')
-    })
-
-    it('should add the navigation control when asked', () => {
-      new MapView(mount('<div data-bs-controls="true"></div>'))
-
-      expect(FakeMap.last.controls).toHaveLength(1)
-      expect(FakeMap.last.controls[0]).toBeInstanceOf(FakeNavigationControl)
     })
 
     it('should fire the load event when the map has loaded', () => {
@@ -337,6 +345,76 @@ describe('MapView', () => {
       expect((marker?.popup?.content as DocumentFragment).querySelector('strong')?.textContent).toBe('Museum')
       expect(marker?.popupToggled).toBe(1)
       expect(element.querySelector('template')).toBeNull()
+    })
+  })
+
+  describe('controls', () => {
+    const actions = (element: HTMLElement): (string | null)[] => [...element.querySelectorAll('.map-controls button')].map((button) => button.getAttribute('data-bs-map-action'))
+
+    it('should add no buttons by default', () => {
+      const element = mount('<div></div>')
+
+      new MapView(element)
+
+      expect(element.querySelector('.map-controls')).toBeNull()
+    })
+
+    it('should add the zoom buttons as a group', () => {
+      const element = mount('<div data-bs-controls="true"></div>')
+
+      new MapView(element)
+
+      expect(actions(element)).toEqual(['zoom-in', 'zoom-out'])
+      expect(element.querySelectorAll('.map-controls > .btn-group-vertical > .btn.btn-sm.btn-icon')).toHaveLength(2)
+      expect(element.querySelector('[data-bs-map-action="zoom-in"]')?.getAttribute('aria-label')).toBe('Zoom in')
+      expect((element.querySelector('.map-controls button') as HTMLButtonElement).type).toBe('button')
+    })
+
+    it('should add the buttons named in a list and skip unknown names', () => {
+      const element = mount('<div data-bs-controls="zoom, north,locate,fullscreen,unknown"></div>')
+
+      new MapView(element)
+
+      expect(actions(element)).toEqual(['zoom-in', 'zoom-out', 'north', 'locate', 'fullscreen'])
+      expect(element.querySelectorAll('.map-controls > .btn')).toHaveLength(3)
+    })
+
+    it('should run the action of a clicked button on its map', () => {
+      const element = mount('<div data-bs-toggle="map" data-bs-controls="zoom,north"></div>')
+
+      new MapView(element)
+
+      for (const action of ['zoom-in', 'zoom-out', 'north']) {
+        element.querySelector<HTMLElement>(`[data-bs-map-action="${action}"]`)!.click()
+      }
+
+      expect(FakeMap.last.calls).toEqual(['zoomIn', 'zoomOut', 'resetNorthPitch'])
+    })
+
+    it('should let a button outside the map point at it', () => {
+      fixtureEl.innerHTML = '<div id="target-map" data-bs-toggle="map"></div><button type="button" data-bs-map-action="zoom-in" data-bs-target="#target-map"></button>'
+      new MapView(fixtureEl.querySelector<HTMLElement>('#target-map')!)
+
+      fixtureEl.querySelector('button')!.click()
+
+      expect(FakeMap.last.calls).toEqual(['zoomIn'])
+    })
+
+    it('should ignore a button with no map', () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-map-action="zoom-in"></button>'
+
+      expect(() => fixtureEl.querySelector('button')!.click()).not.toThrow()
+    })
+
+    it('should fly to the position of the device, at least at street level', () => {
+      const view = new MapView(mount('<div data-bs-zoom="4"></div>'))
+      const original = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation)
+
+      navigator.geolocation.getCurrentPosition = (success) => success({ coords: { longitude: 21.01, latitude: 52.23 } } as GeolocationPosition)
+      view.locate()
+      navigator.geolocation.getCurrentPosition = original
+
+      expect(FakeMap.last.flownTo).toEqual({ center: [21.01, 52.23], zoom: 14 })
     })
   })
 

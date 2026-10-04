@@ -15,6 +15,8 @@ classnames:
   part:
     - class: map-marker-label
       desc: Short text under a marker
+    - class: map-controls
+      desc: Column of buttons in the top end corner of the map
   modifier:
     - class: map-marker-dot
       desc: Small dot with no content
@@ -100,7 +102,7 @@ Put the map element inside a `ratio` element, so the map keeps its shape on ever
 <Map rounded={false} mapId="simple" />
 </Example>
 
-Change the shape with the ratio classes, for example `ratio-21x9` for a wide map or `ratio-1x1` for a square one. Add `data-bs-controls="true"` for the zoom and compass buttons.
+Change the shape with the ratio classes, for example `ratio-21x9` for a wide map or `ratio-1x1` for a square one.
 
 ### Map styles
 
@@ -171,6 +173,34 @@ For richer content, put a `<template>` inside the marker. Its content becomes th
   </span>
 </Map>
 </Example>
+
+### Controls
+
+Add `data-bs-controls="true"` for zoom buttons in the top corner of the map. They are regular Tabler buttons, so they follow the theme. For more buttons, pass a list of names:
+
+| Name | Buttons |
+| --- | --- |
+| `zoom` | Zoom in and zoom out. |
+| `north` | Turns the map back to north up. |
+| `locate` | Moves the map to the position of the device. The browser asks for permission first. |
+| `fullscreen` | Shows the map on the whole screen, and back. |
+
+```html
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-center="13.405,52.52" data-bs-zoom="12" data-bs-controls="zoom,north,locate,fullscreen"></div>
+```
+
+You can also write the buttons yourself. Any button with `data-bs-map-action` works on the map it is inside, or on the map its `data-bs-target` points at. The actions are `zoom-in`, `zoom-out`, `north`, `locate` and `fullscreen`. A button with no content gets a matching icon; put the buttons in a `.map-controls` element to place them in the top corner.
+
+```html
+<div class="w-100 h-100" id="map-office" data-bs-toggle="map" data-bs-center="13.405,52.52" data-bs-zoom="12">
+  <div class="map-controls">
+    <button type="button" class="btn btn-sm btn-icon" data-bs-map-action="zoom-in" aria-label="Zoom in"></button>
+    <button type="button" class="btn btn-sm btn-icon" data-bs-map-action="zoom-out" aria-label="Zoom out"></button>
+  </div>
+</div>
+
+<button type="button" class="btn" data-bs-map-action="locate" data-bs-target="#map-office">Find me</button>
+```
 
 ### Globe
 
@@ -314,7 +344,7 @@ Pass options as data attributes, with the name written in kebab case after `data
 | `mapStyleDark` | string | `'dark'` | Style used in dark mode. Set `null` to keep `mapStyle` in both modes. |
 | `mapTheme` | string | `'auto'` | `'auto'` follows the nearest `[data-bs-theme]`; `'light'` or `'dark'` keeps one look. |
 | `palette` | boolean | `true` | Softer colors for the `positron` and `dark` styles. Other styles are left as they are. |
-| `controls` | boolean | `false` | Show the zoom and compass buttons. |
+| `controls` | boolean, string | `false` | Buttons over the map: `true` for zoom, or a list of `zoom`, `north`, `locate` and `fullscreen`. |
 | `globe` | boolean | `false` | Draw the map as a 3D globe. |
 | `mapOptions` | object | `{}` | Any [MapLibre map option](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions/), passed straight through. |
 
@@ -334,6 +364,10 @@ A marker element takes these attributes:
 | --- | --- |
 | `map` | The MapLibre map, for layers, events and everything else the options do not cover. |
 | `markers` | The MapLibre markers made from the child elements, in document order. |
+| `zoomIn()`, `zoomOut()` | Zooms the map by one level. |
+| `resetNorth()` | Turns the map back to north up, with no tilt. |
+| `locate()` | Moves the map to the position of the device. |
+| `toggleFullscreen()` | Shows the map on the whole screen, and back. |
 | `dispose()` | Removes the map, its markers and the instance. |
 | `MapView.color(value)` | Turns a CSS variable or color into a plain `rgb()` color for a map layer. |
 | `MapView.getInstance(element)` | Returns the instance for an element, or `null`. |
