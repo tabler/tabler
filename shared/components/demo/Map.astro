@@ -15,7 +15,8 @@ interface Props {
 	zoom?: number;
 	title?: string;
 	style?: string;
-	controls?: boolean;
+	/** buttons over the map: true for zoom, or a list such as "zoom,north,fullscreen" */
+	controls?: boolean | string;
 	/** draws the map as a 3D globe instead of a flat map */
 	globe?: boolean;
 	/** rounded corners; turn off when the map fills a box that has its own corners */
@@ -34,8 +35,8 @@ type MapData = {
 	style?: string | undefined;
 	/** style used in dark mode, `dark` by default */
 	darkStyle?: string;
-	/** adds the zoom and compass buttons */
-	controls?: boolean | undefined;
+	/** buttons over the map: true for zoom, or a list such as "zoom,north,fullscreen" */
+	controls?: boolean | string | undefined;
 	zoom?: number | undefined;
 	center?: [number, number];
 	markers?: { name?: string; center: [number, number] }[];
@@ -62,7 +63,7 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 					data-bs-zoom={data.zoom ?? 13}
 					data-bs-map-style={data.style}
 					data-bs-map-style-dark={data.darkStyle}
-					data-bs-controls={data.controls ? 'true' : undefined}
+					data-bs-controls={data.controls ? String(data.controls) : undefined}
 					data-bs-globe={globe ? 'true' : undefined}
 				>
 					{(data.markers ?? []).map((marker) => <span class="map-marker map-marker-dot" data-bs-lng={marker.center[1]} data-bs-lat={marker.center[0]} data-bs-popup={marker.name} />)}

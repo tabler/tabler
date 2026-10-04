@@ -8,6 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import Manipulator from './bootstrap/dom/manipulator'
+import SelectorEngine from './bootstrap/dom/selector-engine'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -20,10 +21,18 @@ const DATA_KEY = `bs.${NAME}`
 const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_LOAD = `load${EVENT_KEY}`
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}.data-api`
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="map"], [data-tblr-toggle="map"]'
 const SELECTOR_MARKER = ':scope > [data-bs-lng], :scope > [data-tblr-lng]'
 const SELECTOR_THEME = '[data-bs-theme]'
+const SELECTOR_ACTION = '[data-bs-map-action], [data-tblr-map-action]'
+
+const CLASS_NAME_CONTROLS = 'map-controls'
+const CLASS_NAME_CONTROL = 'btn btn-sm btn-icon'
+const CLASS_NAME_CONTROL_GROUP = 'btn-group-vertical'
+
+const LOCATE_ZOOM = 14
 
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/'
 
@@ -45,7 +54,11 @@ type MapInstance = {
   getStyle(): { layers: { id: string }[] }
   setPaintProperty(layer: string, name: string, value: string): unknown
   setProjection(projection: { type: string }): unknown
-  addControl(control: unknown): unknown
+  zoomIn(): unknown
+  zoomOut(): unknown
+  resetNorthPitch(): unknown
+  getZoom(): number
+  flyTo(options: { center: LngLat; zoom: number }): unknown
 }
 
 /** The part of a MapLibre GL JS marker the `markers` getter promises. */
@@ -67,8 +80,9 @@ type MapLibrary = {
   Map: new (options: Record<string, unknown>) => MapInstance
   Marker: new (options: Record<string, unknown>) => MapMarkerInstance
   Popup: new (options: Record<string, unknown>) => MapPopupInstance
-  NavigationControl: new () => unknown
 }
+
+type MapAction = 'zoom-in' | 'zoom-out' | 'north' | 'locate' | 'fullscreen'
 
 type MapTheme = 'auto' | 'light' | 'dark'
 
@@ -84,8 +98,8 @@ type ComponentConfig = {
   mapTheme: MapTheme
   /** softer colors for the default `positron` and `dark` styles */
   palette: boolean
-  /** zoom and compass buttons */
-  controls: boolean
+  /** buttons over the map: `true` for zoom, or a list of `zoom`, `north`, `locate` and `fullscreen` */
+  controls: boolean | string
   /** draws the map as a 3D globe */
   globe: boolean
   /** pass-through for any MapLibre GL JS map option */
@@ -115,9 +129,20 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   mapStyleDark: '(null|string)',
   mapTheme: 'string',
   palette: 'boolean',
-  controls: 'boolean',
+  controls: '(boolean|string)',
   globe: 'boolean',
   mapOptions: 'object',
+}
+
+// The buttons each name in the `controls` option stands for, with their labels
+const Controls: Record<string, [MapAction, string][]> = {
+  zoom: [
+    ['zoom-in', 'Zoom in'],
+    ['zoom-out', 'Zoom out'],
+  ],
+  north: [['north', 'Reset north']],
+  locate: [['locate', 'Show my location']],
+  fullscreen: [['fullscreen', 'Full screen']],
 }
 
 // Paint values by layer id of the OpenFreeMap `positron` and `dark` styles:
@@ -248,6 +273,34 @@ class MapView extends BaseComponent {
   }
 
   // Public
+  zoomIn(): void {
+    this._map?.zoomIn()
+  }
+
+  zoomOut(): void {
+    this._map?.zoomOut()
+  }
+
+  /** Turns the map back to north up, with no tilt. */
+  resetNorth(): void {
+    this._map?.resetNorthPitch()
+  }
+
+  /** Moves the map to the position of the device. The browser asks for permission first. */
+  locate(): void {
+    navigator.geolocation?.getCurrentPosition(({ coords }) => {
+      this._map?.flyTo({ center: [coords.longitude, coords.latitude], zoom: Math.max(this._map.getZoom(), LOCATE_ZOOM) })
+    })
+  }
+
+  toggleFullscreen(): void {
+    if (document.fullscreenElement) {
+      void document.exitFullscreen()
+    } else {
+      void this._element.requestFullscreen()
+    }
+  }
+
   dispose(): void {
     this._themeObserver?.disconnect()
     this._themeObserver = null
@@ -294,11 +347,38 @@ class MapView extends BaseComponent {
     })
 
     if (controls) {
-      map.addControl(new library.NavigationControl())
+      this._createControls(controls)
     }
 
     this._markers = markerElements.map((element) => this._createMarker(library, map, element))
     this._setupThemeObserver()
+  }
+
+  // Tabler buttons over the map. The icons come from the stylesheet, by action.
+  _createControls(controls: true | string): void {
+    const container = document.createElement('div')
+
+    container.className = CLASS_NAME_CONTROLS
+
+    for (const name of controls === true ? ['zoom'] : controls.split(',')) {
+      const buttons = Controls[name.trim()] ?? []
+      const group = buttons.length > 1 ? container.appendChild(document.createElement('div')) : container
+
+      if (group !== container) {
+        group.className = CLASS_NAME_CONTROL_GROUP
+      }
+
+      for (const [action, label] of buttons) {
+        const button = group.appendChild(document.createElement('button'))
+
+        button.type = 'button'
+        button.className = CLASS_NAME_CONTROL
+        button.setAttribute('data-bs-map-action', action)
+        button.setAttribute('aria-label', label)
+      }
+    }
+
+    this._element.append(container)
   }
 
   _createMarker(library: MapLibrary, map: MapInstance, element: HTMLElement): MapMarkerInstance {
@@ -410,6 +490,22 @@ class MapView extends BaseComponent {
 
 // js-docs-start map-init
 initAll(SELECTOR_DATA_TOGGLE, MapView)
+
+// A button with `data-bs-map-action` acts on the map it is in, or on the map
+// its `data-bs-target` points at.
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_ACTION, function (this: HTMLElement) {
+  const element = SelectorEngine.getElementFromSelector(this) ?? this.closest<HTMLElement>(SELECTOR_DATA_TOGGLE)
+  const view = element && (MapView.getInstance(element) as MapView | null)
+  const actions: Record<string, () => void> = {
+    'zoom-in': () => view?.zoomIn(),
+    'zoom-out': () => view?.zoomOut(),
+    'north': () => view?.resetNorth(),
+    'locate': () => view?.locate(),
+    'fullscreen': () => view?.toggleFullscreen(),
+  }
+
+  actions[this.getAttribute('data-bs-map-action') ?? this.getAttribute('data-tblr-map-action') ?? '']?.()
+})
 // js-docs-end map-init
 
 export default MapView

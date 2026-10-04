@@ -39,6 +39,51 @@
   background-color: var(--bg-surface-secondary);
 }
 
+// Tabler buttons over the map, in the top end corner
+.map-controls {
+  position: absolute;
+  inset-block-start: #{$map-controls-offset};
+  inset-inline-end: #{$map-controls-offset};
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: #{$map-controls-gap};
+}
+
+// The hover and active colors of a button are see-through, which would show
+// the map under it. For a button inside a map, or in an element laid over one,
+// keep the button color and draw the hover color as a layer on top.
+[data-bs-toggle='map'],
+[data-bs-toggle='map'] ~ *,
+[data-tblr-toggle='map'],
+[data-tblr-toggle='map'] ~ * {
+  .btn:hover {
+    background-color: var(--btn-bg);
+    background-image: linear-gradient(var(--btn-hover-bg), var(--btn-hover-bg));
+  }
+
+  .btn:active,
+  .btn.active {
+    background-color: var(--btn-bg);
+    background-image: linear-gradient(var(--btn-active-bg), var(--btn-active-bg));
+  }
+}
+
+// A map button with no content gets its icon from its action
+[data-bs-map-action]:empty::before {
+  width: #{$map-control-icon-size};
+  height: #{$map-control-icon-size};
+  content: '';
+  background: currentColor;
+  mask: var(--map-control-icon) center / contain no-repeat;
+}
+
+@each $action, $shape in $map-control-icons {
+  [data-bs-map-action='#{$action}'] {
+    --map-control-icon: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>#{$shape}</svg>"))};
+  }
+}
+
 // Attribution
 .maplibregl-ctrl.maplibregl-ctrl-attrib {
   color: var(--secondary);
