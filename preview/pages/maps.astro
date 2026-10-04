@@ -61,6 +61,14 @@ const storeCities: [number, number][] = [
 ]
 const stores = storeCities.flatMap(([lng, lat], city) => Array.from({ length: 5 + (city % 4) }, (_, index) => [lng + Math.sin(city * 7 + index * 3) * 0.6, lat + Math.cos(city * 5 + index * 2) * 0.4]))
 
+const hub = { name: 'London', lng: -0.1276, lat: 51.5072 }
+const destinations = [
+  { name: 'Tokyo', lng: 139.6917, lat: 35.6895 },
+  { name: 'Mumbai', lng: 72.8777, lat: 19.076 },
+  { name: 'Singapore', lng: 103.8198, lat: 1.3521 },
+  { name: 'Nairobi', lng: 36.8219, lat: -1.2921 },
+]
+
 const places = [
   { name: 'Museum Island', text: 'Five museums on the Spree, open daily.', photo: 'a-visit-to-the-bookstore.jpg', lat: 52.5169, lng: 13.4019, open: true },
   { name: 'Bellevue Palace', text: 'Residence by the Tiergarten park.', photo: 'book-on-the-grass.jpg', lat: 52.5176, lng: 13.3531, open: false },
@@ -114,11 +122,11 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Marker styles</CardTitle>
-          <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar.</CardSubtitle>
+          <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar. Add <code>.map-marker-label</code> for a short text.</CardSubtitle>
           <Map mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11} ratio="4x3">
             <div data-lng="13.345" data-lat="52.54"><span class="map-marker map-marker-dot"></span></div>
             <div data-lng="13.39" data-lat="52.545"><span class="map-marker map-marker-dot map-marker-red"></span></div>
-            <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /></span></div>
+            <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /><span class="map-marker-label">Store</span></span></div>
             <div data-lng="13.35" data-lat="52.512"><span class="map-marker map-marker-green">12</span></div>
             <div data-lng="13.405" data-lat="52.52" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="home" /></span></div>
             <div data-lng="13.47" data-lat="52.518" data-anchor="bottom"><span class="map-marker map-marker-pin map-marker-red"><Icon name="star" /></span></div>
@@ -180,7 +188,7 @@ const places = [
                     type: 'line',
                     source: 'route',
                     layout: { 'line-cap': 'round', 'line-join': 'round' },
-                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 4 },
+                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 3, 'line-opacity': 0.8 },
                   })
                 })
               })
@@ -220,7 +228,7 @@ const places = [
         <CardBody>
           <CardTitle>Clusters</CardTitle>
           <CardSubtitle>Group many points into clusters that split as you zoom in. Click a cluster to zoom to it.</CardSubtitle>
-          <Map mapId="clusters" title="Clusters" center={[48.5, 9]} zoom={3} style="positron" controls />
+          <Map mapId="clusters" title="Clusters" center={[48.5, 9]} zoom={3} controls />
           <CaptureScript>
             <script is:inline define:vars={{ stores }}>
               document.addEventListener('DOMContentLoaded', () => {
@@ -279,17 +287,18 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>City switcher</CardTitle>
-          <CardSubtitle>Move the map to a place with <code>flyTo</code> when a button is clicked.</CardSubtitle>
-          <div class="btn-group w-100 mb-3" role="group" aria-label="City" id="map-cities-switcher">
-            {
-              cities.slice(0, 4).map((city, index) => (
-                <button type="button" class:list={['btn', index === 0 && 'active']} data-lng={city.lng} data-lat={city.lat}>
-                  {city.name}
-                </button>
-              ))
-            }
-          </div>
-          <Map mapId="cities" title="City switcher" center={[52.52, 13.405]} zoom={10} ratio="21x9" />
+          <CardSubtitle>Put buttons over the map and move it to a place with <code>flyTo</code>.</CardSubtitle>
+          <Map mapId="cities" title="City switcher" center={[52.52, 13.405]} zoom={10}>
+            <div slot="overlay" class="btn-list position-absolute top-0 start-0 w-auto h-auto m-2" role="group" aria-label="City" id="map-cities-switcher">
+              {
+                cities.slice(0, 4).map((city, index) => (
+                  <button type="button" class:list={['btn btn-sm btn-pill', index === 0 && 'btn-primary']} aria-pressed={index === 0 ? 'true' : 'false'} data-lng={city.lng} data-lat={city.lat}>
+                    {city.name}
+                  </button>
+                ))
+              }
+            </div>
+          </Map>
           <CaptureScript>
             <script is:inline>
               document.addEventListener('DOMContentLoaded', () => {
@@ -298,7 +307,10 @@ const places = [
 
                 buttons.forEach((button) => {
                   button.addEventListener('click', () => {
-                    buttons.forEach((item) => item.classList.toggle('active', item === button))
+                    buttons.forEach((item) => {
+                      item.classList.toggle('btn-primary', item === button)
+                      item.setAttribute('aria-pressed', item === button)
+                    })
                     map.flyTo({ center: [Number(button.dataset.lng), Number(button.dataset.lat)], zoom: 10 })
                   })
                 })
@@ -314,12 +326,12 @@ const places = [
         <CardBody>
           <CardTitle>Bubble map</CardTitle>
           <CardSubtitle>Size circles by a value, for example users per city. Hover a circle to see the number.</CardSubtitle>
-          <Map mapId="bubbles" title="Bubble map" center={[20, 20]} zoom={1} style="positron" ratio="21x9" />
+          <Map mapId="bubbles" title="Bubble map" center={[20, 20]} zoom={1} ratio="21x9" />
           <CaptureScript>
             <script is:inline define:vars={{ cities }}>
               document.addEventListener('DOMContentLoaded', () => {
                 const map = window.tabler_map['map-bubbles']
-                const popup = new maplibregl.Popup({ closeButton: false, offset: 12 })
+                const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
 
                 map.on('style.load', () => {
                   const color = tablerMapColor('--tblr-primary')
@@ -332,7 +344,7 @@ const places = [
                     id: 'cities',
                     type: 'circle',
                     source: 'cities',
-                    paint: { 'circle-color': color, 'circle-opacity': 0.4, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 4, 1600, 28], 'circle-stroke-width': 1, 'circle-stroke-color': color },
+                    paint: { 'circle-color': color, 'circle-opacity': 0.6, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 4, 1600, 24] },
                   })
                 })
 
@@ -340,11 +352,11 @@ const places = [
                   const city = event.features[0].properties
 
                   map.getCanvas().style.cursor = 'pointer'
-                  popup.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
+                  tooltip.setLngLat([city.lng, city.lat]).setText(`${city.name}: ${city.users} users`).addTo(map)
                 })
                 map.on('mouseleave', 'cities', () => {
                   map.getCanvas().style.cursor = ''
-                  popup.remove()
+                  tooltip.remove()
                 })
               })
             </script>
@@ -353,12 +365,79 @@ const places = [
       </Card>
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Globe</CardTitle>
+          <CardSubtitle>Show the map as a 3D globe with <code>setProjection</code>, and connect places with arcs.</CardSubtitle>
+          <Map mapId="globe" title="Globe" center={[32, 62]} zoom={1.3} ratio="4x3" globe>
+            <div data-lng={hub.lng} data-lat={hub.lat}>
+              <span class="map-marker map-marker-dot">
+                <span class="map-marker-label">{hub.name}</span>
+              </span>
+            </div>
+            {
+              destinations.map((place) => (
+                <div data-lng={place.lng} data-lat={place.lat}>
+                  <span class="map-marker map-marker-dot" style="--tblr-map-marker-size: 0.625rem">
+                    <span class="map-marker-label">{place.name}</span>
+                  </span>
+                </div>
+              ))
+            }
+          </Map>
+          <CaptureScript>
+            <script is:inline define:vars={{ hub, destinations }}>
+              document.addEventListener('DOMContentLoaded', () => {
+                const map = window.tabler_map['map-globe']
+
+                // Points along the shortest path between two places on the globe
+                const arc = (from, to, steps = 64) => {
+                  const [lng1, lat1, lng2, lat2] = [from.lng, from.lat, to.lng, to.lat].map((degrees) => (degrees * Math.PI) / 180)
+                  const angle = 2 * Math.asin(Math.sqrt(Math.sin((lat2 - lat1) / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin((lng2 - lng1) / 2) ** 2))
+
+                  return Array.from({ length: steps + 1 }, (_, step) => {
+                    const start = Math.sin((1 - step / steps) * angle) / Math.sin(angle)
+                    const end = Math.sin((step / steps) * angle) / Math.sin(angle)
+                    const x = start * Math.cos(lat1) * Math.cos(lng1) + end * Math.cos(lat2) * Math.cos(lng2)
+                    const y = start * Math.cos(lat1) * Math.sin(lng1) + end * Math.cos(lat2) * Math.sin(lng2)
+                    const z = start * Math.sin(lat1) + end * Math.sin(lat2)
+
+                    return [(Math.atan2(y, x) * 180) / Math.PI, (Math.atan2(z, Math.hypot(x, y)) * 180) / Math.PI]
+                  })
+                }
+
+                map.on('style.load', () => {
+                  // Hide the place names of the map style, so only the marker labels are left
+                  map
+                    .getStyle()
+                    .layers.filter((layer) => layer.type === 'symbol')
+                    .forEach((layer) => map.setLayoutProperty(layer.id, 'visibility', 'none'))
+
+                  map.addSource('arcs', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: destinations.map((place) => ({ type: 'Feature', geometry: { type: 'LineString', coordinates: arc(hub, place) } })) },
+                  })
+                  map.addLayer({
+                    id: 'arcs',
+                    type: 'line',
+                    source: 'arcs',
+                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 1.5, 'line-dasharray': [2, 2] },
+                  })
+                })
+              })
+            </script>
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
       <Card>
         <CardBody>
           <CardTitle>Draggable marker</CardTitle>
           <CardSubtitle>Add <code>draggable: true</code> to let people move a marker, for example to pick an address.</CardSubtitle>
-          <Map mapId="draggable" title="Draggable marker" center={[52.52, 13.405]} zoom={12} ratio="21x9">
+          <Map mapId="draggable" title="Draggable marker" center={[52.52, 13.405]} zoom={12} ratio="4x3">
             <div data-lng="13.405" data-lat="52.52" data-anchor="bottom" data-draggable><span class="map-marker map-marker-pin"><Icon name="map-pin" /></span></div>
           </Map>
         </CardBody>
