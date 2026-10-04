@@ -1,7 +1,6 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Map from '@components/demo/Map.astro'
-import MapPalette from '@components/demo/MapPalette.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import maps from '@data/maps.json'
@@ -79,7 +78,6 @@ const places = [
 
 <DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['maplibre-gl']} description="Interactive MapLibre maps — plain, styled, with custom markers and popups.">
   <DocsLink slot="page-header-actions" path="/ui/components/map" />
-  <MapPalette />
   <div class="row row-cards">
     {
       mapEntries.map(([mapId, data]) =>
@@ -108,13 +106,13 @@ const places = [
           <CardTitle>Marker styles</CardTitle>
           <CardSubtitle>Draw markers in HTML with <code>.map-marker</code>: a dot, a circle with an icon or a count, a pin, or an avatar. Add <code>.map-marker-label</code> for a short text.</CardSubtitle>
           <Map mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11} ratio="4x3">
-            <div data-lng="13.345" data-lat="52.54"><span class="map-marker map-marker-dot"></span></div>
-            <div data-lng="13.39" data-lat="52.545"><span class="map-marker map-marker-dot map-marker-red"></span></div>
-            <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /><span class="map-marker-label">Store</span></span></div>
-            <div data-lng="13.35" data-lat="52.512"><span class="map-marker map-marker-green">12</span></div>
-            <div data-lng="13.405" data-lat="52.52" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="home" /></span></div>
-            <div data-lng="13.47" data-lat="52.518" data-anchor="bottom"><span class="map-marker map-marker-pin map-marker-red"><Icon name="star" /></span></div>
-            <div data-lng="13.43" data-lat="52.503"><span class="map-marker"><Avatar size="sm" src={staticPath('avatars/000m.jpg')} /></span></div>
+            <span class="map-marker map-marker-dot" data-bs-lng="13.345" data-bs-lat="52.54"></span>
+            <span class="map-marker map-marker-dot map-marker-red" data-bs-lng="13.39" data-bs-lat="52.545"></span>
+            <span class="map-marker" data-bs-lng="13.445" data-bs-lat="52.538"><Icon name="building-store" /><span class="map-marker-label">Store</span></span>
+            <span class="map-marker map-marker-green" data-bs-lng="13.35" data-bs-lat="52.512">12</span>
+            <span class="map-marker map-marker-pin" data-bs-lng="13.405" data-bs-lat="52.52" data-bs-anchor="bottom"><Icon name="home" /></span>
+            <span class="map-marker map-marker-pin map-marker-red" data-bs-lng="13.47" data-bs-lat="52.518" data-bs-anchor="bottom"><Icon name="star" /></span>
+            <span class="map-marker" data-bs-lng="13.43" data-bs-lat="52.503"><Avatar size="sm" src={staticPath('avatars/000m.jpg')} /></span>
           </Map>
         </CardBody>
       </Card>
@@ -124,15 +122,13 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Popup card</CardTitle>
-          <CardSubtitle>Put the popup content in a <code>&lt;template&gt;</code> next to the marker. <code>.map-popup-card</code> makes room for an image.</CardSubtitle>
+          <CardSubtitle>Put the popup content in a <code>&lt;template&gt;</code> inside the marker. <code>.map-popup-card</code> makes room for an image.</CardSubtitle>
           <Map mapId="popup-card" title="Popup card" center={[52.546, 13.4]} zoom={11} ratio="4x3">
             {
               places.map((place) => (
-                <div data-lng={place.lng} data-lat={place.lat} data-anchor="bottom" data-open={place.open ? '' : undefined}>
-                  <span class="map-marker map-marker-pin">
-                    <Icon name="map-pin" />
-                  </span>
-                  <template class="map-popup-card">
+                <span class="map-marker map-marker-pin" data-bs-lng={place.lng} data-bs-lat={place.lat} data-bs-anchor="bottom" data-bs-popup-open={place.open ? 'true' : undefined}>
+                  <Icon name="map-pin" />
+                  <template class="map-popup-card" data-bs-close-button="true">
                     <div class="img-responsive img-responsive-21x9" style={`background-image: url(${staticPath(`photos/${place.photo}`)})`} />
                     <div class="p-3">
                       <div class="fw-medium">{place.name}</div>
@@ -142,7 +138,7 @@ const places = [
                       </a>
                     </div>
                   </template>
-                </div>
+                </span>
               ))
             }
           </Map>
@@ -156,13 +152,13 @@ const places = [
           <CardTitle>Route</CardTitle>
           <CardSubtitle>Draw a path with a GeoJSON line layer, and mark its ends with markers.</CardSubtitle>
           <Map mapId="route" title="Route" center={[52.513, 13.4046]} zoom={11.6}>
-            <div data-lng="13.3695" data-lat="52.5251"><span class="map-marker map-marker-dot"></span></div>
-            <div data-lng="13.4397" data-lat="52.505" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="map-pin" /></span></div>
+            <span class="map-marker map-marker-dot" data-bs-lng="13.3695" data-bs-lat="52.5251"></span>
+            <span class="map-marker map-marker-pin" data-bs-lng="13.4397" data-bs-lat="52.505" data-bs-anchor="bottom"><Icon name="map-pin" /></span>
           </Map>
           <CaptureScript>
             <script is:inline define:vars={{ route }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-route']
+                const map = tabler.MapView.getInstance('#map-route').map
 
                 // Layers are part of the style, so add them again each time the style loads
                 map.on('style.load', () => {
@@ -172,7 +168,7 @@ const places = [
                     type: 'line',
                     source: 'route',
                     layout: { 'line-cap': 'round', 'line-join': 'round' },
-                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 3, 'line-opacity': 0.8 },
+                    paint: { 'line-color': tabler.MapView.color('--tblr-primary'), 'line-width': 3, 'line-opacity': 0.8 },
                   })
                 })
               })
@@ -191,10 +187,10 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ area }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-area']
+                const map = tabler.MapView.getInstance('#map-area').map
 
                 map.on('style.load', () => {
-                  const color = tablerMapColor('--tblr-primary')
+                  const color = tabler.MapView.color('--tblr-primary')
 
                   map.addSource('area', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [area] } } })
                   map.addLayer({ id: 'area-fill', type: 'fill', source: 'area', paint: { 'fill-color': color, 'fill-opacity': 0.16 } })
@@ -216,11 +212,11 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ stores }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-clusters']
+                const map = tabler.MapView.getInstance('#map-clusters').map
 
                 map.on('style.load', () => {
-                  const color = tablerMapColor('--tblr-primary')
-                  const border = tablerMapColor('--tblr-bg-surface')
+                  const color = tabler.MapView.color('--tblr-primary')
+                  const border = tabler.MapView.color('--tblr-bg-surface')
 
                   map.addSource('stores', {
                     type: 'geojson',
@@ -241,7 +237,7 @@ const places = [
                     source: 'stores',
                     filter: ['has', 'point_count'],
                     layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
-                    paint: { 'text-color': tablerMapColor('--tblr-primary-fg') },
+                    paint: { 'text-color': tabler.MapView.color('--tblr-primary-fg') },
                   })
                   map.addLayer({
                     id: 'store',
@@ -286,7 +282,7 @@ const places = [
           <CaptureScript>
             <script is:inline>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-cities']
+                const map = tabler.MapView.getInstance('#map-cities').map
                 const buttons = document.querySelectorAll('#map-cities-switcher .btn')
 
                 buttons.forEach((button) => {
@@ -314,11 +310,11 @@ const places = [
           <CaptureScript>
             <script is:inline define:vars={{ cities }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-bubbles']
+                const map = tabler.MapView.getInstance('#map-bubbles').map
                 const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
 
                 map.on('style.load', () => {
-                  const color = tablerMapColor('--tblr-primary')
+                  const color = tabler.MapView.color('--tblr-primary')
 
                   map.addSource('cities', {
                     type: 'geojson',
@@ -353,27 +349,23 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Globe</CardTitle>
-          <CardSubtitle>Show the map as a 3D globe with <code>setProjection</code>, and connect places with arcs.</CardSubtitle>
+          <CardSubtitle>Show the map as a 3D globe with <code>data-bs-globe="true"</code>, and connect places with arcs.</CardSubtitle>
           <Map mapId="globe" title="Globe" center={[32, 62]} zoom={1.3} ratio="4x3" globe>
-            <div data-lng={hub.lng} data-lat={hub.lat}>
-              <span class="map-marker map-marker-dot">
-                <span class="map-marker-label">{hub.name}</span>
-              </span>
-            </div>
+            <span class="map-marker map-marker-dot" data-bs-lng={hub.lng} data-bs-lat={hub.lat}>
+              <span class="map-marker-label">{hub.name}</span>
+            </span>
             {
               destinations.map((place) => (
-                <div data-lng={place.lng} data-lat={place.lat}>
-                  <span class="map-marker map-marker-dot" style="--tblr-map-marker-size: 0.625rem">
-                    <span class="map-marker-label">{place.name}</span>
-                  </span>
-                </div>
+                <span class="map-marker map-marker-dot" style="--tblr-map-marker-size: 0.625rem" data-bs-lng={place.lng} data-bs-lat={place.lat}>
+                  <span class="map-marker-label">{place.name}</span>
+                </span>
               ))
             }
           </Map>
           <CaptureScript>
             <script is:inline define:vars={{ hub, destinations }}>
               document.addEventListener('DOMContentLoaded', () => {
-                const map = window.tabler_map['map-globe']
+                const map = tabler.MapView.getInstance('#map-globe').map
 
                 // Points along the shortest path between two places on the globe
                 const arc = (from, to, steps = 64) => {
@@ -406,7 +398,7 @@ const places = [
                     id: 'arcs',
                     type: 'line',
                     source: 'arcs',
-                    paint: { 'line-color': tablerMapColor('--tblr-primary'), 'line-width': 1.5, 'line-dasharray': [2, 2] },
+                    paint: { 'line-color': tabler.MapView.color('--tblr-primary'), 'line-width': 1.5, 'line-dasharray': [2, 2] },
                   })
                 })
               })
@@ -420,9 +412,9 @@ const places = [
       <Card>
         <CardBody>
           <CardTitle>Draggable marker</CardTitle>
-          <CardSubtitle>Add <code>draggable: true</code> to let people move a marker, for example to pick an address.</CardSubtitle>
+          <CardSubtitle>Add <code>data-bs-draggable="true"</code> to let people move a marker, for example to pick an address.</CardSubtitle>
           <Map mapId="draggable" title="Draggable marker" center={[52.52, 13.405]} zoom={12} ratio="4x3">
-            <div data-lng="13.405" data-lat="52.52" data-anchor="bottom" data-draggable><span class="map-marker map-marker-pin"><Icon name="map-pin" /></span></div>
+            <span class="map-marker map-marker-pin" data-bs-lng="13.405" data-bs-lat="52.52" data-bs-anchor="bottom" data-bs-draggable="true"><Icon name="map-pin" /></span>
           </Map>
         </CardBody>
       </Card>

@@ -1,6 +1,5 @@
 ---
 // A delivery on a map: the route, the courier position and the order status.
-// Needs <MapPalette /> on the page, before this card.
 import Map from '../demo/Map.astro'
 import CaptureScript from '../CaptureScript.astro'
 import Avatar from '@ui/Avatar.astro'
@@ -40,22 +39,18 @@ const courierAt = 5
         <Progress value={62} size="sm" color="green" />
       </div>
     </div>
-    <div data-lng={route[0]?.[0]} data-lat={route[0]?.[1]}><span class="map-marker map-marker-dot"></span></div>
-    <div data-lng={route[courierAt]?.[0]} data-lat={route[courierAt]?.[1]}>
-      <span class="map-marker map-marker-green"><Icon name="truck-delivery" /></span>
-    </div>
-    <div data-lng={route.at(-1)?.[0]} data-lat={route.at(-1)?.[1]} data-anchor="bottom">
-      <span class="map-marker map-marker-pin"><Icon name="home" /></span>
-    </div>
+    <span class="map-marker map-marker-dot" data-bs-lng={route[0]?.[0]} data-bs-lat={route[0]?.[1]}></span>
+    <span class="map-marker map-marker-green" data-bs-lng={route[courierAt]?.[0]} data-bs-lat={route[courierAt]?.[1]}><Icon name="truck-delivery" /></span>
+    <span class="map-marker map-marker-pin" data-bs-lng={route.at(-1)?.[0]} data-bs-lat={route.at(-1)?.[1]} data-bs-anchor="bottom"><Icon name="home" /></span>
   </Map>
   <CaptureScript>
     <script is:inline define:vars={{ route, courierAt }}>
       document.addEventListener('DOMContentLoaded', () => {
-        const map = window.tabler_map['map-delivery']
+        const map = tabler.MapView.getInstance('#map-delivery').map
         const line = (coordinates) => ({ type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } })
 
         map.on('style.load', () => {
-          const color = tablerMapColor('--tblr-primary')
+          const color = tabler.MapView.color('--tblr-primary')
 
           // The part of the route still to drive is dashed, the part already driven is solid
           map.addSource('route-left', line(route.slice(courierAt)))

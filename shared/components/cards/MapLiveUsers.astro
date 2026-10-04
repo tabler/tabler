@@ -1,6 +1,5 @@
 ---
 // A world map of active users, with the total in a card over the map.
-// Needs <MapPalette /> on the page, before this card.
 import Map from '../demo/Map.astro'
 import CaptureScript from '../CaptureScript.astro'
 import Card from '@ui/Card.astro'
@@ -38,7 +37,7 @@ const cities = [
   <CaptureScript>
     <script is:inline define:vars={{ cities }}>
       document.addEventListener('DOMContentLoaded', () => {
-        const map = window.tabler_map['map-live-users']
+        const map = tabler.MapView.getInstance('#map-live-users').map
         const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
 
         map.on('style.load', () => {
@@ -50,7 +49,7 @@ const cities = [
             id: 'cities',
             type: 'circle',
             source: 'cities',
-            paint: { 'circle-color': tablerMapColor('--tblr-primary'), 'circle-opacity': 0.6, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 3, 1600, 14] },
+            paint: { 'circle-color': tabler.MapView.color('--tblr-primary'), 'circle-opacity': 0.6, 'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 3, 1600, 14] },
           })
         })
 

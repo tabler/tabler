@@ -1,42 +1,8 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import CaptureScript from '@shared/components/CaptureScript.astro'
-import MapPalette from '@components/demo/MapPalette.astro'
 ---
 
 <DefaultLayout title="Full Size Map" pageHeader={false} pageMenu="plugins.map-fullsize" pageLibs={['maplibre-gl']} navbarPosition="vertical" wrapperFull>
   <h1 class="visually-hidden">Full Size Map</h1>
-  <MapPalette />
-  <div class="map flex-fill" id="map-fullsize" role="img" aria-label="Map of Berlin"></div>
-  <CaptureScript>
-    <!-- BEGIN MAP SCRIPT -->
-    <script is:inline>
-      window.tabler_map ??= {}
-
-      function initMap() {
-        const theme = () => (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light')
-        const themeStyle = () => `https://tiles.openfreemap.org/styles/${theme() === 'dark' ? 'dark' : 'positron'}`
-
-        const map = new maplibregl.Map({
-          container: 'map-fullsize',
-          style: themeStyle(),
-          zoom: 12,
-          center: [13.4049, 52.518827],
-        })
-
-        map.addControl(new maplibregl.NavigationControl())
-
-        // Softer map colors, set again each time the style loads
-        map.on('style.load', () => tablerMapPalette(map, theme()))
-
-        // Change the map style when the page theme changes
-        new MutationObserver(() => map.setStyle(themeStyle())).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] })
-
-        window.tabler_map['map-fullsize'] = map
-      }
-
-      document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true })
-    </script>
-    <!-- END MAP SCRIPT -->
-  </CaptureScript>
+  <div class="map flex-fill" id="map-fullsize" role="region" aria-label="Map of Berlin" data-bs-toggle="map" data-bs-center="13.4049,52.518827" data-bs-zoom="12" data-bs-controls="true"></div>
 </DefaultLayout>

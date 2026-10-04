@@ -1,12 +1,10 @@
 ---
-// MapLibre GL map on OpenFreeMap tiles: no account and no access token.
-// The map follows the page theme: `style` in light mode, `darkStyle` in dark.
-// With <MapPalette /> on the page, the default styles get softer colors.
-// Markers written in HTML go in the default slot: each child has `data-lng`
-// and `data-lat`, holds the marker element, and optionally a `<template>` with
-// the popup content. Renders nothing unless maps[mapId] exists or `center` is set.
+// A map drawn by the Tabler `MapView` component (core/js/src/map.ts) on top of
+// MapLibre GL JS: the markup below is all a page needs, there is no script.
+// Markers go in the default slot, as elements with `data-bs-lng` and
+// `data-bs-lat`; content laid over the map goes in the `overlay` slot.
+// Renders nothing unless maps[mapId] exists or `center` is set.
 import maps from '@data/maps.json';
-import CaptureScript from '../CaptureScript.astro';
 
 interface Props {
 	/** Key into the maps data; also the suffix of the container id */
@@ -44,19 +42,9 @@ type MapData = {
 };
 
 const data: MapData | undefined = (maps as unknown as Record<string, MapData>)[mapId] ?? (centerProp ? { title, center: centerProp, zoom: zoomProp, style: styleProp, controls: controlsProp } : undefined);
-const hasHtmlMarkers = Astro.slots.has('default');
 
-const mapContainerId = `map-${mapId}`;
-const styleUrl = (name: string) => `https://tiles.openfreemap.org/styles/${name}`;
-const style = styleUrl(data?.style ?? 'positron');
-const darkStyle = styleUrl(data?.darkStyle ?? 'dark');
-// The softer palette (MapPalette.astro) is made for these two styles only
-const palette = { light: !data?.style || data.style === 'positron', dark: !data?.darkStyle || data.darkStyle === 'dark' };
-const controls = data?.controls ?? false;
-const zoom = data?.zoom ?? 13;
-const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
-const markers = (data?.markers ?? []).map((marker) => ({ name: marker.name, coords: [marker.center[1], marker.center[0]] }));
-
+// The data keeps [latitude, longitude]; the component takes longitude first
+const center = data?.center ? `${data.center[1]},${data.center[0]}` : '13.4049,52.518827';
 const ratioClass = data?.ratio ?? ratio ?? '16x9';
 ---
 
@@ -64,86 +52,24 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<div class:list={height ? 'position-relative' : `ratio ratio-${ratioClass}`} style={height ? `height: ${height}` : undefined}>
 			<div class:list={[height && 'h-100']}>
-				<div id={mapContainerId} class:list={['w-100 h-100', rounded && 'rounded']} role="img" aria-label={data.title ?? 'Map'} />
+				<div
+					id={`map-${mapId}`}
+					class:list={['w-100 h-100', rounded && 'rounded']}
+					role="region"
+					aria-label={data.title ?? 'Map'}
+					data-bs-toggle="map"
+					data-bs-center={center}
+					data-bs-zoom={data.zoom ?? 13}
+					data-bs-map-style={data.style}
+					data-bs-map-style-dark={data.darkStyle}
+					data-bs-controls={data.controls ? 'true' : undefined}
+					data-bs-globe={globe ? 'true' : undefined}
+				>
+					{(data.markers ?? []).map((marker) => <span class="map-marker map-marker-dot" data-bs-lng={marker.center[1]} data-bs-lat={marker.center[0]} data-bs-popup={marker.name} />)}
+					<slot />
+				</div>
 				<slot name="overlay" />
 			</div>
 		</div>
-	)
-}
-{
-	data && hasHtmlMarkers && (
-		<div id={`${mapContainerId}-markers`} hidden>
-			<slot />
-		</div>
-	)
-}
-{
-	data && (
-		<CaptureScript>
-			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapContainerId, style, darkStyle, palette, controls, globe, zoom, center, markers }}>
-				window.tabler_map ??= {};
-
-				function initMap() {
-					const theme = () => (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light');
-					const themeStyle = () => (theme() === 'dark' ? darkStyle : style);
-
-					const map = new maplibregl.Map({
-						container: mapContainerId,
-						style: themeStyle(),
-						zoom,
-						center,
-					});
-
-					// Softer map colors, when the page has the palette script
-					map.on('style.load', () => {
-						if (window.tablerMapPalette && palette[theme()]) {
-							window.tablerMapPalette(map, theme());
-						}
-					});
-
-					if (controls) {
-						map.addControl(new maplibregl.NavigationControl());
-					}
-
-					if (globe) {
-						// The projection is part of the style, so set it again each time the style loads
-						map.on('style.load', () => map.setProjection({ type: 'globe' }));
-					}
-
-					markers.forEach((marker) => {
-						const element = document.createElement('span');
-
-						element.className = 'map-marker map-marker-dot';
-						new maplibregl.Marker({ element }).setLngLat(marker.coords).setPopup(new maplibregl.Popup({ offset: 16, closeButton: false }).setText(marker.name)).addTo(map);
-					});
-
-					// Markers written in HTML: the first child is the marker, a <template> is its popup
-					document.querySelectorAll(`#${mapContainerId}-markers > [data-lng]`).forEach((item) => {
-						const anchor = item.dataset.anchor ?? 'center';
-						const marker = new maplibregl.Marker({ element: item.firstElementChild, anchor, draggable: 'draggable' in item.dataset });
-						const popup = item.querySelector('template');
-
-						if (popup) {
-							marker.setPopup(new maplibregl.Popup({ offset: anchor === 'bottom' ? 40 : 16, className: popup.className, maxWidth: 'none', focusAfterOpen: !('open' in item.dataset) }).setDOMContent(popup.content));
-						}
-
-						marker.setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)]).addTo(map);
-
-						if (popup && 'open' in item.dataset) {
-							marker.togglePopup();
-						}
-					});
-
-					// Change the map style when the page theme changes
-					new MutationObserver(() => map.setStyle(themeStyle())).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] });
-
-					window.tabler_map[mapContainerId] = map;
-				}
-
-				document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
-			</script>
-			<!-- END MAP -->
-		</CaptureScript>
 	)
 }
