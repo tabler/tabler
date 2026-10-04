@@ -1,7 +1,7 @@
 ---
 title: Map
-summary: A map shows places and markers on an interactive world map. Tabler provides the markup and the setup code, and the map itself is rendered by MapLibre GL JS.
-description: Show interactive maps with markers using MapLibre GL JS and free map tiles. No account or access token is needed.
+summary: A map shows places and markers on an interactive world map. Tabler turns a single element into a themed map, and the map itself is rendered by MapLibre GL JS.
+description: Show interactive maps with markers, popups and a matching dark mode from plain HTML, using MapLibre GL JS and free map tiles. No account or access token is needed.
 related: [/ui/plugins/vector-map]
 docs-libs: [maplibre-gl]
 source: core/scss/vendor/_maplibre.scss
@@ -33,22 +33,22 @@ classnames:
 ---
 import Example from '@components/Example.astro';
 import Map from '@shared/components/demo/Map.astro';
-import MapPalette from '@shared/components/demo/MapPalette.astro';
 import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 import { Code } from 'astro:components';
 import { site } from '@shared/lib/site.ts';
 
-<MapPalette />
-
 ## Overview
 
-The map is a small wrapper around [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/), an open-source map library. Tabler gives you the container markup and a short init script. MapLibre draws the tiles, handles zoom, and renders the markers.
+The map component turns an element into an interactive map. Add `data-bs-toggle="map"` to it, set the center and the zoom with data attributes, and write the markers as child elements. No script is needed.
 
-The demos load their map tiles from [OpenFreeMap](https://openfreemap.org/). It needs no account and no access token, and it can be used in commercial projects. If you only need a simple map of countries or regions, use the [vector map](/ui/plugins/vector-map) instead. It makes no network calls at all.
+The map is drawn by [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/), an open-source map library, which you load next to Tabler. The map tiles come from [OpenFreeMap](https://openfreemap.org/). It needs no account and no access token, and it can be used in commercial projects.
+
+If you only need a simple map of countries or regions, use the [vector map](/ui/plugins/vector-map) instead. It makes no network calls at all.
 
 ## Installation
 
-MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the stylesheet, then import the library in a module script:
+MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the stylesheet, then import the library in a module script, before the Tabler script:
 
 <Code
 	lang="html"
@@ -56,14 +56,15 @@ MapLibre GL JS is published as an ES module. Tabler uses version 6. Load the sty
 <script type="module">
   import * as maplibregl from '${site.cdnUrl}/dist/libs/maplibre-gl/dist/maplibre-gl.mjs'
 
-  // Makes the library available to the other scripts on the page
+  // The map component looks for the library here
   window.maplibregl = maplibregl
-</script>`}
+</script>
+<script src="${site.cdnUrl}/dist/js/tabler.min.js" defer></script>`}
 />
 
-A module script runs before the `DOMContentLoaded` event, so the code examples on this page can use the `maplibregl` global. The library loads two more files from the same folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together when you host them yourself.
+The library loads two more files from the same folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together when you host them yourself.
 
-With a bundler, install the package and import it in your code:
+With a bundler, install the package and set the global before you import Tabler:
 
 ```bash
 npm install maplibre-gl
@@ -72,6 +73,8 @@ npm install maplibre-gl
 ```js
 import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
+
+window.maplibregl = maplibregl
 ```
 
 <Danger title="Use version 6.4.1 or newer">
@@ -89,177 +92,182 @@ Tabler styles the map controls, popups and attribution to match the interface, i
 
 ## Usage
 
-### Markup
+### Basic map
 
-Put the map container inside a `ratio` element, so the map keeps its shape on every screen size. Give the inner element an `id` and the `w-100 h-100` classes.
-
-<Example codeOnly>
-<div class="ratio ratio-16x9">
-  <div><div id="map-simple" class="w-100 h-100"></div></div>
-</div>
-</Example>
-
-Change the shape with the ratio classes, for example `ratio-21x9` for a wide map or `ratio-1x1` for a square one.
-
-### Init the map
-
-Create the map after the DOM is ready. Pass the id of your container, a style, a zoom level, and a center point.
-
-```js
-document.addEventListener('DOMContentLoaded', function () {
-  const map = new maplibregl.Map({
-    container: 'map-simple',
-    style: 'https://tiles.openfreemap.org/styles/positron',
-    zoom: 13,
-    center: [13.4049, 52.518827],
-  })
-})
-```
+Put the map element inside a `ratio` element, so the map keeps its shape on every screen size. `data-bs-center` takes the longitude first and the latitude second. This is the opposite of what most map services show.
 
 <Example flush>
 <Map rounded={false} mapId="simple" />
 </Example>
 
-`center` takes the longitude first and the latitude second. This is the opposite of what most map services show.
+Change the shape with the ratio classes, for example `ratio-21x9` for a wide map or `ratio-1x1` for a square one. Add `data-bs-controls="true"` for the zoom and compass buttons.
 
 ### Map styles
 
-Set `style` to the URL of any MapLibre style. OpenFreeMap has five of them:
+The map uses a light gray style in light mode and a dark one in dark mode. Tabler softens their colors, so markers and data stand out. Set another style with `data-bs-map-style`: the name of an OpenFreeMap style, or the URL of any MapLibre style.
 
 | Style | Result |
 | --- | --- |
-| `https://tiles.openfreemap.org/styles/positron` | Light gray map, used by the Tabler demos with [softer colors](#map-colors). Markers and data stand out on it. |
-| `https://tiles.openfreemap.org/styles/dark` | Dark gray map, used by the demos in dark mode. |
-| `https://tiles.openfreemap.org/styles/liberty` | Street map in color. |
-| `https://tiles.openfreemap.org/styles/bright` | Street map with stronger colors. |
-| `https://tiles.openfreemap.org/styles/fiord` | Dark blue map. |
+| `positron` | Light gray map. The default in light mode. |
+| `dark` | Dark gray map. The default in dark mode. |
+| `liberty` | Street map in color. |
+| `bright` | Street map with stronger colors. |
+| `fiord` | Dark blue map. |
 
 <Example flush>
 <Map rounded={false} mapId="light" />
 </Example>
 
-### Map colors
+`data-bs-map-style-dark` sets the style for dark mode. Styles from other providers work the same way, as long as they follow the MapLibre style format. Check the terms of each provider, as many of them need an API key or a paid plan.
 
-The Tabler demos make the `positron` and `dark` styles softer: near-white land, pale water and muted labels in light mode, and blue-gray water and roads in dark mode. They do it by changing the paint values of the style layers after the style loads:
+### Dark mode
 
-```js
-map.on('style.load', function () {
-  map.setPaintProperty('background', 'background-color', '#fafaf8')
-  map.setPaintProperty('water', 'fill-color', '#d4dadc')
-  map.setPaintProperty('boundary_2', 'line-color', '#e3cdd0')
-})
-```
-
-The full list of colors for both modes is in the `tablerMapPalette()` function in the source of the [maps preview page](https://preview.tabler.io/maps.html). Copy it to get the same look. The layer names belong to the OpenFreeMap styles, so the function works only with them.
-
-Styles from other providers work the same way, as long as they follow the MapLibre style format. Check the terms of each provider, as many of them need an API key or a paid plan.
+The map follows the nearest `data-bs-theme` and changes its style when the theme changes. Markers and popups stay on the map. To keep one look in both modes, set `data-bs-map-theme` to `light` or `dark`.
 
 ### Markers
 
-Add a marker for each place. `setLngLat` takes the same longitude and latitude order as `center`. The demos use a small dot, drawn with the `.map-marker` and `.map-marker-dot` classes.
+Each child element with `data-bs-lng` and `data-bs-lat` becomes a marker. Use the `.map-marker` class to draw it: a circle in the primary color that can hold an icon, a short count or an avatar. Put a `.map-marker-label` element inside the marker for a short text under it.
 
-```js
-const cities = [
-  [-58.666667, -34.58333333], // Buenos Aires
-  [16.366667, 48.2], // Vienna
-  [116.383333, 39.91666667], // Beijing
-]
+Add `.map-marker-dot` for a small dot, or `.map-marker-pin` for a pin that points down. A pin needs `data-bs-anchor="bottom"`, so its tip sits on the place. Change the color with `.map-marker-{color}`.
 
-cities.forEach(function (coords) {
-  const element = document.createElement('span')
-  element.className = 'map-marker map-marker-dot'
+<Example flush>
+<Map rounded={false} mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11}>
+  <span class="map-marker map-marker-dot" data-bs-lng="13.345" data-bs-lat="52.54"></span>
+  <span class="map-marker map-marker-dot map-marker-red" data-bs-lng="13.39" data-bs-lat="52.545"></span>
+  <span class="map-marker" data-bs-lng="13.445" data-bs-lat="52.538"><Icon name="building-store" /><span class="map-marker-label">Store</span></span>
+  <span class="map-marker map-marker-green" data-bs-lng="13.35" data-bs-lat="52.512">12</span>
+  <span class="map-marker map-marker-pin" data-bs-lng="13.405" data-bs-lat="52.522" data-bs-anchor="bottom"><Icon name="home" /></span>
+  <span class="map-marker map-marker-pin map-marker-red" data-bs-lng="13.47" data-bs-lat="52.518" data-bs-anchor="bottom"><Icon name="star" /></span>
+  <span class="map-marker" data-bs-lng="13.43" data-bs-lat="52.508"><span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span></span>
+</Map>
+</Example>
 
-  new maplibregl.Marker({ element: element }).setLngLat(coords).addTo(map)
-})
-```
+Add `data-bs-draggable="true"` to let people move a marker, for example to pick an address.
+
+HTML markers work well for up to a few hundred places. For more, use [clusters](#clusters).
+
+### Popups
+
+Add `data-bs-popup` to a marker for a short text that opens when the marker is clicked. Tabler draws the popup as a small bordered panel with no arrow.
 
 <Example flush>
 <Map rounded={false} mapId="markers" />
 </Example>
 
-Without `element`, MapLibre draws its own pin. Its `color` option accepts a CSS variable, for example `var(--tblr-primary)`.
-
-### Custom markers
-
-To draw a marker in HTML, create an element with the `.map-marker` class and pass it as `element`. The marker is a circle in the primary color. Put an icon, a short count or an avatar inside it.
-
-```js
-const element = document.createElement('span')
-element.className = 'map-marker map-marker-green'
-element.textContent = '12'
-
-new maplibregl.Marker({ element: element }).setLngLat([13.35, 52.512]).addTo(map)
-```
-
-Put a `.map-marker-label` element inside the marker for a short text under it.
-
-Add `.map-marker-dot` for a small dot, or `.map-marker-pin` for a pin that points down. A pin needs `anchor: 'bottom'`, so its tip sits on the place. Change the color with `.map-marker-{color}`.
-
-```js
-const pin = document.createElement('span')
-pin.className = 'map-marker map-marker-pin map-marker-red'
-
-new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([13.47, 52.518]).addTo(map)
-```
+For richer content, put a `<template>` inside the marker. Its content becomes the popup. Add the `map-popup-card` class to the template for a popup with an image: it removes the padding and sets a fixed width, so the image reaches the edges. `data-bs-close-button="true"` on the template adds a close button, and `data-bs-popup-open="true"` on the marker opens the popup from the start.
 
 <Example flush>
-<Map rounded={false} mapId="marker-styles" title="Marker styles" center={[52.522, 13.405]} zoom={11}>
-  <div data-lng="13.345" data-lat="52.54"><span class="map-marker map-marker-dot"></span></div>
-  <div data-lng="13.39" data-lat="52.545"><span class="map-marker map-marker-dot map-marker-red"></span></div>
-  <div data-lng="13.445" data-lat="52.538"><span class="map-marker"><Icon name="building-store" /><span class="map-marker-label">Store</span></span></div>
-  <div data-lng="13.35" data-lat="52.512"><span class="map-marker map-marker-green">12</span></div>
-  <div data-lng="13.405" data-lat="52.522" data-anchor="bottom"><span class="map-marker map-marker-pin"><Icon name="home" /></span></div>
-  <div data-lng="13.47" data-lat="52.518" data-anchor="bottom"><span class="map-marker map-marker-pin map-marker-red"><Icon name="star" /></span></div>
-  <div data-lng="13.43" data-lat="52.508"><span class="map-marker"><span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span></span></div>
+<Map rounded={false} mapId="popup-card" title="Popup card" center={[52.546, 13.4]} zoom={11} ratio="4x3">
+  <span class="map-marker map-marker-pin" data-bs-lng="13.4019" data-bs-lat="52.5169" data-bs-anchor="bottom" data-bs-popup-open="true">
+    <Icon name="map-pin" />
+    <template class="map-popup-card" data-bs-close-button="true">
+      <div class="img-responsive img-responsive-21x9" style="background-image: url(/static/photos/a-visit-to-the-bookstore.jpg)"></div>
+      <div class="p-3">
+        <div class="fw-medium">Museum Island</div>
+        <div class="text-secondary mb-3">Five museums on the Spree, open daily.</div>
+        <a href="#" class="btn btn-primary btn-sm">View details</a>
+      </div>
+    </template>
+  </span>
 </Map>
 </Example>
 
-You can also write the markers in the page and move them to the map. The preview pages do this: each marker sits in a hidden element with `data-lng` and `data-lat`, and a short loop passes it to MapLibre.
+### Globe
+
+Add `data-bs-globe="true"` to draw the map as a 3D globe. Use a low zoom, between 1 and 2, to see the whole globe. People can turn it by dragging.
 
 ```html
-<div id="map-markers" hidden>
-  <div data-lng="13.405" data-lat="52.522">
-    <span class="map-marker map-marker-pin">...</span>
+<div class="w-100 h-100" data-bs-toggle="map" data-bs-center="62,32" data-bs-zoom="1.3" data-bs-globe="true"></div>
+```
+
+### Content over the map
+
+To put buttons or a small card over the map, place them next to the map element and position them with the utility classes:
+
+```html
+<div class="ratio ratio-16x9">
+  <div>
+    <div class="w-100 h-100 rounded" data-bs-toggle="map" data-bs-center="13.405,52.52" data-bs-zoom="10"></div>
+    <div class="btn-list position-absolute top-0 start-0 m-2">
+      <button type="button" class="btn btn-sm btn-pill btn-primary">Berlin</button>
+      <button type="button" class="btn btn-sm btn-pill">Tokyo</button>
+    </div>
   </div>
 </div>
 ```
 
+### Attribution
+
+MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap requires it, so do not hide it.
+
+## Layers
+
+Lines, areas and large sets of points are drawn as map layers. For these, take the MapLibre map from the component and use its own API. The `map` property is the [MapLibre map](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/).
+
+A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in the `style.load` event. It runs when the map starts and again each time the style changes, for example on a theme change.
+
 ```js
-document.querySelectorAll('#map-markers > [data-lng]').forEach(function (item) {
-  new maplibregl.Marker({ element: item.firstElementChild, anchor: 'bottom' })
-    .setLngLat([Number(item.dataset.lng), Number(item.dataset.lat)])
-    .addTo(map)
+document.addEventListener('DOMContentLoaded', function () {
+  const map = tabler.MapView.getInstance('#map-route').map
+
+  map.on('style.load', function () {
+    map.addSource('route', {
+      type: 'geojson',
+      data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [[13.3695, 52.5251], [13.4132, 52.5219], [13.4397, 52.505]] } },
+    })
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: 'route',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': tabler.MapView.color('--tblr-primary'), 'line-width': 3 },
+    })
+  })
 })
 ```
 
-### Draggable markers
+For an area, use a `Polygon` geometry with a `fill` layer, and a `line` layer for its outline.
 
-Pass `draggable: true` to let people move a marker, for example to pick an address. Read the new position in the `dragend` event.
+### Theme colors in layers
+
+MapLibre draws layers on a canvas, so a CSS variable does not work in `paint`, and neither do the `oklch()` values Tabler colors are written in. `MapView.color()` turns a variable, or any CSS color, into a plain `rgb()` color. Call it inside `style.load`, so the colors are read again after a theme change.
 
 ```js
-const marker = new maplibregl.Marker({ element: pin, anchor: 'bottom', draggable: true }).setLngLat([13.405, 52.52]).addTo(map)
+tabler.MapView.color('--tblr-primary') // 'rgb(6, 111, 209)'
+```
 
-marker.on('dragend', function () {
-  console.log(marker.getLngLat())
+### Clusters
+
+Put many points in a GeoJSON source with `cluster: true`. MapLibre then groups nearby points and splits the groups as you zoom in.
+
+```js
+map.addSource('stores', { type: 'geojson', data: stores, cluster: true, clusterRadius: 40 })
+
+// Circle for each cluster, larger for more points
+map.addLayer({
+  id: 'clusters',
+  type: 'circle',
+  source: 'stores',
+  filter: ['has', 'point_count'],
+  paint: { 'circle-color': tabler.MapView.color('--tblr-primary'), 'circle-radius': ['step', ['get', 'point_count'], 14, 10, 18, 25, 24] },
+})
+
+// Number of points in the cluster
+map.addLayer({
+  id: 'cluster-count',
+  type: 'symbol',
+  source: 'stores',
+  filter: ['has', 'point_count'],
+  layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
+  paint: { 'text-color': '#ffffff' },
 })
 ```
 
-### Popups
-
-Attach a popup to a marker with `setPopup`. It opens when the marker is clicked. Click a marker on the map above to see one. Tabler draws the popup as a small bordered panel with no arrow.
-
-```js
-new maplibregl.Marker({ element: element })
-  .setLngLat([16.366667, 48.2])
-  .setPopup(new maplibregl.Popup({ offset: 16, closeButton: false }).setText('Vienna'))
-  .addTo(map)
-```
-
-Leave out `closeButton: false` to show a close button in the corner. The popup also closes on a click on the map.
+`text-font` has to be a font the map style provides. All OpenFreeMap styles have `Noto Sans Regular`.
 
 ### Tooltips
 
-For a short label on hover, add the `map-tooltip` class to a popup. It turns the popup into a small dark label.
+For a short label on hover, add the `map-tooltip` class to a MapLibre popup. It turns the popup into a small dark label.
 
 ```js
 const tooltip = new maplibregl.Popup({ closeButton: false, offset: 12, className: 'map-tooltip' })
@@ -272,266 +280,78 @@ map.on('mouseleave', 'cities', function () {
 })
 ```
 
-Use `setHTML` instead of `setText` for richer content. Only pass HTML you trust, as it is not escaped.
+Live versions of a route, an area, clusters, a bubble map, a globe with arcs and a city switcher are on the [maps preview page](https://preview.tabler.io/maps.html). The [map blocks page](https://preview.tabler.io/map-blocks.html) has larger examples: a store locator, a delivery tracker, a map of live users and a vector map of users by country.
 
-### Popup card
+## JavaScript
 
-For a popup with an image, add the `map-popup-card` class with the `className` option. It removes the padding and sets a fixed width, so the image reaches the edges. Keep the content in a `<template>` and pass it with `setDOMContent`.
+### Via data attributes
 
-```html
-<template id="popup-museum">
-  <div class="img-responsive img-responsive-21x9" style="background-image: url(...)"></div>
-  <div class="p-3">
-    <div class="fw-medium">Museum Island</div>
-    <div class="text-secondary mb-3">Five museums on the Spree, open daily.</div>
-    <a href="#" class="btn btn-primary btn-sm">View details</a>
-  </div>
-</template>
-```
+An element with `data-bs-toggle="map"` becomes a map when the Tabler script loads:
+
+<CodeDocs name="map-init" file="core/js/src/map.ts" />
+
+### Via JavaScript
+
+Create a map from your own code with the same options:
 
 ```js
-const popup = new maplibregl.Popup({ offset: 40, className: 'map-popup-card', maxWidth: 'none' })
-  .setDOMContent(document.getElementById('popup-museum').content)
-
-new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat([13.4019, 52.5169]).setPopup(popup).addTo(map)
-```
-
-<Example flush>
-<Map rounded={false} mapId="popup-card" title="Popup card" center={[52.546, 13.4]} zoom={11} ratio="4x3">
-  <div data-lng="13.4019" data-lat="52.5169" data-anchor="bottom" data-open>
-    <span class="map-marker map-marker-pin"><Icon name="map-pin" /></span>
-    <template class="map-popup-card">
-      <div class="img-responsive img-responsive-21x9" style="background-image: url(/static/photos/a-visit-to-the-bookstore.jpg)"></div>
-      <div class="p-3">
-        <div class="fw-medium">Museum Island</div>
-        <div class="text-secondary mb-3">Five museums on the Spree, open daily.</div>
-        <a href="#" class="btn btn-primary btn-sm">View details</a>
-      </div>
-    </template>
-  </div>
-</Map>
-</Example>
-
-### Controls
-
-Add the zoom and compass buttons with `NavigationControl`. They go to the top right corner by default.
-
-```js
-map.addControl(new maplibregl.NavigationControl())
-```
-
-MapLibre also has `FullscreenControl`, `GeolocateControl` and `ScaleControl`. Pass a corner as the second argument, for example `'bottom-left'`.
-
-### Dark mode
-
-A map style does not change with the page theme on its own. Pick the style from the `data-bs-theme` attribute, and set it again when the attribute changes:
-
-```js
-const themeStyle = function () {
-  const dark = document.documentElement.getAttribute('data-bs-theme') === 'dark'
-  return 'https://tiles.openfreemap.org/styles/' + (dark ? 'dark' : 'positron')
-}
-
-const map = new maplibregl.Map({
-  container: 'map-simple',
-  style: themeStyle(),
-  zoom: 13,
-  center: [13.4049, 52.518827],
-})
-
-new MutationObserver(function () {
-  map.setStyle(themeStyle())
-}).observe(document.documentElement, { attributeFilter: ['data-bs-theme'] })
-```
-
-Markers and popups stay on the map when the style changes. The maps on this page follow the theme this way.
-
-### Layers
-
-Lines, areas and large sets of points are drawn as layers. A layer reads its data from a GeoJSON source. Layers are part of the map style, so add them in the `style.load` event. It runs when the map starts and again each time the style changes, for example on a theme change.
-
-```js
-map.on('style.load', function () {
-  map.addSource('route', {
-    type: 'geojson',
-    data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [[13.3695, 52.5251], [13.4132, 52.5219], [13.4397, 52.505]] } },
-  })
-  map.addLayer({
-    id: 'route',
-    type: 'line',
-    source: 'route',
-    layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: { 'line-color': '#066fd1', 'line-width': 3, 'line-opacity': 0.8 },
-  })
+const view = new tabler.MapView('#map', {
+  center: [13.405, 52.52],
+  zoom: 12,
+  controls: true,
 })
 ```
 
-For an area, use a `Polygon` geometry with a `fill` layer, and a `line` layer for its outline:
+### Options
 
-```js
-map.addLayer({ id: 'area-fill', type: 'fill', source: 'area', paint: { 'fill-color': '#066fd1', 'fill-opacity': 0.16 } })
-map.addLayer({ id: 'area-outline', type: 'line', source: 'area', paint: { 'line-color': '#066fd1', 'line-width': 2 } })
-```
+Pass options as data attributes, with the name written in kebab case after `data-bs-`, or in the config object.
 
-### Theme colors in layers
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `center` | array, string | `[0, 0]` | Center of the map: `[longitude, latitude]`, or the two numbers in a string such as `"13.405,52.52"`. |
+| `zoom` | number | `1` | Zoom level, from 0 for the whole world to about 20 for a building. |
+| `mapStyle` | string | `'positron'` | Name of an OpenFreeMap style, or the URL of a MapLibre style. |
+| `mapStyleDark` | string | `'dark'` | Style used in dark mode. Set `null` to keep `mapStyle` in both modes. |
+| `mapTheme` | string | `'auto'` | `'auto'` follows the nearest `[data-bs-theme]`; `'light'` or `'dark'` keeps one look. |
+| `palette` | boolean | `true` | Softer colors for the `positron` and `dark` styles. Other styles are left as they are. |
+| `controls` | boolean | `false` | Show the zoom and compass buttons. |
+| `globe` | boolean | `false` | Draw the map as a 3D globe. |
+| `mapOptions` | object | `{}` | Any [MapLibre map option](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapOptions/), passed straight through. |
 
-MapLibre draws layers on a canvas, so a CSS variable does not work in `paint`, and neither do the `oklch()` values Tabler colors are written in. Turn the variable into a plain `rgb()` color first:
+A marker element takes these attributes:
 
-```js
-function mapColor(name) {
-  const context = document.createElement('canvas').getContext('2d')
-  const probe = document.body.appendChild(document.createElement('span'))
+| Attribute | Description |
+| --- | --- |
+| `data-bs-lng`, `data-bs-lat` | Position of the marker. Both are needed. |
+| `data-bs-anchor` | Part of the marker that sits on the position: `center` by default, `bottom` for a pin. |
+| `data-bs-draggable` | Set `true` to let people move the marker. |
+| `data-bs-popup` | Text of a popup that opens when the marker is clicked. |
+| `data-bs-popup-open` | Set `true` to open the popup from the start. |
 
-  probe.style.color = 'var(' + name + ')'
-  context.fillStyle = getComputedStyle(probe).color
-  context.fillRect(0, 0, 1, 1)
-  probe.remove()
+### Methods
 
-  const pixel = context.getImageData(0, 0, 1, 1).data
+| Name | Description |
+| --- | --- |
+| `map` | The MapLibre map, for layers, events and everything else the options do not cover. |
+| `markers` | The MapLibre markers made from the child elements, in document order. |
+| `dispose()` | Removes the map, its markers and the instance. |
+| `MapView.color(value)` | Turns a CSS variable or color into a plain `rgb()` color for a map layer. |
+| `MapView.getInstance(element)` | Returns the instance for an element, or `null`. |
+| `MapView.getOrCreateInstance(element)` | Returns the instance, or creates one. |
 
-  return 'rgb(' + pixel[0] + ', ' + pixel[1] + ', ' + pixel[2] + ')'
-}
+### Events
 
-map.addLayer({ id: 'route', type: 'line', source: 'route', paint: { 'line-color': mapColor('--tblr-primary'), 'line-width': 3 } })
-```
-
-Call it inside `style.load`, so the colors are read again after a theme change.
-
-### Clusters
-
-HTML markers work well for up to a few hundred places. For more, put the points in a GeoJSON source with `cluster: true`. MapLibre then groups nearby points and splits the groups as you zoom in.
-
-```js
-map.addSource('stores', { type: 'geojson', data: stores, cluster: true, clusterRadius: 40 })
-
-// Circle for each cluster, larger for more points
-map.addLayer({
-  id: 'clusters',
-  type: 'circle',
-  source: 'stores',
-  filter: ['has', 'point_count'],
-  paint: { 'circle-color': '#066fd1', 'circle-radius': ['step', ['get', 'point_count'], 14, 10, 18, 25, 24] },
-})
-
-// Number of points in the cluster
-map.addLayer({
-  id: 'cluster-count',
-  type: 'symbol',
-  source: 'stores',
-  filter: ['has', 'point_count'],
-  layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
-  paint: { 'text-color': '#ffffff' },
-})
-
-// Single points
-map.addLayer({ id: 'store', type: 'circle', source: 'stores', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': '#066fd1', 'circle-radius': 6 } })
-```
-
-`text-font` has to be a font the map style provides. All OpenFreeMap styles have `Noto Sans Regular`.
-
-### Bubble map
-
-To size circles by a value, read it from the feature with `['get', ...]` and map it to a radius with `interpolate`:
-
-```js
-map.addLayer({
-  id: 'cities',
-  type: 'circle',
-  source: 'cities',
-  paint: {
-    'circle-color': '#066fd1',
-    'circle-opacity': 0.6,
-    'circle-radius': ['interpolate', ['linear'], ['get', 'users'], 0, 4, 1600, 24],
-  },
-})
-```
-
-### Content over the map
-
-To put buttons or a small card over the map, place them next to the map container and position them with the utility classes:
-
-```html
-<div class="ratio ratio-16x9">
-  <div>
-    <div id="map-cities" class="w-100 h-100 rounded"></div>
-    <div class="btn-list position-absolute top-0 start-0 m-2">
-      <button type="button" class="btn btn-sm btn-pill btn-primary">Berlin</button>
-      <button type="button" class="btn btn-sm btn-pill">Tokyo</button>
-    </div>
-  </div>
-</div>
-```
-
-### Globe
-
-MapLibre can draw the map as a 3D globe. Set the projection in the `style.load` event, as it is part of the map style. People can turn the globe by dragging it.
-
-```js
-map.on('style.load', function () {
-  map.setProjection({ type: 'globe' })
-})
-```
-
-Use a low zoom, between 1 and 2, to see the whole globe. To connect two places with an arc, draw a line layer through points on the shortest path between them. The [maps preview page](https://preview.tabler.io/maps.html) has a short function that returns these points.
-
-### Moving the map
-
-Move to another place with `flyTo`, for example from a row of buttons:
-
-```js
-button.addEventListener('click', function () {
-  map.flyTo({ center: [139.6917, 35.6895], zoom: 10 })
-})
-```
-
-Live versions of the route, area, clusters, bubble map and city switcher are on the [maps preview page](https://preview.tabler.io/maps.html).
-
-### Attribution
-
-MapLibre adds the credit for the map data in the corner of the map. OpenFreeMap requires it, so do not hide it.
-
-## Examples
-
-### Map in a card
-
-Add a card title above the map. This is the usual layout for a small map next to other content.
-
-<Example codeOnly>
-<div class="card">
-  <div class="card-body">
-    <div class="card-title">Simple map</div>
-    <div class="ratio ratio-16x9">
-      <div><div id="map-card" class="w-100 h-100"></div></div>
-    </div>
-  </div>
-</div>
-</Example>
-
-### Full-card map
-
-Drop the card body to let the map fill the whole card. Add `rounded` to the container, so the map follows the card corners.
-
-<Example codeOnly>
-<div class="card">
-  <div class="ratio ratio-21x9">
-    <div><div id="map-full" class="w-100 h-100 rounded"></div></div>
-  </div>
-</div>
-</Example>
-
-Live versions of these maps are on the [maps preview page](https://preview.tabler.io/maps.html).
-
-### Blocks
-
-The [map blocks preview page](https://preview.tabler.io/map-blocks.html) has larger examples that pair a map with other components: a store locator with a searchable list, a delivery tracker with a route and a status card over the map, a world map of live users, and a vector map of users by country next to a table.
+| Event | Description |
+| --- | --- |
+| `load.bs.map` | Fires on the map element once the map has loaded its style and first tiles. |
 
 ## Using Mapbox GL JS
 
-MapLibre GL JS started as a fork of Mapbox GL JS, so the two share most of their API. To use Mapbox instead, load its script and stylesheet, replace `maplibregl` with `mapboxgl`, set `mapboxgl.accessToken` to your public token, and use a `mapbox://` style URL.
+MapLibre GL JS started as a fork of Mapbox GL JS, so the two share most of their API. The map component works with MapLibre only. To use Mapbox, write the map script yourself: load its script and stylesheet, set `mapboxgl.accessToken` to your public token, and use a `mapbox://` style URL.
 
 ## Accessibility
 
 - The map is a picture for most users. Give the same information as text near it, for example the address or a list of places.
-- Add an `aria-label` to the map container, so screen reader users know what the map shows.
+- Add `role="region"` and an `aria-label` to the map element, so screen reader users know what the map shows.
 - Do not put an action only on a marker. Repeat it in a normal link or button below the map.
 - Keep a visible fallback when the script fails to load, for example the address in text.

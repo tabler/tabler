@@ -190,13 +190,14 @@ const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * 
         else document.addEventListener('DOMContentLoaded', () => resolve(undefined), { once: true })
       })
       // Maps draw their tiles after the page is ready, so wait until each one has loaded.
-      // The first check is delayed: the maps are created in DOMContentLoaded handlers.
+      // The first check is delayed, so the maps exist by then.
       const mapsReady = () =>
         new Promise((resolve) => {
           const check = () => {
-            const maps = Object.values((window as { tabler_map?: Record<string, { loaded(): boolean }> }).tabler_map ?? {})
+            const { MapView } = (window as { tabler?: { MapView?: { getInstance(element: Element): { map: { loaded(): boolean } | null } | null } } }).tabler ?? {}
+            const maps = [...document.querySelectorAll('[data-bs-toggle="map"]')].map((element) => MapView?.getInstance(element)?.map)
 
-            if (maps.every((map) => map.loaded())) resolve(undefined)
+            if (maps.every((map) => map?.loaded())) resolve(undefined)
             else setTimeout(check, 100)
           }
 
