@@ -27,6 +27,10 @@ classnames:
       desc: Slot for controls on the trailing edge of an entry
     - class: list-group-selectable-check
       desc: Checkbox or radio that marks its entry when checked
+    - class: list-group-nested
+      desc: Block of indented entries under a parent entry, usually a collapse
+    - class: list-group-item-toggle
+      desc: Chevron of a parent entry, turned over while its nested entries are open
   size:
     - class: list-group-sm
       desc: Compact entries
@@ -149,6 +153,25 @@ The item itself can be a link or a `label`. Use a `label` with a checkbox, a rad
 </div>
 </Example>
 
+### Longer text
+
+The slots are centered and the description stays on one line. For longer text add the `align-items-start` utility to the item and `text-wrap` to the description.
+
+<Example bg="surface-secondary" column>
+<div class="list-group">
+  <div class="list-group-item align-items-start">
+    <div class="list-group-item-media">
+      <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span>
+    </div>
+    <div class="list-group-item-content">
+      <div class="list-group-item-title">Paweł Kuna</div>
+      <div class="list-group-item-description text-wrap">The new list layout works well on the dashboard. Can we use the same slots for the search results?</div>
+    </div>
+    <div class="list-group-item-meta">2 h</div>
+  </div>
+</div>
+</Example>
+
 ## Sizes
 
 Add `list-group-sm` for compact items or `list-group-lg` for items with more room. The classes change the vertical padding of the items and the gap between the slots.
@@ -230,6 +253,34 @@ Add `list-group-selectable` to the container and `list-group-selectable-check` t
   </label>
 </div>
 </Example>
+
+### Nested items
+
+Put the child items in a `list-group-nested` element right after their parent item. The nested items are indented and have no borders between them. Make the element a `collapse` and the parent item its toggle to open and close the group. Add `list-group-item-toggle` to the chevron, and it turns over while the group is open.
+
+<Example bg="surface-secondary" column>
+<div class="list-group">
+  <button type="button" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#list-nested-projects" aria-expanded="true" aria-controls="list-nested-projects">
+    <span class="list-group-item-media"><Icon name="folder" color="muted" /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Projects</span>
+    </span>
+    <span class="list-group-item-meta"><Icon name="chevron-down" class="list-group-item-toggle" /></span>
+  </button>
+  <div class="list-group-nested collapse show" id="list-nested-projects">
+    <a href="#" class="list-group-item list-group-item-action">Website redesign</a>
+    <a href="#" class="list-group-item list-group-item-action">Mobile app</a>
+  </div>
+  <a href="#" class="list-group-item list-group-item-action">
+    <span class="list-group-item-media"><Icon name="settings" color="muted" /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Settings</span>
+    </span>
+  </a>
+</div>
+</Example>
+
+The indent is the `--tblr-list-group-nested-indent` variable. Its default matches an icon in the media slot.
 
 ### Section header
 

@@ -18,6 +18,7 @@ import Icon from '@ui/Icon.astro'
 import Progress from '@ui/Progress.astro'
 import StatusDot from '@ui/StatusDot.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import Empty from '@ui/Empty.astro'
 import { people } from '@shared/lib/people'
 import type { FlagCountry } from '@shared/lib/tokens'
 import transactionsData from '@data/transactions.json'
@@ -42,6 +43,17 @@ const channels = [
   { id: 'email', icon: 'mail', title: 'Email', description: 'A summary every morning', checked: true },
   { id: 'push', icon: 'device-mobile', title: 'Push', description: 'Mentions and direct messages', checked: true },
   { id: 'slack', icon: 'brand-slack', title: 'Slack', description: 'Posts to the #updates channel', checked: false },
+]
+
+const comments = [
+  { text: 'The new list layout works well on the dashboard. Can we use the same slots for the search results?', time: '2 h' },
+  { text: 'Yes, the results only need a wrapped description and the avatar aligned to the top.', time: '1 h' },
+  { text: 'Done. I also added the nested items to the sidebar.', time: '12 min' },
+]
+
+const tree = [
+  { id: 'list-nested-projects', icon: 'folder', title: 'Projects', open: true, items: ['Website redesign', 'Mobile app', 'Design system'] },
+  { id: 'list-nested-teams', icon: 'users', title: 'Teams', open: false, items: ['Design', 'Engineering'] },
 ]
 
 const sizes = [
@@ -80,7 +92,7 @@ const notifications = (notificationsData as { title: string; description: string
 }))
 ---
 
-<DefaultLayout title="Lists" pageMenu="base.lists" description="Vertical lists built from list-group items: media, content, meta and actions in one row.">
+<DefaultLayout title="Lists" pageMenu="base.lists" pageLibs={['sortablejs']} description="Vertical lists built from list-group items: media, content, meta and actions in one row.">
   <DocsLink slot="page-header-actions" path="/ui/components/list-group" />
 
   <div class="row row-cards">
@@ -304,6 +316,80 @@ const notifications = (notificationsData as { title: string; description: string
       </Card>
     </div>
 
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Wrapped description</CardTitle>
+          <CardSubtitle>Add <code>align-items-start</code> to the item and <code>text-wrap</code> to the description for longer text.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            comments.map((comment, index) => (
+              <ListGroupItem class="align-items-start" title={team[index]?.full_name}>
+                <Avatar slot="media" person={team[index]} />
+                <div class="list-group-item-description text-wrap">{comment.text}</div>
+                <Fragment slot="meta">{comment.time}</Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Nested items</CardTitle>
+          <CardSubtitle>Put <code>list-group-nested</code> on a collapse after the parent item. <code>list-group-item-toggle</code> turns the chevron.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            tree.map((group) => (
+              <>
+                <ListGroupItem as="button" type="button" action title={group.title} data-bs-toggle="collapse" data-bs-target={`#${group.id}`} aria-expanded={group.open ? 'true' : 'false'} aria-controls={group.id}>
+                  <Icon slot="media" name={group.icon} class="text-secondary" />
+                  <Icon slot="meta" name="chevron-down" class="list-group-item-toggle" />
+                </ListGroupItem>
+                <div class:list={['list-group-nested collapse', group.open && 'show']} id={group.id}>
+                  {group.items.map((item) => (
+                    <ListGroupItem as="a" href="#" action>
+                      {item}
+                    </ListGroupItem>
+                  ))}
+                </div>
+              </>
+            ))
+          }
+          <ListGroupItem as="a" href="#" action title="Settings">
+            <Icon slot="media" name="settings" class="text-secondary" />
+          </ListGroupItem>
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Drag handle</CardTitle>
+          <CardSubtitle>Add <code>data-sortable</code> to the list and put the handle in the media slot.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush data-sortable='{"animation":150,"handle":".sortable-handle"}'>
+          {
+            team.map((person) => (
+              <ListGroupItem title={person.full_name} description={person.job_title}>
+                <Fragment slot="media">
+                  <span class="sortable-handle cursor-move text-secondary me-3" aria-hidden="true">
+                    <Icon name="grip-vertical" />
+                  </span>
+                  <Avatar person={person} />
+                </Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
     {
       sizes.map((item) => (
         <div class="col-md-6 col-lg-4">
@@ -411,6 +497,30 @@ const notifications = (notificationsData as { title: string; description: string
             }
           </ListGroup>
         </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Loading" />
+        <ListGroup flush class="placeholder-glow" aria-hidden="true">
+          {
+            team.map((_, index) => (
+              <ListGroupItem>
+                <span slot="media" class="avatar placeholder" />
+                <div class:list={['placeholder', index % 2 ? 'col-5' : 'col-7']} />
+                <div class:list={['placeholder placeholder-xs', index % 2 ? 'col-9' : 'col-8']} />
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Empty" />
+        <Empty icon="inbox-off" title="No messages" description="New messages from your team show up here." />
       </Card>
     </div>
 

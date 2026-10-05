@@ -3,6 +3,7 @@
 .list-group {
   --list-group-header-padding-y: #{$list-group-header-padding-y};
   --list-group-item-gap: #{$list-group-item-gap};
+  --list-group-nested-indent: #{$list-group-nested-indent};
 
   margin-inline-start: 0;
   margin-inline-end: 0;
@@ -94,6 +95,40 @@
 .list-group-item-description,
 .list-group-item-meta {
   color: var(--secondary);
+}
+
+// Nested items: a block of indented items under a parent item, usually a
+// `.collapse` toggled by that parent. It draws the side and bottom borders its
+// borderless items leave out.
+.list-group-nested {
+  border: var(--list-group-border-width) solid var(--list-group-border-color);
+  border-top-width: 0;
+
+  > .list-group-item {
+    padding-inline-start: calc(var(--list-group-item-padding-x) + var(--list-group-nested-indent));
+    border-width: 0;
+  }
+
+  + .list-group-item {
+    border-top-width: 0;
+  }
+
+  .list-group-flush > & {
+    border-inline-width: 0;
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+// Chevron of a parent item, turned over while its nested items are open
+.list-group-item-toggle {
+  @include transition(transform $transition-time);
+
+  [aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
 }
 
 .list-bordered {
