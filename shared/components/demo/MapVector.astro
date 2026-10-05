@@ -8,6 +8,8 @@ interface MapData {
   zoom?: boolean
   colors?: string[]
   legend?: boolean
+  select?: 'single' | 'multiple'
+  selected?: string[]
   values?: Record<string, number>
   markers?: { name: string; lat: number; lng: number }[]
   lines?: { from: string; to: string }[]
@@ -36,6 +38,8 @@ const legend = legendProp ?? data?.legend ?? false
       data-bs-label={data.title}
       data-bs-zoom={data.zoom ? 'true' : undefined}
       data-bs-legend={legend ? 'true' : undefined}
+      data-bs-select={data.select}
+      data-bs-selected={data.selected && JSON.stringify(data.selected)}
       data-bs-colors={data.colors && JSON.stringify(data.colors)}
       data-bs-values={data.values && JSON.stringify(data.values)}
       data-bs-markers={data.markers && JSON.stringify(data.markers)}

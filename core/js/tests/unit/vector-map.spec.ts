@@ -226,6 +226,183 @@ describe('VectorMap', () => {
     })
   })
 
+  describe('click', () => {
+    it('should fire regionclick with the code, the name and the value of the region', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+      new VectorMap(el(), { map: squares, values: { AA: 5 } })
+
+      const spy = vi.fn()
+      el().addEventListener('regionclick.bs.vector-map', spy)
+      region('AA').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+      expect(spy).toHaveBeenCalledTimes(2)
+      expect(spy.mock.calls[0][0]).toMatchObject({ code: 'AA', name: 'First', value: 5, relatedTarget: region('AA') })
+      expect(spy.mock.calls[1][0]).toMatchObject({ code: 'BB', name: 'Second' })
+      expect('value' in spy.mock.calls[1][0]).toBe(false)
+    })
+
+    it('should fire markerclick with the marker, and no regionclick', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+      new VectorMap(el(), {
+        map: squares,
+        markers: [
+          { name: 'One', lat: 0, lng: 0 },
+          { name: 'Two', lat: 1, lng: 2 },
+        ],
+      })
+
+      const markerSpy = vi.fn()
+      const regionSpy = vi.fn()
+      el().addEventListener('markerclick.bs.vector-map', markerSpy)
+      el().addEventListener('regionclick.bs.vector-map', regionSpy)
+      el()
+        .querySelectorAll('.vector-map-marker-dot')[1]
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+      expect(markerSpy.mock.calls[0][0]).toMatchObject({ name: 'Two', lat: 1, lng: 2 })
+      expect(regionSpy).not.toHaveBeenCalled()
+    })
+
+    it('should not take the click that ends a drag for a click on a region', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" style="width: 300px" data-bs-zoom="true"></div>'
+      new VectorMap(el(), { map: squares, zoomMax: 2 })
+      el().dispatchEvent(new WheelEvent('wheel', { bubbles: true, cancelable: true, deltaY: -5000 }))
+
+      const spy = vi.fn()
+      el().addEventListener('regionclick.bs.vector-map', spy)
+      const pointer = (type: string, x: number): void => {
+        region('BB').dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, pointerType: 'mouse', button: 0, clientX: x, clientY: 50 }))
+      }
+
+      pointer('pointerdown', 100)
+      pointer('pointermove', 60)
+      pointer('pointerup', 60)
+      region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      expect(spy).not.toHaveBeenCalled()
+
+      // A press that moves by a pixel or two is still a click
+      const viewBox = el().querySelector('svg')!.getAttribute('viewBox')
+      pointer('pointerdown', 100)
+      pointer('pointermove', 102)
+      pointer('pointerup', 102)
+      region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(el().querySelector('svg')!.getAttribute('viewBox')).toBe(viewBox)
+    })
+  })
+
+  describe('select', () => {
+    const click = (code: string): void => {
+      region(code).dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    }
+
+    const isSelected = (code: string): boolean => region(code).classList.contains('vector-map-region-selected')
+
+    it('should not select anything by default', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+      const map = new VectorMap(el(), { map: squares, selected: ['AA'] })
+
+      click('BB')
+
+      expect(map.getSelected()).toEqual([])
+      expect(isSelected('AA')).toBe(false)
+      expect(el().classList.contains('vector-map-selectable')).toBe(false)
+    })
+
+    it('should select one region at a time, and take it out on a second click', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-select="single"></div>'
+      const map = new VectorMap(el(), { map: squares })
+      const spy = vi.fn()
+      el().addEventListener('selected.bs.vector-map', spy)
+
+      expect(el().classList.contains('vector-map-selectable')).toBe(true)
+
+      click('AA')
+      expect(map.getSelected()).toEqual(['AA'])
+      expect(isSelected('AA')).toBe(true)
+      expect(spy.mock.calls[0][0]).toMatchObject({ selected: ['AA'], code: 'AA' })
+
+      click('BB')
+      expect(map.getSelected()).toEqual(['BB'])
+      expect(isSelected('AA')).toBe(false)
+
+      click('BB')
+      expect(map.getSelected()).toEqual([])
+      expect(spy).toHaveBeenCalledTimes(3)
+    })
+
+    it('should select several regions', () => {
+      fixtureEl.innerHTML = `<div class="vector-map" data-bs-select="multiple" data-bs-selected='["CC", "ZZ"]'></div>`
+      const map = new VectorMap(el(), { map: squares })
+
+      expect(map.getSelected()).toEqual(['CC'])
+
+      click('AA')
+      expect(map.getSelected()).toEqual(['CC', 'AA'])
+
+      click('CC')
+      expect(map.getSelected()).toEqual(['AA'])
+      expect(isSelected('CC')).toBe(false)
+    })
+
+    it('should keep the first of several codes when one region can be selected', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+      const map = new VectorMap(el(), { map: squares, select: 'single', selected: ['BB', 'CC'] })
+
+      expect(map.getSelected()).toEqual(['BB'])
+    })
+
+    it('should not select when regionclick is prevented', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-select="single"></div>'
+      const map = new VectorMap(el(), { map: squares })
+      el().addEventListener('regionclick.bs.vector-map', (event) => {
+        event.preventDefault()
+      })
+
+      click('AA')
+
+      expect(map.getSelected()).toEqual([])
+    })
+
+    it('should set the selection from code', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-select="multiple"></div>'
+      const map = new VectorMap(el(), { map: squares })
+      const spy = vi.fn()
+      el().addEventListener('selected.bs.vector-map', spy)
+
+      map.setSelected(['AA', 'CC', 'nowhere'])
+      expect(map.getSelected()).toEqual(['AA', 'CC'])
+      expect(spy.mock.calls[0][0]).toMatchObject({ selected: ['AA', 'CC'] })
+
+      map.setSelected([])
+      expect(isSelected('AA')).toBe(false)
+    })
+
+    it('should draw a selected shape after the other shapes, under the markers', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-select="single"></div>'
+      new VectorMap(el(), { map: squares, markers: [{ name: 'One', lat: 0, lng: 0 }] })
+
+      click('AA')
+
+      const children = [...el().querySelector('svg')!.children]
+      expect(children.indexOf(region('AA'))).toBeGreaterThan(children.indexOf(region('CC')))
+      expect(children.indexOf(region('AA'))).toBeLessThan(children.indexOf(el().querySelector('.vector-map-marker')!))
+    })
+
+    it('should keep the selection over update() and render()', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-select="single"></div>'
+      const map = new VectorMap(el(), { map: squares })
+
+      click('BB')
+      map.update({ AA: 1 })
+      map.render()
+
+      expect(map.getSelected()).toEqual(['BB'])
+      expect(isSelected('BB')).toBe(true)
+    })
+  })
+
   describe('legend', () => {
     const legend = (): HTMLElement | null => el().querySelector<HTMLElement>('.vector-map-legend')
     const labels = (): string[] => [...el().querySelectorAll('.vector-map-legend-label')].map((label) => label.textContent ?? '')

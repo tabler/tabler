@@ -46,6 +46,7 @@ export type VectorMapTooltipItem = { type: 'region'; code: string; name: string;
 type VectorMapValues = Record<string, number>
 type VectorMapTooltip = boolean | ((item: VectorMapTooltipItem) => string)
 type VectorMapLegend = boolean | ((value: number) => string)
+type VectorMapSelect = 'none' | 'single' | 'multiple'
 type Point = [number, number]
 // The part of the map in sight: its top left corner and how many times it is magnified
 type View = { x: number; y: number; scale: number }
@@ -60,6 +61,8 @@ type ComponentConfig = {
   lines: VectorMapLine[]
   tooltip: VectorMapTooltip
   legend: VectorMapLegend
+  select: VectorMapSelect
+  selected: string[]
   zoom: boolean
   zoomMax: number
   zoomOnScroll: boolean
@@ -80,6 +83,9 @@ const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_RENDERED = `rendered${EVENT_KEY}`
 const EVENT_UPDATED = `updated${EVENT_KEY}`
+const EVENT_REGION_CLICK = `regionclick${EVENT_KEY}`
+const EVENT_MARKER_CLICK = `markerclick${EVENT_KEY}`
+const EVENT_SELECTED = `selected${EVENT_KEY}`
 const EVENT_POINTERMOVE = `pointermove${EVENT_KEY}`
 const EVENT_POINTERLEAVE = `pointerleave${EVENT_KEY}`
 const EVENT_POINTERDOWN = `pointerdown${EVENT_KEY}`
@@ -103,6 +109,8 @@ const CLASS_NAME_LEGEND = 'vector-map-legend'
 const CLASS_NAME_LEGEND_LABEL = 'vector-map-legend-label'
 const CLASS_NAME_LEGEND_SCALE = 'vector-map-legend-scale'
 const CLASS_NAME_LEGEND_STEP = 'vector-map-legend-step'
+const CLASS_NAME_SELECTABLE = 'vector-map-selectable'
+const CLASS_NAME_SELECTED = 'vector-map-region-selected'
 const CLASS_NAME_ZOOMABLE = 'vector-map-zoomable'
 const CLASS_NAME_DRAGGING = 'vector-map-dragging'
 const CLASS_NAME_CONTROLS = 'vector-map-controls'
@@ -116,6 +124,16 @@ const ATTRIBUTE_ACTION = 'data-bs-vector-map-action'
 
 const SELECTOR_TOOLTIP_TARGET = `.${CLASS_NAME_REGION}, .${CLASS_NAME_MARKER}`
 const SELECTOR_ACTION = `[${ATTRIBUTE_ACTION}]`
+// What a selected shape is moved in front of, so its outline is not covered
+// by the shapes around it but stays under everything drawn over the map
+const SELECTOR_OVER_SHAPES = `.${CLASS_NAME_POINT}, .${CLASS_NAME_LINE}, .${CLASS_NAME_MARKER}`
+
+const SELECT_NONE = 'none'
+const SELECT_MULTIPLE = 'multiple'
+
+// How far a pointer has to move, in pixels, before a press becomes a drag
+// and stops being a click
+const DRAG_THRESHOLD = 4
 
 const ACTION_ZOOM_IN = 'zoom-in'
 const ACTION_ZOOM_OUT = 'zoom-out'
@@ -159,6 +177,8 @@ const Default: ComponentConfig = {
   lines: [],
   tooltip: true,
   legend: false,
+  select: 'none',
+  selected: [],
   zoom: false,
   zoomMax: 8,
   zoomOnScroll: true,
@@ -177,6 +197,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   lines: 'array',
   tooltip: '(boolean|function)',
   legend: '(boolean|function)',
+  select: 'string',
+  selected: 'array',
   zoom: 'boolean',
   zoomMax: 'number',
   zoomOnScroll: 'boolean',
@@ -279,6 +301,11 @@ class VectorMap extends BaseComponent {
   _frame = 0
   // Pointers that are down on the map, with where each was last seen
   _pointers = new Map<number, Point>()
+  // Whether the pointers that are down have moved the map. A click that ends
+  // a drag is not a click on a region.
+  _dragged = false
+  // The codes of the selected regions; filled from `selected` on the first render
+  _selected: Set<string> | null = null
 
   /** Maps added with `addMap()`, by name */
   static maps: Record<string, VectorMapData> = {}
@@ -312,6 +339,9 @@ class VectorMap extends BaseComponent {
     // `wheel` is not among the native events EventHandler knows, and the
     // listener must not be passive to keep the page from scrolling.
     this._element.addEventListener('wheel', this._onWheel, { passive: false })
+    EventHandler.on(this._element, EVENT_CLICK, (event: MouseEvent) => {
+      this._onClick(event)
+    })
     EventHandler.on(this._element, EVENT_DBLCLICK, (event: MouseEvent) => {
       if (this._config.zoom && this._isOnMap(event)) {
         this._zoomBy(ZOOM_STEP, this._toMapPoint(event.clientX, event.clientY), true)
@@ -380,6 +410,7 @@ class VectorMap extends BaseComponent {
     this._element.append(svg)
     this._renderControls()
     this._applyColors()
+    this._applySelected()
     this._setView({ x: 0, y: 0, scale: 1 })
     this._applyValues()
 
@@ -392,6 +423,19 @@ class VectorMap extends BaseComponent {
     this._applyValues()
 
     EventHandler.trigger(this._element, EVENT_UPDATED)
+  }
+
+  // The codes of the selected regions, in the order they were selected
+  getSelected(): string[] {
+    return [...(this._selected ?? [])]
+  }
+
+  // Selects exactly these regions. Codes that are not on the map are left
+  // out, and all but the first when only one region can be selected.
+  setSelected(codes: string[]): void {
+    this._selected = this._toSelected(codes)
+    this._applySelected()
+    EventHandler.trigger(this._element, EVENT_SELECTED, { selected: this.getSelected() })
   }
 
   zoomIn(): void {
@@ -415,7 +459,7 @@ class VectorMap extends BaseComponent {
     this._tooltip?.remove()
     this._config.colors = []
     this._applyColors()
-    this._element.classList.remove(CLASS_NAME_ZOOMABLE, CLASS_NAME_DRAGGING)
+    this._element.classList.remove(CLASS_NAME_ZOOMABLE, CLASS_NAME_DRAGGING, CLASS_NAME_SELECTABLE)
     this._element.removeEventListener('wheel', this._onWheel)
     super.dispose()
   }
@@ -671,17 +715,12 @@ class VectorMap extends BaseComponent {
       return
     }
 
+    if (this._pointers.size === 0) {
+      this._dragged = false
+    }
+
     this._pointers.set(event.pointerId, [event.clientX, event.clientY])
     cancelAnimationFrame(this._frame)
-
-    // The map keeps getting the moves of this pointer when it leaves the map.
-    // Capturing throws for a pointer the browser does not know, which is what
-    // an event made in a script has.
-    try {
-      this._getSvg()?.setPointerCapture(event.pointerId)
-    } catch {
-      // The drag still works while the pointer stays over the map
-    }
   }
 
   _onPointerUp(event: PointerEvent): void {
@@ -700,6 +739,26 @@ class VectorMap extends BaseComponent {
     }
 
     const current: Point = [event.clientX, event.clientY]
+
+    // A press that barely moves is a click, not a drag. Until the pointer has
+    // moved far enough the map stays put, and the click reaches the region.
+    if (!this._dragged) {
+      if (this._pointers.size === 1 && Math.hypot(current[0] - previous[0], current[1] - previous[1]) < DRAG_THRESHOLD) {
+        return
+      }
+
+      this._dragged = true
+
+      // The map keeps getting the moves of this pointer when it leaves the
+      // map. Capturing throws for a pointer the browser does not know, which
+      // is what an event made in a script has.
+      try {
+        this._getSvg()?.setPointerCapture(event.pointerId)
+      } catch {
+        // The drag still works while the pointer stays over the map
+      }
+    }
+
     this._pointers.set(event.pointerId, current)
     this._element.classList.add(CLASS_NAME_DRAGGING)
     this._hideTooltip()
@@ -768,6 +827,75 @@ class VectorMap extends BaseComponent {
     if (this._tooltip) {
       this._tooltip.hidden = true
     }
+  }
+
+  _toSelected(codes: unknown): Set<string> {
+    const { select } = this._config
+    const known = (Array.isArray(codes) ? (codes as unknown[]) : []).filter((code): code is string => typeof code === 'string' && this._map?.regions[code] !== undefined)
+
+    if (select === SELECT_NONE) {
+      return new Set()
+    }
+
+    return new Set(select === SELECT_MULTIPLE ? known : known.slice(0, 1))
+  }
+
+  // Marks the selected regions for the stylesheet. A shape that gets selected
+  // moves after the other shapes, where nothing covers its outline.
+  _applySelected(): void {
+    const svg = this._getSvg()
+    if (!svg) {
+      return
+    }
+
+    this._selected ??= this._toSelected(this._config.selected)
+    this._element.classList.toggle(CLASS_NAME_SELECTABLE, this._config.select !== SELECT_NONE)
+
+    const over = svg.querySelector(SELECTOR_OVER_SHAPES)
+    for (const region of svg.querySelectorAll<SVGElement>(`.${CLASS_NAME_REGION}`)) {
+      const selected = this._selected.has(region.getAttribute(ATTRIBUTE_REGION) ?? '')
+      if (selected && !region.classList.contains(CLASS_NAME_SELECTED) && !region.classList.contains(CLASS_NAME_POINT)) {
+        svg.insertBefore(region, over)
+      }
+
+      region.classList.toggle(CLASS_NAME_SELECTED, selected)
+    }
+  }
+
+  // A click on a region or on a marker becomes an event of the map. A click on
+  // a region also selects it, unless the event was prevented.
+  _onClick(event: MouseEvent): void {
+    if (this._dragged || !this._isOnMap(event) || !this._map) {
+      return
+    }
+
+    const target = event.target as Element
+    const marker = target.closest(`.${CLASS_NAME_MARKER}`)
+    if (marker) {
+      const index = [...this._element.querySelectorAll(`.${CLASS_NAME_MARKER}`)].indexOf(marker)
+      EventHandler.trigger(this._element, EVENT_MARKER_CLICK, { ...this._config.markers[index], relatedTarget: marker })
+      return
+    }
+
+    const region = target.closest(`.${CLASS_NAME_REGION}`)
+    const code = region?.getAttribute(ATTRIBUTE_REGION)
+    if (!region || !code) {
+      return
+    }
+
+    const value = this._config.values[code]
+    const clickEvent = EventHandler.trigger(this._element, EVENT_REGION_CLICK, { code, name: this._map.regions[code]?.name ?? code, ...(value === undefined ? {} : { value }), relatedTarget: region })
+    if (clickEvent?.defaultPrevented || this._config.select === SELECT_NONE) {
+      return
+    }
+
+    // A click on a selected region takes it out again
+    const selected = this.getSelected()
+    const rest = selected.filter((other) => other !== code)
+    const next = rest.length < selected.length ? rest : this._config.select === SELECT_MULTIPLE ? [...selected, code] : [code]
+    this._selected = new Set(next)
+    this._applySelected()
+    EventHandler.trigger(this._element, EVENT_SELECTED, { selected: next, code })
   }
 
   _getLegend(): HTMLElement | null {

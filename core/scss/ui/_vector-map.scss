@@ -15,6 +15,8 @@
   --vector-map-region-stroke-width: #{$vector-map-region-stroke-width};
   --vector-map-value-min: #{$vector-map-value-min};
   --vector-map-point-size: #{$vector-map-point-size};
+  --vector-map-selected-stroke: #{$vector-map-selected-stroke};
+  --vector-map-selected-stroke-width: #{$vector-map-selected-stroke-width};
   --vector-map-marker-size: #{$vector-map-marker-size};
   --vector-map-marker-color: #{$vector-map-marker-color};
   --vector-map-marker-halo-color: #{$vector-map-marker-halo-color};
@@ -197,4 +199,19 @@
 .vector-map-legend-step {
   flex: 1;
   background: var(--vector-map-region-color);
+}
+
+// Regions can be clicked to select them
+.vector-map-selectable .vector-map-region {
+  cursor: pointer;
+}
+
+// A selected region gets an outline, and keeps the colour of its value
+.vector-map-region-selected {
+  stroke: var(--vector-map-selected-stroke);
+  stroke-width: var(--vector-map-selected-stroke-width);
+
+  .vector-map-region-point-halo {
+    stroke: var(--vector-map-selected-stroke);
+  }
 }

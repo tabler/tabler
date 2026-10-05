@@ -170,6 +170,44 @@ Add `data-bs-zoom="true"` to let users look closer. The map gets two buttons, an
 
 While the pointer is over a zoomable map, the wheel zooms the map and does not scroll the page. Set `data-bs-zoom-on-scroll="false"` to keep the wheel for the page. On a touch screen a finger on the map moves the map, not the page, so leave some room around a large map.
 
+## Selecting countries
+
+Set `data-bs-select` to let users pick countries with a click. With `single` a click on another country moves the selection. With `multiple` every click adds a country. A click on a selected country takes it out again. Pass the countries that start selected in `data-bs-selected`.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-select="multiple" data-bs-selected='["PL", "FR", "BR"]' data-bs-label="Countries to compare"></div>
+</Example>
+
+A selected country gets an outline and keeps the color of its value. Change the outline with `--tblr-vector-map-selected-stroke` and `--tblr-vector-map-selected-stroke-width`.
+
+The map fires `selected.bs.vector-map` after every change. Read the selection from the event, or with `getSelected()`:
+
+```js
+const element = document.getElementById('compare');
+
+element.addEventListener('selected.bs.vector-map', (event) => {
+  console.log(event.selected); // ['PL', 'FR', 'BR', 'DE']
+});
+
+tabler.VectorMap.getInstance(element).setSelected(['US', 'CA']);
+```
+
+## Clicks
+
+The map fires `regionclick.bs.vector-map` when a country is clicked and `markerclick.bs.vector-map` when a marker is clicked, also when nothing can be selected. Use them to open a page or to filter a table. A drag on a zoomable map is not a click.
+
+```js
+element.addEventListener('regionclick.bs.vector-map', (event) => {
+  console.log(event.code, event.name, event.value); // 'PL', 'Poland', 54
+});
+
+element.addEventListener('markerclick.bs.vector-map', (event) => {
+  console.log(event.name, event.lat, event.lng);
+});
+```
+
+Call `event.preventDefault()` in `regionclick.bs.vector-map` to keep that click from changing the selection.
+
 ## Tooltip
 
 A tooltip shows the name of the country or marker under the pointer, with the value when the country has one. Set `data-bs-tooltip="false"` to turn it off.
@@ -198,6 +236,8 @@ Set options with data attributes or pass them to the constructor. For a data att
 | `lines` | array | `[]` | Connections as `{ from, to }`, by marker name. |
 | `tooltip` | boolean, function | `true` | Shows a tooltip, or builds its text. |
 | `legend` | boolean, function | `false` | Shows the scale under the map, or formats its two numbers. |
+| `select` | string | `'none'` | Lets users select countries: `'none'`, `'single'` or `'multiple'`. |
+| `selected` | array | `[]` | Codes of the countries that start selected. |
 | `zoom` | boolean | `false` | Lets users zoom and drag the map. |
 | `zoomMax` | number | `8` | The largest magnification. |
 | `zoomOnScroll` | boolean | `true` | Zooms with the mouse wheel. Needs `zoom`. |
@@ -229,6 +269,8 @@ visits.update({ PL: 61, DE: 77, FR: 70 });
 | --- | --- |
 | `update(values)` | Shades the regions with new values. Fires `updated.bs.vector-map`. |
 | `render()` | Reads the attributes again and draws the map from the start. Fires `rendered.bs.vector-map`. |
+| `getSelected()` | Returns the codes of the selected countries. |
+| `setSelected(codes)` | Selects exactly these countries. Fires `selected.bs.vector-map`. |
 | `zoomIn()` | Zooms in one step, around the middle of the view. |
 | `zoomOut()` | Zooms out one step. |
 | `reset()` | Goes back to the whole map. |
@@ -241,6 +283,9 @@ visits.update({ PL: 61, DE: 77, FR: 70 });
 | --- | --- |
 | `rendered.bs.vector-map` | Fired on the element after every render. |
 | `updated.bs.vector-map` | Fired on the element after `update()`. |
+| `regionclick.bs.vector-map` | Fired when a country is clicked. Has `code`, `name`, `value` when the country has one, and the element in `relatedTarget`. Can be prevented. |
+| `markerclick.bs.vector-map` | Fired when a marker is clicked. Has `name`, `lat`, `lng` and the element in `relatedTarget`. |
+| `selected.bs.vector-map` | Fired after the selection changes. Has the codes in `selected`, and the clicked `code` when a click made the change. |
 
 ## Styling a single country
 
@@ -266,6 +311,8 @@ The map reads its colors and sizes from custom properties on the element. Change
 | `--tblr-vector-map-color-1` to `-5` | none | Colors of a scale, from the lowest value to the highest. |
 | `--tblr-vector-map-colors` | none | Number of colors in the scale. |
 | `--tblr-vector-map-point-size` | `0.375rem` | Diameter of the dot of a small country. |
+| `--tblr-vector-map-selected-stroke` | `var(--tblr-body-color)` | Outline of a selected country. |
+| `--tblr-vector-map-selected-stroke-width` | `2px` | Width of that outline. |
 | `--tblr-vector-map-marker-size` | `0.5rem` | Diameter of a marker. |
 | `--tblr-vector-map-marker-color` | `var(--tblr-vector-map-color)` | Color of a marker. |
 | `--tblr-vector-map-marker-halo-color` | `var(--tblr-bg-surface)` | Color of the ring around a marker and around the dot of a small country. |
@@ -308,6 +355,7 @@ Three territories have no ISO code. The map uses `XK` for Kosovo, `XC` for North
 - The data behind the map has to be reachable another way. Put a table of the same values next to or below the map. It serves screen reader users and anyone who prints the page.
 - The tooltip is for the pointer only. Do not put anything there that is not in the text version too.
 - Shades of one color are hard to tell apart for many users. Turn on the legend, and for exact numbers add a table.
+- Countries and markers can be clicked with a pointer only. They are not in the tab order, because a world map would be two hundred tab stops. When a click or a selection does something, offer the same choice in another control, such as a list of checkboxes or a select, and keep the two in step with `setSelected()`.
 - The zoom buttons work with the keyboard and have accessible names. Change the names with `data-bs-zoom-in-label` and `data-bs-zoom-out-label` when the page is not in English.
 
 ## Variables
