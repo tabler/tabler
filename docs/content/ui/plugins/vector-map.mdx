@@ -17,7 +17,7 @@ classnames:
     - class: vector-map-region
       desc: One country or region, with its code in data-region
     - class: vector-map-region-point
-      desc: A country too small for a shape, drawn as a dot
+      desc: A country too small for a shape, drawn as a dot when it has a value
     - class: vector-map-region-point-dot
       desc: The dot, in the color of the region
     - class: vector-map-region-point-halo
@@ -230,13 +230,21 @@ The world map has 207 countries in the Miller projection, without Antarctica. Va
 
 ### Small countries
 
-31 countries are too small to see as a shape on a map of the world, for example Andorra, San Marino, Malta or Singapore. The map shows each of them as a dot. A dot works like any other country: it takes a value, gets the same shade and has a tooltip. It keeps its size when the map is resized or zoomed.
+31 countries are too small to see as a shape on a map of the world, for example Andorra, San Marino, Malta or Singapore. The map shows such a country as a dot when it has a value. A dot works like any other country: it gets the same shade and has a tooltip. It keeps its size when the map is resized or zoomed.
 
 <Example>
 <div class="vector-map" data-bs-toggle="vector-map" data-bs-zoom="true" data-bs-label="Visits from small countries" data-bs-values='{"AD": 4, "SM": 2, "MC": 5, "LI": 3, "VA": 1, "MT": 6, "SG": 9, "HK": 8, "BH": 5, "MU": 3}'></div>
 </Example>
 
 The dots are the sovereign states that have no shape on the map, plus Hong Kong and Macao. Dependent territories, such as Gibraltar or Guam, are not on the map. Set the size of a dot with `--tblr-vector-map-point-size`.
+
+A small country with no value is hidden, so a map with a few markers does not fill up with grey dots. To show all of them, add this rule:
+
+```css
+.vector-map-region-point:not([data-value]) {
+  display: inline;
+}
+```
 
 Three territories have no ISO code. The map uses `XK` for Kosovo, `XC` for Northern Cyprus and `XS` for Somaliland. Borders follow the default view of Natural Earth.
 

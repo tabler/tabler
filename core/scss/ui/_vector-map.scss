@@ -83,7 +83,12 @@
 }
 
 // A country too small for a shape: a dot in the colour of the region, with the
-// ring of a marker around it.
+// ring of a marker around it. Without a value it says nothing and only adds
+// noise next to the markers, so it is left out.
+.vector-map-region-point:not([data-value]) {
+  display: none;
+}
+
 .vector-map-region-point-halo {
   stroke: var(--vector-map-marker-halo-color);
   stroke-width: calc(var(--vector-map-point-size) + var(--vector-map-marker-halo-width) * 2);
