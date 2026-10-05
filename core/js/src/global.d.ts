@@ -12,5 +12,7 @@ declare global {
     IMask?: new (element: HTMLElement, options: { mask: unknown; lazy?: boolean } & Record<string, unknown>) => import('./input-mask').IMaskInstance
     Sortable?: new (element: HTMLElement, options?: Record<string, unknown>) => import('./sortable').SortableInstance
     jQuery?: JQueryStaticLike
+    // Filled by the map files of the VectorMap plugin (`dist/js/maps/*.js`)
+    tablerVectorMaps?: Record<string, import('./vector-map').VectorMapData>
   }
 }

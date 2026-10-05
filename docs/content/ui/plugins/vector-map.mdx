@@ -1,99 +1,240 @@
 ---
 title: Vector map
-docs-libs: [jsvectormap]
-description: Interactive SVG maps with jsVectorMap, with a world map, markers and lines.
-summary: A vector map draws countries as SVG paths that can be styled and clicked. Tabler themes jsVectorMap to match the interface.
-related: [/ui/components/map]
+docs-libs: [vector-map]
+description: Draw a world map as inline SVG from data attributes. Shade countries by value, add markers and lines, show tooltips and let users zoom, with no map library.
+summary: A vector map draws countries as SVG paths, shaded by a value, with markers, lines, tooltips and zoom. Tabler renders it from data attributes, with no map library and no map provider.
+added-in: '1.7.0'
+related: [/ui/components/map, /ui/components/sparkline]
+source: core/scss/ui/_vector-map.scss
+css-vars: vector-map
+classnames:
+  component:
+    - class: vector-map
+      desc: Box that holds the map, as wide as its parent
+  part:
+    - class: vector-map-svg
+      desc: The rendered SVG, added by JavaScript
+    - class: vector-map-region
+      desc: One country or region, a path with a data-region code
+    - class: vector-map-marker
+      desc: Group that holds the two parts of a marker
+    - class: vector-map-marker-dot
+      desc: The colored dot of a marker
+    - class: vector-map-marker-halo
+      desc: Ring around the dot, in the surface color
+    - class: vector-map-line
+      desc: Dashed curve between two markers
+    - class: vector-map-tooltip
+      desc: Label that follows the pointer
+    - class: vector-map-controls
+      desc: Zoom buttons in the corner of the map
 ---
-
-import Example from '@components/Example.astro'
-import MapVector from '@shared/components/demo/MapVector.astro'
-import { Code } from 'astro:components'
-import { site } from '@shared/lib/site.ts'
-import TabsPackage from '@components/TabsPackage.astro'
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
-A vector map draws countries and regions as SVG paths, so it stays sharp at any size and every region can be styled or clicked. Tabler uses [jsVectorMap](https://jvm-docs.vercel.app/), and themes it to match the rest of the interface.
+A vector map draws countries as SVG paths, so it stays sharp at any size. Use it to show a number per country, a few places, or routes between them.
 
-The library ships the map data separately from the code. Load the map you need - the world map here - or the build will render an empty box.
+The component is Tabler's own. It needs no map library, no API key and no network request. The country shapes come from [Natural Earth](https://www.naturalearthdata.com/), which is public domain.
 
 ## Installation
 
-Install jsVectorMap with npm:
-
-<TabsPackage name="jsvectormap" />
-
-Or include it from a CDN. You need three files: the stylesheet, the library, and the map data.
+The vector map is not part of `tabler.js`, so pages without a map do not load it. Add two files after `tabler.js`: the component and the map data.
 
 <Code
 	lang="html"
-	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/jsvectormap/dist/jsvectormap.css" />
-<script src="${site.cdnUrl}/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script>
-<script src="${site.cdnUrl}/dist/libs/jsvectormap/dist/maps/world.js"></script>`}
+	code={`<script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>
+<script src="${site.cdnUrl}/dist/js/tabler-vector-map.min.js"></script>
+<script src="${site.cdnUrl}/dist/js/maps/world.js"></script>`}
 />
 
-Use `maps/world-merc.js` instead for the Mercator projection.
+The styles are part of `tabler.css`.
 
-## Usage
-
-Add an empty element with a height, then point jsVectorMap at it. The `map` option has to match the map file you loaded.
-
-```html
-<div id="map-world" style="height: 20rem"></div>
-```
+With a bundler, import the component and the map, then register the map under a name:
 
 ```js
-new jsVectorMap({
-  selector: '#map-world',
-  map: 'world',
-});
+import { VectorMap } from '@tabler/core/dist/js/tabler-vector-map.esm.js';
+import { world } from '@tabler/core/dist/js/maps/world.esm.js';
+
+VectorMap.addMap('world', world);
 ```
 
-The map sizes itself from its container, so the container needs a height before the map is created. Call `updateSize()` on resize to keep it in step:
+## Default markup
 
-```js
-const map = new jsVectorMap({ selector: '#map-world', map: 'world' });
+Add `class="vector-map"` and `data-bs-toggle="vector-map"` to an empty element. Tabler draws the map on page load. The map is as wide as its parent and keeps its own proportions, so it needs no height.
 
-window.addEventListener('resize', () => map.updateSize());
-```
-
-## Default map
-
-The code for a world map with the default options:
-
-<Example codeOnly>
-<MapVector mapId="empty" />
-</Example>
-
-## Sample demo
-
-The same map rendered on the page:
+Set `data-bs-label` to a short text that says what the map shows. Without it the map is hidden from screen readers.
 
 <Example>
-<MapVector mapId="world" />
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="World map"></div>
+</Example>
+
+## Values
+
+Pass a number per country in `data-bs-values`, as a JSON object. The keys are ISO 3166-1 alpha-2 codes, such as `PL` or `US`. The country with the highest value gets the full color and the others get a lighter shade.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Visits by country" data-bs-values='{"US": 100, "CA": 62, "BR": 48, "GB": 71, "DE": 80, "FR": 66, "PL": 54, "IN": 90, "CN": 85, "JP": 59, "AU": 40, "ZA": 22, "EG": 18, "MX": 35, "AR": 27}'></div>
+</Example>
+
+The shades are spread between the lowest and the highest value. Set `data-bs-min` and `data-bs-max` to use a fixed range instead, for example `0` and `100` for a percentage.
+
+### Color
+
+The map uses the primary color. Set `--tblr-vector-map-color` to change it.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Growth by country" data-bs-min="0" data-bs-values='{"US": 4, "CA": 7, "BR": 9, "DE": 3, "PL": 8, "IN": 10, "CN": 6, "AU": 5}' style="--tblr-vector-map-color: var(--tblr-green)"></div>
 </Example>
 
 ## Markers
 
-Markers point out single locations, such as offices or customers:
+Markers point at single places, such as offices or customers. Pass them in `data-bs-markers` as a JSON array. Each marker has a `lat`, a `lng` and an optional `name`. A marker keeps its size when the map is resized or zoomed.
 
 <Example>
-<MapVector mapId="world-markers" />
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Our offices" data-bs-markers='[{"name": "Warsaw", "lat": 52.23, "lng": 21.01}, {"name": "New York", "lat": 40.71, "lng": -74.01}, {"name": "Tokyo", "lat": 35.68, "lng": 139.69}, {"name": "Sydney", "lat": -33.87, "lng": 151.21}]' style="--tblr-vector-map-color: var(--tblr-red)"></div>
 </Example>
 
 ## Lines
 
-Lines connect locations, for a route or a link between two points:
+Lines join two markers, for a route or a connection. Pass them in `data-bs-lines` as a JSON array. `from` and `to` are the names of two markers. The dashes move from the start of the line to its end, and stand still for users who ask for reduced motion.
 
 <Example>
-<MapVector mapId="world-lines" />
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Flights from Warsaw" data-bs-markers='[{"name": "Warsaw", "lat": 52.23, "lng": 21.01}, {"name": "New York", "lat": 40.71, "lng": -74.01}, {"name": "Tokyo", "lat": 35.68, "lng": 139.69}, {"name": "Cape Town", "lat": -33.92, "lng": 18.42}]' data-bs-lines='[{"from": "Warsaw", "to": "New York"}, {"from": "Warsaw", "to": "Tokyo"}, {"from": "Warsaw", "to": "Cape Town"}]'></div>
 </Example>
+
+## Zoom
+
+Add `data-bs-zoom="true"` to let users look closer. The map gets two buttons, and reacts to the mouse wheel, a double click, a pinch and a drag.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-zoom="true" data-bs-label="Visits in Europe" data-bs-values='{"PL": 8, "DE": 6, "FR": 5, "ES": 3, "IT": 4, "GB": 7, "SE": 2, "UA": 3, "RO": 2, "CZ": 5}'></div>
+</Example>
+
+While the pointer is over a zoomable map, the wheel zooms the map and does not scroll the page. Set `data-bs-zoom-on-scroll="false"` to keep the wheel for the page. On a touch screen a finger on the map moves the map, not the page, so leave some room around a large map.
+
+## Tooltip
+
+A tooltip shows the name of the country or marker under the pointer, with the value when the country has one. Set `data-bs-tooltip="false"` to turn it off.
+
+Pass a function from JavaScript to write your own text. It gets the item under the pointer and returns a string. The string is shown as plain text. Return an empty string to show nothing.
+
+```js
+new tabler.VectorMap('#visits', {
+  values: { PL: 54, DE: 80 },
+  tooltip: (item) => (item.type === 'region' && item.value !== undefined ? `${item.name}: ${item.value}%` : item.name),
+});
+```
+
+## Options
+
+Set options with data attributes or pass them to the constructor. For a data attribute, add `data-bs-` to the name and write it in kebab case, for example `data-bs-zoom-max`.
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `map` | string, object | `'world'` | Name of a loaded map, or the map data itself. |
+| `values` | object | `{}` | A number per region code. |
+| `min` | number, null | `null` | Value that gets the lightest shade. The lowest value when `null`. |
+| `max` | number, null | `null` | Value that gets the full color. The highest value when `null`. |
+| `markers` | array | `[]` | Places as `{ name, lat, lng }`. |
+| `lines` | array | `[]` | Connections as `{ from, to }`, by marker name. |
+| `tooltip` | boolean, function | `true` | Shows a tooltip, or builds its text. |
+| `zoom` | boolean | `false` | Lets users zoom and drag the map. |
+| `zoomMax` | number | `8` | The largest magnification. |
+| `zoomOnScroll` | boolean | `true` | Zooms with the mouse wheel. Needs `zoom`. |
+| `zoomInLabel` | string | `'Zoom in'` | Accessible name of the zoom in button. |
+| `zoomOutLabel` | string | `'Zoom out'` | Accessible name of the zoom out button. |
+| `label` | string, null | `null` | Accessible name of the map. |
+
+## JavaScript
+
+Tabler wraps the element in a `VectorMap` component that works like the Bootstrap components: it is created once per element and stored on it. When the page is loaded, Tabler creates one for every element with `data-bs-toggle="vector-map"`. This is the code that runs:
+
+<CodeDocs name="vector-map-init" file="core/js/src/vector-map.ts" />
+
+Create the component yourself for an element added later, or to pass the data from code:
+
+```js
+const visits = tabler.VectorMap.getOrCreateInstance(document.getElementById('visits'), {
+  values: { PL: 54, DE: 80, FR: 66 },
+});
+```
+
+Call `update()` with new values to shade the map again. The map is not drawn again, so this is cheap enough for live data:
+
+```js
+visits.update({ PL: 61, DE: 77, FR: 70 });
+```
+
+| Method | Description |
+| --- | --- |
+| `update(values)` | Shades the regions with new values. Fires `updated.bs.vector-map`. |
+| `render()` | Reads the attributes again and draws the map from the start. Fires `rendered.bs.vector-map`. |
+| `zoomIn()` | Zooms in one step, around the middle of the view. |
+| `zoomOut()` | Zooms out one step. |
+| `reset()` | Goes back to the whole map. |
+| `dispose()` | Removes the map, the buttons, the tooltip and the component from the element. |
+| `VectorMap.addMap(name, data)` | Static. Registers a map under a name. |
+| `getInstance(element)` | Static. Returns the component for the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+| Event | Description |
+| --- | --- |
+| `rendered.bs.vector-map` | Fired on the element after every render. |
+| `updated.bs.vector-map` | Fired on the element after `update()`. |
+
+## Styling a single country
+
+Every country is a path with its code in `data-region`, so one rule can style it:
+
+```css
+.vector-map [data-region='PL'] {
+  fill: var(--tblr-red);
+}
+```
+
+## Custom properties
+
+The map reads its colors and sizes from custom properties on the element. Change them for one map with a `style` attribute, or for a section with a class.
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--tblr-vector-map-color` | `var(--tblr-primary)` | Color of the highest value, and of the markers. |
+| `--tblr-vector-map-region-fill` | `var(--tblr-border-color)` | Fill of a country with no value. |
+| `--tblr-vector-map-region-stroke` | `var(--tblr-bg-surface)` | Border between countries. |
+| `--tblr-vector-map-region-stroke-width` | `1px` | Width of the border. |
+| `--tblr-vector-map-value-min` | `0.1` | Share of the color the lowest value gets, from 0 to 1. |
+| `--tblr-vector-map-marker-size` | `0.5rem` | Diameter of a marker. |
+| `--tblr-vector-map-marker-color` | `var(--tblr-vector-map-color)` | Color of a marker. |
+| `--tblr-vector-map-marker-halo-color` | `var(--tblr-bg-surface)` | Color of the ring around a marker. |
+| `--tblr-vector-map-marker-halo-width` | `2px` | Width of the ring. |
+| `--tblr-vector-map-line-color` | `var(--tblr-secondary)` | Color of a line. |
+| `--tblr-vector-map-line-width` | `1px` | Width of a line. |
+| `--tblr-vector-map-line-dash` | `4px` | Length of a dash and of the gap after it. |
+| `--tblr-vector-map-line-duration` | `1s` | Time one dash takes to move to the place of the next. |
+| `--tblr-vector-map-controls-offset` | `var(--tblr-spacer-2)` | Distance of the zoom buttons from the corner. |
+
+## The world map
+
+The world map has 176 countries in the Miller projection, without Antarctica. It is made for an overview, so very small countries, such as Singapore or Malta, are not on it. Values for a code that is not on the map are skipped.
+
+Three territories have no ISO code. The map uses `XK` for Kosovo, `XC` for Northern Cyprus and `XS` for Somaliland. Borders follow the default view of Natural Earth.
 
 ## Accessibility
 
-- A map is a picture built from paths, and a screen reader reads them as a list of shapes. Give the container `role="img"` and an `aria-label` that says what it shows.
-- The data behind the map has to be reachable another way. A table of the same values, next to or below the map, serves screen reader users and anyone printing the page.
-- Hovering a region is mouse-only. Do not put anything there that is not also available in the text version.
-- Colour scales are hard to read for many users. Add a legend with the actual numbers rather than color alone.
-- Do not make every region focusable. A world map would be hundreds of tab stops.
+- Set `data-bs-label`. The map is then an image with that name. The countries themselves are not read out one by one.
+- The data behind the map has to be reachable another way. Put a table of the same values next to or below the map. It serves screen reader users and anyone who prints the page.
+- The tooltip is for the pointer only. Do not put anything there that is not in the text version too.
+- Shades of one color are hard to tell apart for many users. Add a legend with the real numbers.
+- The zoom buttons work with the keyboard and have accessible names. Change the names with `data-bs-zoom-in-label` and `data-bs-zoom-out-label` when the page is not in English.
+
+## Variables
+
+<CodeDocs name="vector-map-variables" file="core/scss/_variables.scss" />
+
+## Migration notes
+
+Before 1.7 this page used [jsVectorMap](https://jvm-docs.vercel.app/). Its files are still in `dist/libs/jsvectormap` and its styles are still in `tabler-vendors.css`, so a page that uses it keeps working. The demo and the docs now use the component above.

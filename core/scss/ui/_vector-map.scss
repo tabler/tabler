@@ -1,0 +1,130 @@
+// Vector map (inline SVG, rendered by js/src/vector-map.ts)
+@use '../config' as *;
+
+@keyframes vector-map-line {
+  to {
+    stroke-dashoffset: calc(var(--vector-map-line-dash) * -2);
+  }
+}
+
+.vector-map {
+  // scss-docs-start vector-map-css-vars
+  --vector-map-color: #{$vector-map-color};
+  --vector-map-region-fill: #{$vector-map-region-fill};
+  --vector-map-region-stroke: #{$vector-map-region-stroke};
+  --vector-map-region-stroke-width: #{$vector-map-region-stroke-width};
+  --vector-map-value-min: #{$vector-map-value-min};
+  --vector-map-marker-size: #{$vector-map-marker-size};
+  --vector-map-marker-color: #{$vector-map-marker-color};
+  --vector-map-marker-halo-color: #{$vector-map-marker-halo-color};
+  --vector-map-marker-halo-width: #{$vector-map-marker-halo-width};
+  --vector-map-line-color: #{$vector-map-line-color};
+  --vector-map-line-width: #{$vector-map-line-width};
+  --vector-map-line-dash: #{$vector-map-line-dash};
+  --vector-map-line-duration: #{$vector-map-line-duration};
+  --vector-map-controls-offset: #{$vector-map-controls-offset};
+  // scss-docs-end vector-map-css-vars
+
+  position: relative;
+  display: block;
+  line-height: 0;
+}
+
+.vector-map-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.vector-map-region {
+  fill: var(--vector-map-region-fill);
+  stroke: var(--vector-map-region-stroke);
+  stroke-linejoin: round;
+  stroke-width: var(--vector-map-region-stroke-width);
+  // The border keeps its width however large the map is drawn
+  vector-effect: non-scaling-stroke;
+
+  // `--vector-map-value` is the 0 to 1 share set by the plugin. The lowest
+  // value still gets `--vector-map-value-min` of the colour, so it stands out
+  // from a region with no value at all.
+  &[data-value] {
+    fill: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
+  }
+}
+
+// Dashes that move from the start of the line to its end
+.vector-map-line {
+  fill: none;
+  stroke: var(--vector-map-line-color);
+  stroke-dasharray: var(--vector-map-line-dash);
+  stroke-width: var(--vector-map-line-width);
+  vector-effect: non-scaling-stroke;
+  animation: vector-map-line var(--vector-map-line-duration) linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// Both parts of a marker are a line of no length: its round caps make a dot
+// as wide as the stroke, and the non-scaling stroke keeps it that wide in
+// pixels however large the map is drawn.
+.vector-map-marker-halo,
+.vector-map-marker-dot {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.vector-map-marker-halo {
+  stroke: var(--vector-map-marker-halo-color);
+  stroke-width: calc(var(--vector-map-marker-size) + var(--vector-map-marker-halo-width) * 2);
+}
+
+.vector-map-marker-dot {
+  stroke: var(--vector-map-marker-color);
+  stroke-width: var(--vector-map-marker-size);
+}
+
+// Follows the pointer, placed by the plugin with `left` and `top`
+.vector-map-tooltip {
+  position: absolute;
+  z-index: 1;
+  padding: $tooltip-padding-y $tooltip-padding-x;
+  font-size: $tooltip-font-size;
+  line-height: $line-height-base;
+  color: $tooltip-color;
+  white-space: nowrap;
+  pointer-events: none;
+  background: $tooltip-bg;
+  @include border-radius($tooltip-border-radius);
+
+  /* rtl:ignore */
+  transform: translate(-50%, calc(-100% - #{$spacer-2}));
+}
+
+// A map that can be magnified takes the drags and pinches for itself, so the
+// page does not scroll or zoom under the finger.
+.vector-map-zoomable .vector-map-svg {
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.vector-map-dragging .vector-map-svg {
+  cursor: grabbing;
+}
+
+.vector-map-controls {
+  position: absolute;
+  inset-block-start: var(--vector-map-controls-offset);
+  inset-inline-end: var(--vector-map-controls-offset);
+  z-index: 1;
+
+  .icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+  }
+}
