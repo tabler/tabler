@@ -1,0 +1,136 @@
+@use '../../config' as *;
+
+.dropzone {
+  // scss-docs-start dropzone-css-vars
+  --dropzone-gap: #{$dropzone-gap};
+  --dropzone-padding-y: #{$dropzone-padding-y};
+  --dropzone-padding-x: #{$dropzone-padding-x};
+  --dropzone-color: #{$dropzone-color};
+  --dropzone-bg: #{$dropzone-bg};
+  --dropzone-border-width: #{$dropzone-border-width};
+  --dropzone-border-color: #{$dropzone-border-color};
+  --dropzone-border-radius: #{$dropzone-border-radius};
+  --dropzone-active-color: #{$dropzone-active-color};
+  --dropzone-active-bg: #{$dropzone-active-bg};
+  --dropzone-active-border-color: #{$dropzone-active-border-color};
+  --dropzone-item-padding-y: #{$dropzone-item-padding-y};
+  --dropzone-item-padding-x: #{$dropzone-item-padding-x};
+  --dropzone-item-bg: #{$dropzone-item-bg};
+  // scss-docs-end dropzone-css-vars
+  display: flex;
+  flex-direction: column;
+  gap: var(--dropzone-gap);
+}
+
+// A `<label>` around the real file input: a click and the keyboard open the
+// file dialog natively, the script only adds drag and drop and the file list.
+.dropzone-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  padding: var(--dropzone-padding-y) var(--dropzone-padding-x);
+  margin: 0;
+  color: var(--dropzone-color);
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--dropzone-bg);
+  border: var(--dropzone-border-width) dashed var(--dropzone-border-color);
+  @include border-radius(var(--dropzone-border-radius));
+  @include focus-ring-transition(color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out);
+
+  &:hover {
+    border-color: var(--dropzone-active-border-color);
+  }
+
+  &:has(.dropzone-input:focus-visible) {
+    border-color: var(--dropzone-active-border-color);
+    @include focus-ring(true);
+  }
+
+  &:has(.dropzone-input:disabled) {
+    pointer-events: none;
+    opacity: $btn-disabled-opacity;
+  }
+}
+
+.dropzone-dragover .dropzone-area {
+  color: var(--dropzone-active-color);
+  background-color: var(--dropzone-active-bg);
+  border-color: var(--dropzone-active-border-color);
+}
+
+.dropzone-input {
+  @include visually-hidden();
+}
+
+.dropzone-title {
+  font-weight: var(--font-weight-medium);
+  color: var(--body-color);
+}
+
+.dropzone-hint {
+  font-size: var(--font-size-h5);
+}
+
+.dropzone-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dropzone-gap);
+
+  &:empty {
+    display: none;
+  }
+}
+
+.dropzone-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: var(--dropzone-item-padding-y) var(--dropzone-item-padding-x);
+  background-color: var(--dropzone-item-bg);
+  border: var(--dropzone-border-width) solid var(--dropzone-border-color);
+  @include border-radius(var(--dropzone-border-radius));
+
+  // The progress bar takes its own line below the name and the meta text
+  .progress {
+    flex-basis: 100%;
+  }
+}
+
+.dropzone-item-body {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.dropzone-item-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: var(--font-weight-medium);
+  @include text-truncate();
+}
+
+.dropzone-item-meta {
+  flex: none;
+  font-size: var(--font-size-h5);
+  color: var(--secondary);
+}
+
+.dropzone-item-success .progress-bar {
+  background-color: var(--success);
+}
+
+.dropzone-item-error {
+  .dropzone-item-meta {
+    color: var(--danger);
+  }
+
+  .progress {
+    display: none;
+  }
+}
