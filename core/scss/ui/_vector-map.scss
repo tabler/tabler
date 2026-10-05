@@ -82,6 +82,22 @@
   vector-effect: non-scaling-stroke;
 }
 
+// A scale of several colours, from `--vector-map-color-1` for the lowest value
+// to the last one for the highest. `--vector-map-colors` says how many there
+// are. Every further colour is mixed over the result so far: not at all below
+// its part of the scale, more and more inside it, and fully above it, so each
+// part runs between two neighbours. A colour past the last one never gets a
+// share, which is why one rule serves any number of them.
+.vector-map-colors .vector-map-region[data-value] {
+  $color: var(--vector-map-color-1, transparent);
+
+  @for $i from 2 through $vector-map-colors-max {
+    $color: color-mix(in oklab, #{$color}, var(--vector-map-color-#{$i}, transparent) calc(clamp(0, var(--vector-map-value, 1) * (var(--vector-map-colors, 2) - 1) - #{$i - 2}, 1) * 100%));
+  }
+
+  --vector-map-region-color: #{$color};
+}
+
 // A country too small for a shape: a dot in the colour of the region, with the
 // ring of a marker around it. Without a value it says nothing and only adds
 // noise next to the markers, so it is left out.

@@ -54,6 +54,7 @@ type ComponentConfig = {
   values: VectorMapValues
   min: number | null
   max: number | null
+  colors: string[]
   markers: VectorMapMarker[]
   lines: VectorMapLine[]
   tooltip: VectorMapTooltip
@@ -95,6 +96,7 @@ const CLASS_NAME_MARKER = 'vector-map-marker'
 const CLASS_NAME_MARKER_HALO = 'vector-map-marker-halo'
 const CLASS_NAME_MARKER_DOT = 'vector-map-marker-dot'
 const CLASS_NAME_TOOLTIP = 'vector-map-tooltip'
+const CLASS_NAME_COLORS = 'vector-map-colors'
 const CLASS_NAME_ZOOMABLE = 'vector-map-zoomable'
 const CLASS_NAME_DRAGGING = 'vector-map-dragging'
 const CLASS_NAME_CONTROLS = 'vector-map-controls'
@@ -132,6 +134,11 @@ const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${N
 // Declared on `.vector-map-region` in scss/ui/_vector-map.scss, where it gets
 // the `--tblr-` prefix at build time.
 const CSS_VAR_VALUE = '--tblr-vector-map-value'
+// The colours of a scale, numbered from 1, and how many of them there are.
+// scss/ui/_vector-map.scss mixes them, for at most this many.
+const CSS_VAR_COLOR = '--tblr-vector-map-color-'
+const CSS_VAR_COLORS = '--tblr-vector-map-colors'
+const COLORS_MAX = 5
 const SVG_NS = 'http://www.w3.org/2000/svg'
 
 const Default: ComponentConfig = {
@@ -139,6 +146,7 @@ const Default: ComponentConfig = {
   values: {},
   min: null,
   max: null,
+  colors: [],
   markers: [],
   lines: [],
   tooltip: true,
@@ -155,6 +163,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   values: 'object',
   min: '(number|null)',
   max: '(number|null)',
+  colors: 'array',
   markers: 'array',
   lines: 'array',
   tooltip: '(boolean|function)',
@@ -201,6 +210,13 @@ const toMarkers = (input: unknown): VectorMapMarker[] => {
   }
 
   return markers
+}
+
+// A scale needs two colours at least; with one, or none, the map keeps the
+// single colour of `--tblr-vector-map-color`.
+const toColors = (input: unknown): string[] => {
+  const colors = (Array.isArray(input) ? (input as unknown[]) : []).filter((color): color is string => typeof color === 'string' && color.trim() !== '')
+  return colors.length < 2 ? [] : colors.slice(0, COLORS_MAX)
 }
 
 const toLines = (input: unknown): VectorMapLine[] => {
@@ -353,6 +369,7 @@ class VectorMap extends BaseComponent {
     this._getSvg()?.remove()
     this._element.append(svg)
     this._renderControls()
+    this._applyColors()
     this._setView({ x: 0, y: 0, scale: 1 })
     this._applyValues()
 
@@ -385,6 +402,8 @@ class VectorMap extends BaseComponent {
     this._getSvg()?.remove()
     this._getControls()?.remove()
     this._tooltip?.remove()
+    this._config.colors = []
+    this._applyColors()
     this._element.classList.remove(CLASS_NAME_ZOOMABLE, CLASS_NAME_DRAGGING)
     this._element.removeEventListener('wheel', this._onWheel)
     super.dispose()
@@ -393,6 +412,7 @@ class VectorMap extends BaseComponent {
   // Private
   _configAfterMerge(config: BaseConfig): BaseConfig {
     config.values = toValues(config.values)
+    config.colors = toColors(config.colors)
     config.markers = toMarkers(config.markers)
     config.lines = toLines(config.lines)
     return config
@@ -737,6 +757,30 @@ class VectorMap extends BaseComponent {
     if (this._tooltip) {
       this._tooltip.hidden = true
     }
+  }
+
+  // Hands the colours of the scale to the stylesheet, which mixes the colour
+  // of every region from them and from its share. Nothing is computed here.
+  _applyColors(): void {
+    const { colors } = this._config
+    const { style } = this._element
+
+    for (let index = 0; index < COLORS_MAX; index++) {
+      const color = colors[index]
+      if (color === undefined) {
+        style.removeProperty(`${CSS_VAR_COLOR}${index + 1}`)
+      } else {
+        style.setProperty(`${CSS_VAR_COLOR}${index + 1}`, color)
+      }
+    }
+
+    if (colors.length > 0) {
+      style.setProperty(CSS_VAR_COLORS, String(colors.length))
+    } else {
+      style.removeProperty(CSS_VAR_COLORS)
+    }
+
+    this._element.classList.toggle(CLASS_NAME_COLORS, colors.length > 0)
   }
 
   // Shades every region by where its value sits between `min` and `max`. Only

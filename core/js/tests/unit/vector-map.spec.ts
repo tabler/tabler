@@ -168,6 +168,64 @@ describe('VectorMap', () => {
     })
   })
 
+  describe('colors', () => {
+    const colorVar = (index: number): string => el().style.getPropertyValue(`--tblr-vector-map-color-${index}`)
+
+    it('should hand a scale of colors to the stylesheet', () => {
+      fixtureEl.innerHTML = `<div class="vector-map" data-bs-colors='["red", "yellow", "green"]'></div>`
+
+      new VectorMap(el(), { map: squares, values: { AA: 1, BB: 2, CC: 3 } })
+
+      expect(el().classList.contains('vector-map-colors')).toBe(true)
+      expect(el().style.getPropertyValue('--tblr-vector-map-colors')).toBe('3')
+      expect(colorVar(1)).toBe('red')
+      expect(colorVar(2)).toBe('yellow')
+      expect(colorVar(3)).toBe('green')
+      expect(colorVar(4)).toBe('')
+      // The share of a region stays the same, only the stylesheet reads it differently
+      expect(ratio('BB')).toBe('0.5')
+    })
+
+    it('should keep the single color with fewer than two colors', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: squares, colors: ['red'] })
+
+      expect(el().classList.contains('vector-map-colors')).toBe(false)
+      expect(el().style.getPropertyValue('--tblr-vector-map-colors')).toBe('')
+      expect(colorVar(1)).toBe('')
+    })
+
+    it('should use the first five colors', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: squares, colors: ['#111', '#222', '#333', '#444', '#555', '#666'] })
+
+      expect(el().style.getPropertyValue('--tblr-vector-map-colors')).toBe('5')
+      expect(colorVar(5)).toBe('#555')
+      expect(colorVar(6)).toBe('')
+    })
+
+    it('should drop the scale when render() no longer has one, and on dispose', () => {
+      fixtureEl.innerHTML = `<div class="vector-map" data-bs-colors='["red", "green"]'></div>`
+
+      const map = new VectorMap(el(), { map: squares })
+      el().removeAttribute('data-bs-colors')
+      map.render()
+
+      expect(el().classList.contains('vector-map-colors')).toBe(false)
+      expect(colorVar(1)).toBe('')
+
+      el().setAttribute('data-bs-colors', '["red", "green"]')
+      map.render()
+      expect(colorVar(2)).toBe('green')
+
+      map.dispose()
+      expect(el().classList.contains('vector-map-colors')).toBe(false)
+      expect(colorVar(2)).toBe('')
+    })
+  })
+
   describe('points', () => {
     const islands: VectorMapData = {
       ...squares,

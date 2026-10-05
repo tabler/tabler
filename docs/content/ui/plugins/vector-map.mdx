@@ -11,6 +11,9 @@ classnames:
   component:
     - class: vector-map
       desc: Box that holds the map, as wide as its parent
+  style:
+    - class: vector-map-colors
+      desc: Shades the values with a scale of several colors, set by JavaScript for data-bs-colors
   part:
     - class: vector-map-svg
       desc: The rendered SVG, added by JavaScript
@@ -96,6 +99,24 @@ The map uses the primary color. Set `--tblr-vector-map-color` to change it.
 <div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Growth by country" data-bs-min="0" data-bs-values='{"US": 4, "CA": 7, "BR": 9, "DE": 3, "PL": 8, "IN": 10, "CN": 6, "AU": 5}' style="--tblr-vector-map-color: var(--tblr-green)"></div>
 </Example>
 
+### Color scale
+
+One color shows how much. A scale of several colors also shows good and bad, or cold and hot. Pass two to five colors in `data-bs-colors`, as a JSON array. The first color is for the lowest value and the last one for the highest. The values between them get a mix of the two nearest colors.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-label="Customer satisfaction by country" data-bs-min="0" data-bs-max="100" data-bs-colors='["var(--tblr-red)", "var(--tblr-yellow)", "var(--tblr-green)"]' data-bs-values='{"US": 82, "CA": 91, "MX": 48, "BR": 35, "AR": 22, "GB": 74, "DE": 96, "FR": 63, "ES": 55, "PL": 88, "RU": 12, "IN": 41, "CN": 58, "JP": 79, "AU": 100, "ZA": 28, "EG": 6, "NG": 17, "SA": 67, "ID": 45}'></div>
+</Example>
+
+Any CSS color works, also a Tabler color such as `var(--tblr-red)`. The browser mixes the colors with `color-mix()`, so they follow the theme and you can change them later with CSS.
+
+The plugin writes the colors to `--tblr-vector-map-color-1`, `--tblr-vector-map-color-2` and so on, and their number to `--tblr-vector-map-colors`. To set a scale without JavaScript options, add the `vector-map-colors` class and these properties yourself:
+
+```html
+<div class="vector-map vector-map-colors" data-bs-toggle="vector-map" style="--tblr-vector-map-colors: 2; --tblr-vector-map-color-1: var(--tblr-blue); --tblr-vector-map-color-2: var(--tblr-red)"></div>
+```
+
+With a scale, the lowest value gets the first color in full, so `--tblr-vector-map-value-min` is not used. Markers keep the color from `--tblr-vector-map-color`.
+
 ## Markers
 
 Markers point at single places, such as offices or customers. Pass them in `data-bs-markers` as a JSON array. Each marker has a `lat`, a `lng` and an optional `name`. A marker keeps its size when the map is resized or zoomed.
@@ -145,6 +166,7 @@ Set options with data attributes or pass them to the constructor. For a data att
 | `values` | object | `{}` | A number per region code. |
 | `min` | number, null | `null` | Value that gets the lightest shade. The lowest value when `null`. |
 | `max` | number, null | `null` | Value that gets the full color. The highest value when `null`. |
+| `colors` | array | `[]` | Two to five colors of a scale, from the lowest value to the highest. |
 | `markers` | array | `[]` | Places as `{ name, lat, lng }`. |
 | `lines` | array | `[]` | Connections as `{ from, to }`, by marker name. |
 | `tooltip` | boolean, function | `true` | Shows a tooltip, or builds its text. |
@@ -213,6 +235,8 @@ The map reads its colors and sizes from custom properties on the element. Change
 | `--tblr-vector-map-region-stroke` | `var(--tblr-bg-surface)` | Border between countries. |
 | `--tblr-vector-map-region-stroke-width` | `1px` | Width of the border. |
 | `--tblr-vector-map-value-min` | `0.1` | Share of the color the lowest value gets, from 0 to 1. |
+| `--tblr-vector-map-color-1` to `-5` | none | Colors of a scale, from the lowest value to the highest. |
+| `--tblr-vector-map-colors` | none | Number of colors in the scale. |
 | `--tblr-vector-map-point-size` | `0.375rem` | Diameter of the dot of a small country. |
 | `--tblr-vector-map-marker-size` | `0.5rem` | Diameter of a marker. |
 | `--tblr-vector-map-marker-color` | `var(--tblr-vector-map-color)` | Color of a marker. |

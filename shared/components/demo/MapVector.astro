@@ -6,6 +6,7 @@ interface MapData {
   map: string
   color?: string
   zoom?: boolean
+  colors?: string[]
   values?: Record<string, number>
   markers?: { name: string; lat: number; lng: number }[]
   lines?: { from: string; to: string }[]
@@ -30,6 +31,7 @@ const color = colorProp ?? data?.color ?? 'primary'
       data-bs-map={data.map}
       data-bs-label={data.title}
       data-bs-zoom={data.zoom ? 'true' : undefined}
+      data-bs-colors={data.colors && JSON.stringify(data.colors)}
       data-bs-values={data.values && JSON.stringify(data.values)}
       data-bs-markers={data.markers && JSON.stringify(data.markers)}
       data-bs-lines={data.lines && JSON.stringify(data.lines)}
