@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Updated the off `.form-switch` to a filled gray track with a white knob and added the `$form-switch-bg` variable.
+Updated `.form-switch` with a filled gray off track, a white knob with an even gap and a new `$form-switch-bg` variable.
