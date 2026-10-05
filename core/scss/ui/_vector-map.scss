@@ -24,6 +24,8 @@
   --vector-map-line-dash: #{$vector-map-line-dash};
   --vector-map-line-duration: #{$vector-map-line-duration};
   --vector-map-controls-offset: #{$vector-map-controls-offset};
+  --vector-map-legend-width: #{$vector-map-legend-width};
+  --vector-map-legend-height: #{$vector-map-legend-height};
   // scss-docs-end vector-map-css-vars
 
   position: relative;
@@ -47,13 +49,15 @@
   stroke-width: var(--vector-map-region-stroke-width);
   // The border keeps its width however large the map is drawn
   vector-effect: non-scaling-stroke;
+}
 
-  // `--vector-map-value` is the 0 to 1 share set by the plugin. The lowest
-  // value still gets `--vector-map-value-min` of the colour, so it stands out
-  // from a region with no value at all.
-  &[data-value] {
-    --vector-map-region-color: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
-  }
+// `--vector-map-value` is the 0 to 1 share set by the plugin. The lowest value
+// still gets `--vector-map-value-min` of the colour, so it stands out from a
+// region with no value at all. A slice of the legend has a share too, and
+// gets its colour from the same rule.
+.vector-map-region[data-value],
+.vector-map-legend-step {
+  --vector-map-region-color: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
 }
 
 // Dashes that move from the start of the line to its end
@@ -88,7 +92,8 @@
 // its part of the scale, more and more inside it, and fully above it, so each
 // part runs between two neighbours. A colour past the last one never gets a
 // share, which is why one rule serves any number of them.
-.vector-map-colors .vector-map-region[data-value] {
+.vector-map-colors .vector-map-region[data-value],
+.vector-map-colors .vector-map-legend-step {
   $color: var(--vector-map-color-1, transparent);
 
   @for $i from 2 through $vector-map-colors-max {
@@ -166,4 +171,30 @@
     stroke-linecap: round;
     stroke-width: 2;
   }
+}
+
+// The scale of the map as a bar, with the lowest and the highest value
+.vector-map-legend {
+  display: flex;
+  gap: $spacer-2;
+  align-items: center;
+  justify-content: center;
+  margin-top: $spacer-2;
+  font-size: $font-size-sm;
+  font-variant-numeric: tabular-nums;
+  line-height: $line-height-base;
+  color: var(--secondary);
+}
+
+.vector-map-legend-scale {
+  display: flex;
+  width: var(--vector-map-legend-width);
+  height: var(--vector-map-legend-height);
+  overflow: hidden;
+  @include border-radius($border-radius-pill);
+}
+
+.vector-map-legend-step {
+  flex: 1;
+  background: var(--vector-map-region-color);
 }

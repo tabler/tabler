@@ -45,6 +45,7 @@ export type VectorMapTooltipItem = { type: 'region'; code: string; name: string;
 
 type VectorMapValues = Record<string, number>
 type VectorMapTooltip = boolean | ((item: VectorMapTooltipItem) => string)
+type VectorMapLegend = boolean | ((value: number) => string)
 type Point = [number, number]
 // The part of the map in sight: its top left corner and how many times it is magnified
 type View = { x: number; y: number; scale: number }
@@ -58,6 +59,7 @@ type ComponentConfig = {
   markers: VectorMapMarker[]
   lines: VectorMapLine[]
   tooltip: VectorMapTooltip
+  legend: VectorMapLegend
   zoom: boolean
   zoomMax: number
   zoomOnScroll: boolean
@@ -97,6 +99,10 @@ const CLASS_NAME_MARKER_HALO = 'vector-map-marker-halo'
 const CLASS_NAME_MARKER_DOT = 'vector-map-marker-dot'
 const CLASS_NAME_TOOLTIP = 'vector-map-tooltip'
 const CLASS_NAME_COLORS = 'vector-map-colors'
+const CLASS_NAME_LEGEND = 'vector-map-legend'
+const CLASS_NAME_LEGEND_LABEL = 'vector-map-legend-label'
+const CLASS_NAME_LEGEND_SCALE = 'vector-map-legend-scale'
+const CLASS_NAME_LEGEND_STEP = 'vector-map-legend-step'
 const CLASS_NAME_ZOOMABLE = 'vector-map-zoomable'
 const CLASS_NAME_DRAGGING = 'vector-map-dragging'
 const CLASS_NAME_CONTROLS = 'vector-map-controls'
@@ -139,6 +145,8 @@ const CSS_VAR_VALUE = '--tblr-vector-map-value'
 const CSS_VAR_COLOR = '--tblr-vector-map-color-'
 const CSS_VAR_COLORS = '--tblr-vector-map-colors'
 const COLORS_MAX = 5
+// Enough slices for the bar of the legend to read as one smooth gradient
+const LEGEND_STEPS = 24
 const SVG_NS = 'http://www.w3.org/2000/svg'
 
 const Default: ComponentConfig = {
@@ -150,6 +158,7 @@ const Default: ComponentConfig = {
   markers: [],
   lines: [],
   tooltip: true,
+  legend: false,
   zoom: false,
   zoomMax: 8,
   zoomOnScroll: true,
@@ -167,6 +176,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   markers: 'array',
   lines: 'array',
   tooltip: '(boolean|function)',
+  legend: '(boolean|function)',
   zoom: 'boolean',
   zoomMax: 'number',
   zoomOnScroll: 'boolean',
@@ -401,6 +411,7 @@ class VectorMap extends BaseComponent {
     cancelAnimationFrame(this._frame)
     this._getSvg()?.remove()
     this._getControls()?.remove()
+    this._getLegend()?.remove()
     this._tooltip?.remove()
     this._config.colors = []
     this._applyColors()
@@ -759,6 +770,45 @@ class VectorMap extends BaseComponent {
     }
   }
 
+  _getLegend(): HTMLElement | null {
+    return this._element.querySelector<HTMLElement>(`.${CLASS_NAME_LEGEND}`)
+  }
+
+  // A bar with the colours of the scale between the lowest and the highest
+  // value. Every slice of the bar carries a share, like a region does, so the
+  // stylesheet colours it with the very rule it colours the map with.
+  _renderLegend(min: number, max: number): void {
+    const { legend } = this._config
+    this._getLegend()?.remove()
+
+    if (!legend || !Number.isFinite(min) || !Number.isFinite(max)) {
+      return
+    }
+
+    const format = typeof legend === 'function' ? legend : (value: number): string => value.toLocaleString()
+    const label = (value: number): HTMLElement => {
+      const element = document.createElement('span')
+      element.className = CLASS_NAME_LEGEND_LABEL
+      element.textContent = format(value)
+      return element
+    }
+
+    const scale = document.createElement('span')
+    scale.className = CLASS_NAME_LEGEND_SCALE
+    scale.setAttribute('aria-hidden', 'true')
+    for (let index = 0; index < LEGEND_STEPS; index++) {
+      const step = document.createElement('span')
+      step.className = CLASS_NAME_LEGEND_STEP
+      step.style.setProperty(CSS_VAR_VALUE, String(Math.round((index / (LEGEND_STEPS - 1)) * 1000) / 1000))
+      scale.append(step)
+    }
+
+    const element = document.createElement('div')
+    element.className = CLASS_NAME_LEGEND
+    element.append(label(min), scale, label(max))
+    this._element.append(element)
+  }
+
   // Hands the colours of the scale to the stylesheet, which mixes the colour
   // of every region from them and from its share. Nothing is computed here.
   _applyColors(): void {
@@ -791,6 +841,8 @@ class VectorMap extends BaseComponent {
     const min = minForced ?? Math.min(...numbers)
     const max = maxForced ?? Math.max(...numbers)
     const span = max - min
+
+    this._renderLegend(min, max)
 
     for (const path of this._element.querySelectorAll<SVGElement>(`.${CLASS_NAME_REGION}`)) {
       const value = values[path.getAttribute(ATTRIBUTE_REGION) ?? '']

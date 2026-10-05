@@ -37,6 +37,14 @@ classnames:
       desc: Label that follows the pointer
     - class: vector-map-controls
       desc: Zoom buttons in the corner of the map
+    - class: vector-map-legend
+      desc: The scale under the map, two numbers around a bar
+    - class: vector-map-legend-label
+      desc: A number at one end of the scale
+    - class: vector-map-legend-scale
+      desc: The bar of the legend
+    - class: vector-map-legend-step
+      desc: One slice of the bar, colored like a region with the same share
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
@@ -117,6 +125,25 @@ The plugin writes the colors to `--tblr-vector-map-color-1`, `--tblr-vector-map-
 
 With a scale, the lowest value gets the first color in full, so `--tblr-vector-map-value-min` is not used. Markers keep the color from `--tblr-vector-map-color`.
 
+### Legend
+
+Colors alone do not say how much. Add `data-bs-legend="true"` to show the scale under the map, as a bar between the lowest and the highest value. The bar uses the same colors as the map, also with a scale of several colors.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-legend="true" data-bs-label="Customer satisfaction by country" data-bs-min="0" data-bs-max="100" data-bs-colors='["var(--tblr-red)", "var(--tblr-yellow)", "var(--tblr-green)"]' data-bs-values='{"US": 82, "CA": 91, "MX": 48, "BR": 35, "AR": 22, "GB": 74, "DE": 96, "FR": 63, "ES": 55, "PL": 88, "RU": 12, "IN": 41, "CN": 58, "JP": 79, "AU": 100, "ZA": 28, "EG": 6, "NG": 17, "SA": 67, "ID": 45}'></div>
+</Example>
+
+The two numbers are the range of the scale: `min` and `max` when you set them, the lowest and the highest value otherwise. Pass a function from JavaScript to add a unit or to format the numbers:
+
+```js
+new tabler.VectorMap('#satisfaction', {
+  values: { PL: 88, DE: 96 },
+  legend: (value) => `${value}%`,
+});
+```
+
+Set the size of the bar with `--tblr-vector-map-legend-width` and `--tblr-vector-map-legend-height`.
+
 ## Markers
 
 Markers point at single places, such as offices or customers. Pass them in `data-bs-markers` as a JSON array. Each marker has a `lat`, a `lng` and an optional `name`. A marker keeps its size when the map is resized or zoomed.
@@ -170,6 +197,7 @@ Set options with data attributes or pass them to the constructor. For a data att
 | `markers` | array | `[]` | Places as `{ name, lat, lng }`. |
 | `lines` | array | `[]` | Connections as `{ from, to }`, by marker name. |
 | `tooltip` | boolean, function | `true` | Shows a tooltip, or builds its text. |
+| `legend` | boolean, function | `false` | Shows the scale under the map, or formats its two numbers. |
 | `zoom` | boolean | `false` | Lets users zoom and drag the map. |
 | `zoomMax` | number | `8` | The largest magnification. |
 | `zoomOnScroll` | boolean | `true` | Zooms with the mouse wheel. Needs `zoom`. |
@@ -204,7 +232,7 @@ visits.update({ PL: 61, DE: 77, FR: 70 });
 | `zoomIn()` | Zooms in one step, around the middle of the view. |
 | `zoomOut()` | Zooms out one step. |
 | `reset()` | Goes back to the whole map. |
-| `dispose()` | Removes the map, the buttons, the tooltip and the component from the element. |
+| `dispose()` | Removes the map, the buttons, the legend, the tooltip and the component from the element. |
 | `VectorMap.addMap(name, data)` | Static. Registers a map under a name. |
 | `getInstance(element)` | Static. Returns the component for the element, or `null`. |
 | `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
@@ -246,6 +274,8 @@ The map reads its colors and sizes from custom properties on the element. Change
 | `--tblr-vector-map-line-width` | `1px` | Width of a line. |
 | `--tblr-vector-map-line-dash` | `4px` | Length of a dash and of the gap after it. |
 | `--tblr-vector-map-line-duration` | `1s` | Time one dash takes to move to the place of the next. |
+| `--tblr-vector-map-legend-width` | `8rem` | Width of the bar of the legend. |
+| `--tblr-vector-map-legend-height` | `0.5rem` | Height of the bar. |
 | `--tblr-vector-map-controls-offset` | `var(--tblr-spacer-2)` | Distance of the zoom buttons from the corner. |
 
 ## The world map
@@ -277,7 +307,7 @@ Three territories have no ISO code. The map uses `XK` for Kosovo, `XC` for North
 - Set `data-bs-label`. The map is then an image with that name. The countries themselves are not read out one by one.
 - The data behind the map has to be reachable another way. Put a table of the same values next to or below the map. It serves screen reader users and anyone who prints the page.
 - The tooltip is for the pointer only. Do not put anything there that is not in the text version too.
-- Shades of one color are hard to tell apart for many users. Add a legend with the real numbers.
+- Shades of one color are hard to tell apart for many users. Turn on the legend, and for exact numbers add a table.
 - The zoom buttons work with the keyboard and have accessible names. Change the names with `data-bs-zoom-in-label` and `data-bs-zoom-out-label` when the page is not in English.
 
 ## Variables

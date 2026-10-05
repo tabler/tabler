@@ -226,6 +226,73 @@ describe('VectorMap', () => {
     })
   })
 
+  describe('legend', () => {
+    const legend = (): HTMLElement | null => el().querySelector<HTMLElement>('.vector-map-legend')
+    const labels = (): string[] => [...el().querySelectorAll('.vector-map-legend-label')].map((label) => label.textContent ?? '')
+    const steps = (): HTMLElement[] => [...el().querySelectorAll<HTMLElement>('.vector-map-legend-step')]
+
+    it('should not be there by default', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: squares, values: { AA: 1, BB: 2 } })
+
+      expect(legend()).toBeNull()
+    })
+
+    it('should show the lowest and the highest value around a bar that runs over the whole scale', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-legend="true"></div>'
+
+      new VectorMap(el(), { map: squares, values: { AA: 10, BB: 20, CC: 1500 } })
+
+      expect(labels()).toEqual(['10', (1500).toLocaleString()])
+      expect(steps().length).toBeGreaterThan(10)
+      expect(steps()[0].style.getPropertyValue('--tblr-vector-map-value')).toBe('0')
+      expect(steps().at(-1)!.style.getPropertyValue('--tblr-vector-map-value')).toBe('1')
+      expect(el().querySelector('.vector-map-legend-scale')!.getAttribute('aria-hidden')).toBe('true')
+      // The legend comes after the drawing
+      expect(el().lastElementChild).toBe(legend())
+    })
+
+    it('should use the forced range', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-legend="true" data-bs-min="0" data-bs-max="100"></div>'
+
+      new VectorMap(el(), { map: squares, values: { AA: 25 } })
+
+      expect(labels()).toEqual(['0', '100'])
+    })
+
+    it('should format the labels with a function', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: squares, values: { AA: 5, BB: 80 }, legend: (value) => `${value}%` })
+
+      expect(labels()).toEqual(['5%', '80%'])
+    })
+
+    it('should follow the values on update(), with one legend at all times', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-legend="true"></div>'
+
+      const map = new VectorMap(el(), { map: squares, values: { AA: 1, BB: 2 } })
+      map.update({ AA: 3, CC: 9 })
+
+      expect(labels()).toEqual(['3', '9'])
+      expect(el().querySelectorAll('.vector-map-legend').length).toBe(1)
+    })
+
+    it('should stay away when the map has no values, and go on dispose', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-legend="true"></div>'
+
+      const map = new VectorMap(el(), { map: squares })
+      expect(legend()).toBeNull()
+
+      map.update({ AA: 1 })
+      expect(legend()).not.toBeNull()
+
+      map.dispose()
+      expect(legend()).toBeNull()
+    })
+  })
+
   describe('points', () => {
     const islands: VectorMapData = {
       ...squares,

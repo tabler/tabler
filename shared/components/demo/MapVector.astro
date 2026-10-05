@@ -7,6 +7,7 @@ interface MapData {
   color?: string
   zoom?: boolean
   colors?: string[]
+  legend?: boolean
   values?: Record<string, number>
   markers?: { name: string; lat: number; lng: number }[]
   lines?: { from: string; to: string }[]
@@ -15,12 +16,15 @@ interface MapData {
 interface Props {
   mapId: string
   color?: string
+  /** the scale as a bar under the map; defaults to what the map data says */
+  legend?: boolean
 }
 
-const { mapId, color: colorProp } = Astro.props
+const { mapId, color: colorProp, legend: legendProp } = Astro.props
 
 const data = (mapsVector as Record<string, MapData>)[mapId]
 const color = colorProp ?? data?.color ?? 'primary'
+const legend = legendProp ?? data?.legend ?? false
 ---
 
 {
@@ -31,6 +35,7 @@ const color = colorProp ?? data?.color ?? 'primary'
       data-bs-map={data.map}
       data-bs-label={data.title}
       data-bs-zoom={data.zoom ? 'true' : undefined}
+      data-bs-legend={legend ? 'true' : undefined}
       data-bs-colors={data.colors && JSON.stringify(data.colors)}
       data-bs-values={data.values && JSON.stringify(data.values)}
       data-bs-markers={data.markers && JSON.stringify(data.markers)}
