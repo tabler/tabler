@@ -157,6 +157,7 @@
   --form-switch-height: #{$form-switch-height};
   --form-switch-padding-start: #{if(sass($form-switch-padding-start == $form-switch-width + 0.5rem): calc(var(--form-switch-width) + 0.5rem); else: $form-switch-padding-start)};
   --form-switch-border-radius: #{if(sass($form-switch-border-radius == $form-switch-width): var(--form-switch-width); else: $form-switch-border-radius)};
+  --form-switch-bg: #{$form-switch-bg};
   --form-switch-focus-color: #{$form-switch-focus-color};
   --form-switch-checked-color: #{$form-switch-checked-color};
   --form-switch-disabled-bg: #{var-if-default($form-switch-disabled-bg, var(--bg-forms-disabled), '--control-disabled-bg')};
@@ -167,10 +168,12 @@
 
   .form-check-input {
     --form-switch-color: #{$form-switch-color};
-    // The knob is a circle three quarters of the track height, inset by an eighth
-    // — the same geometry the old `viewBox='-4 -4 8 8'` svg had.
-    --form-switch-knob-size: calc(var(--form-switch-height) * 0.75);
-    --form-switch-knob-offset: calc(var(--form-switch-height) * 0.125);
+    // The knob is a circle with the same gap to the outer edge of the track on
+    // every side. The gap is a whole number of pixels, so the knob stays round.
+    --form-switch-knob-offset: 0.125rem;
+    --form-switch-knob-size: calc(var(--form-switch-height) - var(--form-switch-knob-offset) * 2);
+    // The knob is positioned inside the border, the gap is measured from outside it.
+    --form-switch-knob-inset: calc(var(--form-switch-knob-offset) - var(--border-width));
 
     width: var(--form-switch-width);
     margin-inline-start: calc(var(--form-switch-padding-start) * -1);
@@ -180,7 +183,7 @@
     // The knob replaces the masked check icon: a plain circle that slides.
     &::before {
       inset-block: 0;
-      inset-inline: var(--form-switch-knob-offset) auto;
+      inset-inline: var(--form-switch-knob-inset) auto;
       width: var(--form-switch-knob-size);
       height: var(--form-switch-knob-size);
       margin-block: auto;
@@ -192,6 +195,13 @@
       @include transition($form-switch-knob-transition);
     }
 
+    // An off switch is a filled track with no outline, so it reads as a
+    // switch and not as an empty input.
+    &:not(:checked, :disabled) {
+      background-color: var(--form-switch-bg);
+      border-color: transparent;
+    }
+
     &:focus {
       --form-switch-color: var(--form-switch-focus-color);
     }
@@ -200,7 +210,7 @@
       --form-switch-color: var(--form-switch-checked-color);
 
       &::before {
-        inset-inline-start: calc(100% - var(--form-switch-knob-size) - var(--form-switch-knob-offset));
+        inset-inline-start: calc(100% - var(--form-switch-knob-size) - var(--form-switch-knob-inset));
       }
     }
   }
