@@ -1,0 +1,40 @@
+---
+// Image label on its own, no card: four photos in a grid, each showing a
+// different use of the label - a plain text, an icon with a text, a colored
+// label in another corner and a square icon-only label. Enlarged with the
+// --tblr-img-label-* variables so the labels read at picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Icon from '@ui/Icon.astro'
+import ImageLabel from '@ui/ImageLabel.astro'
+
+const labelStyle = '--tblr-img-label-font-size: 1rem; --tblr-img-label-icon-size: 1rem; --tblr-img-label-offset: 0.75rem; --tblr-img-label-padding-y: 0.375rem; --tblr-img-label-padding-x: 0.625rem; --tblr-img-label-border-radius: var(--tblr-border-radius)'
+---
+
+<ScreenshotLayout title="Image label" columns={2}>
+  <div class="row g-4">
+    <div class="col-6">
+      <div class="img-labeled d-block">
+        <img src="/static/photos/cup-of-coffee-and-an-open-book.jpg" class="rounded-3 w-100 object-fit-cover" style="aspect-ratio: 4 / 3" alt="" />
+        <ImageLabel style={labelStyle}>AI</ImageLabel>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="img-labeled d-block">
+        <img src="/static/photos/brainstorming-session-with-creative-designers.jpg" class="rounded-3 w-100 object-fit-cover" style="aspect-ratio: 4 / 3" alt="" />
+        <ImageLabel style={labelStyle}><Icon name="player-play" /> 1:24</ImageLabel>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="img-labeled d-block">
+        <img src="/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg" class="rounded-3 w-100 object-fit-cover" style="aspect-ratio: 4 / 3" alt="" />
+        <ImageLabel position="top-end" icon style={labelStyle}><Icon name="crown" /></ImageLabel>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="img-labeled d-block">
+        <img src="/static/photos/people-by-a-banquet-table-full-with-food.jpg" class="rounded-3 w-100 object-fit-cover" style="aspect-ratio: 4 / 3" alt="" />
+        <ImageLabel position="top-start" color="red" style={labelStyle}>-20%</ImageLabel>
+      </div>
+    </div>
+  </div>
+</ScreenshotLayout>
