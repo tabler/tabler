@@ -29,7 +29,7 @@ describe('VectorMap', () => {
   })
 
   const el = (): HTMLElement => fixtureEl.querySelector('.vector-map')!
-  const region = (code: string): SVGPathElement => el().querySelector<SVGPathElement>(`[data-region="${code}"]`)!
+  const region = (code: string): SVGGeometryElement => el().querySelector<SVGGeometryElement>(`[data-region="${code}"]`)!
   const ratio = (code: string): string => region(code).style.getPropertyValue('--tblr-vector-map-value')
 
   describe('NAME', () => {
@@ -165,6 +165,40 @@ describe('VectorMap', () => {
       expect(ratio('BB')).toBe('0')
       expect(ratio('CC')).toBe('1')
       expect(spy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('points', () => {
+    const islands: VectorMapData = {
+      ...squares,
+      regions: { ZZ: { name: 'Island', path: 'M15 5h0', point: true }, ...squares.regions },
+    }
+
+    it('should draw a region that is a point as a dot with a ring, on top of the shapes', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: islands })
+
+      const point = region('ZZ')
+      expect(point.tagName).toBe('g')
+      expect(point.classList.contains('vector-map-region-point')).toBe(true)
+      expect(point.querySelector('.vector-map-region-point-halo')!.getAttribute('d')).toBe('M15 5h0')
+      expect(point.querySelector('.vector-map-region-point-dot')!.getAttribute('d')).toBe('M15 5h0')
+      expect(el().querySelector('svg')!.lastElementChild).toBe(point)
+    })
+
+    it('should give a point a value and a tooltip like any region', () => {
+      fixtureEl.innerHTML = '<div class="vector-map"></div>'
+
+      new VectorMap(el(), { map: islands, values: { AA: 1, ZZ: 3 } })
+
+      expect(region('ZZ').getAttribute('data-value')).toBe('3')
+      expect(ratio('ZZ')).toBe('1')
+
+      region('ZZ')
+        .querySelector('.vector-map-region-point-dot')!
+        .dispatchEvent(new PointerEvent('pointermove', { bubbles: true }))
+      expect(el().querySelector('.vector-map-tooltip')!.textContent).toBe('Island: 3')
     })
   })
 
@@ -496,10 +530,20 @@ describe('VectorMap', () => {
       expect(world.regions.FR.name).toBe('France')
       expect(world.regions.AQ).toBeUndefined()
 
-      for (const [code, { path }] of Object.entries(world.regions)) {
+      for (const [code, { path, point }] of Object.entries(world.regions)) {
         expect(code).toMatch(/^[A-Z]{2}$/)
-        expect(path).toMatch(/^M[-\d. ]+l[-\d. ]+z/)
+        expect(path).toMatch(point ? /^M[\d. ]+h0$/ : /^M[-\d. ]+l[-\d. ]+z/)
       }
+    })
+
+    it('should have the countries too small for a shape as points', () => {
+      for (const code of ['AD', 'SM', 'MC', 'LI', 'VA', 'MT', 'SG', 'HK', 'MO']) {
+        expect(world.regions[code].point).toBe(true)
+      }
+
+      expect(world.regions.PL.point).toBeUndefined()
+      // Dependencies are left out
+      expect(world.regions.GI).toBeUndefined()
     })
 
     it('should draw inside its viewBox', () => {

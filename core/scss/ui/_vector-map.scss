@@ -14,6 +14,7 @@
   --vector-map-region-stroke: #{$vector-map-region-stroke};
   --vector-map-region-stroke-width: #{$vector-map-region-stroke-width};
   --vector-map-value-min: #{$vector-map-value-min};
+  --vector-map-point-size: #{$vector-map-point-size};
   --vector-map-marker-size: #{$vector-map-marker-size};
   --vector-map-marker-color: #{$vector-map-marker-color};
   --vector-map-marker-halo-color: #{$vector-map-marker-halo-color};
@@ -37,7 +38,10 @@
 }
 
 .vector-map-region {
-  fill: var(--vector-map-region-fill);
+  // The colour of the region, used as the fill of a shape and as the dot of a
+  // region drawn as a point.
+  --vector-map-region-color: var(--vector-map-region-fill);
+  fill: var(--vector-map-region-color);
   stroke: var(--vector-map-region-stroke);
   stroke-linejoin: round;
   stroke-width: var(--vector-map-region-stroke-width);
@@ -48,7 +52,7 @@
   // value still gets `--vector-map-value-min` of the colour, so it stands out
   // from a region with no value at all.
   &[data-value] {
-    fill: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
+    --vector-map-region-color: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
   }
 }
 
@@ -66,14 +70,28 @@
   }
 }
 
-// Both parts of a marker are a line of no length: its round caps make a dot
-// as wide as the stroke, and the non-scaling stroke keeps it that wide in
-// pixels however large the map is drawn.
+// Both parts of a marker, and of a region drawn as a point, are a line of no
+// length: its round caps make a dot as wide as the stroke, and the non-scaling
+// stroke keeps it that wide in pixels however large the map is drawn.
+.vector-map-region-point-halo,
+.vector-map-region-point-dot,
 .vector-map-marker-halo,
 .vector-map-marker-dot {
   fill: none;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
+}
+
+// A country too small for a shape: a dot in the colour of the region, with the
+// ring of a marker around it.
+.vector-map-region-point-halo {
+  stroke: var(--vector-map-marker-halo-color);
+  stroke-width: calc(var(--vector-map-point-size) + var(--vector-map-marker-halo-width) * 2);
+}
+
+.vector-map-region-point-dot {
+  stroke: var(--vector-map-region-color);
+  stroke-width: var(--vector-map-point-size);
 }
 
 .vector-map-marker-halo {

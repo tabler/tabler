@@ -15,7 +15,13 @@ classnames:
     - class: vector-map-svg
       desc: The rendered SVG, added by JavaScript
     - class: vector-map-region
-      desc: One country or region, a path with a data-region code
+      desc: One country or region, with its code in data-region
+    - class: vector-map-region-point
+      desc: A country too small for a shape, drawn as a dot
+    - class: vector-map-region-point-dot
+      desc: The dot, in the color of the region
+    - class: vector-map-region-point-halo
+      desc: Ring around the dot, in the surface color
     - class: vector-map-marker
       desc: Group that holds the two parts of a marker
     - class: vector-map-marker-dot
@@ -188,11 +194,11 @@ visits.update({ PL: 61, DE: 77, FR: 70 });
 
 ## Styling a single country
 
-Every country is a path with its code in `data-region`, so one rule can style it:
+Every country has its code in `data-region`, so one rule can color it. Set `--tblr-vector-map-region-color`, which works for a shape and for the dot of a small country:
 
 ```css
 .vector-map [data-region='PL'] {
-  fill: var(--tblr-red);
+  --tblr-vector-map-region-color: var(--tblr-red);
 }
 ```
 
@@ -207,9 +213,10 @@ The map reads its colors and sizes from custom properties on the element. Change
 | `--tblr-vector-map-region-stroke` | `var(--tblr-bg-surface)` | Border between countries. |
 | `--tblr-vector-map-region-stroke-width` | `1px` | Width of the border. |
 | `--tblr-vector-map-value-min` | `0.1` | Share of the color the lowest value gets, from 0 to 1. |
+| `--tblr-vector-map-point-size` | `0.375rem` | Diameter of the dot of a small country. |
 | `--tblr-vector-map-marker-size` | `0.5rem` | Diameter of a marker. |
 | `--tblr-vector-map-marker-color` | `var(--tblr-vector-map-color)` | Color of a marker. |
-| `--tblr-vector-map-marker-halo-color` | `var(--tblr-bg-surface)` | Color of the ring around a marker. |
+| `--tblr-vector-map-marker-halo-color` | `var(--tblr-bg-surface)` | Color of the ring around a marker and around the dot of a small country. |
 | `--tblr-vector-map-marker-halo-width` | `2px` | Width of the ring. |
 | `--tblr-vector-map-line-color` | `var(--tblr-secondary)` | Color of a line. |
 | `--tblr-vector-map-line-width` | `1px` | Width of a line. |
@@ -219,7 +226,17 @@ The map reads its colors and sizes from custom properties on the element. Change
 
 ## The world map
 
-The world map has 176 countries in the Miller projection, without Antarctica. It is made for an overview, so very small countries, such as Singapore or Malta, are not on it. Values for a code that is not on the map are skipped.
+The world map has 207 countries in the Miller projection, without Antarctica. Values for a code that is not on the map are skipped.
+
+### Small countries
+
+31 countries are too small to see as a shape on a map of the world, for example Andorra, San Marino, Malta or Singapore. The map shows each of them as a dot. A dot works like any other country: it takes a value, gets the same shade and has a tooltip. It keeps its size when the map is resized or zoomed.
+
+<Example>
+<div class="vector-map" data-bs-toggle="vector-map" data-bs-zoom="true" data-bs-label="Visits from small countries" data-bs-values='{"AD": 4, "SM": 2, "MC": 5, "LI": 3, "VA": 1, "MT": 6, "SG": 9, "HK": 8, "BH": 5, "MU": 3}'></div>
+</Example>
+
+The dots are the sovereign states that have no shape on the map, plus Hong Kong and Macao. Dependent territories, such as Gibraltar or Guam, are not on the map. Set the size of a dot with `--tblr-vector-map-point-size`.
 
 Three territories have no ISO code. The map uses `XK` for Kosovo, `XC` for Northern Cyprus and `XS` for Somaliland. Borders follow the default view of Natural Earth.
 

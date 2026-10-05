@@ -14,6 +14,8 @@ export type VectorMapRegion = {
   name: string
   /** SVG path data, already projected into the viewBox of the map */
   path: string
+  /** Too small for a shape at the scale of the map: `path` is a single point, drawn as a dot */
+  point?: boolean
 }
 
 export type VectorMapData = {
@@ -85,6 +87,9 @@ const EVENT_CLICK = `click${EVENT_KEY}`
 
 const CLASS_NAME_SVG = 'vector-map-svg'
 const CLASS_NAME_REGION = 'vector-map-region'
+const CLASS_NAME_POINT = 'vector-map-region-point'
+const CLASS_NAME_POINT_HALO = 'vector-map-region-point-halo'
+const CLASS_NAME_POINT_DOT = 'vector-map-region-point-dot'
 const CLASS_NAME_LINE = 'vector-map-line'
 const CLASS_NAME_MARKER = 'vector-map-marker'
 const CLASS_NAME_MARKER_HALO = 'vector-map-marker-halo'
@@ -333,12 +338,11 @@ class VectorMap extends BaseComponent {
       svg.setAttribute('aria-hidden', 'true')
     }
 
-    for (const [code, region] of Object.entries(map.regions)) {
-      const path = svgEl('path')
-      path.setAttribute('class', CLASS_NAME_REGION)
-      path.setAttribute(ATTRIBUTE_REGION, code)
-      path.setAttribute('d', region.path)
-      svg.append(path)
+    // The points go in after the shapes, so a small country shows on top of
+    // the large one around it.
+    const regions = Object.entries(map.regions)
+    for (const [code, region] of [...regions.filter(([, { point }]) => !point), ...regions.filter(([, { point }]) => point)]) {
+      svg.append(region.point ? this._createPoint(code, region) : this._createShape(code, region))
     }
 
     this._renderMarkers(svg, map)
@@ -411,6 +415,31 @@ class VectorMap extends BaseComponent {
     }
 
     return data
+  }
+
+  _createShape(code: string, region: VectorMapRegion): SVGElement {
+    const path = svgEl('path')
+    path.setAttribute('class', CLASS_NAME_REGION)
+    path.setAttribute(ATTRIBUTE_REGION, code)
+    path.setAttribute('d', region.path)
+    return path
+  }
+
+  // A region like any other, so it takes a value and a tooltip. It is drawn
+  // the way a marker is: a dot with a ring that sets it apart from the land.
+  _createPoint(code: string, region: VectorMapRegion): SVGElement {
+    const group = svgEl('g')
+    group.setAttribute('class', `${CLASS_NAME_REGION} ${CLASS_NAME_POINT}`)
+    group.setAttribute(ATTRIBUTE_REGION, code)
+
+    for (const className of [CLASS_NAME_POINT_HALO, CLASS_NAME_POINT_DOT]) {
+      const path = svgEl('path')
+      path.setAttribute('class', className)
+      path.setAttribute('d', region.path)
+      group.append(path)
+    }
+
+    return group
   }
 
   // Lines go in first, so the markers they join sit on top of their ends.
@@ -719,7 +748,7 @@ class VectorMap extends BaseComponent {
     const max = maxForced ?? Math.max(...numbers)
     const span = max - min
 
-    for (const path of this._element.querySelectorAll<SVGPathElement>(`.${CLASS_NAME_REGION}`)) {
+    for (const path of this._element.querySelectorAll<SVGElement>(`.${CLASS_NAME_REGION}`)) {
       const value = values[path.getAttribute(ATTRIBUTE_REGION) ?? '']
 
       if (value === undefined) {
