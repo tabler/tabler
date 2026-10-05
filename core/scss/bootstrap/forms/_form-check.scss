@@ -157,6 +157,7 @@
   --form-switch-height: #{$form-switch-height};
   --form-switch-padding-start: #{if(sass($form-switch-padding-start == $form-switch-width + 0.5rem): calc(var(--form-switch-width) + 0.5rem); else: $form-switch-padding-start)};
   --form-switch-border-radius: #{if(sass($form-switch-border-radius == $form-switch-width): var(--form-switch-width); else: $form-switch-border-radius)};
+  --form-switch-bg: #{$form-switch-bg};
   --form-switch-focus-color: #{$form-switch-focus-color};
   --form-switch-checked-color: #{$form-switch-checked-color};
   --form-switch-disabled-bg: #{var-if-default($form-switch-disabled-bg, var(--bg-forms-disabled), '--control-disabled-bg')};
@@ -190,6 +191,13 @@
       opacity: 1;
       mask-image: none;
       @include transition($form-switch-knob-transition);
+    }
+
+    // An off switch is a filled track with no outline, so it reads as a
+    // switch and not as an empty input.
+    &:not(:checked, :disabled) {
+      background-color: var(--form-switch-bg);
+      border-color: transparent;
     }
 
     &:focus {
