@@ -6,6 +6,7 @@ export { default as Carousel } from './bootstrap/carousel'
 export { default as Collapse } from './bootstrap/collapse'
 export { default as Dropdown } from './bootstrap/dropdown'
 export { default as Modal } from './bootstrap/modal'
+export { default as NavOverflow } from './bootstrap/nav-overflow'
 export { default as Offcanvas } from './bootstrap/offcanvas'
 export { default as Popover } from './bootstrap/popover'
 export { default as ScrollSpy } from './bootstrap/scrollspy'
@@ -19,6 +20,7 @@ import Carousel from './bootstrap/carousel'
 import Collapse from './bootstrap/collapse'
 import Dropdown from './bootstrap/dropdown'
 import Modal from './bootstrap/modal'
+import NavOverflow from './bootstrap/nav-overflow'
 import Offcanvas from './bootstrap/offcanvas'
 import Popover from './bootstrap/popover'
 import ScrollSpy from './bootstrap/scrollspy'
@@ -33,6 +35,7 @@ export const bootstrap = {
   Collapse,
   Dropdown,
   Modal,
+  NavOverflow,
   Offcanvas,
   Popover,
   ScrollSpy,
