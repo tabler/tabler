@@ -1,69 +1,50 @@
 ---
-import type { HTMLTag } from 'astro/types'
-import CaptureScript from '../components/CaptureScript.astro'
+// Dropzone initializes from `data-bs-toggle="dropzone"` and its `data-bs-*` options (tabler.js, core/js/src/dropzone.ts).
+// Styles: core/scss/ui/forms/_form-dropzone.scss.
+import Icon from './Icon.astro'
+
 interface Props {
-  id: string
-  multiple?: boolean
-  custom?: boolean
-  text?: string
+  /** id of the file input */
+  id?: string
+  /** name of the file input, and the upload field name unless `data-bs-param-name` is set */
+  name?: string
+  /** `.dropzone-title`: main line of the drop area */
+  title?: string
+  /** `.dropzone-hint`: second line, for the accepted types and the size limit */
   description?: string
-  /** heading level for the custom message title; match it to the surrounding context */
-  titleAs?: HTMLTag
+  /** icon above the title; `false` leaves it out */
+  icon?: string | false
+  multiple?: boolean
+  disabled?: boolean
+  required?: boolean
+  /** native `accept` of the input; the plugin checks dropped files against it too */
+  accept?: string
+  /** data-bs-max-files: how many files the dropzone takes */
+  maxFiles?: number
+  /** data-bs-max-size: largest file, in bytes */
+  maxSize?: number
+  /** data-bs-url: sends every file there by XHR instead of leaving it in the input */
+  url?: string
+  class?: string
+  /** remaining attributes (data-bs-*, aria-*, …) are forwarded to the `.dropzone` wrapper */
+  [key: string]: unknown
 }
 
-const { id, multiple, custom, text, description, titleAs: Title = 'h3' } = Astro.props
-const label = 'Upload file'
-
-const dropzoneId = `dropzone-${id}`
-const dropzoneSelector = `#dropzone-${id}`
-const fileInputId = `${dropzoneId}-file`
+const { id, name = 'file', title = 'Drop files here or click to upload', description, icon = 'cloud-upload', multiple, disabled, required, accept, maxFiles, maxSize, url, class: className, ...rest } = Astro.props
 ---
 
-<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate>
-  <div class="fallback">
-    <label class="visually-hidden" for={fileInputId}>{label}</label>
-    <input id={fileInputId} name="file" type="file" multiple={multiple ? '' : undefined} />
-  </div>
+<div class:list={['dropzone', className]} data-bs-toggle="dropzone" data-bs-max-files={maxFiles} data-bs-max-size={maxSize} data-bs-url={url} {...rest}>
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" id={id} name={name} accept={accept} multiple={multiple ? '' : undefined} disabled={disabled} required={required} />
+    {icon && <Icon name={icon} size="md" />}
+    <span class="dropzone-title">{title}</span>
+    {description && <span class="dropzone-hint">{description}</span>}
+  </label>
   {
-    custom && (
-      <div class="dz-message">
-        <Title>{text}</Title>
-        <span>{description}</span>
+    Astro.slots.has('default') && (
+      <div class="dropzone-list" aria-live="polite">
+        <slot />
       </div>
     )
   }
-</form>
-<CaptureScript>
-  <!-- BEGIN DROPZONE -->
-  <script is:inline define:vars={{ dropzoneId, dropzoneSelector }}>
-    window.tabler_dropzone ??= {}
-
-    function initDropzone() {
-      const dropzoneEl = document.querySelector(dropzoneSelector)
-      const instance = new Dropzone(dropzoneSelector)
-      window.tabler_dropzone[dropzoneId] = instance
-
-      // Dropzone.js hides the .fallback label/input once it initializes, which is why
-      // role="button" + tabindex only get added here rather than in the static markup —
-      // adding them upfront would nest one focusable control (the fallback input) inside
-      // another (this "button"). Dropzone.js is also click/drag-only by default: it binds
-      // a click handler on the whole element but never wires a keyboard equivalent, so
-      // forward Enter/Space to a programmatic click on Dropzone's own hidden file input.
-      // Note: that input is appended to <body> (hiddenInputContainer default), not inside
-      // dropzoneEl, so it must be reached via the instance rather than a DOM query here.
-      dropzoneEl?.setAttribute('role', 'button')
-      dropzoneEl?.setAttribute('tabindex', '0')
-      dropzoneEl?.setAttribute('aria-label', 'Click or drag files to upload')
-
-      dropzoneEl?.addEventListener('keydown', (event) => {
-        if (event.target !== dropzoneEl) return
-        if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return
-        event.preventDefault()
-        instance.hiddenFileInput?.click()
-      })
-    }
-
-    document.readyState !== 'loading' ? initDropzone() : document.addEventListener('DOMContentLoaded', initDropzone, { once: true })
-  </script>
-  <!-- END DROPZONE -->
-</CaptureScript>
+</div>
