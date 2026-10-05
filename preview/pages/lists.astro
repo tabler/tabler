@@ -1,50 +1,430 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
 import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardDropdown from '@ui/CardDropdown.astro'
 import UsersList from '@shared/components/cards/UsersList.astro'
 import UsersList2 from '@shared/components/cards/UsersList2.astro'
 import UsersListHeaders from '@shared/components/cards/UsersListHeaders.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Flag from '@ui/Flag.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import StatusDot from '@ui/StatusDot.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import { people } from '@shared/lib/people'
+import type { FlagCountry } from '@shared/lib/tokens'
+import transactionsData from '@data/transactions.json'
+import notificationsData from '@data/notifications.json'
+
+const team = people.slice(0, 4)
+
+const folders = [
+  { icon: 'inbox', title: 'Inbox', description: 'Messages waiting for a reply', count: 12 },
+  { icon: 'send', title: 'Sent', description: 'Everything you have sent', count: 148 },
+  { icon: 'archive', title: 'Archive', description: 'Closed conversations', count: 2304 },
+  { icon: 'trash', title: 'Trash', description: 'Removed after 30 days', count: 7 },
+]
+
+const plans = [
+  { id: 'starter', title: 'Starter', description: 'Up to 3 projects', price: '$9' },
+  { id: 'team', title: 'Team', description: 'Unlimited projects, 10 members', price: '$29' },
+  { id: 'business', title: 'Business', description: 'Unlimited members and SSO', price: '$79' },
+]
+
+const channels = [
+  { id: 'email', icon: 'mail', title: 'Email', description: 'A summary every morning', checked: true },
+  { id: 'push', icon: 'device-mobile', title: 'Push', description: 'Mentions and direct messages', checked: true },
+  { id: 'slack', icon: 'brand-slack', title: 'Slack', description: 'Posts to the #updates channel', checked: false },
+]
+
+const sizes = [
+  { size: undefined, title: 'Default', subtitle: 'Without a size class the items use the default padding.' },
+  { size: 'sm', title: 'Small', subtitle: 'Add <code>list-group-sm</code> for a compact list.' },
+  { size: 'lg', title: 'Large', subtitle: 'Add <code>list-group-lg</code> for more room around each item.' },
+] as const
+
+const files = [
+  { icon: 'file-type-pdf', name: 'Annual report 2025.pdf', size: '2.4 MB' },
+  { icon: 'file-spreadsheet', name: 'Budget forecast.xlsx', size: '318 kB' },
+  { icon: 'photo', name: 'Office photos.zip', size: '48 MB' },
+  { icon: 'file-text', name: 'Meeting notes.md', size: '4 kB' },
+]
+
+const visits: { country: string; flag: FlagCountry; value: number }[] = [
+  { country: 'United States', flag: 'us', value: 64 },
+  { country: 'Germany', flag: 'de', value: 48 },
+  { country: 'Poland', flag: 'pl', value: 31 },
+  { country: 'Japan', flag: 'jp', value: 17 },
+]
+
+// Rows of transactions.json whose logo exists in static/.
+const transactionIds = ['3', '4', '9', '11']
+const transactions = (transactionsData as { id: string; counterparty: string; counterparty_logo: string; description: string; amount: number }[])
+  .filter((item) => transactionIds.includes(item.id))
+  .map((item) => ({
+    ...item,
+    amountLabel: `${item.amount < 0 ? '−' : '+'}${Math.abs(item.amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`,
+  }))
+
+const notifications = (notificationsData as { title: string; description: string; status: string }[]).slice(0, 4).map((item, index) => ({
+  ...item,
+  unread: item.status === 'unread',
+  time: `${(index + 1) * 2} h`,
+}))
 ---
 
-<DefaultLayout title="Lists" pageMenu="base.lists" description="Lists of users, contacts, and links — built from list-group items or a plain card body.">
+<DefaultLayout title="Lists" pageMenu="base.lists" description="Vertical lists built from list-group items: media, content, meta and actions in one row.">
   <DocsLink slot="page-header-actions" path="/ui/components/list-group" />
 
   <div class="row row-cards">
-    <div class="col-md-6">
-      <div class="row row-cards">
-        <div class="col-12">
-          <UsersList2 />
-        </div>
-        <div class="col-12">
-          <UsersList offset={8} checkbox checkedIds={[2, 5, 8]} title="Contacts" />
-        </div>
-        <div class="col-12">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Text only</CardTitle>
+          <CardSubtitle>A plain <code>list-group-item</code> holds one line of text.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {folders.map((item) => <ListGroupItem>{item.title}</ListGroupItem>)}
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Title and description</CardTitle>
+          <CardSubtitle>Put <code>list-group-item-title</code> and <code>list-group-item-description</code> in <code>list-group-item-content</code>.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {folders.map((item) => <ListGroupItem title={item.title} description={item.description} />)}
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With icon</CardTitle>
+          <CardSubtitle>The <code>list-group-item-media</code> slot holds an icon before the content.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            folders.map((item) => (
+              <ListGroupItem title={item.title} description={item.description}>
+                <Icon slot="media" name={item.icon} class="text-secondary" />
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With avatar</CardTitle>
+          <CardSubtitle>The media slot takes an avatar the same way.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            team.map((person) => (
+              <ListGroupItem title={person.full_name} description={person.job_title}>
+                <Avatar slot="media" person={person} />
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With meta</CardTitle>
+          <CardSubtitle>Use <code>list-group-item-meta</code> for a time, a count or a badge at the end.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            folders.map((item) => (
+              <ListGroupItem title={item.title} description={item.description}>
+                <Fragment slot="meta">{item.count}</Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>All slots</CardTitle>
+          <CardSubtitle>Media, content, meta and <code>list-group-item-actions</code> in one item.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            team.map((person, index) => (
+              <ListGroupItem title={person.full_name} description={person.job_title}>
+                <Avatar slot="media" person={person} />
+                <Fragment slot="meta">{index === 0 ? <Badge color="green" light text="Owner" /> : `${index * 3} d`}</Fragment>
+                <CardDropdown slot="actions" />
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Links</CardTitle>
+          <CardSubtitle>Add <code>list-group-item-action</code> to a link item. It supports <code>active</code> and <code>disabled</code>.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            folders.map((item, index) => (
+              <ListGroupItem as="a" href={index === 3 ? undefined : '#'} action active={index === 0} disabled={index === 3} aria-current={index === 0 ? 'true' : undefined} title={item.title} description={item.description}>
+                <Icon slot="media" name={item.icon} class="text-secondary" />
+                <Icon slot="meta" name="chevron-right" />
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Actions on hover</CardTitle>
+          <CardSubtitle>In a <code>list-group-hoverable</code> list the actions show on hover. Add <code>show</code> to keep them visible.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush hoverable>
+          {
+            team.map((person, index) => (
+              <ListGroupItem title={person.full_name} description={person.job_title} showActions={index === 1}>
+                <Avatar slot="media" person={person} />
+                <button type="button" slot="actions" class="btn btn-action" aria-label={index === 1 ? 'Remove from favorites' : 'Add to favorites'}>
+                  <Icon name="star" class={index === 1 ? 'text-yellow' : undefined} />
+                </button>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Buttons</CardTitle>
+          <CardSubtitle>The actions slot holds any control, for example a button.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            team.map((person, index) => (
+              <ListGroupItem title={person.full_name} description={person.job_title}>
+                <Avatar slot="media" person={person} />
+                <button type="button" slot="actions" class:list={['btn btn-sm', index === 0 && 'btn-primary']}>
+                  {index === 0 ? 'Follow' : 'Following'}
+                </button>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Checkboxes</CardTitle>
+          <CardSubtitle>In a <code>list-group-selectable</code> list a checked <code>list-group-selectable-check</code> marks its item.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush selectable>
+          {
+            team.map((person, index) => (
+              <ListGroupItem as="label" title={person.full_name} description={person.job_title}>
+                <Fragment slot="media">
+                  <input type="checkbox" class="form-check-input list-group-selectable-check m-0 me-3" checked={index % 2 === 0} />
+                  <Avatar person={person} />
+                </Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Radios</CardTitle>
+          <CardSubtitle>Radio inputs with one <code>name</code> make a single choice list. Use a <code>label</code> as the item.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush selectable>
+          {
+            plans.map((plan, index) => (
+              <ListGroupItem as="label" title={plan.title} description={plan.description}>
+                <input slot="media" type="radio" name="list-plan" value={plan.id} class="form-check-input list-group-selectable-check m-0" checked={index === 1} />
+                <Fragment slot="meta">{plan.price}</Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Switches</CardTitle>
+          <CardSubtitle>Put a switch in the actions slot to build a settings list.</CardSubtitle>
+        </CardBody>
+        <ListGroup flush>
+          {
+            channels.map((channel) => (
+              <ListGroupItem as="label" title={channel.title} description={channel.description}>
+                <Icon slot="media" name={channel.icon} class="text-secondary" />
+                <span slot="actions" class="form-check form-switch m-0">
+                  <input type="checkbox" role="switch" class="form-check-input" checked={channel.checked} />
+                </span>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    {
+      sizes.map((item) => (
+        <div class="col-md-6 col-lg-4">
           <Card>
-            <CardHeader title="Links and buttons" />
-            <ListGroup flush>
-              <ListGroupItem as="a" href="#" action active aria-current="true"> The current link item </ListGroupItem>
-              <ListGroupItem as="a" href="#" action>A second link item</ListGroupItem>
-              <ListGroupItem as="a" href="#" action>A third link item</ListGroupItem>
-              <ListGroupItem as="a" href="#" action>A fourth link item</ListGroupItem>
-              <ListGroupItem as="a" action disabled>A disabled link item</ListGroupItem>
+            <CardBody>
+              <CardTitle>{item.title}</CardTitle>
+              <CardSubtitle>
+                <Fragment set:html={item.subtitle} />
+              </CardSubtitle>
+            </CardBody>
+            <ListGroup flush size={item.size}>
+              {team.map((person) => (
+                <ListGroupItem title={person.full_name} description={person.job_title}>
+                  <Avatar slot="media" person={person} size={item.size === 'sm' ? 'sm' : undefined} />
+                </ListGroupItem>
+              ))}
             </ListGroup>
           </Card>
         </div>
-      </div>
+      ))
+    }
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Notifications" />
+        <ListGroup flush>
+          {
+            notifications.map((item) => (
+              <ListGroupItem as="a" href="#" action title={item.title} description={item.description}>
+                <StatusDot slot="media" color={item.unread ? 'blue' : undefined} animated={item.unread} ariaLabel={item.unread ? 'Unread' : 'Read'} />
+                <Fragment slot="meta">{item.time}</Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Transactions" />
+        <ListGroup flush>
+          {
+            transactions.map((item) => (
+              <ListGroupItem title={item.counterparty} description={item.description}>
+                <Avatar slot="media" src={item.counterparty_logo} />
+                <span slot="meta" class:list={['fw-medium', item.amount < 0 ? 'text-body' : 'text-green']}>
+                  {item.amountLabel}
+                </span>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Files" />
+        <ListGroup flush>
+          {
+            files.map((file) => (
+              <ListGroupItem title={file.name} description={file.size}>
+                <Avatar slot="media" icon={file.icon} />
+                <button type="button" slot="actions" class="btn btn-action" aria-label={`Download ${file.name}`}>
+                  <Icon name="download" />
+                </button>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardHeader title="Visits by country" />
+        <ListGroup flush>
+          {
+            visits.map((item) => (
+              <ListGroupItem title={item.country}>
+                <Flag slot="media" flag={item.flag} />
+                <Progress size="sm" class="mt-2" value={item.value} aria-label={`${item.value}% of visits`} />
+                <Fragment slot="meta">{item.value}%</Fragment>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inside a card body</CardTitle>
+          <CardSubtitle>Without <code>list-group-flush</code> the list keeps its own border and rounded corners.</CardSubtitle>
+          <ListGroup>
+            {
+              files.slice(0, 3).map((file) => (
+                <ListGroupItem title={file.name}>
+                  <Icon slot="media" name={file.icon} class="text-secondary" />
+                  <Fragment slot="meta">{file.size}</Fragment>
+                </ListGroupItem>
+              ))
+            }
+          </ListGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <UsersList offset={8} checkbox checkedIds={[2, 5, 8]} title="Contacts" />
     </div>
     <div class="col-md-6">
-      <div class="row row-cards">
-        <div class="col-12">
-          <UsersList hoverable />
-        </div>
-        <div class="col-12">
-          <UsersListHeaders />
-        </div>
-      </div>
+      <UsersList hoverable />
+    </div>
+    <div class="col-md-6">
+      <UsersListHeaders />
+    </div>
+    <div class="col-md-6">
+      <UsersList2 />
     </div>
   </div>
 </DefaultLayout>

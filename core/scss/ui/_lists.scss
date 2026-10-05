@@ -2,6 +2,7 @@
 
 .list-group {
   --list-group-header-padding-y: #{$list-group-header-padding-y};
+  --list-group-item-gap: #{$list-group-item-gap};
 
   margin-inline-start: 0;
   margin-inline-end: 0;
@@ -35,10 +36,64 @@
   }
 }
 
-.list-group-item.active {
+// A checked `.list-group-selectable-check` marks its item like `.active`,
+// the same way `.table-selectable` marks a table row.
+.list-group-item.active,
+.list-group-selectable .list-group-item:has(.list-group-selectable-check:checked) {
   background-color: var(--active-bg);
   border-inline-start-color: $component-active-bg;
   border-inline-start-width: $border-width-wide;
+}
+
+// Density
+.list-group-sm {
+  --list-group-item-padding-y: #{$list-group-item-padding-y-sm};
+  --list-group-item-gap: #{$list-group-item-gap-sm};
+}
+
+.list-group-lg {
+  --list-group-item-padding-y: #{$list-group-item-padding-y-lg};
+  --list-group-item-gap: #{$list-group-item-gap-lg};
+}
+
+// Item slots: media, content (title + description), meta and actions.
+// The item becomes a flex row only when it holds a content slot, so items
+// with plain text or a grid row inside keep their layout.
+.list-group-item:has(> .list-group-item-content) {
+  display: flex;
+  gap: var(--list-group-item-gap);
+  align-items: center;
+}
+
+.list-group-item-media,
+.list-group-item-meta,
+.list-group-item-actions {
+  flex: none;
+}
+
+.list-group-item-media {
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-group-item-title,
+.list-group-item-description {
+  display: block;
+  @include text-truncate();
+}
+
+.list-group-item-title {
+  color: inherit;
+}
+
+.list-group-item-description,
+.list-group-item-meta {
+  color: var(--secondary);
 }
 
 .list-bordered {

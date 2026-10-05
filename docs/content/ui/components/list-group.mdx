@@ -13,8 +13,25 @@ classnames:
       desc: One entry
     - class: list-group-header
       desc: Section label between entries
+    - class: list-group-item-media
+      desc: Slot for an icon, an avatar or an input on the leading edge of an entry
+    - class: list-group-item-content
+      desc: Main slot of an entry; its presence turns the entry into a row of slots
+    - class: list-group-item-title
+      desc: First line of the content, cut with an ellipsis
+    - class: list-group-item-description
+      desc: Second line of the content, in the secondary color
+    - class: list-group-item-meta
+      desc: Slot for a time, a count or a badge after the content
     - class: list-group-item-actions
       desc: Slot for controls on the trailing edge of an entry
+    - class: list-group-selectable-check
+      desc: Checkbox or radio that marks its entry when checked
+  size:
+    - class: list-group-sm
+      desc: Compact entries
+    - class: list-group-lg
+      desc: Roomy entries
   style:
     - class: list-group-flush
       desc: Removes the outer border, to sit flush in a card
@@ -29,6 +46,8 @@ classnames:
       desc: Highlights the entry under the cursor
     - class: list-group-item-action
       desc: Marks an entry as a link or a button
+    - class: list-group-selectable
+      desc: Gives an entry with a checked input the active look
   direction:
     - class: list-group-horizontal
       desc: Lays the entries out in a row; -{breakpoint} only above that width
@@ -59,6 +78,94 @@ The container can be any element. Use `ul` with `li` items for a real list, or `
   <li class="list-group-item">Second item</li>
   <li class="list-group-item">Third item</li>
 </ul>
+</Example>
+
+## Item layout
+
+An item can hold more than one line of text. Put a `list-group-item-content` element in the item and it becomes a row of slots:
+
+- `list-group-item-media` - an icon, an avatar or an input before the content,
+- `list-group-item-content` - the main part, with `list-group-item-title` and `list-group-item-description`,
+- `list-group-item-meta` - a time, a count or a badge after the content,
+- `list-group-item-actions` - buttons and other controls at the end.
+
+Only the content slot is required. The title and the description are cut with an ellipsis when they do not fit.
+
+<Example bg="surface-secondary" column>
+<div class="list-group">
+  <div class="list-group-item">
+    <div class="list-group-item-media">
+      <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span>
+    </div>
+    <div class="list-group-item-content">
+      <div class="list-group-item-title">Paweł Kuna</div>
+      <div class="list-group-item-description">UI Designer</div>
+    </div>
+    <div class="list-group-item-meta">2 h</div>
+    <div class="list-group-item-actions">
+      <button type="button" class="btn btn-sm">Follow</button>
+    </div>
+  </div>
+  <div class="list-group-item">
+    <div class="list-group-item-media">
+      <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span>
+    </div>
+    <div class="list-group-item-content">
+      <div class="list-group-item-title">Alice Marlin</div>
+      <div class="list-group-item-description">Frontend developer</div>
+    </div>
+    <div class="list-group-item-meta">3 d</div>
+    <div class="list-group-item-actions">
+      <button type="button" class="btn btn-sm">Follow</button>
+    </div>
+  </div>
+</div>
+</Example>
+
+The item itself can be a link or a `label`. Use a `label` with a checkbox, a radio or a switch inside, so a click on the whole row changes the input.
+
+<Example bg="surface-secondary" column>
+<div class="list-group">
+  <label class="list-group-item">
+    <span class="list-group-item-media"><Icon name="mail" color="muted" /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Email</span>
+      <span class="list-group-item-description">A summary every morning</span>
+    </span>
+    <span class="list-group-item-actions">
+      <span class="form-check form-switch m-0"><input type="checkbox" role="switch" class="form-check-input" checked /></span>
+    </span>
+  </label>
+  <label class="list-group-item">
+    <span class="list-group-item-media"><Icon name="device-mobile" color="muted" /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Push</span>
+      <span class="list-group-item-description">Mentions and direct messages</span>
+    </span>
+    <span class="list-group-item-actions">
+      <span class="form-check form-switch m-0"><input type="checkbox" role="switch" class="form-check-input" /></span>
+    </span>
+  </label>
+</div>
+</Example>
+
+## Sizes
+
+Add `list-group-sm` for compact items or `list-group-lg` for items with more room. The classes change the vertical padding of the items and the gap between the slots.
+
+<Example bg="surface-secondary" column>
+<div class="list-group list-group-sm mb-3">
+  <div class="list-group-item">Small item</div>
+  <div class="list-group-item">Small item</div>
+</div>
+<div class="list-group mb-3">
+  <div class="list-group-item">Default item</div>
+  <div class="list-group-item">Default item</div>
+</div>
+<div class="list-group list-group-lg">
+  <div class="list-group-item">Large item</div>
+  <div class="list-group-item">Large item</div>
+</div>
 </Example>
 
 ## Variants
@@ -101,6 +208,29 @@ Mark the current item with `active`. Tabler shows it with a thicker border on th
 </div>
 </Example>
 
+### Selectable items
+
+Add `list-group-selectable` to the container and `list-group-selectable-check` to the checkbox or radio in each item. A checked input gives its item the same look as `active`, with no JavaScript. Use a `label` as the item, so a click on the whole row changes the input.
+
+<Example bg="surface-secondary" column>
+<div class="list-group list-group-selectable">
+  <label class="list-group-item">
+    <span class="list-group-item-media"><input type="checkbox" class="form-check-input list-group-selectable-check m-0" checked /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Paweł Kuna</span>
+      <span class="list-group-item-description">UI Designer</span>
+    </span>
+  </label>
+  <label class="list-group-item">
+    <span class="list-group-item-media"><input type="checkbox" class="form-check-input list-group-selectable-check m-0" /></span>
+    <span class="list-group-item-content">
+      <span class="list-group-item-title">Alice Marlin</span>
+      <span class="list-group-item-description">Frontend developer</span>
+    </span>
+  </label>
+</div>
+</Example>
+
 ### Section header
 
 Use `list-group-header` to split a long list into groups. The header is a small uppercase label with its own background.
@@ -122,20 +252,16 @@ Add `list-group-hoverable` to the container to highlight the row under the point
 <Example bg="surface-secondary" column>
 <div class="list-group list-group-hoverable">
   <div class="list-group-item">
-    <div class="row align-items-center">
-      <div class="col text-truncate">Change deprecated html tags</div>
-      <div class="col-auto">
-        <a href="#" class="list-group-item-actions" aria-label="Add to favorites"><Icon name="star" color="muted" /></a>
-      </div>
+    <div class="list-group-item-content">
+      <div class="list-group-item-title">Change deprecated html tags</div>
     </div>
+    <a href="#" class="list-group-item-actions" aria-label="Add to favorites"><Icon name="star" color="muted" /></a>
   </div>
   <div class="list-group-item">
-    <div class="row align-items-center">
-      <div class="col text-truncate">Fix spacing in the navbar</div>
-      <div class="col-auto">
-        <a href="#" class="list-group-item-actions show" aria-label="Remove from favorites"><Icon name="star" color="yellow" /></a>
-      </div>
+    <div class="list-group-item-content">
+      <div class="list-group-item-title">Fix spacing in the navbar</div>
     </div>
+    <a href="#" class="list-group-item-actions show" aria-label="Remove from favorites"><Icon name="star" color="yellow" /></a>
   </div>
 </div>
 </Example>
@@ -234,30 +360,22 @@ This pattern joins several variants: a flush list inside a card, hoverable rows,
   <div class="card-header"><h3 class="card-title">Notifications</h3></div>
   <div class="list-group list-group-flush list-group-hoverable">
     <div class="list-group-item">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <span class="status-dot status-dot-animated bg-red d-block"></span>
-        </div>
-        <div class="col text-truncate">
-          <a href="#" class="text-body d-block">Build failed</a>
-          <div class="d-block text-secondary text-truncate mt-n1">The last deploy did not finish</div>
-        </div>
-        <div class="col-auto">
-          <a href="#" class="list-group-item-actions" aria-label="Add to favorites"><Icon name="star" color="muted" /></a>
-        </div>
+      <div class="list-group-item-media">
+        <span class="status-dot status-dot-animated bg-red"></span>
       </div>
+      <div class="list-group-item-content">
+        <a href="#" class="list-group-item-title">Build failed</a>
+        <div class="list-group-item-description">The last deploy did not finish</div>
+      </div>
+      <a href="#" class="list-group-item-actions" aria-label="Add to favorites"><Icon name="star" color="muted" /></a>
     </div>
     <div class="list-group-item">
-      <div class="row align-items-center">
-        <div class="col-auto"><span class="status-dot d-block"></span></div>
-        <div class="col text-truncate">
-          <a href="#" class="text-body d-block">New comment</a>
-          <div class="d-block text-secondary text-truncate mt-n1">Alice replied in the design thread</div>
-        </div>
-        <div class="col-auto">
-          <a href="#" class="list-group-item-actions show" aria-label="Remove from favorites"><Icon name="star" color="yellow" /></a>
-        </div>
+      <div class="list-group-item-media"><span class="status-dot"></span></div>
+      <div class="list-group-item-content">
+        <a href="#" class="list-group-item-title">New comment</a>
+        <div class="list-group-item-description">Alice replied in the design thread</div>
       </div>
+      <a href="#" class="list-group-item-actions show" aria-label="Remove from favorites"><Icon name="star" color="yellow" /></a>
     </div>
   </div>
 </div>
