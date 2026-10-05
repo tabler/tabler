@@ -3,15 +3,20 @@
 
 interface Props {
   title: string
+  /** renders dt/dd instead of divs, for an item inside `<Datagrid as="dl">` */
+  list?: boolean
   class?: string
 }
 
-const { title, class: className } = Astro.props
+const { title, list = false, class: className } = Astro.props
+
+const TitleTag = list ? 'dt' : 'div'
+const ContentTag = list ? 'dd' : 'div'
 ---
 
 <div class:list={['datagrid-item', className]}>
-  <div class="datagrid-title">{title}</div>
-  <div class="datagrid-content">
+  <TitleTag class="datagrid-title">{title}</TitleTag>
+  <ContentTag class="datagrid-content">
     <slot />
-  </div>
+  </ContentTag>
 </div>

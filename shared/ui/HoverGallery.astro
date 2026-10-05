@@ -1,0 +1,32 @@
+---
+// Hover gallery (.hover-gallery): one image on display, the others show as the pointer moves across.
+
+export interface HoverGalleryImage {
+  src: string
+  alt?: string
+}
+
+interface Props {
+  /** one `.hover-gallery-item` per image; the first one shows by default */
+  images: HoverGalleryImage[]
+  /** core/scss/ui/_hover-gallery.scss `.hover-gallery-indicators` */
+  showIndicators?: boolean
+  /** sets `--tblr-hover-gallery-aspect-ratio`, e.g. "16 / 9" */
+  aspectRatio?: string | undefined
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { images, showIndicators = false, aspectRatio, class: className, ...rest } = Astro.props
+---
+
+<div class:list={['hover-gallery', showIndicators && 'hover-gallery-indicators', className]} style={aspectRatio ? `--tblr-hover-gallery-aspect-ratio: ${aspectRatio}` : undefined} {...rest}>
+  {
+    images.map((image) => (
+      <div class="hover-gallery-item">
+        <img src={image.src} alt={image.alt ?? ''} />
+      </div>
+    ))
+  }
+</div>
