@@ -11,6 +11,7 @@ export { default as Popover } from './bootstrap/popover'
 export { default as ScrollSpy } from './bootstrap/scrollspy'
 export { default as Tab } from './bootstrap/tab'
 export { default as Toast } from './bootstrap/toast'
+export { default as Toggler } from './bootstrap/toggler'
 export { default as Tooltip } from './bootstrap/tooltip'
 
 import Alert from './bootstrap/alert'
@@ -24,6 +25,7 @@ import Popover from './bootstrap/popover'
 import ScrollSpy from './bootstrap/scrollspy'
 import Tab from './bootstrap/tab'
 import Toast from './bootstrap/toast'
+import Toggler from './bootstrap/toggler'
 import Tooltip from './bootstrap/tooltip'
 
 export const bootstrap = {
@@ -38,5 +40,6 @@ export const bootstrap = {
   ScrollSpy,
   Tab,
   Toast,
+  Toggler,
   Tooltip,
 }
