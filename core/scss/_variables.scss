@@ -1083,17 +1083,23 @@ $input-btn-icon-size-lg: 1.5rem !default;
 
 $input-btn-padding-y-xl: 0.6875rem !default;
 $input-btn-padding-x-xl: 1.75rem !default;
-$input-btn-font-size-xl: $h1-font-size !default;
+$input-btn-font-size-xl: 1.25rem !default;
 $input-btn-line-height-xl: 2rem !default;
-$input-btn-icon-size-xl: 2rem !default;
+$input-btn-icon-size-xl: 1.75rem !default;
 
 // scss-docs-start btn-variables
 $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
-// Inner top edge of the filled color variants: the variant tinted towards white.
-$btn-highlight-color: color-mix(in oklab, var(--btn-variant), var(--white) 20%) !default;
+// Inner edges of the filled color variants: the variant tinted towards white
+// along the top and shaded towards black along the bottom, over a faint white
+// gradient, so the button reads as slightly raised.
+$btn-highlight-color: color-mix(in oklab, var(--btn-variant), var(--white) 30%) !default;
+$btn-shade-color: color-mix(in oklab, var(--btn-variant), var(--black) 4%) !default;
+$btn-gradient: linear-gradient(180deg, color-transparent(var(--white), 0.12), transparent) !default;
+// Border of the filled color variants: the variant shaded a little towards black.
+$btn-variant-border-color: color-mix(in oklab, var(--btn-variant), var(--black) 10%) !default;
 $btn-disabled-opacity: 0.4 !default;
 $btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
@@ -1136,7 +1142,7 @@ $btn-white-space: null !default; // Set to `nowrap` to prevent text wrapping
 $btn-font-size-sm: $input-btn-font-size-sm !default;
 $btn-font-size-lg: $input-btn-font-size-lg !default;
 $btn-padding-y-sm: $input-btn-padding-y-sm !default;
-$btn-padding-x-sm: $input-btn-padding-x-sm !default;
+$btn-padding-x-sm: 0.75rem !default;
 $btn-padding-y-lg: $input-btn-padding-y-lg !default;
 $btn-padding-x-lg: $input-btn-padding-x-lg !default;
 // scss-docs-end btn-variables
