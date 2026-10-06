@@ -1,0 +1,35 @@
+---
+// Mockup browser (.mockup-browser): a frame that looks like a browser window,
+// with the window dots and an address bar above the content in the slot.
+
+interface Props {
+  /** text shown in the address bar; no address bar when omitted */
+  url?: string | undefined
+  /** show a lock icon before the url */
+  secure?: boolean
+  class?: string
+  /** class of the `.mockup-browser-body` element */
+  bodyClass?: string | undefined
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+import Icon from './Icon.astro'
+
+const { url, secure, class: className, bodyClass, ...rest } = Astro.props
+---
+
+<div class:list={['mockup-browser', className]} {...rest}>
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+    {
+      url && (
+        <div class="mockup-browser-url">
+          {secure && <Icon name="lock" />}
+          <span>{url}</span>
+        </div>
+      )
+    }
+  </div>
+  <div class:list={['mockup-browser-body', bodyClass]}><slot /></div>
+</div>

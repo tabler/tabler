@@ -1,0 +1,89 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import MockupBrowser from '@ui/MockupBrowser.astro'
+import Button from '@ui/Button.astro'
+import { staticPath } from '@shared/lib/assets'
+---
+
+<DefaultLayout title="Mockup browser" pageMenu="base.mockup-browser" description="The mockup browser shows a page preview or a screenshot inside a frame that looks like a browser window.">
+  <DocsLink slot="page-header-actions" path="/ui/components/mockup-browser" />
+
+  <div class="row row-cards">
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A screenshot in a <code>.mockup-browser</code> frame, with the window dots and an address bar.</CardSubtitle>
+          <MockupBrowser url="preview.tabler.io">
+            <img src={staticPath('tabler-preview.png')} class="hide-theme-dark" alt="Tabler dashboard" />
+            <img src={staticPath('tabler-preview-dark.png')} class="hide-theme-light" alt="Tabler dashboard" />
+          </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Secure address</CardTitle>
+          <CardSubtitle>Put a lock icon before the address to show a secure page.</CardSubtitle>
+          <MockupBrowser url="https://preview.tabler.io" secure>
+            <img src={staticPath('tabler-preview.png')} class="hide-theme-dark" alt="Tabler dashboard" />
+            <img src={staticPath('tabler-preview-dark.png')} class="hide-theme-light" alt="Tabler dashboard" />
+          </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Without an address bar</CardTitle>
+          <CardSubtitle>Leave out <code>.mockup-browser-url</code> for a plain window frame.</CardSubtitle>
+          <MockupBrowser>
+            <img src={staticPath('tabler-preview.png')} class="hide-theme-dark" alt="Tabler dashboard" />
+            <img src={staticPath('tabler-preview-dark.png')} class="hide-theme-light" alt="Tabler dashboard" />
+          </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Any content</CardTitle>
+          <CardSubtitle>The body takes any markup, not only an image, so a component can be shown as a page.</CardSubtitle>
+          <MockupBrowser url="example.com/signup" secure bodyClass="p-4">
+            <h3 class="card-title">Create an account</h3>
+            <div class="mb-3">
+              <label class="form-label" for="mockup-browser-email">Email</label>
+              <input type="email" class="form-control" id="mockup-browser-email" placeholder="you@example.com" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="mockup-browser-password">Password</label>
+              <input type="password" class="form-control" id="mockup-browser-password" placeholder="Password" />
+            </div>
+            <Button color="primary" class="w-100" text="Sign up" />
+          </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Custom look</CardTitle>
+          <CardSubtitle>Set the <code>--tblr-mockup-browser-*</code> variables for a dark toolbar, other window dot colors or no shadow.</CardSubtitle>
+          <MockupBrowser url="preview.tabler.io" secure style="--tblr-mockup-browser-toolbar-bg: var(--tblr-gray-900); --tblr-mockup-browser-toolbar-color: var(--tblr-gray-400); --tblr-mockup-browser-toolbar-border-color: var(--tblr-gray-900); --tblr-mockup-browser-box-shadow: none">
+            <img src={staticPath('tabler-preview-dark.png')} alt="Tabler dashboard" />
+          </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

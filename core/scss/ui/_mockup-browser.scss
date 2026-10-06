@@ -1,0 +1,98 @@
+@use 'sass:list';
+@use '../config' as *;
+
+// A frame that looks like a browser window, to show a page preview or a screenshot
+.mockup-browser {
+  // scss-docs-start mockup-browser-css-vars
+  --mockup-browser-bg: #{$mockup-browser-bg};
+  --mockup-browser-border-radius: #{$mockup-browser-border-radius};
+  --mockup-browser-box-shadow: #{$mockup-browser-box-shadow};
+  --mockup-browser-toolbar-padding-y: #{$mockup-browser-toolbar-padding-y};
+  --mockup-browser-toolbar-padding-x: #{$mockup-browser-toolbar-padding-x};
+  --mockup-browser-toolbar-color: #{$mockup-browser-toolbar-color};
+  --mockup-browser-toolbar-bg: #{$mockup-browser-toolbar-bg};
+  --mockup-browser-toolbar-border-color: #{$mockup-browser-toolbar-border-color};
+  --mockup-browser-control-offset: #{$mockup-browser-control-offset};
+  --mockup-browser-control-size: #{$mockup-browser-control-size};
+  --mockup-browser-control-gap: #{$mockup-browser-control-gap};
+  --mockup-browser-control-color-1: #{list.nth($mockup-browser-control-colors, 1)};
+  --mockup-browser-control-color-2: #{list.nth($mockup-browser-control-colors, 2)};
+  --mockup-browser-control-color-3: #{list.nth($mockup-browser-control-colors, 3)};
+  --mockup-browser-url-font-size: #{$mockup-browser-url-font-size};
+  --mockup-browser-url-line-height: #{$mockup-browser-url-line-height};
+  --mockup-browser-url-icon-size: #{$mockup-browser-url-icon-size};
+  // scss-docs-end mockup-browser-css-vars
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--mockup-browser-bg);
+  box-shadow: var(--mockup-browser-box-shadow);
+  @include border-radius(var(--mockup-browser-border-radius));
+}
+
+// The top bar: the window dots sit at the start, the address bar fills the middle
+.mockup-browser-toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--mockup-browser-control-size) + 2 * var(--mockup-browser-toolbar-padding-y));
+  padding: var(--mockup-browser-toolbar-padding-y) var(--mockup-browser-toolbar-padding-x);
+  color: var(--mockup-browser-toolbar-color);
+  background: var(--mockup-browser-toolbar-bg);
+  // Drawn as an inset shadow so the line does not add to the toolbar height
+  box-shadow: inset 0 calc(-1 * var(--border-width)) var(--mockup-browser-toolbar-border-color);
+}
+
+// The three window dots, drawn with one element and two shadows. They are taken
+// out of the flow so the address bar stays centered whatever the frame width
+.mockup-browser-controls {
+  position: absolute;
+  inset-inline-start: var(--mockup-browser-control-offset);
+  width: var(--mockup-browser-control-size);
+  height: var(--mockup-browser-control-size);
+  background: var(--mockup-browser-control-color-1);
+  border-radius: 50%;
+  box-shadow:
+    calc(var(--mockup-browser-control-size) + var(--mockup-browser-control-gap)) 0 0 var(--mockup-browser-control-color-2),
+    calc(2 * (var(--mockup-browser-control-size) + var(--mockup-browser-control-gap))) 0 0 var(--mockup-browser-control-color-3);
+}
+
+// The address, plain centered text
+.mockup-browser-url {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  font-size: var(--mockup-browser-url-font-size);
+  line-height: var(--mockup-browser-url-line-height);
+
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon {
+    --icon-size: var(--mockup-browser-url-icon-size);
+    flex-shrink: 0;
+  }
+}
+
+// The page: a screenshot fills the width, other content keeps its own layout
+.mockup-browser-body {
+  flex: 1;
+  min-height: 0;
+
+  > img,
+  > iframe,
+  > video {
+    display: block;
+    width: 100%;
+  }
+
+  > iframe {
+    border: 0;
+  }
+}

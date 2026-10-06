@@ -1,0 +1,116 @@
+---
+title: Mockup browser
+summary: A mockup browser is a frame that looks like a browser window, with the window dots and an address bar, to show a page preview or a screenshot.
+description: Show a screenshot or any content inside a browser window frame with the mockup browser component. Add an address, a lock icon or your own colors.
+related: [/ui/components/image-label, /ui/components/card]
+source: core/scss/ui/_mockup-browser.scss
+css-vars: mockup-browser
+classnames:
+  component:
+    - class: mockup-browser
+      desc: The frame, with rounded corners and a shadow
+  part:
+    - class: mockup-browser-toolbar
+      desc: The top bar with the window dots and the address bar
+    - class: mockup-browser-controls
+      desc: The three window dots
+    - class: mockup-browser-url
+      desc: The address, centered in the toolbar
+    - class: mockup-browser-body
+      desc: The page area that holds the screenshot or the content
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+
+## Default markup
+
+A `.mockup-browser` has a `.mockup-browser-toolbar` with the window dots and an address bar, and a `.mockup-browser-body` with the page. An image in the body fills the width of the frame.
+
+<Example>
+<div class="mockup-browser">
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+    <div class="mockup-browser-url"><span>preview.tabler.io</span></div>
+  </div>
+  <div class="mockup-browser-body">
+    <img src="/static/tabler-preview.png" class="hide-theme-dark" alt="Tabler dashboard" />
+    <img src="/static/tabler-preview-dark.png" class="hide-theme-light" alt="Tabler dashboard" />
+  </div>
+</div>
+</Example>
+
+## Secure address
+
+Put an icon before the address text to show a secure page. The icon is scaled down to match the text.
+
+<Example>
+<div class="mockup-browser">
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+    <div class="mockup-browser-url"><Icon name="lock" /><span>https://preview.tabler.io</span></div>
+  </div>
+  <div class="mockup-browser-body">
+    <img src="/static/tabler-preview.png" class="hide-theme-dark" alt="Tabler dashboard" />
+    <img src="/static/tabler-preview-dark.png" class="hide-theme-light" alt="Tabler dashboard" />
+  </div>
+</div>
+</Example>
+
+## Without an address bar
+
+Leave out `.mockup-browser-url` for a plain window frame with only the dots.
+
+<Example>
+<div class="mockup-browser">
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+  </div>
+  <div class="mockup-browser-body">
+    <img src="/static/tabler-preview.png" class="hide-theme-dark" alt="Tabler dashboard" />
+    <img src="/static/tabler-preview-dark.png" class="hide-theme-light" alt="Tabler dashboard" />
+  </div>
+</div>
+</Example>
+
+## Any content
+
+The body takes any markup, not only an image. Add a padding utility to the body when the content needs space from the frame.
+
+<Example>
+<div class="mockup-browser">
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+    <div class="mockup-browser-url"><Icon name="lock" /><span>example.com/signup</span></div>
+  </div>
+  <div class="mockup-browser-body p-4">
+    <h3 class="card-title">Create an account</h3>
+    <div class="mb-3">
+      <label class="form-label" for="mockup-browser-email">Email</label>
+      <input type="email" class="form-control" id="mockup-browser-email" placeholder="you@example.com" />
+    </div>
+    <button type="button" class="btn btn-primary w-100">Sign up</button>
+  </div>
+</div>
+</Example>
+
+## Custom look
+
+Set the `--tblr-mockup-browser-*` variables on the frame to change the colors, the shadow or the size of the dots. The three dots have their own color variables, `--tblr-mockup-browser-control-color-1` to `-3`.
+
+<Example>
+<div class="mockup-browser" style="--tblr-mockup-browser-toolbar-bg: var(--tblr-gray-900); --tblr-mockup-browser-toolbar-color: var(--tblr-gray-400); --tblr-mockup-browser-toolbar-border-color: var(--tblr-gray-900); --tblr-mockup-browser-box-shadow: none">
+  <div class="mockup-browser-toolbar">
+    <span class="mockup-browser-controls"></span>
+    <div class="mockup-browser-url"><Icon name="lock" /><span>preview.tabler.io</span></div>
+  </div>
+  <div class="mockup-browser-body">
+    <img src="/static/tabler-preview-dark.png" alt="Tabler dashboard" />
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- The window dots are decoration. They are an empty element, so screen readers skip them.
+- The address bar is plain text and is read as such. It is not a link and not a form field.
+- Give a screenshot in the body an `alt` text that says what page it shows.
