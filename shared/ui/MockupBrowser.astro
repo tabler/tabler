@@ -7,6 +7,8 @@ interface Props {
   url?: string | undefined
   /** show a lock icon before the url */
   secure?: boolean
+  /** `.mockup-browser-sm`: a 24px toolbar for thumbnails and cards */
+  size?: 'sm'
   class?: string
   /** class of the `.mockup-browser-body` element */
   bodyClass?: string | undefined
@@ -16,10 +18,10 @@ interface Props {
 
 import Icon from './Icon.astro'
 
-const { url, secure, class: className, bodyClass, ...rest } = Astro.props
+const { url, secure, size, class: className, bodyClass, ...rest } = Astro.props
 ---
 
-<div class:list={['mockup-browser', className]} {...rest}>
+<div class:list={['mockup-browser', size && `mockup-browser-${size}`, className]} {...rest}>
   <div class="mockup-browser-toolbar">
     <span class="mockup-browser-controls"></span>
     {

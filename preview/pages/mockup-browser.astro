@@ -7,7 +7,6 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
 import MockupBrowser from '@ui/MockupBrowser.astro'
 import Button from '@ui/Button.astro'
-import { staticPath } from '@shared/lib/assets'
 ---
 
 <DefaultLayout title="Mockup browser" pageMenu="base.mockup-browser" description="The mockup browser shows a page preview or a screenshot inside a frame that looks like a browser window.">
@@ -20,8 +19,9 @@ import { staticPath } from '@shared/lib/assets'
           <CardTitle>Basic</CardTitle>
           <CardSubtitle>A screenshot in a <code>.mockup-browser</code> frame, with the window dots and an address bar.</CardSubtitle>
           <MockupBrowser url="preview.tabler.io">
-            <img src={staticPath('tabler-preview.png')} srcset={`${staticPath('tabler-preview.png')} 1x, ${staticPath('tabler-preview@2x.png')} 2x`} class="hide-theme-dark" alt="Tabler dashboard" />
-            <img src={staticPath('tabler-preview-dark.png')} srcset={`${staticPath('tabler-preview-dark.png')} 1x, ${staticPath('tabler-preview-dark@2x.png')} 2x`} class="hide-theme-light" alt="Tabler dashboard" />
+            <div class="ratio ratio-16x9">
+              <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+            </div>
           </MockupBrowser>
         </CardBody>
       </Card>
@@ -33,8 +33,9 @@ import { staticPath } from '@shared/lib/assets'
           <CardTitle>Secure address</CardTitle>
           <CardSubtitle>Put a lock icon before the address to show a secure page.</CardSubtitle>
           <MockupBrowser url="https://preview.tabler.io" secure>
-            <img src={staticPath('tabler-preview.png')} srcset={`${staticPath('tabler-preview.png')} 1x, ${staticPath('tabler-preview@2x.png')} 2x`} class="hide-theme-dark" alt="Tabler dashboard" />
-            <img src={staticPath('tabler-preview-dark.png')} srcset={`${staticPath('tabler-preview-dark.png')} 1x, ${staticPath('tabler-preview-dark@2x.png')} 2x`} class="hide-theme-light" alt="Tabler dashboard" />
+            <div class="ratio ratio-16x9">
+              <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+            </div>
           </MockupBrowser>
         </CardBody>
       </Card>
@@ -46,9 +47,35 @@ import { staticPath } from '@shared/lib/assets'
           <CardTitle>Without an address bar</CardTitle>
           <CardSubtitle>Leave out <code>.mockup-browser-url</code> for a plain window frame.</CardSubtitle>
           <MockupBrowser>
-            <img src={staticPath('tabler-preview.png')} srcset={`${staticPath('tabler-preview.png')} 1x, ${staticPath('tabler-preview@2x.png')} 2x`} class="hide-theme-dark" alt="Tabler dashboard" />
-            <img src={staticPath('tabler-preview-dark.png')} srcset={`${staticPath('tabler-preview-dark.png')} 1x, ${staticPath('tabler-preview-dark@2x.png')} 2x`} class="hide-theme-light" alt="Tabler dashboard" />
+            <div class="ratio ratio-16x9">
+              <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+            </div>
           </MockupBrowser>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Add <code>.mockup-browser-sm</code> for a 24px toolbar with smaller dots and text, for thumbnails and cards.</CardSubtitle>
+          <div class="row g-3 align-items-start">
+            <div class="col-md-7">
+              <MockupBrowser url="preview.tabler.io" secure>
+                <div class="ratio ratio-16x9">
+                  <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+                </div>
+              </MockupBrowser>
+            </div>
+            <div class="col-md-5">
+              <MockupBrowser url="preview.tabler.io" secure size="sm">
+                <div class="ratio ratio-16x9">
+                  <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+                </div>
+              </MockupBrowser>
+            </div>
+          </div>
         </CardBody>
       </Card>
     </div>
@@ -79,8 +106,10 @@ import { staticPath } from '@shared/lib/assets'
         <CardBody>
           <CardTitle>Custom look</CardTitle>
           <CardSubtitle>Set the <code>--tblr-mockup-browser-*</code> variables for a dark toolbar, other window dot colors or no shadow.</CardSubtitle>
-          <MockupBrowser url="preview.tabler.io" secure style="--tblr-mockup-browser-toolbar-bg: var(--tblr-gray-900); --tblr-mockup-browser-toolbar-color: var(--tblr-gray-400); --tblr-mockup-browser-toolbar-border-color: var(--tblr-gray-900); --tblr-mockup-browser-box-shadow: none">
-            <img src={staticPath('tabler-preview-dark.png')} srcset={`${staticPath('tabler-preview-dark.png')} 1x, ${staticPath('tabler-preview-dark@2x.png')} 2x`} alt="Tabler dashboard" />
+          <MockupBrowser url="preview.tabler.io" secure style="--tblr-mockup-browser-toolbar-bg: var(--tblr-gray-900); --tblr-mockup-browser-toolbar-color: var(--tblr-gray-400); --tblr-mockup-browser-border-color: var(--tblr-gray-900); --tblr-mockup-browser-box-shadow: none">
+            <div class="ratio ratio-16x9">
+              <div class="d-flex align-items-center justify-content-center text-secondary">Your page goes here</div>
+            </div>
           </MockupBrowser>
         </CardBody>
       </Card>
