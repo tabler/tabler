@@ -1,31 +1,77 @@
 ---
-// Icon list on its own, no card: a two-column list of features with green
-// check markers, as on a pricing or a landing page. Enlarged with the
-// --tblr-list-icon-* variables so the markers read at picture size.
+// Icon list in context: two cards side by side. On the left a pricing plan
+// with green checks for what is included and muted crosses for what is not;
+// on the right a setup checklist where every entry has its own icon, color
+// and a short description. Both show the marker centered on the first line.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
 import IconList from '@ui/IconList.astro'
 import IconListItem from '@ui/IconListItem.astro'
 
-const columns = [
-  ['Boxed', 'Combined', 'Condensed', 'Dark mode', 'Fluid', 'Horizontal'],
-  ['Navbar dark', 'Navbar overlap', 'Navbar sticky', 'RTL mode', 'Vertical', 'Folded sidebar'],
+const plan = [
+  { text: 'Unlimited projects', included: true },
+  { text: 'Up to 10 team members', included: true },
+  { text: 'Custom domains', included: true },
+  { text: 'Priority support', included: true },
+  { text: 'Advanced analytics', included: false },
+  { text: 'Single sign-on', included: false },
 ]
 
-const listStyle = '--tblr-list-icon-size: 1.25rem; --tblr-list-icon-row-gap: 0.75rem; font-size: 1.125rem'
+const checklist = [
+  { icon: 'circle-check', color: 'green', title: 'Account created', text: 'Your workspace is ready to use.' },
+  { icon: 'circle-check', color: 'green', title: 'Email confirmed', text: 'We sent a link to your inbox.' },
+  { icon: 'progress', color: 'blue', title: 'Team invited', text: '2 of 5 invitations accepted.' },
+  { icon: 'circle-dashed', color: 'secondary', title: 'Add a payment method', text: 'Needed before the trial ends.' },
+]
 ---
 
-<ScreenshotLayout title="Icon list" columns={2}>
-  <div class="row g-5">
-    {
-      columns.map((items) => (
-        <div class="col-6">
-          <IconList color="green" style={listStyle}>
-            {items.map((text) => (
-              <IconListItem>{text}</IconListItem>
-            ))}
+<ScreenshotLayout title="Icon list" columns={2.4}>
+  <div class="row g-4 align-items-start">
+    <div class="col-6">
+      <Card class="card-md">
+        <CardBody>
+          <div class="text-uppercase text-secondary fw-medium">Pro plan</div>
+          <div class="d-flex align-items-baseline gap-1 my-3">
+            <div class="display-5 fw-bold">$29</div>
+            <div class="text-secondary">/ month</div>
+          </div>
+          <IconList class="mb-4" style="--tblr-list-icon-row-gap: 0.75rem">
+            {
+              plan.map((row) =>
+                row.included ? (
+                  <IconListItem color="green">{row.text}</IconListItem>
+                ) : (
+                  <IconListItem icon="x" class="text-secondary">
+                    {row.text}
+                  </IconListItem>
+                ),
+              )
+            }
           </IconList>
-        </div>
-      ))
-    }
+          <a href="#" class="btn btn-primary w-100">Choose Pro</a>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-6">
+      <Card class="card-md">
+        <CardBody>
+          <CardTitle>Getting started</CardTitle>
+          <IconList style="--tblr-list-icon-row-gap: 1.25rem; --tblr-list-icon-size: 1.25rem">
+            {
+              checklist.map((step) => (
+                <IconListItem icon={step.icon} color={step.color}>
+                  <span>
+                    <strong class="d-block">{step.title}</strong>
+                    <span class="d-block text-secondary">{step.text}</span>
+                  </span>
+                </IconListItem>
+              ))
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
   </div>
 </ScreenshotLayout>
