@@ -1,10 +1,20 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
 import PricingCard from '@shared/components/cards/PricingCard.astro'
 import PricingCardEnterprise from '@shared/components/cards/PricingCardEnterprise.astro'
+
+const plans = [
+  { title: 'Free', price: '0', features: ['Up to 3 users', 'Basic components', 'Community support'], button: 'Get started', buttonClass: 'btn' },
+  { title: 'Premium', price: '49', featured: true, label: 'Popular', features: ['Up to 10 users', 'All components', 'Figma UI kit', 'Priority support'], button: 'Get started', buttonClass: 'btn btn-primary' },
+  { title: 'Enterprise', price: '99', features: ['Unlimited users', 'All components', 'Dedicated support'], button: 'Contact us', buttonClass: 'btn' },
+]
 ---
 
-<DefaultLayout title="Pricing cards" pageMenu="extra.pricing">
+<DefaultLayout title="Pricing cards" pageMenu="extra.pricing" description="Pricing cards show the plans side by side, with a price, a feature list and a button on each one.">
+  <DocsLink slot="page-header-actions" path="/ui/components/pricing" />
+
   <div class="row row-cards">
     <div class="col-sm-6 col-lg-3">
       <PricingCard price="0" users={3} category="Free" />
@@ -20,6 +30,43 @@ import PricingCardEnterprise from '@shared/components/cards/PricingCardEnterpris
     </div>
     <div class="col-12">
       <PricingCardEnterprise />
+    </div>
+    <div class="col-12">
+      <div class="pricing">
+        {
+          plans.map((plan) => (
+            <div class:list={['pricing-card', plan.featured && 'featured']}>
+              {plan.label && (
+                <div class="pricing-label">
+                  <span class="badge bg-primary text-primary-fg">{plan.label}</span>
+                </div>
+              )}
+              <h2 class="pricing-title">{plan.title}</h2>
+              <div class="pricing-price">
+                <span class="pricing-price-currency">$</span>
+                {plan.price}
+                <div class="pricing-price-description">
+                  <div>per user</div>
+                  <div>per month</div>
+                </div>
+              </div>
+              <ul class="pricing-features my-4">
+                {plan.features.map((feature) => (
+                  <li>
+                    <Icon name="check" color="green" class="icon-inline me-1" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <div class="pricing-btn">
+                <a href="#" class:list={[plan.buttonClass, 'w-100']}>
+                  {plan.button}
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </DefaultLayout>

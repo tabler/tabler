@@ -1,0 +1,51 @@
+---
+// Pricing component: three plan cards joined into one table, the middle one
+// featured with a primary border and a "Popular" badge on its top edge. Same
+// plans as the docs page, so the picture matches the example.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Icon from '@ui/Icon.astro'
+
+const plans = [
+  { title: 'Free', price: '0', features: ['Up to 3 users', 'Basic components', 'Community support'], button: 'Get started', buttonClass: 'btn' },
+  { title: 'Premium', price: '49', featured: true, label: 'Popular', features: ['Up to 10 users', 'All components', 'Figma UI kit', 'Priority support'], button: 'Get started', buttonClass: 'btn btn-primary' },
+  { title: 'Enterprise', price: '99', features: ['Unlimited users', 'All components', 'Dedicated support'], button: 'Contact us', buttonClass: 'btn' },
+]
+---
+
+<ScreenshotLayout title="Pricing" columns={3}>
+  <div class="pricing">
+    {
+      plans.map((plan) => (
+        <div class:list={['pricing-card', plan.featured && 'featured']}>
+          {plan.label && (
+            <div class="pricing-label">
+              <span class="badge bg-primary text-primary-fg">{plan.label}</span>
+            </div>
+          )}
+          <h2 class="pricing-title">{plan.title}</h2>
+          <div class="pricing-price">
+            <span class="pricing-price-currency">$</span>
+            {plan.price}
+            <div class="pricing-price-description">
+              <div>per user</div>
+              <div>per month</div>
+            </div>
+          </div>
+          <ul class="pricing-features my-4">
+            {plan.features.map((feature) => (
+              <li>
+                <Icon name="check" color="green" class="icon-inline me-1" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+          <div class="pricing-btn">
+            <a href="#" class:list={[plan.buttonClass, 'w-100']}>
+              {plan.button}
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>
