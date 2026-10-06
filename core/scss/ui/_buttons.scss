@@ -132,7 +132,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-bg: var(--btn-variant-darken);
   --btn-disabled-bg: var(--btn-variant);
   --btn-disabled-color: var(--btn-variant-fg);
-  --btn-box-shadow: var(--shadow-input);
+  // A 1px lighter edge along the top, so the filled button reads as slightly
+  // raised; the press state replaces it with `--btn-active-shadow`.
+  --btn-box-shadow: inset 0 1px 0 0 #{$btn-highlight-color}, var(--shadow-input);
 }
 
 @if map.has-key($theme-colors, 'dark') {
