@@ -114,3 +114,42 @@
     content: ' · ';
   }
 }
+
+// Icon list: a list whose markers are icons instead of bullets, such as a
+// checklist of features. The first `.icon` in an entry is the marker.
+.list-icon {
+  // scss-docs-start list-icon-css-vars
+  --list-icon-gap: #{$list-icon-gap};
+  --list-icon-row-gap: #{$list-icon-row-gap};
+  --list-icon-inline-gap: #{$list-icon-inline-gap};
+  --list-icon-size: #{$list-icon-size};
+  --list-icon-color: #{$list-icon-color};
+  // scss-docs-end list-icon-css-vars
+  display: flex;
+  flex-direction: column;
+  gap: var(--list-icon-row-gap);
+  padding-inline-start: 0;
+  list-style: none;
+
+  > * {
+    display: flex;
+    gap: var(--list-icon-gap);
+    align-items: flex-start;
+  }
+
+  > * > .icon:first-child {
+    --icon-size: var(--list-icon-size);
+    flex-shrink: 0;
+    // center the marker on the first line of text: `.icon` sets its own font
+    // size, which would make `1lh` the icon's line height, so inherit the text's
+    margin-top: calc((1lh - var(--list-icon-size)) / 2);
+    font-size: inherit;
+    color: var(--list-icon-color);
+  }
+}
+
+// Entries in a row that wraps, for a short list of highlights
+.list-icon-inline {
+  flex-flow: row wrap;
+  gap: var(--list-icon-row-gap) var(--list-icon-inline-gap);
+}

@@ -1,0 +1,31 @@
+---
+// Icon list on its own, no card: a two-column list of features with green
+// check markers, as on a pricing or a landing page. Enlarged with the
+// --tblr-list-icon-* variables so the markers read at picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import IconList from '@ui/IconList.astro'
+import IconListItem from '@ui/IconListItem.astro'
+
+const columns = [
+  ['Boxed', 'Combined', 'Condensed', 'Dark mode', 'Fluid', 'Horizontal'],
+  ['Navbar dark', 'Navbar overlap', 'Navbar sticky', 'RTL mode', 'Vertical', 'Folded sidebar'],
+]
+
+const listStyle = '--tblr-list-icon-size: 1.25rem; --tblr-list-icon-row-gap: 0.75rem; font-size: 1.125rem'
+---
+
+<ScreenshotLayout title="Icon list" columns={2}>
+  <div class="row g-5">
+    {
+      columns.map((items) => (
+        <div class="col-6">
+          <IconList color="green" style={listStyle}>
+            {items.map((text) => (
+              <IconListItem>{text}</IconListItem>
+            ))}
+          </IconList>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

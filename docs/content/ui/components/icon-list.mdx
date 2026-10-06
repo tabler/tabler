@@ -1,0 +1,117 @@
+---
+title: Icon list
+summary: An icon list replaces the bullets of a list with icons, such as a check mark in a list of features, a plan's benefits or the steps of a setup.
+description: Show a list with icon markers instead of bullets. Change the icon and the color per list or per entry, or lay the entries out in a row.
+related: [/ui/components/list-group, /ui/components/icon]
+source: core/scss/ui/_lists.scss
+css-vars: list-icon
+classnames:
+  component:
+    - class: list-icon
+      desc: The list, on a ul, ol or div
+  part:
+    - class: icon
+      desc: The first icon in an entry becomes its marker
+  direction:
+    - class: list-icon-inline
+      desc: Lays the entries out in a row that wraps
+  color:
+    - class: text-{color}
+      desc: Colors the marker of one entry, for example text-green on the icon
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+
+## Default markup
+
+Add `.list-icon` to a list and start each entry with an icon. The first icon in an entry is the marker: it sits in front of the text, centered on the first line, in the secondary color.
+
+<Example>
+<ul class="list-icon">
+  <li><Icon name="check" /> Unlimited projects</li>
+  <li><Icon name="check" /> Priority support</li>
+  <li><Icon name="check" /> Custom domains</li>
+  <li><Icon name="check" /> Advanced analytics</li>
+</ul>
+</Example>
+
+## Color
+
+Color all markers at once with the `--tblr-list-icon-color` variable on the list. A `text-{color}` utility on one icon colors that marker only.
+
+<Example>
+<ul class="list-icon" style="--tblr-list-icon-color: var(--tblr-green)">
+  <li><Icon name="check" /> Unlimited projects</li>
+  <li><Icon name="check" /> Priority support</li>
+  <li><Icon name="check" /> Custom domains</li>
+  <li><Icon name="check" class="text-red" /> No phone support</li>
+</ul>
+</Example>
+
+## Different icons
+
+Each entry can use its own icon. Combine icons and colors to show a status, for example the steps of a setup.
+
+<Example>
+<ul class="list-icon">
+  <li><Icon name="circle-check" class="text-green" /> Account created</li>
+  <li><Icon name="circle-check" class="text-green" /> Email confirmed</li>
+  <li><Icon name="progress" class="text-blue" /> Profile in progress</li>
+  <li><Icon name="circle-dashed" /> Add a payment method</li>
+</ul>
+</Example>
+
+## Included and excluded
+
+In a pricing table, use a check for what the plan has and a muted cross for what it lacks. Mute the whole entry with `.text-secondary` so the text reads as unavailable too.
+
+<Example>
+<ul class="list-icon" style="--tblr-list-icon-color: var(--tblr-green)">
+  <li><Icon name="check" /> Unlimited projects</li>
+  <li><Icon name="check" /> Priority support</li>
+  <li class="text-secondary"><Icon name="x" class="text-secondary" /> Custom domains</li>
+  <li class="text-secondary"><Icon name="x" class="text-secondary" /> Advanced analytics</li>
+</ul>
+</Example>
+
+## Inline
+
+Add `.list-icon-inline` to show short entries in a row that wraps, for example the highlights under a product name.
+
+<Example>
+<ul class="list-icon list-icon-inline" style="--tblr-list-icon-color: var(--tblr-green)">
+  <li><Icon name="check" /> Free shipping</li>
+  <li><Icon name="check" /> 30-day returns</li>
+  <li><Icon name="check" /> 2-year warranty</li>
+  <li><Icon name="check" /> In stock</li>
+</ul>
+</Example>
+
+## Long entries
+
+When an entry wraps to more lines, the marker stays on the first line. The marker follows the line height of the list, so it also fits small or large text.
+
+<Example>
+<ul class="list-icon">
+  <li><Icon name="shield-check" class="text-green" /> Two-factor authentication keeps the account safe even when the password leaks.</li>
+  <li><Icon name="cloud-upload" class="text-blue" /> Backups run every night and are kept for thirty days in a separate region.</li>
+  <li><Icon name="headset" class="text-purple" /> Support answers within one business day.</li>
+</ul>
+</Example>
+
+## Custom look
+
+Set the `--tblr-list-icon-*` variables on the list to change the size of the markers and the gaps between the entries.
+
+<Example>
+<ul class="list-icon fs-3" style="--tblr-list-icon-size: 1.5rem; --tblr-list-icon-row-gap: 1rem; --tblr-list-icon-color: var(--tblr-primary)">
+  <li><Icon name="check" /> Unlimited projects</li>
+  <li><Icon name="check" /> Priority support</li>
+  <li><Icon name="check" /> Custom domains</li>
+</ul>
+</Example>
+
+## Accessibility
+
+- Use a real list element, `ul` or `ol`, so screen readers announce the number of entries and let the user jump between them.
+- The icons are decorative, so screen readers skip them. When the icon carries meaning, for example a check against a cross, add the meaning as a `.visually-hidden` text, such as "Included" or "Not included".
