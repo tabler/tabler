@@ -175,6 +175,66 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-box-shadow: none;
 }
 
+// Gradient ring: a surface-colored layer clipped to the padding box sits on a
+// gradient layer that fills the border box, so only the border shows the
+// gradient — the same trick as `.card-gradient`. Presets share the `.btn-outline-gradient`
+// base through one selector list, so a preset class works on its own.
+$btn-gradient-names: list.join(map.keys($theme-colors), map.keys($gradients));
+
+@function btn-gradient-selectors() {
+  $selectors: '.btn-outline-gradient';
+  @each $name in $btn-gradient-names {
+    $selectors: list.append($selectors, '.btn-outline-gradient-#{$name}', $separator: comma);
+  }
+  @return $selectors;
+}
+
+$btn-gradient-selectors: btn-gradient-selectors();
+
+#{$btn-gradient-selectors} {
+  // scss-docs-start btn-gradient-css-vars
+  --btn-gradient: var(--primary), var(--primary);
+  --btn-gradient-direction: 135deg;
+  // scss-docs-end btn-gradient-css-vars
+  --btn-border-color: transparent;
+  --btn-hover-border-color: transparent;
+  --btn-active-border-color: transparent;
+  --btn-disabled-border-color: transparent;
+  --btn-box-shadow: none;
+  // The hover and active fills are translucent tints, so a solid surface layer
+  // sits under them — otherwise the gradient would bleed through on hover.
+  background:
+    linear-gradient(var(--btn-bg), var(--btn-bg)) padding-box,
+    linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+    linear-gradient(var(--btn-gradient-direction), var(--btn-gradient)) border-box;
+}
+
+// `.btn:hover` only sets `background-color`, which sits under the two opaque
+// image layers, so the hover and active fills go through the token instead.
+// `:is()` keeps the state rules to one selector list each.
+:is(#{$btn-gradient-selectors}):hover,
+.btn-check + :is(#{$btn-gradient-selectors}):hover {
+  --btn-bg: var(--btn-hover-bg);
+}
+
+:is(#{$btn-gradient-selectors}):active,
+:is(#{$btn-gradient-selectors}).active,
+.btn-check:checked + :is(#{$btn-gradient-selectors}) {
+  --btn-bg: var(--btn-active-bg);
+}
+
+@each $color in map.keys($theme-colors) {
+  .btn-outline-gradient-#{$color} {
+    --btn-gradient: var(--#{$color}), var(--#{$color}-darken);
+  }
+}
+
+@each $name, $stops in $gradients {
+  .btn-outline-gradient-#{$name} {
+    --btn-gradient: #{$stops};
+  }
+}
+
 //
 // Button sizes
 //
