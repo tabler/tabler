@@ -1,6 +1,8 @@
 ---
 // Feature names are a fixed list; the `features` string is split per-character into a 1/0 availability mask.
 import Icon from '@ui/Icon.astro'
+import IconList from '@ui/IconList.astro'
+import IconListItem from '@ui/IconListItem.astro'
 
 interface Props {
   price?: string
@@ -31,17 +33,22 @@ const availableFeatures = features.split('')
 
     <div class="display-5 fw-bold my-3">${price}</div>
 
-    <ul class="list-unstyled lh-lg">
-      <li><strong>{users}</strong> Users</li>
+    <IconList class="align-items-center">
+      <IconListItem icon="users">
+        <span><strong>{users}</strong> Users</span>
+      </IconListItem>
       {
-        featureNames.map((feature, i) => (
-          <li>
-            {availableFeatures[i] === '1' ? <Icon name="check" inline class="me-1 text-success" /> : <Icon name="x" inline class="me-1 text-danger" />}
-            {feature}
-          </li>
-        ))
+        featureNames.map((feature, i) =>
+          availableFeatures[i] === '1' ? (
+            <IconListItem color="success">{feature}</IconListItem>
+          ) : (
+            <IconListItem icon="x" color="danger">
+              {feature}
+            </IconListItem>
+          ),
+        )
       }
-    </ul>
+    </IconList>
 
     <div class="text-center mt-4">
       <a href="#" class={`btn${featuredColor ? ` btn-${featuredColor}` : ''} w-100`}>Choose plan</a>
