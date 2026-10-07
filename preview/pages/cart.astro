@@ -1,0 +1,154 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardFooter from '@ui/CardFooter.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import Icon from '@ui/Icon.astro'
+import Payment from '@ui/Payment.astro'
+import Stepper from '@ui/Stepper.astro'
+import products from '@shared/data/products.json'
+import { staticPath } from '@shared/lib/assets'
+import { requireIndex } from '@shared/lib/array'
+import type { PaymentProvider } from '@shared/lib/tokens'
+
+interface CartLine {
+  name: string
+  image: string
+  variant: string
+  price: number
+  quantity: number
+  stock: number
+}
+
+// Fixed quantities and prices, so the totals below never move between builds.
+const lines: CartLine[] = [
+  { ...requireIndex(products, 1), variant: 'Black, one size', price: 49, quantity: 1, stock: 12 },
+  { ...requireIndex(products, 2), variant: 'Gold, 2-pack', price: 12.5, quantity: 2, stock: 40 },
+  { ...requireIndex(products, 5), variant: 'Natural wood', price: 89, quantity: 1, stock: 3 },
+  { ...requireIndex(products, 8), variant: 'Set of 4', price: 24, quantity: 4, stock: 4 },
+]
+
+const freeShippingFrom = 150
+const subtotal = lines.reduce((sum, line) => sum + line.price * line.quantity, 0)
+const discount = 20
+const shipping = subtotal - discount >= freeShippingFrom ? 0 : 9
+const tax = (subtotal - discount) * 0.08
+const total = subtotal - discount + shipping + tax
+
+const money = (value: number): string => `$${value.toFixed(2)}`
+
+const providers: PaymentProvider[] = ['visa', 'mastercard', 'americanexpress', 'paypal', 'applepay']
+---
+
+<DefaultLayout title="Shopping cart" pageMenu="extra.cart" description="A cart lists what the customer is about to buy, lets them change the quantity of each line and shows the total before checkout.">
+  <div class="row row-cards">
+    <div class="col-lg-8">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>Your cart</CardTitle>
+            <CardSubtitle>{lines.length} items. Prices include the discount code <code>SPRING20</code>.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th class="text-end">Total</th>
+                <th class="w-1"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                lines.map((line) => (
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center gap-3">
+                        <Avatar src={staticPath(`products/${line.image}`)} size="lg" shape="rounded" />
+                        <div>
+                          <div class="fw-medium">{line.name}</div>
+                          <div class="text-secondary">{line.variant}</div>
+                          {line.quantity >= line.stock && <Badge text="Last items in stock" color="orange" light class="mt-1" />}
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-nowrap">{money(line.price)}</td>
+                    <td>
+                      <Stepper value={line.quantity} min={1} max={line.stock} ariaLabel={`Quantity of ${line.name}`} />
+                    </td>
+                    <td class="text-end fw-medium text-nowrap">{money(line.price * line.quantity)}</td>
+                    <td>
+                      <button type="button" class="btn btn-action" aria-label={`Remove ${line.name}`}>
+                        <Icon name="trash" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <CardFooter class="d-flex align-items-center">
+          <a href="./search-results.html" class="d-inline-flex align-items-center gap-1">
+            <Icon name="arrow-left" size="sm" />
+            Continue shopping
+          </a>
+          <Button text="Clear cart" variant="ghost" class="ms-auto" />
+        </CardFooter>
+      </Card>
+    </div>
+
+    <div class="col-lg-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Order summary</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <label class="form-label" for="cart-promo">Discount code</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="cart-promo" value="SPRING20" />
+            <Button text="Apply" />
+          </div>
+          <Badge text="SPRING20 applied" color="green" light />
+        </CardBody>
+        <CardBody>
+          <dl class="row mb-0">
+            <dt class="col-7 fw-normal text-secondary">Subtotal</dt>
+            <dd class="col-5 text-end">{money(subtotal)}</dd>
+            <dt class="col-7 fw-normal text-secondary">Discount</dt>
+            <dd class="col-5 text-end text-success">−{money(discount)}</dd>
+            <dt class="col-7 fw-normal text-secondary">Shipping</dt>
+            <dd class="col-5 text-end">{shipping === 0 ? 'Free' : money(shipping)}</dd>
+            <dt class="col-7 fw-normal text-secondary">Tax (8%)</dt>
+            <dd class="col-5 text-end mb-0">{money(tax)}</dd>
+          </dl>
+          <hr class="my-3" />
+          <div class="d-flex align-items-baseline">
+            <div class="h3 mb-0">Total</div>
+            <div class="h3 mb-0 ms-auto">{money(total)}</div>
+          </div>
+          <div class="text-secondary mt-1">Free shipping on orders over {money(freeShippingFrom)}.</div>
+        </CardBody>
+        <CardBody>
+          <Button text="Proceed to checkout" color="primary" class="w-100 mb-3" />
+          <div class="d-flex align-items-center justify-content-center gap-2">
+            {providers.map((provider) => <Payment payment={provider} size="sm" />)}
+          </div>
+          <div class="text-secondary text-center mt-3 d-flex align-items-center justify-content-center gap-1">
+            <Icon name="lock" size="sm" />
+            Secure checkout, 30-day returns
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
