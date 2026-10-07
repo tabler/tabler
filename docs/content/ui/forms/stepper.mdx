@@ -11,10 +11,16 @@ classnames:
   component:
     - class: stepper
       desc: Wrapper; holds the two buttons and the input
+  size:
+    - class: stepper-sm
+      desc: Smaller field and buttons
+    - class: stepper-lg
+      desc: Larger field and buttons
 ---
 
 import Example from '@components/Example.astro'
 import CodeDocs from '@components/CodeDocs.astro'
+import Icon from '@ui/Icon.astro'
 
 ## Overview
 
@@ -25,16 +31,11 @@ Add `data-bs-toggle="stepper"` to a `.stepper` wrapper, mark the buttons with `d
 <Example column>
   <div class="stepper" data-bs-toggle="stepper">
     <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="minus" />
     </button>
     <input type="text" class="form-control" value="1" min="1" max="99" aria-label="Quantity" />
     <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="plus" />
     </button>
   </div>
 </Example>
@@ -43,21 +44,17 @@ Add `data-bs-toggle="stepper"` to a `.stepper` wrapper, mark the buttons with `d
 
 ### Bounds and step
 
-The button at a bound goes disabled, so the user sees when the value cannot go further. Letters never get into the field: a typed one is dropped and a pasted text keeps only its digits, with a minus sign allowed only when `min` is negative and a decimal separator only for a fractional `step`. A typed value is clamped once the field is left. A fractional `step` sets the precision: with `step="0.25"` the value is always shown with two decimals.
+The button at a bound goes disabled, so the user sees when the value cannot go further. Letters never get into the field: a typed one is dropped and a pasted text keeps only its digits, with a minus sign allowed only when `min` is negative and a decimal separator only for a fractional `step`. A typed value is clamped
+once the field is left. A fractional `step` sets the precision: with `step="0.25"` the value is always shown with two decimals.
 
 <Example column>
   <div class="stepper" data-bs-toggle="stepper">
     <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="minus" />
     </button>
     <input type="text" class="form-control" value="1.5" min="0" max="10" step="0.25" aria-label="Hours" />
     <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="plus" />
     </button>
   </div>
 </Example>
@@ -71,16 +68,11 @@ A `type="text"` input gets `role="spinbutton"`, the matching `aria-value*` attri
 <Example column>
   <div class="stepper" data-bs-toggle="stepper">
     <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="minus" />
     </button>
     <input type="number" class="form-control" value="5" min="0" max="10" aria-label="Seats" />
     <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="plus" />
     </button>
   </div>
 </Example>
@@ -89,6 +81,40 @@ A `type="text"` input gets `role="spinbutton"`, the matching `aria-value*` attri
 
 With the focus in the field, <kbd>↑</kbd> and <kbd>↓</kbd> step the value, <kbd>Home</kbd> and <kbd>End</kbd> jump to `min` and `max`. Holding a button down keeps stepping after a short delay; set `data-bs-repeat="false"` to turn that off.
 
+### Sizes
+
+Add `.stepper-sm` or `.stepper-lg` to the wrapper. The field and the buttons follow the same height as `.form-control-sm` and `.form-control-lg`.
+
+<Example column>
+  <div class="stepper stepper-sm" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <Icon name="minus" />
+    </button>
+    <input type="text" class="form-control" value="1" min="0" aria-label="Small" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <Icon name="plus" />
+    </button>
+  </div>
+  <div class="stepper " data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <Icon name="minus" />
+    </button>
+    <input type="text" class="form-control" value="1" min="0" aria-label="Default" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <Icon name="plus" />
+    </button>
+  </div>
+  <div class="stepper stepper-lg" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <Icon name="minus" />
+    </button>
+    <input type="text" class="form-control" value="1" min="0" aria-label="Large" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <Icon name="plus" />
+    </button>
+  </div>
+</Example>
+
 ### Wider input
 
 The input is `3.5rem` wide by default, enough for a quantity. Set `--tblr-stepper-input-width` on the wrapper for longer values.
@@ -96,16 +122,11 @@ The input is `3.5rem` wide by default, enough for a quantity. Set `--tblr-steppe
 <Example column>
   <div class="stepper" data-bs-toggle="stepper" style="--tblr-stepper-input-width: 6rem">
     <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="minus" />
     </button>
     <input type="text" class="form-control" value="1000" min="0" step="100" aria-label="Amount" />
     <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="plus" />
     </button>
   </div>
 </Example>
@@ -117,16 +138,11 @@ Add `disabled` or `readonly` to the input; both buttons follow.
 <Example column>
   <div class="stepper" data-bs-toggle="stepper">
     <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="minus" />
     </button>
     <input type="text" class="form-control" value="3" disabled aria-label="Quantity" />
     <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-      </svg>
+      <Icon name="plus" />
     </button>
   </div>
 </Example>

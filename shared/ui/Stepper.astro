@@ -11,6 +11,7 @@ interface Props {
   step?: number
   /** data-bs-repeat: keep stepping while a button is held (default: true) */
   repeat?: boolean
+  size?: 'sm' | 'lg'
   value?: number | string
   /** `text` keeps the native spin buttons away; `number` keeps the browser's own validation */
   type?: 'text' | 'number'
@@ -27,9 +28,9 @@ interface Props {
   [key: string]: unknown
 }
 
-const { min, max, step, repeat, value, type = 'text', ariaLabel, id, name, disabled, readonly, decrementLabel = 'Decrease', incrementLabel = 'Increase', class: className, ...rest } = Astro.props
+const { min, max, step, repeat, size, value, type = 'text', ariaLabel, id, name, disabled, readonly, decrementLabel = 'Decrease', incrementLabel = 'Increase', class: className, ...rest } = Astro.props
 
-const wrapperClass = ['stepper', className]
+const wrapperClass = ['stepper', size && `stepper-${size}`, className]
 ---
 
 <div class:list={wrapperClass} data-bs-toggle="stepper" data-bs-repeat={repeat === false ? 'false' : undefined} {...rest}>

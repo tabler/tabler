@@ -16,6 +16,8 @@ Stepper (number input with buttons)
   position: relative;
   display: inline-flex;
   align-items: stretch;
+  // Never stretched by a flex column parent: the box is as wide as its parts
+  width: fit-content;
   vertical-align: middle;
   background-color: var(--stepper-bg);
   border: $input-border-width solid var(--stepper-border-color);
@@ -108,6 +110,28 @@ Stepper (number input with buttons)
       &:focus-within {
         outline-color: map.get($data, 'focus-ring-color');
       }
+    }
+  }
+}
+
+// Sizes move the same tokens `.form-control-sm` / `.btn-sm` and their `-lg`
+// twins read, so the field and the buttons keep one height.
+@each $size in (sm, lg) {
+  .stepper-#{$size} {
+    --stepper-input-width: #{map.get($stepper-input-widths, $size)};
+    --stepper-border-radius: var(--btn-input-#{$size}-border-radius);
+
+    > .form-control {
+      --control-padding-y: var(--btn-input-#{$size}-padding-y);
+      --control-font-size: var(--btn-input-#{$size}-font-size);
+      --control-line-height: var(--btn-input-#{$size}-line-height);
+    }
+
+    > .btn {
+      --btn-padding-y: var(--btn-input-#{$size}-padding-y);
+      --btn-font-size: var(--btn-input-#{$size}-font-size);
+      --btn-line-height: var(--btn-input-#{$size}-line-height);
+      --btn-icon-size: #{map.get($stepper-icon-sizes, $size)};
     }
   }
 }
