@@ -16,7 +16,10 @@
   --bg-surface: light-dark(var(--bg-surface-primary), var(--gray-800));
   --bg-surface-primary: var(--white);
   --bg-surface-secondary: light-dark(var(--gray-50), var(--gray-900));
-  --bg-surface-tertiary: light-dark(var(--gray-50), var(--gray-800));
+  // Translucent, so a card header or footer, a table stripe or an input-group
+  // addon stands out from whatever surface it sits on, in both color modes
+  // (an opaque gray-800 was invisible on a dark card).
+  --bg-surface-tertiary: light-dark(#{color-transparent(var(--body-color), 0.025)}, #{color-transparent(var(--body-color), 0.04)});
   --bg-surface-dark: var(--gray-900);
   --bg-surface-inverted: light-dark(var(--gray-900), var(--gray-100));
   --bg-forms: light-dark(var(--bg-surface), var(--gray-900));
