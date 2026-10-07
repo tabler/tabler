@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Updated `.btn-xl` font and icon size to `1.25rem` / `1.75rem` and `.btn-sm` horizontal padding to `0.75rem`.
+Updated `.btn-xl` with a `1.25rem` font, `1.75rem` icons and a `--tblr-border-radius-lg` corner, and `.btn-sm` with `0.75rem` horizontal padding.
