@@ -130,6 +130,13 @@ Stepper (number input with buttons)
       &:focus-within {
         outline-color: map.get($data, 'focus-ring-color');
       }
+
+      // The box sits between the field and its feedback text, so the
+      // `.is-invalid ~ .invalid-feedback` rule has to be repeated from here.
+      ~ .#{$state}-feedback,
+      ~ .#{$state}-tooltip {
+        display: block;
+      }
     }
   }
 }

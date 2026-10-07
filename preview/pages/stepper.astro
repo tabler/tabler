@@ -118,10 +118,16 @@ const cart = [
       <Card>
         <CardBody>
           <CardTitle>Validation</CardTitle>
-          <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code> to the input, like on any <code>.form-control</code>.</CardSubtitle>
-          <div class="d-flex flex-wrap gap-3">
-            <Stepper class="is-valid" value={2} min={1} max={5} ariaLabel="Valid quantity" />
-            <Stepper class="is-invalid" value={5} min={1} max={5} ariaLabel="Invalid quantity" />
+          <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code> to the input, like on any <code>.form-control</code>; the feedback text after it still shows.</CardSubtitle>
+          <div class="space-y-3">
+            <div>
+              <Stepper class="is-valid" value={2} min={1} max={5} ariaLabel="Valid quantity" />
+              <div class="valid-feedback">In stock, ships today.</div>
+            </div>
+            <div>
+              <Stepper class="is-invalid" value={5} min={1} max={5} ariaLabel="Invalid quantity" />
+              <div class="invalid-feedback">Only 5 pieces left.</div>
+            </div>
           </div>
         </CardBody>
       </Card>

@@ -89,7 +89,32 @@ Add `disabled` or `readonly` to the input; both buttons follow.
 
 ### Validation
 
-Add `.is-valid` or `.is-invalid` to the input, the same way you would on any `.form-control`. The field is too narrow for the validation icon, so only the border changes colour.
+Add `.is-valid` or `.is-invalid` to the input, the same way you would on any `.form-control`. The field is too narrow for the validation icon, so only the border changes colour. A `.valid-feedback` or `.invalid-feedback` placed right after the input still shows, even though the plugin puts its box between them.
+
+<Example column>
+  <div>
+    <input type="text" class="form-control is-valid" value="2" min="1" max="5" aria-label="Quantity" data-bs-toggle="stepper" />
+    <div class="valid-feedback">In stock, ships today.</div>
+  </div>
+  <div>
+    <input type="text" class="form-control is-invalid" value="5" min="1" max="5" aria-label="Quantity" data-bs-toggle="stepper" />
+    <div class="invalid-feedback">Only 5 pieces left.</div>
+  </div>
+</Example>
+
+With a `type="number"` input the browser validates `required` itself (the plugin keeps the value inside `min` and `max` anyway), so a `.was-validated` form colours the box without any class on the input.
+
+<Example column>
+  <form class="was-validated" novalidate>
+    <div class="mb-3">
+      <label class="form-label" for="stepper-seats">
+        Seats
+      </label>
+      <input type="number" class="form-control" id="stepper-seats" value="" min="1" max="10" required data-bs-toggle="stepper" />
+      <div class="invalid-feedback">Pick the number of seats.</div>
+    </div>
+  </form>
+</Example>
 
 ### Custom buttons
 
