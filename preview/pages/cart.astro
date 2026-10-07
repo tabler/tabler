@@ -14,6 +14,8 @@ import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import Payment from '@ui/Payment.astro'
 import Stepper from '@ui/Stepper.astro'
+import Tag from '@ui/Tag.astro'
+import TagList from '@ui/TagList.astro'
 import products from '@shared/data/products.json'
 import { staticPath } from '@shared/lib/assets'
 import { requireIndex } from '@shared/lib/array'
@@ -111,13 +113,11 @@ const deliveries = [
             <input type="text" class="form-control" id="cart-promo" placeholder="Enter a code" aria-describedby="cart-promo-applied" />
             <Button text="Apply" />
           </div>
-          <div class="d-flex align-items-center gap-2 rounded bg-surface-secondary px-3 py-2" id="cart-promo-applied">
-            <Icon name="check" size="sm" class="text-success" />
-            <code>SPRING20</code>
-            <span class="text-secondary">−{money(discount)}</span>
-            <button type="button" class="btn btn-action ms-auto" aria-label="Remove the discount code">
-              <Icon name="x" />
-            </button>
+          <div class="d-flex align-items-center gap-2" id="cart-promo-applied">
+            <span class="text-secondary">Applied:</span>
+            <TagList>
+              <Tag icon="rosette-discount" text="SPRING20" badge={`−${money(discount)}`} />
+            </TagList>
           </div>
         </CardBody>
         <CardBody>
