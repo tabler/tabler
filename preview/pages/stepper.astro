@@ -24,7 +24,7 @@ const cart = [
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>
-          <CardSubtitle>Add <code>data-bs-toggle="stepper"</code> to a <code>.stepper</code> wrapper; the input's <code>min</code> and <code>max</code> set the bounds.</CardSubtitle>
+          <CardSubtitle>Add <code>data-bs-toggle="stepper"</code> to the input; the plugin renders the box and the buttons, <code>min</code> and <code>max</code> set the bounds.</CardSubtitle>
           <Stepper value={1} min={1} max={99} ariaLabel="Quantity" />
         </CardBody>
       </Card>
@@ -57,7 +57,7 @@ const cart = [
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <CardSubtitle>Add <code>.stepper-sm</code> or <code>.stepper-lg</code>; the field and the buttons follow the same height as <code>.form-control-sm</code> and <code>-lg</code>.</CardSubtitle>
+          <CardSubtitle>Add <code>.form-control-sm</code> or <code>.form-control-lg</code> to the input; the box gets <code>.stepper-sm</code> or <code>-lg</code>.</CardSubtitle>
           <div class="d-flex flex-wrap align-items-center gap-3">
             <Stepper size="sm" value={1} min={0} ariaLabel="Small" />
             <Stepper value={1} min={0} ariaLabel="Default" />
@@ -97,7 +97,7 @@ const cart = [
       <Card>
         <CardBody>
           <CardTitle>Wider input</CardTitle>
-          <CardSubtitle>Set <code>--tblr-stepper-input-width</code> on the wrapper for longer values.</CardSubtitle>
+          <CardSubtitle>Set <code>--tblr-stepper-input-width</code> on the input for longer values.</CardSubtitle>
           <Stepper value={125000} min={0} step={1000} ariaLabel="Budget" style="--tblr-stepper-input-width: 7rem" />
         </CardBody>
       </Card>
@@ -120,16 +120,21 @@ const cart = [
           <CardTitle>Validation</CardTitle>
           <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code> to the input, like on any <code>.form-control</code>.</CardSubtitle>
           <div class="d-flex flex-wrap gap-3">
-            <div class="stepper" data-bs-toggle="stepper">
-              <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease"><Icon name="minus" /></button>
-              <input type="text" class="form-control is-valid" value="2" min="1" max="5" aria-label="Valid quantity" />
-              <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase"><Icon name="plus" /></button>
-            </div>
-            <div class="stepper" data-bs-toggle="stepper">
-              <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease"><Icon name="minus" /></button>
-              <input type="text" class="form-control is-invalid" value="5" min="1" max="5" aria-label="Invalid quantity" />
-              <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase"><Icon name="plus" /></button>
-            </div>
+            <Stepper class="is-valid" value={2} min={1} max={5} ariaLabel="Valid quantity" />
+            <Stepper class="is-invalid" value={5} min={1} max={5} ariaLabel="Invalid quantity" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Custom buttons</CardTitle>
+          <CardSubtitle>Write the <code>.stepper</code> markup yourself to change the icons or labels; <code>data-bs-stepper-action</code> marks the buttons.</CardSubtitle>
+          <div class="stepper" data-bs-toggle="stepper">
+            <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Fewer"><Icon name="chevron-down" /></button>
+            <input type="text" class="form-control" value="1" min="1" max="99" aria-label="Quantity with custom buttons" />
+            <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="More"><Icon name="chevron-up" /></button>
           </div>
         </CardBody>
       </Card>

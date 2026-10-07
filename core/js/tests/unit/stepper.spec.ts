@@ -394,6 +394,68 @@ describe('Stepper', () => {
     })
   })
 
+  describe('bare input', () => {
+    const bare = (attributes = 'value="1" min="0" max="5"'): HTMLInputElement => {
+      fixtureEl.innerHTML = `<form><input type="text" class="form-control" data-bs-toggle="stepper" ${attributes} /></form>`
+      return fixtureEl.querySelector('input')!
+    }
+
+    it('should wrap the input and render the two buttons', () => {
+      const el = bare()
+      new Stepper(el)
+
+      const wrapper = el.parentElement!
+      expect(wrapper.classList.contains('stepper')).toBe(true)
+      expect(wrapper.parentElement!.tagName).toBe('FORM')
+      expect([...wrapper.children].map((child) => child.tagName)).toEqual(['BUTTON', 'INPUT', 'BUTTON'])
+      expect(decrementButton().getAttribute('aria-label')).toBe('Decrease')
+      expect(incrementButton().getAttribute('aria-label')).toBe('Increase')
+      expect(incrementButton().type).toBe('button')
+      expect(incrementButton().innerHTML).toBe('')
+    })
+
+    it('should step through the rendered buttons', () => {
+      const el = bare()
+      new Stepper(el)
+      incrementButton().click()
+      expect(el.value).toBe('2')
+    })
+
+    it('should read the config from the input and label the buttons', () => {
+      const el = bare('value="1" data-bs-max="2" data-bs-increment-label="More" data-bs-decrement-label="Fewer"')
+      new Stepper(el)
+      expect(incrementButton().getAttribute('aria-label')).toBe('More')
+      expect(decrementButton().getAttribute('aria-label')).toBe('Fewer')
+      incrementButton().click()
+      incrementButton().click()
+      expect(el.value).toBe('2')
+    })
+
+    it('should map the size of the input to the box', () => {
+      fixtureEl.innerHTML = '<input type="text" class="form-control form-control-sm" data-bs-toggle="stepper" value="1" />'
+      const el = fixtureEl.querySelector('input')!
+      new Stepper(el)
+      expect(el.parentElement!.classList.contains('stepper-sm')).toBe(true)
+    })
+
+    it('should fire change.bs.stepper on the input', () => {
+      const el = bare()
+      const instance = new Stepper(el)
+      const spy = vi.fn()
+      el.addEventListener('change.bs.stepper', spy)
+      instance.increment()
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should unwrap the input on dispose', () => {
+      const el = bare()
+      new Stepper(el).dispose()
+      expect(el.parentElement!.tagName).toBe('FORM')
+      expect(fixtureEl.querySelector('.stepper')).toBeNull()
+      expect(fixtureEl.querySelectorAll('button')).toHaveLength(0)
+    })
+  })
+
   describe('data-api', () => {
     it('should initialise on getOrCreateInstance', () => {
       const instance = Stepper.getOrCreateInstance(stepper())

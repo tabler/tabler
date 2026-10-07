@@ -93,6 +93,26 @@ Stepper (number input with buttons)
     user-select: none;
     border-radius: 0;
 
+    // An empty button paints the default icon through a CSS mask, so the
+    // markup needs no svg; any content put inside replaces it.
+    &[data-bs-stepper-action='decrement'],
+    &[data-tblr-stepper-action='decrement'] {
+      --stepper-icon: #{escape-svg($stepper-icon-decrement)};
+    }
+
+    &[data-bs-stepper-action='increment'],
+    &[data-tblr-stepper-action='increment'] {
+      --stepper-icon: #{escape-svg($stepper-icon-increment)};
+    }
+
+    &:not(:has(> *))::before {
+      width: var(--btn-icon-size);
+      height: var(--btn-icon-size);
+      content: '';
+      background-color: currentColor;
+      @include mask-icon(var(--stepper-icon), $size: 100%);
+    }
+
     &:first-child {
       @include border-start-radius(calc(var(--stepper-border-radius) - #{$input-border-width}));
     }

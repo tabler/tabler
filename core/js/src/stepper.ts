@@ -27,6 +27,9 @@ type ComponentConfig = {
   repeatDelay: number
   /** milliseconds between two repeated steps */
   repeatInterval: number
+  /** accessible names of the buttons the plugin renders around a bare input */
+  decrementLabel: string
+  incrementLabel: string
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -41,11 +44,18 @@ const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_CHANGE = `change${EVENT_KEY}`
 
+const CLASS_NAME_STEPPER = 'stepper'
+const CLASS_NAME_BUTTON = 'btn btn-icon'
+
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 const SELECTOR_INPUT = 'input'
 const SELECTOR_ACTION = `[data-bs-${NAME}-action], [data-tblr-${NAME}-action]`
 
 const ATTRIBUTES_ACTION = [`data-bs-${NAME}-action`, `data-tblr-${NAME}-action`]
+const ATTRIBUTE_ACTION = ATTRIBUTES_ACTION[0]
+
+// `.form-control-sm` on a bare input becomes `.stepper-sm` on the rendered box
+const SIZES = ['sm', 'lg']
 
 const KEY_UP = 'ArrowUp'
 const KEY_DOWN = 'ArrowDown'
@@ -63,6 +73,8 @@ const Default: ComponentConfig = {
   repeat: true,
   repeatDelay: 400,
   repeatInterval: 80,
+  decrementLabel: 'Decrease',
+  incrementLabel: 'Increase',
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
@@ -72,6 +84,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   repeat: 'boolean',
   repeatDelay: 'number',
   repeatInterval: 'number',
+  decrementLabel: 'string',
+  incrementLabel: 'string',
 }
 
 /**
@@ -81,6 +95,10 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
  * the single source of truth: the buttons, the arrow keys and the public API
  * all write to it, clamp to `min` / `max` and round to the precision of
  * `step`, so a form sees nothing but an ordinary field.
+ *
+ * Initialised on a bare `<input>`, the plugin wraps it in `.stepper` and
+ * renders the two buttons itself; initialised on a `.stepper` wrapper, it
+ * uses the buttons found in the markup.
  */
 
 class Stepper extends BaseComponent {
@@ -88,6 +106,8 @@ class Stepper extends BaseComponent {
   declare _config: ComponentConfig
   _input: HTMLInputElement | null = null
   _buttons: HTMLElement[] = []
+  // The box rendered around a bare input, removed again on dispose
+  _wrapper: HTMLElement | null = null
   _min = Number.NEGATIVE_INFINITY
   _max = Number.POSITIVE_INFINITY
   _step = 1
@@ -117,13 +137,18 @@ class Stepper extends BaseComponent {
       return
     }
 
-    const input = SelectorEngine.findOne(SELECTOR_INPUT, this._element) as HTMLInputElement | null
+    const input = this._element instanceof HTMLInputElement ? this._element : (SelectorEngine.findOne(SELECTOR_INPUT, this._element) as HTMLInputElement | null)
     if (!input) {
       return
     }
 
     this._input = input
-    this._buttons = SelectorEngine.find(SELECTOR_ACTION, this._element)
+
+    if (this._element === input) {
+      this._renderWrapper()
+    } else {
+      this._buttons = SelectorEngine.find(SELECTOR_ACTION, this._element)
+    }
 
     this._resolveBounds()
     this._setUpInput()
@@ -184,10 +209,46 @@ class Stepper extends BaseComponent {
       }
     }
 
+    if (this._wrapper && this._input) {
+      this._wrapper.replaceWith(this._input)
+    }
+
     super.dispose()
   }
 
   // Private
+  // Puts a bare input into a `.stepper` box with a button on each side. The
+  // buttons are empty: the stylesheet paints their icons.
+  _renderWrapper(): void {
+    const input = this._input!
+    const wrapper = document.createElement('div')
+    wrapper.className = CLASS_NAME_STEPPER
+
+    for (const size of SIZES) {
+      if (input.classList.contains(`form-control-${size}`)) {
+        wrapper.classList.add(`${CLASS_NAME_STEPPER}-${size}`)
+      }
+    }
+
+    const button = (action: StepperAction, label: string): HTMLButtonElement => {
+      const element = document.createElement('button')
+      element.type = 'button'
+      element.className = CLASS_NAME_BUTTON
+      element.setAttribute(ATTRIBUTE_ACTION, action)
+      element.setAttribute('aria-label', label)
+      return element
+    }
+
+    const decrement = button('decrement', this._config.decrementLabel)
+    const increment = button('increment', this._config.incrementLabel)
+
+    input.replaceWith(wrapper)
+    wrapper.append(decrement, input, increment)
+
+    this._wrapper = wrapper
+    this._buttons = [decrement, increment]
+  }
+
   // Config wins over the input's own attributes; both are optional.
   _resolveBounds(): void {
     const input = this._input!
