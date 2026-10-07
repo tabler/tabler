@@ -1,0 +1,164 @@
+/*
+Stepper (number input with buttons)
+ */
+@use 'sass:map';
+@use '../../config' as *;
+
+// One bordered box, like a `.form-control`: the field in the middle and the
+// two buttons inside it have no border of their own.
+.stepper {
+  // scss-docs-start stepper-css-vars
+  --stepper-input-width: #{$stepper-input-width};
+  --stepper-bg: #{$stepper-bg};
+  --stepper-border-color: #{$stepper-border-color};
+  --stepper-border-radius: #{$stepper-border-radius};
+  // scss-docs-end stepper-css-vars
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  // Never stretched by a flex column parent: the box is as wide as its parts
+  width: fit-content;
+  vertical-align: middle;
+  background-color: var(--stepper-bg);
+  border: $input-border-width solid var(--stepper-border-color);
+  box-shadow: $input-box-shadow;
+  @include border-radius(var(--stepper-border-radius));
+  @include focus-ring-transition(border-color);
+
+  // The box carries the focus ring for the field inside it.
+  &:focus-within {
+    --focus-ring-offset: -1px;
+    border-color: $input-focus-border-color;
+    @include focus-ring(true);
+  }
+
+  &:has(> .form-control:disabled) {
+    background-color: $input-disabled-bg;
+  }
+
+  > .form-control {
+    // stylelint-disable-next-line length-zero-no-unit
+    --control-border-width: 0px;
+    flex: 0 0 auto;
+    width: var(--stepper-input-width);
+    min-width: 0;
+    padding-inline: 0.25rem;
+    text-align: center;
+    appearance: textfield;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+
+    // A `type="number"` field keeps its keyboard behaviour but loses the
+    // native spin buttons, which the stepper's own buttons replace.
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+
+    &:focus {
+      background-color: transparent;
+      outline: 0;
+      box-shadow: none;
+    }
+
+    // The field is too narrow for the validation icon, which would sit on
+    // top of the number; the box border alone carries the state.
+    // `!important` because forms/_validation.scss forces the icon padding
+    // with one.
+    @each $state, $data in $form-validation-states {
+      &.is-#{$state},
+      .was-validated &:#{$state} {
+        padding-inline-end: 0.25rem !important;
+        background-image: none;
+      }
+    }
+  }
+
+  > .btn {
+    // With a unit, or `calc()` in the button's `min-width` has nothing to add
+    // stylelint-disable-next-line length-zero-no-unit
+    --btn-border-width: 0px;
+    --btn-bg: transparent;
+    --btn-border-color: transparent;
+    --btn-hover-border-color: transparent;
+    --btn-active-border-color: transparent;
+    --btn-hover-bg: var(--hover-bg);
+    --btn-box-shadow: none;
+    --focus-ring-offset: -2px;
+    // A held button must not select text or open the context menu on touch.
+    touch-action: manipulation;
+    user-select: none;
+    border-radius: 0;
+
+    // An empty button paints the default icon through a CSS mask, so the
+    // markup needs no svg; any content put inside replaces it.
+    &[data-bs-stepper-action='decrement'],
+    &[data-tblr-stepper-action='decrement'] {
+      --stepper-icon: #{escape-svg($stepper-icon-decrement)};
+    }
+
+    &[data-bs-stepper-action='increment'],
+    &[data-tblr-stepper-action='increment'] {
+      --stepper-icon: #{escape-svg($stepper-icon-increment)};
+    }
+
+    &:not(:has(> *))::before {
+      width: var(--btn-icon-size);
+      height: var(--btn-icon-size);
+      content: '';
+      background-color: currentColor;
+      @include mask-icon(var(--stepper-icon), $size: 100%);
+    }
+
+    &:first-child {
+      @include border-start-radius(calc(var(--stepper-border-radius) - #{$input-border-width}));
+    }
+
+    &:last-child {
+      @include border-end-radius(calc(var(--stepper-border-radius) - #{$input-border-width}));
+    }
+  }
+
+  @each $state, $data in $form-validation-states {
+    &:has(> .form-control.is-#{$state}),
+    .was-validated &:has(> .form-control:#{$state}) {
+      border-color: map.get($data, 'border-color');
+
+      &:focus-within {
+        outline-color: map.get($data, 'focus-ring-color');
+      }
+
+      // The box sits between the field and its feedback text, so the
+      // `.is-invalid ~ .invalid-feedback` rule has to be repeated from here.
+      ~ .#{$state}-feedback,
+      ~ .#{$state}-tooltip {
+        display: block;
+      }
+    }
+  }
+}
+
+// Sizes move the same tokens `.form-control-sm` / `.btn-sm` and their `-lg`
+// twins read, so the field and the buttons keep one height.
+@each $size in (sm, lg) {
+  .stepper-#{$size} {
+    --stepper-input-width: #{map.get($stepper-input-widths, $size)};
+    --stepper-border-radius: var(--btn-input-#{$size}-border-radius);
+
+    > .form-control {
+      --control-padding-y: var(--btn-input-#{$size}-padding-y);
+      --control-font-size: var(--btn-input-#{$size}-font-size);
+      --control-line-height: var(--btn-input-#{$size}-line-height);
+    }
+
+    > .btn {
+      --btn-padding-y: var(--btn-input-#{$size}-padding-y);
+      --btn-font-size: var(--btn-input-#{$size}-font-size);
+      --btn-line-height: var(--btn-input-#{$size}-line-height);
+      --btn-icon-size: #{map.get($stepper-icon-sizes, $size)};
+    }
+  }
+}
