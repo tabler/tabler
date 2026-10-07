@@ -10,6 +10,8 @@ import Avatar from '@ui/Avatar.astro'
 import Badge from '@ui/Badge.astro'
 import Button from '@ui/Button.astro'
 import Icon from '@ui/Icon.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
 import Payment from '@ui/Payment.astro'
 import Stepper from '@ui/Stepper.astro'
 import products from '@shared/data/products.json'
@@ -44,6 +46,11 @@ const total = subtotal - discount + shipping + tax
 const money = (value: number): string => `$${value.toFixed(2)}`
 
 const providers: PaymentProvider[] = ['visa', 'mastercard', 'americanexpress', 'paypal', 'applepay']
+
+const deliveries = [
+  { id: 'standard', title: 'Standard', description: '3–5 business days', price: shipping, checked: true },
+  { id: 'express', title: 'Express', description: 'Tomorrow before noon', price: 14, checked: false },
+]
 ---
 
 <DefaultLayout title="Shopping cart" pageMenu="extra.cart" description="A cart lists what the customer is about to buy, lets them change the quantity of each line and shows the total before checkout.">
@@ -56,47 +63,33 @@ const providers: PaymentProvider[] = ['visa', 'mastercard', 'americanexpress', '
             <CardSubtitle>{lines.length} items. Prices include the discount code <code>SPRING20</code>.</CardSubtitle>
           </div>
         </CardHeader>
-        <div class="table-responsive">
-          <table class="table table-vcenter card-table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th class="text-end">Total</th>
-                <th class="w-1"><span class="visually-hidden">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                lines.map((line) => (
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-3">
-                        <Avatar src={staticPath(`products/${line.image}`)} size="lg" shape="rounded" />
-                        <div>
-                          <div class="fw-medium">{line.name}</div>
-                          <div class="text-secondary">{line.variant}</div>
-                          {line.quantity >= line.stock && <Badge text="Last items in stock" color="orange" light class="mt-1" />}
-                        </div>
-                      </div>
-                    </td>
-                    <td class="text-nowrap">{money(line.price)}</td>
-                    <td>
-                      <Stepper value={line.quantity} min={1} max={line.stock} ariaLabel={`Quantity of ${line.name}`} />
-                    </td>
-                    <td class="text-end fw-medium text-nowrap">{money(line.price * line.quantity)}</td>
-                    <td>
-                      <button type="button" class="btn btn-action" aria-label={`Remove ${line.name}`}>
-                        <Icon name="trash" />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
+        <ListGroup class="card-list-group">
+          {
+            lines.map((line) => (
+              <ListGroupItem>
+                <div class="row g-3 align-items-center">
+                  <div class="col-auto">
+                    <Avatar src={staticPath(`products/${line.image}`)} size="lg" shape="square" />
+                  </div>
+                  <div class="col">
+                    <div class="fw-medium">{line.name}</div>
+                    <div class="text-secondary">
+                      {line.variant} · {money(line.price)} each
+                    </div>
+                    {line.quantity >= line.stock && <Badge text="Last items in stock" color="orange" light class="mt-1" />}
+                  </div>
+                  <div class="col-12 col-sm-auto d-flex align-items-center gap-3">
+                    <Stepper value={line.quantity} min={1} max={line.stock} ariaLabel={`Quantity of ${line.name}`} />
+                    <div class="fw-medium text-nowrap text-end ms-auto ms-sm-0">{money(line.price * line.quantity)}</div>
+                    <button type="button" class="btn btn-action" aria-label={`Remove ${line.name}`}>
+                      <Icon name="trash" />
+                    </button>
+                  </div>
+                </div>
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
         <CardFooter class="d-flex align-items-center">
           <a href="./search-results.html" class="d-inline-flex align-items-center gap-1">
             <Icon name="arrow-left" size="sm" />
@@ -115,10 +108,39 @@ const providers: PaymentProvider[] = ['visa', 'mastercard', 'americanexpress', '
         <CardBody>
           <label class="form-label" for="cart-promo">Discount code</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" id="cart-promo" value="SPRING20" />
+            <input type="text" class="form-control" id="cart-promo" placeholder="Enter a code" aria-describedby="cart-promo-applied" />
             <Button text="Apply" />
           </div>
-          <Badge text="SPRING20 applied" color="green" light />
+          <div class="d-flex align-items-center gap-2 rounded bg-surface-secondary px-3 py-2" id="cart-promo-applied">
+            <Icon name="check" size="sm" class="text-success" />
+            <code>SPRING20</code>
+            <span class="text-secondary">−{money(discount)}</span>
+            <button type="button" class="btn btn-action ms-auto" aria-label="Remove the discount code">
+              <Icon name="x" />
+            </button>
+          </div>
+        </CardBody>
+        <CardBody>
+          <div class="form-label">Delivery</div>
+          <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+            {
+              deliveries.map((delivery) => (
+                <label class="form-selectgroup-item flex-fill">
+                  <input type="radio" name="delivery" value={delivery.id} class="form-selectgroup-input" checked={delivery.checked} />
+                  <div class="form-selectgroup-label d-flex align-items-center p-3">
+                    <div class="me-3">
+                      <span class="form-selectgroup-check" />
+                    </div>
+                    <div class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong">{delivery.title}</span>
+                      <span class="d-block text-secondary">{delivery.description}</span>
+                    </div>
+                    <div class="ms-auto fw-medium text-nowrap">{delivery.price === 0 ? 'Free' : money(delivery.price)}</div>
+                  </div>
+                </label>
+              ))
+            }
+          </div>
         </CardBody>
         <CardBody>
           <dl class="row mb-0">
@@ -136,7 +158,7 @@ const providers: PaymentProvider[] = ['visa', 'mastercard', 'americanexpress', '
             <div class="h3 mb-0">Total</div>
             <div class="h3 mb-0 ms-auto">{money(total)}</div>
           </div>
-          <div class="text-secondary mt-1">Free shipping on orders over {money(freeShippingFrom)}.</div>
+          <div class="text-secondary mt-1">Includes {money(tax)} tax. Standard delivery is free on orders over {money(freeShippingFrom)}.</div>
         </CardBody>
         <CardBody>
           <Button text="Proceed to checkout" color="primary" class="w-100 mb-3" />
