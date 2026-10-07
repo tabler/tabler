@@ -1,0 +1,39 @@
+---
+// Stepper initializes from `data-bs-toggle="stepper"` and its `data-bs-*` options (tabler.js, core/js/src/stepper.ts).
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  /** data-bs-min: lower bound; defaults to the input's `min` attribute */
+  min?: number
+  /** data-bs-max: upper bound; defaults to the input's `max` attribute */
+  max?: number
+  /** data-bs-step: amount per step; defaults to the input's `step` attribute, or 1 */
+  step?: number
+  /** data-bs-repeat: keep stepping while a button is held (default: true) */
+  repeat?: boolean
+  value?: number | string
+  /** `text` keeps the native spin buttons away; `number` keeps the browser's own validation */
+  type?: 'text' | 'number'
+  ariaLabel?: string
+  id?: string
+  name?: string
+  disabled?: boolean
+  readonly?: boolean
+  /** labels of the two buttons, for screen readers */
+  decrementLabel?: string
+  incrementLabel?: string
+  class?: string
+  /** remaining attributes (data-*, …) are forwarded to the `.stepper` wrapper */
+  [key: string]: unknown
+}
+
+const { min, max, step, repeat, value, type = 'text', ariaLabel, id, name, disabled, readonly, decrementLabel = 'Decrease', incrementLabel = 'Increase', class: className, ...rest } = Astro.props
+
+const wrapperClass = ['stepper', className]
+---
+
+<div class:list={wrapperClass} data-bs-toggle="stepper" data-bs-repeat={repeat === false ? 'false' : undefined} {...rest}>
+  <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label={decrementLabel}><Icon name="minus" /></button>
+  <input type={type} class="form-control" id={id} name={name} value={value} min={min} max={max} step={step} disabled={disabled} readonly={readonly} aria-label={ariaLabel} />
+  <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label={incrementLabel}><Icon name="plus" /></button>
+</div>

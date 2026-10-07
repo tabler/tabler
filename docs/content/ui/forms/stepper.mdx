@@ -1,0 +1,180 @@
+---
+title: Stepper
+seoTitle: Stepper (quantity input)
+order: 14
+summary: A number field with a decrease and an increase button, for a quantity in a cart, a number of seats or any value changed in fixed steps.
+description: Add a stepper input with min, max and step, hold-to-repeat buttons, arrow key support and change events.
+related: [/ui/forms/elements, /ui/forms/validation]
+source: core/scss/ui/forms/_form-stepper.scss
+css-vars: stepper
+classnames:
+  component:
+    - class: stepper
+      desc: Wrapper; holds the two buttons and the input
+---
+
+import Example from '@components/Example.astro'
+import CodeDocs from '@components/CodeDocs.astro'
+
+## Overview
+
+A stepper is an ordinary `<input>` between two buttons. The input stays the only field a form sees: the buttons, the arrow keys and the JavaScript API all write to it, keep the value between `min` and `max` and round it to the precision of `step`.
+
+Add `data-bs-toggle="stepper"` to a `.stepper` wrapper, mark the buttons with `data-bs-stepper-action="decrement"` and `"increment"`, and Tabler wires them up. The bounds come from the input's own `min`, `max` and `step` attributes.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+    <input type="text" class="form-control" value="1" min="1" max="99" aria-label="Quantity" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+  </div>
+</Example>
+
+## Usage
+
+### Bounds and step
+
+The button at a bound goes disabled, so the user sees when the value cannot go further. Letters never get into the field: a typed one is dropped and a pasted text keeps only its digits, with a minus sign allowed only when `min` is negative and a decimal separator only for a fractional `step`. A typed value is clamped once the field is left. A fractional `step` sets the precision: with `step="0.25"` the value is always shown with two decimals.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+    <input type="text" class="form-control" value="1.5" min="0" max="10" step="0.25" aria-label="Hours" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+  </div>
+</Example>
+
+Without `min` and `max` the value has no bounds. An empty field steps from `min` when that is positive, otherwise from zero.
+
+### Text or number input
+
+A `type="text"` input gets `role="spinbutton"`, the matching `aria-value*` attributes and a numeric `inputmode`, so a phone shows the number keyboard and the native spin buttons never appear. A `type="number"` input keeps the browser's own validation and keyboard behaviour; the stepper only hides its spin buttons.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+    <input type="number" class="form-control" value="5" min="0" max="10" aria-label="Seats" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+  </div>
+</Example>
+
+### Keyboard
+
+With the focus in the field, <kbd>↑</kbd> and <kbd>↓</kbd> step the value, <kbd>Home</kbd> and <kbd>End</kbd> jump to `min` and `max`. Holding a button down keeps stepping after a short delay; set `data-bs-repeat="false"` to turn that off.
+
+### Wider input
+
+The input is `3.5rem` wide by default, enough for a quantity. Set `--tblr-stepper-input-width` on the wrapper for longer values.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper" style="--tblr-stepper-input-width: 6rem">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+    <input type="text" class="form-control" value="1000" min="0" step="100" aria-label="Amount" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+  </div>
+</Example>
+
+### Disabled
+
+Add `disabled` or `readonly` to the input; both buttons follow.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+    <input type="text" class="form-control" value="3" disabled aria-label="Quantity" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+      </svg>
+    </button>
+  </div>
+</Example>
+
+### Validation
+
+Add `.is-valid` or `.is-invalid` to the input, the same way you would on any `.form-control`. The field is too narrow for the validation icon, so only the border changes colour.
+
+## Options
+
+Options are read from `data-bs-*` attributes on the `.stepper` element (the `data-tblr-*` alias also works), or passed to the constructor. An option set this way wins over the input's attribute.
+
+| Option           | Type           | Default | Description                                                                                          |
+| ---------------- | -------------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `min`            | number or null | `null`  | Lower bound. When `null`, the input's `min` attribute is used; without that there is no lower bound. |
+| `max`            | number or null | `null`  | Upper bound. When `null`, the input's `max` attribute is used; without that there is no upper bound. |
+| `step`           | number or null | `null`  | Amount per step. When `null`, the input's `step` attribute is used, or `1`.                          |
+| `repeat`         | boolean        | `true`  | Keeps stepping while a button is held down.                                                          |
+| `repeatDelay`    | number         | `400`   | Milliseconds a button has to be held before it starts repeating.                                     |
+| `repeatInterval` | number         | `80`    | Milliseconds between two repeated steps.                                                             |
+
+## JavaScript
+
+Tabler creates a `Stepper` for every element matching `[data-bs-toggle="stepper"]` (or `[data-tblr-toggle="stepper"]`):
+
+<CodeDocs name="stepper-init" file="core/js/src/stepper.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('.stepper')
+const stepper = tabler.Stepper.getOrCreateInstance(el, { min: 1, max: 10 })
+```
+
+The input itself fires the usual `input` and `change` events whenever a button or the API changes it, so a form, a framework binding or validation sees a stepped value like a typed one. On top of that, `change.bs.stepper` fires on the wrapper with both values:
+
+```javascript
+el.addEventListener('change.bs.stepper', (event) => {
+  console.log(event.value, event.previousValue)
+})
+```
+
+### Methods
+
+| Method            | Description                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| `getValue()`      | Returns the current value as a number, or `null` for an empty field.     |
+| `setValue(value)` | Sets the value, clamped to the bounds and rounded to the step precision. |
+| `increment()`     | Adds one step.                                                           |
+| `decrement()`     | Removes one step.                                                        |
+| `dispose()`       | Removes the listeners and the instance.                                  |

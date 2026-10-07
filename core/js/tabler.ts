@@ -15,6 +15,7 @@ import './src/sortable'
 import './src/otp-input'
 import './src/sparkline'
 import './src/strength'
+import './src/stepper'
 
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
@@ -29,6 +30,7 @@ export { default as InputMask } from './src/input-mask'
 export { default as OtpInput } from './src/otp-input'
 export { default as Sortable } from './src/sortable'
 export { default as Sparkline } from './src/sparkline'
+export { default as Stepper } from './src/stepper'
 export { default as Strength } from './src/strength'
 export { default as SwitchIcon } from './src/switch-icon'
 

@@ -1,0 +1,175 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Stepper from '@ui/Stepper.astro'
+import Icon from '@ui/Icon.astro'
+
+const cart = [
+  { name: 'Hex nut M8 DIN 934, zinc plated', code: '8-934-8-ZN', price: '12.40', quantity: 2, max: 50 },
+  { name: 'Lock nut M8 DIN 985, stainless A2', code: '8-985-A2', price: '28.90', quantity: 1, max: 20 },
+  { name: 'Cap nut M8 DIN 1587, brass', code: '8-1587-MS', price: '41.00', quantity: 3, max: 3 },
+]
+---
+
+<DefaultLayout title="Stepper" pageMenu="base.stepper" description="A stepper is a number field with a decrease and an increase button, for a quantity or any value changed in fixed steps.">
+  <DocsLink slot="page-header-actions" path="/ui/forms/stepper" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="stepper"</code> to a <code>.stepper</code> wrapper; the input's <code>min</code> and <code>max</code> set the bounds.</CardSubtitle>
+          <Stepper value={1} min={1} max={99} ariaLabel="Quantity" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>At a bound</CardTitle>
+          <CardSubtitle>The button at <code>min</code> or <code>max</code> goes disabled, so the user sees the value cannot go further.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <Stepper value={0} min={0} max={10} ariaLabel="At the minimum" />
+            <Stepper value={10} min={0} max={10} ariaLabel="At the maximum" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Step and precision</CardTitle>
+          <CardSubtitle>A fractional <code>step</code> sets how many decimals the value keeps.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <Stepper value={1.5} min={0} max={10} step={0.25} ariaLabel="Hours" />
+            <Stepper value={500} min={0} step={100} ariaLabel="Amount" style="--tblr-stepper-input-width: 5rem" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Without bounds</CardTitle>
+          <CardSubtitle>Without <code>min</code> and <code>max</code> the value goes both ways, so a minus sign can be typed too.</CardSubtitle>
+          <Stepper value={0} ariaLabel="Offset" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Native number input</CardTitle>
+          <CardSubtitle>Use <code>type="number"</code> to keep the browser's own validation; the stepper only hides its spin buttons.</CardSubtitle>
+          <Stepper type="number" value={5} min={0} max={10} ariaLabel="Seats" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>No repeat</CardTitle>
+          <CardSubtitle>Add <code>data-bs-repeat="false"</code> to step once per click instead of repeating while the button is held.</CardSubtitle>
+          <Stepper value={1} min={1} max={99} repeat={false} ariaLabel="Quantity, one step per click" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Wider input</CardTitle>
+          <CardSubtitle>Set <code>--tblr-stepper-input-width</code> on the wrapper for longer values.</CardSubtitle>
+          <Stepper value={125000} min={0} step={1000} ariaLabel="Budget" style="--tblr-stepper-input-width: 7rem" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Disabled and readonly</CardTitle>
+          <CardSubtitle>Add <code>disabled</code> or <code>readonly</code> to the input; both buttons follow.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <Stepper value={3} disabled ariaLabel="Disabled" />
+            <Stepper value={3} readonly ariaLabel="Readonly" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Validation</CardTitle>
+          <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code> to the input, like on any <code>.form-control</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <div class="stepper" data-bs-toggle="stepper">
+              <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease"><Icon name="minus" /></button>
+              <input type="text" class="form-control is-valid" value="2" min="1" max="5" aria-label="Valid quantity" />
+              <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase"><Icon name="plus" /></button>
+            </div>
+            <div class="stepper" data-bs-toggle="stepper">
+              <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease"><Icon name="minus" /></button>
+              <input type="text" class="form-control is-invalid" value="5" min="1" max="5" aria-label="Invalid quantity" />
+              <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase"><Icon name="plus" /></button>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With a label and hint</CardTitle>
+          <CardSubtitle>A stepper sits in a <code>FormGroup</code> like any other control.</CardSubtitle>
+          <FormGroup label="Number of seats" for="stepper-seats" hint="Up to 8 seats per booking."><Stepper id="stepper-seats" name="seats" value={2} min={1} max={8} /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-12 col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>In a cart</CardTitle>
+          <CardSubtitle>The usual place for a stepper: a quantity per line, with <code>max</code> set to the stock.</CardSubtitle>
+          <div class="table-responsive">
+            <table class="table table-vcenter card-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th class="w-1"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  cart.map((item) => (
+                    <tr>
+                      <td>
+                        <div>{item.name}</div>
+                        <div class="text-secondary">{item.code}</div>
+                      </td>
+                      <td class="text-nowrap">${item.price}</td>
+                      <td>
+                        <Stepper value={item.quantity} min={1} max={item.max} ariaLabel={`Quantity of ${item.name}`} />
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-icon btn-ghost-secondary" aria-label={`Remove ${item.name}`}>
+                          <Icon name="trash" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
