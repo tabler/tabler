@@ -121,9 +121,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 }
 
 #{btn-color-selectors('.btn-{c}')} {
-  --btn-border-color: transparent;
-  --btn-hover-border-color: transparent;
-  --btn-active-border-color: transparent;
+  --btn-border-color: #{$btn-variant-border-color};
+  --btn-hover-border-color: #{$btn-variant-border-color};
+  --btn-active-border-color: #{$btn-variant-border-color};
   --btn-color: var(--btn-variant-fg, #{$white});
   --btn-bg: var(--btn-variant);
   --btn-hover-color: var(--btn-variant-fg);
@@ -132,7 +132,12 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-bg: var(--btn-variant-darken);
   --btn-disabled-bg: var(--btn-variant);
   --btn-disabled-color: var(--btn-variant-fg);
-  --btn-box-shadow: var(--shadow-input);
+  // A lighter 1px edge along the top, a darker one along the bottom and a faint
+  // white gradient, so the filled button reads as slightly raised. The press
+  // state replaces the edges with `--btn-active-shadow`.
+  --btn-box-shadow: inset 0 1px 0 0 #{$btn-highlight-color}, inset 0 -1px 0 0 #{$btn-shade-color}, var(--shadow-input);
+  --btn-gradient: #{$btn-gradient};
+  background-image: var(--btn-gradient);
 }
 
 @if map.has-key($theme-colors, 'dark') {
@@ -155,6 +160,8 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-border-color: var(--btn-variant);
   --btn-disabled-color: var(--btn-variant);
   --btn-disabled-border-color: var(--btn-variant);
+  --btn-gradient: none;
+  --btn-box-shadow: none;
 }
 
 #{btn-color-selectors('.btn-ghost-{c}', '.btn-ghost.btn-{c}')} {
@@ -172,6 +179,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-disabled-bg: transparent;
   --btn-disabled-border-color: transparent;
   --gradient: none;
+  --btn-gradient: none;
   --btn-box-shadow: none;
 }
 
@@ -197,6 +205,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-padding-y: #{$input-btn-padding-y-xl};
   --btn-padding-x: #{$input-btn-padding-x-xl};
   --btn-font-size: #{$input-btn-font-size-xl};
+  --btn-border-radius: #{$btn-border-radius-xl};
 }
 
 //
