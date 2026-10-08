@@ -1,0 +1,61 @@
+---
+// Code block (.code-block): a dark code surface with an optional header and a
+// copy button that uses the Clipboard plugin. Syntax highlighting stays external.
+
+interface Props {
+  /** the code to show and to copy */
+  code: string
+  /** title or file name in the header */
+  title?: string | undefined
+  /** language label in the header */
+  language?: string | undefined
+  /** show the copy button */
+  copy?: boolean
+  /** `.code-block-numbered`: line numbers */
+  numbered?: boolean
+  /** 1-based line numbers to highlight */
+  highlight?: number[]
+  /** `.code-block-scroll`: limit the height and scroll vertically */
+  scroll?: boolean
+  /** accessible name of the copy button */
+  copyLabel?: string
+  /** class added to the `<code>` element, e.g. `language-js` for a highlighter */
+  codeClass?: string | undefined
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+import Icon from './Icon.astro'
+
+const { code, title, language, copy = true, numbered, highlight = [], scroll, copyLabel = 'Copy code', codeClass, class: className, ...rest } = Astro.props
+
+const lines = code.replace(/\n$/, '').split('\n')
+const hasHeader = Boolean(title || language)
+---
+
+<div class:list={['code-block', numbered && 'code-block-numbered', scroll && 'code-block-scroll', className]} {...rest}>
+  {
+    hasHeader && (
+      <div class="code-block-header">
+        {title && <span class="code-block-title">{title}</span>}
+        {language && <span class="code-block-lang">{language}</span>}
+        {copy && (
+          <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-text={code} aria-label={copyLabel}>
+            <Icon name="copy" class="clipboard-label" />
+            <Icon name="check" class="clipboard-feedback" />
+          </button>
+        )}
+      </div>
+    )
+  }
+  {
+    !hasHeader && copy && (
+      <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-text={code} aria-label={copyLabel}>
+        <Icon name="copy" class="clipboard-label" />
+        <Icon name="check" class="clipboard-feedback" />
+      </button>
+    )
+  }
+  <pre><code class={codeClass}>{lines.map((line, index) => <span class:list={['code-line', highlight.includes(index + 1) && 'code-line-highlight']}>{line}</span>)}</code></pre>
+</div>

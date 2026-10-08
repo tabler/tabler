@@ -1,0 +1,80 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import CodeBlock from '@ui/CodeBlock.astro'
+
+const js = `import { Clipboard } from '@tabler/core'
+
+const button = document.querySelector('#share')
+const clipboard = Clipboard.getOrCreateInstance(button, {
+  text: window.location.href,
+})
+
+button.addEventListener('copied.bs.clipboard', () => {
+  console.log('copied')
+})
+
+clipboard.copy()`
+
+const shell = 'npm install @tabler/core'
+---
+
+<DefaultLayout title="Code block" pageMenu="base.code-block" description="The code block shows a snippet on a dark surface with a header and a copy button.">
+  <DocsLink slot="page-header-actions" path="/ui/components/code-block" />
+
+  <div class="row row-cards">
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A <code>.code-block</code> with the copy button in the corner.</CardSubtitle>
+          <CodeBlock code={shell} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>With header</CardTitle>
+          <CardSubtitle>A title or a file name and a language label.</CardSubtitle>
+          <CodeBlock code={js} title="share.js" language="JavaScript" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Line numbers and highlighted lines</CardTitle>
+          <CardSubtitle>Add <code>.code-block-numbered</code> and mark lines with <code>.code-line-highlight</code>.</CardSubtitle>
+          <CodeBlock code={js} title="share.js" numbered highlight={[4, 5, 6]} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Max height</CardTitle>
+          <CardSubtitle>Add <code>.code-block-scroll</code> to scroll long code vertically.</CardSubtitle>
+          <CodeBlock code={js} title="share.js" numbered scroll style="--tblr-code-block-max-height: 8rem" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Without copy button</CardTitle>
+          <CardSubtitle>Set <code>copy={'{false}'}</code> on the component, or leave the button out of the markup.</CardSubtitle>
+          <CodeBlock code={shell} copy={false} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
