@@ -1,0 +1,107 @@
+---
+title: Shape
+summary: A tinted, rounded square that holds one icon, for feature lists and other places where an icon needs a background.
+description: Put an icon on a soft, tinted background with the shape component. Pick a size and a color, or set the corner radius with a CSS variable.
+related: [/ui/components/avatar, /ui/components/icon]
+source: core/scss/ui/_shape.scss
+css-vars: shape
+added-in: '1.7.0'
+classnames:
+  component:
+    - class: shape
+      desc: Container element, an inline rounded square in the primary color
+  color:
+    - class: shape-{color}
+      desc: Any palette color, for example shape-red or shape-teal
+  size:
+    - class: shape-{size}
+      desc: Avatar sizes from shape-xxs to shape-2xl
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+
+## Default markup
+
+A shape is a `.shape` element with one icon inside. It is a square with soft corners, filled with a light tint of the primary color. The icon takes the stronger primary color. The square is the same size as an [avatar](/ui/components/avatar), so the two line up in a list.
+
+<Example centered>
+<span class="shape"><Icon name="devices" /></span>
+</Example>
+
+## Sizes
+
+Add `.shape-{size}` to change the size. The sizes are the avatar sizes, from `xxs` to `2xl`. The icon grows with the square.
+
+<Example centered>
+<div class="d-flex align-items-end gap-3">
+  <span class="shape shape-xxs"><Icon name="star" /></span>
+  <span class="shape shape-xs"><Icon name="star" /></span>
+  <span class="shape shape-sm"><Icon name="star" /></span>
+  <span class="shape shape-md"><Icon name="star" /></span>
+  <span class="shape shape-lg"><Icon name="star" /></span>
+  <span class="shape shape-xl"><Icon name="star" /></span>
+  <span class="shape shape-2xl"><Icon name="star" /></span>
+</div>
+</Example>
+
+## Colors
+
+Add `.shape-{color}` to use another palette color. The square takes the light tint of the color and the icon takes the full color.
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <span class="shape shape-blue"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-azure"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-indigo"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-purple"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-pink"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-red"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-orange"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-yellow"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-lime"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-green"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-teal"><Icon name="brand-bootstrap" /></span>
+  <span class="shape shape-cyan"><Icon name="brand-bootstrap" /></span>
+</div>
+</Example>
+
+## Corner radius
+
+The corners are rounded by `35%` of the size. Set `--tblr-shape-border-radius` on the shape to change this: `50%` makes a circle, `0` makes a sharp square.
+
+<Example centered>
+<div class="d-flex gap-3">
+  <span class="shape shape-md" style="--tblr-shape-border-radius: 0"><Icon name="palette" /></span>
+  <span class="shape shape-md"><Icon name="palette" /></span>
+  <span class="shape shape-md" style="--tblr-shape-border-radius: 50%"><Icon name="palette" /></span>
+</div>
+</Example>
+
+## In a feature list
+
+Shapes mark the items of a feature list. Put one above or next to each heading, with the same size and color on every item.
+
+<Example>
+<div class="row g-4">
+  <div class="col-md-4">
+    <span class="shape shape-md mb-3"><Icon name="devices" /></span>
+    <h3>Mobile-optimized</h3>
+    <p class="text-secondary">Every page works on any screen size.</p>
+  </div>
+  <div class="col-md-4">
+    <span class="shape shape-md mb-3"><Icon name="mailbox" /></span>
+    <h3>Tested email clients</h3>
+    <p class="text-secondary">Checked in more than 90 email clients.</p>
+  </div>
+  <div class="col-md-4">
+    <span class="shape shape-md mb-3"><Icon name="palette" /></span>
+    <h3>Minimal design</h3>
+    <p class="text-secondary">Clean layouts based on Bootstrap.</p>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- A shape is decoration. The icon inside renders with `aria-hidden="true"`, so the shape adds nothing to the accessibility tree.
+- Put the meaning in the text next to the shape, not in the icon or the color.
