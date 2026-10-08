@@ -1,8 +1,8 @@
 ---
-// Shape component: a three-item feature list, each item with a colored shape
-// above its heading, the way the marketing pages use it. Three colors so the
-// tint and the icon color read as a pair; medium size so the icons are legible
-// at picture size.
+// Shape component: a six-item feature grid, each item with a colored shape
+// above its heading, the way the marketing pages use it. Six colors so the
+// tint and the icon color read as a pair across the palette, at the default
+// size a page would use.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
@@ -12,6 +12,9 @@ const features = [
   { icon: 'devices', color: 'blue', title: 'Mobile-optimized', text: 'Every page works on any screen size, from a phone to a wide monitor.' },
   { icon: 'mailbox', color: 'purple', title: 'Tested email clients', text: 'Checked in more than 90 email clients and devices.' },
   { icon: 'palette', color: 'green', title: 'Minimal design', text: 'Clean layouts based on Bootstrap and Material Design principles.' },
+  { icon: 'shield-check', color: 'orange', title: 'Secure by default', text: 'Sensible defaults for forms, auth pages and user settings.' },
+  { icon: 'chart-bar', color: 'red', title: 'Charts and tables', text: 'Dashboards, data grids and charts that fit in with the rest.' },
+  { icon: 'users', color: 'teal', title: 'Built for teams', text: 'Shared components and docs so everyone ships the same UI.' },
 ]
 ---
 
@@ -22,7 +25,7 @@ const features = [
         {
           features.map((feature) => (
             <div class="col-4">
-              <span class:list={['shape', 'shape-xl', `shape-${feature.color}`, 'mb-3']}>
+              <span class:list={['shape', `shape-${feature.color}`, 'mb-3']}>
                 <Icon name={feature.icon} />
               </span>
               <h3 class="h3">{feature.title}</h3>
