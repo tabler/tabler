@@ -167,7 +167,7 @@ const formatPattern = (date: Date, pattern: string): string => {
     D: String(date.getDate()),
   }
 
-  return pattern.replace(FORMAT_TOKENS, (token) => parts[token]!)
+  return pattern.replace(FORMAT_TOKENS, (token) => parts[token])
 }
 
 // Reads text written with `pattern` back into `YYYY-MM-DD`, or null when it
@@ -175,7 +175,7 @@ const formatPattern = (date: Date, pattern: string): string => {
 const parsePattern = (value: string, pattern: string): string | null => {
   const order: string[] = []
   const source = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(FORMAT_TOKENS, (token) => {
-    order.push(token[0]!)
+    order.push(token[0])
     return token === 'YYYY' ? '(\\d{4})' : token.length === 2 ? '(\\d{2})' : '(\\d{1,2})'
   })
   const match = new RegExp(`^${source}$`).exec(value)
