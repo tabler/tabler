@@ -102,7 +102,7 @@ class Transfer extends BaseComponent {
       return
     }
 
-    for (const panel of SelectorEngine.find(SELECTOR_PANEL, this._element) as HTMLElement[]) {
+    for (const panel of SelectorEngine.find(SELECTOR_PANEL, this._element)) {
       const side = this._sideOf(panel)
       if (side && !this._panels[side]) {
         this._panels[side] = panel
@@ -204,7 +204,7 @@ class Transfer extends BaseComponent {
   }
 
   _items(side: TransferSide): HTMLElement[] {
-    return SelectorEngine.find(SELECTOR_ITEM, this._list(side)) as HTMLElement[]
+    return SelectorEngine.find(SELECTOR_ITEM, this._list(side))
   }
 
   _enabled(side: TransferSide): HTMLElement[] {
@@ -400,8 +400,8 @@ class Transfer extends BaseComponent {
   }
 
   _handleInput(event: Event): void {
-    const search = (event.target as Element).closest(SELECTOR_SEARCH) as HTMLInputElement | null
-    const panel = search?.closest(SELECTOR_PANEL) as HTMLElement | null
+    const search = (event.target as Element).closest<HTMLInputElement>(SELECTOR_SEARCH)
+    const panel = search?.closest<HTMLElement>(SELECTOR_PANEL)
     if (!search || !panel) {
       return
     }
@@ -414,8 +414,8 @@ class Transfer extends BaseComponent {
   }
 
   _handleChange(event: Event): void {
-    const checkbox = (event.target as Element).closest(SELECTOR_SELECT_ALL) as HTMLInputElement | null
-    const panel = checkbox?.closest(SELECTOR_PANEL) as HTMLElement | null
+    const checkbox = (event.target as Element).closest<HTMLInputElement>(SELECTOR_SELECT_ALL)
+    const panel = checkbox?.closest<HTMLElement>(SELECTOR_PANEL)
     if (!checkbox || !panel) {
       return
     }
