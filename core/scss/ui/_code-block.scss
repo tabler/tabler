@@ -6,9 +6,11 @@
   --code-block-bg: #{$code-block-bg};
   --code-block-color: #{$code-block-color};
   --code-block-border-radius: #{$code-block-border-radius};
+  --code-block-box-shadow: #{$code-block-box-shadow};
   --code-block-header-bg: #{$code-block-header-bg};
   --code-block-header-color: #{$code-block-header-color};
   --code-block-header-border-color: #{$code-block-header-border-color};
+  --code-block-header-box-shadow: #{$code-block-header-box-shadow};
   --code-block-header-padding-y: #{$code-block-header-padding-y};
   --code-block-header-padding-x: #{$code-block-header-padding-x};
   --code-block-title-color: #{$code-block-title-color};
@@ -31,6 +33,7 @@
   text-align: left;
   direction: ltr;
   background: var(--code-block-bg);
+  box-shadow: var(--code-block-box-shadow);
   @include border-radius(var(--code-block-border-radius));
 
   pre {
@@ -47,6 +50,8 @@
 }
 
 .code-block-header {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -54,6 +59,7 @@
   color: var(--code-block-header-color);
   background: var(--code-block-header-bg);
   border-bottom: var(--border-width) solid var(--code-block-header-border-color);
+  box-shadow: var(--code-block-header-box-shadow);
 }
 
 .code-block-title {
