@@ -16,6 +16,7 @@ import ListGroupItem from '@ui/ListGroupItem.astro'
 import Icon from '@ui/Icon.astro'
 import Payment from '@ui/Payment.astro'
 import Progress from '@ui/Progress.astro'
+import Stepper from '@ui/Stepper.astro'
 import type { PaymentProvider } from '@shared/lib/tokens'
 
 const usage = { used: 7420, limit: 10000 }
@@ -79,7 +80,12 @@ const invoiceStatus = {
               <Datagrid>
                 <DatagridItem title="Billing period">Monthly</DatagridItem>
                 <DatagridItem title="Next invoice">September 18, 2026</DatagridItem>
-                <DatagridItem title="Seats">8 of 10 used</DatagridItem>
+                <DatagridItem title="Seats">
+                  <div class="d-flex align-items-center gap-2">
+                    <Stepper size="sm" value={10} min={8} max={100} ariaLabel="Seats in the plan" />
+                    <span class="text-secondary">8 used</span>
+                  </div>
+                </DatagridItem>
               </Datagrid>
             </CardBody>
           </Card>

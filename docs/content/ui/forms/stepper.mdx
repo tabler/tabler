@@ -1,0 +1,179 @@
+---
+title: Stepper
+seoTitle: Stepper (quantity input)
+order: 14
+summary: A number field with a decrease and an increase button, for a quantity in a cart, a number of seats or any value changed in fixed steps.
+description: Add a stepper input with min, max and step, hold-to-repeat buttons, arrow key support and change events.
+related: [/ui/forms/elements, /ui/forms/validation]
+source: core/scss/ui/forms/_form-stepper.scss
+css-vars: stepper
+classnames:
+  component:
+    - class: stepper
+      desc: The box around the field and the two buttons; rendered by the plugin, or written by hand for custom buttons
+  size:
+    - class: stepper-sm
+      desc: Smaller field and buttons
+    - class: stepper-lg
+      desc: Larger field and buttons
+---
+
+import Example from '@components/Example.astro'
+import CodeDocs from '@components/CodeDocs.astro'
+import Icon from '@ui/Icon.astro'
+
+## Overview
+
+A stepper is an ordinary `<input>` between two buttons. The input stays the only field a form sees: the buttons, the arrow keys and the JavaScript API all write to it, keep the value between `min` and `max` and round it to the precision of `step`.
+
+Add `data-bs-toggle="stepper"` to the input and Tabler does the rest: it wraps the field in a `.stepper` box and renders the two buttons. The bounds come from the input's own `min`, `max` and `step` attributes.
+
+<Example column>
+  <input type="text" class="form-control" value="1" min="1" max="99" aria-label="Quantity" data-bs-toggle="stepper" />
+</Example>
+
+## Usage
+
+### Bounds and step
+
+The button at a bound goes disabled, so the user sees when the value cannot go further. Letters never get into the field: a typed one is dropped and a pasted text keeps only its digits, with a minus sign allowed only when `min` is negative and a decimal separator only for a fractional `step`. A typed value is clamped
+once the field is left. A fractional `step` sets the precision: with `step="0.25"` the value is always shown with two decimals.
+
+<Example column>
+  <input type="text" class="form-control" value="1.5" min="0" max="10" step="0.25" aria-label="Hours" data-bs-toggle="stepper" />
+</Example>
+
+Without `min` and `max` the value has no bounds. An empty field steps from `min` when that is positive, otherwise from zero.
+
+### Text or number input
+
+A `type="text"` input gets `role="spinbutton"`, the matching `aria-value*` attributes and a numeric `inputmode`, so a phone shows the number keyboard and the native spin buttons never appear. A `type="number"` input keeps the browser's own validation and keyboard behaviour; the stepper only hides its spin buttons.
+
+<Example column>
+  <input type="number" class="form-control" value="5" min="0" max="10" aria-label="Seats" data-bs-toggle="stepper" />
+</Example>
+
+### Keyboard
+
+With the focus in the field, <kbd>↑</kbd> and <kbd>↓</kbd> step the value, <kbd>Home</kbd> and <kbd>End</kbd> jump to `min` and `max`. Holding a button down keeps stepping after a short delay; set `data-bs-repeat="false"` to turn that off.
+
+### Sizes
+
+Add `.form-control-sm` or `.form-control-lg` to the input; the rendered box gets `.stepper-sm` or `.stepper-lg`, so the field and the buttons keep one height.
+
+<Example column>
+  <input type="text" class="form-control form-control-sm" value="1" min="0" aria-label="Small" data-bs-toggle="stepper" />
+  <div class="stepper " data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease"></button>
+    <input type="text" class="form-control" value="1" min="0" aria-label="Default" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase"></button>
+  </div>
+  <input type="text" class="form-control form-control-lg" value="1" min="0" aria-label="Large" data-bs-toggle="stepper" />
+</Example>
+
+### Wider input
+
+The input is `3.5rem` wide by default, enough for a quantity. Set `--tblr-stepper-input-width` on the input for longer values.
+
+<Example column>
+  <input type="text" class="form-control" value="1000" min="0" step="100" aria-label="Amount" data-bs-toggle="stepper" style="--tblr-stepper-input-width: 6rem" />
+</Example>
+
+### Disabled
+
+Add `disabled` or `readonly` to the input; both buttons follow.
+
+<Example column>
+  <input type="text" class="form-control" value="3" disabled aria-label="Quantity" data-bs-toggle="stepper" />
+</Example>
+
+### Validation
+
+Add `.is-valid` or `.is-invalid` to the input, the same way you would on any `.form-control`. The field is too narrow for the validation icon, so only the border changes colour. A `.valid-feedback` or `.invalid-feedback` placed right after the input still shows, even though the plugin puts its box between them.
+
+<Example column>
+  <div>
+    <input type="text" class="form-control is-valid" value="2" min="1" max="5" aria-label="Quantity" data-bs-toggle="stepper" />
+    <div class="valid-feedback">In stock, ships today.</div>
+  </div>
+  <div>
+    <input type="text" class="form-control is-invalid" value="5" min="1" max="5" aria-label="Quantity" data-bs-toggle="stepper" />
+    <div class="invalid-feedback">Only 5 pieces left.</div>
+  </div>
+</Example>
+
+With a `type="number"` input the browser validates `required` itself (the plugin keeps the value inside `min` and `max` anyway), so a `.was-validated` form colours the box without any class on the input.
+
+<Example column>
+  <form class="was-validated" novalidate>
+    <div class="mb-3">
+      <label class="form-label" for="stepper-seats">
+        Seats
+      </label>
+      <input type="number" class="form-control" id="stepper-seats" value="" min="1" max="10" required data-bs-toggle="stepper" />
+      <div class="invalid-feedback">Pick the number of seats.</div>
+    </div>
+  </form>
+</Example>
+
+### Custom buttons
+
+To change the icons, the labels or the classes of the buttons, write the markup yourself: put `data-bs-toggle="stepper"` on a `.stepper` wrapper and mark the buttons with `data-bs-stepper-action="decrement"` and `"increment"`. An empty button still gets the default icon from CSS; any content inside replaces it.
+
+<Example column>
+  <div class="stepper" data-bs-toggle="stepper">
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Fewer">
+      <Icon name="chevron-down" />
+    </button>
+    <input type="text" class="form-control" value="1" min="1" max="99" aria-label="Quantity" />
+    <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="More">
+      <Icon name="chevron-up" />
+    </button>
+  </div>
+</Example>
+
+## Options
+
+Options are read from `data-bs-*` attributes on the element that carries `data-bs-toggle` (the `data-tblr-*` alias also works), or passed to the constructor. An option set this way wins over the input's attribute.
+
+| Option           | Type           | Default        | Description                                                                                          |
+| ---------------- | -------------- | -------------- | ---------------------------------------------------------------------------------------------------- |
+| `min`            | number or null | `null`         | Lower bound. When `null`, the input's `min` attribute is used; without that there is no lower bound. |
+| `max`            | number or null | `null`         | Upper bound. When `null`, the input's `max` attribute is used; without that there is no upper bound. |
+| `step`           | number or null | `null`         | Amount per step. When `null`, the input's `step` attribute is used, or `1`.                          |
+| `repeat`         | boolean        | `true`         | Keeps stepping while a button is held down.                                                          |
+| `repeatDelay`    | number         | `400`          | Milliseconds a button has to be held before it starts repeating.                                     |
+| `repeatInterval` | number         | `80`           | Milliseconds between two repeated steps.                                                             |
+| `decrementLabel` | string         | `\'Decrease\'` | `aria-label` of the rendered decrease button.                                                        |
+| `incrementLabel` | string         | `\'Increase\'` | `aria-label` of the rendered increase button.                                                        |
+
+## JavaScript
+
+Tabler creates a `Stepper` for every element matching `[data-bs-toggle="stepper"]` (or `[data-tblr-toggle="stepper"]`), an input or a `.stepper` wrapper:
+
+<CodeDocs name="stepper-init" file="core/js/src/stepper.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('#quantity')
+const stepper = tabler.Stepper.getOrCreateInstance(el, { min: 1, max: 10 })
+```
+
+The input itself fires the usual `input` and `change` events whenever a button or the API changes it, so a form, a framework binding or validation sees a stepped value like a typed one. On top of that, `change.bs.stepper` fires on the element the plugin was created on with both values:
+
+```javascript
+el.addEventListener('change.bs.stepper', (event) => {
+  console.log(event.value, event.previousValue)
+})
+```
+
+### Methods
+
+| Method            | Description                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| `getValue()`      | Returns the current value as a number, or `null` for an empty field.     |
+| `setValue(value)` | Sets the value, clamped to the bounds and rounded to the step precision. |
+| `increment()`     | Adds one step.                                                           |
+| `decrement()`     | Removes one step.                                                        |
+| `dispose()`       | Removes the listeners and the instance.                                  |

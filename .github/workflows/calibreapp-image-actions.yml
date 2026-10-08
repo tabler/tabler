@@ -30,5 +30,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # docs images go through astro:assets, which makes the webp files at build
-          # time; lossy PNG compression here only degrades the source
-          ignorePaths: 'node_modules/**,docs/images/**'
+          # time; lossy PNG compression here only degrades the source.
+          # The README preview screenshots stay lossless: the palette quantization
+          # left visible shapes on the light cards (see #3186)
+          ignorePaths: 'node_modules/**,docs/images/**,shared/static/tabler-preview*.png'
