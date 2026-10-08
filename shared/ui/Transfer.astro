@@ -1,0 +1,107 @@
+---
+// Transfer initializes from `data-bs-toggle="transfer"` (tabler.js, core/js/src/transfer.ts).
+// The rows live in the markup; the plugin moves them and keeps the `<select multiple>` in sync.
+import Icon from './Icon.astro'
+
+export interface TransferItem {
+  value: string
+  label: string
+  disabled?: boolean
+}
+
+interface Props {
+  /** every row, in its original order */
+  items: TransferItem[]
+  /** values of the rows that start in the target list */
+  selected?: string[]
+  /** data-bs-name: `name` of the `<select multiple>` that carries the value in a form */
+  name?: string
+  /** headers of the two panels */
+  titles?: [string, string]
+  /** search field in each panel header */
+  search?: boolean
+  /** select-all checkbox in each panel header */
+  selectAll?: boolean
+  /** up / down buttons to reorder the target list */
+  reorder?: boolean
+  /** data-bs-counter-template: `{checked}` and `{total}` are replaced (default: `{checked} / {total}`) */
+  counterTemplate?: string
+  /** placeholder of the search fields */
+  searchPlaceholder?: string
+  /** height of the lists, any CSS length */
+  height?: string
+  class?: string
+  /** remaining attributes (id, data-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { items, selected = [], name, titles = ['Available', 'Selected'], search = false, selectAll = true, reorder = false, counterTemplate, searchPlaceholder = 'Search…', height, class: className, ...rest } = Astro.props
+
+const sides = [
+  { side: 'source', title: titles[0], items: items.filter((item) => !selected.includes(item.value)) },
+  { side: 'target', title: titles[1], items: items.filter((item) => selected.includes(item.value)) },
+]
+
+const style = height ? `--tblr-transfer-list-height: ${height}` : undefined
+---
+
+<div class:list={['transfer', className]} data-bs-toggle="transfer" data-bs-name={name} data-bs-counter-template={counterTemplate} style={style} {...rest}>
+  {
+    sides.map(({ side, title, items: rows }, index) => (
+      <>
+        <div class="card transfer-panel" data-bs-transfer-panel={side}>
+          <div class="card-header">
+            {selectAll ? (
+              <label class="form-check mb-0">
+                <input type="checkbox" class="form-check-input" data-bs-transfer-select-all />
+                <span class="form-check-label fw-medium">{title}</span>
+              </label>
+            ) : (
+              <h3 class="card-title">{title}</h3>
+            )}
+            <span class="transfer-counter" data-bs-transfer-counter />
+          </div>
+          {search && (
+            <div class="card-body border-bottom py-2">
+              <input type="search" class="form-control form-control-sm" placeholder={searchPlaceholder} aria-label={`Search in ${title}`} data-bs-transfer-search />
+            </div>
+          )}
+          <div class="list-group list-group-flush transfer-list" aria-label={title} data-bs-transfer-list>
+            {rows.map((item) => (
+              <div class="list-group-item transfer-item" data-value={item.value} aria-disabled={item.disabled ? 'true' : undefined}>
+                <input type="checkbox" class="form-check-input" />
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {index === 0 && (
+          <div class="transfer-actions">
+            <button type="button" class="btn btn-icon" aria-label="Move selected to the right" data-bs-transfer-action="add">
+              <Icon name="chevron-right" />
+            </button>
+            <button type="button" class="btn btn-icon" aria-label="Move selected to the left" data-bs-transfer-action="remove">
+              <Icon name="chevron-left" />
+            </button>
+            <button type="button" class="btn btn-icon" aria-label="Move all to the right" data-bs-transfer-action="add-all">
+              <Icon name="chevrons-right" />
+            </button>
+            <button type="button" class="btn btn-icon" aria-label="Move all to the left" data-bs-transfer-action="remove-all">
+              <Icon name="chevrons-left" />
+            </button>
+            {reorder && (
+              <>
+                <button type="button" class="btn btn-icon" aria-label="Move selected up" data-bs-transfer-action="up">
+                  <Icon name="chevron-up" />
+                </button>
+                <button type="button" class="btn btn-icon" aria-label="Move selected down" data-bs-transfer-action="down">
+                  <Icon name="chevron-down" />
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </>
+    ))
+  }
+</div>
