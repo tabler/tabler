@@ -1,0 +1,32 @@
+---
+// Hover gallery for the stills and the video recorder (`pnpm run record hover-gallery`):
+// a product card whose photo changes as the cursor crosses it, driven by
+// steps/hover-gallery.json. As a still it shows the first photo with its indicator lit.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import Button from '@ui/Button.astro'
+import HoverGallery from '@ui/HoverGallery.astro'
+import { staticPath } from '@shared/lib/assets'
+
+const watch = ['Steel watch with a black dial, front view', 'Steel watch with a black dial, view from the front left', 'Steel watch, side view with the crown', 'Steel watch, back view with the case back and buckle', 'Close-up of the watch dial, bezel and crown'].map((alt, index) => ({
+  src: staticPath(`products/watch-${index + 1}.jpg`),
+  alt,
+}))
+---
+
+<ScreenshotLayout title="Hover gallery" columns={1}>
+  <Card>
+    <HoverGallery images={watch} showIndicators class="card-img-top" />
+    <CardBody>
+      <CardTitle>Steel watch</CardTitle>
+      <CardSubtitle>Brushed steel case, black dial and a leather strap.</CardSubtitle>
+      <div class="d-flex align-items-center">
+        <div class="h2 m-0">$249</div>
+        <Button text="Add to cart" color="primary" icon="shopping-cart" class="ms-auto" />
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

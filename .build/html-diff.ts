@@ -61,7 +61,7 @@ const main = async () => {
         try {
           pages.set(name, await fetchPage(url))
         } catch (error) {
-          failures.push(`${url} — ${error instanceof Error ? error.message : error}`)
+          failures.push(`${url} — ${error instanceof Error ? error.message : String(error)}`)
         }
       }
     }),
@@ -130,4 +130,7 @@ const main = async () => {
   console.log(`✓ All ${pages.size} pages are byte-identical to the baseline.`)
 }
 
-main()
+main().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})

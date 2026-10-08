@@ -82,13 +82,13 @@ async function compile(entry: string): Promise<{ outFile: string; result: Result
   return { outFile, result }
 }
 
-// rtlcss over the prefixed output: outDir/x.css → outDir/x.rtl.css (+ .map)
+// rtlcss over the prefixed, already autoprefixed output: outDir/x.css → outDir/x.rtl.css (+ .map)
 async function rtl(entry: string, outFile: string, base: Result): Promise<void> {
   const rtlFile = join(outDir, `${basename(entry, '.scss')}.rtl.css`)
   // Same input the CLI read from disk: the prefixed css including its
   // sourceMappingURL annotation, so postcss picks up the previous map.
   // The previous map is not on disk yet (writes are buffered) — pass it in.
-  const result = await postcss([autoprefixer({ cascade: false }), rtlcss()]).process(base.css, {
+  const result = await postcss([rtlcss()]).process(base.css, {
     from: outFile,
     to: rtlFile,
     map: { ...mapOptions, prev: base.map.toString() },

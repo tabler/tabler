@@ -1,5 +1,4 @@
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { defineConfig, type UserConfig } from 'vite'
 
 interface CreateViteConfigOptions {
@@ -40,7 +39,7 @@ export function createViteConfig({ entry, name, fileName, formats, outDir, banne
       rollupOptions: {
         output: rollupOutput,
       },
-      target: 'es2015',
+      target: 'es2022',
       minify: minify,
     },
     define: {

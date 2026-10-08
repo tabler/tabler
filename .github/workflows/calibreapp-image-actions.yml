@@ -26,6 +26,11 @@ jobs:
 
       - name: Compress Images
         # pinned to a commit: this job holds a write token
-        uses: calibreapp/image-actions@26d5b54006db4da7a1b29903f33404a6f77b58cf # main, 2026-09-02
+        uses: calibreapp/image-actions@c3752f0cc46d3f73677f20c7bfe20ed4601ba2a3 # main, 2026-09-02
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # docs images go through astro:assets, which makes the webp files at build
+          # time; lossy PNG compression here only degrades the source.
+          # The README preview screenshots stay lossless: the palette quantization
+          # left visible shapes on the light cards (see #3186)
+          ignorePaths: 'node_modules/**,docs/images/**,shared/static/tabler-preview*.png'

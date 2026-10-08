@@ -235,6 +235,38 @@ describe('Datepicker', () => {
 
       expect(instance._isShown).toBe(false)
     })
+
+    it('should show again after the plugin throws while showing', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+      const pluginShow = vi.spyOn(instance.calendar!, 'show').mockImplementationOnce(() => {
+        throw new Error('plugin failed')
+      })
+
+      await expect(instance.show()).rejects.toThrow('plugin failed')
+      expect(instance._isShowing).toBe(false)
+
+      await instance.show()
+      expect(pluginShow).toHaveBeenCalledTimes(2)
+      expect(instance._isShown).toBe(true)
+    })
+
+    it('should hide again after the plugin throws while hiding', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+
+      const instance = new Datepicker(input())
+      await instance.show()
+      vi.spyOn(instance.calendar!, 'hide').mockImplementationOnce(() => {
+        throw new Error('plugin failed')
+      })
+
+      await expect(instance.hide()).rejects.toThrow('plugin failed')
+      expect(instance._isHiding).toBe(false)
+
+      await instance.hide()
+      expect(instance._isShown).toBe(false)
+    })
   })
 
   describe('setSelectedDates', () => {

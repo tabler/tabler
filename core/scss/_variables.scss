@@ -1026,7 +1026,7 @@ $breadcrumb-padding-x: 0 !default;
 $breadcrumb-item-padding-x: 0.5rem !default;
 $breadcrumb-margin-bottom: 1rem !default;
 $breadcrumb-bg: null !default;
-$breadcrumb-divider-color: var(--gray-500) !default;
+$breadcrumb-divider-color: var(--secondary-color) !default;
 $breadcrumb-active-color: inherit !default;
 $breadcrumb-divider: string.quote('/') !default;
 $breadcrumb-border-radius: null !default;
@@ -1083,15 +1083,23 @@ $input-btn-icon-size-lg: 1.5rem !default;
 
 $input-btn-padding-y-xl: 0.6875rem !default;
 $input-btn-padding-x-xl: 1.75rem !default;
-$input-btn-font-size-xl: $h1-font-size !default;
+$input-btn-font-size-xl: 1.25rem !default;
 $input-btn-line-height-xl: 2rem !default;
-$input-btn-icon-size-xl: 2rem !default;
+$input-btn-icon-size-xl: 1.75rem !default;
 
 // scss-docs-start btn-variables
 $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: var(--font-weight-medium) !default;
 $btn-box-shadow: var(--shadow-input) !default;
+// Inner edges of the filled color variants: the variant tinted towards white
+// along the top and shaded towards black along the bottom, over a faint white
+// gradient, so the button reads as slightly raised.
+$btn-highlight-color: color-mix(in oklab, var(--btn-variant), var(--white) 30%) !default;
+$btn-shade-color: color-mix(in oklab, var(--btn-variant), var(--black) 4%) !default;
+$btn-gradient: linear-gradient(180deg, color-transparent(var(--white), 0.12), transparent) !default;
+// Border of the filled color variants: the variant shaded a little towards black.
+$btn-variant-border-color: color-mix(in oklab, var(--btn-variant), var(--black) 10%) !default;
 $btn-disabled-opacity: 0.4 !default;
 $btn-active-box-shadow: inset 0 3px 5px color-transparent(var(--black), 0.125) !default;
 
@@ -1102,6 +1110,7 @@ $btn-link-disabled-color: light-dark(var(--gray-600), var(--gray-400)) !default;
 $btn-border-radius: var(--border-radius) !default;
 $btn-border-radius-sm: var(--border-radius-sm) !default;
 $btn-border-radius-lg: var(--border-radius-lg) !default;
+$btn-border-radius-xl: var(--border-radius-lg) !default;
 $btn-floating-offset: 1rem !default;
 $btn-pill-icon-padding-y: 0.375rem !default;
 $btn-pill-icon-padding-x: 15px !default;
@@ -1134,7 +1143,7 @@ $btn-white-space: null !default; // Set to `nowrap` to prevent text wrapping
 $btn-font-size-sm: $input-btn-font-size-sm !default;
 $btn-font-size-lg: $input-btn-font-size-lg !default;
 $btn-padding-y-sm: $input-btn-padding-y-sm !default;
-$btn-padding-x-sm: $input-btn-padding-x-sm !default;
+$btn-padding-x-sm: 0.75rem !default;
 $btn-padding-y-lg: $input-btn-padding-y-lg !default;
 $btn-padding-x-lg: $input-btn-padding-x-lg !default;
 // scss-docs-end btn-variables
@@ -1207,6 +1216,25 @@ $otp-slot-box-shadow: var(--shadow-input) !default;
 $otp-separator-color: var(--secondary) !default;
 // scss-docs-end otp-variables
 
+// Stepper
+// scss-docs-start stepper-variables
+$stepper-input-width: 3.5rem !default;
+$stepper-input-widths: (
+  'sm': 3rem,
+  'lg': 4rem,
+) !default;
+$stepper-icon-sizes: (
+  'sm': $input-btn-icon-size-sm,
+  'lg': $input-btn-icon-size-lg,
+) !default;
+$stepper-bg: $input-bg !default;
+$stepper-border-color: var(--border-color) !default;
+$stepper-border-radius: $input-border-radius !default;
+// Monochrome icons, painted with `currentColor` through `mask-icon()` on an empty button.
+$stepper-icon-decrement: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14'/></svg>") !default;
+$stepper-icon-increment: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 5v14M5 12h14'/></svg>") !default;
+// scss-docs-end stepper-variables
+
 // Cards
 // scss-docs-start card-variables
 $card-spacer-y: 1.25rem !default;
@@ -1278,6 +1306,20 @@ $ribbon-top-padding-y: 0.5rem !default;
 $ribbon-bookmark-border-size: 1rem !default;
 $ribbon-bookmark-notch-width: 0.5rem !default;
 // scss-docs-end ribbon-variables
+
+// scss-docs-start img-label-variables
+$img-label-offset: 0.375rem !default;
+$img-label-padding-y: 0.25rem !default;
+$img-label-padding-x: 0.375rem !default;
+$img-label-gap: 0.25rem !default;
+$img-label-font-size: $h5-font-size !default;
+$img-label-font-weight: var(--font-weight-medium) !default;
+$img-label-color: $white !default;
+$img-label-bg: rgba($black, 0.6) !default;
+$img-label-border-radius: var(--border-radius-sm) !default;
+$img-label-backdrop-filter: blur(4px) !default;
+$img-label-icon-size: 0.75rem !default;
+// scss-docs-end img-label-variables
 
 // Accordion
 // scss-docs-start accordion-variables
@@ -1357,6 +1399,8 @@ $btn-close-white-filter: invert(1) grayscale(100%) brightness(200%) !default; //
 $datagrid-padding: 1.5rem !default;
 $datagrid-item-width: 15rem !default;
 $datagrid-title-margin-bottom: 0.25rem !default;
+$datagrid-title-width: 10rem !default;
+$datagrid-columns: 4 !default;
 // scss-docs-end datagrid-variables
 
 // Empty
@@ -1448,7 +1492,7 @@ $tooltip-arrow-height: 0.4rem !default;
 $loader-size: 2.5rem !default;
 
 $list-group-header-bg: var(--bg-surface-tertiary) !default;
-$list-group-header-color: var(--gray-500) !default;
+$list-group-header-color: var(--secondary-color) !default;
 
 // Modals
 // scss-docs-start modal-variables
@@ -1507,7 +1551,7 @@ $nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 0.75rem !default;
 $nav-link-font-size: var(--body-font-size) !default;
 $nav-link-font-weight: null !default;
-$nav-link-color: var(--gray-500) !default;
+$nav-link-color: var(--secondary-color) !default;
 $nav-link-active-color: var(--body-color) !default;
 $nav-link-hover-color: var(--link-hover-color) !default;
 $nav-link-transition:
@@ -1652,7 +1696,7 @@ $popover-arrow-height: 0.5rem !default;
 $footer-padding-y: 2rem !default;
 $footer-bg: var(--bg-surface) !default;
 $footer-border-color: var(--border-color) !default;
-$footer-color: var(--gray-500) !default;
+$footer-color: var(--secondary-color) !default;
 
 // Pagination
 // scss-docs-start pagination-variables
@@ -1715,6 +1759,17 @@ $status-indicator-size: 2.5rem !default;
 $status-circle-size: 0.75rem !default;
 // scss-docs-end status-variables
 
+// scss-docs-start hover-gallery-variables
+$hover-gallery-aspect-ratio: 1 !default;
+$hover-gallery-indicator-size: 2px !default;
+$hover-gallery-indicator-gap: 0.25rem !default;
+$hover-gallery-indicator-padding: 0.5rem !default;
+$hover-gallery-indicator-color: $white !default;
+$hover-gallery-indicator-scrim-height: 40% !default;
+$hover-gallery-indicator-scrim-bg: linear-gradient(to top, rgba($black, 0.32), rgba($black, 0.2) 20%, rgba($black, 0.1) 45%, rgba($black, 0.03) 75%, transparent) !default;
+$hover-gallery-indicator-inactive-opacity: 0.5 !default;
+// scss-docs-end hover-gallery-variables
+
 // scss-docs-start signal-variables
 $signal-size: map.get(map.get($avatar-sizes, 'xs'), size) !default;
 $signal-gap-ratio: 0.1 !default;
@@ -1724,6 +1779,48 @@ $signal-bar-border-radius: 1px !default;
 $signal-bar-inactive-opacity: 0.24 !default;
 $signal-max-bars: 5 !default;
 // scss-docs-end signal-variables
+
+// scss-docs-start text-shimmer-variables
+$text-shimmer-duration: 2s !default;
+$text-shimmer-opacity: 0.4 !default;
+$text-shimmer-width: 20% !default;
+$text-shimmer-fade-duration: 320ms !default;
+$text-shimmer-fade-easing: cubic-bezier(0.22, 1, 0.36, 1) !default;
+// Sized against 14px text: a 12px ring and 4px before the label
+$text-shimmer-loader-size: math.div(12em, 14) !default;
+$text-shimmer-loader-border-width: 0.1em !default;
+$text-shimmer-loader-margin: math.div(4em, 14) !default;
+$text-shimmer-loader-duration: 0.75s !default;
+$text-shimmer-loader-opacity: 0.25 !default;
+// scss-docs-end text-shimmer-variables
+
+// Mockup browser
+// scss-docs-start mockup-browser-variables
+$mockup-browser-bg: var(--bg-surface) !default;
+$mockup-browser-border-color: var(--border-light-color) !default;
+$mockup-browser-border-radius: var(--border-radius-lg) !default;
+$mockup-browser-box-shadow: var(--shadow-lg) !default;
+$mockup-browser-toolbar-min-height: 2rem !default;
+$mockup-browser-toolbar-padding-y: 0.5rem !default;
+$mockup-browser-toolbar-padding-x: 12.5% !default;
+$mockup-browser-toolbar-color: var(--secondary) !default;
+$mockup-browser-toolbar-bg: var(--bg-surface-secondary) !default;
+$mockup-browser-control-offset: 1rem !default;
+$mockup-browser-control-size: 0.75rem !default;
+$mockup-browser-control-gap: 0.5rem !default;
+$mockup-browser-control-colors: #ff5f57, #febc2e, #28c840 !default;
+$mockup-browser-url-font-size: $h5-font-size !default;
+$mockup-browser-url-line-height: 1rem !default;
+$mockup-browser-url-icon-size: 0.875rem !default;
+
+$mockup-browser-sm-border-radius: var(--border-radius) !default;
+$mockup-browser-sm-toolbar-min-height: 1.5rem !default;
+$mockup-browser-sm-toolbar-padding-y: 0.25rem !default;
+$mockup-browser-sm-control-size: 0.5rem !default;
+$mockup-browser-sm-control-gap: 0.25rem !default;
+$mockup-browser-sm-url-font-size: $h6-font-size !default;
+$mockup-browser-sm-url-icon-size: 0.75rem !default;
+// scss-docs-end mockup-browser-variables
 
 // Steps
 // scss-docs-start steps-variables
@@ -1828,7 +1925,7 @@ $toast-border-radius: var(--border-radius) !default;
 $toast-box-shadow: var(--box-shadow) !default;
 $toast-spacing: $container-padding-x !default;
 
-$toast-header-color: var(--gray-500) !default;
+$toast-header-color: var(--secondary-color) !default;
 $toast-header-background-color: color-transparent(var(--body-bg), 0.85) !default;
 $toast-header-border-color: $toast-border-color !default;
 // scss-docs-end toast-variables
@@ -1899,7 +1996,7 @@ $list-group-border-color: var(--border-color) !default;
 $list-group-border-width: var(--border-width) !default;
 $list-group-border-radius: var(--border-radius) !default;
 
-$list-group-item-padding-y: $card-cap-padding-y !default;
+$list-group-item-padding-y: 1rem !default;
 $list-group-item-padding-x: $card-cap-padding-x !default;
 
 $list-group-hover-bg: var(--hover-bg) !default;
@@ -1915,6 +2012,12 @@ $list-group-action-hover-color: var(--emphasis-color) !default;
 $list-group-action-active-color: var(--body-color) !default;
 $list-group-action-active-bg: var(--active-bg) !default;
 $list-group-header-padding-y: 0.5rem !default;
+$list-group-item-gap: 1rem !default;
+$list-group-nested-indent: 2.25rem !default;
+$list-group-item-padding-y-sm: 0.5rem !default;
+$list-group-item-gap-sm: 0.75rem !default;
+$list-group-item-padding-y-lg: 1.5rem !default;
+$list-group-item-gap-lg: 1.25rem !default;
 
 // Color variants: a tinted row, matched to the `bg-{color}-lt` utilities
 $list-group-variant-border-alpha: 0.24 !default;
@@ -1930,8 +2033,8 @@ $input-placeholder-color: var(--tertiary) !default;
 $input-group-addon-padding-y: $input-padding-y !default;
 $input-group-addon-padding-x: $input-padding-x !default;
 $input-group-addon-font-weight: $input-font-weight !default;
-$input-group-addon-color: var(--gray-500) !default;
-$input-group-addon-bg: var(--bg-surface-secondary) !default;
+$input-group-addon-color: var(--secondary-color) !default;
+$input-group-addon-bg: var(--bg-surface-tertiary) !default;
 $input-group-addon-border-color: $input-border-color !default;
 
 $input-border-radius: var(--border-radius) !default;
@@ -2007,7 +2110,8 @@ $form-select-font-size-lg: $input-font-size-lg !default;
 $form-select-border-radius-lg: $input-border-radius-lg !default;
 $form-select-transition: $input-transition !default;
 
-$form-switch-color: light-dark(var(--gray-200), #{color-transparent(var(--white), 0.25)}) !default;
+$form-switch-bg: light-dark(var(--gray-300), #{color-transparent(var(--white), 0.25)}) !default;
+$form-switch-color: var(--white) !default;
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
 $form-switch-padding-start: $form-switch-width + 0.5rem !default;
@@ -2017,7 +2121,7 @@ $form-switch-transition:
   border-color 0.15s ease-in-out,
   $focus-ring-transition !default;
 $form-switch-knob-transition: inset-inline-start 0.15s ease-in-out !default;
-$form-switch-focus-color: mix-color-css(var(--white), var(--primary), 50%) !default;
+$form-switch-focus-color: var(--white) !default;
 $form-switch-checked-color: var(--white) !default;
 $form-switch-disabled-bg: $input-disabled-bg !default;
 $form-switch-disabled-color: light-dark(var(--gray-400), var(--gray-600)) !default;

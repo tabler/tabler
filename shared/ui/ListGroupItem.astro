@@ -1,7 +1,8 @@
 ---
 import type { HTMLTag } from 'astro/types'
 
-// List group item (.list-group-item).
+// List group item (.list-group-item). With a title, a description or a named
+// slot it renders the slot layout: media, content, meta and actions in a row.
 
 type PolymorphicProps = { as?: HTMLTag }
 
@@ -10,14 +11,52 @@ interface Props extends PolymorphicProps {
   action?: boolean
   active?: boolean
   disabled?: boolean
+  /** first line of the content slot (.list-group-item-title) */
+  title?: string | undefined
+  /** second line of the content slot (.list-group-item-description) */
+  description?: string | undefined
+  /** keeps the actions slot visible in a hoverable list (.show) */
+  showActions?: boolean
   class?: string
   /** remaining attributes (href, data-*, …) are forwarded to the element */
   [key: string]: unknown
 }
 
-const { as: Element = 'div', action, active, disabled, class: className, ...rest }: Props = Astro.props
+const { as: Element = 'div', action, active, disabled, title, description, showActions, class: className, ...rest }: Props = Astro.props
+
+const hasMedia = Astro.slots.has('media')
+const hasMeta = Astro.slots.has('meta')
+const hasActions = Astro.slots.has('actions')
+const hasSlots = Boolean(title || description || hasMedia || hasMeta || hasActions)
 ---
 
 <Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} aria-disabled={disabled ? 'true' : undefined} tabindex={Element === 'a' && disabled ? -1 : undefined} {...rest}>
-  <slot />
+  {
+    hasSlots ? (
+      <>
+        {hasMedia && (
+          <div class="list-group-item-media">
+            <slot name="media" />
+          </div>
+        )}
+        <div class="list-group-item-content">
+          {title && <div class="list-group-item-title">{title}</div>}
+          {description && <div class="list-group-item-description">{description}</div>}
+          <slot />
+        </div>
+        {hasMeta && (
+          <div class="list-group-item-meta">
+            <slot name="meta" />
+          </div>
+        )}
+        {hasActions && (
+          <div class:list={['list-group-item-actions', showActions && 'show']}>
+            <slot name="actions" />
+          </div>
+        )}
+      </>
+    ) : (
+      <slot />
+    )
+  }
 </Element>

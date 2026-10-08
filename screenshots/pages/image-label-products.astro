@@ -1,0 +1,45 @@
+---
+// Image labels in context: a card with a short product list, the way a shop or
+// a media library would use them. Each thumbnail carries one label - "AI" for a
+// generated picture, "New" and a red discount.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import ImageLabel from '@ui/ImageLabel.astro'
+
+const products = [
+  { name: 'Morning coffee set', category: 'Kitchen', price: '$49', file: 'cup-of-coffee-and-an-open-book.jpg', label: 'AI', color: undefined },
+  { name: 'Designer sofa', category: 'Living room', price: '$849', file: 'blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg', label: 'New', color: 'primary' },
+  { name: 'Bedside stool', category: 'Bedroom', price: '$59', file: 'books-and-purple-flowers-on-a-wooden-stool-by-the-bed.jpg', label: '-20%', color: 'red' },
+]
+---
+
+<ScreenshotLayout title="Image label in a product list" columns={1.5}>
+  <Card>
+    <CardHeader>
+      <CardTitle>Products</CardTitle>
+    </CardHeader>
+    <div class="list-group list-group-flush">
+      {
+        products.map((product) => (
+          <div class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <div class="img-labeled">
+                  <img src={`/static/photos/${product.file}`} class="rounded object-fit-cover" width="128" height="96" alt="" />
+                  <ImageLabel color={product.color}>{product.label}</ImageLabel>
+                </div>
+              </div>
+              <div class="col">
+                <div class="fw-medium">{product.name}</div>
+                <div class="text-secondary">{product.category}</div>
+              </div>
+              <div class="col-auto fw-medium">{product.price}</div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </Card>
+</ScreenshotLayout>

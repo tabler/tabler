@@ -1,0 +1,22 @@
+---
+// Image label (.img-label): a short label pinned to a corner of an image.
+// Place it next to the image inside an `.img-labeled` wrapper.
+
+interface Props {
+  /** corner of the image; core/scss/ui/_images.scss `.img-label-{position}`, bottom-end is the default */
+  position?: 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
+  /** background color utility `bg-{color}` with its matching `text-{color}-fg` */
+  color?: string | undefined
+  /** the label holds only an icon, so it becomes a square (`.img-label-icon`) */
+  icon?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { position = 'bottom-end', color, icon, class: className, ...rest } = Astro.props
+
+const classes = ['img-label', position !== 'bottom-end' && `img-label-${position}`, color && `bg-${color} text-${color}-fg`, icon && 'img-label-icon', className]
+---
+
+<span class:list={classes} {...rest}><slot /></span>

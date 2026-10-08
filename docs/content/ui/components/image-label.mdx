@@ -1,0 +1,134 @@
+---
+title: Image label
+summary: An image label is a short text or an icon pinned to a corner of an image, such as "AI", "New" or a video length.
+description: Pin a short label to a corner of an image with the image label component. Change the corner and the color, or add an icon.
+related: [/ui/components/ribbon, /ui/components/badge]
+source: core/scss/ui/_images.scss
+css-vars: img-label
+classnames:
+  component:
+    - class: img-labeled
+      desc: Wrapper around the image that the labels are positioned in
+  part:
+    - class: img-label
+      desc: The label, in the bottom end corner by default
+  modifier:
+    - class: img-label-icon
+      desc: Square label for a single icon, with equal padding on all sides
+  direction:
+    - class: img-label-top-start
+      desc: Moves the label to the top start corner
+    - class: img-label-top-end
+      desc: Moves the label to the top end corner
+    - class: img-label-bottom-start
+      desc: Moves the label to the bottom start corner
+  color:
+    - class: bg-{color}
+      desc: Any base color, for example bg-red, used with the matching text-red-fg
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+
+## Default markup
+
+Wrap the image in an `.img-labeled` element and put an `.img-label` next to the image. The label sits in the bottom end corner, on a dark, see-through background that stays readable on any photo.
+
+<Example centered>
+<div class="img-labeled">
+  <img src="/static/photos/book-on-the-grass.jpg" class="rounded" width="240" alt="A book on the grass" />
+  <span class="img-label">AI</span>
+</div>
+</Example>
+
+## Position
+
+Move the label to another corner with `.img-label-top-start`, `.img-label-top-end` or `.img-label-bottom-start`. The corners follow the text direction, so start and end swap in right-to-left layouts.
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <div class="img-labeled">
+    <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" class="rounded" width="160" alt="A woman working on a laptop" />
+    <span class="img-label img-label-top-start">Top start</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" class="rounded" width="160" alt="A woman working on a laptop" />
+    <span class="img-label img-label-top-end">Top end</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" class="rounded" width="160" alt="A woman working on a laptop" />
+    <span class="img-label img-label-bottom-start">Bottom start</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" class="rounded" width="160" alt="A woman working on a laptop" />
+    <span class="img-label">Bottom end</span>
+  </div>
+</div>
+</Example>
+
+## With an icon
+
+A label can hold an icon, a text, or both. The icon is scaled down to match the label text. Add `.img-label-icon` to a label with only an icon to make it a square.
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <div class="img-labeled">
+    <img src="/static/photos/brainstorming-session-with-creative-designers.jpg" class="rounded" width="200" alt="A brainstorming session" />
+    <span class="img-label"><Icon name="player-play" /> 1:24</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/blond-using-her-laptop-at-her-bedroom.jpg" class="rounded" width="200" alt="A woman using a laptop" />
+    <span class="img-label img-label-icon"><Icon name="crown" /><span class="visually-hidden">Premium</span></span>
+  </div>
+</div>
+</Example>
+
+## Colors
+
+Change the color with a background utility and its matching text color, for example `.bg-red` with `.text-red-fg`.
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <div class="img-labeled">
+    <img src="/static/photos/a-visit-to-the-bookstore.jpg" class="rounded" width="160" alt="A visit to the bookstore" />
+    <span class="img-label bg-primary text-primary-fg">New</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/a-visit-to-the-bookstore.jpg" class="rounded" width="160" alt="A visit to the bookstore" />
+    <span class="img-label bg-red text-red-fg">-20%</span>
+  </div>
+  <div class="img-labeled">
+    <img src="/static/photos/a-visit-to-the-bookstore.jpg" class="rounded" width="160" alt="A visit to the bookstore" />
+    <span class="img-label bg-green text-green-fg">Free</span>
+  </div>
+</div>
+</Example>
+
+## Multiple labels
+
+Put several labels on one image, each in its own corner.
+
+<Example centered>
+<div class="img-labeled">
+  <img src="/static/photos/brainstorming-session-with-creative-designers-2.jpg" class="rounded" width="320" alt="Designers at a brainstorming session" />
+  <span class="img-label img-label-top-start bg-red text-red-fg">Live</span>
+  <span class="img-label img-label-top-end"><Icon name="lock" /> Members</span>
+  <span class="img-label">4K</span>
+</div>
+</Example>
+
+## Custom look
+
+Set the `--tblr-img-label-*` variables on the label to change its offset, size or background. Set `--tblr-img-label-backdrop-filter` to `none` to turn off the blur.
+
+<Example centered>
+<div class="img-labeled">
+  <img src="/static/photos/book-on-the-grass.jpg" class="rounded" width="240" alt="A book on the grass" />
+  <span class="img-label" style="--tblr-img-label-offset: 0.75rem; --tblr-img-label-font-size: 0.875rem; --tblr-img-label-bg: rgba(255, 255, 255, 0.8); --tblr-img-label-color: #000">Sponsored</span>
+</div>
+</Example>
+
+## Accessibility
+
+- The label is real text, so screen readers read it after the image. For a short form such as "AI", add the full meaning in a `.visually-hidden` element, for example "AI generated".
+- A label with only an icon needs a `.visually-hidden` text that names it.
+- The label does not take clicks. When the image is a link, a click on the label goes to the link.

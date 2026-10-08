@@ -29,7 +29,7 @@ export interface ThemePreset extends ThemeOption {
 
 export interface ThemeSetting {
   /** input name; a real switcher key, or the preset group's own name */
-  key: ThemeKey | string
+  key: string
   /** fieldset legend */
   legend: string
   /** help text under the legend */

@@ -29,7 +29,7 @@ function normalizeData(value: string): DataValue {
   }
 
   try {
-    return JSON.parse(decodeURIComponent(value))
+    return JSON.parse(decodeURIComponent(value)) as DataValue
   } catch {
     return value
   }

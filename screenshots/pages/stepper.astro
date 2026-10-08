@@ -1,0 +1,53 @@
+---
+// Stepper where it is used most: a quantity per line of a small cart. Three
+// lines, each with its own stepper; the cursor rests on the increase button of
+// the middle one, and the last line sits at its stock limit so its increase
+// button is disabled - the state the plugin sets, not a faked one.
+//
+// The capture never hovers, so the middle line is written by hand (the
+// custom-buttons markup) and its increase button gets the hover background
+// through the `--btn-bg` token, the same colour a real hover paints.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import Stepper from '@ui/Stepper.astro'
+
+const cart = [
+  { name: 'Hex nut M8 DIN 934', code: 'Zinc plated', price: '$12.40', quantity: 2, max: 50 },
+  { name: 'Lock nut M8 DIN 985', code: 'Stainless A2', price: '$28.90', quantity: 1, max: 20 },
+  { name: 'Cap nut M8 DIN 1587', code: 'Brass', price: '$41.00', quantity: 3, max: 3 },
+]
+---
+
+<ScreenshotLayout title="Stepper" columns={2}>
+  <Card>
+    <table class="table table-vcenter card-table">
+      <tbody>
+        {
+          cart.map((item, index) => (
+            <tr>
+              <td>
+                <div class="fw-medium">{item.name}</div>
+                <div class="text-secondary">{item.code}</div>
+              </td>
+              <td class="text-secondary text-nowrap">{item.price}</td>
+              <td class="w-1">
+                <div class="position-relative">
+                  {index === 1 ? (
+                    <div class="stepper" data-bs-toggle="stepper">
+                      <button type="button" class="btn btn-icon" data-bs-stepper-action="decrement" aria-label="Decrease" />
+                      <input type="text" class="form-control" value={item.quantity} min="1" max={item.max} aria-label={`Quantity of ${item.name}`} />
+                      <button type="button" class="btn btn-icon" data-bs-stepper-action="increment" aria-label="Increase" style="--tblr-btn-bg: var(--tblr-hover-bg)" />
+                      <span class="cursor" style="top: 55%; left: 82%" />
+                    </div>
+                  ) : (
+                    <Stepper value={item.quantity} min={1} max={item.max} ariaLabel={`Quantity of ${item.name}`} />
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Card>
+</ScreenshotLayout>

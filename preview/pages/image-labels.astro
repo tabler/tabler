@@ -1,0 +1,148 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
+import ImageLabel from '@ui/ImageLabel.astro'
+import { staticPath } from '@shared/lib/assets'
+
+const photo = (file: string) => staticPath(`photos/${file}`)
+
+const positions = [
+  { position: 'top-start', label: 'Top start' },
+  { position: 'top-end', label: 'Top end' },
+  { position: 'bottom-start', label: 'Bottom start' },
+  { position: 'bottom-end', label: 'Bottom end' },
+] as const
+
+const colors = ['primary', 'red', 'green', 'yellow']
+
+const products = [
+  { name: 'Reading corner', price: '$129', file: 'book-on-the-grass.jpg', label: 'AI' },
+  { name: 'Designer sofa', price: '$849', file: 'blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg', label: 'New' },
+  { name: 'Bedside stool', price: '$59', file: 'books-and-purple-flowers-on-a-wooden-stool-by-the-bed.jpg', label: '-20%', color: 'red' },
+]
+---
+
+<DefaultLayout title="Image labels" pageMenu="base.image-labels" description="Image labels pin a short text or an icon to a corner of an image.">
+  <DocsLink slot="page-header-actions" path="/ui/components/image-label" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Wrap the image in <code>.img-labeled</code> and add an <code>.img-label</code> next to it.</CardSubtitle>
+          <div class="img-labeled">
+            <img src={photo('book-on-the-grass.jpg')} class="rounded" width="240" alt="A book on the grass" />
+            <ImageLabel>AI</ImageLabel>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With an icon</CardTitle>
+          <CardSubtitle>A label can hold an icon, a text, or both. Add <code>.img-label-icon</code> to a label with only an icon.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <div class="img-labeled">
+              <img src={photo('brainstorming-session-with-creative-designers.jpg')} class="rounded" width="160" alt="A brainstorming session" />
+              <ImageLabel><Icon name="player-play" /> 1:24</ImageLabel>
+            </div>
+            <div class="img-labeled">
+              <img src={photo('blond-using-her-laptop-at-her-bedroom.jpg')} class="rounded" width="160" alt="A woman using a laptop" />
+              <ImageLabel icon><Icon name="crown" /><span class="visually-hidden">Premium</span></ImageLabel>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Add a background utility such as <code>.bg-red</code> with its <code>.text-red-fg</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            {
+              colors.map((color) => (
+                <div class="img-labeled">
+                  <img src={photo('a-visit-to-the-bookstore.jpg')} class="rounded" width="110" alt="A visit to the bookstore" />
+                  <ImageLabel color={color}>New</ImageLabel>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Position</CardTitle>
+          <CardSubtitle>Move the label to another corner with <code>.img-label-top-start</code>, <code>.img-label-top-end</code> or <code>.img-label-bottom-start</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            {
+              positions.map((item) => (
+                <div class="img-labeled">
+                  <img src={photo('a-woman-works-on-a-laptop-at-home.jpg')} class="rounded" width="140" alt="A woman working on a laptop" />
+                  <ImageLabel position={item.position}>{item.label}</ImageLabel>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Multiple labels</CardTitle>
+          <CardSubtitle>Put several labels on one image, each in its own corner.</CardSubtitle>
+          <div class="img-labeled">
+            <img src={photo('brainstorming-session-with-creative-designers-2.jpg')} class="rounded" width="320" alt="Designers at a brainstorming session" />
+            <ImageLabel position="top-start" color="red">Live</ImageLabel>
+            <ImageLabel position="top-end"><Icon name="lock" /> Members</ImageLabel>
+            <ImageLabel>4K</ImageLabel>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>In a list</CardTitle>
+          <CardSubtitle>Labels mark single items in a list of products or media.</CardSubtitle>
+          <div class="row g-3">
+            {
+              products.map((product) => (
+                <div class="col-md-4">
+                  <div class="row g-3 align-items-center">
+                    <a href="#" class="col-auto">
+                      <span class="img-labeled">
+                        <img src={photo(product.file)} class="rounded" width="120" alt={product.name} />
+                        <ImageLabel color={product.color}>{product.label}</ImageLabel>
+                      </span>
+                    </a>
+                    <div class="col">
+                      <div class="fw-medium">{product.name}</div>
+                      <div class="text-secondary">{product.price}</div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

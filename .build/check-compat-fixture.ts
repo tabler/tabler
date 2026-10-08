@@ -27,7 +27,7 @@ import { pkgName, releasedPackage } from './released-package'
 
 const fixtureDir = '.build/compat-fixture'
 const packageArg = process.argv.indexOf('--package')
-const coreDir = packageArg > -1 ? process.argv[packageArg + 1]! : 'core'
+const coreDir = packageArg > -1 ? process.argv[packageArg + 1] : 'core'
 
 const MIME: Record<string, string> = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.map': 'application/json' }
 
@@ -61,7 +61,7 @@ function sassResults(pkg: string): Result {
 
 function serve(pkg: string): Promise<Server> {
   const server = createServer((request, response) => {
-    const path = decodeURIComponent((request.url ?? '/').split('?')[0]!)
+    const path = decodeURIComponent((request.url ?? '/').split('?')[0])
     const file = path === '/' ? resolve(fixtureDir, 'page.html') : resolve(pkg, `.${path}`)
     if (!existsSync(file) || !statSync(file).isFile()) {
       response.writeHead(404).end()
@@ -86,7 +86,7 @@ async function pageResults(pkg: string, page: Page): Promise<Result> {
   await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'networkidle' })
   await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' })
 
-  const style = (selector: string, property: string): Promise<string> => page.evaluate(([s, p]) => getComputedStyle(document.querySelector(s!)!).getPropertyValue(p!), [selector, property])
+  const style = (selector: string, property: string): Promise<string> => page.evaluate(([s, p]) => getComputedStyle(document.querySelector(s)!).getPropertyValue(p), [selector, property])
 
   results['page: no script error and no 404'] = problems.length === 0 ? 'yes' : problems.join('; ')
   results['page: rgba(var(--tblr-primary-rgb), .5) paints'] = await style('#highlight', 'background-color')
