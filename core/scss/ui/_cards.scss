@@ -463,6 +463,9 @@
 
 // Card table
 .card-table {
+  // Radius of the outer cells of the first and last rows, set when the table starts or ends the card
+  --card-table-top-radius: 0;
+  --card-table-bottom-radius: 0;
   margin-bottom: 0 !important;
 
   tr {
@@ -471,13 +474,11 @@
       &:first-child {
         padding-inline-start: $card-spacer-x;
         border-inline-start: 0;
-        border-start-start-radius: var(--card-border-radius);
       }
 
       &:last-child {
         padding-inline-end: $card-spacer-x;
         border-inline-end: 0;
-        border-start-end-radius: var(--card-border-radius);
       }
     }
   }
@@ -485,14 +486,26 @@
   thead,
   tbody,
   tfoot {
+    &:first-child {
+      tr:first-child {
+        > *:first-child {
+          border-start-start-radius: var(--card-table-top-radius);
+        }
+
+        > *:last-child {
+          border-start-end-radius: var(--card-table-top-radius);
+        }
+      }
+    }
+
     &:last-child {
       tr:last-child {
         > *:last-child {
-          border-end-end-radius: calc(var(--card-border-radius) - var(--card-border-width));
+          border-end-end-radius: var(--card-table-bottom-radius);
         }
 
         > *:first-child {
-          border-end-start-radius: calc(var(--card-border-radius) - var(--card-border-width));
+          border-end-start-radius: var(--card-table-bottom-radius);
         }
       }
     }
@@ -535,6 +548,18 @@
   .card-body + & {
     border-top: var(--border-width) var(--border-style) var(--table-border-color);
   }
+}
+
+// Round only the cells in the card corners, when the table starts or ends the card: rounding
+// every row put rounded corners on hovered, active or colored rows inside the card.
+.card > .card-table:first-child,
+.card > .table-responsive:first-child > .card-table {
+  --card-table-top-radius: var(--card-border-radius);
+}
+
+.card > .card-table:last-child,
+.card > .table-responsive:last-child > .card-table {
+  --card-table-bottom-radius: calc(var(--card-border-radius) - var(--card-border-width));
 }
 
 /*
