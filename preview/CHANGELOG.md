@@ -1,5 +1,29 @@
 # @tabler/preview
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- 681b6eb: Added the image label component: `.img-labeled` and `.img-label` pin a short text or an icon to a corner of an image.
+- 69c1114: Added item slots, `.list-group-sm` and `.list-group-lg` sizes, selectable and nested items to the list group.
+- d6cfffb: Added the mockup browser component: `.mockup-browser` wraps a screenshot or any content in a frame that looks like a browser window, with window dots and an address bar.
+- 6c46d55: Added `NavOverflow` component that moves nav items that do not fit into a More dropdown, with a `.nav-overflow` wrapper.
+- 6c46d55: Updated the preview navbar to move menu items that do not fit into a More dropdown with `.nav-overflow`.
+- 0e4a07b: Added the `Stepper` component, a `.stepper` quantity input with buttons, bounds, hold-to-repeat and keyboard support.
+
+### Patch Changes
+
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- ba4e87a: Added `.icon-inline` to icons that sit in a line of text in the demo cards, preview pages and docs examples.
+- 744f9fe: Added the `.text-shimmer` class, a highlight that sweeps across a label such as "Thinking…" while a task runs, with an optional `.text-shimmer-loader` spinner before the label.
+- 5cbc443: Added a `mist` gray palette for `data-bs-theme-base` and removed the hidden `pink` base from `tabler-themes.css`.
+- ed41f04: Updated the promo top banner to load only on production deploys, not on branch previews.
+- b1aac09: Updated Tabler Illustrations to v1.18.0 with 11 new illustrations.
+- 8dc1ffe: Updated Tabler Icons to v3.49.0.
+
 ## 1.6.1
 
 ### Patch Changes
