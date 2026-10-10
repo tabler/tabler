@@ -17,12 +17,15 @@
     "lint:scss:vars": "find-unused-sass-variables scss/ --ignoreFiles scss/_variables-deprecated.scss",
     "js": "pnpm run js:build && pnpm run js:min && pnpm run js:types",
     "js:types": "tsc -p tsconfig.types.json",
-    "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\"",
+    "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\" \"pnpm run js:build:vector-map\" \"pnpm run js:build:maps\"",
+    "js:build:vector-map": "cross-env BASE_NAME=tabler-vector-map vite build --config .build/vite.config.mts",
+    "js:build:maps": "cross-env BASE_NAME=maps/world vite build --config .build/vite.config.mts",
     "js:build:theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
     "js:build:standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
-    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\"",
+    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\" \"pnpm run js:min:vector-map\"",
     "js:min:standalone": "concurrently \"terser dist/js/tabler.js --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\\\" -o dist/js/tabler.min.js\" \"terser dist/js/tabler.esm.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler.esm.js.map,filename=dist/js/tabler.esm.min.js.map,url=tabler.esm.min.js.map\\\" -o dist/js/tabler.esm.min.js\"",
     "js:min:theme": "concurrently \"terser dist/js/tabler-theme.js --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\\\" -o dist/js/tabler-theme.min.js\" \"terser dist/js/tabler-theme.esm.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler-theme.esm.js.map,filename=dist/js/tabler-theme.esm.min.js.map,url=tabler-theme.esm.min.js.map\\\" -o dist/js/tabler-theme.esm.min.js\"",
+    "js:min:vector-map": "concurrently \"terser dist/js/tabler-vector-map.js --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler-vector-map.js.map,filename=dist/js/tabler-vector-map.min.js.map,url=tabler-vector-map.min.js.map\\\" -o dist/js/tabler-vector-map.min.js\" \"terser dist/js/tabler-vector-map.esm.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \\\"content=dist/js/tabler-vector-map.esm.js.map,filename=dist/js/tabler-vector-map.esm.min.js.map,url=tabler-vector-map.esm.min.js.map\\\" -o dist/js/tabler-vector-map.esm.min.js\"",
     "copy": "concurrently \"pnpm run copy:img\" \"pnpm run copy:libs\"",
     "copy:img": "tsx .build/copy-img.ts",
     "copy:libs": "tsx .build/copy-libs.ts",
@@ -241,6 +244,30 @@
       {
         "path": "./dist/js/tabler-theme.esm.min.js",
         "maxSize": "800 B"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.js",
+        "maxSize": "13 kB"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.esm.js",
+        "maxSize": "13 kB"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.min.js",
+        "maxSize": "9 kB"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.esm.min.js",
+        "maxSize": "9 kB"
+      },
+      {
+        "path": "./dist/js/maps/world.js",
+        "maxSize": "28 kB"
+      },
+      {
+        "path": "./dist/js/maps/world.esm.js",
+        "maxSize": "28 kB"
       }
     ]
   },
