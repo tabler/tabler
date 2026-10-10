@@ -3,7 +3,8 @@
 .alert {
   // scss-docs-start alert-css-vars
   --alert-variant-color: var(--body-color);
-  --alert-color: var(--alert-variant-color);
+  --alert-variant-text: var(--alert-variant-color);
+  --alert-color: var(--alert-variant-text);
   --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))};
   --alert-padding-x: #{$alert-padding-x};
   --alert-padding-y: #{$alert-padding-y};
@@ -121,5 +122,6 @@
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
     --alert-variant-color: var(--#{$name});
+    --alert-variant-text: var(--#{$name}-text);
   }
 }
