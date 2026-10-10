@@ -1,0 +1,83 @@
+//
+// Keyboard key
+//
+@use '../config' as *;
+
+kbd,
+.kbd {
+  // scss-docs-start kbd-css-vars
+  --kbd-height: #{$kbd-height};
+  --kbd-padding-x: #{$kbd-padding-x};
+  --kbd-padding-y: #{$kbd-padding-y};
+  --kbd-gap: #{$kbd-gap};
+  --kbd-font-size: #{$kbd-font-size};
+  --kbd-font-weight: #{$kbd-font-weight};
+  --kbd-color: #{$kbd-color};
+  --kbd-bg: #{$kbd-bg};
+  --kbd-border: #{$kbd-border};
+  --kbd-border-radius: #{$kbd-border-radius};
+  // scss-docs-end kbd-css-vars
+  box-sizing: border-box;
+  display: inline-flex;
+  gap: var(--kbd-gap);
+  align-items: center;
+  justify-content: center;
+  min-width: var(--kbd-height);
+  max-width: 100%;
+  height: var(--kbd-height);
+  padding: var(--kbd-padding-y) var(--kbd-padding-x);
+  font-family: var(--font-sans-serif);
+  font-size: var(--kbd-font-size);
+  font-weight: var(--kbd-font-weight);
+  line-height: 1;
+  color: var(--kbd-color);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: var(--kbd-bg);
+  border: var(--kbd-border);
+  @include border-radius(var(--kbd-border-radius));
+
+  .icon {
+    --icon-size: 0.75rem;
+  }
+}
+
+// On a coloured surface the key takes the colour of the text around it
+.btn,
+.tooltip,
+.badge {
+  kbd,
+  .kbd {
+    --kbd-color: inherit;
+  }
+}
+
+.btn,
+.badge {
+  > kbd,
+  > .kbd {
+    margin-inline-start: 0.5em;
+  }
+}
+
+//
+// Group of keys
+//
+.kbd-group {
+  display: inline-flex;
+  gap: var(--kbd-gap, #{$kbd-gap});
+  align-items: center;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  font-weight: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+
+  // Reboot removes the padding of a nested `kbd`
+  > kbd {
+    padding: var(--kbd-padding-y) var(--kbd-padding-x);
+    font-size: var(--kbd-font-size);
+  }
+}
