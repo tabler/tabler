@@ -1,0 +1,102 @@
+//
+// Transfer (dual listbox)
+//
+@use '../config' as *;
+
+.transfer {
+  // scss-docs-start transfer-css-vars
+  --transfer-gap: #{$transfer-gap};
+  --transfer-list-height: #{$transfer-list-height};
+  --transfer-item-padding-y: #{$transfer-item-padding-y};
+  --transfer-item-padding-x: #{$transfer-item-padding-x};
+  --transfer-item-hover-bg: #{$transfer-item-hover-bg};
+  --transfer-item-selected-bg: #{$transfer-item-selected-bg};
+  // scss-docs-end transfer-css-vars
+  display: flex;
+  flex-direction: column;
+  gap: var(--transfer-gap);
+  align-items: stretch;
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.transfer-panel {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.transfer-counter {
+  margin-inline-start: auto;
+  font-size: $font-size-sm;
+  color: var(--secondary-color);
+  white-space: nowrap;
+}
+
+.transfer-list {
+  height: var(--transfer-list-height);
+  overflow-y: auto;
+}
+
+.transfer-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: var(--transfer-item-padding-y) var(--transfer-item-padding-x);
+  cursor: pointer;
+  user-select: none;
+
+  .form-check-input {
+    flex: none;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: var(--transfer-item-hover-bg);
+  }
+
+  &[aria-selected='true'] {
+    background-color: var(--transfer-item-selected-bg);
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 2px $focus-ring-color;
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--secondary-color);
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.transfer-actions {
+  $horizontal-icons: '.btn:not([data-bs-transfer-action="up"], [data-bs-transfer-action="down"], [data-tblr-transfer-action="up"], [data-tblr-transfer-action="down"]) .icon';
+
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: column;
+
+    #{$horizontal-icons} {
+      scale: var(--dir) 1;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    #{$horizontal-icons} {
+      rotate: 90deg;
+    }
+  }
+}

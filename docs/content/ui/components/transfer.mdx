@@ -1,0 +1,174 @@
+---
+title: Transfer
+seoTitle: Transfer (dual listbox)
+summary: A transfer is a pair of lists with buttons between them, to move items from the available list to the selected one and back.
+description: Add a transfer (dual listbox) with search, select all, reordering and a hidden select that keeps a form in sync.
+related: [/ui/components/list-group, /ui/forms/elements]
+source: core/scss/ui/_transfer.scss
+css-vars: transfer
+classnames:
+  component:
+    - class: transfer
+      desc: The root, two panels with a column of buttons between them; stacks on small screens
+  part:
+    - class: transfer-panel
+      desc: A card that holds one list
+    - class: transfer-counter
+      desc: The "checked / total" counter in a panel header
+    - class: transfer-list
+      desc: The scrollable list of rows
+    - class: transfer-item
+      desc: A row; carries the value in `data-value`
+    - class: transfer-actions
+      desc: The column of buttons between the panels
+---
+
+import Example from '@components/Example.astro'
+import CodeDocs from '@components/CodeDocs.astro'
+import Transfer from '@ui/Transfer.astro'
+
+## Overview
+
+A transfer is two lists side by side. Click rows to check them, then use the buttons between the lists to move the checked rows across, or move every row at once. The rows stay in the markup; the plugin moves them and keeps a `<select multiple>` in sync, so a form submits the values of the rows in the right-hand list
+like any other field.
+
+<Example columnFullWidth>
+  <Transfer
+    name="members[]"
+    items={[
+      { value: 'ada', label: 'Ada Lovelace' },
+      { value: 'alan', label: 'Alan Turing' },
+      { value: 'grace', label: 'Grace Hopper' },
+      { value: 'linus', label: 'Linus Torvalds' },
+    ]}
+    selected={['grace']}
+    height="12rem"
+  />
+</Example>
+
+## Usage
+
+### Markup
+
+Put `data-bs-toggle="transfer"` on the root. Each panel carries `data-bs-transfer-panel="source"` or `"target"` and a list with `data-bs-transfer-list`. A row is a `.transfer-item` with a `data-value` and, optionally, a checkbox. Buttons use `data-bs-transfer-action` with `add`, `remove`, `add-all`, `remove-all`, `up`
+or `down`; a button is disabled while its action has nothing to do.
+
+```html
+<div class="transfer" data-bs-toggle="transfer" data-bs-name="members[]">
+  <div class="card transfer-panel" data-bs-transfer-panel="source">
+    <div class="card-header">
+      <label class="form-check mb-0">
+        <input type="checkbox" class="form-check-input" data-bs-transfer-select-all />
+        <span class="form-check-label">Available</span>
+      </label>
+      <span class="transfer-counter" data-bs-transfer-counter></span>
+    </div>
+    <div class="list-group list-group-flush transfer-list" aria-label="Available" data-bs-transfer-list>
+      <div class="list-group-item transfer-item" data-value="ada">
+        <input type="checkbox" class="form-check-input" />
+        <span>Ada Lovelace</span>
+      </div>
+    </div>
+  </div>
+  <div class="transfer-actions">
+    <button type="button" class="btn btn-icon" aria-label="Move selected to the right" data-bs-transfer-action="add">…</button>
+  </div>
+  <div class="card transfer-panel" data-bs-transfer-panel="target">…</div>
+</div>
+```
+
+The rows that start in the target panel are the initial value. A row sent back lands in its original place in the available list.
+
+### Search
+
+Add an input with `data-bs-transfer-search` to a panel to filter its rows by text.
+
+<Example columnFullWidth>
+  <Transfer
+    items={[
+      { value: 'name', label: 'Name' },
+      { value: 'email', label: 'Email' },
+      { value: 'role', label: 'Role' },
+      { value: 'created', label: 'Created' },
+      { value: 'status', label: 'Status' },
+    ]}
+    selected={['name']}
+    search
+    height="12rem"
+  />
+</Example>
+
+### Reordering
+
+Add the `up` and `down` buttons to move the checked rows of the right-hand list one place at a time. The order is kept in the `<select>`, so it is the order a form submits.
+
+<Example columnFullWidth>
+  <Transfer
+    items={[
+      { value: 'name', label: 'Name' },
+      { value: 'email', label: 'Email' },
+      { value: 'role', label: 'Role' },
+      { value: 'created', label: 'Created' },
+    ]}
+    selected={['name', 'email']}
+    titles={['Hidden columns', 'Visible columns']}
+    reorder
+    height="12rem"
+  />
+</Example>
+
+### Disabled rows
+
+Add `aria-disabled="true"` to a row to keep it from being checked or moved.
+
+### Form value
+
+Use a `<select multiple>` inside the root, or set the `name` option and the plugin renders a hidden one. Its options follow the rows: an option is selected when its row is in the right-hand list, and the options are ordered like that list. It fires a `change` event whenever the value changes.
+
+### Keyboard
+
+The lists are `role="listbox"` with `aria-multiselectable`, and the rows are options. <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> and <kbd>End</kbd> move the focus, <kbd>Space</kbd> and <kbd>Enter</kbd> check a row, <kbd>Ctrl</kbd> + <kbd>A</kbd> checks every visible row.
+
+## Options
+
+Options are read from `data-bs-*` attributes on the root (the `data-tblr-*` alias also works), or passed to the constructor.
+
+| Option            | Type           | Default                   | Description                                                                           |
+| ----------------- | -------------- | ------------------------- | ------------------------------------------------------------------------------------- |
+| `counterTemplate` | string         | `\'{checked} / {total}\'` | Text of the counter in a panel header; `{checked}` and `{total}` are replaced.        |
+| `name`            | string or null | `null`                    | `name` of the hidden `<select multiple>` the plugin renders when the markup has none. |
+
+## JavaScript
+
+Tabler creates a `Transfer` for every element matching `[data-bs-toggle="transfer"]` (or `[data-tblr-toggle="transfer"]`):
+
+<CodeDocs name="transfer-init" file="core/js/src/transfer.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('#members')
+const transfer = tabler.Transfer.getOrCreateInstance(el)
+```
+
+`change.bs.transfer` fires on the root after rows moved or were reordered:
+
+```javascript
+el.addEventListener('change.bs.transfer', (event) => {
+  console.log(event.value, event.moved, event.direction)
+})
+```
+
+`value` is the list of values in the right-hand list, `moved` the values that moved, and `direction` is `add`, `remove` or `reorder`.
+
+### Methods
+
+| Method             | Description                                                            |
+| ------------------ | ---------------------------------------------------------------------- |
+| `getValue()`       | Returns the values of the right-hand list, in order.                   |
+| `setValue(values)` | Puts exactly these values in the right-hand list, in the given order.  |
+| `add(values?)`     | Moves the given rows (or the checked ones) to the right-hand list.     |
+| `remove(values?)`  | Moves the given rows (or the checked ones) back to the left-hand list. |
+| `addAll()`         | Moves every enabled row to the right-hand list.                        |
+| `removeAll()`      | Moves every enabled row back to the left-hand list.                    |
+| `dispose()`        | Removes the listeners and the instance.                                |
