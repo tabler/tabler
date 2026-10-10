@@ -1,0 +1,131 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import CodeBlock from '@ui/CodeBlock.astro'
+
+const install = `npm install @tabler/core
+pnpm add @tabler/core
+yarn add @tabler/core`
+
+const config = `{
+  "name": "my-dashboard",
+  "dependencies": {
+    "@tabler/core": "^1.6.0"
+  }
+}`
+
+const script = `import { Clipboard } from '@tabler/core'
+
+const button = document.querySelector('#share')
+
+const clipboard = Clipboard.getOrCreateInstance(button, {
+  text: window.location.href,
+})
+
+button.addEventListener('copied.bs.clipboard', () => {
+  console.log('Link copied')
+})
+
+clipboard.copy()`
+
+const markup = `<button type="button" class="btn" data-bs-toggle="clipboard" data-bs-text="https://tabler.io/">
+  <span class="clipboard-label">Copy link</span>
+  <span class="clipboard-feedback">Link copied</span>
+</button>`
+
+const command = 'curl -X POST https://api.example.com/v1/projects/42/deployments -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d \'{"branch": "main", "environment": "production"}\''
+---
+
+<DefaultLayout title="Code block" pageMenu="base.code-block" description="The code block shows a snippet on a dark surface with a header and a copy button.">
+  <DocsLink slot="page-header-actions" path="/ui/components/code-block" />
+
+  <div class="row row-cards">
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>A <code>.code-block</code> around a <code>pre</code>. The copy button sits in the top right corner.</CardSubtitle>
+          <CodeBlock code={install} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>With header</CardTitle>
+          <CardSubtitle>A title or a file name and a language label. The copy button moves into the header.</CardSubtitle>
+          <CodeBlock code={config} title="package.json" language="JSON" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Line numbers and highlighted lines</CardTitle>
+          <CardSubtitle>Add <code>.code-block-numbered</code> and mark the lines to point out with <code>.code-line-highlight</code>.</CardSubtitle>
+          <CodeBlock code={script} title="share.js" language="JavaScript" numbered highlight={[5, 6, 7]} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Max height</CardTitle>
+          <CardSubtitle>Add <code>.code-block-scroll</code> to scroll long code vertically. Change the height with <code>--tblr-code-block-max-height</code>.</CardSubtitle>
+          <CodeBlock code={script} title="share.js" language="JavaScript" numbered scroll style="--tblr-code-block-max-height: 14rem" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Header variants</CardTitle>
+          <CardSubtitle>The header can hold only a title, only a language, or both.</CardSubtitle>
+          <div class="d-grid gap-3">
+            <CodeBlock code="npm run build" title="Terminal" class="mb-0" />
+            <CodeBlock code="display: grid;" language="CSS" class="mb-0" />
+            <CodeBlock code="git push origin main" title="Deploy" language="Shell" class="mb-0" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Markup</CardTitle>
+          <CardSubtitle>Any text works, also HTML. The copy button copies the code as written.</CardSubtitle>
+          <CodeBlock code={markup} title="clipboard.html" language="HTML" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Long lines</CardTitle>
+          <CardSubtitle>Lines that do not fit scroll horizontally with the themed scrollbar. The page does not scroll.</CardSubtitle>
+          <CodeBlock code={command} title="Create a deployment" language="Shell" class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Without copy button</CardTitle>
+          <CardSubtitle>Set <code>copy={'{false}'}</code> on the component, or leave the button out of the markup.</CardSubtitle>
+          <CodeBlock code="npm install @tabler/core" copy={false} class="mb-0" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

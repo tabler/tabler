@@ -1,0 +1,17 @@
+---
+// Code block on its own, no card: a header with a copy button, line numbers and highlighted lines.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import CodeBlock from '@ui/CodeBlock.astro'
+
+const code = `import { Clipboard } from '@tabler/core'
+
+const button = document.querySelector('#share')
+
+Clipboard.getOrCreateInstance(button, {
+  text: window.location.href,
+}).copy()`
+---
+
+<ScreenshotLayout title="Code block" columns={2}>
+  <CodeBlock code={code} title="share.js" language="JavaScript" numbered highlight={[5, 6, 7]} class="mb-0" />
+</ScreenshotLayout>
