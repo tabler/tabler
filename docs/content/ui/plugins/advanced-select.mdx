@@ -9,6 +9,7 @@ related: [/ui/forms/select-group, /ui/forms/elements]
 ---
 
 import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
 import TabsPackage from '@components/TabsPackage.astro';
 import { Code } from 'astro:components';
 import { site } from '@shared/lib/site.ts';
@@ -146,6 +147,24 @@ Add `.is-valid` or `.is-invalid` to the `<select>` to show a validation state. T
 </div>
 </Example>
 
+### With an icon
+
+Put the `<select>` in an [`.input-icon`](/ui/forms/elements#input-with-icon) after an `.input-icon-addon`, as for an input. The icon shows inside the Tom Select field.
+
+<Example>
+<div class="input-icon">
+  <span class="input-icon-addon">
+    <Icon name="user" />
+  </span>
+  <select class="form-select" id="select-icon" data-placeholder="Assign to…">
+    <option value="">Assign to…</option>
+    <option value="1">Jane Doe</option>
+    <option value="2">Mark Smith</option>
+    <option value="3">Amy Kim</option>
+  </select>
+</div>
+</Example>
+
 ### Rich options
 
 An option can carry extra markup - an avatar, a flag, a badge - through a `data-custom-properties` attribute. Read it in a custom `render.option` / `render.item` function and show it next to the option text.
@@ -218,7 +237,7 @@ window.addEventListener('load', function () {
 		return '<div>' + escape(data.text) + '</div>';
 	}
 
-	['select-overview', 'select-basic', 'select-placeholder', 'select-multiple', 'select-optgroup', 'select-valid', 'select-invalid'].forEach(function (id) {
+	['select-overview', 'select-basic', 'select-placeholder', 'select-multiple', 'select-optgroup', 'select-valid', 'select-invalid', 'select-icon'].forEach(function (id) {
 		var el = document.getElementById(id);
 		if (el) new TomSelect(el, { copyClassesToDropdown: false, dropdownParent: 'body' });
 	});
