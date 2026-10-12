@@ -1,0 +1,20 @@
+---
+// Kbd on its own, no card: keys in three sizes, a combination, text and a button hint.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Kbd from '@ui/Kbd.astro'
+---
+
+<ScreenshotLayout title="Kbd" columns={2}>
+  <div class="d-flex flex-column gap-4">
+    <div class="d-flex align-items-center gap-3">
+      <Kbd size="sm">Esc</Kbd>
+      <Kbd>Enter</Kbd>
+      <Kbd size="lg">Tab</Kbd>
+    </div>
+    <Kbd keys={['Ctrl', 'Shift', 'P']} separator="+" />
+    <p class="mb-0">Press <Kbd>Esc</Kbd> to close or <Kbd keys={['⌘', 'S']} /> to save.</p>
+    <div>
+      <button type="button" class="btn">Search <Kbd size="sm" class="ms-2" keys={['⌘', 'K']} /></button>
+    </div>
+  </div>
+</ScreenshotLayout>

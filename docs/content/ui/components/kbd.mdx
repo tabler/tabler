@@ -1,0 +1,117 @@
+---
+title: Kbd
+summary: Kbd shows a keyboard key or a key combination, for example in a shortcut hint next to a button or a menu item.
+description: Show keyboard keys and shortcuts with the kbd component. Use it alone, as a key combination, inside text, buttons, dropdown items and tooltips.
+related: [/ui/components/button, /ui/components/dropdown, /ui/components/tooltip]
+source: core/scss/ui/_type.scss
+classnames:
+  component:
+    - class: kbd
+      desc: A keyboard key; the same style as the kbd element
+  size:
+    - class: kbd-sm
+      desc: Small size, for shortcut hints in buttons and menu items
+    - class: kbd-lg
+      desc: Large size
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+import Kbd from '@ui/Kbd.astro';
+
+## Default markup
+
+Use the `<kbd>` element for a single key. The `.kbd` class gives the same look to any other element.
+
+<Example centered>
+<kbd>Esc</kbd>
+</Example>
+
+## Key combination
+
+Use one `<kbd>` for each key. Wrap the keys in a flex container to keep a small gap between them.
+
+<Example centered>
+<span class="d-inline-flex align-items-center gap-1"><kbd><Icon name="command" /></kbd><kbd>K</kbd></span>
+</Example>
+
+The `Kbd` component builds this markup from the `keys` prop.
+
+<Example centered>
+<Kbd keys={['⌘', 'K']} />
+</Example>
+
+Add `separator` to show a text between the keys.
+
+<Example centered>
+<Kbd keys={['Ctrl', 'Shift', 'P']} separator="+" />
+</Example>
+
+## Sizes
+
+Add `.kbd-sm` or `.kbd-lg` to change the size.
+
+<Example centered>
+<div class="d-flex align-items-center gap-3">
+  <kbd class="kbd-sm">Small</kbd>
+  <kbd>Default</kbd>
+  <kbd class="kbd-lg">Large</kbd>
+</div>
+</Example>
+
+The icon scales with the size of the key.
+
+<Example centered>
+<div class="d-flex align-items-center gap-3">
+  <Kbd keys={['⌘', 'K']} size="sm" />
+  <Kbd keys={['⌘', 'K']} />
+  <Kbd keys={['⌘', 'K']} size="lg" />
+</div>
+</Example>
+
+## Inside text
+
+A key keeps the line height of the text, so you can use it in a sentence.
+
+<Example>
+<p class="mb-0">Press <kbd>Esc</kbd> to close the dialog or <Kbd keys={['⌘', 'S']} /> to save your changes.</p>
+</Example>
+
+## Shortcut hint in a button
+
+Add a `.kbd-sm` key after the label, with `.ms-2` for the space, to show the shortcut of an action.
+
+<Example centered>
+<div class="btn-list">
+  <button type="button" class="btn">Search <Kbd keys={['⌘', 'K']} size="sm" class="ms-2" /></button>
+  <button type="button" class="btn btn-primary">Save <Kbd keys={['⌘', 'S']} size="sm" class="ms-2" /></button>
+</div>
+</Example>
+
+## Shortcut hint in a dropdown item
+
+Add `.ms-auto` to push the key to the end of the dropdown item.
+
+<Example height="260px">
+<div class="dropdown">
+  <button type="button" class="btn dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">Edit</button>
+  <div class="dropdown-menu show">
+    <button type="button" class="dropdown-item">Copy <Kbd keys={['⌘', 'C']} size="sm" class="ms-auto" /></button>
+    <button type="button" class="dropdown-item">Paste <Kbd keys={['⌘', 'V']} size="sm" class="ms-auto" /></button>
+    <button type="button" class="dropdown-item">Select all <Kbd keys={['⌘', 'A']} size="sm" class="ms-auto" /></button>
+  </div>
+</div>
+</Example>
+
+## Shortcut hint in a tooltip
+
+Set `data-bs-html="true"` on the trigger and put the keys in the tooltip title. The tooltip removes the `<kbd>` element, so use `<span class="kbd">`.
+
+<Example centered>
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title='Search <span class="kbd kbd-sm ms-1">Ctrl</span> <span class="kbd kbd-sm">K</span>'>Hover me</button>
+</Example>
+
+## Accessibility
+
+- Use the `<kbd>` element, so assistive technologies know the text is a keyboard input.
+- A symbol such as `⌘` may not be read aloud. Name the shortcut in the label of the control, for example with `aria-keyshortcuts="Meta+K"`.
+- A shortcut hint only tells users about the shortcut. Your own script has to handle the keys.

@@ -1,0 +1,37 @@
+---
+// Keyboard key (.kbd): one key from the slot, or a key combination from `keys`.
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  /** key combination; each item is rendered as its own `<kbd>` */
+  keys?: string[] | undefined
+  /** text between the keys of a combination, for example `+`; keys sit next to each other when omitted */
+  separator?: string | undefined
+  /** `.kbd-sm` / `.kbd-lg` modifier classes */
+  size?: 'sm' | 'lg' | undefined
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { keys, separator, size, class: className, ...rest } = Astro.props
+
+const kbdClasses = [size && `kbd-${size}`]
+---
+
+{
+  keys && keys.length > 0 ? (
+    <span class:list={['d-inline-flex align-items-center gap-1', className]} {...rest}>
+      {keys.map((key, index) => (
+        <>
+          {index > 0 && separator && <span class="text-secondary">{separator}</span>}
+          <kbd class:list={kbdClasses}>{key === '⌘' ? <Icon name="command" /> : key}</kbd>
+        </>
+      ))}
+    </span>
+  ) : (
+    <kbd class:list={[...kbdClasses, className]} {...rest}>
+      <slot />
+    </kbd>
+  )
+}

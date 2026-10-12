@@ -1,0 +1,110 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Kbd from '@ui/Kbd.astro'
+---
+
+<DefaultLayout title="Kbd" pageMenu="base.kbd" description="The kbd component shows a keyboard key or a key combination, for example in a shortcut hint.">
+  <DocsLink slot="page-header-actions" path="/ui/components/kbd" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Single key</CardTitle>
+          <CardSubtitle>A <code>&lt;kbd&gt;</code> element or a <code>.kbd</code> class shows one key.</CardSubtitle>
+          <Kbd>Esc</Kbd>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Key combination</CardTitle>
+          <CardSubtitle>Put one <code>&lt;kbd&gt;</code> per key next to each other.</CardSubtitle>
+          <Kbd keys={['⌘', 'K']} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Separator</CardTitle>
+          <CardSubtitle>Add a <code>+</code> between the keys with the <code>separator</code> prop.</CardSubtitle>
+          <Kbd keys={['Ctrl', 'Shift', 'P']} separator="+" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Use <code>.kbd-sm</code> or <code>.kbd-lg</code> to change the size.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <Kbd size="sm">Small</Kbd>
+            <Kbd>Default</Kbd>
+            <Kbd size="lg">Large</Kbd>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inside text</CardTitle>
+          <CardSubtitle>A key keeps the line height, so it fits a sentence.</CardSubtitle>
+          <p class="mb-0">Press <Kbd>Esc</Kbd> to close the dialog or <Kbd keys={['⌘', 'S']} /> to save your changes.</p>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>In buttons</CardTitle>
+          <CardSubtitle>Show a shortcut with <code>.kbd-sm</code> and <code>.ms-2</code> inside a button.</CardSubtitle>
+          <ButtonList>
+            <button type="button" class="btn">Search <Kbd size="sm" class="ms-2" keys={['⌘', 'K']} /></button>
+            <button type="button" class="btn btn-primary">Save <Kbd size="sm" class="ms-2" keys={['⌘', 'S']} /></button>
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>In a dropdown</CardTitle>
+          <CardSubtitle>Push the shortcut to the end of a dropdown item with <code>.ms-auto</code>.</CardSubtitle>
+          <div class="dropdown">
+            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Edit</button>
+            <div class="dropdown-menu">
+              <button type="button" class="dropdown-item">Copy <Kbd size="sm" class="ms-auto" keys={['⌘', 'C']} /></button>
+              <button type="button" class="dropdown-item">Paste <Kbd size="sm" class="ms-auto" keys={['⌘', 'V']} /></button>
+              <button type="button" class="dropdown-item">Select all <Kbd size="sm" class="ms-auto" keys={['⌘', 'A']} /></button>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>In a tooltip</CardTitle>
+          <CardSubtitle>Add the shortcut to a tooltip with <code>data-bs-html="true"</code>.</CardSubtitle>
+          <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title='Search <span class="kbd kbd-sm ms-1">⌘</span> <span class="kbd kbd-sm">K</span>'> Hover me </button>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
