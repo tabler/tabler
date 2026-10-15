@@ -1,0 +1,19 @@
+---
+// Icon list entry: an icon marker followed by the text. Place inside `IconList`.
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  /** Tabler icon name of the marker */
+  icon?: string
+  /** filled icon variant */
+  filled?: boolean | undefined
+  /** marker color of this entry only, `text-{color}` on the icon */
+  color?: string | undefined
+  class?: string
+  [key: string]: unknown
+}
+
+const { icon = 'check', filled, color, class: className, ...rest } = Astro.props
+---
+
+<li class={className} {...rest}><Icon name={icon} filled={filled ?? false} color={color} /><slot /></li>
