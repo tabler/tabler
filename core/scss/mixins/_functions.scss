@@ -212,14 +212,26 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return if(sass($l1 > $l2): divide($l1 + 0.05, $l2 + 0.05); else: divide($l2 + 0.05, $l1 + 0.05));
 }
 
+// Shift a color's lightness in 1% steps until it reaches `$min` contrast against `$surface`.
+@function text-color-on($color, $surface, $min, $direction: 'darker') {
+  $step: if(sass($direction == 'darker'): -1%; else: 1%);
+  $l: color.channel($color, 'lightness', $space: oklch);
+  $result: $color;
+  @while contrast-ratio($result, $surface) < $min and $l > 0% and $l < 100% {
+    $l: $l + $step;
+    $result: color.change($color, $lightness: $l, $space: oklch);
+  }
+  @return $result;
+}
+
 // Return WCAG2.2 relative luminance
 // See https://www.w3.org/TR/WCAG/#dfn-relative-luminance
 // See https://www.w3.org/TR/WCAG/#dfn-contrast-ratio
 @function luminance($color) {
   $rgb: (
-    'r': math.round(color.channel($color, 'red', $space: rgb)),
-    'g': math.round(color.channel($color, 'green', $space: rgb)),
-    'b': math.round(color.channel($color, 'blue', $space: rgb)),
+    'r': math.clamp(0, math.round(color.channel($color, 'red', $space: rgb)), 255),
+    'g': math.clamp(0, math.round(color.channel($color, 'green', $space: rgb)), 255),
+    'b': math.clamp(0, math.round(color.channel($color, 'blue', $space: rgb)), 255),
   );
 
   @each $name, $value in $rgb {
