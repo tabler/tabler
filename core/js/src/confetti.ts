@@ -94,6 +94,7 @@ const PALETTE: [string, string][] = [
   ['green', '#2fb344'],
   ['teal', '#0ca678'],
   ['cyan', '#17a2b8'],
+  ['mist', '#67787c'],
 ]
 
 // The physics below is tuned for this viewport height; taller windows get

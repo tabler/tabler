@@ -25,7 +25,7 @@ export const site = {
   description: 'Tabler is packed with beautifully crafted components and powerful features. Jump in and start building a stunning dashboard — all for free!',
   themeColor: '#066fd1',
   cssPlugins: ['flags', 'socials', 'payments', 'vendors', 'marketing', 'themes'],
-  themeColors: ['blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan'],
+  themeColors: ['blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan', 'mist'],
   themeFonts: ['sans-serif', 'serif', 'monospace', 'comic'],
   themeBases: ['slate', 'gray', 'zinc', 'neutral', 'stone', 'mist'],
   themeRadiuses: ['0', '0.5', '1', '1.5', '2'],
