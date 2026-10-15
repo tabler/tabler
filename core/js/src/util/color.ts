@@ -57,7 +57,7 @@ const hue = (token: string): number | null => {
   }
 
   const match = /^([^a-z]+)(deg|grad|rad|turn)?$/i.exec(token)
-  const number = match ? toNumber(match[1]!) : Number.NaN
+  const number = match ? toNumber(match[1]) : Number.NaN
   if (!match || Number.isNaN(number)) {
     return null
   }
@@ -78,7 +78,7 @@ const alphaChannel = (token: string | undefined): number | null => {
 /** Splits `r, g, b, a`, `r g b / a` and `r g b` into channel tokens and an alpha token. */
 const splitArguments = (body: string): [string[], string | undefined] | null => {
   const [channels, alpha] = body.split('/').map((part) => part.trim())
-  const tokens = channels!
+  const tokens = channels
     .split(/[\s,]+/)
     .map((token) => token.trim().toLowerCase())
     .filter(Boolean)
@@ -147,7 +147,7 @@ const parseFunction = (value: string): RGBA | null => {
     return null
   }
 
-  const split = splitArguments(match[2]!)
+  const split = splitArguments(match[2])
   if (!split) {
     return null
   }
@@ -158,27 +158,27 @@ const parseFunction = (value: string): RGBA | null => {
     return null
   }
 
-  const name = match[1]!.toLowerCase()
+  const name = match[1].toLowerCase()
 
   if (name.startsWith('rgb')) {
-    const r = channel(tokens[0]!, 255, 255)
-    const g = channel(tokens[1]!, 255, 255)
-    const b = channel(tokens[2]!, 255, 255)
+    const r = channel(tokens[0], 255, 255)
+    const g = channel(tokens[1], 255, 255)
+    const b = channel(tokens[2], 255, 255)
     return r === null || g === null || b === null ? null : { r: round(r), g: round(g), b: round(b), a }
   }
 
   if (name.startsWith('hsl')) {
-    const h = hue(tokens[0]!)
-    const s = channel(tokens[1]!, 100, 100)
-    const l = channel(tokens[2]!, 100, 100)
+    const h = hue(tokens[0])
+    const s = channel(tokens[1], 100, 100)
+    const l = channel(tokens[2], 100, 100)
     return h === null || s === null || l === null ? null : hslaToRgba({ h, s, l, a })
   }
 
-  const l = channel(tokens[0]!, 100, 100)
-  const c = channel(tokens[1]!, 0.4, 0.5)
-  const h = hue(tokens[2]!)
+  const l = channel(tokens[0], 100, 100)
+  const c = channel(tokens[1], 0.4, 0.5)
+  const h = hue(tokens[2])
   // A bare lightness in `oklch()` is 0-1, a percentage is 0-100
-  return l === null || c === null || h === null ? null : oklchaToRgba({ l: tokens[0]!.endsWith('%') ? l : l * 100, c, h, a })
+  return l === null || c === null || h === null ? null : oklchaToRgba({ l: tokens[0].endsWith('%') ? l : l * 100, c, h, a })
 }
 
 /**
@@ -213,7 +213,7 @@ export const detectColorFormat = (value: string): ColorFormat | null => {
     return null
   }
 
-  const name = match[1]!
+  const name = match[1]
   return name.startsWith('rgb') ? 'rgb' : name.startsWith('hsl') ? 'hsl' : 'oklch'
 }
 
