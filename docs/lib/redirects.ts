@@ -34,10 +34,13 @@ export const redirects: Record<string, Redirect> = {
     ].map(([from, to]): [string, Redirect] => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
   ),
   // Components that need a third-party library moved to /ui/plugins/.
-  ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+  ...Object.fromEntries(['autosize', 'chart', 'countup', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
   // Pre-Astro plural urls for two of those pages, sent straight to the new home.
   '/ui/components/charts': { status: 301, destination: '/ui/plugins/chart' },
   '/ui/components/vector-maps': { status: 301, destination: '/ui/plugins/vector-map' },
+  // Dropzone became a native form plugin and moved next to the other form pages.
+  '/ui/plugins/dropzone': { status: 301, destination: '/ui/forms/dropzone' },
+  '/ui/components/dropzone': { status: 301, destination: '/ui/forms/dropzone' },
   // The form- prefix was redundant inside /ui/forms/.
   '/ui/forms/form-elements': { status: 301, destination: '/ui/forms/elements' },
   '/ui/forms/form-fieldset': { status: 301, destination: '/ui/forms/fieldset' },

@@ -1,0 +1,39 @@
+---
+// One row of the Dropzone file list, as the script builds it (core/js/src/dropzone.ts `_createItem`).
+// Written by hand it shows a state without an upload; goes into the default slot of Dropzone.astro.
+
+/** core/scss/ui/forms/_form-dropzone.scss `.dropzone-item-{status}` modifier classes */
+type DropzoneItemStatus = 'uploading' | 'success' | 'error'
+
+interface Props {
+  /** `.dropzone-item-name`: the file name */
+  title: string
+  /** `.dropzone-item-meta`: the file size, or the error message */
+  description?: string
+  status?: DropzoneItemStatus | undefined
+  /** upload progress in percent; renders the progress bar */
+  value?: number | undefined
+  /** aria-label of the remove button */
+  removeLabel?: string
+  class?: string
+  /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { title, description, status, value, removeLabel = 'Remove file', class: className, ...rest } = Astro.props
+---
+
+<div class:list={['dropzone-item', status && `dropzone-item-${status}`, className]} {...rest}>
+  <div class="dropzone-item-body">
+    <div class="dropzone-item-name">{title}</div>
+    {description && <div class="dropzone-item-meta">{description}</div>}
+    {
+      value !== undefined && (
+        <div class="progress progress-sm">
+          <div class="progress-bar" style={`width: ${value}%`} role="progressbar" aria-label={title} aria-valuenow={value} aria-valuemin="0" aria-valuemax="100" />
+        </div>
+      )
+    }
+  </div>
+  <button type="button" class="btn-close dropzone-item-remove" aria-label={removeLabel}></button>
+</div>
