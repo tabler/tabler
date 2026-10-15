@@ -1,4 +1,3 @@
-@use 'sass:map';
 @use 'config' as *;
 
 :root,
@@ -42,13 +41,8 @@
   --brand: #{$primary};
 
   // Theme colors
-  @each $name, $color in map.merge($theme-colors, $social-colors) {
-    --#{$name}: #{$color};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
-    --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
-    --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
-  }
+  // Brand colors (`$social-colors`) are set in `tabler-socials.css`
+  @include color-props($theme-colors);
 
   // Gray colors
   @each $name, $color in $gray-colors {

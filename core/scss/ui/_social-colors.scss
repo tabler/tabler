@@ -1,0 +1,39 @@
+// Brand colors (`$social-colors`): the palette custom properties and the
+// color classes of each brand, so `.btn-facebook`, `.bg-x` or
+// `.status-github` work like their theme-color counterparts. They ship in
+// `tabler-socials.css`, not in `tabler.css`.
+@use 'sass:map';
+@use '../config' as *;
+@use '../deprecated-props' as *;
+
+:root,
+:host {
+  @include color-props($social-colors);
+}
+
+@include deprecated-color-props($social-colors);
+
+@include button-color-variants(map.keys($social-colors));
+
+@each $color, $value in $social-colors {
+  .bg-#{'' + $color} {
+    --bg-opacity: 1;
+    background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity) * 100%)) !important;
+  }
+
+  .text-#{'' + $color}-fg {
+    color: var(--#{$color}-fg) !important;
+  }
+
+  .legend-#{$color} {
+    --legend-color: var(--#{$color});
+  }
+
+  .status-#{$color} {
+    --status-color: var(--#{$color});
+
+    @if $enable-deprecated {
+      --status-color-rgb: var(--#{$color}-rgb);
+    }
+  }
+}

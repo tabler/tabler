@@ -7,7 +7,6 @@
 // with `@extend`, which only reaches modules upstream of this one.
 //
 // Removed in 2.0, together with this file and `_deprecated-props.scss`.
-@use 'sass:map';
 @use 'config' as *;
 @use 'core';
 @use 'deprecated-props' as *;
@@ -97,7 +96,7 @@
     --status-color-rgb: #{deprecated-rgb-triplet($text-secondary)};
   }
 
-  @each $name, $color in map.merge($theme-colors, $social-colors) {
+  @each $name, $color in $theme-colors {
     .status-#{$name} {
       --status-color-rgb: var(--#{$name}-rgb);
     }
