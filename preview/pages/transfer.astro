@@ -1,0 +1,53 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Transfer from '@ui/Transfer.astro'
+
+const users = [
+  { value: 'ada', label: 'Ada Lovelace' },
+  { value: 'alan', label: 'Alan Turing' },
+  { value: 'grace', label: 'Grace Hopper' },
+  { value: 'linus', label: 'Linus Torvalds' },
+  { value: 'margaret', label: 'Margaret Hamilton' },
+  { value: 'dennis', label: 'Dennis Ritchie', disabled: true },
+  { value: 'barbara', label: 'Barbara Liskov' },
+]
+
+const columns = [
+  { value: 'name', label: 'Name' },
+  { value: 'email', label: 'Email' },
+  { value: 'role', label: 'Role' },
+  { value: 'created', label: 'Created' },
+  { value: 'status', label: 'Status' },
+  { value: 'country', label: 'Country' },
+]
+---
+
+<DefaultLayout title="Transfer" pageMenu="base.transfer" description="A transfer is a pair of lists with buttons between them, to move items from available to selected and back.">
+  <DocsLink slot="page-header-actions" path="/ui/components/transfer" />
+
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Pick rows, then move them with the arrows. A hidden <code>&lt;select multiple&gt;</code> carries the chosen values in a form.</CardSubtitle>
+          <Transfer name="members[]" items={users} selected={['grace']} />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Search and reordering</CardTitle>
+          <CardSubtitle>Search each list, and change the order of the selected rows with the up and down buttons. A disabled row stays where it is.</CardSubtitle>
+          <Transfer name="columns[]" items={columns} selected={['name', 'email']} titles={['Hidden columns', 'Visible columns']} search reorder />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
