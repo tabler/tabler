@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Moved the `.shape` component from `tabler-marketing.css` to the core `tabler.css` bundle.
+Updated `.shape` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
