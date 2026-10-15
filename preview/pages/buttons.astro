@@ -9,6 +9,7 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
+import { gradients } from '@shared/lib/tokens'
 import DocsLink from '@ui/DocsLink.astro'
 
 type ColorEntry = [string, { title: string; icon?: string }]
@@ -163,6 +164,33 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
               themeColors.map(([name, color]) => (
                 <button type="button" class={`btn btn-outline btn-${name}`}>
                   {color.icon && <Icon name={color.icon} />} {color.title}
+                </button>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Outline gradient</CardTitle>
+          <CardSubtitle>Only the border carries the gradient. Use a theme color or one of the named gradients shared with <code>.card-gradient</code>.</CardSubtitle>
+          <ButtonList>
+            <button type="button" class="btn btn-outline-gradient">Default</button>
+            {
+              themeColors.slice(0, 6).map(([name, color]) => (
+                <button type="button" class={`btn btn-outline-gradient-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </button>
+              ))
+            }
+          </ButtonList>
+          <ButtonList class="mt-3">
+            {
+              gradients.map((name) => (
+                <button type="button" class={`btn btn-outline-gradient-${name}`}>
+                  {ucFirst(name)}
                 </button>
               ))
             }
