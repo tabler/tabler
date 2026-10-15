@@ -281,6 +281,8 @@ class Colorpicker extends BaseComponent {
     return this._isShown ? this.hide() : this.show()
   }
 
+  // Async to match the `Datepicker` API, though nothing is awaited yet
+  // eslint-disable-next-line @typescript-eslint/require-await
   async show(): Promise<void> {
     // Focus handed back by `hide()` reaches the Data API too, which must not reopen the panel
     if (this._config.inline || this._isShown || this._isRestoringFocus || isDisabled(this._element)) {
@@ -313,6 +315,7 @@ class Colorpicker extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_SHOWN)
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async hide(): Promise<void> {
     if (this._config.inline || !this._isShown) {
       return
@@ -554,7 +557,7 @@ class Colorpicker extends BaseComponent {
     if (closeButton) {
       const button = create('button', `btn btn-sm btn-primary ${CLASS_NAME_CLOSE}`, { type: 'button' })
       button.textContent = labels.close
-      EventHandler.on(button, EVENT_CLICK, () => this.hide())
+      EventHandler.on(button, EVENT_CLICK, () => void this.hide())
       actions.append(button)
     }
 
@@ -818,7 +821,7 @@ class Colorpicker extends BaseComponent {
       this._element.focus()
     } else if (!event.shiftKey && target === focusable[focusable.length - 1]) {
       event.preventDefault()
-      this.hide()
+      void this.hide()
     }
   }
 
@@ -828,19 +831,19 @@ class Colorpicker extends BaseComponent {
     if (event.key === 'Escape') {
       event.preventDefault()
       event.stopPropagation()
-      this.hide()
+      void this.hide()
     }
   }
 
   _handleDocumentClick(event: Event): void {
     if (!this._isOwnTarget(event.target)) {
-      this.hide()
+      void this.hide()
     }
   }
 
   _handleDocumentFocusIn(event: Event): void {
     if (!this._isOwnTarget(event.target)) {
-      this.hide()
+      void this.hide()
     }
   }
 
@@ -878,7 +881,7 @@ class Colorpicker extends BaseComponent {
       const rect = `${left},${top},${width},${height}`
       if (rect !== this._positionRect) {
         this._positionRect = rect
-        this._popper.update()
+        void this._popper.update()
       }
 
       this._positionFrame = requestAnimationFrame(check)
@@ -951,7 +954,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   event.preventDefault()
-  ;(Colorpicker.getOrCreateInstance(this) as Colorpicker).toggle()
+  void (Colorpicker.getOrCreateInstance(this) as Colorpicker).toggle()
 })
 
 EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement) {
@@ -959,7 +962,7 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
     return
   }
 
-  ;(Colorpicker.getOrCreateInstance(this) as Colorpicker).show()
+  void (Colorpicker.getOrCreateInstance(this) as Colorpicker).show()
 })
 
 // Render on load what cannot wait for a focus or a click: inline panels, and
