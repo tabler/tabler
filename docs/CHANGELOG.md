@@ -1,5 +1,37 @@
 # @tabler/docs
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- 6cd45d0: Added the Icon design guide page to the Tabler Icons docs, with the SVG format, naming rules and icon requests.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- 681b6eb: Added the image label component: `.img-labeled` and `.img-label` pin a short text or an icon to a corner of an image.
+- 03e2775: Updated `<kbd>` to a compact key cap and added `.kbd-group` and `--tblr-kbd-*` variables for keyboard shortcuts.
+- d6cfffb: Added the `.mockup-browser` component that frames a screenshot or any content in a browser window with an address bar.
+- 6c46d55: Added `NavOverflow` component that moves nav items that do not fit into a More dropdown, with a `.nav-overflow` wrapper.
+- 0e4a07b: Added the `Stepper` component, a `.stepper` quantity input with buttons, bounds, hold-to-repeat and keyboard support.
+
+### Patch Changes
+
+- 964eb7c: Added `dateFormat` patterns such as `iso` or `DD.MM.YYYY` and a `boundInput` option for ISO form values to `Datepicker`.
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- 8f00eab: Added `--tblr-form-check-*` and `--tblr-form-switch-*` variables, with shared `--tblr-control-checked-bg` and disabled tokens on `:root`.
+- 8f00eab: Added `--tblr-control-*` variables to `.form-control` and `.form-select`; sizes and the file button now follow them.
+- bb60211: Updated `.form-switch` with a filled gray off track, a white knob with an even gap and a new `$form-switch-bg` variable.
+- 8f00eab: Added the Forms → CSS variables page: the control scale, state colors and every `--tblr-control-*`, add-on, floating, range, check and switch token.
+- ba4e87a: Added `.icon-inline` to icons that sit in a line of text in the demo cards, preview pages and docs examples.
+- 8f00eab: Added `--tblr-input-group-addon-*`, `--tblr-form-floating-*` and `--tblr-range-*` variables to input groups, floating labels and range inputs.
+- 9d837ea: Fixed `.input-icon` icons off-center in small and large inputs and selects: the addon follows the control size.
+- 69c1114: Added item slots, `.list-group-sm` and `.list-group-lg` sizes, selectable and nested items to the list group.
+- 744f9fe: Added the `.text-shimmer` class that sweeps a highlight across a label, with an optional `.text-shimmer-loader` spinner.
+- 5cbc443: Added a `mist` gray palette for `data-bs-theme-base` and removed the hidden `pink` base from `tabler-themes.css`.
+- 00746f2: Added `.input-icon` support for Tom Select: a leading icon no longer overlaps the selected value.
+- ed41f04: Updated the promo top banner to load only on production deploys, not on branch previews.
+- b1aac09: Updated Tabler Illustrations to v1.18.0 with 11 new illustrations.
+
 ## 1.6.1
 
 ### Patch Changes

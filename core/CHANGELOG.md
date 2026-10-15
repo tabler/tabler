@@ -1,5 +1,49 @@
 # @tabler/core
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- 964eb7c: Added `dateFormat` patterns such as `iso` or `DD.MM.YYYY` and a `boundInput` option for ISO form values to `Datepicker`.
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 8f00eab: Added `--tblr-form-check-*` and `--tblr-form-switch-*` variables, with shared `--tblr-control-checked-bg` and disabled tokens on `:root`.
+- 8f00eab: Added `--tblr-control-*` variables to `.form-control` and `.form-select`; sizes and the file button now follow them.
+- 8f00eab: Updated icon addons, select groups, `.col-form-label`, validation icons, OTP and Tom Select to read the `--tblr-control-*` and `--tblr-btn-input-*` variables.
+- 8f00eab: Fixed `.form-select-sm`, `.form-select-lg` and small Tom Select to match `.form-control-*`, so small controls are now 32px tall.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- 681b6eb: Added the image label component: `.img-labeled` and `.img-label` pin a short text or an icon to a corner of an image.
+- 8f00eab: Added `--tblr-input-group-addon-*`, `--tblr-form-floating-*` and `--tblr-range-*` variables to input groups, floating labels and range inputs.
+- 03e2775: Updated `<kbd>` to a compact key cap and added `.kbd-group` and `--tblr-kbd-*` variables for keyboard shortcuts.
+- 69c1114: Added item slots, `.list-group-sm` and `.list-group-lg` sizes, selectable and nested items to the list group.
+- d6cfffb: Added the `.mockup-browser` component that frames a screenshot or any content in a browser window with an address bar.
+- 6c46d55: Added `NavOverflow` component that moves nav items that do not fit into a More dropdown, with a `.nav-overflow` wrapper.
+- 12c045f: Updated `.pricing` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
+- 28c24bf: Updated `.shape` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
+- 0e4a07b: Added the `Stepper` component, a `.stepper` quantity input with buttons, bounds, hold-to-repeat and keyboard support.
+- 744f9fe: Added the `.text-shimmer` class that sweeps a highlight across a label, with an optional `.text-shimmer-loader` spinner.
+- 5cbc443: Added a `mist` gray palette for `data-bs-theme-base` and removed the hidden `pink` base from `tabler-themes.css`.
+- 00746f2: Added `.input-icon` support for Tom Select: a leading icon no longer overlaps the selected value.
+
+### Patch Changes
+
+- d75c5d6: Updated `--tblr-bg-surface-tertiary` to a translucent color, so card headers, footers and table stripes show on dark cards.
+- 9368b8e: Fixed the default `.btn` turning see-through on hover and active by mixing the tint over `--tblr-bg-surface`.
+- b168be1: Updated filled `.btn-*` variants with a subtle border, inner edges and a faint gradient; outline buttons lose their shadow.
+- b168be1: Updated `.btn-xl` with a `1.25rem` font, `1.75rem` icons and a larger radius; `.btn-sm` gets `0.75rem` side padding.
+- e3739a1: Fixed `.card-table` rounding the outer cells of every row: only the cells in the card corners are rounded now.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- d75c5d6: Fixed dark mode contrast of nav links, list group headers, toast headers, breadcrumbs, the footer, `.form-control-light` and `.form-help`.
+- a1b46ae: Fixed `Datepicker` getting stuck closed after the calendar plugin throws in `show()` or `hide()`.
+- d75c5d6: Fixed `.input-group-text` contrast in dark mode with the `--tblr-secondary-color` text color and a translucent background.
+- dcacb65: Fixed `.table-striped` rows and `thead th` backgrounds that were invisible in dark mode on cards.
+- bb60211: Updated `.form-switch` with a filled gray off track, a white knob with an even gap and a new `$form-switch-bg` variable.
+- 9d837ea: Fixed `.input-icon` icons off-center in small and large inputs and selects: the addon follows the control size.
+- 252c914: Updated the `tabler.js` build target from ES2015 to ES2022, making `tabler.min.js` about 1.5 kB smaller (gzip).
+- 252c914: Removed Sass doc comments from `tabler.css` and `tabler.rtl.css` by switching them to `//` comments.
+- 530f11b: Fixed `.nav-segmented` icons staying gray on hover: they follow the link color like the text.
+- 2726bc4: Updated the terser build of `tabler.min.js` to use two compress passes and ES2020 output.
+
 ## 1.6.1
 
 ### Patch Changes
