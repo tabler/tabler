@@ -72,7 +72,7 @@
   }
 }
 
-@each $color, $value in $gray-colors {
+@each $color, $value in map.merge($gray-colors, $mist-colors) {
   .bg-#{'' + $color} {
     --bg-opacity: 1;
     background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity) * 100%)) !important;

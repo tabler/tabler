@@ -15,6 +15,7 @@ type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: s
 const colors = Object.entries(site.colors) as ColorEntry[]
 const lightColors = Object.entries(site.lightColors) as ColorEntry[]
 const grayColors = Object.entries(site.grayColors) as ColorEntry[]
+const mistColors = Object.entries(site.mistColors) as ColorEntry[]
 const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
@@ -84,6 +85,32 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
           <div class="row g-3">
             {
               grayColors.map(([name, color]) => (
+                <div class="col-12">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
+                    </div>
+                    <div class="col">
+                      {color.title}
+                      <br />
+                      <code>{color.hex}</code>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-6 col-lg-3">
+      <Card>
+        <CardBody>
+          <CardTitle>Mist colors</CardTitle>
+          <CardSubtitle>A cool gray scale with a subtle blue-green tint.</CardSubtitle>
+          <div class="row g-3">
+            {
+              mistColors.map(([name, color]) => (
                 <div class="col-12">
                   <div class="row align-items-center">
                     <div class="col-auto">
