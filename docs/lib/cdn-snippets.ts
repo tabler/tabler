@@ -31,6 +31,9 @@ export const cdnJsTag = (): string => cdnScriptTag('dist/js/tabler.min.js')
 /** `<script>` for the color mode script, as shown on the Color modes page. */
 export const cdnThemeJsTag = (): string => cdnScriptTag('dist/js/tabler-theme.min.js')
 
+/** `<script>` for the map add-on, as shown on the Map page. Loaded after the core bundle. */
+export const cdnMapJsTag = (): string => cdnScriptTag('dist/js/tabler-map.min.js').replace('></script>', ' defer></script>')
+
 /** Both core tags, as shown by `<CdnImportPackage />`. */
 export const cdnPackageSnippet = (): string => `${cdnCssTag()}\n${cdnJsTag()}`
 
