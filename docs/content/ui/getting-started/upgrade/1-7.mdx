@@ -1,15 +1,15 @@
 ---
 title: Upgrade to 1.7
-summary: Move a project from Tabler 1.6 to 1.7. The Pricing and Shape components moved from the marketing bundle into the core bundle, so a page that loaded only the marketing stylesheet for them needs one more link.
-description: Upgrade guide from Tabler 1.6 to 1.7 with the components that moved from the marketing bundle into the core bundle, and what to change in your HTML and Sass imports.
+summary: Move a project from Tabler 1.6 to 1.7. The Pricing and Shape components moved from the marketing bundle into the core bundle, so a page that loaded only the marketing stylesheet for them needs one more link. The hidden pink theme base is removed.
+description: Upgrade guide from Tabler 1.6 to 1.7 with the components that moved from the marketing bundle into the core bundle, the removed pink theme base, and what to change in your HTML and Sass imports.
 added-in: '1.7.0'
 order: 1
 related: [/ui/getting-started/upgrade/1-6, /ui/getting-started/customize]
 ---
 
-Tabler 1.7 is a small update. Every class, custom property, Sass variable and function from 1.6 is still there, and the only change that can touch your code is where two components ship: Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`. A page that loads both files, as every marketing page does, needs no change.
+Tabler 1.7 is a small update. Every documented class, custom property, Sass variable and function from 1.6 is still there. Two changes can touch your code: Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`, and the hidden `pink` theme base is gone. A page that loads both stylesheets and uses one of the documented theme bases needs no change.
 
-Check [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle) if you load `tabler-marketing.css` on its own or import its Sass partials one by one.
+Check [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle) if you load `tabler-marketing.css` on its own or import its Sass partials one by one, and [The pink theme base is removed](#the-pink-theme-base-is-removed) if you set `data-bs-theme-base="pink"`.
 
 If you're coming from 1.5 or older, do the [1.6 upgrade](/ui/getting-started/upgrade/1-6) first.
 
@@ -20,6 +20,7 @@ If you…|You need to…
 Load `tabler.css` and `tabler-marketing.css` together|Nothing
 Load `tabler-marketing.css` without `tabler.css` on a page that uses `.pricing` or `.shape`|Add `tabler.css`, see [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle)
 Import `scss/marketing/pricing` or `scss/marketing/shape` in your own Sass|Import `scss/ui/pricing` or `scss/ui/shape`, see [Sass changes](#sass-changes)
+Set `data-bs-theme-base="pink"` or `?theme-base=pink`|Pick another base or define your own palette, see [The pink theme base is removed](#the-pink-theme-base-is-removed)
 
 ## Update the package
 
@@ -52,6 +53,19 @@ The [Pricing](/ui/components/pricing) component, `.pricing` and its `.pricing-*`
 ```
 
 The pricing card border also follows the theme now. In 1.6 it was a fixed light gray in dark mode; in 1.7 it uses `--tblr-border-color`.
+
+## The pink theme base is removed
+
+`tabler-themes.css` used to ship a hidden `pink` gray palette. It wasn't listed in the theme settings or the docs, but it worked with `data-bs-theme-base="pink"`, `data-theme-base="pink"` or the `?theme-base=pink` query parameter. 1.7 removes it and adds a documented `mist` palette instead.
+
+With `pink` set, the attribute no longer matches anything and the page falls back to the default `neutral` grays. Switch to one of the [six theme bases](/ui/plugins/theme-base-colors), for example `mist`:
+
+```diff
+- <html data-bs-theme-base="pink">
++ <html data-bs-theme-base="mist">
+```
+
+To keep the pink grays, override the `--tblr-gray-50` … `--tblr-gray-950` scale yourself, as shown in [Customize Tabler: gray scale](/ui/getting-started/customize#gray-scale).
 
 ## Sass changes
 

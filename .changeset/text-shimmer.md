@@ -4,4 +4,4 @@
 "@tabler/preview": patch
 ---
 
-Added the `.text-shimmer` class, a highlight that sweeps across a label such as "Thinking…" while a task runs, with an optional `.text-shimmer-loader` spinner before the label.
+Added the `.text-shimmer` class that sweeps a highlight across a label, with an optional `.text-shimmer-loader` spinner.
