@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Added `--tblr-fill-*` and `--tblr-{color}-fill` tokens with `.bg-fill-*` utilities, used by alerts, statuses, badges and progress.
+Added the `--tblr-fill-*` tokens and `.bg-fill-*` utilities, used by badges, avatars, code, progress and range tracks and the hover background.

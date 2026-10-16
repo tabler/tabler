@@ -4,9 +4,7 @@
   // scss-docs-start alert-css-vars
   --alert-variant-color: var(--body-color);
   --alert-color: var(--alert-variant-color);
-  // Same tint as the old 16% mixed again 50/50 with the surface; the theme
-  // colors swap it for their opaque `--{color}-fill` below.
-  --alert-bg: #{color-transparent(var(--alert-variant-color), 0.08, var(--bg-surface))};
+  --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))};
   --alert-padding-x: #{$alert-padding-x};
   --alert-padding-y: #{$alert-padding-y};
   --alert-margin-bottom: #{$alert-margin-bottom};
@@ -25,7 +23,7 @@
   padding: var(--alert-padding-y) var(--alert-padding-x);
   margin-bottom: var(--alert-margin-bottom);
   color: var(--alert-color);
-  background-color: var(--alert-bg);
+  background-color: color-mix(in oklab, var(--alert-bg), var(--bg-surface));
   border: var(--border-width) var(--border-style) var(--alert-border-color);
   @include border-radius(var(--alert-border-radius));
 
@@ -123,6 +121,5 @@
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
     --alert-variant-color: var(--#{$name});
-    --alert-bg: var(--#{$name}-fill);
   }
 }
