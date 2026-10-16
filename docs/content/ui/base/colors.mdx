@@ -1,6 +1,6 @@
 ---
 title: Colors
-summary: The Tabler color palette with base colors, light variants, the gray scale and social brand colors, each with background and text utilities.
+summary: The Tabler color palette with base colors, light variants, fill colors, the gray scale and social brand colors, each with background and text utilities.
 description: The Tabler color palette, with base and light shades, the gray scale and social brand colors.
 ---
 
@@ -19,6 +19,47 @@ These are the base colors. Each one has `bg-*` and `text-*` utilities, and the c
 Every base color also has a light shade with the `-lt` suffix. It works as a background for text or an icon in the base color.
 
 <Colors colors={site.lightColors} />
+
+## Fill colors
+
+Fills are background tints for controls and small surfaces. There are two kinds.
+
+### Neutral fills
+
+The neutral fills are the text color over a transparent background, so the same fill reads the same on the page, a card, a dropdown or a modal, in both color modes. Use them from the strongest to the faintest:
+
+- `--tblr-fill-primary` (16%) for the inactive track of a slider and other strong neutral shapes. `--tblr-fill` is an alias for it.
+- `--tblr-fill-secondary` (8%) for progress tracks and the hover state of neutral badges.
+- `--tblr-fill-tertiary` (4% in light mode, 6% in dark) for neutral badges, avatars, code and the hover state of quiet controls. `--tblr-hover-bg` points at it.
+- `--tblr-fill-quaternary` (2%) for faint section backgrounds.
+
+<Example>
+<div class="row g-3">
+  <div class="col-6 col-md-3"><div class="bg-fill-primary p-4 rounded">bg-fill-primary</div></div>
+  <div class="col-6 col-md-3"><div class="bg-fill-secondary p-4 rounded">bg-fill-secondary</div></div>
+  <div class="col-6 col-md-3"><div class="bg-fill-tertiary p-4 rounded">bg-fill-tertiary</div></div>
+  <div class="col-6 col-md-3"><div class="bg-fill-quaternary p-4 rounded">bg-fill-quaternary</div></div>
+</div>
+</Example>
+
+### Color fills
+
+Every base color has three opaque fills: `--tblr-{color}-fill` for the resting state, and `--tblr-{color}-fill-hover` and `--tblr-{color}-fill-active` for the interactive states. Colored alerts and statuses use them. Each has a `bg-{color}-fill`, `bg-{color}-fill-hover` and `bg-{color}-fill-active` utility.
+
+Unlike the `-lt` shades, the fills are opaque, so they look the same on any surface.
+
+<Example>
+<div class="row g-3">
+  <div class="col-4"><div class="bg-blue-fill text-blue p-4 rounded">bg-blue-fill</div></div>
+  <div class="col-4"><div class="bg-blue-fill-hover text-blue p-4 rounded">bg-blue-fill-hover</div></div>
+  <div class="col-4"><div class="bg-blue-fill-active text-blue p-4 rounded">bg-blue-fill-active</div></div>
+  <div class="col-4"><div class="bg-green-fill text-green p-4 rounded">bg-green-fill</div></div>
+  <div class="col-4"><div class="bg-orange-fill text-orange p-4 rounded">bg-orange-fill</div></div>
+  <div class="col-4"><div class="bg-red-fill text-red p-4 rounded">bg-red-fill</div></div>
+</div>
+</Example>
+
+Note the order of the words in the names: `--tblr-fill-primary` is the strongest neutral fill, while `--tblr-primary-fill` is the fill of the primary color.
 
 ## Gray palette
 

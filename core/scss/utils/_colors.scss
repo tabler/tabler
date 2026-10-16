@@ -61,6 +61,25 @@
   }
 }
 
+// Fills
+.bg-fill {
+  background-color: var(--fill) !important;
+}
+
+@each $level in (primary, secondary, tertiary, quaternary) {
+  .bg-fill-#{$level} {
+    background-color: var(--fill-#{$level}) !important;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  @each $suffix, $amounts in $fill-color-amounts {
+    .bg-#{'' + $color}-#{$suffix} {
+      background-color: var(--#{$color}-#{$suffix}) !important;
+    }
+  }
+}
+
 @each $color, $value in $theme-colors {
   .text-#{'' + $color} {
     --text-opacity: 1;

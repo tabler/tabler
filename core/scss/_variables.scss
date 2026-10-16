@@ -575,7 +575,34 @@ $active-border-color: var(--primary) !default;
 
 $selection-bg: light-dark(color-transparent(var(--primary), 0.1), color-transparent(var(--primary), 0.4)) !default;
 
-$hover-bg: light-dark(color-transparent(var(--body-color), 0.06), color-transparent(var(--body-color), 0.08)) !default;
+// Neutral fills: the text color over transparent, so one tint reads the same
+// on the page, a card, a dropdown or a modal, in both color modes.
+// scss-docs-start fill-variables
+$fill-primary: color-transparent(var(--body-color), 0.16) !default;
+$fill-secondary: color-transparent(var(--body-color), 0.08) !default;
+$fill-tertiary: light-dark(color-transparent(var(--body-color), 0.04), color-transparent(var(--body-color), 0.06)) !default;
+$fill-quaternary: color-transparent(var(--body-color), 0.02) !default;
+
+// Color fills: opaque tints of a palette color, mixed in oklab with white in
+// light mode and with `$fill-color-base-dark` in dark mode.
+$fill-color-base-dark: #111 !default;
+$fill-color-amounts: (
+  'fill': (
+    8%,
+    12%,
+  ),
+  'fill-hover': (
+    15%,
+    20%,
+  ),
+  'fill-active': (
+    24%,
+    27%,
+  ),
+) !default;
+// scss-docs-end fill-variables
+
+$hover-bg: var(--fill-tertiary) !default;
 
 $disabled-bg: var(--bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--body-color), 0.4) !default;
@@ -744,7 +771,7 @@ $icon-color: var(--gray-400) !default;
 
 // Code
 $code-color: light-dark(var(--gray-600), var(--gray-400)) !default;
-$code-bg: light-dark(var(--gray-100), var(--gray-900)) !default;
+$code-bg: var(--fill-tertiary) !default;
 $code-font-size: $font-size-reative-sm !default;
 
 $pre-font-size: 0.92857143em !default;
@@ -777,7 +804,7 @@ $avatar-upload-icon-size: 1.5rem !default;
 $avatar-upload-text-margin-top: 0.25rem !default;
 $avatar-cover-ring-width: 0.25rem !default;
 $avatar-brand-offset: -2px !default;
-$avatar-bg: var(--bg-surface-secondary) !default;
+$avatar-bg: var(--fill-tertiary) !default;
 $avatar-sizes: (
   'xxs': (
     size: 1rem,
@@ -1056,7 +1083,7 @@ $badge-padding-x: 0.5em !default;
 $badge-border-radius: var(--border-radius) !default;
 $badge-empty-size: 0.5rem !default;
 $badge-color: var(--secondary) !default;
-$badge-bg-color: var(--bg-surface-secondary) !default;
+$badge-bg-color: var(--fill-tertiary) !default;
 $badge-gap: 0.25rem !default;
 $badge-padding-x-sm: 0.25rem !default;
 $badge-padding-y-lg: 0.25rem !default;
@@ -1501,7 +1528,7 @@ $tooltip-arrow-height: 0.4rem !default;
 // Loader
 $loader-size: 2.5rem !default;
 
-$list-group-header-bg: var(--bg-surface-tertiary) !default;
+$list-group-header-bg: var(--fill-tertiary) !default;
 $list-group-header-color: var(--secondary-color) !default;
 
 // Modals
@@ -1964,7 +1991,7 @@ $sortable-drag-box-shadow: $box-shadow-lg !default;
 // scss-docs-start progress-variables
 $progress-height: 0.5rem !default;
 $progress-font-size: $font-size-base * 0.75 !default;
-$progress-bg: var(--border-color) !default;
+$progress-bg: var(--fill-secondary) !default;
 $progress-border-radius: var(--border-radius) !default;
 $progress-box-shadow: var(--box-shadow-inset) !default;
 $progress-bar-color: $white !default;
@@ -2140,7 +2167,7 @@ $form-switch-disabled-color: light-dark(var(--gray-400), var(--gray-600)) !defau
 $form-range-track-width: 100% !default;
 $form-range-track-height: 0.25rem !default;
 $form-range-track-cursor: pointer !default;
-$form-range-track-bg: var(--border-color) !default;
+$form-range-track-bg: var(--fill-primary) !default;
 $form-range-track-border-radius: 1rem !default;
 $form-range-track-box-shadow: var(--box-shadow-inset) !default;
 

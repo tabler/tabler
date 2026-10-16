@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 @use 'config' as *;
 
@@ -48,6 +49,13 @@
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
+  }
+
+  // Color fills
+  @each $name, $color in $theme-colors {
+    @each $suffix, $amounts in $fill-color-amounts {
+      --#{$name}-#{$suffix}: light-dark(color-mix(in oklab, var(--#{$name}) #{list.nth($amounts, 1)}, #fff), color-mix(in oklab, var(--#{$name}) #{list.nth($amounts, 2)}, #{$fill-color-base-dark}));
+    }
   }
 
   // Gray colors
