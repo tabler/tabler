@@ -79,13 +79,16 @@
 // padding, 1px border and 3px bottom margin out of the control's padding so
 // the chips fill the same height. The font size is `!important` because the
 // preset sets its own on `.form-select-sm.has-items .ts-control`, which
-// outranks this selector.
+// outranks this selector. The radius comes from the wrapper too: the preset
+// rounds `.ts-control` with `var(--bs-border-radius*)`, which Tabler does not
+// define, so the focus ring of a small or large select came out square.
 .ts-wrapper.form-control,
 .ts-wrapper.form-select {
   .ts-control {
     padding: var(--control-padding-y) var(--control-padding-x);
     font-size: var(--control-font-size) !important;
     line-height: var(--control-line-height);
+    border-radius: inherit;
   }
 
   &.multi.has-items .ts-control {
@@ -168,12 +171,28 @@
   }
 }
 
-.ts-wrapper.disabled .ts-control {
-  background-color: var(--secondary-bg);
-  opacity: 1;
+.ts-wrapper.disabled {
+  .ts-control {
+    background-color: var(--secondary-bg);
+    opacity: 1;
 
-  & > div.item {
-    color: var(--gray-500);
+    & > div.item {
+      color: var(--gray-500);
+    }
+  }
+
+  // The `.form-control` / `.form-select` wrapper draws the rounded border, so a
+  // background on the `.ts-control` inside it spilled over the corners. Paint the
+  // disabled state on the wrapper with the tokens of a native `:disabled` control,
+  // which also covers a single select with a value (`.full`, painted `--body-bg`).
+  &.form-control,
+  &.form-select {
+    background-color: var(--control-disabled-bg);
+    border-color: var(--control-disabled-border-color);
+
+    .ts-control {
+      background-color: transparent;
+    }
   }
 }
 
