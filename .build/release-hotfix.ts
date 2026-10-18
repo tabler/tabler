@@ -1,91 +1,67 @@
 #!/usr/bin/env node
-// Finishes a hotfix release. A hotfix branches off `main` (the last release) and merges back
-// into `main`, where the Release workflow publishes the next patch version. `dev` keeps its
-// pending minor changesets untouched. Run this on `main` once that workflow has put the new
-// version on npm:
+// Finishes a patch release of an older minor, made from a `release/<major>.<minor>` branch
+// (for example `release/1.7` once 1.8.0 is the latest release). Run it on that branch once
+// the release workflow has put the new version on npm:
 //
 //   1. refreshes shared/data/sri.json for that version (`generate:sri --wait`),
-//   2. commits it and pushes `main` (docs.tabler.io is built from `main`),
-//   3. merges `main` into `dev` and pushes `dev`, so the fix, the new version and the
-//      changelog entry reach the next minor.
+//   2. commits it and pushes the release branch,
+//   3. merges the release branch into `main` when `main` is still on the same minor
+//      (docs.tabler.io is built from `main`; a newer minor there keeps its version),
+//   4. merges the release branch into `dev`, so the fix and the changelog entry reach the
+//      current line.
 //
-// The merge happens in a temporary worktree, so the current checkout (and a dev server running
-// from it) never switches branches. A merge conflict stops the script before any push to `dev`;
-// merge `main` into `dev` by hand in that case and keep the version from `main`.
+// The merges happen in a temporary worktree, so the current checkout never switches branches.
+// A merge conflict stops the script before that push; the error says how to finish by hand.
 //
 // Run: pnpm run release:hotfix             (does all of the above)
 //      pnpm run release:hotfix --dry-run   (refreshes and commits locally, pushes nothing)
 
-import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { commitSriHashes, coreVersion, git, mergeAndPush, requireBranch, run } from './release-merge'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const repoRoot = join(__dirname, '..')
-const sriFile = 'shared/data/sri.json'
+const script = 'release:hotfix'
 const dryRun = process.argv.includes('--dry-run')
 
-const git = (args: string[], cwd = repoRoot): string => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim()
-const run = (command: string, args: string[]): void => {
-  execFileSync(command, args, { cwd: repoRoot, stdio: 'inherit' })
-}
 const step = (message: string): void => {
-  console.log(`\nrelease:hotfix: ${message}`)
+  console.log(`\n${script}: ${message}`)
 }
 
-const { version } = JSON.parse(readFileSync(join(repoRoot, 'core', 'package.json'), 'utf8')) as { version: string }
+const minorOf = (version: string): string => version.split('.').slice(0, 2).join('.')
 
 const main = (): void => {
-  if (git(['branch', '--show-current']) !== 'main') {
-    throw new Error('release:hotfix: run this on the `main` branch')
+  const branch = requireBranch(script, /^release\/\d+\.\d+$/)
+  const version = coreVersion()
+
+  if (branch !== `release/${minorOf(version)}`) {
+    throw new Error(`${script}: ${branch} holds @tabler/core v${version} - the branch name and the version do not match`)
   }
 
-  if (git(['status', '--porcelain', '--untracked-files=no']) !== '') {
-    throw new Error('release:hotfix: the working tree has uncommitted changes - commit or stash them first')
-  }
-
-  step('updating main from origin')
-  git(['fetch', 'origin', 'dev', 'main'])
-  git(['merge', '--ff-only', 'origin/main'])
+  step(`updating ${branch} from origin`)
+  git(['fetch', 'origin', branch, 'dev', 'main'])
+  git(['merge', '--ff-only', `origin/${branch}`])
 
   step(`refreshing the SRI hashes for @tabler/core v${version}`)
-  run(join(repoRoot, 'node_modules', '.bin', 'tsx'), [join('.build', 'generate-sri.ts'), '--wait'])
-
-  if (git(['status', '--porcelain', '--', sriFile]) === '') {
-    console.log(`release:hotfix: ${sriFile} is already up to date`)
-  } else {
-    git(['commit', '-m', `Update SRI hashes for v${version}`, '--', sriFile])
-    console.log(`release:hotfix: committed ${sriFile}`)
-  }
+  commitSriHashes(script, version)
 
   if (dryRun) {
     step('--dry-run: stopping before any push')
     return
   }
 
-  step('pushing main')
-  run('git', ['push', 'origin', 'main'])
+  step(`pushing ${branch}`)
+  run('git', ['push', 'origin', branch])
 
-  step('merging main into dev')
-  const worktree = mkdtempSync(join(tmpdir(), 'tabler-dev-'))
-
-  try {
-    git(['worktree', 'add', '--detach', worktree, 'origin/dev'])
-    try {
-      git(['merge', '--no-edit', '-m', `Merge main into dev after v${version}`, 'main'], worktree)
-    } catch {
-      git(['merge', '--abort'], worktree)
-      throw new Error(`release:hotfix: merging main into dev has conflicts - run \`git merge origin/main\` on dev, keep the version from main (v${version}), resolve CHANGELOG.md and push dev`)
-    }
-    execFileSync('git', ['push', 'origin', 'HEAD:dev'], { cwd: worktree, stdio: 'inherit' })
-  } finally {
-    git(['worktree', 'remove', '--force', worktree])
-    rmSync(worktree, { recursive: true, force: true })
+  const mainVersion = (JSON.parse(git(['show', 'origin/main:core/package.json'])) as { version: string }).version
+  if (minorOf(mainVersion) === minorOf(version)) {
+    step(`merging ${branch} into main`)
+    mergeAndPush(script, branch, 'main', `Merge ${branch} into main for v${version}`)
+  } else {
+    step(`main is on v${mainVersion} - skipping the merge into main`)
   }
 
-  step(`done - docs.tabler.io deploys v${version} from main and dev carries the hotfix`)
+  step(`merging ${branch} into dev`)
+  mergeAndPush(script, branch, 'dev', `Merge ${branch} into dev after v${version}`)
+
+  step(`done - v${version} is released and dev carries the fix`)
 }
 
 try {

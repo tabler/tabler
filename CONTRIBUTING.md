@@ -78,12 +78,30 @@ Two of these help with refactors:
 4. **Write the PR in English**: a concise title in present tense (max ~72 chars, no trailing period) and a short description that explains why the change is needed.
 5. **Keep the scope small**: one logical change per pull request makes reviews faster and releases safer.
 
-## Releases and hotfixes
+## Releases
 
-- `dev` is the next minor release. Every push there updates the `chore: update versions` pull request; merging it publishes to npm.
-- `main` is the last release and builds docs.tabler.io. After a minor release, `pnpm run release:main` (on `dev`) refreshes the SRI hashes and merges `dev` into `main`.
-- A **hotfix** for the released version branches off `main` and merges back into `main`, with a `patch` changeset. Write the changeset file by hand: `pnpm exec changeset` compares with `dev`. Merging into `main` opens a `chore: update versions` pull request for the next patch version, independent of the minor changesets waiting on `dev`. Once it is published, `pnpm run release:hotfix` (on `main`) refreshes the SRI hashes and merges `main` into `dev`.
-- Never commit to `main` directly. Changes reach it only through `release:main` or a hotfix pull request.
+Three branches matter:
+
+| Branch | Holds | Releases |
+| ------ | ----- | -------- |
+| `dev` | the current minor: fixes, docs, chores | the next patch (`1.7.1`, `1.7.2`, ...) as `latest` on npm |
+| `next` | the next minor: new components, classes, pages | prereleases (`1.8.0-next.0`, `-next.1`, ...) under the npm tag `next`, no GitHub release |
+| `main` | the last release | nothing; it builds docs.tabler.io |
+
+Every push to `dev` or `next` updates that branch's `chore: update versions` pull request; merging it publishes to npm. Open a pull request against `dev` for a fix and against `next` for a feature. A fix on `next` that users of the current version need goes to `dev` instead, and reaches `next` with the next sync.
+
+**After a patch release** from `dev`: `pnpm run release:main` (on `dev`) refreshes the SRI hashes, merges `dev` into `main` and merges `dev` into `next`. Run it after every release from `dev`, so `next` never drifts.
+
+**Releasing the next minor** (`next` becomes `1.8.0`):
+
+1. On `next`: `pnpm exec changeset pre exit`, commit `.changeset/pre.json` and push. The changesets consumed by the prereleases are still there; the final changelog lists all of them once.
+2. Merge `next` into `dev` (a pull request, or a merge pushed to `dev`). The `chore: update versions` pull request on `dev` now shows `1.8.0`; the `.github/release-notes/1.8.0.md` intro goes in before merging it.
+3. Merge the version pull request, wait for npm, run `pnpm run release:main`.
+4. Start the next line. `dev` now contains `next`, so it fast-forwards: `git checkout next && git merge --ff-only dev && pnpm exec changeset pre enter next && git commit -am "Enter prerelease mode for 1.9" && git push`. The first time, create the branch with `git checkout -b next dev` instead.
+
+**A patch for an older minor** (for example `1.7.3` once `1.8.0` is `latest`) uses a `release/1.7` branch, created from the `@tabler/core@1.7.2` tag. Pull requests with a `patch` changeset go there (write the changeset file by hand: `pnpm exec changeset` compares with `dev`). The branch gets its own `chore: update versions` pull request; merging it publishes. Then `pnpm run release:hotfix` (on `release/1.7`) refreshes the SRI hashes, merges the branch into `main` if `main` is still on 1.7, and into `dev`. Before the first such release check how `pnpm run publish` tags it: the Release workflow publishes as `latest`, and an older line must not take that tag over from the current one.
+
+Never commit to `main` directly. Changes reach it only through `release:main` or `release:hotfix`.
 
 ## Code style
 

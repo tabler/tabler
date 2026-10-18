@@ -12,7 +12,8 @@ on:
   push:
     branches:
       - dev
-      - main
+      - next
+      - 'release/**'
 
 permissions:
   contents: read
@@ -32,9 +33,9 @@ jobs:
         run: pnpm exec turbo build
 
       # Nothing the last release shipped may disappear in a minor release. On the
-      # versions pull request (from `dev` or from `main` for a hotfix) it runs with
-      # --strict, but workflows there wait for a manual approval, so the Release
-      # workflow runs --strict too.
+      # versions pull request (`changeset-release/*`, from `dev`, `next` or a
+      # `release/*` branch) it runs with --strict, but workflows there wait for a
+      # manual approval, so the Release workflow runs --strict too.
       - name: Check backward compatibility
         env:
           STRICT: ${{ startsWith(github.head_ref, 'changeset-release/') && '--strict' || '' }}
