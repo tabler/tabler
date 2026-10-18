@@ -78,6 +78,13 @@ Two of these help with refactors:
 4. **Write the PR in English**: a concise title in present tense (max ~72 chars, no trailing period) and a short description that explains why the change is needed.
 5. **Keep the scope small**: one logical change per pull request makes reviews faster and releases safer.
 
+## Releases and hotfixes
+
+- `dev` is the next minor release. Every push there updates the `chore: update versions` pull request; merging it publishes to npm.
+- `main` is the last release and builds docs.tabler.io. After a minor release, `pnpm run release:main` (on `dev`) refreshes the SRI hashes and merges `dev` into `main`.
+- A **hotfix** for the released version branches off `main` and merges back into `main`, with a `patch` changeset. Write the changeset file by hand: `pnpm exec changeset` compares with `dev`. Merging into `main` opens a `chore: update versions` pull request for the next patch version, independent of the minor changesets waiting on `dev`. Once it is published, `pnpm run release:hotfix` (on `main`) refreshes the SRI hashes and merges `main` into `dev`.
+- Never commit to `main` directly. Changes reach it only through `release:main` or a hotfix pull request.
+
 ## Code style
 
 - Use Bootstrap 5 conventions and Tabler's CSS custom properties pattern: `--component-property`. Write custom properties without a prefix — the build adds the public `--tblr-` prefix. Names owned by a third-party library you are theming must be listed in `cssVarIgnore` in `.build/css-var-prefix.ts` so they stay untouched.

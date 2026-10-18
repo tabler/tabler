@@ -1,9 +1,13 @@
 name: Release
 
+# `dev` releases the next minor. `main` is the last release, so a hotfix merged
+# there releases the next patch while `dev` keeps its pending minor changesets.
+# After a hotfix is published, run `pnpm run release:hotfix` on `main`.
 on:
   push:
     branches:
       - dev
+      - main
 
 permissions:
   contents: read
