@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Updated the terser build of `tabler.min.js` to use two compress passes and ES2020 output.
+Updated the `tabler.min.js` minification to two terser compress passes.
