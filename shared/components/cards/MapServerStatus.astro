@@ -1,0 +1,62 @@
+---
+// A status page map: one marker per region, colored by its state, with the
+// regions listed in a table below. A region with a problem pulses.
+import Map from '../demo/Map.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import StatusDot from '@ui/StatusDot.astro'
+
+const states = {
+  ok: { label: 'Operational', color: 'green' },
+  slow: { label: 'Degraded', color: 'yellow' },
+  down: { label: 'Outage', color: 'red' },
+}
+
+const regions: { name: string; code: string; state: keyof typeof states; latency: string; uptime: string; lng: number; lat: number }[] = [
+  { name: 'Frankfurt', code: 'eu-central', state: 'ok', latency: '24 ms', uptime: '99.99%', lng: 8.6821, lat: 50.1109 },
+  { name: 'London', code: 'eu-west', state: 'ok', latency: '31 ms', uptime: '99.98%', lng: -0.1276, lat: 51.5072 },
+  { name: 'Virginia', code: 'us-east', state: 'slow', latency: '212 ms', uptime: '99.71%', lng: -77.4874, lat: 39.0438 },
+  { name: 'São Paulo', code: 'sa-east', state: 'ok', latency: '48 ms', uptime: '99.95%', lng: -46.6333, lat: -23.5505 },
+  { name: 'Singapore', code: 'ap-southeast', state: 'down', latency: '-', uptime: '98.20%', lng: 103.8198, lat: 1.3521 },
+  { name: 'Sydney', code: 'ap-south', state: 'ok', latency: '36 ms', uptime: '99.97%', lng: 151.2093, lat: -33.8688 },
+]
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Server status</CardTitle>
+  </CardHeader>
+  <Map mapId="servers" title="Server status" center={[20, 40]} zoom={0.45} height="20rem" rounded={false}>
+    {regions.map((region) => <span class:list={['map-marker map-marker-dot', `map-marker-${states[region.state].color}`, region.state !== 'ok' && 'map-marker-pulse']} data-bs-lng={region.lng} data-bs-lat={region.lat} data-bs-popup={`${region.name}: ${states[region.state].label}`} />)}
+  </Map>
+  <div class="table-responsive">
+    <table class="table table-vcenter card-table">
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th>Status</th>
+          <th class="text-end">Latency</th>
+          <th class="text-end">Uptime</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          regions.map((region) => (
+            <tr>
+              <td>
+                {region.name} <span class="text-secondary">{region.code}</span>
+              </td>
+              <td>
+                <StatusDot color={states[region.state].color} animated={region.state !== 'ok'} class="me-2" />
+                {states[region.state].label}
+              </td>
+              <td class="text-end">{region.latency}</td>
+              <td class="text-end">{region.uptime}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</Card>

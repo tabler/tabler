@@ -1,6 +1,6 @@
 /**
  * --------------------------------------------------------------------------
- * Tabler stepper.ts
+ * Tabler number-input.ts
  * Licensed under MIT (https://github.com/tabler/tabler/blob/dev/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -12,7 +12,7 @@ import { initAll } from './bootstrap/util/component-functions'
 import { isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
-type StepperAction = 'increment' | 'decrement'
+type NumberInputAction = 'increment' | 'decrement'
 
 type ComponentConfig = {
   /** lower bound; `null` reads the input's `min` attribute, no bound when that is missing too */
@@ -38,23 +38,25 @@ type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
  * Constants
  */
 
-const NAME = 'stepper'
+const NAME = 'numberInput'
+// the attribute spelling: `data-bs-toggle="number-input"`, `data-bs-number-input-action`
+const DATA_NAME = 'number-input'
 const DATA_KEY = `bs.${NAME}`
 const EVENT_KEY = `.${DATA_KEY}`
 
 const EVENT_CHANGE = `change${EVENT_KEY}`
 
-const CLASS_NAME_STEPPER = 'stepper'
+const CLASS_NAME_NUMBER_INPUT = 'number-input'
 const CLASS_NAME_BUTTON = 'btn btn-icon'
 
-const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
+const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${DATA_NAME}"], [data-tblr-toggle="${DATA_NAME}"]`
 const SELECTOR_INPUT = 'input'
-const SELECTOR_ACTION = `[data-bs-${NAME}-action], [data-tblr-${NAME}-action]`
+const SELECTOR_ACTION = `[data-bs-${DATA_NAME}-action], [data-tblr-${DATA_NAME}-action]`
 
-const ATTRIBUTES_ACTION = [`data-bs-${NAME}-action`, `data-tblr-${NAME}-action`]
+const ATTRIBUTES_ACTION = [`data-bs-${DATA_NAME}-action`, `data-tblr-${DATA_NAME}-action`]
 const ATTRIBUTE_ACTION = ATTRIBUTES_ACTION[0]
 
-// `.form-control-sm` on a bare input becomes `.stepper-sm` on the rendered box
+// `.form-control-sm` on a bare input becomes `.number-input-sm` on the rendered box
 const SIZES = ['sm', 'lg']
 
 const KEY_UP = 'ArrowUp'
@@ -96,12 +98,12 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
  * all write to it, clamp to `min` / `max` and round to the precision of
  * `step`, so a form sees nothing but an ordinary field.
  *
- * Initialised on a bare `<input>`, the plugin wraps it in `.stepper` and
- * renders the two buttons itself; initialised on a `.stepper` wrapper, it
+ * Initialised on a bare `<input>`, the plugin wraps it in `.number-input` and
+ * renders the two buttons itself; initialised on a `.number-input` wrapper, it
  * uses the buttons found in the markup.
  */
 
-class Stepper extends BaseComponent {
+class NumberInput extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
   _input: HTMLInputElement | null = null
@@ -217,20 +219,20 @@ class Stepper extends BaseComponent {
   }
 
   // Private
-  // Puts a bare input into a `.stepper` box with a button on each side. The
+  // Puts a bare input into a `.number-input` box with a button on each side. The
   // buttons are empty: the stylesheet paints their icons.
   _renderWrapper(): void {
     const input = this._input!
     const wrapper = document.createElement('div')
-    wrapper.className = CLASS_NAME_STEPPER
+    wrapper.className = CLASS_NAME_NUMBER_INPUT
 
     for (const size of SIZES) {
       if (input.classList.contains(`form-control-${size}`)) {
-        wrapper.classList.add(`${CLASS_NAME_STEPPER}-${size}`)
+        wrapper.classList.add(`${CLASS_NAME_NUMBER_INPUT}-${size}`)
       }
     }
 
-    const button = (action: StepperAction, label: string): HTMLButtonElement => {
+    const button = (action: NumberInputAction, label: string): HTMLButtonElement => {
       const element = document.createElement('button')
       element.type = 'button'
       element.className = CLASS_NAME_BUTTON
@@ -311,7 +313,7 @@ class Stepper extends BaseComponent {
     }
   }
 
-  _actionOf(button: HTMLElement): StepperAction | null {
+  _actionOf(button: HTMLElement): NumberInputAction | null {
     for (const name of ATTRIBUTES_ACTION) {
       const action = button.getAttribute(name)
       if (action === 'increment' || action === 'decrement') {
@@ -370,7 +372,7 @@ class Stepper extends BaseComponent {
     }
   }
 
-  _runAction(action: StepperAction | null): void {
+  _runAction(action: NumberInputAction | null): void {
     if (action === 'increment') {
       this.increment()
     } else if (action === 'decrement') {
@@ -554,8 +556,8 @@ class Stepper extends BaseComponent {
  * Data API implementation
  */
 
-// js-docs-start stepper-init
-initAll(SELECTOR_DATA_TOGGLE, Stepper)
-// js-docs-end stepper-init
+// js-docs-start number-input-init
+initAll(SELECTOR_DATA_TOGGLE, NumberInput)
+// js-docs-end number-input-init
 
-export default Stepper
+export default NumberInput
