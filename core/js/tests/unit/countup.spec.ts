@@ -3,6 +3,9 @@ import { clearFixture, getFixture } from '../helpers/fixture'
 import CountUp from '../../src/countup'
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+// Waits for the animation to end instead of a fixed time, since animation frames run late on a slow CI runner.
+const completed = (el: HTMLElement): Promise<void> =>
+  new Promise((resolve) => el.addEventListener('complete.bs.countup', () => resolve(), { once: true }))
 
 describe('CountUp', () => {
   let fixtureEl: HTMLElement
@@ -254,11 +257,12 @@ describe('CountUp', () => {
     it('should count a time in minutes and print it as h:mm', async () => {
       fixtureEl.innerHTML = '<h1 data-countup=\'{"format":"time","suffix":" hrs"}\'>3:28</h1>'
 
+      const done = completed(element())
       const instance = new CountUp(element(), { autoAnimate: false, duration: 0.1 })
       expect(instance._endVal).toBe(208)
       expect(element().textContent).toBe('0:00 hrs')
 
-      await wait(300)
+      await done
       expect(element().textContent).toBe('3:28 hrs')
     })
 
