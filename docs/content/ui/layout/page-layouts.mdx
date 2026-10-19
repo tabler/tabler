@@ -470,10 +470,11 @@ Without the attribute, add the `offcanvas-floating` class to a single panel.
 
 ### Navigation position
 
-`data-bs-navbar-position` picks which navigation the page shows:
+`data-bs-navbar-position` picks which navigation the page shows. `horizontal` is the default, `vertical` shows the sidebar instead, and `combined` shows both at once:
 
 ```html
 <html data-bs-navbar-position="vertical">
+<html data-bs-navbar-position="combined">
 ```
 
 This one needs the markup to cooperate. Render **both** navigations as direct children of `.page`, the vertical `aside` first:
@@ -486,7 +487,7 @@ This one needs the markup to cooperate. Render **both** navigations as direct ch
 </div>
 ```
 
-The CSS then shows one and hides the other, and removes the sidebar's width from the page offset when the sidebar is hidden. Both rules only fire when the other navigation really is on the page, so a page with a single navbar keeps it whatever the stored value says. That is what makes the layout safe to switch at runtime: no stored choice can leave a visitor with no navigation.
+The CSS then shows one and hides the other, and removes the sidebar's width from the page offset when the sidebar is hidden. `combined` opts out of both rules, so the sidebar and the top navbar stay on screen together, the way a page with both navbars rendered before 1.5. Both rules only fire when the other navigation really is on the page, so a page with a single navbar keeps it whatever the stored value says. That is what makes the layout safe to switch at runtime: no stored choice can leave a visitor with no navigation.
 
 The demo pages use this: every page renders both navigations, and the layout demos state their own variant with the attribute.
 
