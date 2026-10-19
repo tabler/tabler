@@ -78,6 +78,29 @@ Two of these help with refactors:
 4. **Write the PR in English**: a concise title in present tense (max ~72 chars, no trailing period) and a short description that explains why the change is needed.
 5. **Keep the scope small**: one logical change per pull request makes reviews faster and releases safer.
 
+## Releases
+
+Only three long-lived branches exist: `main`, `dev` and `next`. There are no `release/*` branches; a fix always ships from `dev` as the next patch of the current minor.
+
+| Branch | Holds | Releases |
+| ------ | ----- | -------- |
+| `dev` | the current minor: fixes, docs, chores | the next patch (`1.7.1`, `1.7.2`, ...) as `latest` on npm |
+| `next` | the next minor: new components, classes, pages | prereleases (`1.8.0-next.0`, `-next.1`, ...) under the npm tag `next`, no GitHub release |
+| `main` | the last release | nothing; it builds docs.tabler.io |
+
+Every push to `dev` or `next` updates that branch's `chore: update versions` pull request; merging it publishes to npm. Open a pull request against `dev` for a fix and against `next` for a feature. A fix on `next` that users of the current version need goes to `dev` instead, and reaches `next` with the next sync.
+
+**After a patch release** from `dev`: `pnpm run release:main` (on `dev`) refreshes the SRI hashes, merges `dev` into `main` and merges `dev` into `next`. Run it after every release from `dev`, so `next` never drifts.
+
+**Releasing the next minor** (`next` becomes `1.8.0`):
+
+1. On `next`: `pnpm exec changeset pre exit`, commit `.changeset/pre.json` and push. The changesets consumed by the prereleases are still there; the final changelog lists all of them once.
+2. Merge `next` into `dev` (a pull request, or a merge pushed to `dev`). The `chore: update versions` pull request on `dev` now shows `1.8.0`; the `.github/release-notes/1.8.0.md` intro goes in before merging it.
+3. Merge the version pull request, wait for npm, run `pnpm run release:main`.
+4. Start the next line. `dev` now contains `next`, so it fast-forwards: `git checkout next && git merge --ff-only dev && pnpm exec changeset pre enter next && git commit -am "Enter prerelease mode for 1.9" && git push`. The first time, create the branch with `git checkout -b next dev` instead.
+
+Never commit to `main` directly. Changes reach it only through `release:main`.
+
 ## Code style
 
 - Use Bootstrap 5 conventions and Tabler's CSS custom properties pattern: `--component-property`. Write custom properties without a prefix — the build adds the public `--tblr-` prefix. Names owned by a third-party library you are theming must be listed in `cssVarIgnore` in `.build/css-var-prefix.ts` so they stay untouched.
