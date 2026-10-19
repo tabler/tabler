@@ -1,28 +1,28 @@
 /*
-Stepper (number input with buttons)
+Number input (a field with a decrease and an increase button)
  */
 @use 'sass:map';
 @use '../../config' as *;
 
 // One bordered box, like a `.form-control`: the field in the middle and the
 // two buttons inside it have no border of their own.
-.stepper {
-  // scss-docs-start stepper-css-vars
-  --stepper-input-width: #{$stepper-input-width};
-  --stepper-bg: #{$stepper-bg};
-  --stepper-border-color: #{$stepper-border-color};
-  --stepper-border-radius: #{$stepper-border-radius};
-  // scss-docs-end stepper-css-vars
+.number-input {
+  // scss-docs-start number-input-css-vars
+  --number-input-input-width: #{$number-input-input-width};
+  --number-input-bg: #{$number-input-bg};
+  --number-input-border-color: #{$number-input-border-color};
+  --number-input-border-radius: #{$number-input-border-radius};
+  // scss-docs-end number-input-css-vars
   position: relative;
   display: inline-flex;
   align-items: stretch;
   // Never stretched by a flex column parent: the box is as wide as its parts
   width: fit-content;
   vertical-align: middle;
-  background-color: var(--stepper-bg);
-  border: $input-border-width solid var(--stepper-border-color);
+  background-color: var(--number-input-bg);
+  border: $input-border-width solid var(--number-input-border-color);
   box-shadow: $input-box-shadow;
-  @include border-radius(var(--stepper-border-radius));
+  @include border-radius(var(--number-input-border-radius));
   @include focus-ring-transition(border-color);
 
   // The box carries the focus ring for the field inside it.
@@ -40,7 +40,7 @@ Stepper (number input with buttons)
     // stylelint-disable-next-line length-zero-no-unit
     --control-border-width: 0px;
     flex: 0 0 auto;
-    width: var(--stepper-input-width);
+    width: var(--number-input-input-width);
     min-width: 0;
     padding-inline: 0.25rem;
     text-align: center;
@@ -51,7 +51,7 @@ Stepper (number input with buttons)
     box-shadow: none;
 
     // A `type="number"` field keeps its keyboard behaviour but loses the
-    // native spin buttons, which the stepper's own buttons replace.
+    // native spin buttons, which the number input's own buttons replace.
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       margin: 0;
@@ -95,14 +95,14 @@ Stepper (number input with buttons)
 
     // An empty button paints the default icon through a CSS mask, so the
     // markup needs no svg; any content put inside replaces it.
-    &[data-bs-stepper-action='decrement'],
-    &[data-tblr-stepper-action='decrement'] {
-      --stepper-icon: #{escape-svg($stepper-icon-decrement)};
+    &[data-bs-number-input-action='decrement'],
+    &[data-tblr-number-input-action='decrement'] {
+      --number-input-icon: #{escape-svg($number-input-icon-decrement)};
     }
 
-    &[data-bs-stepper-action='increment'],
-    &[data-tblr-stepper-action='increment'] {
-      --stepper-icon: #{escape-svg($stepper-icon-increment)};
+    &[data-bs-number-input-action='increment'],
+    &[data-tblr-number-input-action='increment'] {
+      --number-input-icon: #{escape-svg($number-input-icon-increment)};
     }
 
     &:not(:has(> *))::before {
@@ -110,15 +110,15 @@ Stepper (number input with buttons)
       height: var(--btn-icon-size);
       content: '';
       background-color: currentColor;
-      @include mask-icon(var(--stepper-icon), $size: 100%);
+      @include mask-icon(var(--number-input-icon), $size: 100%);
     }
 
     &:first-child {
-      @include border-start-radius(calc(var(--stepper-border-radius) - #{$input-border-width}));
+      @include border-start-radius(calc(var(--number-input-border-radius) - #{$input-border-width}));
     }
 
     &:last-child {
-      @include border-end-radius(calc(var(--stepper-border-radius) - #{$input-border-width}));
+      @include border-end-radius(calc(var(--number-input-border-radius) - #{$input-border-width}));
     }
   }
 
@@ -144,9 +144,9 @@ Stepper (number input with buttons)
 // Sizes move the same tokens `.form-control-sm` / `.btn-sm` and their `-lg`
 // twins read, so the field and the buttons keep one height.
 @each $size in (sm, lg) {
-  .stepper-#{$size} {
-    --stepper-input-width: #{map.get($stepper-input-widths, $size)};
-    --stepper-border-radius: var(--btn-input-#{$size}-border-radius);
+  .number-input-#{$size} {
+    --number-input-input-width: #{map.get($number-input-input-widths, $size)};
+    --number-input-border-radius: var(--btn-input-#{$size}-border-radius);
 
     > .form-control {
       --control-padding-y: var(--btn-input-#{$size}-padding-y);
@@ -158,7 +158,7 @@ Stepper (number input with buttons)
       --btn-padding-y: var(--btn-input-#{$size}-padding-y);
       --btn-font-size: var(--btn-input-#{$size}-font-size);
       --btn-line-height: var(--btn-input-#{$size}-line-height);
-      --btn-icon-size: #{map.get($stepper-icon-sizes, $size)};
+      --btn-icon-size: #{map.get($number-input-icon-sizes, $size)};
     }
   }
 }

@@ -575,7 +575,17 @@ $active-border-color: var(--primary) !default;
 
 $selection-bg: light-dark(color-transparent(var(--primary), 0.1), color-transparent(var(--primary), 0.4)) !default;
 
-$hover-bg: light-dark(color-transparent(var(--body-color), 0.06), color-transparent(var(--body-color), 0.08)) !default;
+// Neutral fills: the text color over transparent, so one tint reads the same
+// on the page, a card, a dropdown or a modal, in both color modes.
+// scss-docs-start fill-variables
+$fill-primary: color-transparent(var(--body-color), 0.16) !default;
+$fill-secondary: color-transparent(var(--body-color), 0.08) !default;
+$fill-tertiary: light-dark(color-transparent(var(--body-color), 0.04), color-transparent(var(--body-color), 0.06)) !default;
+$fill-quaternary: color-transparent(var(--body-color), 0.02) !default;
+
+// scss-docs-end fill-variables
+
+$hover-bg: var(--fill-tertiary) !default;
 
 $disabled-bg: var(--bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--body-color), 0.4) !default;
@@ -744,7 +754,7 @@ $icon-color: var(--gray-400) !default;
 
 // Code
 $code-color: light-dark(var(--gray-600), var(--gray-400)) !default;
-$code-bg: light-dark(var(--gray-100), var(--gray-900)) !default;
+$code-bg: var(--fill-tertiary) !default;
 $code-font-size: $font-size-reative-sm !default;
 
 $pre-font-size: 0.92857143em !default;
@@ -777,7 +787,7 @@ $avatar-upload-icon-size: 1.5rem !default;
 $avatar-upload-text-margin-top: 0.25rem !default;
 $avatar-cover-ring-width: 0.25rem !default;
 $avatar-brand-offset: -2px !default;
-$avatar-bg: var(--bg-surface-secondary) !default;
+$avatar-bg: var(--fill-tertiary) !default;
 $avatar-sizes: (
   'xxs': (
     size: 1rem,
@@ -1056,7 +1066,7 @@ $badge-padding-x: 0.5em !default;
 $badge-border-radius: var(--border-radius) !default;
 $badge-empty-size: 0.5rem !default;
 $badge-color: var(--secondary) !default;
-$badge-bg-color: var(--bg-surface-secondary) !default;
+$badge-bg-color: var(--fill-tertiary) !default;
 $badge-gap: 0.25rem !default;
 $badge-padding-x-sm: 0.25rem !default;
 $badge-padding-y-lg: 0.25rem !default;
@@ -1136,6 +1146,12 @@ $btn-active-border-shade-amount: 25% !default;
 $btn-active-border-tint-amount: 10% !default;
 
 $btn-border-color: var(--border-color) !default;
+
+// Hover and active backgrounds of the default button. `$hover-bg` and
+// `$active-bg` are tints over `transparent`; a button over a photo would
+// show it through, so the same tints are mixed over the button surface instead.
+$btn-hover-bg: light-dark(color-transparent(var(--body-color), 0.06, var(--bg-surface)), color-transparent(var(--body-color), 0.08, var(--bg-surface))) !default;
+$btn-active-bg: light-dark(color-transparent(var(--primary), 0.04, var(--bg-surface)), color-transparent(var(--primary), 0.12, var(--bg-surface))) !default;
 
 $btn-color: var(--body-color) !default;
 $btn-padding-y: $input-btn-padding-y !default;
@@ -1220,24 +1236,24 @@ $otp-slot-box-shadow: var(--shadow-input) !default;
 $otp-separator-color: var(--secondary) !default;
 // scss-docs-end otp-variables
 
-// Stepper
-// scss-docs-start stepper-variables
-$stepper-input-width: 3.5rem !default;
-$stepper-input-widths: (
+// NumberInput
+// scss-docs-start number-input-variables
+$number-input-input-width: 3.5rem !default;
+$number-input-input-widths: (
   'sm': 3rem,
   'lg': 4rem,
 ) !default;
-$stepper-icon-sizes: (
+$number-input-icon-sizes: (
   'sm': $input-btn-icon-size-sm,
   'lg': $input-btn-icon-size-lg,
 ) !default;
-$stepper-bg: $input-bg !default;
-$stepper-border-color: var(--border-color) !default;
-$stepper-border-radius: $input-border-radius !default;
+$number-input-bg: $input-bg !default;
+$number-input-border-color: var(--border-color) !default;
+$number-input-border-radius: $input-border-radius !default;
 // Monochrome icons, painted with `currentColor` through `mask-icon()` on an empty button.
-$stepper-icon-decrement: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14'/></svg>") !default;
-$stepper-icon-increment: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 5v14M5 12h14'/></svg>") !default;
-// scss-docs-end stepper-variables
+$number-input-icon-decrement: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 12h14'/></svg>") !default;
+$number-input-icon-increment: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 5v14M5 12h14'/></svg>") !default;
+// scss-docs-end number-input-variables
 
 // Cards
 // scss-docs-start card-variables
@@ -1519,7 +1535,7 @@ $tooltip-arrow-height: 0.4rem !default;
 // Loader
 $loader-size: 2.5rem !default;
 
-$list-group-header-bg: var(--bg-surface-tertiary) !default;
+$list-group-header-bg: var(--fill-tertiary) !default;
 $list-group-header-color: var(--secondary-color) !default;
 
 // Modals
@@ -1982,7 +1998,7 @@ $sortable-drag-box-shadow: $box-shadow-lg !default;
 // scss-docs-start progress-variables
 $progress-height: 0.5rem !default;
 $progress-font-size: $font-size-base * 0.75 !default;
-$progress-bg: var(--border-color) !default;
+$progress-bg: var(--fill-secondary) !default;
 $progress-border-radius: var(--border-radius) !default;
 $progress-box-shadow: var(--box-shadow-inset) !default;
 $progress-bar-color: $white !default;
@@ -2050,6 +2066,15 @@ $list-group-item-gap-lg: 1.25rem !default;
 // Color variants: a tinted row, matched to the `bg-{color}-lt` utilities
 $list-group-variant-border-alpha: 0.24 !default;
 $list-group-variant-hover-alpha: 0.16 !default;
+
+// Icon list
+// scss-docs-start list-icon-variables
+$list-icon-gap: 0.5rem !default;
+$list-icon-row-gap: 0.5rem !default;
+$list-icon-inline-gap: 1.5rem !default;
+$list-icon-size: 1rem !default;
+$list-icon-color: var(--secondary) !default;
+// scss-docs-end list-icon-variables
 
 // Forms
 $input-disabled-bg: var(--bg-forms-disabled) !default;
@@ -2158,7 +2183,7 @@ $form-switch-disabled-color: light-dark(var(--gray-400), var(--gray-600)) !defau
 $form-range-track-width: 100% !default;
 $form-range-track-height: 0.25rem !default;
 $form-range-track-cursor: pointer !default;
-$form-range-track-bg: var(--border-color) !default;
+$form-range-track-bg: var(--fill-primary) !default;
 $form-range-track-border-radius: 1rem !default;
 $form-range-track-box-shadow: var(--box-shadow-inset) !default;
 

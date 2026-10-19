@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Moved the `.pricing` component from `tabler-marketing.css` to the core `tabler.css` bundle.
+Updated `.pricing` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
