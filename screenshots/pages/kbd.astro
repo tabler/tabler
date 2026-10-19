@@ -1,0 +1,40 @@
+---
+// Keyboard keys where people meet them most: the shortcuts in an open actions
+// menu. Every shortcut is a `.kbd-group`, so the keys of one combination sit
+// together with an even gap. The menu is written open (`show`, static
+// position) because the capture cannot click; the cursor rests on one item.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Icon from '@ui/Icon.astro'
+
+const actions = [
+  { label: 'New file', icon: 'file-plus', keys: ['⌘', 'N'] },
+  { label: 'Search', icon: 'search', keys: ['⌘', 'K'], active: true },
+  { label: 'Duplicate', icon: 'copy', keys: ['⌘', 'D'] },
+  { label: 'Move to folder', icon: 'folder', keys: ['⌘', '⇧', 'M'] },
+]
+---
+
+<ScreenshotLayout title="Keyboard keys" columns={1} zoom={1.5} class="d-flex justify-content-center">
+  <div class="dropdown-menu show position-static">
+    {
+      actions.map((action) => (
+        <a href="#" class:list={['dropdown-item position-relative', action.active && 'active']}>
+          <Icon name={action.icon} class="dropdown-item-icon" />
+          {action.label}
+          <kbd class="kbd-group ms-auto ps-4">
+            {action.keys.map((key) => (
+              <kbd>{key}</kbd>
+            ))}
+          </kbd>
+          {action.active && <span class="cursor" />}
+        </a>
+      ))
+    }
+    <div class="dropdown-divider"></div>
+    <a href="#" class="dropdown-item text-danger">
+      <Icon name="trash" class="dropdown-item-icon" />
+      Delete
+      <kbd class="kbd-group ms-auto ps-4"><kbd>⌘</kbd><kbd>⌫</kbd></kbd>
+    </a>
+  </div>
+</ScreenshotLayout>
