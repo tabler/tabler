@@ -4,7 +4,7 @@ const VARIANTS = ['primary', 'secondary', 'success', 'info', 'warning', 'danger'
 
 export type AlertDialogOptions = {
   title?: string
-  message?: string
+  message?: string | Element
   confirmText?: string
   cancelText?: string
   variant?: (typeof VARIANTS)[number]
@@ -80,7 +80,11 @@ const show = (input: string | AlertDialogOptions, withCancel: boolean): Promise<
       root.querySelector(selector)!.textContent = text
     }
     set('h3', title)
-    set(`#${id}-description`, message)
+    if (message instanceof Element) {
+      root.querySelector(`#${id}-description`)!.append(message)
+    } else {
+      set(`#${id}-description`, message)
+    }
     set('[data-confirm]', confirmText)
     root.querySelector('[data-confirm]')!.classList.add(`btn-${color}`)
     if (withCancel) {
