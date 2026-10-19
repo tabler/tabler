@@ -24,6 +24,8 @@ interface Props {
   selectAll?: boolean
   /** up / down buttons to reorder the target list */
   reorder?: boolean
+  /** data-bs-draggable: rows can be dragged to the other list and reordered in the target list (default: true) */
+  draggable?: boolean
   /** data-bs-counter-template: `{checked}` and `{total}` are replaced (default: `{checked} / {total}`) */
   counterTemplate?: string
   /** placeholder of the search fields */
@@ -35,7 +37,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { items, selected = [], name, titles = ['Available', 'Selected'], search = false, selectAll = true, reorder = false, counterTemplate, searchPlaceholder = 'Search…', height, class: className, ...rest } = Astro.props
+const { items, selected = [], name, titles = ['Available', 'Selected'], search = false, selectAll = true, reorder = false, draggable = true, counterTemplate, searchPlaceholder = 'Search…', height, class: className, ...rest } = Astro.props
 
 const sides = [
   { side: 'source', title: titles[0], items: items.filter((item) => !selected.includes(item.value)) },
@@ -45,7 +47,7 @@ const sides = [
 const style = height ? `--tblr-transfer-list-height: ${height}` : undefined
 ---
 
-<div class:list={['transfer', className]} data-bs-toggle="transfer" data-bs-name={name} data-bs-counter-template={counterTemplate} style={style} {...rest}>
+<div class:list={['transfer', className]} data-bs-toggle="transfer" data-bs-name={name} data-bs-counter-template={counterTemplate} data-bs-draggable={draggable ? undefined : 'false'} style={style} {...rest}>
   {
     sides.map(({ side, title, items: rows }, index) => (
       <>

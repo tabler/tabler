@@ -2,7 +2,7 @@
 title: Transfer
 seoTitle: Transfer (dual listbox)
 summary: A transfer is a pair of lists with buttons between them, to move items from the available list to the selected one and back.
-description: Add a transfer (dual listbox) with search, select all, reordering and a hidden select that keeps a form in sync.
+description: Add a transfer (dual listbox) with search, select all, reordering, drag and drop and a hidden select that keeps a form in sync.
 related: [/ui/components/list-group, /ui/forms/elements]
 source: core/scss/ui/_transfer.scss
 css-vars: transfer
@@ -21,6 +21,15 @@ classnames:
       desc: A row; carries the value in `data-value`
     - class: transfer-actions
       desc: The column of buttons between the panels
+  state:
+    - class: dragging
+      desc: Set on a row while it is dragged
+    - class: drag-over
+      desc: Set on a list while dragged rows are over it
+    - class: drop-before
+      desc: Set on the row the dragged rows will land in front of
+    - class: drop-after
+      desc: Set on the last row of a list when the dragged rows will land after it
 ---
 
 import Example from '@components/Example.astro'
@@ -29,8 +38,8 @@ import Transfer from '@ui/Transfer.astro'
 
 ## Overview
 
-A transfer is two lists side by side. Click rows to check them, then use the buttons between the lists to move the checked rows across, or move every row at once. The rows stay in the markup; the plugin moves them and keeps a `<select multiple>` in sync, so a form submits the values of the rows in the right-hand list
-like any other field.
+A transfer is two lists side by side. Click rows to check them, then use the buttons between the lists to move the checked rows across, or move every row at once. Rows can also be dragged from one list to the other. The rows stay in the markup; the plugin moves them and keeps a `<select multiple>` in sync, so a form
+submits the values of the rows in the right-hand list like any other field.
 
 <Example columnFullWidth>
   <Transfer
@@ -117,9 +126,30 @@ Add the `up` and `down` buttons to move the checked rows of the right-hand list 
   />
 </Example>
 
+### Drag and drop
+
+Rows can be dragged to the other list. Dropping a row in the right-hand list puts it where it was dropped, so dragging also reorders that list; a row dropped in the left-hand list goes back to its original place. Dragging a checked row takes every checked row of its list along. A line shows where the rows will land.
+
+Drag and drop is a shortcut: the buttons and the keyboard still do everything, so it works on touch screens too. Set `data-bs-draggable="false"` to turn it off.
+
+<Example columnFullWidth>
+  <Transfer
+    items={[
+      { value: 'ada', label: 'Ada Lovelace' },
+      { value: 'alan', label: 'Alan Turing' },
+      { value: 'grace', label: 'Grace Hopper' },
+      { value: 'linus', label: 'Linus Torvalds' },
+    ]}
+    selected={['grace']}
+    titles={['Available', 'Selected']}
+    selectAll={false}
+    height="12rem"
+  />
+</Example>
+
 ### Disabled rows
 
-Add `aria-disabled="true"` to a row to keep it from being checked or moved.
+Add `aria-disabled="true"` to a row to keep it from being checked, moved or dragged.
 
 ### Form value
 
@@ -133,10 +163,11 @@ The lists are `role="listbox"` with `aria-multiselectable`, and the rows are opt
 
 Options are read from `data-bs-*` attributes on the root (the `data-tblr-*` alias also works), or passed to the constructor.
 
-| Option            | Type           | Default                   | Description                                                                           |
-| ----------------- | -------------- | ------------------------- | ------------------------------------------------------------------------------------- |
-| `counterTemplate` | string         | `\'{checked} / {total}\'` | Text of the counter in a panel header; `{checked}` and `{total}` are replaced.        |
-| `name`            | string or null | `null`                    | `name` of the hidden `<select multiple>` the plugin renders when the markup has none. |
+| Option            | Type           | Default                   | Description                                                                             |
+| ----------------- | -------------- | ------------------------- | --------------------------------------------------------------------------------------- |
+| `counterTemplate` | string         | `\'{checked} / {total}\'` | Text of the counter in a panel header; `{checked}` and `{total}` are replaced.          |
+| `draggable`       | boolean        | `true`                    | Rows can be dragged to the other list and reordered by dragging in the right-hand list. |
+| `name`            | string or null | `null`                    | `name` of the hidden `<select multiple>` the plugin renders when the markup has none.   |
 
 ## JavaScript
 
