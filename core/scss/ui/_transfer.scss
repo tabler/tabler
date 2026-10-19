@@ -11,6 +11,8 @@
   --transfer-item-padding-x: #{$transfer-item-padding-x};
   --transfer-item-hover-bg: #{$transfer-item-hover-bg};
   --transfer-item-selected-bg: #{$transfer-item-selected-bg};
+  --transfer-drop-indicator-color: #{$transfer-drop-indicator-color};
+  --transfer-drag-over-bg: #{$transfer-drag-over-bg};
   // scss-docs-end transfer-css-vars
   display: flex;
   flex-direction: column;
@@ -42,6 +44,7 @@
 }
 
 .transfer-item {
+  position: relative;
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -74,6 +77,40 @@
     cursor: default;
     opacity: 0.6;
   }
+
+  &[draggable='true'] {
+    cursor: grab;
+  }
+
+  &.dragging {
+    opacity: 0.4;
+  }
+
+  // Line that shows where the dragged rows will land
+  &.drop-before,
+  &.drop-after {
+    &::after {
+      position: absolute;
+      inset-inline: 0;
+      z-index: 2;
+      height: 2px;
+      pointer-events: none;
+      content: '';
+      background-color: var(--transfer-drop-indicator-color);
+    }
+  }
+
+  &.drop-before::after {
+    top: 0;
+  }
+
+  &.drop-after::after {
+    bottom: 0;
+  }
+}
+
+.transfer-list.drag-over {
+  background-color: var(--transfer-drag-over-bg);
 }
 
 .transfer-actions {

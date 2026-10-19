@@ -20,6 +20,8 @@ type TransferDirection = 'add' | 'remove' | 'reorder'
 type ComponentConfig = {
   /** text of the counter in a panel header; `{checked}` and `{total}` are replaced */
   counterTemplate: string
+  /** rows can be dragged to the other list, and reordered by dragging in the target list */
+  draggable: boolean
   /** `name` of the `<select multiple>` the plugin renders when the markup has none; `null` renders nothing */
   name: string | null
 }
@@ -37,6 +39,10 @@ const EVENT_KEY = `.${DATA_KEY}`
 const EVENT_CHANGE = `change${EVENT_KEY}`
 
 const CLASS_NAME_ITEM = 'transfer-item'
+const CLASS_NAME_DRAGGING = 'dragging'
+const CLASS_NAME_DRAG_OVER = 'drag-over'
+const CLASS_NAME_DROP_BEFORE = 'drop-before'
+const CLASS_NAME_DROP_AFTER = 'drop-after'
 
 const attributeSelector = (name: string): string => `[data-bs-${name}], [data-tblr-${name}]`
 
@@ -65,11 +71,13 @@ const KEY_ENTER = 'Enter'
 
 const Default: ComponentConfig = {
   counterTemplate: '{checked} / {total}',
+  draggable: true,
   name: null,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   counterTemplate: 'string',
+  draggable: 'boolean',
   name: '(string|null)',
 }
 
@@ -89,11 +97,19 @@ class Transfer extends BaseComponent {
   _select: HTMLSelectElement | null = null
   // Position of every row in the markup, so a row sent back lands where it came from
   _order = new Map<HTMLElement, number>()
+  // Rows being dragged, and the list they are dragged over
+  _dragged: HTMLElement[] = []
+  _dragOver: HTMLElement | null = null
 
   _onClick = (event: Event): void => this._handleClick(event)
   _onKeyDown = (event: Event): void => this._handleKeyDown(event as KeyboardEvent)
   _onInput = (event: Event): void => this._handleInput(event)
   _onChange = (event: Event): void => this._handleChange(event)
+  _onDragStart = (event: Event): void => this._handleDragStart(event as DragEvent)
+  _onDragOver = (event: Event): void => this._handleDragOver(event as DragEvent)
+  _onDragLeave = (event: Event): void => this._handleDragLeave(event as DragEvent)
+  _onDrop = (event: Event): void => this._handleDrop(event as DragEvent)
+  _onDragEnd = (): void => this._endDrag()
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -182,6 +198,11 @@ class Transfer extends BaseComponent {
       this._element.removeEventListener('keydown', this._onKeyDown)
       this._element.removeEventListener('input', this._onInput)
       this._element.removeEventListener('change', this._onChange)
+      this._element.removeEventListener('dragstart', this._onDragStart)
+      this._element.removeEventListener('dragover', this._onDragOver)
+      this._element.removeEventListener('dragleave', this._onDragLeave)
+      this._element.removeEventListener('drop', this._onDrop)
+      this._element.removeEventListener('dragend', this._onDragEnd)
     }
 
     super.dispose()
@@ -253,6 +274,7 @@ class Transfer extends BaseComponent {
 
         item.setAttribute('role', 'option')
         item.tabIndex = -1
+        item.draggable = this._config.draggable && !this._isDisabled(item)
         this._order.set(item, index++)
         this._setChecked(item, this._isChecked(item) || Boolean(checkbox?.checked))
 
@@ -291,6 +313,14 @@ class Transfer extends BaseComponent {
     this._element.addEventListener('keydown', this._onKeyDown)
     this._element.addEventListener('input', this._onInput)
     this._element.addEventListener('change', this._onChange)
+
+    if (this._config.draggable) {
+      this._element.addEventListener('dragstart', this._onDragStart)
+      this._element.addEventListener('dragover', this._onDragOver)
+      this._element.addEventListener('dragleave', this._onDragLeave)
+      this._element.addEventListener('drop', this._onDrop)
+      this._element.addEventListener('dragend', this._onDragEnd)
+    }
   }
 
   _itemFrom(event: Event): HTMLElement | null {
@@ -426,6 +456,155 @@ class Transfer extends BaseComponent {
     }
   }
 
+  _listFrom(event: Event): HTMLElement | null {
+    const target = event.target as Element | null
+    const list = target?.closest(SELECTOR_LIST) as HTMLElement | null
+    return list && this._element.contains(list) ? list : null
+  }
+
+  // A checked row drags every checked row of its list; any other row drags alone
+  _handleDragStart(event: DragEvent): void {
+    const item = this._itemFrom(event)
+    if (!item || event.target !== item) {
+      return
+    }
+
+    if (this._isDisabled(item)) {
+      event.preventDefault()
+      return
+    }
+
+    this._dragged = this._isChecked(item) ? this._checked(this._sideOfItem(item)) : [item]
+
+    for (const dragged of this._dragged) {
+      dragged.classList.add(CLASS_NAME_DRAGGING)
+    }
+
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.setData('text/plain', this._dragged.map((dragged) => this._valueOf(dragged)).join(','))
+    }
+  }
+
+  _handleDragOver(event: DragEvent): void {
+    const list = this._listFrom(event)
+    if (this._dragged.length === 0 || !list) {
+      return
+    }
+
+    event.preventDefault()
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move'
+    }
+
+    this._clearDropIndicator()
+    this._dragOver = list
+    list.classList.add(CLASS_NAME_DRAG_OVER)
+
+    const side: TransferSide = list === this._list('target') ? 'target' : 'source'
+    if (side === 'source' && this._sideOfItem(this._dragged[0]) === 'source') {
+      return
+    }
+
+    const before = this._dropPosition(event, side)
+    const items = this._items(side).filter((item) => !this._dragged.includes(item) && this._isVisible(item))
+    const last = items[items.length - 1]
+
+    if (before) {
+      before.classList.add(CLASS_NAME_DROP_BEFORE)
+    } else if (last) {
+      last.classList.add(CLASS_NAME_DROP_AFTER)
+    }
+  }
+
+  _handleDragLeave(event: DragEvent): void {
+    const list = this._listFrom(event)
+    const next = event.relatedTarget as Node | null
+    if (list && !(next && list.contains(next))) {
+      this._clearDropIndicator()
+    }
+  }
+
+  _handleDrop(event: DragEvent): void {
+    const list = this._listFrom(event)
+    const items = this._dragged
+    if (items.length === 0 || !list) {
+      return
+    }
+
+    event.preventDefault()
+    const side: TransferSide = list === this._list('target') ? 'target' : 'source'
+    const from = this._sideOfItem(items[0])
+    const before = this._dropPosition(event, side)
+    this._endDrag()
+
+    if (side === 'source') {
+      if (from === 'source') {
+        return
+      }
+
+      this._moveItems(items, 'source')
+      return
+    }
+
+    const value = this.getValue()
+    for (const item of items) {
+      this._place(item, 'target', before)
+    }
+
+    this._applyFilter('source')
+    this._applyFilter('target')
+    this._finish(
+      value,
+      from === 'target' ? 'reorder' : 'add',
+      items.map((item) => this._valueOf(item)),
+    )
+  }
+
+  // The row the dragged rows go in front of; `null` appends. In the target
+  // list that is the row under the pointer; in the source list the rows go
+  // back to their original place, whatever the pointer is over.
+  _dropPosition(event: DragEvent, side: TransferSide): HTMLElement | null {
+    if (side === 'source') {
+      const order = Math.min(...this._dragged.map((dragged) => this._order.get(dragged) ?? 0))
+      return this._items('source').find((item) => !this._dragged.includes(item) && this._isVisible(item) && (this._order.get(item) ?? 0) > order) ?? null
+    }
+
+    const item = this._itemFrom(event)
+    if (!item || this._sideOfItem(item) !== 'target') {
+      return null
+    }
+
+    const rect = item.getBoundingClientRect()
+    const after = event.clientY > rect.top + rect.height / 2
+    let next: Element | null = after ? item.nextElementSibling : item
+
+    while (next && this._dragged.includes(next as HTMLElement)) {
+      next = next.nextElementSibling
+    }
+
+    return next as HTMLElement | null
+  }
+
+  _clearDropIndicator(): void {
+    this._dragOver?.classList.remove(CLASS_NAME_DRAG_OVER)
+    this._dragOver = null
+
+    for (const item of SelectorEngine.find(`.${CLASS_NAME_DROP_BEFORE}, .${CLASS_NAME_DROP_AFTER}`, this._element)) {
+      item.classList.remove(CLASS_NAME_DROP_BEFORE, CLASS_NAME_DROP_AFTER)
+    }
+  }
+
+  _endDrag(): void {
+    this._clearDropIndicator()
+
+    for (const item of this._dragged) {
+      item.classList.remove(CLASS_NAME_DRAGGING)
+    }
+
+    this._dragged = []
+  }
+
   _applyFilter(side: TransferSide): void {
     const search = SelectorEngine.findOne(SELECTOR_SEARCH, this._panels[side]!) as HTMLInputElement | null
     const query = (search?.value ?? '').trim().toLowerCase()
@@ -462,14 +641,14 @@ class Transfer extends BaseComponent {
     item.focus()
   }
 
-  // Appends the row to the target list, or puts it back among the rows of the
-  // source list in its original order.
-  _place(item: HTMLElement, side: TransferSide): void {
+  // Appends the row to the target list (or puts it in front of `before`), or
+  // puts it back among the rows of the source list in its original order.
+  _place(item: HTMLElement, side: TransferSide, before: HTMLElement | null = null): void {
     const list = this._list(side)
     this._setChecked(item, false)
 
     if (side === 'target') {
-      list.append(item)
+      list.insertBefore(item, before)
     } else {
       const order = this._order.get(item) ?? 0
       const next = this._items('source').find((candidate) => candidate !== item && (this._order.get(candidate) ?? 0) > order)

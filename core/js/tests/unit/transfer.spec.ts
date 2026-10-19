@@ -223,6 +223,131 @@ describe('Transfer', () => {
     })
   })
 
+  describe('drag and drop', () => {
+    const drag = (target: HTMLElement, type: string, init: DragEventInit = {}): DragEvent => {
+      const event = new DragEvent(type, { bubbles: true, cancelable: true, dataTransfer: new DataTransfer(), ...init })
+      target.dispatchEvent(event)
+      return event
+    }
+    const list = (side: 'source' | 'target'): HTMLElement => fixtureEl.querySelector(`[data-bs-transfer-panel="${side}"] [data-bs-transfer-list]`)!
+    const middle = (el: HTMLElement): number => {
+      const rect = el.getBoundingClientRect()
+      return rect.top + rect.height / 2
+    }
+
+    it('should make the enabled rows draggable', () => {
+      new Transfer(root())
+      expect(row('a').draggable).toBe(true)
+      expect(row('d').draggable).toBe(false)
+    })
+
+    it('should not make the rows draggable with draggable false', () => {
+      new Transfer(root(), { draggable: false })
+      expect(row('a').draggable).toBe(false)
+      drag(row('a'), 'dragstart')
+      drag(list('target'), 'drop')
+      expect(values('target')).toEqual(['e'])
+    })
+
+    it('should move a dragged row to the list it is dropped on', () => {
+      const transfer = new Transfer(root())
+      const spy = vi.fn()
+      root().addEventListener('change.bs.transfer', spy)
+
+      const start = drag(row('b'), 'dragstart')
+      expect(start.dataTransfer!.getData('text/plain')).toBe('b')
+      expect(row('b').classList.contains('dragging')).toBe(true)
+
+      const over = drag(list('target'), 'dragover')
+      expect(over.defaultPrevented).toBe(true)
+      expect(list('target').classList.contains('drag-over')).toBe(true)
+      expect(row('e').classList.contains('drop-after')).toBe(true)
+
+      drag(list('target'), 'drop')
+      drag(row('b'), 'dragend')
+
+      expect(values('target')).toEqual(['e', 'b'])
+      expect(transfer.getValue()).toEqual(['e', 'b'])
+      expect(selectedOptions()).toEqual(['e', 'b'])
+      expect(row('b').classList.contains('dragging')).toBe(false)
+      expect(list('target').classList.contains('drag-over')).toBe(false)
+      expect(row('e').classList.contains('drop-after')).toBe(false)
+      expect(spy).toHaveBeenCalledTimes(1)
+      const event = spy.mock.calls[0][0] as Event & { moved: string[]; direction: string }
+      expect(event.moved).toEqual(['b'])
+      expect(event.direction).toBe('add')
+    })
+
+    it('should drop the row in front of the row it is dropped on', () => {
+      const transfer = new Transfer(root())
+      drag(row('a'), 'dragstart')
+      drag(row('e'), 'dragover', { clientY: middle(row('e')) - 1 })
+      expect(row('e').classList.contains('drop-before')).toBe(true)
+      drag(row('e'), 'drop', { clientY: middle(row('e')) - 1 })
+      drag(row('a'), 'dragend')
+      expect(transfer.getValue()).toEqual(['a', 'e'])
+    })
+
+    it('should drag every checked row of the list together', () => {
+      const transfer = new Transfer(root())
+      row('a').click()
+      row('c').click()
+      drag(row('c'), 'dragstart')
+      expect(row('a').classList.contains('dragging')).toBe(true)
+      drag(list('target'), 'drop')
+      drag(row('c'), 'dragend')
+      expect(transfer.getValue()).toEqual(['e', 'a', 'c'])
+      expect(row('a').getAttribute('aria-selected')).toBe('false')
+    })
+
+    it('should reorder the target list by dragging', () => {
+      const transfer = new Transfer(root())
+      transfer.add(['a', 'b'])
+      expect(transfer.getValue()).toEqual(['e', 'a', 'b'])
+
+      const spy = vi.fn()
+      root().addEventListener('change.bs.transfer', spy)
+      drag(row('b'), 'dragstart')
+      drag(row('e'), 'drop', { clientY: middle(row('e')) - 1 })
+      drag(row('b'), 'dragend')
+
+      expect(transfer.getValue()).toEqual(['b', 'e', 'a'])
+      expect(selectedOptions()).toEqual(['b', 'e', 'a'])
+      expect((spy.mock.calls[0][0] as Event & { direction: string }).direction).toBe('reorder')
+    })
+
+    it('should send a dragged row back to its original place', () => {
+      const transfer = new Transfer(root())
+      transfer.add(['a', 'c'])
+      drag(row('a'), 'dragstart')
+      drag(row('d'), 'dragover')
+      expect(row('b').classList.contains('drop-before')).toBe(true)
+      expect(row('d').classList.contains('drop-before')).toBe(false)
+      drag(list('source'), 'drop')
+      drag(row('a'), 'dragend')
+      expect(values('source')).toEqual(['a', 'b', 'd'])
+      expect(transfer.getValue()).toEqual(['e', 'c'])
+    })
+
+    it('should not start a drag on a disabled row', () => {
+      new Transfer(root())
+      const start = drag(row('d'), 'dragstart')
+      expect(start.defaultPrevented).toBe(true)
+      drag(list('target'), 'drop')
+      expect(values('target')).toEqual(['e'])
+    })
+
+    it('should ignore a drop outside the lists', () => {
+      const transfer = new Transfer(root())
+      drag(row('a'), 'dragstart')
+      const over = drag(button('add'), 'dragover')
+      expect(over.defaultPrevented).toBe(false)
+      drag(button('add'), 'drop')
+      drag(row('a'), 'dragend')
+      expect(transfer.getValue()).toEqual(['e'])
+    })
+  })
+
   describe('dispose', () => {
     it('should remove the instance and stop reacting', () => {
       const transfer = new Transfer(root())
