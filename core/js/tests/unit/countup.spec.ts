@@ -4,8 +4,7 @@ import CountUp from '../../src/countup'
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
 // Waits for the animation to end instead of a fixed time, since animation frames run late on a slow CI runner.
-const completed = (el: HTMLElement): Promise<void> =>
-  new Promise((resolve) => el.addEventListener('complete.bs.countup', () => resolve(), { once: true }))
+const completed = (el: HTMLElement): Promise<void> => new Promise((resolve) => el.addEventListener('complete.bs.countup', () => resolve(), { once: true }))
 
 describe('CountUp', () => {
   let fixtureEl: HTMLElement
