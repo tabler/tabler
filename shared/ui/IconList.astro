@@ -1,0 +1,21 @@
+---
+// Icon list (.list-icon): a list whose markers are icons instead of bullets.
+// Fill it with `IconListItem` entries.
+
+interface Props {
+  /** entries in a row that wraps (`.list-icon-inline`) */
+  inline?: boolean
+  /** marker color for the whole list, any base color name, for example `green` */
+  color?: string | undefined
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { inline, color, class: className, style, ...rest } = Astro.props
+
+const colorStyle = color ? `--tblr-list-icon-color: var(--tblr-${color})` : undefined
+const styles = [colorStyle, style].filter(Boolean).join('; ') || undefined
+---
+
+<ul class:list={['list-icon', inline && 'list-icon-inline', className]} style={styles} {...rest}><slot /></ul>

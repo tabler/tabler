@@ -3,39 +3,52 @@ import MarkdownSource from './MarkdownSource.astro'
 import { markdownTable } from '@shared/lib/markdown-source'
 import flags from '@data/flags.json'
 
-// Same list as a table for the page's .md mirror
-const markdown = markdownTable(
-  ['Country', 'Code', 'CSS class'],
-  flags.map((flag) => [flag.name, `\`${flag.flag}\``, `\`.flag-country-${flag.flag}\``]),
-)
+const categories = ['Countries', 'Territories', 'Unions', 'Other']
+const groups = categories.map((category) => ({ category, flags: flags.filter((flag) => flag.category === category) }))
+
+// Same list as tables for the page's .md mirror
+const markdown = groups
+  .map(({ category, flags }) => {
+    const table = markdownTable(
+      ['Name', 'Code', 'CSS class'],
+      flags.map((flag) => [flag.name, `\`${flag.flag}\``, `\`.flag-country-${flag.flag}\``]),
+    )
+    return `### ${category}\n\n${table}`
+  })
+  .join('\n\n')
 ---
 
-<table class="table table-vcenter">
-  <thead>
-    <tr>
-      <th class="w-1">Flag</th>
-      <th>Name</th>
-      <th class="w-1">Country code</th>
-      <th>CSS class</th>
-    </tr>
-  </thead>
-  <tbody>
-    {
-      flags.map((flag) => (
-        <tr>
-          <td>
-            <div class={`flag flag-sm flag-country-${flag.flag}`} />
-          </td>
-          <td>{flag.name}</td>
-          <td>
-            <code>{flag.flag}</code>
-          </td>
-          <td>
-            <code>.flag-country-{flag.flag}</code>
-          </td>
-        </tr>
-      ))
-    }
-  </tbody>
-</table>
+{
+  groups.map(({ category, flags }) => (
+    <Fragment>
+      <h3>{category}</h3>
+      <table class="table table-vcenter">
+        <thead>
+          <tr>
+            <th class="w-1">Flag</th>
+            <th>Name</th>
+            <th class="w-1">Code</th>
+            <th>CSS class</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flags.map((flag) => (
+            <tr>
+              <td>
+                <div class={`flag flag-sm flag-country-${flag.flag}`} />
+              </td>
+              <td>{flag.name}</td>
+              <td>
+                <code>{flag.flag}</code>
+              </td>
+              <td>
+                <code>.flag-country-{flag.flag}</code>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Fragment>
+  ))
+}
 <MarkdownSource name="Flags" markdown={markdown} />
