@@ -13,5 +13,7 @@ declare global {
     maplibregl?: import('./map').MapLibrary
     Sortable?: new (element: HTMLElement, options?: Record<string, unknown>) => import('./sortable').SortableInstance
     jQuery?: JQueryStaticLike
+    // Filled by the map files of the VectorMap plugin (`dist/js/maps/*.js`)
+    tablerVectorMaps?: Record<string, import('./vector-map').VectorMapData>
   }
 }

@@ -9,7 +9,7 @@ import { themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys, themeData
 
 interface Props {
   title?: string | undefined
-  /** Third-party libs from libs.json, e.g. ['apexcharts', 'jsvectormap'] */
+  /** Third-party libs from libs.json, e.g. ['apexcharts', 'vector-map'] */
   pageLibs?: string[] | undefined
   /** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
   bodyClass?: string | undefined
@@ -39,7 +39,7 @@ const isProduction = process.env.VERCEL_ENV === 'production'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
 
-type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string }; addon?: string }
+type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string }; addon?: string; maps?: string[] }
 const unknownLibs = pageLibs.filter((name) => !(name in libs))
 if (unknownLibs.length > 0) {
   throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
@@ -54,6 +54,8 @@ const libCssFiles = pageLibEntries.flatMap(([, lib]) => (lib.css ?? []).map((fil
 const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * as lib from '${libHref(lib, lib.module.file)}'\n      window.${lib.module.global} = lib`] : []))
 // Tabler add-on bundles (dist/js) that a library needs, loaded after tabler.js
 const libAddons = pageLibEntries.flatMap(([, lib]) => (lib.addon ? [lib.addon] : []))
+// Map files of the vector map (dist/js/maps), which are plain data
+const libMaps = pageLibEntries.flatMap(([, lib]) => lib.maps ?? [])
 const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean(lib.head) === head).flatMap(([, lib]) => (lib.js ?? []).map((file) => libHref(lib, file)))
 ---
 
@@ -140,6 +142,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
     {libAddons.map((addon) => <script is:inline src={`${base}/dist/js/${addon}${min}.js`} defer />)}
+    {libMaps.map((map) => <script is:inline src={`${base}/dist/js/maps/${map}.js`} defer />)}
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <PageScripts />
