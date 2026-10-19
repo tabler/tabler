@@ -1,6 +1,6 @@
 ---
 "@tabler/core": minor
-"@tabler/docs": patch
+"@tabler/docs": minor
 "@tabler/preview": patch
 ---
 
