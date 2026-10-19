@@ -7,9 +7,9 @@ order: 1
 related: [/ui/getting-started/upgrade/1-6, /ui/getting-started/customize]
 ---
 
-Tabler 1.7 adds a lot, but changes little. Every class, custom property, Sass variable and function from 1.6 is still there, and the only change that can touch your code is where two components ship: Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`. A page that loads both files, as every marketing page does, needs no change.
+Tabler 1.7 adds a lot and changes very little. Every class, custom property, Sass variable and function from 1.6 is still there. The one thing that can touch your code is where two components ship. Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`. If a page loads both files, and every marketing page does, there's nothing to do.
 
-Check [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle) if you load `tabler-marketing.css` on its own or import its Sass partials one by one. Then look through [Visual changes](#visual-changes): a few components are drawn a little differently, and custom styles that sit close to them may need a look.
+If you load `tabler-marketing.css` on its own, or import its Sass partials one by one, read [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle). Then have a look at [Visual changes](#visual-changes). A few components are drawn a little differently now, and if you have custom styles sitting close to them, they may need a small adjustment.
 
 If you're coming from 1.5 or older, do the [1.6 upgrade](/ui/getting-started/upgrade/1-6) first.
 
@@ -43,9 +43,9 @@ Or update the CDN links:
 
 ## Pricing and Shape are in the core bundle
 
-The [Pricing](/ui/components/pricing) component, `.pricing` and its `.pricing-*` parts, and the [Shape](/ui/components/shape) component, `.shape` with its size and color modifiers, used to ship only in `tabler-marketing.css`. They're part of `tabler.css` now, so a dashboard can show plan cards or an icon in a shape without the marketing stylesheet. The class names and the markup are the same.
+The [Pricing](/ui/components/pricing) component (`.pricing` and its `.pricing-*` parts) and the [Shape](/ui/components/shape) component (`.shape` with its size and color modifiers) used to ship only in `tabler-marketing.css`. They're part of `tabler.css` now. So a dashboard can show plan cards, or an icon in a shape, without loading the marketing stylesheet. The class names and the markup haven't changed.
 
-`tabler-marketing.css` no longer contains the two components. A page that loads both stylesheets keeps working. A page that loaded only `tabler-marketing.css` for them has to add `tabler.css`, which it needs for the buttons, badges and icons inside them anyway:
+`tabler-marketing.css` doesn't contain the two components any more. A page that loads both stylesheets keeps working. A page that loaded only `tabler-marketing.css` for them has to add `tabler.css` too. It needs it anyway, for the buttons, badges and icons inside them:
 
 ```diff
 - <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
@@ -53,53 +53,53 @@ The [Pricing](/ui/components/pricing) component, `.pricing` and its `.pricing-*`
 + <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
 ```
 
-The pricing card border also follows the theme now. In 1.6 it was a fixed light gray in dark mode; in 1.7 it uses `--tblr-border-color`.
+The pricing card border also follows the theme now. In 1.6 it was a fixed light gray, even in dark mode. In 1.7 it uses `--tblr-border-color`.
 
 ## Visual changes
 
-Nothing here needs a change to your markup. The components below are drawn a little differently in 1.7, so a custom style that sits next to one of them, or overrides one of its values, may look off by a pixel or two.
+Nothing in this section needs a change to your markup. The components below are just drawn a little differently in 1.7. If you have a custom style that sits next to one of them, or overrides one of its values, it may end up off by a pixel or two. Worth a quick look.
 
 ### Buttons
 
-Filled buttons, `.btn-primary` and the other `.btn-{color}` variants, have a thin border, a faint top-to-bottom gradient and light inner edges. Outline buttons lose their shadow. The default `.btn` mixes its hover and active tint over `--tblr-bg-surface` and so stays opaque: in 1.6 it turned slightly see-through over a colored background.
+Filled buttons, so `.btn-primary` and the other `.btn-{color}` variants, have a thin border now, a faint top-to-bottom gradient and light inner edges. Outline buttons lose their shadow. The default `.btn` mixes its hover and active tint over `--tblr-bg-surface`, which keeps it opaque. In 1.6 it turned slightly see-through when it was sitting on a colored background.
 
-`.btn-xl` is now a `1.25rem` font with `1.75rem` icons and the large radius; in 1.6 it used the `h1` size with `2rem` icons. `.btn-sm` has `0.75rem` of side padding instead of `0.5rem`.
+`.btn-xl` uses a `1.25rem` font with `1.75rem` icons and the large radius. In 1.6 it used the `h1` size and `2rem` icons, which was a bit much. `.btn-sm` has `0.75rem` of side padding instead of `0.5rem`.
 
 ### Small controls are 32px tall
 
-`.form-control-sm`, `.form-select-sm`, `.btn-sm` and a small Tom Select are `32px` tall. In 1.6 the small input was `28px`, and the small select and the small Tom Select did not match it. The vertical padding of the small size, `$input-btn-padding-y-sm`, went from `0.3125rem` to `0.4375rem`, so the three sit on one line in a toolbar. The large sizes did not change.
+`.form-control-sm`, `.form-select-sm`, `.btn-sm` and a small Tom Select are all `32px` tall now. In 1.6 the small input was `28px`, and the small select and the small Tom Select didn't match it anyway. The vertical padding of the small size, `$input-btn-padding-y-sm`, went from `0.3125rem` to `0.4375rem`. That's what makes the three line up in a toolbar. The large sizes didn't change.
 
 ### Switch
 
-`.form-switch` has a filled gray track when it is off, with a white knob and an even gap around it. In 1.6 the off track was an outline. The track color is the new `$form-switch-bg` variable, and `$form-switch-color` is the knob, now plain white in both color modes.
+`.form-switch` has a filled gray track when it's off, with a white knob and an even gap around it. In 1.6 the off track was just an outline. The track color comes from the new `$form-switch-bg` variable. `$form-switch-color` is the knob, and it's plain white in both color modes now.
 
 ### Flags
 
-The flags plugin ships the [Tabler Flags](https://github.com/tabler/tabler-flags) set: 304 flags at a 5:4 ratio instead of 4:3, so a flag is a little narrower for the same height. Six flags have a new code; the old classes keep working as [aliases](/ui/plugins/flags#old-flag-codes) and go away in 2.0.
+The flags plugin ships the [Tabler Flags](https://github.com/tabler/tabler-flags) set now. That's 304 flags at a 5:4 ratio instead of 4:3, so a flag is a little narrower for the same height. Six flags got a new code. The old classes keep working as [aliases](/ui/plugins/flags#old-flag-codes), but they go away in 2.0.
 
 ### Dark mode
 
-A round of contrast fixes changes a few surfaces on a dark page:
+A round of contrast fixes changed a few surfaces on a dark page:
 
 - `--tblr-bg-surface-tertiary` is translucent, so card headers, card footers and striped table rows show on a dark card.
 - `.input-group-text` has the `--tblr-secondary-color` text color and a translucent background.
-- Card, alert, dropdown and table borders are no longer too bright: `$border-color-translucent-dark` applied to more than it should.
+- Card, alert, dropdown and table borders aren't too bright any more. `$border-color-translucent-dark` was applied to more elements than it should have been.
 - Nav links, list group headers, toast headers, breadcrumbs, the footer, `.form-control-light` and `.form-help` no longer use fixed grays.
 
 ### Smaller changes
 
-- `.card-table` rounds only the cells in the four card corners; in 1.6 every row rounded its outer cells.
+- `.card-table` rounds only the cells in the four card corners. In 1.6 every row rounded its outer cells.
 - `.nav-segmented` icons follow the link color on hover, like the text.
 - Disabled Tom Select fields have rounded corners, and small and large ones a rounded focus ring.
-- The `.pricing` card border follows the theme: `--tblr-border-color` instead of a fixed light gray in dark mode.
+- The `.pricing` card border follows the theme, with `--tblr-border-color` instead of a fixed light gray in dark mode.
 
 ## JavaScript
 
-`tabler.js` is compiled for ES2022 instead of ES2015. Every [supported browser](/ui/getting-started/browser-support) has run ES2022 for years, so this changes nothing for a page. It only matters if you feed `tabler.js` through your own transpiler with an older target: drop the override, or let the transpiler lower the syntax for you.
+`tabler.js` is compiled for ES2022 instead of ES2015. Every [supported browser](/ui/getting-started/browser-support) has run ES2022 for years, so for a normal page nothing changes. It only matters if you run `tabler.js` through your own transpiler with an older target. In that case, either drop the override or let the transpiler lower the syntax for you.
 
 ## Sass changes
 
-Only relevant if you compile the `scss/` sources yourself and import partials one by one. `@use '@tabler/core/scss/tabler'` and `@use '@tabler/core/scss/tabler-marketing'` keep working.
+This only matters if you compile the `scss/` sources yourself and import partials one by one. `@use '@tabler/core/scss/tabler'` and `@use '@tabler/core/scss/tabler-marketing'` keep working as they are.
 
 ### Moved partials
 
@@ -129,10 +129,10 @@ Besides the changes above, 1.7 adds:
 - [Icon list](/ui/components/icon-list), a list with icons instead of bullets.
 - [Text shimmer](/ui/components/text-shimmer), a band of light sweeping across a label while something runs.
 - [List group](/ui/components/list-group) items with media, content, meta and actions slots, selectable and nested items, and `.list-group-sm` and `.list-group-lg` sizes.
-- [Keyboard keys](/ui/base/typography#keyboard-input): `<kbd>` as a compact key cap, `.kbd-group` for a shortcut and `--tblr-kbd-*` variables.
+- [Keyboard keys](/ui/base/typography#keyboard-input), with `<kbd>` as a compact key cap, `.kbd-group` for a shortcut and `--tblr-kbd-*` variables.
 - [Datagrid](/ui/components/datagrid) with `.datagrid-horizontal` and `.datagrid-cols-{n}`.
 - [Datepicker](/ui/plugins/date-picker) with `weekNumbers`, `dateFormat` patterns such as `'DD.MM.YYYY'` or `'iso'`, and `boundInput` for ISO form values.
-- [Form CSS variables](/ui/forms/css-variables): `--tblr-control-*` on inputs and selects, and their own sets for checks, switches, input group add-ons, floating labels and range inputs.
+- [Form CSS variables](/ui/forms/css-variables), with `--tblr-control-*` on inputs and selects, and their own sets for checks, switches, input group add-ons, floating labels and range inputs.
 - [Fill colors](/ui/base/colors#fill-colors), four neutral `--tblr-fill-*` tokens and the `.bg-fill-*` utilities behind badges, avatars, code and progress tracks.
 - A `mist` gray palette for `data-bs-theme-base`, see [Theme base colors](/ui/plugins/theme-base-colors).
 - `data-bs-navbar-position="combined"` to show the vertical and the horizontal navbar at once, see [Page layouts](/ui/layout/page-layouts#navigation-position).
