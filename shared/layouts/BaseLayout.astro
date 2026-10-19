@@ -194,9 +194,10 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
         }
 
         // Some settings only do something with one of the navigations on
-        // screen; the others are hidden rather than left to do nothing.
+        // screen; the others are hidden rather than left to do nothing. The
+        // combined position shows both navigations, so nothing is hidden.
         var toggleSidebarSettings = function () {
-          var vertical = currentValue('navbar-position') === 'vertical'
+          var position = currentValue('navbar-position')
           var setHidden = function (keys, hidden) {
             keys.forEach(function (key) {
               var fieldset = form.querySelector('[data-theme-setting="' + key + '"]')
@@ -207,8 +208,8 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
             })
           }
 
-          setHidden(sidebarOnlyKeys, !vertical)
-          setHidden(navbarOnlyKeys, vertical)
+          setHidden(sidebarOnlyKeys, position === 'horizontal')
+          setHidden(navbarOnlyKeys, position === 'vertical')
         }
 
         var setValue = function (key, value) {

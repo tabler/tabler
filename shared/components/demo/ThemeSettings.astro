@@ -54,10 +54,10 @@ const thumb = (y: number) => `<rect x="90" y="${y}" width="3" height="14" rx="1.
 const tileSvg = (key: string, value: string): string => {
   switch (key) {
     case 'navbar-position':
-      // The navigation is the accent-colored shape: a bar across the top or a rail down the start side.
-      return value === 'vertical'
-        ? svg(frame(page) + rail(30, primary) + lines(7, 10, [16, 16, 16, 16], onAccent, 10) + lines(40, 12, [40, 48, 28], border) + outline)
-        : svg(frame(page) + topBar(primary) + [8, 26, 44].map((x) => `<rect x="${x}" y="8" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(12, 30, [46, 72, 30], border) + outline)
+      // The navigation is the accent-colored shape: a bar across the top, a rail down the start side, or both.
+      if (value === 'vertical') return svg(frame(page) + rail(30, primary) + lines(7, 10, [16, 16, 16, 16], onAccent, 10) + lines(40, 12, [40, 48, 28], border) + outline)
+      if (value === 'combined') return svg(frame(page) + topBar(primary) + `<path d="M0.5 20h30v43.5h-24a6 6 0 0 1 -6 -6z" fill="${primary}" /><rect x="30" y="20" width="0.5" height="43.5" fill="${border}" />` + [8, 26, 44].map((x) => `<rect x="${x}" y="8" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(7, 28, [16, 16, 16], onAccent, 10) + lines(40, 30, [40, 48, 28], border) + outline)
+      return svg(frame(page) + topBar(primary) + [8, 26, 44].map((x) => `<rect x="${x}" y="8" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(12, 30, [46, 72, 30], border) + outline)
     case 'layout':
       // Only the content width changes, so the navigation stays out of these tiles.
       // The surround is the inverted surface, so it stays dark on a light page and light on a dark one.
