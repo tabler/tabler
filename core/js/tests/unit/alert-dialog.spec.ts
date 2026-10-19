@@ -83,6 +83,18 @@ describe('AlertDialog', () => {
     await promise
   })
 
+  it('accepts a message element and keeps the reference', async () => {
+    const field = document.createElement('select')
+    field.innerHTML = '<option value="a">A</option><option value="b">B</option>'
+    const promise = AlertDialog.confirm({ title: 'Delete user?', message: field })
+    const el = await shown()
+    expect(el.querySelector('[id$="-description"] select')).toBe(field)
+    field.value = 'b'
+    el.querySelector<HTMLElement>('[data-confirm]')!.click()
+    expect(await promise).toBe(true)
+    expect(field.value).toBe('b')
+  })
+
   it('does not put an unknown variant into the markup', async () => {
     const promise = AlertDialog.confirm({ title: 'Hi', icon: 'trash', variant: 'x" onmouseover="alert(1)' as never })
     const el = await shown()

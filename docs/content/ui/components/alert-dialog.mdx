@@ -114,18 +114,44 @@ The message is optional. A dialog with only a title is fine for a short question
   </button>
 </Example>
 
+## Custom content
+
+`message` also takes a DOM element, for example a form field the user has to fill in before the action goes ahead. The element is moved into the dialog as it is, so you keep the reference and can read its value after the promise resolves. The dialog is removed from the page when it closes, so build a fresh element for
+each call.
+
+```js
+const field = document.createElement('div')
+field.innerHTML = `
+  <p>Choose who takes over the projects of this user.</p>
+  <select class="form-select">
+    <option value="1">Jane Doe</option>
+    <option value="2">John Smith</option>
+  </select>
+`
+const ok = await tabler.AlertDialog.confirm({ title: 'Delete user?', message: field, confirmText: 'Delete', variant: 'danger', align: 'start' })
+if (ok) {
+  const owner = field.querySelector('select').value
+}
+```
+
+<Example centered>
+  <button type="button" class="btn btn-danger" onclick="const field = document.createElement('div'); field.innerHTML = '<p>Choose who takes over the projects of this user.</p><select class=&quot;form-select&quot;><option>Jane Doe</option><option>John Smith</option></select>'; tabler.AlertDialog.confirm({ title: 'Delete user?', message: field, confirmText: 'Delete', variant: 'danger', align: 'start' })">
+    Delete user
+  </button>
+</Example>
+
 ## Options
 
-| Option        | Default                                                 | Description                                                                                |
-| ------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `title`       | `Are you sure?` for `confirm()`, `Notice` for `alert()` | The heading of the dialog.                                                                 |
-| `message`     | none                                                    | A line of text under the title. It is set as plain text, so HTML is not rendered.          |
-| `confirmText` | `OK`                                                    | The label of the confirm button.                                                           |
-| `cancelText`  | `Cancel`                                                | The label of the cancel button. `confirm()` only.                                          |
-| `variant`     | `primary`                                               | The color of the confirm button.                                                           |
-| `icon`        | none                                                    | A built-in icon name or a DOM element, shown in a round badge in the color of the variant. |
-| `align`       | `center`                                                | `center` or `start`. See [Layout](#layout).                                                |
-| `focus`       | `confirm`                                               | Which button gets focus when the dialog opens: `confirm` or `cancel`. `confirm()` only.    |
+| Option        | Default                                                 | Description                                                                                                       |
+| ------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `title`       | `Are you sure?` for `confirm()`, `Notice` for `alert()` | The heading of the dialog.                                                                                        |
+| `message`     | none                                                    | A line of text under the title, or a DOM element. Text is set as plain text, so HTML in a string is not rendered. |
+| `confirmText` | `OK`                                                    | The label of the confirm button.                                                                                  |
+| `cancelText`  | `Cancel`                                                | The label of the cancel button. `confirm()` only.                                                                 |
+| `variant`     | `primary`                                               | The color of the confirm button.                                                                                  |
+| `icon`        | none                                                    | A built-in icon name or a DOM element, shown in a round badge in the color of the variant.                        |
+| `align`       | `center`                                                | `center` or `start`. See [Layout](#layout).                                                                       |
+| `focus`       | `confirm`                                               | Which button gets focus when the dialog opens: `confirm` or `cancel`. `confirm()` only.                           |
 
 For a destructive action, set `focus: 'cancel'` so a stray <kbd>Enter</kbd> does not confirm it.
 
