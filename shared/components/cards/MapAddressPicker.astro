@@ -1,0 +1,66 @@
+---
+// An address form next to a map: dragging the pin fills the position field,
+// for an address the text alone does not pin down.
+import Map from '../demo/Map.astro'
+import CaptureScript from '../CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Delivery address</CardTitle>
+  </CardHeader>
+  <div class="row g-0">
+    <div class="col-lg-5 border-end">
+      <CardBody>
+        <div class="mb-3">
+          <label class="form-label" for="address-street">Street</label>
+          <input type="text" class="form-control" id="address-street" value="Karl-Liebknecht-Straße 9" />
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col-4">
+            <label class="form-label" for="address-postcode">Postal code</label>
+            <input type="text" class="form-control" id="address-postcode" value="10178" />
+          </div>
+          <div class="col-8">
+            <label class="form-label" for="address-city">City</label>
+            <input type="text" class="form-control" id="address-city" value="Berlin" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="address-position">Position</label>
+          <input type="text" class="form-control" id="address-position" value="52.52190, 13.40940" readonly />
+          <small class="form-hint">Drag the pin on the map to the entrance.</small>
+        </div>
+        <button type="button" class="btn btn-primary">Save address</button>
+      </CardBody>
+    </div>
+    <div class="col-lg-7">
+      <Map mapId="address" title="Delivery address" center={[52.5219, 13.4094]} zoom={15} height="24rem" rounded={false} controls>
+        <span class="map-marker map-marker-pin" data-bs-lng="13.4094" data-bs-lat="52.5219" data-bs-anchor="bottom" data-bs-draggable="true"><Icon name="map-pin" /></span>
+      </Map>
+    </div>
+  </div>
+  <CaptureScript>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const view = tabler.MapView.getInstance('#map-address')
+
+        // The marker exists once the map does, which may be a moment after the page has loaded
+        view.ready(() => {
+          const marker = view.markers[0]
+
+          marker.on('drag', () => {
+            const { lng, lat } = marker.getLngLat()
+
+            document.getElementById('address-position').value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`
+          })
+        })
+      })
+    </script>
+  </CaptureScript>
+</Card>

@@ -1,0 +1,162 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
+import { avatarSizes, extraColors } from '@shared/lib/tokens'
+
+const icons = ['devices', 'mailbox', 'palette', 'tools', 'brand-bootstrap', 'paint', 'rocket', 'shield-check']
+
+const radii = [
+  { label: 'Square', value: '0' },
+  { label: 'Default', value: undefined },
+  { label: 'Circle', value: '50%' },
+]
+
+const features = [
+  { icon: 'devices', title: 'Mobile-optimized', text: 'Every page works on any screen size, from a phone to a wide monitor.' },
+  { icon: 'mailbox', title: 'Tested email clients', text: 'Checked in more than 90 email clients and devices.' },
+  { icon: 'palette', title: 'Minimal design', text: 'Clean layouts based on Bootstrap and Material Design principles.' },
+]
+
+const featureList = [
+  { icon: 'tools', color: 'blue', title: 'Easy to customize', text: 'Change colors, fonts and spacing with Sass or CSS variables.' },
+  { icon: 'brand-bootstrap', color: 'purple', title: 'Built on Bootstrap', text: 'Every Bootstrap component works out of the box.' },
+  { icon: 'paint', color: 'green', title: 'Dark mode', text: 'One attribute switches the whole interface to a dark theme.' },
+]
+---
+
+<DefaultLayout title="Shape" pageMenu="base.shape" description="Shapes put an icon on a soft, tinted square, for feature lists and other places where an icon needs a background.">
+  <DocsLink slot="page-header-actions" path="/ui/components/shape" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Add <code>.shape-&#123;size&#125;</code>, from <code>xxs</code> to <code>2xl</code>, the same sizes as an avatar.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-end gap-3">
+            {
+              avatarSizes.map((size) => (
+                <span class:list={['shape', `shape-${size}`]}>
+                  <Icon name="star" />
+                </span>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Add <code>.shape-&#123;color&#125;</code> to use another palette color.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            <span class="shape"><Icon name="brand-bootstrap" /></span>
+            {
+              extraColors.map((color) => (
+                <span class:list={['shape', `shape-${color}`]}>
+                  <Icon name="brand-bootstrap" />
+                </span>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>With icons</CardTitle>
+          <CardSubtitle>Put one <code>.icon</code> inside the shape; it is sized with the square.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            {
+              icons.map((icon) => (
+                <span class="shape shape-md">
+                  <Icon name={icon} />
+                </span>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Corner radius</CardTitle>
+          <CardSubtitle>Set <code>--tblr-shape-border-radius</code> to change the corners; the default is <code>35%</code>.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-4">
+            {
+              radii.map((item) => (
+                <div class="text-center">
+                  <span class="shape shape-lg" style={item.value && `--tblr-shape-border-radius: ${item.value}`}>
+                    <Icon name="palette" />
+                  </span>
+                  <div class="text-secondary small mt-1">{item.label}</div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Feature list</CardTitle>
+          <CardSubtitle>A shape above each heading, with the same size and color on every item.</CardSubtitle>
+          <div class="row g-4 text-center">
+            {
+              features.map((feature) => (
+                <div class="col-md-4">
+                  <span class="shape shape-md mb-3">
+                    <Icon name={feature.icon} />
+                  </span>
+                  <h3 class="h3">{feature.title}</h3>
+                  <p class="text-secondary mb-0">{feature.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Feature list, inline</CardTitle>
+          <CardSubtitle>A colored shape next to each heading, in a <code>.row</code> with an auto column.</CardSubtitle>
+          <div class="row g-4">
+            {
+              featureList.map((feature) => (
+                <div class="col-md-4">
+                  <div class="row g-3">
+                    <div class="col-auto">
+                      <span class:list={['shape', 'shape-md', `shape-${feature.color}`]}>
+                        <Icon name={feature.icon} />
+                      </span>
+                    </div>
+                    <div class="col">
+                      <h3 class="h4 mb-1">{feature.title}</h3>
+                      <p class="text-secondary mb-0">{feature.text}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

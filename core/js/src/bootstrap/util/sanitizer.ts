@@ -32,6 +32,7 @@ export const DefaultAllowlist: AllowList = {
   'h6': [],
   'i': [],
   'img': ['src', 'srcset', 'alt', 'title', 'width', 'height'],
+  'kbd': [],
   'li': [],
   'ol': [],
   'p': [],

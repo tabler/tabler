@@ -1,0 +1,81 @@
+---
+title: Upgrade to 1.7
+summary: Move a project from Tabler 1.6 to 1.7. The Pricing and Shape components moved from the marketing bundle into the core bundle, so a page that loaded only the marketing stylesheet for them needs one more link.
+description: Upgrade guide from Tabler 1.6 to 1.7 with the components that moved from the marketing bundle into the core bundle, and what to change in your HTML and Sass imports.
+added-in: '1.7.0'
+order: 1
+related: [/ui/getting-started/upgrade/1-6, /ui/getting-started/customize]
+---
+
+Tabler 1.7 is a small update. Every class, custom property, Sass variable and function from 1.6 is still there, and the only change that can touch your code is where two components ship: Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`. A page that loads both files, as every marketing page does, needs no change.
+
+Check [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle) if you load `tabler-marketing.css` on its own or import its Sass partials one by one.
+
+If you're coming from 1.5 or older, do the [1.6 upgrade](/ui/getting-started/upgrade/1-6) first.
+
+## Overview
+
+If you…|You need to…
+---|---
+Load `tabler.css` and `tabler-marketing.css` together|Nothing
+Load `tabler-marketing.css` without `tabler.css` on a page that uses `.pricing` or `.shape`|Add `tabler.css`, see [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle)
+Import `scss/marketing/pricing` or `scss/marketing/shape` in your own Sass|Import `scss/ui/pricing` or `scss/ui/shape`, see [Sass changes](#sass-changes)
+
+## Update the package
+
+Install the new version:
+
+```sh
+npm install --save @tabler/core@1.7.0
+```
+
+Or update the CDN links:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/css/tabler.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/js/tabler.min.js"></script>
+```
+
+## Pricing and Shape are in the core bundle
+
+The [Pricing](/ui/components/pricing) component, `.pricing` and its `.pricing-*` parts, and the [Shape](/ui/components/shape) component, `.shape` with its size and color modifiers, used to ship only in `tabler-marketing.css`. They're part of `tabler.css` now, so a dashboard can show plan cards or an icon in a shape without the marketing stylesheet. The class names and the markup are the same.
+
+`tabler-marketing.css` no longer contains the two components. A page that loads both stylesheets keeps working. A page that loaded only `tabler-marketing.css` for them has to add `tabler.css`, which it needs for the buttons, badges and icons inside them anyway:
+
+```diff
+- <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
+```
+
+The pricing card border also follows the theme now. In 1.6 it was a fixed light gray in dark mode; in 1.7 it uses `--tblr-border-color`.
+
+## Sass changes
+
+Only relevant if you compile the `scss/` sources yourself and import partials one by one. `@use '@tabler/core/scss/tabler'` and `@use '@tabler/core/scss/tabler-marketing'` keep working.
+
+### Moved partials
+
+Partial in 1.6|Partial in 1.7
+---|---
+`scss/marketing/_pricing.scss`|`scss/ui/_pricing.scss`
+`scss/marketing/_shape.scss`|`scss/ui/_shape.scss`
+
+```diff
+- @use '@tabler/core/scss/marketing/pricing';
+- @use '@tabler/core/scss/marketing/shape';
++ @use '@tabler/core/scss/ui/pricing';
++ @use '@tabler/core/scss/ui/shape';
+```
+
+## What is new in 1.7
+
+Besides the changes above, 1.7 adds:
+
+- [Pricing](/ui/components/pricing) as a documented core component, with a class reference.
+- [Shape](/ui/components/shape), a rounded container for an icon in several sizes and every theme color, with its CSS variables documented.
+
+See the [changelog](https://github.com/tabler/tabler/releases) for the full list.

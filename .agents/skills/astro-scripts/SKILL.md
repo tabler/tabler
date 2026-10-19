@@ -66,6 +66,7 @@ const selector = `#wysiwyg-${id}`
 
 - `BEGIN … / END …` comments mark the block in the copied HTML. Use the component name in caps.
 - A named `init…` function plus the `readyState` guard, never a bare call: the script may be parsed after `DOMContentLoaded` has already fired.
+- No `await` (and no `async` function) inside a captured `<script is:inline>`. The Astro compiler sees the keyword and renders the page content asynchronously, `PageScripts` then drains the registry too early, and **every** captured script of the page disappears with no error. Use a `.then()` chain instead.
 - The component takes a required `id` prop and derives ids and selectors from it in the frontmatter. Never query by class or by tag — a page renders many instances.
 
 ## 4. Passing data with `define:vars`
