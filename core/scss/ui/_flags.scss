@@ -7,7 +7,7 @@
   position: relative;
   display: inline-block;
   width: config.$avatar-size;
-  aspect-ratio: 1.33333;
+  aspect-ratio: 1.25;
   vertical-align: bottom;
   background: no-repeat center/cover;
   box-shadow: config.$flag-box-shadow;
@@ -22,6 +22,16 @@
 @each $country in config.$flag-countries {
   .flag-country-#{$country} {
     background-image: url('#{config.$assets-base}/img/flags/#{$country}.svg');
+  }
+}
+
+// deprecated(2.0): the old flag codes keep working, each with its own copy
+// of the image, see `$flag-country-aliases`
+@if config.$enable-deprecated {
+  @each $old, $new in config.$flag-country-aliases {
+    .flag-country-#{$old} {
+      background-image: url('#{config.$assets-base}/img/flags/#{$old}.svg');
+    }
   }
 }
 

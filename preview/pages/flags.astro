@@ -7,29 +7,41 @@ import flags from '@data/flags.json'
 import CardTitle from '@ui/CardTitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
 
+const categories = ['Countries', 'Territories', 'Unions', 'Other']
+const groups = categories.map((category) => ({ category, flags: flags.filter((flag) => flag.category === category) }))
+
 // 21 filler divs for flexbox layout.
 const fillers = Array.from({ length: 21 })
 ---
 
 <DefaultLayout title="Flags" pageMenu="addons.flags">
   <DocsLink slot="page-header-actions" path="/ui/plugins/flags" />
-  <Card>
-    <CardHeader>
-      <CardTitle>List of all flags</CardTitle>
-    </CardHeader>
-    <CardBody class="p-0">
-      <div class="demo-icons-list-wrap">
-        <div class="demo-icons-list">
-          {
-            flags.map((country) => (
-              <span class="demo-icons-list-item" title={country.name} data-bs-toggle="tooltip" data-bs-placement="top">
-                <span class={`flag flag-country-${country.flag.toLowerCase()}`} />
-              </span>
-            ))
-          }
-          {fillers.map(() => <div />)}
+  <div class="row row-cards">
+    {
+      groups.map(({ category, flags }) => (
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>{category}</CardTitle>
+              <span class="card-subtitle ms-2">{flags.length} flags</span>
+            </CardHeader>
+            <CardBody class="p-0">
+              <div class="demo-icons-list-wrap">
+                <div class="demo-icons-list">
+                  {flags.map((flag) => (
+                    <span class="demo-icons-list-item" title={flag.name} data-bs-toggle="tooltip" data-bs-placement="top">
+                      <span class={`flag flag-country-${flag.flag}`} />
+                    </span>
+                  ))}
+                  {fillers.map(() => (
+                    <div />
+                  ))}
+                </div>
+              </div>
+            </CardBody>
+          </Card>
         </div>
-      </div>
-    </CardBody>
-  </Card>
+      ))
+    }
+  </div>
 </DefaultLayout>
