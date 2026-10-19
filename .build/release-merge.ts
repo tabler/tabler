@@ -1,7 +1,6 @@
-// Shared steps of the release scripts (`release:main`, `release:hotfix`): refresh the SRI
-// hashes for the version in core/package.json, and merge one branch into another through a
-// temporary worktree, so the current checkout (and a dev server running from it) never
-// switches branches.
+// Steps of `release:main`: refresh the SRI hashes for the version in core/package.json, and
+// merge one branch into another through a temporary worktree, so the current checkout (and a
+// dev server running from it) never switches branches.
 
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
@@ -23,12 +22,11 @@ export const coreVersion = (): string => {
   return version
 }
 
-/** Fails unless the checkout is on `branch` (or matches it, for a prefix like `release/`) and clean. */
-export const requireBranch = (script: string, branch: string | RegExp): string => {
+/** Fails unless the checkout is on `branch` and clean. */
+export const requireBranch = (script: string, branch: string): string => {
   const current = git(['branch', '--show-current'])
-  const matches = typeof branch === 'string' ? current === branch : branch.test(current)
-  if (!matches) {
-    throw new Error(`${script}: run this on the \`${typeof branch === 'string' ? branch : branch.source}\` branch`)
+  if (current !== branch) {
+    throw new Error(`${script}: run this on the \`${branch}\` branch`)
   }
   if (git(['status', '--porcelain', '--untracked-files=no']) !== '') {
     throw new Error(`${script}: the working tree has uncommitted changes - commit or stash them first`)

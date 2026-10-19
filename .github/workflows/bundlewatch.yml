@@ -14,7 +14,6 @@ on:
       - main
       - dev
       - next
-      - 'release/**'
 
 permissions:
   contents: read
@@ -37,6 +36,6 @@ jobs:
         run: pnpm run bundlewatch
         env:
           BUNDLEWATCH_GITHUB_TOKEN: "${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}"
-          # Compare a pull request with its base branch (`dev`, `next` or `release/*`);
+          # Compare a pull request with its base branch (`dev` or `next`);
           # a push records the branch itself as the new baseline.
           CI_BRANCH_BASE: ${{ github.base_ref || github.ref_name }}

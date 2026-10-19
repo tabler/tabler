@@ -80,7 +80,7 @@ Two of these help with refactors:
 
 ## Releases
 
-Three branches matter:
+Only three long-lived branches exist: `main`, `dev` and `next`. There are no `release/*` branches; a fix always ships from `dev` as the next patch of the current minor.
 
 | Branch | Holds | Releases |
 | ------ | ----- | -------- |
@@ -99,9 +99,7 @@ Every push to `dev` or `next` updates that branch's `chore: update versions` pul
 3. Merge the version pull request, wait for npm, run `pnpm run release:main`.
 4. Start the next line. `dev` now contains `next`, so it fast-forwards: `git checkout next && git merge --ff-only dev && pnpm exec changeset pre enter next && git commit -am "Enter prerelease mode for 1.9" && git push`. The first time, create the branch with `git checkout -b next dev` instead.
 
-**A patch for an older minor** (for example `1.7.3` once `1.8.0` is `latest`) uses a `release/1.7` branch, created from the `@tabler/core@1.7.2` tag. Pull requests with a `patch` changeset go there (write the changeset file by hand: `pnpm exec changeset` compares with `dev`). The branch gets its own `chore: update versions` pull request; merging it publishes. Then `pnpm run release:hotfix` (on `release/1.7`) refreshes the SRI hashes, merges the branch into `main` if `main` is still on 1.7, and into `dev`. Before the first such release check how `pnpm run publish` tags it: the Release workflow publishes as `latest`, and an older line must not take that tag over from the current one.
-
-Never commit to `main` directly. Changes reach it only through `release:main` or `release:hotfix`.
+Never commit to `main` directly. Changes reach it only through `release:main`.
 
 ## Code style
 
