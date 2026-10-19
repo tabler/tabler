@@ -2,6 +2,8 @@
 
 .list-group {
   --list-group-header-padding-y: #{$list-group-header-padding-y};
+  --list-group-item-gap: #{$list-group-item-gap};
+  --list-group-nested-indent: #{$list-group-nested-indent};
 
   margin-inline-start: 0;
   margin-inline-end: 0;
@@ -35,10 +37,98 @@
   }
 }
 
-.list-group-item.active {
+// A checked `.list-group-selectable-check` marks its item like `.active`,
+// the same way `.table-selectable` marks a table row.
+.list-group-item.active,
+.list-group-selectable .list-group-item:has(.list-group-selectable-check:checked) {
   background-color: var(--active-bg);
-  border-inline-start-color: $component-active-bg;
-  border-inline-start-width: $border-width-wide;
+  // An inset shadow instead of a wider border, so the content does not shift
+  box-shadow: inset $border-width-wide 0 0 $component-active-bg;
+}
+
+// Density
+.list-group-sm {
+  --list-group-item-padding-y: #{$list-group-item-padding-y-sm};
+  --list-group-item-gap: #{$list-group-item-gap-sm};
+}
+
+.list-group-lg {
+  --list-group-item-padding-y: #{$list-group-item-padding-y-lg};
+  --list-group-item-gap: #{$list-group-item-gap-lg};
+}
+
+// Item slots: media, content (title + description), meta and actions.
+// The item becomes a flex row only when it holds a content slot, so items
+// with plain text or a grid row inside keep their layout.
+.list-group-item:has(> .list-group-item-content) {
+  display: flex;
+  gap: var(--list-group-item-gap);
+  align-items: center;
+}
+
+.list-group-item-media,
+.list-group-item-meta,
+.list-group-item-actions {
+  flex: none;
+}
+
+.list-group-item-media {
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-group-item-title,
+.list-group-item-description {
+  display: block;
+  @include text-truncate();
+}
+
+.list-group-item-title {
+  color: inherit;
+}
+
+.list-group-item-description,
+.list-group-item-meta {
+  color: var(--secondary);
+}
+
+// Nested items: a block of indented items under a parent item, usually a
+// `.collapse` toggled by that parent. It draws the side and bottom borders its
+// borderless items leave out.
+.list-group-nested {
+  border: var(--list-group-border-width) solid var(--list-group-border-color);
+  border-top-width: 0;
+
+  > .list-group-item {
+    padding-inline-start: calc(var(--list-group-item-padding-x) + var(--list-group-nested-indent));
+    border-width: 0;
+  }
+
+  + .list-group-item {
+    border-top-width: 0;
+  }
+
+  .list-group-flush > & {
+    border-inline-width: 0;
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+// Chevron of a parent item, turned over while its nested items are open
+.list-group-item-toggle {
+  @include transition(transform $transition-time);
+
+  [aria-expanded='true'] & {
+    transform: rotate(180deg);
+  }
 }
 
 .list-bordered {
@@ -113,4 +203,43 @@
     margin-inline-end: $list-inline-padding;
     content: ' · ';
   }
+}
+
+// Icon list: a list whose markers are icons instead of bullets, such as a
+// checklist of features. The first `.icon` in an entry is the marker.
+.list-icon {
+  // scss-docs-start list-icon-css-vars
+  --list-icon-gap: #{$list-icon-gap};
+  --list-icon-row-gap: #{$list-icon-row-gap};
+  --list-icon-inline-gap: #{$list-icon-inline-gap};
+  --list-icon-size: #{$list-icon-size};
+  --list-icon-color: #{$list-icon-color};
+  // scss-docs-end list-icon-css-vars
+  display: flex;
+  flex-direction: column;
+  gap: var(--list-icon-row-gap);
+  padding-inline-start: 0;
+  list-style: none;
+
+  > * {
+    display: flex;
+    gap: var(--list-icon-gap);
+    align-items: flex-start;
+  }
+
+  > * > .icon:first-child {
+    --icon-size: var(--list-icon-size);
+    flex-shrink: 0;
+    // center the marker on the first line of text: `.icon` sets its own font
+    // size, which would make `1lh` the icon's line height, so inherit the text's
+    margin-top: calc((1lh - var(--list-icon-size)) / 2);
+    font-size: inherit;
+    color: var(--list-icon-color);
+  }
+}
+
+// Entries in a row that wraps, for a short list of highlights
+.list-icon-inline {
+  flex-flow: row wrap;
+  gap: var(--list-icon-row-gap) var(--list-icon-inline-gap);
 }

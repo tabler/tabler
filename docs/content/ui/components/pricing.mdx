@@ -1,0 +1,127 @@
+---
+title: Pricing
+summary: A row of plan cards with a price, a feature list and a button, where one card can be marked as featured.
+description: Show your plans side by side with the pricing component. Each card has a title, a price, a feature list and a button. Mark one card as featured to raise it above the others.
+related: [/ui/components/card, /ui/components/badge]
+source: core/scss/ui/_pricing.scss
+added-in: '1.7.0'
+classnames:
+  component:
+    - class: pricing
+      desc: Container that lays the cards out in a column, and in a row from the md breakpoint up
+  part:
+    - class: pricing-card
+      desc: One plan, with a border, a shadow and centered text
+    - class: pricing-title
+      desc: Plan name, sized like an h2
+    - class: pricing-label
+      desc: Label centered on the top edge of the card, for a badge such as "Popular"
+    - class: pricing-price
+      desc: Price row, large and bold
+    - class: pricing-price-currency
+      desc: Currency sign in front of the amount, smaller than the amount
+    - class: pricing-price-description
+      desc: Text next to the amount, such as the billing period
+    - class: pricing-features
+      desc: Plain list of features, aligned to the start
+    - class: pricing-btn
+      desc: Button wrapper, pushed to the bottom of the card
+  modifier:
+    - class: featured
+      desc: Raises the card, adds a primary border and puts it first on small screens; set on pricing-card
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+
+## Default markup
+
+Put the plans in a `.pricing` container, one `.pricing-card` per plan. Each card holds a `.pricing-title`, a `.pricing-price`, a `.pricing-features` list and a `.pricing-btn`. On small screens the cards stack. From the `md` breakpoint up they sit in a row and share their borders, so the group reads as one table.
+
+Add `.featured` to the main plan. The card gets a primary border and a shadow, and on wide screens it is a bit taller than its neighbors, so it stands out. On small screens it moves to the top of the stack. A `.pricing-label` with a [badge](/ui/components/badge) sits on the top edge of the card.
+
+<Example>
+<div class="pricing">
+  <div class="pricing-card">
+    <h3 class="pricing-title">Free</h3>
+    <div class="pricing-price">
+      <span class="pricing-price-currency">$</span>0
+      <div class="pricing-price-description">
+        <div>per user</div>
+        <div>per month</div>
+      </div>
+    </div>
+    <ul class="pricing-features my-4">
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Up to 3 users</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Basic components</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Community support</li>
+    </ul>
+    <div class="pricing-btn"><a href="#" class="btn w-100">Get started</a></div>
+  </div>
+  <div class="pricing-card featured">
+    <div class="pricing-label"><span class="badge bg-primary text-primary-fg">Popular</span></div>
+    <h3 class="pricing-title">Premium</h3>
+    <div class="pricing-price">
+      <span class="pricing-price-currency">$</span>49
+      <div class="pricing-price-description">
+        <div>per user</div>
+        <div>per month</div>
+      </div>
+    </div>
+    <ul class="pricing-features my-4">
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Up to 10 users</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />All components</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Figma UI kit</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Priority support</li>
+    </ul>
+    <div class="pricing-btn"><a href="#" class="btn btn-primary w-100">Get started</a></div>
+  </div>
+  <div class="pricing-card">
+    <h3 class="pricing-title">Enterprise</h3>
+    <div class="pricing-price">
+      <span class="pricing-price-currency">$</span>99
+      <div class="pricing-price-description">
+        <div>per user</div>
+        <div>per month</div>
+      </div>
+    </div>
+    <ul class="pricing-features my-4">
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Unlimited users</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />All components</li>
+      <li><Icon name="check" color="green" class="icon-inline me-1" />Dedicated support</li>
+    </ul>
+    <div class="pricing-btn"><a href="#" class="btn w-100">Contact us</a></div>
+  </div>
+</div>
+</Example>
+
+## Price
+
+The `.pricing-price` row holds the amount. Put the currency sign in a `.pricing-price-currency` in front of it, and the billing period in a `.pricing-price-description` after it. The description is smaller and uses the secondary text color, so the amount stays the strongest part of the card.
+
+<Example centered>
+<div class="pricing-price">
+  <span class="pricing-price-currency">$</span>49
+  <div class="pricing-price-description">
+    <div>per user</div>
+    <div>per month</div>
+  </div>
+</div>
+</Example>
+
+## Features
+
+`.pricing-features` is a plain list with no bullets, aligned to the start of the card. Put an icon in front of each item to show what the plan includes. Use a margin utility such as `.my-4` to space the list from the price and the button.
+
+<Example centered>
+<ul class="pricing-features">
+  <li><Icon name="check" color="green" class="icon-inline me-1" />Up to 10 users</li>
+  <li><Icon name="check" color="green" class="icon-inline me-1" />All components</li>
+  <li><Icon name="x" color="red" class="icon-inline me-1" />Dedicated support</li>
+</ul>
+</Example>
+
+## Accessibility
+
+- Use a heading for `.pricing-title`, with the level that fits the page, so users of a screen reader can jump between plans.
+- Say in the button text or in an `aria-label` which plan the button belongs to when several buttons share the same text.
+- Do not rely on the border color alone to mark the featured plan. The `.pricing-label` badge names it in text.

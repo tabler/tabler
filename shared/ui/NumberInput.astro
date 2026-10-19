@@ -1,0 +1,53 @@
+---
+// NumberInput initializes from `data-bs-toggle="number-input"` on the input and its `data-bs-*` options (tabler.js, core/js/src/number-input.ts).
+// The plugin wraps the input in `.number-input` and renders the two buttons.
+interface Props {
+  /** data-bs-min: lower bound; defaults to the input's `min` attribute */
+  min?: number
+  /** data-bs-max: upper bound; defaults to the input's `max` attribute */
+  max?: number
+  /** data-bs-step: amount per step; defaults to the input's `step` attribute, or 1 */
+  step?: number
+  /** data-bs-repeat: keep stepping while a button is held (default: true) */
+  repeat?: boolean
+  /** `.form-control-{size}`; the rendered box gets `.number-input-{size}` */
+  size?: 'sm' | 'lg'
+  value?: number | string
+  /** `text` keeps the native spin buttons away; `number` keeps the browser's own validation */
+  type?: 'text' | 'number'
+  ariaLabel?: string
+  id?: string
+  name?: string
+  disabled?: boolean
+  readonly?: boolean
+  /** data-bs-decrement-label / data-bs-increment-label: accessible names of the rendered buttons */
+  decrementLabel?: string
+  incrementLabel?: string
+  class?: string
+  /** remaining attributes (data-*, style, …) are forwarded to the input */
+  [key: string]: unknown
+}
+
+const { min, max, step, repeat, size, value, type = 'text', ariaLabel, id, name, disabled, readonly, decrementLabel, incrementLabel, class: className, ...rest } = Astro.props
+
+const inputClass = ['form-control', size && `form-control-${size}`, className]
+---
+
+<input
+  type={type}
+  class:list={inputClass}
+  data-bs-toggle="number-input"
+  data-bs-repeat={repeat === false ? 'false' : undefined}
+  data-bs-decrement-label={decrementLabel}
+  data-bs-increment-label={incrementLabel}
+  id={id}
+  name={name}
+  value={value}
+  min={min}
+  max={max}
+  step={step}
+  disabled={disabled}
+  readonly={readonly}
+  aria-label={ariaLabel}
+  {...rest}
+/>

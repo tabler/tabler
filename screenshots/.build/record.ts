@@ -330,7 +330,7 @@ async function main() {
 
         if (system) {
           await encode(system, sampled, ['-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'], path.join(outDir, `${name}.mp4`))
-          await encode(system, sampled, ['-vf', `fps=15,scale=iw/2:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=sierra2_4a`, '-loop', '0'], path.join(outDir, `${name}.gif`))
+          await encode(system, sampled, ['-vf', `fps=${FPS},scale=iw/2:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=sierra2_4a`, '-loop', '0'], path.join(outDir, `${name}.gif`))
           console.log(`  ✓ ${name}.mp4, ${name}.gif`)
         }
       }

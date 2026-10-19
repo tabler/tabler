@@ -1,77 +1,91 @@
 ---
-// Mapbox GL map. Access token from the MAPBOX_KEY environment variable (.env or
-// the host's settings), never from the source. Renders nothing unless
-// maps[mapId] exists; without a token the container renders but the map is not
-// initialised (Mapbox GL throws on a missing token).
+// A map drawn by the Tabler `MapView` component (core/js/src/map.ts) on top of
+// MapLibre GL JS: the markup below is all a page needs, there is no script.
+// Markers go in the default slot, as elements with `data-bs-lng` and
+// `data-bs-lat`; content laid over the map goes in the `overlay` slot.
+// Renders nothing unless maps[mapId] exists or `center` is set.
 import maps from '@data/maps.json';
-import CaptureScript from '../CaptureScript.astro';
 
 interface Props {
-	/** Key into the maps data */
+	/** Key into the maps data; also the suffix of the container id */
 	mapId: string;
 	ratio?: string;
+	/** for a map with no entry in the maps data: [latitude, longitude] */
+	center?: [number, number];
+	zoom?: number;
+	title?: string;
+	style?: string;
+	/** buttons over the map: true for zoom, or a list such as "zoom,north,fullscreen" */
+	controls?: boolean | string;
+	/** draws the map as a 3D globe instead of a flat map */
+	globe?: boolean;
+	/** rounded corners; turn off when the map fills a box that has its own corners */
+	rounded?: boolean;
+	/** fixed height (any CSS length) instead of an aspect ratio */
+	height?: string;
+	/** a path drawn as a line: [longitude, latitude] points */
+	route?: number[][];
+	/** index of the route point reached so far: the rest of the path is dashed */
+	routeProgress?: number;
+	/** color of the route and the GeoJSON shapes */
+	layerColor?: string;
+	/** accessible names of the control buttons, by action */
+	labels?: Record<string, string>;
+	/** GeoJSON drawn over the map: an object, or the URL of a file */
+	geojson?: object | string;
 }
 
-const { mapId, ratio } = Astro.props;
-
-const mapboxKey = import.meta.env.MAPBOX_KEY ?? process.env.MAPBOX_KEY ?? '';
+const { mapId, ratio, center: centerProp, zoom: zoomProp, title, style: styleProp, controls: controlsProp, globe = false, rounded = true, height, route, routeProgress, layerColor, labels, geojson } = Astro.props;
 
 type MapData = {
-	title?: string;
+	title?: string | undefined;
 	ratio?: string;
 	card?: boolean;
-	style?: string;
-	zoom?: number;
+	/** OpenFreeMap style name: positron (default), liberty, bright, dark or fiord */
+	style?: string | undefined;
+	/** style used in dark mode, `dark` by default */
+	darkStyle?: string;
+	/** buttons over the map: true for zoom, or a list such as "zoom,north,fullscreen" */
+	controls?: boolean | string | undefined;
+	zoom?: number | undefined;
 	center?: [number, number];
 	markers?: { name?: string; center: [number, number] }[];
 };
 
-const data = (maps as unknown as Record<string, MapData>)[mapId];
+const data: MapData | undefined = (maps as unknown as Record<string, MapData>)[mapId] ?? (centerProp ? { title, center: centerProp, zoom: zoomProp, style: styleProp, controls: controlsProp } : undefined);
 
-const mapContainerId = `map-${mapId}`;
-const style = data ? (data.style ?? 'streets-v11') : undefined;
-const zoom = data?.zoom ?? 13;
-const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
-const markers = (data?.markers ?? []).map((marker) => [marker.center[1], marker.center[0]]);
-
+// The data keeps [latitude, longitude]; the component takes longitude first
+const center = data?.center ? `${data.center[1]},${data.center[0]}` : '13.4049,52.518827';
 const ratioClass = data?.ratio ?? ratio ?? '16x9';
 ---
 
 {
 	data && (
-		<div class={`ratio ratio-${ratioClass}`}>
-			<div>
-				<div id={mapContainerId} class={`w-100 h-100${data.card ? ' rounded' : ''}`} role="img" aria-label={data.title ?? 'Map'} />
+		<div class:list={height ? 'position-relative' : `ratio ratio-${ratioClass}`} style={height ? `height: ${height}` : undefined}>
+			<div class:list={[height && 'h-100']}>
+				<div
+					id={`map-${mapId}`}
+					class:list={['w-100 h-100', rounded && 'rounded']}
+					role="region"
+					aria-label={data.title ?? 'Map'}
+					data-bs-toggle="map"
+					data-bs-center={center}
+					data-bs-zoom={data.zoom ?? 13}
+					data-bs-map-style={data.style}
+					data-bs-map-style-dark={data.darkStyle}
+					data-bs-controls={data.controls ? String(data.controls) : undefined}
+					data-bs-globe={globe ? 'true' : undefined}
+					data-bs-route={route ? JSON.stringify(route) : undefined}
+					data-bs-route-progress={routeProgress}
+					data-bs-layer-color={layerColor}
+					data-bs-labels={labels ? JSON.stringify(labels) : undefined}
+					data-bs-geojson={typeof geojson === 'object' ? JSON.stringify(geojson) : geojson}
+				>
+					{(data.markers ?? []).map((marker) => <span class="map-marker map-marker-dot" data-bs-lng={marker.center[1]} data-bs-lat={marker.center[0]} data-bs-popup={marker.name} />)}
+					<slot />
+				</div>
+				<slot name="overlay" />
 			</div>
 		</div>
-	)
-}
-{
-	data && mapboxKey && (
-		<CaptureScript>
-			<!-- BEGIN MAP -->
-			<script is:inline define:vars={{ mapboxKey, mapContainerId, style, zoom, center, markers }}>
-				window.tabler_map ??= {};
-
-				function initMap() {
-					mapboxgl.accessToken = mapboxKey;
-					const map = new mapboxgl.Map({
-						container: mapContainerId,
-						style: `mapbox://styles/mapbox/${style}`,
-						zoom,
-						center,
-					});
-
-					markers.forEach((coords) => {
-						new mapboxgl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map);
-					});
-
-					window.tabler_map[mapContainerId] = map;
-				}
-
-				document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
-			</script>
-			<!-- END MAP -->
-		</CaptureScript>
 	)
 }
