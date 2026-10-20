@@ -19,8 +19,19 @@ const dataFile = join(repoRoot, 'shared', 'data', 'payments.json')
 
 let cloneDir: string | undefined
 
+// In a git worktree the main checkout lives elsewhere, so also look next to it.
+function mainCheckoutRoot(): string | undefined {
+  try {
+    const gitDir = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'], { cwd: repoRoot, encoding: 'utf8' }).trim()
+    return dirname(gitDir)
+  } catch {
+    return undefined
+  }
+}
+
 function resolveSourceDir(): string {
-  const candidates = [process.env.TABLER_PAYMENTS_DIR, join(repoRoot, '..', 'tabler-payments')].filter((dir): dir is string => Boolean(dir))
+  const mainRoot = mainCheckoutRoot()
+  const candidates = [process.env.TABLER_PAYMENTS_DIR, join(repoRoot, '..', 'tabler-payments'), mainRoot && join(mainRoot, '..', 'tabler-payments')].filter((dir): dir is string => Boolean(dir))
   for (const dir of candidates) {
     if (existsSync(join(dir, 'src', 'light'))) return dir
   }

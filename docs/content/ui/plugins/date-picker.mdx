@@ -149,6 +149,25 @@ The popup lines up with the left edge of the field. Set `data-bs-placement` to `
 <input type="text" class="form-control" id="datepicker-right" data-bs-toggle="datepicker" autocomplete="off" data-bs-placement="right" placeholder="Select a date" />
 </Example>
 
+### Date format
+
+The field shows the date in the format of `data-bs-locale`. Set `data-bs-date-format` to a pattern to write it the same way in every language. The pattern uses `YYYY` for the year, `MM` and `M` for the month, and `DD` and `D` for the day. The short tokens drop the leading zero. Everything else is copied as it is. Use `iso` as a shortcut for `YYYY-MM-DD`.
+
+<Example>
+<div class="row g-3">
+  <div class="col-sm-6">
+    <label class="form-label" for="datepicker-format-iso">ISO date, Polish calendar</label>
+    <input type="text" class="form-control" id="datepicker-format-iso" data-bs-toggle="datepicker" autocomplete="off" data-bs-locale="pl-PL" data-bs-date-format="iso" value="2026-09-30" />
+  </div>
+  <div class="col-sm-6">
+    <label class="form-label" for="datepicker-format-pattern">Custom pattern</label>
+    <input type="text" class="form-control" id="datepicker-format-pattern" data-bs-toggle="datepicker" autocomplete="off" data-bs-date-format="DD/MM/YYYY" placeholder="DD/MM/YYYY" />
+  </div>
+</div>
+</Example>
+
+A field with a pattern also reads its `value` in that pattern, so a form the server sends back keeps the picked date selected.
+
 ### Button trigger
 
 Any element can open the calendar, not only an input. A button shows the picked date as its text. Put the text in a child with `data-bs-datepicker-display` so an icon next to it stays.
@@ -197,11 +216,22 @@ To submit the picked dates with a form, put a hidden input inside the calendar. 
 </form>
 </Example>
 
+A popup field works the same way. Point `data-bs-bound-input` at a hidden input and give the `name` to that input, not to the field. The field shows the date in the visitor's language, and the form sends `YYYY-MM-DD`. When the hidden input already has a value, the picker selects that date on page load.
+
+<Example>
+<form onsubmit="return false">
+  <label class="form-label" for="datepicker-bound">Due date</label>
+  <input type="text" class="form-control" id="datepicker-bound" data-bs-toggle="datepicker" autocomplete="off" data-bs-locale="pl-PL" data-bs-bound-input="#datepicker-bound-value" placeholder="Select a date" />
+  <input type="hidden" id="datepicker-bound-value" name="due_date" value="2026-09-30" />
+  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+</Example>
+
 ## JavaScript
 
 ### Via data attributes
 
-Add `data-bs-toggle="datepicker"` and Tabler does the rest. Inputs open on focus, other elements open on click, and inline calendars and fields with a value or `data-bs-selected-dates` render on page load. Every option below can be set as a `data-bs-*` attribute, for example `data-bs-selection-mode="multiple"`.
+Add `data-bs-toggle="datepicker"` and Tabler does the rest. Inputs open on focus, other elements open on click, and inline calendars and fields with a value, `data-bs-selected-dates` or `data-bs-bound-input` render on page load. Every option below can be set as a `data-bs-*` attribute, for example `data-bs-selection-mode="multiple"`.
 
 <CodeDocs name="datepicker-init" file="core/js/src/datepicker.ts" />
 
@@ -223,12 +253,13 @@ const datepicker = new tabler.Datepicker(document.getElementById('my-date'), {
 | --- | --- | --- | --- |
 | `dateMin` | string, number, Date | `null` | First pickable date, as `YYYY-MM-DD`. |
 | `dateMax` | string, number, Date | `null` | Last pickable date, as `YYYY-MM-DD`. |
-| `dateFormat` | object, function | `null` | How the date is shown in the field. Pass `Intl.DateTimeFormat` options or a `function(date, locale)` that returns a string. |
+| `boundInput` | string, element | `null` | Input that gets the picked dates as `YYYY-MM-DD`, separated by commas. An inline calendar uses a hidden input inside it. |
+| `dateFormat` | string, object, function | `null` | How the date is shown in the field. Pass a pattern such as `'DD.MM.YYYY'`, `'iso'`, `Intl.DateTimeFormat` options or a `function(date, locale)` that returns a string. |
 | `displayElement` | string, element, boolean | `null` | Element that shows the picked date. A button uses itself or its `[data-bs-datepicker-display]` child. Set `false` to show nothing. |
 | `displayMonthsCount` | number | `1` | Months shown side by side. |
 | `firstWeekday` | number | `1` | First day of the week: 0 is Sunday, 1 is Monday. |
 | `inline` | boolean | `false` | Render the calendar in place instead of a popup. |
-| `locale` | string | `'default'` | Locale for month names and the date shown in the field, for example `'en-US'` or `'de-DE'`. |
+| `locale` | string | `'default'` | Locale for month names and the date shown in the field, for example `'en-US'` or `'de-DE'`. A `dateFormat` pattern takes over the field. |
 | `positionElement` | string, element | `null` | Element the popup lines up with. Defaults to the `.input-icon` or `.input-group` wrapper, or the field itself. |
 | `selectedDates` | array | `[]` | Preselected dates as `YYYY-MM-DD`. |
 | `selectionMode` | string | `'single'` | `'single'`, `'multiple'` or `'multiple-ranged'`. |
@@ -298,5 +329,5 @@ Tabler 1.5 and older used [Litepicker](https://github.com/wakirin/Litepicker), w
 | `singleMode: false` | `data-bs-selection-mode="multiple-ranged"` |
 | `minDate` / `maxDate` | `data-bs-date-min` / `data-bs-date-max` |
 | `numberOfMonths: 2` | `data-bs-display-months-count="2"` |
-| `format` | `dateFormat` option, as `Intl.DateTimeFormat` options |
+| `format: 'DD.MM.YYYY'` | `data-bs-date-format="DD.MM.YYYY"` (tokens `YYYY`, `MM`, `M`, `DD`, `D`) |
 | `picker.on('selected', …)` | `change.bs.datepicker` event |

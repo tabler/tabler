@@ -5,18 +5,24 @@ import type { HTMLTag } from 'astro/types'
 
 type PolymorphicProps = { as?: HTMLTag }
 
+/** core/scss/ui/_lists.scss `.list-group-{size}` density modifiers */
+type ListGroupSize = 'sm' | 'lg'
+
 interface Props extends PolymorphicProps {
+  size?: ListGroupSize | undefined
   flush?: boolean
   hoverable?: boolean
+  /** list-group-selectable: an item with a checked .list-group-selectable-check input gets the active look */
+  selectable?: boolean
   transparent?: boolean
   class?: string
   /** remaining attributes (data-sortable, style, …) are forwarded to the element */
   [key: string]: unknown
 }
 
-const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest }: Props = Astro.props
+const { as: Element = 'div', size, flush, hoverable, selectable, transparent, class: className, ...rest }: Props = Astro.props
 ---
 
-<Element class:list={['list-group', flush && 'list-group-flush', hoverable && 'list-group-hoverable', transparent && 'list-group-transparent', className]} {...rest}>
+<Element class:list={['list-group', size && `list-group-${size}`, flush && 'list-group-flush', hoverable && 'list-group-hoverable', selectable && 'list-group-selectable', transparent && 'list-group-transparent', className]} {...rest}>
   <slot />
 </Element>

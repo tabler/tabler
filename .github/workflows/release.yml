@@ -1,9 +1,14 @@
 name: Release
 
+# Two lines can release (see CONTRIBUTING.md, "Releases"):
+#   dev   the next patch of the current minor; `release:main` then merges it into `main`
+#   next  the next minor, in changesets prerelease mode: publishes `x.y.0-next.N` under
+#         the npm tag `next`, without a GitHub release
 on:
   push:
     branches:
       - dev
+      - next
 
 permissions:
   contents: read
@@ -47,6 +52,9 @@ jobs:
           # changeset-release/dev via a short-lived changesets-ghcommit-temp/* branch,
           # and every one of those branches triggered a Vercel build.
           push-with-git-cli: true
+          # A `next` prerelease is only an npm tag; the GitHub release comes with the
+          # final version from `dev`.
+          create-github-releases: ${{ github.ref_name != 'next' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -55,19 +63,26 @@ jobs:
       # packages shows up several times. Replace that body with the same notes the
       # GitHub release gets: the intro from `.github/release-notes/<version>.md`
       # and the changes grouped as core / demo / docs, each listed once. The
-      # action rewrites the body on every push to dev, so this runs right after it.
+      # action rewrites the body on every push to the branch, so this runs right
+      # after it. The version branch is `changeset-release/<branch>`.
       - name: Write the release notes into the version pull request
         if: steps.changesets.outputs.pr-number != ''
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.changesets.outputs.pr-number }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          git fetch --depth=1 origin changeset-release/dev
-          git checkout --force --detach origin/changeset-release/dev
+          git fetch --depth=1 origin "changeset-release/${BRANCH}"
+          git checkout --force --detach "origin/changeset-release/${BRANCH}"
           version=$(node -p "require('./core/package.json').version")
+          if [ "${BRANCH}" = "next" ]; then
+            what="publishes \`@tabler/core@${version}\` to npm under the \`next\` tag"
+          else
+            what="publishes \`@tabler/core@${version}\` to npm and creates the GitHub release"
+          fi
           {
-            echo "Merging this pull request publishes \`@tabler/core@${version}\` to npm and creates the GitHub release. It is regenerated on every push to \`dev\`."
+            echo "Merging this pull request ${what}. It is regenerated on every push to \`${BRANCH}\`."
             echo
             pnpm run --silent release-notes
           } > "${RUNNER_TEMP}/pr-body.md"
@@ -75,8 +90,9 @@ jobs:
 
       # `pnpm run build` above zipped preview/dist into packages-zip/; attach it to
       # the GitHub release that changesets/action just created for @tabler/core.
+      # Not on `next`: a prerelease has no GitHub release.
       - name: Attach the preview zip to the GitHub release
-        if: steps.changesets.outputs.published == 'true'
+        if: steps.changesets.outputs.published == 'true' && github.ref_name != 'next'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -88,7 +104,7 @@ jobs:
       # the intro from `.github/release-notes/<version>.md` followed by the changes
       # grouped per package.
       - name: Write the release notes
-        if: steps.changesets.outputs.published == 'true'
+        if: steps.changesets.outputs.published == 'true' && github.ref_name != 'next'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

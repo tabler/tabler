@@ -39,19 +39,13 @@ const rows = sorted.map((person, idx) => {
         <>
           {row.header && <ListGroupHeader class="sticky-top">{row.header}</ListGroupHeader>}
           <ListGroupItem>
-            <div class="row">
-              <div class="col-auto">
-                <a href="#" tabindex="-1" aria-hidden="true">
-                  <Avatar person={row.person} />
-                </a>
-              </div>
-              <div class="col text-truncate">
-                <a href="#" class="text-body d-block">
-                  {row.person.full_name}
-                </a>
-                <div class="text-secondary text-truncate mt-n1">{row.description}</div>
-              </div>
-            </div>
+            <a href="#" slot="media" tabindex="-1" aria-hidden="true">
+              <Avatar person={row.person} />
+            </a>
+            <a href="#" class="list-group-item-title">
+              {row.person.full_name}
+            </a>
+            <div class="list-group-item-description">{row.description}</div>
           </ListGroupItem>
         </>
       ))

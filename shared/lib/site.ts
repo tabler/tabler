@@ -27,6 +27,6 @@ export const site = {
   cssPlugins: ['flags', 'socials', 'payments', 'vendors', 'marketing', 'themes'],
   themeColors: ['blue', 'azure', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'lime', 'green', 'teal', 'cyan'],
   themeFonts: ['sans-serif', 'serif', 'monospace', 'comic'],
-  themeBases: ['slate', 'gray', 'zinc', 'neutral', 'stone'],
+  themeBases: ['slate', 'gray', 'zinc', 'neutral', 'stone', 'mist'],
   themeRadiuses: ['0', '0.5', '1', '1.5', '2'],
 }

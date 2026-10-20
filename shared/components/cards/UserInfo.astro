@@ -1,5 +1,6 @@
 ---
-import Icon from '@ui/Icon.astro'
+import IconList from '@ui/IconList.astro'
+import IconListItem from '@ui/IconListItem.astro'
 import type { FlagCountry } from '@shared/lib/tokens'
 import { people } from '@shared/lib/people'
 import Flag from '@ui/Flag.astro'
@@ -12,29 +13,25 @@ const person = requireIndex(people, 24)
 <div class="card">
   <div class="card-body">
     <CardTitle>Basic info</CardTitle>
-    <div class="mb-2">
-      <Icon name="book" inline class="me-2 text-secondary" />
-      Went to: <strong>{person.university}</strong>
-    </div>
-    <div class="mb-2">
-      <Icon name="briefcase" inline class="me-2 text-secondary" />
-      Worked at: <strong>{person.company}</strong>
-    </div>
-    <div class="mb-2">
-      <Icon name="home" inline class="me-2 text-secondary" />
-      Lives in: <strong>{person.city}, {person.country}</strong>
-    </div>
-    <div class="mb-2">
-      <Icon name="map-pin" inline class="me-2 text-secondary" />
-      From: <strong><Flag size="xs" flag={(person.country_code ?? '') as FlagCountry} /> {person.country}</strong>
-    </div>
-    <div class="mb-2">
-      <Icon name="calendar" inline class="me-2 text-secondary" />
-      Birth date: <strong>{person.birth_date}</strong>
-    </div>
-    <div>
-      <Icon name="clock" inline class="me-2 text-secondary" />
-      Time zone: <strong>{person.time_zone}</strong>
-    </div>
+    <IconList>
+      <IconListItem icon="book">
+        <span>Went to: <strong>{person.university}</strong></span>
+      </IconListItem>
+      <IconListItem icon="briefcase">
+        <span>Worked at: <strong>{person.company}</strong></span>
+      </IconListItem>
+      <IconListItem icon="home">
+        <span>Lives in: <strong>{person.city}, {person.country}</strong></span>
+      </IconListItem>
+      <IconListItem icon="map-pin">
+        <span>From: <strong><Flag size="xs" flag={(person.country_code ?? '') as FlagCountry} /> {person.country}</strong></span>
+      </IconListItem>
+      <IconListItem icon="calendar">
+        <span>Birth date: <strong>{person.birth_date}</strong></span>
+      </IconListItem>
+      <IconListItem icon="clock">
+        <span>Time zone: <strong>{person.time_zone}</strong></span>
+      </IconListItem>
+    </IconList>
   </div>
 </div>

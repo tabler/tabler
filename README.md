@@ -46,8 +46,8 @@ Tabler is a set of ready-made layouts, components and demo pages for admin panel
 <p align="center">
 <a href="https://preview.tabler.io" target="_blank">
 <picture>
-<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview-dark.png">
-<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview.png" alt="Tabler preview">
+<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview-dark@2x.png">
+<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview@2x.png" alt="Tabler preview">
 </picture>
 </a>
 </p>

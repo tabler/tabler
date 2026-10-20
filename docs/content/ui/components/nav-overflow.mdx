@@ -1,0 +1,244 @@
+---
+title: Nav overflow
+summary: Nav overflow keeps a nav on one line. Items that do not fit move into a More dropdown, and come back when there is room again.
+description: Keep a nav on one line by moving the items that do not fit into a More dropdown.
+added-in: '1.7.0'
+related: [/ui/layout/navs-tabs, /ui/components/dropdown]
+source: core/scss/ui/_nav-overflow.scss
+classnames:
+  component:
+    - class: nav-overflow
+      desc: Wrapper around the nav. The component measures this element to decide what fits
+  items:
+    - class: nav-overflow-keep
+      desc: Put on a nav item that must never move to the menu
+  toggle:
+    - class: nav-overflow-item
+      desc: The nav item that holds the More toggle and its menu
+    - class: nav-overflow-toggle
+      desc: The More button. Write your own to change its markup or label
+    - class: nav-overflow-menu
+      desc: The dropdown menu that receives the moved items
+    - class: nav-overflow-icon
+      desc: Wrapper around the toggle icon
+    - class: nav-overflow-text
+      desc: Wrapper around the toggle text
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Overview
+
+A nav with many links wraps to a second line, or runs out of its container, when the screen gets narrow. Nav overflow keeps the nav on one line. Items that do not fit move into a More dropdown at the end of the nav, and come back when there is room again. This is also known as the Priority+ pattern.
+
+Wrap the `.nav` in a `.nav-overflow` element and add `data-bs-toggle="nav-overflow"` to the wrapper. Resize the window to see the items move.
+
+<Example overflow="visible">
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+  </ul>
+</div>
+</Example>
+
+How it works:
+
+- The component watches the size of the wrapper, not of the window. It works in a card, a sidebar or any container that changes width.
+- It measures the wrapper, not the nav. Moving items changes the width of the nav, so measuring the nav would feed the result back in.
+- Moved items are copied into the menu as `.dropdown-item`, and the originals are hidden. The `.active` and `.disabled` states are copied too.
+- A link with `data-bs-toggle`, like a tab, works from the menu. The copy sends the click to the original link, and the `.active` state follows.
+- Until the script runs, the nav is clipped to one line but stays visible, so it still works without JavaScript.
+- It works with every nav style: plain, `.nav-pills`, `.nav-tabs` and `.nav-underline`.
+- It also works with the `.navbar-nav` of a navbar. A vertical nav, like the collapsed navbar on a phone, keeps every item visible.
+
+## Tabs
+
+<Example overflow="visible">
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Overview</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Details</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">History</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Activity</a></li>
+    <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Comments</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Attachments</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Related</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+  </ul>
+</div>
+</Example>
+
+## Keep items visible
+
+Add `.nav-overflow-keep` to an item that must never move to the menu, such as the home link or a call to action. The other items move first.
+
+<Example overflow="visible">
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav nav-underline">
+    <li class="nav-item nav-overflow-keep"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Partners</a></li>
+    <li class="nav-item nav-overflow-keep"><a class="nav-link" href="#">Contact</a></li>
+  </ul>
+</div>
+</Example>
+
+## With dropdowns
+
+A nav item that has its own dropdown becomes a nested dropdown in the More menu. It opens towards the start (`.dropstart`) when the menu is aligned to the end, which is the default, and towards the end (`.dropend`) otherwise. The component moves the original `.dropdown-menu` instead of copying it, so its ids and content stay the same, and moves it back when the item fits again.
+
+<Example overflow="visible">
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">Products</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Laptops</a>
+        <a class="dropdown-item" href="#">Phones</a>
+        <a class="dropdown-item" href="#">Tablets</a>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false">Company</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">About</a>
+        <a class="dropdown-item" href="#">Careers</a>
+        <a class="dropdown-item" href="#">Press</a>
+      </div>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+  </ul>
+</div>
+</Example>
+
+## Customizing the toggle
+
+### Text and icon
+
+Change the text with `data-bs-more-text`. Set it to `false` for an icon-only toggle. The button then gets `aria-label="More"`, so it still has a name.
+
+<Example overflow="visible">
+<div class="nav-overflow" data-bs-toggle="nav-overflow" data-bs-more-text="false">
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+  </ul>
+</div>
+</Example>
+
+To use another icon, put an element with `data-bs-overflow-icon` inside the wrapper, next to the nav. The component uses it as the toggle icon and removes the original. The icon markup is sanitized first.
+
+```html
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav">…</ul>
+  <svg data-bs-overflow-icon xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+    <path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" />
+  </svg>
+</div>
+```
+
+### Your own toggle
+
+To change the markup or the label of the button, write the toggle yourself. The component uses a `.nav-overflow-toggle` it finds in the wrapper instead of creating one:
+
+```html
+<div class="nav-overflow" data-bs-toggle="nav-overflow">
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+    …
+    <li class="nav-item dropdown nav-overflow-item">
+      <button class="nav-link nav-overflow-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Show more links">…</button>
+      <div class="dropdown-menu dropdown-menu-end nav-overflow-menu"></div>
+    </li>
+  </ul>
+</div>
+```
+
+## Collapse all
+
+Use `data-bs-collapse-below` to move every item into the menu when the wrapper is narrower than a breakpoint. Pass a breakpoint name, read from `--tblr-breakpoint-{name}`, or a number of pixels. Above that width the nav collapses item by item again. Items with `.nav-overflow-keep` stay visible.
+
+```html
+<div class="nav-overflow" data-bs-toggle="nav-overflow" data-bs-collapse-below="md">…</div>
+```
+
+## Options
+
+Pass options as data attributes on the wrapper, or in the config object.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `collapseBelow` | `0` | Wrapper width below which every item moves to the menu. A breakpoint name (`md`) or a number of pixels. `0` turns it off. |
+| `iconPlacement` | `'start'` | Puts the icon before (`start`) or after (`end`) the text. |
+| `menuPlacement` | `'bottom-end'` | Where the menu opens: `bottom-end`, `bottom-start`, `top-end` or `top-start`. |
+| `menuStrategy` | `'absolute'` | Positioning strategy of the menu. Use `fixed` when a parent with `overflow` clips it. |
+| `moreText` | `'More'` | Text of the toggle, inserted as plain text. `false` or an empty string gives an icon-only toggle. |
+| `moreIcon` | three dots | SVG or HTML of the toggle icon. It is sanitized before insertion. |
+| `threshold` | `0` | Minimum number of items that stay visible. |
+
+## JavaScript
+
+On page load Tabler creates a `NavOverflow` for every element with `data-bs-toggle="nav-overflow"`. This is the code that runs:
+
+<CodeDocs name="nav-overflow-init" file="core/js/src/bootstrap/nav-overflow.ts" />
+
+Create it yourself for a nav added later, and pass the wrapper, not the nav:
+
+```js
+const navOverflow = new tabler.NavOverflow(document.querySelector('.nav-overflow'), {
+  moreText: 'See all',
+  threshold: 2,
+});
+```
+
+| Method | Description |
+| --- | --- |
+| `update()` | Works out again which items fit. It runs by itself when the wrapper changes size. |
+| `dispose()` | Puts every item back, removes the generated toggle and stops watching the wrapper. |
+| `getInstance(element)` | Static. Returns the component for the wrapper, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the component for the wrapper and creates it when needed. |
+
+Both events fire on the wrapper:
+
+| Event | Description |
+| --- | --- |
+| `update.bs.navoverflow` | Fires after `update()`. |
+| `overflow.bs.navoverflow` | Fires when items move to the menu. The event carries `overflowCount` and `visibleCount`. |
+
+```js
+document.querySelector('.nav-overflow').addEventListener('overflow.bs.navoverflow', (event) => {
+  console.log(`${event.overflowCount} items in the menu, ${event.visibleCount} visible`);
+});
+```
+
+## Limitations
+
+- An event listener added to a plain nav link is not copied to the menu. Add the listener to the nav or to the wrapper and check `event.target`, so it works for both.
+- A plain link in the menu keeps its `href`, but not its `id`.
+
+## Accessibility
+
+- The More toggle is a `<button>` with `aria-expanded`, and the menu works with the keyboard like any other dropdown.
+- An icon-only toggle is named `More` with `aria-label`. For a page in another language, set `moreText` or write your own toggle with a translated `aria-label`.
+- A moved dropdown gets `role="button"` and `tabindex="0"` in the menu, so it can be reached with the keyboard.

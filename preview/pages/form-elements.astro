@@ -11,6 +11,7 @@ import Layout from '@shared/components/cards/form/Layout.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputMask from '@ui/form/InputMask.astro'
 import OtpInput from '@ui/OtpInput.astro'
+import NumberInput from '@ui/NumberInput.astro'
 import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
@@ -155,6 +156,18 @@ const rows = [
               <FormGroup label="Alphanumeric & masked" for="otp-alphanumeric"><OtpInput id="otp-alphanumeric" length={6} type="alphanumeric" mask /></FormGroup>
               <FormGroup label="Connected" for="otp-connected"><OtpInput id="otp-connected" length={6} connected /></FormGroup>
               <FormGroup label="Disabled" for="otp-disabled"><OtpInput id="otp-disabled" length={6} value="123456" disabled /></FormGroup>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12 col-lg-6">
+          <Card>
+            <CardHeader title="Number input" />
+            <CardBody>
+              <FormGroup label="Quantity" for="number-input-basic"><NumberInput id="number-input-basic" value={1} min={1} max={99} /></FormGroup>
+              <FormGroup label="Step of 0.25" for="number-input-decimal"><NumberInput id="number-input-decimal" value={1.5} min={0} max={10} step={0.25} /></FormGroup>
+              <FormGroup label="Without bounds" for="number-input-unbounded"><NumberInput id="number-input-unbounded" value={0} /></FormGroup>
+              <FormGroup label="Native number input" for="number-input-number"><NumberInput id="number-input-number" type="number" value={5} min={0} max={10} /></FormGroup>
+              <FormGroup label="Disabled" for="number-input-disabled"><NumberInput id="number-input-disabled" value={3} disabled /></FormGroup>
             </CardBody>
           </Card>
         </div>

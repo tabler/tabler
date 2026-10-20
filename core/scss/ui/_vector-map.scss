@@ -1,0 +1,217 @@
+// Vector map (inline SVG, rendered by js/src/vector-map.ts)
+@use '../config' as *;
+
+@keyframes vector-map-line {
+  to {
+    stroke-dashoffset: calc(var(--vector-map-line-dash) * -2);
+  }
+}
+
+.vector-map {
+  // scss-docs-start vector-map-css-vars
+  --vector-map-color: #{$vector-map-color};
+  --vector-map-region-fill: #{$vector-map-region-fill};
+  --vector-map-region-stroke: #{$vector-map-region-stroke};
+  --vector-map-region-stroke-width: #{$vector-map-region-stroke-width};
+  --vector-map-value-min: #{$vector-map-value-min};
+  --vector-map-point-size: #{$vector-map-point-size};
+  --vector-map-selected-stroke: #{$vector-map-selected-stroke};
+  --vector-map-selected-stroke-width: #{$vector-map-selected-stroke-width};
+  --vector-map-marker-size: #{$vector-map-marker-size};
+  --vector-map-marker-color: #{$vector-map-marker-color};
+  --vector-map-marker-halo-color: #{$vector-map-marker-halo-color};
+  --vector-map-marker-halo-width: #{$vector-map-marker-halo-width};
+  --vector-map-line-color: #{$vector-map-line-color};
+  --vector-map-line-width: #{$vector-map-line-width};
+  --vector-map-line-dash: #{$vector-map-line-dash};
+  --vector-map-line-duration: #{$vector-map-line-duration};
+  --vector-map-controls-offset: #{$vector-map-controls-offset};
+  --vector-map-legend-width: #{$vector-map-legend-width};
+  --vector-map-legend-height: #{$vector-map-legend-height};
+  // scss-docs-end vector-map-css-vars
+
+  position: relative;
+  display: block;
+  line-height: 0;
+}
+
+.vector-map-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.vector-map-region {
+  // The colour of the region, used as the fill of a shape and as the dot of a
+  // region drawn as a point.
+  --vector-map-region-color: var(--vector-map-region-fill);
+  fill: var(--vector-map-region-color);
+  stroke: var(--vector-map-region-stroke);
+  stroke-linejoin: round;
+  stroke-width: var(--vector-map-region-stroke-width);
+  // The border keeps its width however large the map is drawn
+  vector-effect: non-scaling-stroke;
+}
+
+// `--vector-map-value` is the 0 to 1 share set by the plugin. The lowest value
+// still gets `--vector-map-value-min` of the colour, so it stands out from a
+// region with no value at all. A slice of the legend has a share too, and
+// gets its colour from the same rule.
+.vector-map-region[data-value],
+.vector-map-legend-step {
+  --vector-map-region-color: color-mix(in oklab, var(--vector-map-color) calc((var(--vector-map-value-min) + var(--vector-map-value, 1) * (1 - var(--vector-map-value-min))) * 100%), var(--vector-map-region-fill));
+}
+
+// Dashes that move from the start of the line to its end
+.vector-map-line {
+  fill: none;
+  stroke: var(--vector-map-line-color);
+  stroke-dasharray: var(--vector-map-line-dash);
+  stroke-width: var(--vector-map-line-width);
+  vector-effect: non-scaling-stroke;
+  animation: vector-map-line var(--vector-map-line-duration) linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// Both parts of a marker, and of a region drawn as a point, are a line of no
+// length: its round caps make a dot as wide as the stroke, and the non-scaling
+// stroke keeps it that wide in pixels however large the map is drawn.
+.vector-map-region-point-halo,
+.vector-map-region-point-dot,
+.vector-map-marker-halo,
+.vector-map-marker-dot {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+// A scale of several colours, from `--vector-map-color-1` for the lowest value
+// to the last one for the highest. `--vector-map-colors` says how many there
+// are. Every further colour is mixed over the result so far: not at all below
+// its part of the scale, more and more inside it, and fully above it, so each
+// part runs between two neighbours. A colour past the last one never gets a
+// share, which is why one rule serves any number of them.
+.vector-map-colors .vector-map-region[data-value],
+.vector-map-colors .vector-map-legend-step {
+  $color: var(--vector-map-color-1, transparent);
+
+  @for $i from 2 through $vector-map-colors-max {
+    $color: color-mix(in oklab, #{$color}, var(--vector-map-color-#{$i}, transparent) calc(clamp(0, var(--vector-map-value, 1) * (var(--vector-map-colors, 2) - 1) - #{$i - 2}, 1) * 100%));
+  }
+
+  --vector-map-region-color: #{$color};
+}
+
+// A country too small for a shape: a dot in the colour of the region, with the
+// ring of a marker around it. Without a value it says nothing and only adds
+// noise next to the markers, so it is left out.
+.vector-map-region-point:not([data-value]) {
+  display: none;
+}
+
+.vector-map-region-point-halo {
+  stroke: var(--vector-map-marker-halo-color);
+  stroke-width: calc(var(--vector-map-point-size) + var(--vector-map-marker-halo-width) * 2);
+}
+
+.vector-map-region-point-dot {
+  stroke: var(--vector-map-region-color);
+  stroke-width: var(--vector-map-point-size);
+}
+
+.vector-map-marker-halo {
+  stroke: var(--vector-map-marker-halo-color);
+  stroke-width: calc(var(--vector-map-marker-size) + var(--vector-map-marker-halo-width) * 2);
+}
+
+.vector-map-marker-dot {
+  stroke: var(--vector-map-marker-color);
+  stroke-width: var(--vector-map-marker-size);
+}
+
+// Follows the pointer, placed by the plugin with `left` and `top`
+.vector-map-tooltip {
+  position: absolute;
+  z-index: 1;
+  padding: $tooltip-padding-y $tooltip-padding-x;
+  font-size: $tooltip-font-size;
+  line-height: $line-height-base;
+  color: $tooltip-color;
+  white-space: nowrap;
+  pointer-events: none;
+  background: $tooltip-bg;
+  @include border-radius($tooltip-border-radius);
+
+  /* rtl:ignore */
+  transform: translate(-50%, calc(-100% - #{$spacer-2}));
+}
+
+// A map that can be magnified takes the drags and pinches for itself, so the
+// page does not scroll or zoom under the finger.
+.vector-map-zoomable .vector-map-svg {
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.vector-map-dragging .vector-map-svg {
+  cursor: grabbing;
+}
+
+.vector-map-controls {
+  position: absolute;
+  inset-block-start: var(--vector-map-controls-offset);
+  inset-inline-end: var(--vector-map-controls-offset);
+  z-index: 1;
+
+  .icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+  }
+}
+
+// The scale of the map as a bar, with the lowest and the highest value
+.vector-map-legend {
+  display: flex;
+  gap: $spacer-2;
+  align-items: center;
+  justify-content: center;
+  margin-top: $spacer-2;
+  font-size: $font-size-sm;
+  font-variant-numeric: tabular-nums;
+  line-height: $line-height-base;
+  color: var(--secondary);
+}
+
+.vector-map-legend-scale {
+  display: flex;
+  width: var(--vector-map-legend-width);
+  height: var(--vector-map-legend-height);
+  overflow: hidden;
+  @include border-radius($border-radius-pill);
+}
+
+.vector-map-legend-step {
+  flex: 1;
+  background: var(--vector-map-region-color);
+}
+
+// Regions can be clicked to select them
+.vector-map-selectable .vector-map-region {
+  cursor: pointer;
+}
+
+// A selected region gets an outline, and keeps the colour of its value
+.vector-map-region-selected {
+  stroke: var(--vector-map-selected-stroke);
+  stroke-width: var(--vector-map-selected-stroke-width);
+
+  .vector-map-region-point-halo {
+    stroke: var(--vector-map-selected-stroke);
+  }
+}
