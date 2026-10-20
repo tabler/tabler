@@ -1,6 +1,6 @@
 {
   "name": "@tabler/core",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "type": "module",
@@ -18,12 +18,17 @@
     "lint:scss:vars": "find-unused-sass-variables scss/ --ignoreFiles scss/_variables-deprecated.scss",
     "js": "pnpm run js:build && pnpm run js:min && pnpm run js:types",
     "js:types": "tsc -p tsconfig.types.json",
-    "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\"",
+    "js:build": "concurrently \"pnpm run js:build:standalone\" \"pnpm run js:build:theme\" \"pnpm run js:build:map\" \"pnpm run js:build:vector-map\" \"pnpm run js:build:maps\"",
+    "js:build:vector-map": "cross-env BASE_NAME=tabler-vector-map vite build --config .build/vite.config.mts",
+    "js:build:maps": "cross-env BASE_NAME=maps/world vite build --config .build/vite.config.mts",
     "js:build:theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
+    "js:build:map": "cross-env BASE_NAME=tabler-map vite build --config .build/vite.config.mts",
     "js:build:standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
-    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\"",
+    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\" \"pnpm run js:min:map\" \"pnpm run js:min:vector-map\"",
     "js:min:standalone": "terser dist/js/tabler.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\" -o dist/js/tabler.min.js",
     "js:min:theme": "terser dist/js/tabler-theme.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\" -o dist/js/tabler-theme.min.js",
+    "js:min:map": "terser dist/js/tabler-map.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-map.js.map,filename=dist/js/tabler-map.min.js.map,url=tabler-map.min.js.map\" -o dist/js/tabler-map.min.js",
+    "js:min:vector-map": "terser dist/js/tabler-vector-map.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-vector-map.js.map,filename=dist/js/tabler-vector-map.min.js.map,url=tabler-vector-map.min.js.map\" -o dist/js/tabler-vector-map.min.js",
     "copy": "concurrently \"pnpm run copy:img\" \"pnpm run copy:libs\"",
     "copy:img": "tsx .build/copy-img.ts",
     "copy:libs": "tsx .build/copy-libs.ts",
@@ -103,19 +108,19 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "88 kB"
+        "maxSize": "90 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "82 kB"
+        "maxSize": "84 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "88 kB"
+        "maxSize": "90 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "82 kB"
+        "maxSize": "84 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
@@ -123,7 +128,7 @@
       },
       {
         "path": "./dist/css/tabler-flags.min.css",
-        "maxSize": "2.1 kB"
+        "maxSize": "2.5 kB"
       },
       {
         "path": "./dist/css/tabler-flags.rtl.css",
@@ -131,7 +136,7 @@
       },
       {
         "path": "./dist/css/tabler-flags.rtl.min.css",
-        "maxSize": "2.1 kB"
+        "maxSize": "2.5 kB"
       },
       {
         "path": "./dist/css/tabler-marketing.css",
@@ -215,27 +220,35 @@
       },
       {
         "path": "./dist/css/tabler-vendors.css",
-        "maxSize": "4 kB"
+        "maxSize": "5.5 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.min.css",
-        "maxSize": "3.5 kB"
+        "maxSize": "5 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.rtl.css",
-        "maxSize": "4 kB"
+        "maxSize": "5.5 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.rtl.min.css",
-        "maxSize": "3.5 kB"
+        "maxSize": "5 kB"
       },
       {
         "path": "./dist/js/tabler.js",
-        "maxSize": "58 kB"
+        "maxSize": "64 kB"
       },
       {
         "path": "./dist/js/tabler.min.js",
-        "maxSize": "40 kB"
+        "maxSize": "42 kB"
+      },
+      {
+        "path": "./dist/js/tabler-map.js",
+        "maxSize": "11 kB"
+      },
+      {
+        "path": "./dist/js/tabler-map.min.js",
+        "maxSize": "8 kB"
       },
       {
         "path": "./dist/js/tabler-theme.js",
@@ -244,6 +257,18 @@
       {
         "path": "./dist/js/tabler-theme.min.js",
         "maxSize": "800 B"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.js",
+        "maxSize": "13 kB"
+      },
+      {
+        "path": "./dist/js/tabler-vector-map.min.js",
+        "maxSize": "9 kB"
+      },
+      {
+        "path": "./dist/js/maps/world.js",
+        "maxSize": "28 kB"
       }
     ]
   },
@@ -257,7 +282,7 @@
   },
   "devDependencies": {
     "@melloware/coloris": "^0.25.0",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.6.5",
     "@vitest/browser-playwright": "4.1.11",
     "@vitest/coverage-istanbul": "4.1.11",
     "apexcharts": "7.0.0",
@@ -265,20 +290,21 @@
     "choices.js": "^11.2.4",
     "clipboard": "^2.0.11",
     "countup.js": "^2.10.1",
-    "driver.js": "^1.8.0",
-    "dropzone": "^6.0.0-beta.2",
+    "driver.js": "^1.10.1",
+    "dropzone": "^6.3.5",
     "find-unused-sass-variables": "^6.2.1",
     "flatpickr": "^4.6.13",
-    "fslightbox": "^3.7.6",
-    "fullcalendar": "^6.1.21",
-    "hugerte": "^1.0.12",
+    "fslightbox": "^3.8.0",
+    "fullcalendar": "^6.1.22",
+    "hugerte": "^1.0.14",
     "imask": "^7.6.1",
     "jsvectormap": "^1.7.0",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
+    "maplibre-gl": "^6.11.2",
     "nouislider": "^15.8.1",
     "playwright": "1.62.1",
-    "plyr": "^3.8.4",
+    "plyr": "^3.8.5",
     "sass": "1.103.1",
     "sass-true": "^10.1.0",
     "signature_pad": "^5.1.4",

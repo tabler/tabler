@@ -1,0 +1,43 @@
+---
+// List group with the item slots: a team picker in a card. Each row has the
+// media, content, meta and actions slots, the list is selectable, and the
+// second row is checked, so its row shows the active look the checkbox gives
+// it without any JavaScript. The cursor rests on that checkbox.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+
+const people = [
+  { name: 'Paweł Kuna', role: 'UI Designer', avatar: '000m', seen: '2 h' },
+  { name: 'Alice Marlin', role: 'Frontend developer', avatar: '016f', seen: '3 d', checked: true },
+  { name: 'Dunn Slane', role: 'Research Nurse', avatar: '002m', seen: '5 d' },
+  { name: 'Emmy Levet', role: 'Product manager', avatar: '003f', seen: '1 w' },
+]
+---
+
+<ScreenshotLayout title="List group" columns={2}>
+  <Card>
+    <div class="card-header">
+      <h3 class="card-title">Add to project</h3>
+    </div>
+    <div class="list-group list-group-flush list-group-selectable">
+      {
+        people.map((person) => (
+          <label class="list-group-item">
+            <span class="list-group-item-media position-relative">
+              <input type="checkbox" class="form-check-input list-group-selectable-check m-0" checked={person.checked} />
+              {person.checked && <span class="cursor" style="top: 70%; left: 60%" />}
+            </span>
+            <span class="list-group-item-media">
+              <span class="avatar avatar-sm" style={`background-image: url(/static/avatars/${person.avatar}.jpg)`} />
+            </span>
+            <span class="list-group-item-content">
+              <span class="list-group-item-title">{person.name}</span>
+              <span class="list-group-item-description">{person.role}</span>
+            </span>
+            <span class="list-group-item-meta">{person.seen}</span>
+          </label>
+        ))
+      }
+    </div>
+  </Card>
+</ScreenshotLayout>

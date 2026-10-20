@@ -1,0 +1,59 @@
+---
+// Datagrid in its natural place: the details panel of a domain in a hosting
+// dashboard. The values mix plain text, a status, an avatar, an icon and a
+// progress bar, so the picture shows that a value can hold any content.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardActions from '@ui/CardActions.astro'
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import Datagrid from '@ui/Datagrid.astro'
+import DatagridItem from '@ui/DatagridItem.astro'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+
+const owner = requireIndex(people, 4)
+---
+
+<ScreenshotLayout title="Data grid" columns={2}>
+  <Card>
+    <CardHeader title="Domain details">
+      <CardActions>
+        <Button text="Edit" icon="pencil" size="sm" />
+      </CardActions>
+    </CardHeader>
+    <CardBody class="p-4">
+      <Datagrid columns={3}>
+        <DatagridItem title="Domain">tabler.io</DatagridItem>
+        <DatagridItem title="Registrar">Third Party</DatagridItem>
+        <DatagridItem title="Edge network">
+          <span class="status status-green">Active</span>
+        </DatagridItem>
+        <DatagridItem title="Owner">
+          <div class="d-flex align-items-center">
+            <Avatar person={owner} size="xs" class="me-2" />
+            {owner.full_name}
+          </div>
+        </DatagridItem>
+        <DatagridItem title="Environment">
+          <Badge color="blue" light text="Production" />
+        </DatagridItem>
+        <DatagridItem title="Port number">3306</DatagridItem>
+        <DatagridItem title="SSL certificate">
+          <Icon name="lock" color="green" inline />
+          Valid
+        </DatagridItem>
+        <DatagridItem title="Expiration date">May 2, 2027</DatagridItem>
+        <DatagridItem title="Disk usage">
+          <div class="mb-1">68%</div>
+          <Progress value={68} size="sm" />
+        </DatagridItem>
+      </Datagrid>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

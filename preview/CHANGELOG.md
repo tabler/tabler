@@ -1,5 +1,34 @@
 # @tabler/preview
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- c493436: Added the `.list-icon` component for lists with icon markers, with `.list-icon-inline` for entries in a row.
+- 681b6eb: Added the image label component: `.img-labeled` and `.img-label` pin a short text or an icon to a corner of an image.
+- 03e2775: Updated `<kbd>` to a compact key cap and added `.kbd-group` and `--tblr-kbd-*` variables for keyboard shortcuts.
+- 69c1114: Added item slots, `.list-group-sm` and `.list-group-lg` sizes, selectable and nested items to the list group.
+- a845ab0: Added the maps page demos on MapLibre instead of Mapbox GL and Google Maps, and the Map blocks page with seven blocks such as a store locator.
+- a845ab0: Added the `MapView` component in `tabler-map.js` on MapLibre GL JS 6: `data-bs-toggle="map"` makes a themed map with markers, popups, routes and a globe.
+- d6cfffb: Added the `.mockup-browser` component that frames a screenshot or any content in a browser window with an address bar.
+- 6c46d55: Added `NavOverflow` component that moves nav items that do not fit into a More dropdown, with a `.nav-overflow` wrapper.
+- 3f3aae9: Added the `NumberInput` component, a `.number-input` quantity input with buttons, bounds, hold-to-repeat and keyboard support.
+- 8ab6441: Added the `VectorMap` plugin: an SVG world map with values, color scales, a legend, markers, lines, selection, tooltips and zoom.
+
+### Patch Changes
+
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- ba4e87a: Added `.icon-inline` to icons that sit in a line of text in the demo cards, preview pages and docs examples.
+- 68da446: Updated the flags plugin to Tabler Flags: 304 flags at a 5:4 ratio, 50 new like `.flag-country-nato`, old codes kept as aliases.
+- 64e290b: Updated the dashboard screenshot in the marketing hero and added a dark theme version.
+- 744f9fe: Added the `.text-shimmer` class that sweeps a highlight across a label, with an optional `.text-shimmer-loader` spinner.
+- 5cbc443: Added a `mist` gray palette for `data-bs-theme-base` and removed the hidden `pink` base from `tabler-themes.css`.
+- ed41f04: Updated the promo top banner to load only on production deploys, not on branch previews.
+- b1aac09: Updated Tabler Illustrations to v1.18.0 with 11 new illustrations.
+- 8dc1ffe: Updated Tabler Icons to v3.49.0.
+
 ## 1.6.1
 
 ### Patch Changes

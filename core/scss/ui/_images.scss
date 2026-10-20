@@ -21,3 +21,64 @@
 .img-bg {
   background: no-repeat center/cover;
 }
+
+// A label pinned to a corner of an image, such as "AI", "New" or a video length
+.img-labeled {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.img-label {
+  // scss-docs-start img-label-css-vars
+  --img-label-offset: #{$img-label-offset};
+  --img-label-padding-y: #{$img-label-padding-y};
+  --img-label-padding-x: #{$img-label-padding-x};
+  --img-label-gap: #{$img-label-gap};
+  --img-label-font-size: #{$img-label-font-size};
+  --img-label-font-weight: #{$img-label-font-weight};
+  --img-label-color: #{$img-label-color};
+  --img-label-bg: #{$img-label-bg};
+  --img-label-border-radius: #{$img-label-border-radius};
+  --img-label-backdrop-filter: #{$img-label-backdrop-filter};
+  --img-label-icon-size: #{$img-label-icon-size};
+  // scss-docs-end img-label-css-vars
+  position: absolute;
+  inset-block-end: var(--img-label-offset);
+  inset-inline-end: var(--img-label-offset);
+  z-index: 1;
+  display: inline-flex;
+  gap: var(--img-label-gap);
+  align-items: center;
+  max-width: calc(100% - 2 * var(--img-label-offset));
+  padding: var(--img-label-padding-y) var(--img-label-padding-x);
+  font-size: var(--img-label-font-size);
+  font-weight: var(--img-label-font-weight);
+  line-height: 1;
+  color: var(--img-label-color);
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--img-label-bg);
+  backdrop-filter: var(--img-label-backdrop-filter);
+  @include border-radius(var(--img-label-border-radius));
+
+  .icon {
+    --icon-size: var(--img-label-icon-size);
+  }
+}
+
+// A label that holds only an icon: equal padding on all sides makes it a square
+.img-label-icon {
+  --img-label-padding-x: var(--img-label-padding-y);
+}
+
+.img-label-top-start,
+.img-label-top-end {
+  inset-block: var(--img-label-offset) auto;
+}
+
+.img-label-top-start,
+.img-label-bottom-start {
+  inset-inline: var(--img-label-offset) auto;
+}

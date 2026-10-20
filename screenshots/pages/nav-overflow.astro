@@ -1,0 +1,164 @@
+---
+// Nav overflow in the header of a small app screen. The header is too narrow
+// for all twelve links, so the last ones sit in the More menu, shown open with the
+// cursor over one of the moved links. The nav and its menu stay at full opacity
+// and everything else fades out with the distance from them, so the eye lands
+// on the nav and the rest only sets the scene.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+
+const links = ['Overview', 'Dashboard', 'Products', 'Services', 'Analytics', 'Reports', 'Customers', 'Invoices', 'Team', 'Billing', 'Settings', 'Help']
+
+const stats = [
+  { label: 'Revenue', value: '$48,290', change: '+8.2%' },
+  { label: 'Orders', value: '1,284', change: '+3.1%' },
+  { label: 'Customers', value: '9,712', change: '+5.4%' },
+]
+
+const orders = [
+  { id: '#4821', customer: 'Northwind Traders', status: 'Paid', total: '$1,240.00' },
+  { id: '#4820', customer: 'Blue Harbor Studio', status: 'Paid', total: '$389.50' },
+  { id: '#4819', customer: 'Juniper & Co.', status: 'Pending', total: '$2,015.00' },
+]
+---
+
+<ScreenshotLayout title="Nav overflow" columns={3}>
+  <div class="shot-nav-overflow">
+    <Card>
+      <div class="card-header gap-3">
+        <img class="shot-nav-overflow-logo" src="/static/logo-small.svg" width="32" height="32" alt="Tabler" />
+        <div class="nav-overflow" data-bs-toggle="nav-overflow" id="shot-nav-overflow">
+          <ul class="nav nav-pills">
+            {
+              links.map((link, index) => (
+                <li class="nav-item">
+                  <a class:list={['nav-link', index === 0 && 'active']} aria-current={index === 0 ? 'page' : undefined} href="#">
+                    {link}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      <CardBody>
+        <div class="row row-cards">
+          {
+            stats.map((stat) => (
+              <div class="col-4">
+                <Card>
+                  <CardBody>
+                    <div class="subheader">{stat.label}</div>
+                    <div class="d-flex align-items-baseline">
+                      <div class="h1 mb-0 me-2">{stat.value}</div>
+                      <span class="text-green">{stat.change}</span>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          }
+          <div class="col-12">
+            <Card>
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th class="text-end">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    orders.map((order) => (
+                      <tr>
+                        <td class="text-secondary">{order.id}</td>
+                        <td>{order.customer}</td>
+                        <td class="text-secondary">{order.status}</td>
+                        <td class="text-end">{order.total}</td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
+            </Card>
+          </div>
+        </div>
+      </CardBody>
+    </Card>
+  </div>
+
+  <style is:inline>
+    .shot-nav-overflow {
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    /* The mark is cut out of the logo, so it takes the colour behind it. Keep it
+    white on a dark header too; the patch is smaller than the logo, so it never
+    shows around the rounded corners. */
+    .shot-nav-overflow-logo {
+      background: linear-gradient(#fff, #fff) center / 75% 75% no-repeat;
+    }
+
+    .shot-nav-overflow-hover {
+      position: relative;
+      color: var(--tblr-dropdown-link-hover-color);
+      background-color: var(--tblr-dropdown-link-hover-bg);
+    }
+  </style>
+
+  <!-- The open menu is the subject of this capture, so it is opened here
+  rather than left to a click the capture tool cannot make. The component
+  builds the menu items, so the hovered one gets its look and the cursor here.
+  The mask is drawn from the measured nav and menu: two blurred boxes, grown
+  enough to be solid over the subject and to fade out around it. -->
+  <script is:inline>
+    window.addEventListener('load', () => {
+      const wrapper = document.getElementById('shot-nav-overflow')
+      const { Dropdown } = window.tabler ?? {}
+      if (!wrapper || !Dropdown) return
+
+      Dropdown.getOrCreateInstance(wrapper.querySelector('.nav-overflow-toggle')).show()
+
+      // Opening a menu moves the focus to it; the picture shows the menu, not a focus ring
+      document.activeElement?.blur()
+
+      const hovered = wrapper.querySelectorAll('.nav-overflow-menu > .dropdown-item')[1]
+      if (!hovered) return
+
+      const cursor = document.createElement('span')
+      cursor.className = 'cursor'
+      cursor.style.cssText = 'top: 60%; left: 55%'
+      hovered.classList.add('shot-nav-overflow-hover')
+      hovered.append(cursor)
+
+      const scene = document.querySelector('.shot-nav-overflow')
+      const menu = wrapper.querySelector('.nav-overflow-menu')
+      const frame = scene.getBoundingClientRect()
+      const blur = 56
+      const grow = blur * 2
+
+      const boxes = [wrapper, menu].map((element) => {
+        const box = element.getBoundingClientRect()
+        const x = box.left - frame.left - grow
+        const y = box.top - frame.top - grow
+
+        return `<rect x="${x}" y="${y}" width="${box.width + 2 * grow}" height="${box.height + 2 * grow}" rx="${grow}"/>`
+      })
+
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${frame.width} ${frame.height}" preserveAspectRatio="none">` +
+        `<filter id="f" filterUnits="userSpaceOnUse" x="-500" y="-500" width="${frame.width + 1000}" height="${frame.height + 1000}"><feGaussianBlur stdDeviation="${blur}"/></filter>` +
+        `<g filter="url(#f)">${boxes.join('')}</g></svg>`
+      const image = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
+
+      scene.style.webkitMaskImage = image
+      scene.style.maskImage = image
+    })
+  </script>
+</ScreenshotLayout>

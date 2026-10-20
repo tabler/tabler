@@ -7,16 +7,20 @@ description: >-
 
 # The framework JavaScript
 
-`core/js` builds two shipped bundles. Everything here is public API and is bound by a size budget.
+`core/js` builds three shipped bundles. Everything here is public API and is bound by a size budget.
 
-## 1. Two entry points
+## 1. Three entry points
 
 | Entry | Ships as | Holds |
 | --- | --- | --- |
 | `js/tabler.ts` | `tabler.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper exports |
 | `js/tabler-theme.ts` | `tabler-theme.js` (+ `.min`) | the colour-mode/theme switcher only |
+| `js/tabler-map.ts` | `tabler-map.js` (+ `.min`) | the `MapView` component, as an add-on module |
+| `js/tabler-vector-map.ts` | `tabler-vector-map.js` (+ `.min`) | the `VectorMap` component, as an add-on module; the maps are `dist/js/maps/*.js` |
 
 Both bundles are **ESM only** (Tabler 2.0, like Bootstrap v6): no UMD, no `window.tabler` global. `tabler.js` is loaded with `<script type="module">`; `tabler-theme.js` has no imports or exports once bundled, so it stays a classic blocking script.
+
+`tabler-map.js` and `tabler-vector-map.js` are loaded after `tabler.js`, and only on pages with a map: a component that few pages use goes in an add-on bundle like these, not in `tabler.js`. A map file in `dist/js/maps/` only exports its map: register it with `VectorMap.addMap()` or assign it to `window.tablerVectorMaps`.
 
 `tabler-theme.js` is loaded right after `<body>` and **not deferred**, so the chosen theme applies before the first paint. It stays tiny on purpose (bundlewatch: 1 kB raw, 800 B minified) — do not add anything to it that is not needed before paint.
 
