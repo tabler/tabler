@@ -1,0 +1,337 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import IconList from '@ui/IconList.astro'
+import IconListItem from '@ui/IconListItem.astro'
+
+const features = ['Unlimited projects', 'Priority support', 'Custom domains', 'Advanced analytics']
+
+const layouts = ['Boxed', 'Combined', 'Condensed', 'Fluid', 'Horizontal', 'Vertical', 'RTL mode', 'Dark mode']
+
+const plans = [
+  { name: 'Free', price: '$0', included: 2 },
+  { name: 'Pro', price: '$29', included: 4 },
+]
+
+const overview = [
+  ['Boxed', 'Combined', 'Condensed', 'Fluid', 'Horizontal', 'Vertical'],
+  ['Dark mode', 'RTL mode', 'Navbar sticky', 'Navbar overlap', 'Folded sidebar', 'Auto color mode'],
+]
+
+const pros = ['Fast to set up', 'No vendor lock-in', 'Great documentation']
+const cons = ['No built-in auth', 'Smaller community']
+
+const requirements = [
+  { text: 'At least 8 characters', met: true },
+  { text: 'One upper case letter', met: true },
+  { text: 'One number', met: false },
+  { text: 'One special character', met: false },
+]
+
+const changes = [
+  { icon: 'plus', color: 'green', text: 'Added the icon list component' },
+  { icon: 'arrow-up', color: 'blue', text: 'Faster rendering of large tables' },
+  { icon: 'bug', color: 'red', text: 'Fixed the dropdown position in RTL mode' },
+  { icon: 'trash', color: 'secondary', text: 'Removed the old inline list dots' },
+]
+
+const contact = [
+  { icon: 'mail', text: 'hello@tabler.io', href: 'mailto:hello@tabler.io' },
+  { icon: 'phone', text: '+1 (555) 123-4567', href: 'tel:+15551234567' },
+  { icon: 'map-pin', text: '1 Market Street, San Francisco' },
+  { icon: 'world', text: 'tabler.io', href: 'https://tabler.io' },
+]
+
+const details = [
+  { title: 'Unlimited projects', text: 'Create as many projects as you need, with no extra charge.' },
+  { title: 'Priority support', text: 'Your questions go to the top of the queue.' },
+  { title: 'Custom domains', text: 'Serve every project from your own domain with a free certificate.' },
+]
+
+const steps = [
+  { icon: 'circle-check', color: 'green', text: 'Account created' },
+  { icon: 'circle-check', color: 'green', text: 'Email confirmed' },
+  { icon: 'progress', color: 'blue', text: 'Profile in progress' },
+  { icon: 'circle-dashed', color: 'secondary', text: 'Add a payment method' },
+]
+---
+
+<DefaultLayout title="Icon lists" pageMenu="base.icon-lists" description="Icon lists replace the bullets of a list with icons, such as a checklist of features.">
+  <DocsLink slot="page-header-actions" path="/ui/components/icon-list" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>.list-icon</code> to a list. The first icon in each entry is the marker.</CardSubtitle>
+          <IconList>
+            {features.map((text) => <IconListItem>{text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Color</CardTitle>
+          <CardSubtitle>
+            Color all markers with the <code>--tblr-list-icon-color</code> variable, or one marker with a <code>text-*</code> utility.
+          </CardSubtitle>
+          <IconList color="green">
+            {features.map((text) => <IconListItem>{text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Different icons</CardTitle>
+          <CardSubtitle>Each entry can use its own icon and color, for example a status.</CardSubtitle>
+          <IconList>
+            {
+              steps.map((step) => (
+                <IconListItem icon={step.icon} color={step.color}>
+                  {step.text}
+                </IconListItem>
+              ))
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Included and excluded</CardTitle>
+          <CardSubtitle>A check for what the plan has and a muted cross for what it lacks.</CardSubtitle>
+          <IconList>
+            {
+              features.map((text, i) =>
+                i < 2 ? (
+                  <IconListItem color="green">{text}</IconListItem>
+                ) : (
+                  <IconListItem icon="x" class="text-secondary">
+                    {text}
+                  </IconListItem>
+                ),
+              )
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Inline</CardTitle>
+          <CardSubtitle>
+            Add <code>.list-icon-inline</code> to show short entries in a row that wraps.
+          </CardSubtitle>
+          <IconList inline color="green">
+            {layouts.map((text) => <IconListItem>{text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Long entries</CardTitle>
+          <CardSubtitle>The marker stays on the first line when an entry wraps.</CardSubtitle>
+          <IconList>
+            <IconListItem icon="shield-check" color="green">Two-factor authentication keeps the account safe even when the password leaks.</IconListItem>
+            <IconListItem icon="cloud-upload" color="blue">Backups run every night and are kept for thirty days in a separate region.</IconListItem>
+            <IconListItem icon="headset" color="purple">Support answers within one business day, in English and Polish.</IconListItem>
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Small text</CardTitle>
+          <CardSubtitle>The marker follows the line height of the list, so it also fits small or large text.</CardSubtitle>
+          <IconList class="small" color="green">
+            {features.map((text) => <IconListItem>{text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Pros and cons</CardTitle>
+          <CardSubtitle>Two lists side by side, green checks against red crosses.</CardSubtitle>
+          <div class="row g-3">
+            <div class="col-6">
+              <IconList color="green">
+                {pros.map((text) => <IconListItem>{text}</IconListItem>)}
+              </IconList>
+            </div>
+            <div class="col-6">
+              <IconList color="red">
+                {cons.map((text) => <IconListItem icon="x">{text}</IconListItem>)}
+              </IconList>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Password requirements</CardTitle>
+          <CardSubtitle>A checklist under a form field, each rule marked as met or not.</CardSubtitle>
+          <div class="mb-3">
+            <label class="form-label" for="icon-list-password">Password</label>
+            <input type="password" class="form-control" id="icon-list-password" value="Tabler2026" autocomplete="new-password" />
+          </div>
+          <IconList class="small">
+            {
+              requirements.map((rule) =>
+                rule.met ? (
+                  <IconListItem icon="circle-check" color="green">
+                    {rule.text}
+                  </IconListItem>
+                ) : (
+                  <IconListItem icon="circle" class="text-secondary">
+                    {rule.text}
+                  </IconListItem>
+                ),
+              )
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Release notes</CardTitle>
+          <CardSubtitle>An icon per kind of change: added, improved, fixed, removed.</CardSubtitle>
+          <IconList>
+            {
+              changes.map((change) => (
+                <IconListItem icon={change.icon} color={change.color}>
+                  {change.text}
+                </IconListItem>
+              ))
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Contact details</CardTitle>
+          <CardSubtitle>Icons as markers for a list of links.</CardSubtitle>
+          <IconList>
+            {contact.map((row) => <IconListItem icon={row.icon}>{row.href ? <a href={row.href}>{row.text}</a> : row.text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Entries with a description</CardTitle>
+          <CardSubtitle>A title and a muted second line in each entry; the marker stays on the title.</CardSubtitle>
+          <IconList color="green" style="--tblr-list-icon-row-gap: 1rem">
+            {
+              details.map((row) => (
+                <IconListItem>
+                  <div>
+                    <div class="fw-medium">{row.title}</div>
+                    <div class="text-secondary small">{row.text}</div>
+                  </div>
+                </IconListItem>
+              ))
+            }
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Large text</CardTitle>
+          <CardSubtitle>Raise the font size and the marker size together for a landing page.</CardSubtitle>
+          <IconList class="fs-3" color="primary" style="--tblr-list-icon-size: 1.5rem; --tblr-list-icon-row-gap: 0.75rem">
+            {features.slice(0, 3).map((text) => <IconListItem>{text}</IconListItem>)}
+          </IconList>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-8">
+      <Card>
+        <CardBody>
+          <CardTitle>Feature overview</CardTitle>
+          <CardSubtitle>A long list split into columns, as on a comparison or a landing page.</CardSubtitle>
+          <div class="row g-3">
+            {
+              overview.map((column) => (
+                <div class="col-sm-6">
+                  <IconList color="green">
+                    {column.map((text) => (
+                      <IconListItem>{text}</IconListItem>
+                    ))}
+                  </IconList>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    {
+      plans.map((plan) => (
+        <div class="col-md-6 col-lg-4">
+          <Card>
+            <CardBody>
+              <CardTitle>{plan.name}</CardTitle>
+              <div class="display-6 fw-bold mb-3">
+                {plan.price}
+                <span class="fs-4 fw-normal text-secondary">/mo</span>
+              </div>
+              <IconList class="mb-3">
+                {features.map((text, i) =>
+                  i < plan.included ? (
+                    <IconListItem color="green">{text}</IconListItem>
+                  ) : (
+                    <IconListItem icon="x" class="text-secondary">
+                      {text}
+                    </IconListItem>
+                  ),
+                )}
+              </IconList>
+              <a href="#" class:list={['btn w-100', plan.included === features.length && 'btn-primary']}>
+                Choose {plan.name}
+              </a>
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+  </div>
+</DefaultLayout>

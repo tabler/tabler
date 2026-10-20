@@ -1,0 +1,290 @@
+@use '../config' as *;
+
+.maplibregl-map {
+  font-family: inherit;
+  font-size: $h5-font-size;
+  line-height: $line-height-base;
+}
+
+// Tabler buttons over the map, in the top end corner
+.map-controls {
+  position: absolute;
+  inset-block-start: #{$map-controls-offset};
+  inset-inline-end: #{$map-controls-offset};
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: #{$map-controls-gap};
+}
+
+// The hover and active colors of a button are see-through, which would show
+// the map under it. For a button inside a map, or in an element laid over one,
+// keep the button color and draw the hover color as a layer on top.
+[data-bs-toggle='map'],
+[data-bs-toggle='map'] ~ *,
+[data-tblr-toggle='map'],
+[data-tblr-toggle='map'] ~ * {
+  .btn:hover {
+    background-color: var(--btn-bg);
+    background-image: linear-gradient(var(--btn-hover-bg), var(--btn-hover-bg));
+  }
+
+  .btn:active,
+  .btn.active {
+    background-color: var(--btn-bg);
+    background-image: linear-gradient(var(--btn-active-bg), var(--btn-active-bg));
+  }
+}
+
+// A map button with no content gets its icon from its action
+[data-bs-map-action]:empty::before {
+  width: #{$map-control-icon-size};
+  height: #{$map-control-icon-size};
+  content: '';
+  background: currentColor;
+  mask: var(--map-control-icon) center / contain no-repeat;
+}
+
+@each $action, $shape in $map-control-icons {
+  [data-bs-map-action='#{$action}'] {
+    --map-control-icon: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>#{$shape}</svg>"))};
+  }
+}
+
+// Attribution
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
+  color: var(--secondary);
+  background-color: color-transparent(var(--bg-surface), 0.7);
+
+  a {
+    color: inherit;
+  }
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  color: var(--secondary);
+  background-color: var(--bg-surface);
+}
+
+.maplibregl-ctrl-attrib-button:focus {
+  box-shadow: none;
+  @include focus-ring();
+}
+
+.maplibregl-ctrl-scale {
+  color: var(--body-color);
+  background-color: color-transparent(var(--bg-surface), 0.75);
+  border-color: var(--body-color);
+}
+
+// Popup: a small bordered panel with no arrow
+.maplibregl-popup .maplibregl-popup-content {
+  padding: 0.75rem;
+  color: var(--body-color);
+  background: var(--bg-surface);
+  box-shadow:
+    0 0 0 var(--border-width) var(--border-color),
+    #{$box-shadow-md};
+  @include border-radius(var(--border-radius));
+}
+
+.maplibregl-popup-tip {
+  display: none;
+}
+
+// A popup fades in and grows a little as it opens
+.maplibregl-popup-content {
+  animation: map-popup-in 0.2s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes map-popup-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+// Room for the close button, which MapLibre pins to the right edge in both directions
+.maplibregl-popup .maplibregl-popup-content:has(.maplibregl-popup-close-button) {
+  /* rtl:ignore */
+  padding-right: 2rem;
+}
+
+.maplibregl-popup-close-button {
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  margin: 0.25rem;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--secondary);
+  @include border-radius(var(--border-radius-sm));
+
+  &:hover {
+    color: var(--body-color);
+    background-color: var(--bg-surface-secondary);
+  }
+}
+
+// Popup used as a tooltip: a short inverted label, shown on hover
+.map-tooltip .maplibregl-popup-content {
+  padding: 0.25rem 0.5rem;
+  color: var(--text-inverted);
+  pointer-events: none;
+  background: var(--bg-surface-inverted);
+  box-shadow: #{$box-shadow-md};
+}
+
+// Popup that holds a card-like block: an image on top, padded content below
+.map-popup-card.maplibregl-popup {
+  .maplibregl-popup-content {
+    width: #{$map-popup-card-width};
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .maplibregl-popup-close-button {
+    color: var(--body-color);
+    background-color: var(--bg-surface);
+  }
+}
+
+// Markers written as children of the map element stay hidden until the
+// component moves them onto the map
+[data-bs-toggle='map'] > [data-bs-lng],
+[data-tblr-toggle='map'] > [data-tblr-lng] {
+  display: none;
+}
+
+// Marker drawn in HTML. MapLibre moves the marker with `transform`, so the
+// shape is drawn by the pseudo-element and the root keeps no transform.
+.map-marker {
+  // scss-docs-start map-marker-css-vars
+  --map-marker-size: #{$map-marker-size};
+  --map-marker-bg: #{$map-marker-bg};
+  --map-marker-color: #{$map-marker-color};
+  --map-marker-border-width: #{$map-marker-border-width};
+  --map-marker-border-color: #{$map-marker-border-color};
+  --map-marker-font-size: #{$map-marker-font-size};
+  --map-marker-icon-size: #{$map-marker-icon-size};
+  // scss-docs-end map-marker-css-vars
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--map-marker-size);
+  min-height: var(--map-marker-size);
+  padding: var(--map-marker-border-width);
+  font-size: var(--map-marker-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  color: var(--map-marker-color);
+  cursor: pointer;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background: var(--map-marker-bg);
+    filter: #{$map-marker-shadow};
+    border: var(--map-marker-border-width) solid var(--map-marker-border-color);
+    @include border-radius(var(--border-radius-pill));
+  }
+
+  // On a map the marker is positioned by MapLibre
+  &.maplibregl-marker {
+    position: absolute;
+  }
+
+  .icon {
+    --icon-size: var(--map-marker-icon-size);
+  }
+}
+
+.map-marker-dot {
+  --map-marker-size: #{$map-marker-dot-size};
+}
+
+// A ring that grows out of the marker and fades, for a live position
+.map-marker-pulse::after {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  content: '';
+  background: var(--map-marker-bg);
+  animation: map-marker-pulse 1.6s ease-out infinite;
+  @include border-radius(var(--border-radius-pill));
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes map-marker-pulse {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+// Short text under a marker
+.map-marker-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 0.125rem;
+  font-size: $h6-font-size;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  color: var(--body-color);
+  text-shadow:
+    0 0 2px var(--bg-surface),
+    0 0 2px var(--bg-surface),
+    0 0 4px var(--bg-surface);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+// Teardrop: a square with one sharp corner, turned to point down. Its tip
+// reaches 20.7% below the circle, so the root is that much taller.
+.map-marker-pin {
+  box-sizing: content-box;
+  width: var(--map-marker-size);
+  min-width: 0;
+  height: var(--map-marker-size);
+  min-height: 0;
+  padding: 0 0 calc(var(--map-marker-size) * 0.207);
+
+  &::before {
+    bottom: auto;
+    height: var(--map-marker-size);
+    @include border-radius(50% 50% 50% 0);
+    transform: rotate(-45deg);
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .map-marker-#{$name} {
+    --map-marker-bg: var(--#{$name});
+    --map-marker-color: var(--#{$name}-fg);
+  }
+}
+
+// The attribution icon is a black SVG image
+@if $enable-dark-mode {
+  @include color-mode(dark) {
+    .maplibregl-ctrl-attrib-button {
+      @include autodark-image();
+    }
+  }
+}

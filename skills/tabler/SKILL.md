@@ -22,8 +22,8 @@ Before writing markup for a component, fetch its `.md` page and copy the example
 Plain HTML, from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.1/dist/css/tabler.min.css" integrity="sha384-tT2UAGE9hxG/p5d0iGIvZ/s8El3nWWG3tfG02i8iOY5Pbf8cZZRVmcrrVs+JG5Vw" crossorigin="anonymous" />
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.1/dist/js/tabler.min.js" integrity="sha384-1yCHfhyU8+V33urXkAlLLpNYd9jdzXkxdafCg0+auIIEtYFnOuM/DwJQgk5sXY98" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/css/tabler.min.css" integrity="sha384-/ZecLhD4wkLsbjdJWUEWeSZJJSEQ3XCPdtLmmm6SW128l+eSNplV12po3tSK7pdy" crossorigin="anonymous" />
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/js/tabler.min.js" integrity="sha384-cW1KeY1Abv4YMD1D4qcBZVHMSeGL8iBtpGn9n8WNcxx6ANLZnMr4wO/2jLQFJuwk" crossorigin="anonymous"></script>
 ```
 
 Put the stylesheet in `<head>` and the script at the end of `<body>`. When the tags carry `integrity` and `crossorigin` attributes, keep them unchanged; the hashes belong to this exact version. In a project with a bundler install the package and import the same files:

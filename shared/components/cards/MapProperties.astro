@@ -1,0 +1,92 @@
+---
+// A list of homes next to a map with their prices as markers: picking a home
+// in the list, or its price on the map, selects both.
+import Map from '../demo/Map.astro'
+import CaptureScript from '../CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+import { staticPath } from '@shared/lib/assets'
+
+const homes = [
+  { title: 'Loft in Mitte', price: '$420k', beds: 2, baths: 1, area: 78, photo: 'contemporary-black-and-white-home-decor.jpg', lng: 13.3989, lat: 52.5246 },
+  { title: 'Flat by the park', price: '$365k', beds: 2, baths: 1, area: 64, photo: 'blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg', lng: 13.4336, lat: 52.5287 },
+  { title: 'Studio in Kreuzberg', price: '$240k', beds: 1, baths: 1, area: 38, photo: 'elegant-home-office-with-golden-accessories.jpg', lng: 13.4107, lat: 52.4993 },
+  { title: 'Family home', price: '$690k', beds: 4, baths: 2, area: 142, photo: 'home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg', lng: 13.3458, lat: 52.5083 },
+]
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Homes for sale</CardTitle>
+  </CardHeader>
+  <div class="row g-0">
+    <div class="col-lg-5 border-end">
+      <div class="list-group list-group-flush overflow-auto" id="homes-list" style="height: 26rem">
+        {
+          homes.map((home, index) => (
+            <button type="button" class:list={['list-group-item list-group-item-action', index === 0 && 'active']}>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <span class="avatar avatar-lg" style={`background-image: url(${staticPath(`photos/${home.photo}`)})`} />
+                </div>
+                <div class="col">
+                  <div class="fw-medium">{home.price}</div>
+                  <div>{home.title}</div>
+                  <div class="text-secondary small mt-1">
+                    <Icon name="bed" class="icon-inline" /> {home.beds}
+                    <Icon name="bath" class="icon-inline ms-2" /> {home.baths}
+                    <Icon name="ruler-2" class="icon-inline ms-2" /> {home.area} m²
+                  </div>
+                </div>
+              </div>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <Map mapId="homes" title="Homes for sale" center={[52.515, 13.39]} zoom={11.4} height="26rem" rounded={false} controls>
+        {
+          homes.map((home, index) => (
+            <span class:list={['map-marker px-2', index === 0 ? 'map-marker-dark' : 'map-marker-primary']} data-bs-lng={home.lng} data-bs-lat={home.lat}>
+              {home.price}
+            </span>
+          ))
+        }
+      </Map>
+    </div>
+  </div>
+  <CaptureScript>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const view = tabler.MapView.getInstance('#map-homes')
+        const items = [...document.querySelectorAll('#homes-list .list-group-item')]
+
+        // The markers are in the same order as the homes in the list
+        view.ready((map) => {
+          const select = (index, move) => {
+            items.forEach((item, position) => item.classList.toggle('active', position === index))
+            view.markers.forEach((marker, position) => {
+              marker.getElement().classList.toggle('map-marker-dark', position === index)
+              marker.getElement().classList.toggle('map-marker-primary', position !== index)
+            })
+
+            if (move) {
+              map.flyTo({ center: view.markers[index].getLngLat(), zoom: 13 })
+            }
+          }
+
+          items.forEach((item, index) => item.addEventListener('click', () => select(index, true)))
+          view.markers.forEach((marker, index) =>
+            marker.getElement().addEventListener('click', () => {
+              select(index, false)
+              items[index].scrollIntoView({ block: 'nearest' })
+            }),
+          )
+        })
+      })
+    </script>
+  </CaptureScript>
+</Card>
