@@ -2,6 +2,8 @@
 name: backward-compat
 description: >-
   Keep a change to `@tabler/core` backward compatible, so a patch or minor release never breaks a project that updates. Use before renaming, removing or changing the meaning of anything a user can touch — a class, a `--tblr-*` custom property, a Sass variable, mixin or function, a `data-*` attribute or option, a JS export, an event, a file under `dist/`, a default value — and whenever a changeset on `dev` looks like it needs a `major` bump. Also consult it proactively when a cleanup or refactor in `core/` deletes something, since "dead" code is often somebody's API. Covers what counts as public API, the `deprecated` files where compatibility code lives, the alias patterns, the `check:compat` gate, and what to do when a break cannot be avoided.
+metadata:
+  internal: true
 ---
 
 # Backward compatibility

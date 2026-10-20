@@ -8,6 +8,8 @@ description: >-
   under `core/scss/ui/`. Covers where a style goes, the custom-property
   pattern and its build-time `--tblr-` prefix, dark mode, RTL, the docs
   markers, the SCSS unit tests and the lint/size gates.
+metadata:
+  internal: true
 ---
 
 # Styles in `core/scss`

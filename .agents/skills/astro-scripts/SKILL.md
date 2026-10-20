@@ -8,6 +8,8 @@ description: >-
   a script has to be moved out of a page. Covers `CaptureScript` /
   `PageScripts`, `script is:inline define:vars`, the IIFE trap, init timing,
   per-instance registries, and when a script must be assembled as a string.
+metadata:
+  internal: true
 ---
 
 # Client-side scripts in Astro components

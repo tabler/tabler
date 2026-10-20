@@ -3,6 +3,8 @@ name: bootstrap-component
 description: >-
   Write a new Bootstrap-style JavaScript component class in `core/js/src/bootstrap/` — a `BaseComponent` subclass with typed config, `EVENT_*`/`CLASS_NAME_*` constants and a `data-bs-toggle` Data API. Use whenever the user asks for a new component in the Bootstrap port (a toggler, a dialog, a chip input, a stepper) or
   wants an existing one brought up to this baseline. Covers file structure, TypeScript typing of `Default` and `DefaultType`, constructor and config merging, events, the Data API handler and the minimal public API. Not for the build, the tests or the size budget — that is the `core-js` skill.
+metadata:
+  internal: true
 ---
 
 # Rules for writing new components

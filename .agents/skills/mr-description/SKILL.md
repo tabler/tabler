@@ -5,6 +5,8 @@ description: >-
   from the current branch versus origin/dev (Tabler). Use when the
   user asks for an MR/PR description, GitLab merge request text, or a branch
   summary for reviewers.
+metadata:
+  internal: true
 ---
 
 # MR / PR description from branch
