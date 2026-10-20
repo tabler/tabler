@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'sass:meta';
 
 // stylelint-disable declaration-no-important
 
@@ -37,6 +38,20 @@
     // Everything else here has been folded into light-dark() declarations in
     // layout/_root.scss; only genuinely dark-only, non-paired values remain.
     --btn-color: #{$darken-dark};
+
+    --secondary-fg: var(--dark);
+    --secondary-text: var(--secondary);
+
+    @each $name, $color in $theme-colors {
+      @if meta.type-of($color) == 'color' and color.channel($color, 'chroma', $space: oklch) > 0.05 and contrast-ratio($color, $dark-mode-contrast-surface) < $dark-mode-min-contrast-ratio {
+        $lifted: text-color-on($color, $dark-mode-contrast-surface, $dark-mode-min-contrast-ratio + 0.1, 'lighter');
+        --#{$name}: #{$lifted};
+        --#{$name}-fg: #{if(sass(contrast-ratio($lifted) >= $min-contrast-ratio): var(--light); else: var(--dark))};
+      }
+      @if meta.type-of($color) == 'color' and color.channel($color, 'chroma', $space: oklch) > 0.05 {
+        --#{$name}-text: #{text-color-on($color, $dark-mode-contrast-surface, $dark-mode-text-min-contrast-ratio, 'lighter')};
+      }
+    }
 
     .navbar-brand-autodark {
       .navbar-brand-image {

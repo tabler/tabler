@@ -116,6 +116,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   .btn-ghost-#{$color} {
     --btn-variant: var(--#{$color});
     --btn-variant-fg: var(--#{$color}-fg);
+    --btn-variant-text: var(--#{$color}#{if(sass(map.has-key($social-colors, $color)): ''; else: '-text')});
     --btn-variant-darken: var(--#{$color}-darken);
   }
 }
@@ -149,7 +150,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 }
 
 #{btn-color-selectors('.btn-outline-{c}', '.btn-outline.btn-{c}')} {
-  --btn-color: var(--btn-variant);
+  --btn-color: var(--btn-variant-text);
   --btn-bg: transparent;
   --btn-border-color: var(--btn-variant);
   --btn-hover-color: var(--btn-variant-fg);
@@ -158,14 +159,14 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-color: var(--btn-variant-fg);
   --btn-active-bg: var(--btn-variant);
   --btn-active-border-color: var(--btn-variant);
-  --btn-disabled-color: var(--btn-variant);
+  --btn-disabled-color: var(--btn-variant-text);
   --btn-disabled-border-color: var(--btn-variant);
   --btn-gradient: none;
   --btn-box-shadow: none;
 }
 
 #{btn-color-selectors('.btn-ghost-{c}', '.btn-ghost.btn-{c}')} {
-  --btn-color: var(--btn-variant);
+  --btn-color: var(--btn-variant-text);
   --btn-bg: transparent;
   --btn-border-color: transparent;
   --btn-hover-color: var(--btn-variant-fg);
@@ -175,7 +176,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-bg: var(--btn-variant);
   --btn-active-border-color: transparent;
   --btn-active-shadow: #{$btn-active-box-shadow};
-  --btn-disabled-color: var(--btn-variant);
+  --btn-disabled-color: var(--btn-variant-text);
   --btn-disabled-bg: transparent;
   --btn-disabled-border-color: transparent;
   --gradient: none;

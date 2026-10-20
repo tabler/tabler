@@ -21,4 +21,8 @@
   @include it('falls back to the highest-contrast colour when none qualifies') {
     @include assert-equal(color-contrast(#808080, #000, #fff, 21), #000);
   }
+
+  @include it('clamps an out-of-gamut colour instead of indexing past the luminance table') {
+    @include assert-true(contrast-ratio(oklch(67% 0.2186 319.15deg), #262626) > 1);
+  }
 }
