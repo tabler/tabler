@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:math';
 @use '../config';
 
 @use '../config' as *;
@@ -6,8 +7,11 @@
 .flag {
   position: relative;
   display: inline-block;
+  // explicit height, not `aspect-ratio`: a flex container with the default
+  // `align-items: stretch` would override the ratio and stretch every flag
+  // to the tallest one
   width: config.$avatar-size;
-  aspect-ratio: 1.25;
+  height: math.div(config.$avatar-size, 1.25);
   vertical-align: bottom;
   background: no-repeat center/cover;
   box-shadow: config.$flag-box-shadow;
@@ -38,6 +42,7 @@
 @each $flag-size, $size in config.$flag-sizes {
   .flag-#{$flag-size} {
     width: map.get($size, size);
+    height: math.div(map.get($size, size), 1.25);
 
     @if map.has-key($size, border-radius) {
       @include config.border-radius(map.get($size, border-radius));
