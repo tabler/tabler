@@ -94,7 +94,7 @@ class FocusTrap extends Config {
     const elements = SelectorEngine.focusableChildren(trapElement)
 
     if (elements.length === 0) {
-      trapElement!.focus()
+      trapElement.focus()
     } else if (this._lastTabNavDirection === TAB_NAV_BACKWARD) {
       elements[elements.length - 1].focus()
     } else {

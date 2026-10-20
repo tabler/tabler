@@ -104,6 +104,10 @@ const files: FileConfig[] = [
     file: 'js/tabler-theme.min.js',
     configPropertyName: 'js-theme',
   },
+  {
+    file: 'js/tabler-map.min.js',
+    configPropertyName: 'js-map',
+  },
 ]
 
 function generateSRI(): void {

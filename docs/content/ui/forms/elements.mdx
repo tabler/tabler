@@ -6,6 +6,7 @@ docs-libs: [nouislider]
 description: Styled inputs, selects, checkboxes and radios, with states, sizes and layout options.
 order: 1
 related: [/ui/forms/validation, /ui/forms/helpers, /ui/forms/fieldset, /ui/plugins/date-picker, /ui/plugins/advanced-select]
+css-vars: control
 sass-vars: input
 ---
 import Example from '@components/Example.astro';
@@ -100,6 +101,29 @@ Put an [icon](/ui/components/icon) inside an input to hint at what goes in it, o
     </span>
     <input type="text" value="" class="form-control" placeholder="Loading…" />
   </div>
+</div>
+</Example>
+
+The icon follows the size of the input, set with `.form-control-sm` or `.form-control-lg`.
+
+<Example column>
+<div class="input-icon mb-2">
+  <span class="input-icon-addon">
+    <Icon name="search" />
+  </span>
+  <input type="text" value="" class="form-control form-control-lg" placeholder="Large input" />
+</div>
+<div class="input-icon mb-2">
+  <span class="input-icon-addon">
+    <Icon name="search" />
+  </span>
+  <input type="text" value="" class="form-control" placeholder="Default input" />
+</div>
+<div class="input-icon">
+  <span class="input-icon-addon">
+    <Icon name="search" />
+  </span>
+  <input type="text" value="" class="form-control form-control-sm" placeholder="Small input" />
 </div>
 </Example>
 
@@ -287,6 +311,8 @@ Use radio buttons for the parts of your form which require users to choose one o
 
 Use checkboxes if you want to allow users to select more than one option from a set of predefined options or to turn an option on or off.
 
+Checks, radios and switches share their state colors through `--tblr-control-checked-bg`, `--tblr-control-checked-border-color`, `--tblr-control-disabled-bg` and `--tblr-control-disabled-opacity` on `:root`. Each control also has its own tokens: `--tblr-form-check-*` on `.form-check-input` and `--tblr-form-switch-*` on `.form-switch`.
+
 <Example column>
 <div class="mb-3">
   <div class="form-label">Checkboxes</div>
@@ -328,13 +354,17 @@ Use checkboxes if you want to allow users to select more than one option from a 
 
 Add a [range slider](/ui/plugins/range-slider) to make it possible for users to set a value or range, such as a price range or a time frame.
 
+The track and the thumb read `--tblr-range-*` custom properties on `.form-range`: `--tblr-range-track-height`, `--tblr-range-track-bg`, `--tblr-range-thumb-width`, `--tblr-range-thumb-bg`, `--tblr-range-thumb-border` and the rest of the `track-*` and `thumb-*` set.
+
 <Example column>
-<div class="mb-3"> <label class="form-label">Range input</label> <input type="range" class="form-range mb-2" value="40" min="0" max="100" step="10" /> <div class="form-range mb-2 text-green" id="range-color"></div> </div> <script>{`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-color"), { start: 40, connect: [true, false], step: 10, range: { min: 0, max: 100, }, }); });`}</script>
+<div class="mb-3"> <label class="form-label">Range input</label> <input type="range" class="form-range mb-2" value="40" min="0" max="100" step="10" /> <div class="form-range mb-2 text-green" id="range-color"></div> </div> <script is:inline set:html={`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-color"), { start: 40, connect: [true, false], step: 10, range: { min: 0, max: 100, }, }); });`} />
 </Example>
 
 ## Input group
 
 Create a group of input controls and place add-ons on either side of an input.
+
+The add-on reads `--tblr-input-group-addon-*` custom properties on `.input-group` (`padding-y`, `padding-x`, `font-size`, `line-height`, `color`, `bg`, `border-color`, `border-radius`). `.input-group-sm` and `.input-group-lg` only change these tokens and pass them on to the controls in the group.
 
 <Example column>
 <div class="mb-3">
@@ -418,7 +448,7 @@ Include a `<kbd>` in your input control to add a shortcut hint to the control.
   <label class="form-label">Input with appended kbd</label>
   <div class="input-group input-group-flat">
     <input type="password" class="form-control" value="ultrastrongpassword" autocomplete="off" />
-    <span class="input-group-text"><kbd>ctrl + K</kbd></span>
+    <span class="input-group-text"><kbd class="kbd-group"><kbd>⌘</kbd><kbd>K</kbd></kbd></span>
   </div>
 </div>
 </Example>

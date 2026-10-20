@@ -2,7 +2,7 @@
 title: Data grid
 summary: Use the data grid component to display detailed information about your product. The data is displayed as a column of items consisting of a title and content.
 description: Display labeled data in a compact datagrid - a responsive list of title and content pairs, ideal for detail panels and summaries.
-related: [/ui/components/table]
+related: [/ui/components/table, /ui/plugins/clipboard]
 source: core/scss/ui/_datagrid.scss
 css-vars: datagrid
 classnames:
@@ -10,8 +10,18 @@ classnames:
     - class: datagrid
       desc: Container element, a responsive grid of label and value pairs
   part:
+    - class: datagrid-item
+      desc: One label and value pair
     - class: datagrid-title
-      desc: Label above a value
+      desc: Label of a value, styled as a subheader
+    - class: datagrid-content
+      desc: Value of the pair, with the margin reset so a dd fits
+  modifier:
+    - class: datagrid-cols-{n}
+      desc: Fixed number of columns, from 1 to 4
+  direction:
+    - class: datagrid-horizontal
+      desc: Puts the label beside the value and shows one pair per row
 ---
 import Example from '@components/Example.astro';
 import Icon from '@ui/Icon.astro'
@@ -101,7 +111,7 @@ A value is a plain container, so it takes anything: text, [avatars](/ui/componen
   </div>
   <div class="datagrid-item">
     <div class="datagrid-title">Icon</div>
-    <div class="datagrid-content"><Icon name="check" class="text-green" /> Checked</div>
+    <div class="datagrid-content"><Icon name="check" inline class="text-green" /> Checked</div>
   </div>
   <div class="datagrid-item">
     <div class="datagrid-title">Form control</div>
@@ -116,14 +126,264 @@ A value is a plain container, so it takes anything: text, [avatars](/ui/componen
 </div>
 </Example>
 
+## Horizontal
+
+Add the `.datagrid-horizontal` class to put the label beside the value. Each pair takes a full row, which is easy to scan when the values are long.
+
+<Example>
+<div class="datagrid datagrid-horizontal">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Plan</div>
+    <div class="datagrid-content">Business</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Status</div>
+    <div class="datagrid-content"><span class="status status-green">Active</span></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Address</div>
+    <div class="datagrid-content">44 Harbor Street, Portland, OR 97209, United States</div>
+  </div>
+</div>
+</Example>
+
+Set `--tblr-datagrid-title-width` to change the width of the label column. Add a `.datagrid-cols-{n}` class to show several pairs in a row.
+
+<Example>
+<div class="datagrid datagrid-horizontal datagrid-cols-2" style="--tblr-datagrid-title-width: 5rem">
+  <div class="datagrid-item">
+    <div class="datagrid-title">CPU</div>
+    <div class="datagrid-content">8 cores</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Memory</div>
+    <div class="datagrid-content">32 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Storage</div>
+    <div class="datagrid-content">512 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Region</div>
+    <div class="datagrid-content">eu-central</div>
+  </div>
+</div>
+</Example>
+
 ## Column width
 
-Columns are generated with `auto-fit`, so the item width decides how many fit in a row. Set the two custom properties on the `.datagrid` element to change the layout:
+Columns are generated with `auto-fit`, so the item width decides how many fit in a row. Set the custom properties on the `.datagrid` element to change the layout:
 
-| Variable                     | Description                    | Default  |
-|------------------------------|--------------------------------|----------|
-| `--tblr-datagrid-item-width` | Width of the datagrid item     | `15rem`  |
-| `--tblr-datagrid-padding`    | Gap between the datagrid items | `1.5rem` |
+| Variable                     | Description                          | Default  |
+|------------------------------|--------------------------------------|----------|
+| `--tblr-datagrid-item-width` | Minimum width of a column            | `15rem`  |
+| `--tblr-datagrid-padding`    | Gap between the items                | `1.5rem` |
+| `--tblr-datagrid-title-width`| Label column in a horizontal datagrid| `10rem`  |
+
+Use a lower item width for short values, such as numbers or single words. More columns then fit in a row.
+
+<Example>
+<div class="datagrid" style="--tblr-datagrid-item-width: 7rem">
+  <div class="datagrid-item">
+    <div class="datagrid-title">CPU</div>
+    <div class="datagrid-content">8 cores</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Memory</div>
+    <div class="datagrid-content">32 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Storage</div>
+    <div class="datagrid-content">512 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Region</div>
+    <div class="datagrid-content">eu-central</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Uptime</div>
+    <div class="datagrid-content">99.98%</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Backups</div>
+    <div class="datagrid-content">Daily</div>
+  </div>
+</div>
+</Example>
+
+### Fixed number of columns
+
+Add a `.datagrid-cols-{n}` class to keep the same number of columns at any container width. The classes go from `.datagrid-cols-1` to `.datagrid-cols-4`. The item width is ignored then.
+
+<Example>
+<div class="datagrid datagrid-cols-2">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Order</div>
+    <div class="datagrid-content">#48213</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Status</div>
+    <div class="datagrid-content"><span class="badge bg-green-lt">Paid</span></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Placed</div>
+    <div class="datagrid-content">September 12, 2026</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Total</div>
+    <div class="datagrid-content"><strong>$248.00</strong></div>
+  </div>
+</div>
+</Example>
+
+A single column works well in a narrow sidebar or an offcanvas.
+
+<Example>
+<div class="datagrid datagrid-cols-1">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Email</div>
+    <div class="datagrid-content"><a href="#">billing@tabler.io</a></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Shipping address</div>
+    <div class="datagrid-content">44 Harbor Street, Portland, OR 97209, United States</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Notes</div>
+    <div class="datagrid-content text-secondary">Not set</div>
+  </div>
+</div>
+</Example>
+
+### Gap
+
+Lower `--tblr-datagrid-padding` to make a dense datagrid. The same value is used between columns and between rows.
+
+<Example>
+<div class="datagrid" style="--tblr-datagrid-item-width: 7rem; --tblr-datagrid-padding: 0.75rem">
+  <div class="datagrid-item">
+    <div class="datagrid-title">CPU</div>
+    <div class="datagrid-content">8 cores</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Memory</div>
+    <div class="datagrid-content">32 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Storage</div>
+    <div class="datagrid-content">512 GB</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Region</div>
+    <div class="datagrid-content">eu-central</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Uptime</div>
+    <div class="datagrid-content">99.98%</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Backups</div>
+    <div class="datagrid-content">Daily</div>
+  </div>
+</div>
+</Example>
+
+## Examples
+
+### Inside a card
+
+A datagrid has no border or background of its own. Put it in a [card](/ui/components/card) to build a detail panel. The card header holds the title and the footer holds the actions.
+
+<Example bg="surface-secondary">
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Domain details</h3>
+    <div class="card-actions">
+      <a href="#" class="btn btn-sm"><Icon name="pencil" /> Edit</a>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="datagrid" style="--tblr-datagrid-item-width: 12rem">
+      <div class="datagrid-item">
+        <div class="datagrid-title">Domain</div>
+        <div class="datagrid-content"><a href="#">tabler.io</a></div>
+      </div>
+      <div class="datagrid-item">
+        <div class="datagrid-title">Registrar</div>
+        <div class="datagrid-content">Third Party</div>
+      </div>
+      <div class="datagrid-item">
+        <div class="datagrid-title">SSL certificate</div>
+        <div class="datagrid-content"><Icon name="lock" class="text-green" inline /> Valid until May 2, 2027</div>
+      </div>
+      <div class="datagrid-item">
+        <div class="datagrid-title">Expiration date</div>
+        <div class="datagrid-content">–</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button type="button" class="btn btn-primary">Renew domain</button>
+  </div>
+</div>
+</Example>
+
+### Statuses and progress
+
+Show the state of a resource with a [status](/ui/components/status), a [badge](/ui/components/badge) or a [progress bar](/ui/components/progress).
+
+<Example>
+<div class="datagrid">
+  <div class="datagrid-item">
+    <div class="datagrid-title">State</div>
+    <div class="datagrid-content"><span class="status status-green">Running</span></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Environment</div>
+    <div class="datagrid-content"><span class="badge bg-blue-lt">Production</span></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Disk usage</div>
+    <div class="datagrid-content">
+      <div class="mb-1">68%</div>
+      <div class="progress progress-sm">
+        <div class="progress-bar" style="width: 68%" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" aria-label="68% used"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+### Values to copy
+
+Add a [clipboard](/ui/plugins/clipboard) button next to a value that users copy, such as an API key. Point `data-bs-target` at the element with the value and give the button an `aria-label` that names it.
+
+<Example>
+<div class="datagrid datagrid-cols-1">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Client ID</div>
+    <div class="datagrid-content d-flex align-items-center gap-2">
+      <code id="datagrid-client-id">tblr_live_8f3a2c91d7e4</code>
+      <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-client-id" aria-label="Copy the client ID">
+        <Icon name="clipboard" class="clipboard-label" />
+        <Icon name="check" class="clipboard-feedback text-green" />
+        <span class="clipboard-feedback visually-hidden">Copied</span>
+      </button>
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Webhook URL</div>
+    <div class="datagrid-content d-flex align-items-center gap-2">
+      <code id="datagrid-webhook-url">https://example.com/hooks/tabler</code>
+      <button type="button" class="btn btn-sm btn-icon btn-action" data-bs-toggle="clipboard" data-bs-target="#datagrid-webhook-url" aria-label="Copy the webhook URL">
+        <Icon name="clipboard" class="clipboard-label" />
+        <Icon name="check" class="clipboard-feedback text-green" />
+        <span class="clipboard-feedback visually-hidden">Copied</span>
+      </button>
+    </div>
+  </div>
+</div>
+</Example>
 
 ## Accessibility
 
@@ -138,11 +398,11 @@ The pairs are only visually connected, so tell assistive tech how they belong to
 <dl class="datagrid">
   <div class="datagrid-item">
     <dt class="datagrid-title">Registrar</dt>
-    <dd class="datagrid-content mb-0">Third Party</dd>
+    <dd class="datagrid-content">Third Party</dd>
   </div>
   <div class="datagrid-item">
     <dt class="datagrid-title">Expiration date</dt>
-    <dd class="datagrid-content mb-0">–</dd>
+    <dd class="datagrid-content">–</dd>
   </div>
 </dl>
 </Example>

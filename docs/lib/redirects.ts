@@ -43,6 +43,8 @@ export const redirects: Record<string, Redirect> = {
   '/ui/forms/form-fieldset': { status: 301, destination: '/ui/forms/fieldset' },
   '/ui/forms/form-floating': { status: 301, destination: '/ui/forms/floating-labels' },
   '/ui/forms/form-helpers': { status: 301, destination: '/ui/forms/helpers' },
+  // The quantity stepper was renamed before 1.7 shipped; `stepper` is the v6 wizard component.
+  '/ui/forms/stepper': { status: 301, destination: '/ui/forms/number-input' },
   '/ui/forms/form-selectboxes': { status: 301, destination: '/ui/forms/select-group' },
   '/ui/forms/form-image-check': { status: 301, destination: '/ui/forms/image-check' },
   '/ui/forms/form-color-check': { status: 301, destination: '/ui/forms/color-check' },

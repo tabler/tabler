@@ -134,8 +134,8 @@ async function main() {
   await startPreviewServer()
   // Interrupting the script (Ctrl+C) must not leave the preview server behind
   // squatting on the port for the next run to collide with.
-  process.once('SIGINT', stopPreviewServer)
-  process.once('SIGTERM', stopPreviewServer)
+  process.once('SIGINT', () => void stopPreviewServer())
+  process.once('SIGTERM', () => void stopPreviewServer())
 
   try {
     const browser = await chromium.launch()

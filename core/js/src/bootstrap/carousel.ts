@@ -297,7 +297,7 @@ class Carousel extends BaseComponent {
 
     const activeElement = this._getActive()
     const isNext = order === ORDER_NEXT
-    const nextElement = element || (getNextActiveElement(this._getItems(), activeElement!, isNext, this._config.wrap as boolean) as HTMLElement)
+    const nextElement = element || getNextActiveElement<HTMLElement>(this._getItems(), activeElement!, isNext, this._config.wrap)
 
     if (nextElement === activeElement) {
       return

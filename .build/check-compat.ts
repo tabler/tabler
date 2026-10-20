@@ -48,7 +48,7 @@ function walk(root: string, dir = root): string[] {
   })
 }
 
-const matches = (source: string, pattern: RegExp): Set<string> => new Set([...source.matchAll(pattern)].map((match) => match[1]!))
+const matches = (source: string, pattern: RegExp): Set<string> => new Set([...source.matchAll(pattern)].map((match) => match[1]))
 
 // --- css -------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ function splitParams(source: string | undefined): string[] {
   }
   params.push(current)
   // `$color: rgba($white, 0.15)` → `$color`; `$args...` → `$args...`
-  return params.map((param) => param.trim().split(':')[0]!.trim()).filter(Boolean)
+  return params.map((param) => param.trim().split(':')[0].trim()).filter(Boolean)
 }
 
 function sassSurface(root: string): { variables: Set<string>; callables: Map<string, Callable> } {
@@ -117,8 +117,8 @@ function sassSurface(root: string): { variables: Set<string>; callables: Map<str
     const source = readFileSync(join(root, 'scss', file), 'utf8').replace(/\/\/.*$/gm, '')
     for (const name of matches(source, sassVariable)) variables.add(name)
     for (const [, kind, name, params] of source.matchAll(sassCallable)) {
-      if (name!.startsWith('_') || name!.startsWith('-')) continue // private by convention
-      callables.set(`${kind} ${name}`, { kind: kind!, name: name!, params: splitParams(params) })
+      if (name.startsWith('_') || name.startsWith('-')) continue // private by convention
+      callables.set(`${kind} ${name}`, { kind: kind, name: name, params: splitParams(params) })
     }
   }
   return { variables, callables }
@@ -160,7 +160,7 @@ function sassTypes(root: string): Map<string, string> {
       }
     }`
   const { css } = compileString(source, { loadPaths: [root, 'node_modules'], logger: { warn() {}, debug() {} } })
-  return new Map([...css.matchAll(/--([\w-]+): (\w+);/g)].map((match) => [match[1]!, match[2]!]))
+  return new Map([...css.matchAll(/--([\w-]+): (\w+);/g)].map((match) => [match[1], match[2]]))
 }
 
 function sassTypeBreaks(released: string, current: string): string[] {
@@ -175,7 +175,7 @@ function esmExports(file: string): Set<string> {
   const source = readFileSync(file, 'utf8')
   const names = new Set<string>()
   for (const [, list] of source.matchAll(/^export\s*\{([^}]*)\}/gm)) {
-    for (const entry of list!.split(',')) {
+    for (const entry of list.split(',')) {
       const name = entry
         .trim()
         .split(/\s+as\s+/)
@@ -220,7 +220,7 @@ async function main() {
   const lines = readFileSync(baselineFile, 'utf8').split('\n')
   const againstIndex = lines.findIndex((line) => againstPattern.test(line))
   if (againstIndex === -1) throw new Error(`${baselineFile} has no \`# against: <version>\` line`)
-  const against = againstPattern.exec(lines[againstIndex]!)![1]!
+  const against = againstPattern.exec(lines[againstIndex])![1]
 
   if (reset) {
     writeFileSync(baselineFile, [...lines.slice(0, againstIndex), `# against: ${version}`, ''].join('\n'))
@@ -233,7 +233,7 @@ async function main() {
   const baseline = new Map<string, boolean>() // key → accepted
   for (const line of stale ? [] : lines) {
     const [entry, comment = ''] = line.split(' # ')
-    const key = entry!.trim()
+    const key = entry.trim()
     if (!key || key.startsWith('#')) continue
     baseline.set(key, comment.trim().startsWith('accepted:'))
   }

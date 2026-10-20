@@ -273,7 +273,7 @@ const stage = {
     }
 
     for (let i = this.particles.length - 1; i >= 0; i--) {
-      const p = this.particles[i]!
+      const p = this.particles[i]
       const fadeFrom = height * (1 - p.emitter.config.fade)
 
       p.sway += 0.05 * step
@@ -317,7 +317,7 @@ const stage = {
   // is still in the air; `end` fires on its element and it leaves the stage.
   _settle(now: number): void {
     for (let i = this.emitters.length - 1; i >= 0; i--) {
-      const emitter = this.emitters[i]!
+      const emitter = this.emitters[i]
       const pouring = !emitter.stopped && now - emitter.startedAt < emitter.config.duration
       const airborne = this.particles.some((p) => p.emitter === emitter)
 
@@ -349,7 +349,7 @@ class Confetti extends BaseComponent {
   _emitter: Emitter | null = null
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
-    super(element, config as BaseConfig | undefined)
+    super(element, config)
   }
 
   // Getters

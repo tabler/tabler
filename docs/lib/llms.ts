@@ -79,7 +79,7 @@ async function replaceAsync(input: string, pattern: RegExp, replacer: (match: Re
   const matches = [...input.matchAll(pattern)]
   if (!matches.length) return input
 
-  const replacements = await Promise.all(matches.map((match) => replacer(match as RegExpExecArray)))
+  const replacements = await Promise.all(matches.map((match) => replacer(match)))
 
   let result = ''
   let last = 0
@@ -105,7 +105,7 @@ async function resolveCodeDocs(tag: string): Promise<string> {
   const load = kind.sources[`../../${file}`]
   if (!load) return ''
 
-  let source = (await load()) as string
+  let source = await load()
   if (kind.lang === 'scss') source = source.replaceAll(' !default', '')
 
   const snippet = extractMarkedSnippet(source, kind.marker, name)
@@ -302,7 +302,7 @@ export function menuOrderedUrls(): string[] {
     return parts.length ? `/${parts.join('/')}` : '/'
   }
   const walk = (nodes: MenuNode[]): string[] => nodes.flatMap((node) => [...(node.url ? [normalize(node.url)] : []), ...walk(node.children ?? [])])
-  return [...new Set(walk(docs.menu as MenuNode[]))]
+  return [...new Set(walk(docs.menu))]
 }
 
 /** Absolute in production, root-relative in dev — same rule as sitemap.xml.ts. */

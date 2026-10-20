@@ -32,6 +32,7 @@ export const DefaultAllowlist: AllowList = {
   'h6': [],
   'i': [],
   'img': ['src', 'srcset', 'alt', 'title', 'width', 'height'],
+  'kbd': [],
   'li': [],
   'ol': [],
   'p': [],
@@ -46,6 +47,22 @@ export const DefaultAllowlist: AllowList = {
   'ul': [],
 }
 // js-docs-end allow-list
+
+// js-docs-start icon-allow-list
+export const DefaultIconAllowlist: AllowList = {
+  '*': ['class', 'role', ARIA_ATTRIBUTE_PATTERN],
+  'svg': ['xmlns', 'width', 'height', 'viewbox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'focusable'],
+  'path': ['d', 'fill', 'stroke', 'stroke-width', 'fill-rule', 'clip-rule'],
+  'line': ['x1', 'y1', 'x2', 'y2', 'stroke', 'stroke-width', 'stroke-linecap'],
+  'circle': ['cx', 'cy', 'r', 'fill', 'stroke', 'stroke-width'],
+  'rect': ['x', 'y', 'width', 'height', 'rx', 'ry', 'fill', 'stroke', 'stroke-width'],
+  'polyline': ['points', 'fill', 'stroke', 'stroke-width'],
+  'polygon': ['points', 'fill', 'stroke', 'stroke-width'],
+  'g': ['fill', 'stroke', 'stroke-width', 'transform'],
+  'span': [],
+  'i': [],
+}
+// js-docs-end icon-allow-list
 
 const uriAttributes = new Set(['background', 'cite', 'href', 'itemtype', 'longdesc', 'poster', 'src', 'xlink:href'])
 
@@ -62,7 +79,7 @@ const allowedAttribute = (attribute: Attr, allowedAttributeList: (string | RegEx
     return true
   }
 
-  return allowedAttributeList.filter((attributeRegex) => attributeRegex instanceof RegExp).some((regex) => (regex as RegExp).test(attributeName))
+  return allowedAttributeList.filter((attributeRegex) => attributeRegex instanceof RegExp).some((regex) => regex.test(attributeName))
 }
 
 export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeFunction?: SanitizeFn): string {

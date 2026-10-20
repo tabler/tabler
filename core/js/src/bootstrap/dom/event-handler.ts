@@ -106,7 +106,7 @@ function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHan
     }
 
     return fn.apply(element as HTMLElement, [event])
-  } as BootstrapHandler
+  }
 }
 
 function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: EventCallback): BootstrapHandler {
@@ -128,7 +128,7 @@ function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: 
         return fn.apply(target as HTMLElement, [event])
       }
     }
-  } as BootstrapHandler
+  }
 }
 
 function findHandler(events: Record<string | number, BootstrapHandler>, callable: EventCallback, delegationSelector: string | null = null): BootstrapHandler | undefined {

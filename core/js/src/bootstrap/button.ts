@@ -44,7 +44,7 @@ class Button extends BaseComponent {
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, (event: Event) => {
   event.preventDefault()
 
-  const target = (event.target as HTMLElement)?.closest(SELECTOR_DATA_TOGGLE) as HTMLElement | null
+  const target = (event.target as HTMLElement)?.closest<HTMLElement>(SELECTOR_DATA_TOGGLE)
   if (!target) {
     return
   }

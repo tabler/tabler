@@ -1,5 +1,60 @@
 # @tabler/core
 
+## 1.7.0
+
+### Minor Changes
+
+- ace9a4f: Added `.datagrid-horizontal` and `.datagrid-cols-{n}` classes and more datagrid examples and docs.
+- 964eb7c: Added `dateFormat` patterns such as `iso` or `DD.MM.YYYY` and a `boundInput` option for ISO form values to `Datepicker`.
+- 725e45d: Added the `weekNumbers` option to `Datepicker` to show the week number in front of each row.
+- 0647af1: Added the `--tblr-fill-*` tokens and `.bg-fill-*` utilities, used by badges, avatars, code, progress and range tracks and the hover background.
+- 8f00eab: Added `--tblr-form-check-*` and `--tblr-form-switch-*` variables, with shared `--tblr-control-checked-bg` and disabled tokens on `:root`.
+- 8f00eab: Added `--tblr-control-*` variables to `.form-control` and `.form-select`; sizes and the file button now follow them.
+- 8f00eab: Updated icon addons, select groups, `.col-form-label`, validation icons, OTP and Tom Select to read the `--tblr-control-*` and `--tblr-btn-input-*` variables.
+- 8f00eab: Updated `.form-select-sm`, `.form-select-lg` and small Tom Select to match `.form-control-*`, so small controls are now 32px tall.
+- bb60211: Updated `.form-switch` with a filled gray off track, a white knob with an even gap and a new `$form-switch-bg` variable.
+- f7c848a: Added the Hover gallery component with `.hover-gallery`, `.hover-gallery-item` and `.hover-gallery-indicators` classes.
+- c493436: Added the `.list-icon` component for lists with icon markers, with `.list-icon-inline` for entries in a row.
+- 681b6eb: Added the image label component: `.img-labeled` and `.img-label` pin a short text or an icon to a corner of an image.
+- 68da446: Updated the flags plugin to Tabler Flags: 304 flags at a 5:4 ratio, 50 new like `.flag-country-nato`, old codes kept as aliases.
+- 8f00eab: Added `--tblr-input-group-addon-*`, `--tblr-form-floating-*` and `--tblr-range-*` variables to input groups, floating labels and range inputs.
+- 03e2775: Updated `<kbd>` to a compact key cap and added `.kbd-group` and `--tblr-kbd-*` variables for keyboard shortcuts.
+- 69c1114: Added item slots, `.list-group-sm` and `.list-group-lg` sizes, selectable and nested items to the list group.
+- a845ab0: Added `.map-marker` with dot, pin, pulse and color variants, `.map-popup-card`, `.map-tooltip` and MapLibre styles in `tabler-vendors.css`.
+- a845ab0: Added the `MapView` component in `tabler-map.js` on MapLibre GL JS 6: `data-bs-toggle="map"` makes a themed map with markers, popups, routes and a globe.
+- d6cfffb: Added the `.mockup-browser` component that frames a screenshot or any content in a browser window with an address bar.
+- 6c46d55: Added `NavOverflow` component that moves nav items that do not fit into a More dropdown, with a `.nav-overflow` wrapper.
+- 86388e4: Added `combined` as a `data-bs-navbar-position` value to show both navbars at once.
+- 3f3aae9: Added the `NumberInput` component, a `.number-input` quantity input with buttons, bounds, hold-to-repeat and keyboard support.
+- 12c045f: Updated `.pricing` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
+- 28c24bf: Updated `.shape` to ship in the core `tabler.css` bundle instead of `tabler-marketing.css`.
+- 744f9fe: Added the `.text-shimmer` class that sweeps a highlight across a label, with an optional `.text-shimmer-loader` spinner.
+- 5cbc443: Added a `mist` gray palette for `data-bs-theme-base` and removed the hidden `pink` base from `tabler-themes.css`.
+- 00746f2: Added `.input-icon` support for Tom Select: a leading icon no longer overlaps the selected value.
+- 8ab6441: Added the `VectorMap` plugin: an SVG world map with values, color scales, a legend, markers, lines, selection, tooltips and zoom.
+
+### Patch Changes
+
+- d75c5d6: Updated `--tblr-bg-surface-tertiary` to a translucent color, so card headers, footers and table stripes show on dark cards.
+- 9368b8e: Fixed the default `.btn` turning see-through on hover and active by mixing the tint over `--tblr-bg-surface`.
+- b168be1: Updated filled `.btn-*` variants with a subtle border, inner edges and a faint gradient; outline buttons lose their shadow.
+- b168be1: Updated `.btn-xl` with a `1.25rem` font, `1.75rem` icons and a larger radius; `.btn-sm` gets `0.75rem` side padding.
+- e3739a1: Fixed `.card-table` rounding the outer cells of every row: only the cells in the card corners are rounded now.
+- 6394af0: Added ESLint with `typescript-eslint` and fixed its findings in `Datepicker`, `Dropdown`, `Tooltip` and `Sparkline`.
+- 3275bff: Fixed `$border-color-translucent-dark` overbrightening card, alert, dropdown and table borders in dark mode.
+- d75c5d6: Fixed dark mode contrast of nav links, list group headers, toast headers, breadcrumbs, the footer, `.form-control-light` and `.form-help`.
+- a1b46ae: Fixed `Datepicker` getting stuck closed after the calendar plugin throws in `show()` or `hide()`.
+- d75c5d6: Fixed `.input-group-text` contrast in dark mode with the `--tblr-secondary-color` text color and a translucent background.
+- dcacb65: Fixed `.table-striped` rows and `thead th` backgrounds that were invisible in dark mode on cards.
+- 462835f: Fixed the square corners of disabled Tom Select fields and the square focus ring of small and large ones.
+- 9d837ea: Fixed `.input-icon` icons off-center in small and large inputs and selects: the addon follows the control size.
+- 252c914: Updated the `tabler.js` build target from ES2015 to ES2022, making `tabler.min.js` about 1.5 kB smaller (gzip).
+- 9fb6930: Fixed the vertical navbar submenu painting over the `.navbar-footer` user dropdown.
+- 252c914: Removed Sass doc comments from `tabler.css` and `tabler.rtl.css` by switching them to `//` comments.
+- 530f11b: Fixed `.nav-segmented` icons staying gray on hover: they follow the link color like the text.
+- 2726bc4: Updated the `tabler.min.js` minification to two terser compress passes.
+- fbf2bdb: Updated bundled `dropzone` to v6.3.5, `driver.js` to v1.10.1, `fslightbox` to v3.8.0, `fullcalendar` to v6.1.22, `hugerte` to v1.0.14 and `plyr` to v3.8.5.
+
 ## 1.6.1
 
 ### Patch Changes

@@ -1,0 +1,142 @@
+---
+title: Upgrade to 1.7
+summary: Move a project from Tabler 1.6 to 1.7. The Pricing and Shape components moved from the marketing bundle into the core bundle, and buttons, switches, small controls, flags and a few dark mode surfaces look a little different.
+description: Upgrade guide from Tabler 1.6 to 1.7 with the components that moved from the marketing bundle into the core bundle, the visual changes to check, and what to change in your HTML and Sass imports.
+added-in: '1.7.0'
+order: 1
+related: [/ui/getting-started/upgrade/1-6, /ui/getting-started/customize]
+---
+
+Tabler 1.7 adds a lot and changes very little. Every class, custom property, Sass variable and function from 1.6 is still there. The one thing that can touch your code is where two components ship. Pricing and Shape moved from `tabler-marketing.css` into the core `tabler.css`. If a page loads both files, and every marketing page does, there's nothing to do.
+
+If you load `tabler-marketing.css` on its own, or import its Sass partials one by one, read [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle). Then have a look at [Visual changes](#visual-changes). A few components are drawn a little differently now, and if you have custom styles sitting close to them, they may need a small adjustment.
+
+If you're coming from 1.5 or older, do the [1.6 upgrade](/ui/getting-started/upgrade/1-6) first.
+
+## Overview
+
+If you…|You need to…
+---|---
+Load `tabler.css` and `tabler-marketing.css` together|Nothing
+Load `tabler-marketing.css` without `tabler.css` on a page that uses `.pricing` or `.shape`|Add `tabler.css`, see [Pricing and Shape are in the core bundle](#pricing-and-shape-are-in-the-core-bundle)
+Import `scss/marketing/pricing` or `scss/marketing/shape` in your own Sass|Import `scss/ui/pricing` or `scss/ui/shape`, see [Sass changes](#sass-changes)
+Style buttons, switches, small inputs or flags yourself|Check them, see [Visual changes](#visual-changes)
+Use `.flag-country-afrun`, `-bq-bo`, `-bq-sa`, `-bq-se`, `-kn-sk` or `-unasur`|Nothing now, they're aliases; switch to the new codes before 2.0, see [Flags](#flags)
+
+## Update the package
+
+Install the new version:
+
+```sh
+npm install --save @tabler/core@1.7.0
+```
+
+Or update the CDN links:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/css/tabler.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.0/dist/js/tabler.min.js"></script>
+```
+
+## Pricing and Shape are in the core bundle
+
+The [Pricing](/ui/components/pricing) component (`.pricing` and its `.pricing-*` parts) and the [Shape](/ui/components/shape) component (`.shape` with its size and color modifiers) used to ship only in `tabler-marketing.css`. They're part of `tabler.css` now. So a dashboard can show plan cards, or an icon in a shape, without loading the marketing stylesheet. The class names and the markup haven't changed.
+
+`tabler-marketing.css` doesn't contain the two components any more. A page that loads both stylesheets keeps working. A page that loaded only `tabler-marketing.css` for them has to add `tabler.css` too. It needs it anyway, for the buttons, badges and icons inside them:
+
+```diff
+- <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler-marketing.min.css" />
+```
+
+The pricing card border also follows the theme now. In 1.6 it was a fixed light gray, even in dark mode. In 1.7 it uses `--tblr-border-color`.
+
+## Visual changes
+
+Nothing in this section needs a change to your markup. The components below are just drawn a little differently in 1.7. If you have a custom style that sits next to one of them, or overrides one of its values, it may end up off by a pixel or two. Worth a quick look.
+
+### Buttons
+
+Filled buttons, so `.btn-primary` and the other `.btn-{color}` variants, have a thin border now, a faint top-to-bottom gradient and light inner edges. Outline buttons lose their shadow. The default `.btn` mixes its hover and active tint over `--tblr-bg-surface`, which keeps it opaque. In 1.6 it turned slightly see-through when it was sitting on a colored background.
+
+`.btn-xl` uses a `1.25rem` font with `1.75rem` icons and the large radius. In 1.6 it used the `h1` size and `2rem` icons, which was a bit much. `.btn-sm` has `0.75rem` of side padding instead of `0.5rem`.
+
+### Small controls are 32px tall
+
+`.form-control-sm`, `.form-select-sm`, `.btn-sm` and a small Tom Select are all `32px` tall now. In 1.6 the small input was `28px`, and the small select and the small Tom Select didn't match it anyway. The vertical padding of the small size, `$input-btn-padding-y-sm`, went from `0.3125rem` to `0.4375rem`. That's what makes the three line up in a toolbar. The large sizes didn't change.
+
+### Switch
+
+`.form-switch` has a filled gray track when it's off, with a white knob and an even gap around it. In 1.6 the off track was just an outline. The track color comes from the new `$form-switch-bg` variable. `$form-switch-color` is the knob, and it's plain white in both color modes now.
+
+### Flags
+
+The flags plugin ships the [Tabler Flags](https://github.com/tabler/tabler-flags) set now. That's 304 flags at a 5:4 ratio instead of 4:3, so a flag is a little narrower for the same height. Six flags got a new code. The old classes keep working as [aliases](/ui/plugins/flags#old-flag-codes), but they go away in 2.0.
+
+### Dark mode
+
+A round of contrast fixes changed a few surfaces on a dark page:
+
+- `--tblr-bg-surface-tertiary` is translucent, so card headers, card footers and striped table rows show on a dark card.
+- `.input-group-text` has the `--tblr-secondary-color` text color and a translucent background.
+- Card, alert, dropdown and table borders aren't too bright any more. `$border-color-translucent-dark` was applied to more elements than it should have been.
+- Nav links, list group headers, toast headers, breadcrumbs, the footer, `.form-control-light` and `.form-help` no longer use fixed grays.
+
+### Smaller changes
+
+- `.card-table` rounds only the cells in the four card corners. In 1.6 every row rounded its outer cells.
+- `.nav-segmented` icons follow the link color on hover, like the text.
+- Disabled Tom Select fields have rounded corners, and small and large ones a rounded focus ring.
+- The `.pricing` card border follows the theme, with `--tblr-border-color` instead of a fixed light gray in dark mode.
+
+## JavaScript
+
+`tabler.js` is compiled for ES2022 instead of ES2015. Every [supported browser](/ui/getting-started/browser-support) has run ES2022 for years, so for a normal page nothing changes. It only matters if you run `tabler.js` through your own transpiler with an older target. In that case, either drop the override or let the transpiler lower the syntax for you.
+
+## Sass changes
+
+This only matters if you compile the `scss/` sources yourself and import partials one by one. `@use '@tabler/core/scss/tabler'` and `@use '@tabler/core/scss/tabler-marketing'` keep working as they are.
+
+### Moved partials
+
+Partial in 1.6|Partial in 1.7
+---|---
+`scss/marketing/_pricing.scss`|`scss/ui/_pricing.scss`
+`scss/marketing/_shape.scss`|`scss/ui/_shape.scss`
+
+```diff
+- @use '@tabler/core/scss/marketing/pricing';
+- @use '@tabler/core/scss/marketing/shape';
++ @use '@tabler/core/scss/ui/pricing';
++ @use '@tabler/core/scss/ui/shape';
+```
+
+## What is new in 1.7
+
+Besides the changes above, 1.7 adds:
+
+- [Map](/ui/components/map), an interactive map on MapLibre GL JS with markers, popups, routes, areas and a globe, from plain HTML with `data-bs-toggle="map"`. It ships as the `tabler-map.js` add-on.
+- [Vector map](/ui/plugins/vector-map), a world map as inline SVG with a value per country, markers, lines and a legend, in `tabler-vector-map.js`.
+- [Nav overflow](/ui/components/nav-overflow), a `.nav` that moves the items that don't fit into a More dropdown.
+- [Number input](/ui/forms/number-input), a quantity field with decrease and increase buttons, bounds, hold-to-repeat and keyboard support.
+- [Hover gallery](/ui/components/hover-gallery), several images in the space of one, switched by the pointer position.
+- [Image label](/ui/components/image-label), a short text or an icon pinned to a corner of an image.
+- [Mockup browser](/ui/components/mockup-browser), a browser window frame for a screenshot or a page preview.
+- [Icon list](/ui/components/icon-list), a list with icons instead of bullets.
+- [Text shimmer](/ui/components/text-shimmer), a band of light sweeping across a label while something runs.
+- [List group](/ui/components/list-group) items with media, content, meta and actions slots, selectable and nested items, and `.list-group-sm` and `.list-group-lg` sizes.
+- [Keyboard keys](/ui/base/typography#keyboard-input), with `<kbd>` as a compact key cap, `.kbd-group` for a shortcut and `--tblr-kbd-*` variables.
+- [Datagrid](/ui/components/datagrid) with `.datagrid-horizontal` and `.datagrid-cols-{n}`.
+- [Datepicker](/ui/plugins/date-picker) with `weekNumbers`, `dateFormat` patterns such as `'DD.MM.YYYY'` or `'iso'`, and `boundInput` for ISO form values.
+- [Form CSS variables](/ui/forms/css-variables), with `--tblr-control-*` on inputs and selects, and their own sets for checks, switches, input group add-ons, floating labels and range inputs.
+- [Fill colors](/ui/base/colors#fill-colors), four neutral `--tblr-fill-*` tokens and the `.bg-fill-*` utilities behind badges, avatars, code and progress tracks.
+- A `mist` gray palette for `data-bs-theme-base`, see [Theme base colors](/ui/plugins/theme-base-colors).
+- `data-bs-navbar-position="combined"` to show the vertical and the horizontal navbar at once, see [Page layouts](/ui/layout/page-layouts#navigation-position).
+- [Pricing](/ui/components/pricing) and [Shape](/ui/components/shape) as documented core components, each with a class reference.
+- An [Icon design guide](/icons/design-guide) in the Tabler Icons docs.
+
+See the [changelog](https://github.com/tabler/tabler/releases) for the full list.

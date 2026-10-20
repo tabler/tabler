@@ -13,7 +13,7 @@ const TRANSITION_END = 'transitionend'
 
 const parseSelector = (selector: string): string => {
   if (selector && typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
-    selector = selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`)
+    selector = selector.replace(/#([^\s"#']+)/g, (_match: string, id: string) => `#${CSS.escape(id)}`)
   }
 
   return selector
@@ -166,7 +166,7 @@ const noop = (): void => {}
  * @see https://www.harrytheo.com/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
  */
 const reflow = (element: HTMLElement): void => {
-  element.offsetHeight // eslint-disable-line no-unused-expressions
+  element.offsetHeight // eslint-disable-line @typescript-eslint/no-unused-expressions
 }
 
 const isRTL = (): boolean => document.documentElement.dir === 'rtl'

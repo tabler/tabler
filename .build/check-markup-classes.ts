@@ -23,8 +23,8 @@ const htmlTargets: string[] = []
 const cssDirs: string[] = []
 let updateBaseline = false
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === '--html') htmlTargets.push(args[++i]!)
-  else if (args[i] === '--css') cssDirs.push(args[++i]!)
+  if (args[i] === '--html') htmlTargets.push(args[++i])
+  else if (args[i] === '--css') cssDirs.push(args[++i])
   else if (args[i] === '--update-baseline') updateBaseline = true
 }
 if (htmlTargets.length === 0 || cssDirs.length === 0) {
@@ -41,14 +41,14 @@ const walk = (dir: string, ext: string): string[] =>
 const defined = new Set<string>()
 for (const dir of cssDirs) {
   for (const file of walk(resolve(dir), '.css')) {
-    for (const m of readFileSync(file, 'utf8').matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) defined.add(m[1]!)
+    for (const m of readFileSync(file, 'utf8').matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) defined.add(m[1])
   }
 }
 
 const pagesOf = async (target: string): Promise<{ path: string; html: string }[]> => {
   if (/^https?:/.test(target)) {
     const xml = await (await fetch(`${target}/sitemap.xml`)).text()
-    const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(/^https?:\/\/[^/]+/, ''))
+    const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+/, ''))
     const pages = []
     for (const path of paths) pages.push({ path, html: await (await fetch(target + path)).text() })
     return pages
@@ -56,7 +56,7 @@ const pagesOf = async (target: string): Promise<{ path: string; html: string }[]
   const root = resolve(target)
   const xml = readFileSync(join(root, 'sitemap.xml'), 'utf8')
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => {
-    const path = m[1]!.replace(/^https?:\/\/[^/]+/, '')
+    const path = m[1].replace(/^https?:\/\/[^/]+/, '')
     const file = [join(root, path), join(root, `${path}.html`), join(root, path, 'index.html')].find((f) => existsSync(f) && statSync(f).isFile())
     return { path, html: file ? readFileSync(file, 'utf8') : '' }
   })
@@ -70,9 +70,9 @@ const main = async () => {
       pageCount++
       // Page-level <style> blocks define classes too (demo pages style their own markup).
       const inline = new Set<string>()
-      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const m of block[1]!.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) inline.add(m[1]!)
+      for (const block of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) for (const m of block[1].matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) inline.add(m[1])
       for (const m of html.matchAll(/class="([^"]*)"/g)) {
-        for (const cls of m[1]!.split(/\s+/).filter(Boolean)) {
+        for (const cls of m[1].split(/\s+/).filter(Boolean)) {
           if (defined.has(cls) || inline.has(cls)) continue
           if (!used.has(cls)) used.set(cls, new Set())
           used.get(cls)!.add(`${target}${path}`)

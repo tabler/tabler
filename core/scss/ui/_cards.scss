@@ -160,9 +160,7 @@
   }
 }
 
-/**
-Stacked card
- */
+// Stacked card
 .card-stacked {
   --card-stacked-offset: #{$card-stacked-offset};
   position: relative;
@@ -418,9 +416,7 @@ Stacked card
   overflow: auto;
 }
 
-/**
-Card optinos
- */
+// Card optinos
 .card-options {
   --card-options-top: #{$card-options-top};
   --card-options-inset: #{$card-options-inset};
@@ -437,9 +433,7 @@ Card optinos
   color: var(--secondary);
 }
 
-/**
-Card status
- */
+// Card status
 .card-status-top,
 .card-status-start,
 .card-status-bottom {
@@ -467,10 +461,10 @@ Card status
   mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
-/**
-Card table
- */
+// Card table
 .card-table {
+  --card-table-top-radius: 0;
+  --card-table-bottom-radius: 0;
   margin-bottom: 0 !important;
 
   tr {
@@ -479,13 +473,11 @@ Card table
       &:first-child {
         padding-inline-start: $card-spacer-x;
         border-inline-start: 0;
-        border-start-start-radius: var(--card-border-radius);
       }
 
       &:last-child {
         padding-inline-end: $card-spacer-x;
         border-inline-end: 0;
-        border-start-end-radius: var(--card-border-radius);
       }
     }
   }
@@ -493,14 +485,26 @@ Card table
   thead,
   tbody,
   tfoot {
+    &:first-child {
+      tr:first-child {
+        > *:first-child {
+          border-start-start-radius: var(--card-table-top-radius);
+        }
+
+        > *:last-child {
+          border-start-end-radius: var(--card-table-top-radius);
+        }
+      }
+    }
+
     &:last-child {
       tr:last-child {
         > *:last-child {
-          border-end-end-radius: calc(var(--card-border-radius) - var(--card-border-width));
+          border-end-end-radius: var(--card-table-bottom-radius);
         }
 
         > *:first-child {
-          border-end-start-radius: calc(var(--card-border-radius) - var(--card-border-width));
+          border-end-start-radius: var(--card-table-bottom-radius);
         }
       }
     }
@@ -545,6 +549,16 @@ Card table
   }
 }
 
+.card > .card-table:first-child,
+.card > .table-responsive:first-child > .card-table {
+  --card-table-top-radius: var(--card-border-radius);
+}
+
+.card > .card-table:last-child,
+.card > .table-responsive:last-child > .card-table {
+  --card-table-bottom-radius: calc(var(--card-border-radius) - var(--card-border-width));
+}
+
 /*
 Card code
  */
@@ -584,9 +598,7 @@ Card chart
   height: var(--card-avatar-height);
 }
 
-/**
-Card avatar
- */
+// Card avatar
 .card-avatar {
   --card-avatar-ring-width: #{$card-avatar-ring-width};
   margin-inline-start: auto;
@@ -709,17 +721,13 @@ Card list group
   }
 }
 
-/**
-Card note
-*/
+// Card note
 .card-note {
   --card-bg: #{mix-color-css(var(--yellow), var(--bg-surface), 12%)};
   --card-border-color: #{mix-color-css(var(--yellow), var(--bg-surface), 20%)};
 }
 
-/**
-Card gradient
-*/
+// Card gradient
 // Split out so scss/tests/_cards.test.scss can assert on it directly — a bare
 // top-level ruleset like .card-gradient can't be @include-d or otherwise
 // referenced in isolation by sass-true.

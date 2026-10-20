@@ -145,9 +145,9 @@ function systemFfmpeg(): string | undefined {
 function resample(frames: Frame[], end: number): Buffer[] {
   const out: Buffer[] = []
   let index = 0
-  for (let t = frames[0]!.time; t <= end; t += 1 / FPS) {
-    while (index + 1 < frames.length && frames[index + 1]!.time <= t) index++
-    out.push(frames[index]!.data)
+  for (let t = frames[0].time; t <= end; t += 1 / FPS) {
+    while (index + 1 < frames.length && frames[index + 1].time <= t) index++
+    out.push(frames[index].data)
   }
   return out
 }
@@ -269,9 +269,9 @@ async function recordOne(page: Page, client: CDPSession, slug: string, theme: 'l
   await moveCursor(page, { x: width / 2, y: height + 40 }, 0)
 
   const frames: Frame[] = []
-  const onFrame = async (event: { data: string; sessionId: number }) => {
+  const onFrame = (event: { data: string; sessionId: number }) => {
     frames.push({ data: Buffer.from(event.data, 'base64'), time: Date.now() / 1000 })
-    await client.send('Page.screencastFrameAck', { sessionId: event.sessionId }).catch(() => {})
+    void client.send('Page.screencastFrameAck', { sessionId: event.sessionId }).catch(() => {})
   }
   client.on('Page.screencastFrame', onFrame)
   await client.send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: width, maxHeight: height, everyNthFrame: 1 })
@@ -303,8 +303,8 @@ async function main() {
 
   console.log(`Starting preview server on port ${PORT}…`)
   await startPreviewServer()
-  process.once('SIGINT', stopPreviewServer)
-  process.once('SIGTERM', stopPreviewServer)
+  process.once('SIGINT', () => void stopPreviewServer())
+  process.once('SIGTERM', () => void stopPreviewServer())
 
   try {
     const browser = await chromium.launch()
@@ -321,7 +321,7 @@ async function main() {
 
         // RECORD_FRAMES="0.5,2,4" also writes those seconds as JPEG stills, for a quick look without a player.
         for (const second of (process.env.RECORD_FRAMES ?? '').split(',').filter(Boolean).map(Number)) {
-          const frame = sampled[Math.min(sampled.length - 1, Math.round(second * FPS))]!
+          const frame = sampled[Math.min(sampled.length - 1, Math.round(second * FPS))]
           writeFileSync(path.join(outDir, `${name}-${second}s.jpg`), frame)
         }
 
@@ -330,7 +330,7 @@ async function main() {
 
         if (system) {
           await encode(system, sampled, ['-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'], path.join(outDir, `${name}.mp4`))
-          await encode(system, sampled, ['-vf', `fps=15,scale=iw/2:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=sierra2_4a`, '-loop', '0'], path.join(outDir, `${name}.gif`))
+          await encode(system, sampled, ['-vf', `fps=${FPS},scale=iw/2:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=sierra2_4a`, '-loop', '0'], path.join(outDir, `${name}.gif`))
           console.log(`  ✓ ${name}.mp4, ${name}.gif`)
         }
       }

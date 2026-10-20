@@ -1,0 +1,35 @@
+---
+// Text shimmer in the place it is made for: an assistant that has not
+// answered yet. The layout turns animations off, so each label is drawn at a
+// fixed point of the sweep with an inline mask-position — the band sits early
+// in the first line, in the middle of the second and late in the third, which
+// reads as motion on a still picture. The last label carries the loader, and
+// the layout zoom keeps the text at its real size while the picture stays
+// legible.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import TextShimmer from '@ui/TextShimmer.astro'
+
+const steps = [
+  { label: 'Searching the web…', position: '80%' },
+  { label: 'Reading 3 files…', position: '50%' },
+]
+---
+
+<ScreenshotLayout title="Text shimmer" columns={2} zoom={2}>
+  <Card>
+    <CardBody class="p-4">
+      <div class="d-flex flex-column gap-3">
+        {
+          steps.map((step) => (
+            <TextShimmer class="text-secondary" style={`--tblr-text-shimmer-width: 40%; mask-position: ${step.position} 0`}>
+              {step.label}
+            </TextShimmer>
+          ))
+        }
+        <TextShimmer loader style="--tblr-text-shimmer-width: 40%; --tblr-text-shimmer-opacity: 0.3; mask-position: 50% 0">Thinking…</TextShimmer>
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

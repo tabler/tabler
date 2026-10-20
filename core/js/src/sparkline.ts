@@ -114,14 +114,14 @@ const clampSpan = (min: number, max: number): number => {
 
 // Accepts "3,4,2" as well as a JSON array literal "[3,4,2]".
 const parseNumberList = (input: unknown): number[] => {
-  const raw = String(input ?? '').trim()
+  const raw = typeof input === 'string' ? input.trim() : ''
   if (!raw) {
     return []
   }
 
   if (raw.startsWith('[')) {
     try {
-      const arr = JSON.parse(raw)
+      const arr = JSON.parse(raw) as unknown
       return Array.isArray(arr) ? arr.map(Number).filter(Number.isFinite) : []
     } catch {
       return []

@@ -1,11 +1,10 @@
-/**
-Icon input
- */
+// Icon input
 @use '../../config' as *;
 
 .input-icon {
   --input-icon-padding-end: #{$input-icon-padding-end};
   --input-icon-padding-start: #{$input-icon-padding-start};
+  --input-icon-addon-height: #{input-height-token()};
   position: relative;
 
   .form-control:not(:last-child),
@@ -16,6 +15,14 @@ Icon input
   .form-control:not(:first-child),
   .form-select:not(:first-child) {
     padding-inline-start: var(--input-icon-padding-start);
+  }
+
+  &:has(> .form-control-sm, > .form-select-sm) {
+    --input-icon-addon-height: #{input-height-token('sm')};
+  }
+
+  &:has(> .form-control-lg, > .form-select-lg) {
+    --input-icon-addon-height: #{input-height-token('lg')};
   }
 }
 
@@ -30,7 +37,7 @@ Icon input
   align-items: center;
   justify-content: center;
   min-width: var(--input-icon-addon-width);
-  height: $input-height;
+  height: var(--input-icon-addon-height, #{input-height-token()});
   font-size: 1.2em;
   color: var(--icon-color);
   pointer-events: none;
