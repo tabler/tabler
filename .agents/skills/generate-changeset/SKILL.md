@@ -6,6 +6,8 @@ description: >-
   for a changeset, version bump, release note, or changelog entry, and also on
   your own whenever a change under `core/`, `preview/`, or `docs/` is about to
   be committed or opened as a PR. Never hand-write the file instead.
+metadata:
+  internal: true
 ---
 
 # Generate changeset

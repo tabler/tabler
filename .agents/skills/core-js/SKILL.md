@@ -3,6 +3,8 @@ name: core-js
 description: >-
   Work on the framework's own JavaScript in `core/js/` — the `tabler.js` and `tabler-theme.js` bundles, the vendored Bootstrap component port, and their browser tests. Use when a Tabler behaviour needs adding or fixing (a `data-bs-toggle` handler, the theme switcher, a plugin initialiser), when a Bootstrap component's
   JS misbehaves, and before changing anything under `core/js/src/`. Not for demo-page scripts — that is the `astro-scripts` skill.
+metadata:
+  internal: true
 ---
 
 # The framework JavaScript

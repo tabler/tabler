@@ -8,6 +8,8 @@ description: >-
   `pageMenu` key does not highlight the right entry, and whenever a docs URL
   changes. Covers both menu formats, the `pageMenu` key rules and the link
   gate.
+metadata:
+  internal: true
 ---
 
 # Menus, URLs and redirects

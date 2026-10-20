@@ -1,6 +1,8 @@
 ---
 name: write-docs
 description: Write, update, or suggest Tabler documentation pages in simple English using the current docs schema. Use whenever the user asks to create docs, edit docs, add new feature docs to an existing page, or standardize docs structure across any docs category. Also consult this skill proactively — without being asked — whenever a new visual UI component (shared/ui/*.astro), plugin, or other user-facing feature has just been added or changed and has no matching, up-to-date page under docs/content/**, since undocumented components are easy to forget about.
+metadata:
+  internal: true
 ---
 
 # Write Tabler Docs

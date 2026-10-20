@@ -7,6 +7,8 @@ description: >-
   has to be retaken after a design change, and before touching anything under
   `screenshots/`. Covers the two layouts, how to show a state the capture
   cannot click, running the server, capturing, and the build trap.
+metadata:
+  internal: true
 ---
 
 # Make a Tabler screenshot

@@ -8,6 +8,8 @@ description: >-
   watcher's output disappears after a restart, when a page 404s on
   `/dist/css/tabler.css`, and before editing anything under `.build/`, a
   package's asset manifest in `astro.config.mjs`, or the dev/build scripts.
+metadata:
+  internal: true
 ---
 
 # The asset pipeline
