@@ -56,6 +56,12 @@
   @include transition(width $transition-time, background $transition-time);
 }
 
+@each $color, $value in $theme-colors {
+  .progress-bar.bg-#{'' + $color} {
+    --progress-bar-color: var(--#{$color}-fg);
+  }
+}
+
 .progress-bar-indeterminate {
   &::after,
   &::before {
