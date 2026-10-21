@@ -111,8 +111,11 @@
 // matches the group's `:not(:first-child)` rule.
 .input-group > .ts-hidden-accessible:first-child + .ts-wrapper {
   margin-inline-start: 0 !important;
-  border-start-start-radius: var(--control-border-radius, var(--border-radius)) !important;
-  border-end-start-radius: var(--control-border-radius, var(--border-radius)) !important;
+
+  @if $enable-rounded {
+    border-start-start-radius: var(--control-border-radius, var(--border-radius)) !important;
+    border-end-start-radius: var(--control-border-radius, var(--border-radius)) !important;
+  }
 }
 
 // Every declaration below is `!important`: the bootstrap5 preset CSS targets
