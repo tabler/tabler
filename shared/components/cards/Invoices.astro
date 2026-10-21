@@ -1,4 +1,5 @@
 ---
+import CaptureScript from '@shared/components/CaptureScript.astro'
 import Icon from '@ui/Icon.astro'
 import type { FlagCountry } from '@shared/lib/tokens'
 import Flag from '@ui/Flag.astro'
@@ -7,6 +8,13 @@ import DropdownMenu from '@shared/components/demo/DropdownMenu.astro'
 import Pagination from '@ui/Pagination.astro'
 import invoices from '@data/invoices.json'
 import countries from '@data/countries.json'
+
+interface Props {
+  id?: string
+}
+
+const { id = 'invoices' } = Astro.props
+const tableId = `${id}-table`
 
 const countryNames = Object.fromEntries((countries as { code: string; name: string }[]).map((c) => [c.code, c.name]))
 ---
@@ -34,10 +42,10 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
     </div>
   </div>
   <div class="table-responsive">
-    <table class="table table-selectable card-table table-vcenter text-nowrap datatable">
+    <table id={tableId} class="table table-selectable card-table table-vcenter text-nowrap datatable">
       <thead>
         <tr>
-          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices" /></th>
+          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices" data-select-all /></th>
           <th class="w-1">No. <Icon name="chevron-up" inline class="icon-sm" /></th>
           <th>Invoice Subject</th>
           <th>Client</th>
@@ -100,3 +108,31 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
     </div>
   </div>
 </div>
+
+<CaptureScript>
+  <!-- BEGIN INVOICES -->
+  <script is:inline define:vars={{ tableId }}>
+    function initInvoices() {
+      const table = document.getElementById(tableId)
+      if (!table) return
+
+      const all = table.querySelector('[data-select-all]')
+      const rows = table.querySelectorAll('.table-selectable-check')
+
+      const sync = () => {
+        const checked = [...rows].filter((row) => row.checked).length
+        all.checked = checked === rows.length
+        all.indeterminate = checked > 0 && checked < rows.length
+      }
+
+      all.addEventListener('change', () => {
+        rows.forEach((row) => (row.checked = all.checked))
+        sync()
+      })
+      rows.forEach((row) => row.addEventListener('change', sync))
+    }
+
+    document.readyState !== 'loading' ? initInvoices() : document.addEventListener('DOMContentLoaded', initInvoices, { once: true })
+  </script>
+  <!-- END INVOICES -->
+</CaptureScript>
