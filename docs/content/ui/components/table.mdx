@@ -47,6 +47,7 @@ classnames:
       desc: Tighter cell padding
 ---
 import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 
 ## Basic table
 
@@ -436,6 +437,90 @@ Inside such a row you can swap content with `.on-checked` and `.on-unchecked`: t
   </tbody>
 </table>
 </Example>
+
+### Select all
+
+Add `data-bs-toggle="select-all"` to the table and `data-bs-select-all-check` to the checkbox in the header. That checkbox then checks or unchecks every enabled row, and turns indeterminate while only some rows are selected. Hold <kbd>Shift</kbd> while clicking to select every row between two clicks.
+
+Inside the header, `.on-checked` and `.on-unchecked` swap whole cells: the first shows while any row is selected, the second while none is. Use this to replace the column titles with a selection bar. JavaScript fills every `data-bs-select-all-count` element with the number of selected rows and every `data-bs-select-all-total` element with the number of rows.
+
+<Example>
+<table class="table table-selectable" data-bs-toggle="select-all">
+  <thead>
+    <tr>
+      <th class="w-1">
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select all rows" data-bs-select-all-check />
+      </th>
+      <th class="on-unchecked">Task</th>
+      <th class="on-unchecked">Status</th>
+      <th class="on-checked" colspan="2">
+        <div class="d-flex align-items-center">
+          <span aria-live="polite"><span data-bs-select-all-count>0</span> of <span data-bs-select-all-total>3</span> selected</span>
+          <div class="btn-list ms-auto my-n2">
+            <button type="button" class="btn btn-sm">Archive</button>
+            <button type="button" class="btn btn-sm btn-ghost-danger">Delete</button>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+      </td>
+      <td>Prepare the release notes</td>
+      <td>Done</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+      </td>
+      <td>Review the pull request</td>
+      <td>In review</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+      </td>
+      <td>Update the changelog</td>
+      <td>To do</td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+The same works for a `.list-group-selectable` list, or for any wrapper around the items: put `data-bs-toggle="select-all"` on the element that holds the checkboxes and the counters.
+
+#### Options
+
+| Option  | Type    | Default                                                   | Description                                                        |
+| ------- | ------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| `items` | string  | `'.table-selectable-check, .list-group-selectable-check'` | Selector of the item checkboxes.                                   |
+| `range` | boolean | `true`                                                    | Shift-click selects every item between the last two clicked items. |
+
+#### JavaScript
+
+Tabler creates a `SelectAll` for every element matching `[data-bs-toggle="select-all"]` (or `[data-tblr-toggle="select-all"]`):
+
+<CodeDocs name="select-all-init" file="core/js/src/select-all.ts" />
+
+Rows added later are picked up on their own. Every item the plugin changes fires the usual `input` and `change` events, and `change.bs.selectAll` fires on the element with the selection:
+
+```javascript
+const table = document.querySelector('#invoices')
+table.addEventListener('change.bs.selectAll', (event) => {
+  console.log(event.count, event.total, event.selected)
+})
+```
+
+| Method          | Description                                                                          |
+| --------------- | ------------------------------------------------------------------------------------ |
+| `getSelected()` | Returns the checked item checkboxes.                                                 |
+| `selectAll()`   | Checks every enabled item.                                                           |
+| `deselectAll()` | Unchecks every enabled item.                                                         |
+| `update()`      | Refreshes the header checkbox and the counters after items were checked by a script. |
+| `dispose()`     | Removes the listeners and the instance.                                              |
 
 ## Stacked table on small screens
 
