@@ -97,7 +97,7 @@ const getElement = (object: unknown): HTMLElement | null => {
 
 const getFocusReturnTarget = (relatedTarget?: HTMLElement): HTMLElement | null => {
   if (isElement(relatedTarget)) {
-    return relatedTarget as HTMLElement
+    return relatedTarget
   }
 
   const { activeElement } = document
@@ -285,4 +285,26 @@ const getNextActiveElement = <T>(list: T[], activeElement: T, shouldGetNext: boo
   return list[Math.max(0, Math.min(index, listLength - 1))]
 }
 
-export { defineJQueryPlugin, execute, executeAfterTransition, findShadowRoot, getElement, getFocusReturnTarget, getjQuery, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, onDOMContentLoaded, parseSelector, reflow, restoreFocus, triggerTransitionEnd, toType }
+export {
+  defineJQueryPlugin,
+  execute,
+  executeAfterTransition,
+  findShadowRoot,
+  getElement,
+  getFocusReturnTarget,
+  getjQuery,
+  getNextActiveElement,
+  getTransitionDurationFromElement,
+  getUID,
+  isDisabled,
+  isElement,
+  isRTL,
+  isVisible,
+  noop,
+  onDOMContentLoaded,
+  parseSelector,
+  reflow,
+  restoreFocus,
+  triggerTransitionEnd,
+  toType,
+}
