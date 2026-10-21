@@ -90,6 +90,10 @@ const elementId = `chart-${id}`;
 					}
 
 					function initChart() {
+						if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+							config.chart = { ...config.chart, animations: { enabled: false } };
+						}
+
 						if (Object.hasOwn(formatters, xFormatter) && config.xaxis?.labels) {
 							config.xaxis.labels.formatter = formatters[xFormatter];
 						}

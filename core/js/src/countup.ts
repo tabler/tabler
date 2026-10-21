@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
+import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
 type CountUpFormat = 'number' | 'time'
 
@@ -124,8 +125,6 @@ const parseValue = (input: string | number, format: CountUpFormat): number => {
 
 // easeOutExpo, the same curve countUp.js used
 const easeOut = (t: number): number => (t >= 1 ? 1 : ((1 - 2 ** (-10 * t)) * 1024) / 1023)
-
-const reducedMotion = (): boolean => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * Class definition
@@ -271,7 +270,7 @@ class CountUp extends BaseComponent {
     this._started = true
 
     // Users who asked for less motion get the final number at once.
-    if (from === to || this._config.duration <= 0 || reducedMotion()) {
+    if (from === to || this._config.duration <= 0 || prefersReducedMotion()) {
       this._finish(to)
       return
     }
