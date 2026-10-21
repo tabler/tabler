@@ -19,7 +19,7 @@ Create one `.changeset/<name>.md` file per logical change. Ground package select
 From the repository root, determine scope:
 
 - **Uncommitted work:** `git status -sb`, `git diff`, `git diff --cached`
-- **Branch work (default base: `dev`):** `git diff origin/dev...HEAD --stat`, then targeted `git diff origin/dev...HEAD -- <paths>`
+- **Branch work (base: `dev`, or `next` for a new feature; examples use `dev`):** `git diff origin/dev...HEAD --stat`, then targeted `git diff origin/dev...HEAD -- <paths>`
 
 If the user points at specific files or a feature, read those diffs first.
 
@@ -40,7 +40,7 @@ Include **every affected package** in the frontmatter. Omit packages with no rel
 | Level | When |
 |-------|------|
 | **patch** | Bug fixes, small improvements, style/accessibility tweaks, variable/token fixes, doc typo/format fixes |
-| **minor** | New components, new pages, new CSS classes/utilities, significant enhancements, new preview demos |
+| **minor** | New components, new pages, new CSS classes/utilities, significant enhancements, new preview demos. A `minor` change is a feature: its PR targets `next`, not `dev` |
 | **major** | Breaking changes, removed APIs/classes, rewrites that break consumers. Never on `dev`: if the honest bump is `major`, stop and follow the `backward-compat` skill |
 
 Packages can differ: e.g. `@tabler/core`: minor + `@tabler/docs`: patch is valid.
