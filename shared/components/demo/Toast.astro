@@ -8,16 +8,17 @@ interface Props {
   show?: boolean
   cookies?: boolean
   text?: string
+  urgent?: boolean
 }
 
-const { toastId, show, cookies, text = 'Hello, world! This is a toast message.' } = Astro.props
+const { toastId, show, cookies, text = 'Hello, world! This is a toast message.', urgent } = Astro.props
 
 const date = '11 mins ago'
 /** people index, 0-based */
 const person = requireIndex(people, 2)
 ---
 
-<div class:list={['toast', show && 'show']} id={`toast-${toastId}`} role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+<div class:list={['toast', show && 'show']} id={`toast-${toastId}`} role={urgent ? 'alert' : 'status'} aria-live={urgent ? 'assertive' : 'polite'} aria-atomic="true" data-bs-autohide="false">
   <div class="toast-header">
     <Avatar person={person} class="me-2" size="xs" />
     <strong class="me-auto">{person.full_name}</strong>
