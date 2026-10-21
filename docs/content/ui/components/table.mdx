@@ -39,6 +39,8 @@ classnames:
       desc: Rows with a checkbox, highlighted when checked
     - class: table-sort
       desc: Sortable header cell
+    - class: selection-toolbar
+      desc: Toolbar before a selectable table that swaps its content while rows are selected
   color:
     - class: table-{color}
       desc: Tints a row or a cell, for example table-success
@@ -440,54 +442,60 @@ Inside such a row you can swap content with `.on-checked` and `.on-unchecked`: t
 
 ### Select all
 
-Add `data-bs-toggle="select-all"` to the table and `data-bs-select-all-check` to the checkbox in the header. That checkbox then checks or unchecks every enabled row, and turns indeterminate while only some rows are selected. Hold <kbd>Shift</kbd> while clicking to select every row between two clicks.
+Add `data-bs-toggle="select-all"` to an element that wraps the table, and `data-bs-select-all-check` to the checkbox in the header. That checkbox then checks or unchecks every enabled row, and turns indeterminate while only some rows are selected. Hold <kbd>Shift</kbd> while clicking to select every row between two clicks.
 
-Inside the header, `.on-checked` and `.on-unchecked` swap whole cells: the first shows while any row is selected, the second while none is. Use this to replace the column titles with a selection bar. JavaScript fills every `data-bs-select-all-count` element with the number of selected rows and every `data-bs-select-all-total` element with the number of rows.
+For bulk actions, put a `.selection-toolbar` before the table. Inside it, `.on-checked` shows while any row is selected and `.on-unchecked` while none is, so the toolbar can swap filters for a selection bar. JavaScript fills every `data-bs-select-all-count` element with the number of selected rows and every `data-bs-select-all-total` element with the number of rows.
 
 <Example>
-<table class="table table-selectable" data-bs-toggle="select-all">
-  <thead>
-    <tr>
-      <th class="w-1">
-        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select all rows" data-bs-select-all-check />
-      </th>
-      <th class="on-unchecked">Task</th>
-      <th class="on-unchecked">Status</th>
-      <th class="on-checked" colspan="2">
-        <div class="d-flex align-items-center">
-          <span aria-live="polite"><span data-bs-select-all-count>0</span> of <span data-bs-select-all-total>3</span> selected</span>
-          <div class="btn-list ms-auto my-n2">
-            <button type="button" class="btn btn-sm">Archive</button>
-            <button type="button" class="btn btn-sm btn-ghost-danger">Delete</button>
-          </div>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
-      </td>
-      <td>Prepare the release notes</td>
-      <td>Done</td>
-    </tr>
-    <tr>
-      <td>
-        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
-      </td>
-      <td>Review the pull request</td>
-      <td>In review</td>
-    </tr>
-    <tr>
-      <td>
-        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
-      </td>
-      <td>Update the changelog</td>
-      <td>To do</td>
-    </tr>
-  </tbody>
-</table>
+<div data-bs-toggle="select-all">
+  <div class="selection-toolbar border-bottom pb-3">
+    <div class="on-unchecked">
+      <span class="text-secondary">3 tasks</span>
+      <input type="text" class="form-control form-control-sm w-auto ms-auto" placeholder="Search…" aria-label="Search tasks" />
+    </div>
+    <div class="on-checked">
+      <span class="fw-medium" aria-live="polite"><span data-bs-select-all-count>0</span> of <span data-bs-select-all-total>3</span> selected</span>
+      <div class="btn-list ms-auto">
+        <button type="button" class="btn btn-sm">Archive</button>
+        <button type="button" class="btn btn-sm btn-ghost-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+  <table class="table table-selectable">
+    <thead>
+      <tr>
+        <th class="w-1">
+          <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select all rows" data-bs-select-all-check />
+        </th>
+        <th>Task</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+        </td>
+        <td>Prepare the release notes</td>
+        <td>Done</td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+        </td>
+        <td>Review the pull request</td>
+        <td>In review</td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+        </td>
+        <td>Update the changelog</td>
+        <td>To do</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </Example>
 
 The same works for a `.list-group-selectable` list, or for any wrapper around the items: put `data-bs-toggle="select-all"` on the element that holds the checkboxes and the counters.
