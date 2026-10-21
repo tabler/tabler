@@ -189,6 +189,61 @@ describe('Modal', () => {
     })
   })
 
+  describe('return focus', () => {
+    const open = (trigger: HTMLElement, el: Element, instance: Modal, via: 'active' | 'related') =>
+      new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.modal', () => resolve(), { once: true })
+        trigger.focus()
+        instance.show(via === 'related' ? trigger : undefined)
+      })
+
+    const close = (el: Element, instance: Modal) =>
+      new Promise<void>((resolve) => {
+        el.addEventListener('hidden.bs.modal', () => resolve(), { once: true })
+        instance.hide()
+      })
+
+    const setup = () => {
+      fixtureEl.innerHTML = `<button id="trigger">Open</button><button id="other">Other</button>${createModalHTML()}`
+      const el = fixtureEl.querySelector('.modal')!
+      return {
+        el,
+        instance: new Modal(el),
+        trigger: fixtureEl.querySelector<HTMLElement>('#trigger')!,
+        other: fixtureEl.querySelector<HTMLElement>('#other')!,
+      }
+    }
+
+    it('should focus the previously focused element on hide', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'active')
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should focus the relatedTarget on hide', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'related')
+      trigger.blur()
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should not steal focus when the app moved it elsewhere', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      el.addEventListener('hidden.bs.modal', () => other.focus(), { once: true })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+  })
+
   describe('hide', () => {
     it('should hide modal', () => {
       return new Promise<void>((resolve) => {

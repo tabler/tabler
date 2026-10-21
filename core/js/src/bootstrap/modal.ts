@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, isRTL, isVisible, reflow } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -78,6 +78,7 @@ class Modal extends BaseComponent {
   _focustrap: FocusTrap
   _isShown: boolean
   _isTransitioning: boolean
+  _returnFocusTarget: HTMLElement | null
   _scrollBar: ScrollBarHelper
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
@@ -88,6 +89,7 @@ class Modal extends BaseComponent {
     this._focustrap = this._initializeFocusTrap()
     this._isShown = false
     this._isTransitioning = false
+    this._returnFocusTarget = null
     this._scrollBar = new ScrollBarHelper()
 
     this._addEventListeners()
@@ -122,6 +124,7 @@ class Modal extends BaseComponent {
       return
     }
 
+    this._returnFocusTarget = getFocusReturnTarget(relatedTarget)
     this._isShown = true
     this._isTransitioning = true
 
@@ -265,6 +268,8 @@ class Modal extends BaseComponent {
       this._resetAdjustments()
       this._scrollBar.reset()
       EventHandler.trigger(this._element, EVENT_HIDDEN)
+      restoreFocus(this._returnFocusTarget, this._element)
+      this._returnFocusTarget = null
     })
   }
 
@@ -351,18 +356,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   if (!target) {
     return
   }
-
-  EventHandler.one(target, EVENT_SHOW, (showEvent: Event) => {
-    if (showEvent?.defaultPrevented) {
-      return
-    }
-
-    EventHandler.one(target, EVENT_HIDDEN, () => {
-      if (isVisible(this)) {
-        this.focus()
-      }
-    })
-  })
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen) {
