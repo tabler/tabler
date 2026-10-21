@@ -4,4 +4,4 @@
 "@tabler/docs": patch
 ---
 
-Added `SelectAll` plugin for a select-all checkbox, selection counters and a bulk-action header in `.table-selectable`.
+Added `SelectAll` plugin for selectable tables and lists, and `.selection-toolbar` for bulk actions on selected rows.

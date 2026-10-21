@@ -165,20 +165,6 @@
 // Table selectable
 //
 .table-selectable {
-  thead .on-checked {
-    display: none;
-  }
-
-  &:has(tbody .table-selectable-check:checked) thead {
-    .on-checked {
-      display: revert;
-    }
-
-    .on-unchecked {
-      display: none;
-    }
-  }
-
   tbody tr {
     .on-checked {
       display: none;
@@ -201,5 +187,27 @@
         display: none;
       }
     }
+  }
+}
+
+//
+// Selection toolbar
+//
+.selection-toolbar {
+  --selection-toolbar-gap: #{$selection-toolbar-gap};
+
+  > .on-checked,
+  > .on-unchecked {
+    display: flex;
+    gap: var(--selection-toolbar-gap);
+    align-items: center;
+  }
+
+  &:not(:has(~ * :is(.table-selectable-check, .list-group-selectable-check):checked)) .on-checked {
+    display: none;
+  }
+
+  &:has(~ * :is(.table-selectable-check, .list-group-selectable-check):checked) .on-unchecked {
+    display: none;
   }
 }
