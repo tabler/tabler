@@ -1,0 +1,74 @@
+---
+// Select all on an orders table. Two rows are checked in the markup, so the
+// plugin turns the header checkbox indeterminate and fills the counter on load,
+// and the selection toolbar above the table shows its bulk actions in place of
+// the filters. The cursor rests on the second checked row.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+
+const orders = [
+  { id: '#10482', customer: 'Paweł Kuna', avatar: '000m', total: '$1,240.00', status: 'Paid', color: 'green' },
+  { id: '#10481', customer: 'Alice Marlin', avatar: '016f', total: '$86.50', status: 'Pending', color: 'orange', checked: true },
+  { id: '#10480', customer: 'Dunn Slane', avatar: '002m', total: '$342.00', status: 'Paid', color: 'green' },
+  { id: '#10479', customer: 'Emmy Levet', avatar: '003f', total: '$59.90', status: 'Pending', color: 'orange', checked: true, cursor: true },
+  { id: '#10478', customer: 'Mallory Hulme', avatar: '004f', total: '$718.20', status: 'Refunded', color: 'secondary' },
+]
+---
+
+<ScreenshotLayout title="Select all" columns={3}>
+  <Card data-bs-toggle="select-all">
+    <div class="card-header">
+      <h3 class="card-title">Orders</h3>
+    </div>
+    <div class="card-body border-bottom py-3 selection-toolbar">
+      <div class="on-unchecked">
+        <span class="text-secondary">5 orders</span>
+      </div>
+      <div class="on-checked">
+        <span class="fw-medium"><span data-bs-select-all-count>2</span> of <span data-bs-select-all-total>5</span> selected</span>
+        <div class="btn-list ms-auto">
+          <button type="button" class="btn btn-sm">Mark as shipped</button>
+          <button type="button" class="btn btn-sm btn-ghost-danger">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-selectable card-table table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th class="w-1">
+              <input type="checkbox" class="form-check-input m-0 align-middle" aria-label="Select all orders" data-bs-select-all-check />
+            </th>
+            <th>Order</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th class="text-end">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            orders.map((order) => (
+              <tr>
+                <td class="position-relative">
+                  <input type="checkbox" class="form-check-input m-0 align-middle table-selectable-check" aria-label="Select order" checked={order.checked} />
+                  {order.cursor && <span class="cursor" style="top: 65%; left: 55%" />}
+                </td>
+                <td class="text-secondary">{order.id}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <span class="avatar avatar-xs me-2" style={`background-image: url(/static/avatars/${order.avatar}.jpg)`} />
+                    {order.customer}
+                  </div>
+                </td>
+                <td>
+                  <span class={`status-dot bg-${order.color} me-1`} /> {order.status}
+                </td>
+                <td class="text-end">{order.total}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</ScreenshotLayout>
