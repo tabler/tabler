@@ -97,6 +97,12 @@
     border-radius: inherit !important;
   }
 
+  // The control sits inside the wrapper's border, so its corners follow the
+  // border's inner curve. Not in an input group, where the wrapper's corners differ.
+  &:not(.input-group > *) .ts-control {
+    border-radius: calc(var(--control-border-radius) - var(--control-border-width)) !important;
+  }
+
   &.multi.has-items .ts-control {
     padding-top: calc(var(--control-padding-y) - 2px) !important;
     padding-bottom: calc(var(--control-padding-y) - 5px);
