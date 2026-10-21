@@ -87,6 +87,11 @@
 // to the `td`s or `th`s
 
 .table-bordered {
+  // Opaque by default: the translucent color doubles up where two cell
+  // borders overlap. A configured `$table-border-color` and the contextual
+  // variants below keep their own color.
+  --table-border-color: #{var-if-default($table-border-color, var(--border-color-translucent), '--border-color')};
+
   > :not(caption) > * {
     border-width: $table-border-width 0;
 

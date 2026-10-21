@@ -7,6 +7,8 @@ description: >-
   dev server behaves oddly: stale CSS/JS, assets that vanish, a page that will
   not reload. Covers which server to start on which port, background mode, the
   rule against building while a dev server runs, and the verification loop.
+metadata:
+  internal: true
 ---
 
 # Run and verify the dev servers

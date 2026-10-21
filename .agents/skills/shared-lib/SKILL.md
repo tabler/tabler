@@ -8,6 +8,8 @@ description: >-
   utility or unit test under `shared/`. Covers what belongs there, module
   conventions, the sibling `*.test.ts` rule, deterministic demo data, and the
   strict-TypeScript patterns the repo uses.
+metadata:
+  internal: true
 ---
 
 # Helpers in `shared/lib`

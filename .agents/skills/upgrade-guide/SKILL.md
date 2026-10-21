@@ -3,6 +3,8 @@ name: upgrade-guide
 description: >-
   Write or update the upgrade guide for a Tabler release — the page under `docs/content/ui/getting-started/upgrade/<version>.mdx` that lists every breaking change with a before and after example. Use whenever the user asks for a migration or upgrade guide, release migration notes, or "what breaks in X.Y", and
   proactively before a release when `.changeset/` holds entries that remove or rename something. Covers where the facts come from, the page skeleton, the menu and ordering rules, and how to check the result.
+metadata:
+  internal: true
 ---
 
 # Upgrade guides

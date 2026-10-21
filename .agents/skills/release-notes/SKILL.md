@@ -2,6 +2,8 @@
 name: release-notes
 description: >-
   Write or update the intro of a Tabler GitHub release — `.github/release-notes/<version>.md`, the part above the generated Core, Demo and Docs lists. Use whenever the user asks for release notes, a release description, a release intro or "what's new in X.Y", and proactively before a minor release when the version PR is open and the intro file is missing. Covers where the facts come from, the fixed layout (cover, headline features with a picture each, then the other changes), the image rules, the tone and how to check the result.
+metadata:
+  internal: true
 ---
 
 # Release notes intro

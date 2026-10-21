@@ -8,6 +8,8 @@ description: >-
   Covers the Props interface, the prop-name dictionary, class composition,
   slots, the `as` pitfall, and the follow-ups (demo page, docs, changeset) a
   new component needs.
+metadata:
+  internal: true
 ---
 
 # Build a shared UI component

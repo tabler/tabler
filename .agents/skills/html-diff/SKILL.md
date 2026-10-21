@@ -8,6 +8,8 @@ description: >-
   restructuring a layout, migrating SCSS class emission — and whenever the
   user asks whether a change is safe or byte-identical. Covers capturing the
   baseline, reading the diff, and what counts as an acceptable difference.
+metadata:
+  internal: true
 ---
 
 # Prove a refactor changes no HTML
