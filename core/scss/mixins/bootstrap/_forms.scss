@@ -1,4 +1,5 @@
 @use 'sass:list';
+@use 'sass:meta';
 @use 'border-radius' as *;
 @use 'box-shadow' as *;
 @use 'rfs' as *;
@@ -96,10 +97,11 @@
           --form-select-bg-icon: #{escape-svg($icon)};
           // The icon starts at `--control-select-indicator-padding`, so the default
           // room reserves that, the icon and one padding, for every size modifier.
-          padding-inline-end: #{if(sass($form-select-feedback-icon-padding-end == $form-select-padding-x * 2.5 + $form-select-indicator-padding): calc(var(--control-select-indicator-padding) + #{list.nth($form-select-feedback-icon-size, 1)} + var(--control-padding-x)); else: $form-select-feedback-icon-padding-end)};
+          // A custom icon position or a keyword icon size keeps the Sass value.
+          padding-inline-end: #{if(sass($form-select-feedback-icon-padding-end == $form-select-padding-x * 2.5 + $form-select-indicator-padding and $form-select-feedback-icon-position == (center right $form-select-indicator-padding) and meta.type-of(list.nth($form-select-feedback-icon-size, 1)) == number): calc(var(--control-select-indicator-padding) + #{list.nth($form-select-feedback-icon-size, 1)} + var(--control-padding-x)); else: $form-select-feedback-icon-padding-end)};
           background-position:
             var(--control-select-bg-position),
-            #{if(sass($form-select-feedback-icon-position == center right $form-select-indicator-padding): center right var(--control-select-indicator-padding); else: $form-select-feedback-icon-position)};
+            #{if(sass($form-select-feedback-icon-position == (center right $form-select-indicator-padding)): center right var(--control-select-indicator-padding); else: $form-select-feedback-icon-position)};
           background-size: $form-select-bg-size, $form-select-feedback-icon-size;
         }
       }
