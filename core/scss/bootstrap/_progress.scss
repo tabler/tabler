@@ -20,7 +20,11 @@
   --progress-bg: #{$progress-bg};
   --progress-border-radius: #{$progress-border-radius};
   --progress-box-shadow: #{$progress-box-shadow};
-  --progress-bar-color: #{var-if-default($progress-bar-color, $white, '--primary-fg')};
+  // Left unset by default, so each bar falls back to the foreground of its own
+  // `.bg-*` colour; set it here (or inline) to color every bar's text at once.
+  @if $progress-bar-color != $white {
+    --progress-bar-color: #{$progress-bar-color};
+  }
   --progress-bar-bg: #{$progress-bar-bg};
   --progress-bar-transition: #{$progress-bar-transition};
   // scss-docs-end progress-css-vars
@@ -39,7 +43,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  color: var(--progress-bar-color);
+  color: var(--progress-bar-color, var(--progress-bar-fg, var(--primary-fg)));
   text-align: center;
   white-space: nowrap;
   background-color: var(--progress-bar-bg);

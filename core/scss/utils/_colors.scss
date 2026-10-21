@@ -39,7 +39,7 @@
   }
 
   .text-bg-#{'' + $color} {
-    color: if(sass(map.has-key($theme-colors, $color)): var(--#{$color}-fg); else: color-contrast($value)) if(sass($enable-important-utilities): !important; else: null);
+    color: if(sass(map.has-key($theme-colors, $color) and $color-contrast-dark == $black and $color-contrast-light == $white): var(--#{$color}-fg); else: color-contrast($value)) if(sass($enable-important-utilities): !important; else: null);
     background-color: color-transparent(var(--#{$color}), calc(var(--bg-opacity, 1) * 100%)) if(sass($enable-important-utilities): !important; else: null);
   }
 
