@@ -6,7 +6,6 @@ import CardBody from '@ui/CardBody.astro'
 import flags from '@data/flags.json'
 import CardTitle from '@ui/CardTitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
-import Flag from '@ui/Flag.astro'
 
 const categories = ['Countries', 'Territories', 'Unions', 'Other']
 const groups = categories.map((category) => ({ category, flags: flags.filter((flag) => flag.category === category) }))
@@ -18,23 +17,6 @@ const fillers = Array.from({ length: 21 })
 <DefaultLayout title="Flags" pageMenu="addons.flags">
   <DocsLink slot="page-header-actions" path="/ui/plugins/flags" />
   <div class="row row-cards">
-    <div class="col-12">
-      <Card>
-        <CardHeader>
-          <CardTitle>In text</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <p>
-            Ships from <Flag flag="de" size="inline" /> Germany, delivered to <Flag flag="pl" size="inline" /> Poland in 2 days. Available in
-            <Flag flag="fr" size="inline" /> French and <Flag flag="es" size="inline" /> Spanish.
-          </p>
-          <p class="small mb-0">
-            Small text: <Flag flag="jp" size="inline" /> Japan, <Flag flag="br" size="inline" /> Brazil and <Flag flag="ca" size="inline" /> Canada.
-          </p>
-          <h2 class="mb-0">Heading with <Flag flag="us" size="inline" /> a flag</h2>
-        </CardBody>
-      </Card>
-    </div>
     {
       groups.map(({ category, flags }) => (
         <div class="col-12">
