@@ -7,11 +7,12 @@ interface Props {
 	/** single handle, or an array for a multi-handle slider */
 	value?: number | number[];
 	id?: string;
+	ariaLabel?: string;
 	connect?: boolean;
 	class?: string;
 }
 
-const { min = 0, max = 100, value = 50, id, connect = false, class: className } = Astro.props;
+const { min = 0, max = 100, value = 50, id, ariaLabel, connect = false, class: className } = Astro.props;
 const step = 10;
 
 const numericValues = Array.isArray(value) ? value : [value];
@@ -27,20 +28,21 @@ if (size > 1 || connect) {
 }
 
 const rangeId = `range-${id}`;
+const handleLabels = ariaLabel ? (size > 1 ? [`${ariaLabel} minimum`, `${ariaLabel} maximum`] : [ariaLabel]) : undefined;
 ---
 
 {
 	id ? (
 		<div class:list={['form-range mb-2', className]} id={rangeId} />
 	) : (
-		<input type="range" class:list={['form-range mb-2', className]} value={Array.isArray(value) ? value[0] : value} min={min} max={max} step={step} />
+		<input type="range" class:list={['form-range mb-2', className]} aria-label={ariaLabel} value={Array.isArray(value) ? value[0] : value} min={min} max={max} step={step} />
 	)
 }
 {
 	id && (
 		<CaptureScript>
 			<!-- BEGIN RANGE -->
-			<script is:inline define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
+			<script is:inline define:vars={{ rangeId, startValue, connectValue, step, min, max, handleLabels }}>
 				function initRange() {
 					window.noUiSlider &&
 						noUiSlider.create(document.getElementById(rangeId), {
@@ -48,6 +50,7 @@ const rangeId = `range-${id}`;
 							...(connectValue ? { connect: connectValue } : {}),
 							step,
 							range: { min, max },
+							...(handleLabels ? { handleAttributes: handleLabels.map((label) => ({ 'aria-label': label })) } : {}),
 						});
 				}
 
