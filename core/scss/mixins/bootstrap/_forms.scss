@@ -94,7 +94,9 @@
         &:not([multiple])[size='1'] {
           --form-select-bg-icon: #{escape-svg($icon)};
           padding-inline-end: $form-select-feedback-icon-padding-end;
-          background-position: $form-select-bg-position, $form-select-feedback-icon-position;
+          background-position:
+            var(--control-select-bg-position),
+            #{if(sass($form-select-feedback-icon-position == center right $form-select-indicator-padding): center right var(--control-select-indicator-padding); else: $form-select-feedback-icon-position)};
           background-size: $form-select-bg-size, $form-select-feedback-icon-size;
         }
       }
