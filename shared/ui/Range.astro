@@ -28,7 +28,13 @@ if (size > 1 || connect) {
 }
 
 const rangeId = `range-${id}`;
-const handleLabels = ariaLabel ? (size > 1 ? [`${ariaLabel} minimum`, `${ariaLabel} maximum`] : [ariaLabel]) : undefined;
+const handleLabels = ariaLabel
+	? numericValues.map((_, index) => {
+			if (size === 1) return ariaLabel;
+			if (size === 2) return `${ariaLabel} ${index === 0 ? 'minimum' : 'maximum'}`;
+			return `${ariaLabel} handle ${index + 1}`;
+		})
+	: undefined;
 ---
 
 {
