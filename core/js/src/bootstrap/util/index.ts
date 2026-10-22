@@ -102,7 +102,11 @@ const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): H
     return target
   }
 
-  const { activeElement } = document
+  let activeElement = document.activeElement
+
+  while (activeElement?.shadowRoot?.activeElement) {
+    activeElement = activeElement.shadowRoot.activeElement
+  }
 
   return activeElement instanceof HTMLElement && activeElement !== document.body ? activeElement : null
 }
