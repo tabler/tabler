@@ -1,5 +1,15 @@
 @use '../config' as *;
 
+.carousel-indicators {
+  --carousel-indicator-width: #{$carousel-indicator-width};
+  --carousel-indicator-height: #{$carousel-indicator-height};
+  --carousel-indicator-spacer: #{$carousel-indicator-spacer};
+  --carousel-indicator-hit-area-height: #{$carousel-indicator-hit-area-height};
+  --carousel-indicator-dot-width: #{$carousel-indicator-dot-width};
+  --carousel-indicator-thumb-width: #{$carousel-indicator-thumb-width};
+  --carousel-indicator-thumb-opacity: #{$carousel-indicator-thumb-opacity};
+}
+
 .carousel-indicators-vertical {
   --carousel-indicators-vertical-margin-inline-end: #{$carousel-indicators-vertical-margin-inline-end};
 
@@ -11,22 +21,22 @@
 
   [data-bs-target],
   [data-target] {
-    width: $carousel-indicator-height;
-    height: $carousel-indicator-width;
-    margin: $carousel-indicator-spacer 0 $carousel-indicator-spacer;
+    width: var(--carousel-indicator-height);
+    height: var(--carousel-indicator-width);
+    margin: var(--carousel-indicator-spacer) 0 var(--carousel-indicator-spacer);
     border: 0;
-    border-inline-start: $carousel-indicator-hit-area-height var(--border-style) transparent;
-    border-inline-end: $carousel-indicator-hit-area-height var(--border-style) transparent;
+    border-inline-start: var(--carousel-indicator-hit-area-height) var(--border-style) transparent;
+    border-inline-end: var(--carousel-indicator-hit-area-height) var(--border-style) transparent;
   }
 }
 
 .carousel-indicators-dot {
   [data-bs-target],
   [data-target] {
-    width: $carousel-indicator-dot-width;
-    height: $carousel-indicator-dot-width;
+    width: var(--carousel-indicator-dot-width);
+    height: var(--carousel-indicator-dot-width);
     margin: 0;
-    border: $carousel-indicator-hit-area-height var(--border-style) transparent;
+    border: var(--carousel-indicator-hit-area-height) var(--border-style) transparent;
     @include border-radius(var(--border-radius-pill));
   }
 }
@@ -34,17 +44,17 @@
 .carousel-indicators-thumb {
   [data-bs-target],
   [data-target] {
-    width: $carousel-indicator-thumb-width * 0.5;
+    width: calc(var(--carousel-indicator-thumb-width) * 0.5);
     height: auto;
-    margin: 0 $carousel-indicator-spacer;
+    margin: 0 var(--carousel-indicator-spacer);
     background: no-repeat center/cover;
     border: 0;
     box-shadow: $box-shadow;
-    opacity: $carousel-indicator-thumb-opacity;
+    opacity: var(--carousel-indicator-thumb-opacity);
     @include border-radius(var(--border-radius));
 
     @include media-breakpoint-up(lg) {
-      width: $carousel-indicator-thumb-width;
+      width: var(--carousel-indicator-thumb-width);
     }
 
     &::before {
@@ -57,7 +67,7 @@
   &.carousel-indicators-vertical {
     [data-bs-target],
     [data-target] {
-      margin: $carousel-indicator-spacer 0;
+      margin: var(--carousel-indicator-spacer) 0;
     }
   }
 }
