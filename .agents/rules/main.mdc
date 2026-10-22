@@ -22,6 +22,8 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 
 Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the matching one before starting, it is the source of truth for that area.
 
+These skills are for working on this repository and carry `metadata.internal: true`, so `npx skills add tabler/tabler` skips them. The public skills for people who build with Tabler live in `skills/<name>/SKILL.md`; they are generated from `docs/lib/agent-skills/<name>/SKILL.md` by `pnpm run generate:agent-skills` (checked by `pnpm run check:agent-skills`), so edit the source in `docs/lib/`, never the copy in `skills/`.
+
 | Skill | Use it when |
 | --- | --- |
 | `ui-component` | creating or extending a component in `shared/ui/` or `shared/components/` |
@@ -97,7 +99,8 @@ Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the
 - Lowercase, kebab-case, format: `<type>/<short-description>` or `<type>/<issue-id>-<short-description>` (issue id as `gh-123`, never `#`).
 - Allowed types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`, `ci`, `perf`, `style`, `revert`.
 - Examples: `feat/gh-123-add-stepper-component`, `fix/markdown-table-overflow`.
-- Branch off `dev` by default.
+- Branch off `dev` for fixes, docs and tooling, and open the PR to `dev`.
+- A new feature goes to `next`: a new component, plugin, class, option, `data-*` attribute, Sass variable or page, anything that needs a `minor` changeset. Branch off `origin/next` and open the PR with `--base next`. A feature branch started from `dev` is moved with `git rebase --onto origin/next <merge-base with origin/dev>`.
 
 ### Commit messages
 

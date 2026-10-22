@@ -97,6 +97,12 @@ You can also [download the latest release](https://github.com/tabler/tabler/rele
 
 See the [installation guide](https://docs.tabler.io/ui/getting-started/installation/) for more options.
 
+Working with a coding agent? Install the Tabler skill, so the agent reads the real docs instead of guessing class names:
+
+```sh
+npx skills add tabler/tabler
+```
+
 ## 📦 What's included
 
 The `@tabler/core` package contains compiled and minified CSS and JavaScript, the Sass and TypeScript sources, and the third-party plugins used by the demo pages:

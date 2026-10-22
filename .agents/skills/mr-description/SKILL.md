@@ -5,6 +5,8 @@ description: >-
   from the current branch versus origin/v2-dev (Tabler). Use when the
   user asks for an MR/PR description, GitLab merge request text, or a branch
   summary for reviewers.
+metadata:
+  internal: true
 ---
 
 # MR / PR description from branch
@@ -13,7 +15,7 @@ Produce a **short title** and a **markdown body**, each in its own fenced **`mar
 
 ## 1. Base branch (this repo)
 
-**Default integration branch:** `v2-dev` (the 2.0 branch, which becomes the main branch). Compare against **`origin/v2-dev`**. `dev` is frozen for 1.x maintenance — use it only when the user explicitly asks for a 1.x PR.
+**Default integration branch:** `v2-dev` (the 2.0 branch, which becomes the main branch). Compare against **`origin/v2-dev`**. `dev` is frozen for 1.x maintenance — use it only when the user explicitly asks for a 1.x PR. For a 1.x PR, use `dev` for fixes, docs and tooling and `next` for new features (a new component, plugin, class, option or page, anything with a `minor` changeset). Use the base of an existing PR when there is one (`gh pr view --json baseRefName`).
 
 If `origin/v2-dev` is missing (offline clone, no remote), fall back to local `v2-dev`, then ask the user. Only use another base (`dev` for 1.x, anything else) if the user says so explicitly.
 

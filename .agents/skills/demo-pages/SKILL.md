@@ -7,6 +7,8 @@ description: >-
   new `shared/ui` component that has no page showing it. Covers the page
   skeleton, the header (title, description, docs link, actions), the card grid,
   heading levels, and how to verify the result in the browser.
+metadata:
+  internal: true
 ---
 
 # Write a Tabler demo page

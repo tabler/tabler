@@ -7,6 +7,8 @@ description: >-
   marketing page — whenever a page hand-rolls a page header or wrapper markup,
   and before adding a new layout file. Covers the layout map, the
   `DefaultLayout` props, the page-header slot, and the rules for a new layout.
+metadata:
+  internal: true
 ---
 
 # Page layouts

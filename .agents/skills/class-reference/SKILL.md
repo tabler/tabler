@@ -1,6 +1,8 @@
 ---
 name: class-reference
 description: Write or update the `classnames` front matter that renders the class reference table on a Tabler docs page. Use whenever a component page needs its class list added, a component gains or loses a class in `core/scss/**`, or the user asks for a class reference, a class table, or a `classnames` block. Also consult it proactively after adding a class to an existing component, since the table is hand-written and will not notice on its own.
+metadata:
+  internal: true
 ---
 
 # Class reference front matter

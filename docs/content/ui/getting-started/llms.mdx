@@ -76,7 +76,13 @@ Coding agents that support [Agent Skills](https://agentskills.io) can load a rea
 - `https://docs.tabler.io/.well-known/agent-skills/index.json` - the discovery index, per the [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc).
 - `https://docs.tabler.io/.well-known/agent-skills/tabler/SKILL.md` - the skill itself.
 
-To use it in a project, copy `SKILL.md` into your agent's skills directory, for example `.claude/skills/tabler/SKILL.md` for Claude Code. The index carries a `sha256` digest of the file, so a tool can check the copy is intact.
+The fastest way to add it to a project is the [skills](https://skills.sh) CLI, which puts the file into the skills directory of every agent it finds:
+
+```shell
+npx skills add tabler/tabler
+```
+
+You can also copy `SKILL.md` into your agent's skills directory by hand, for example `.claude/skills/tabler/SKILL.md` for Claude Code. The index carries a `sha256` digest of the file, so a tool can check the copy is intact.
 
 The same resources are also listed in `https://docs.tabler.io/.well-known/ai-catalog.json`, an [Agentic Resource Discovery](https://agenticresourcediscovery.org) manifest that registries use to index a site.
 
