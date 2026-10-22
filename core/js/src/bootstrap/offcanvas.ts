@@ -112,7 +112,7 @@ class Offcanvas extends BaseComponent {
       return
     }
 
-    this._returnFocusTarget = getFocusReturnTarget(relatedTarget)
+    this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
     this._isShown = true
     this._backdrop.show()
 
@@ -163,9 +163,15 @@ class Offcanvas extends BaseComponent {
         new ScrollBarHelper().reset()
       }
 
-      EventHandler.trigger(this._element, EVENT_HIDDEN)
-      restoreFocus(this._returnFocusTarget, this._element)
+      const element = this._element
+      const returnFocusTarget = this._returnFocusTarget
       this._returnFocusTarget = null
+
+      EventHandler.trigger(element, EVENT_HIDDEN)
+
+      if (!this._isShown) {
+        restoreFocus(returnFocusTarget, element)
+      }
     }
 
     this._queueCallback(completeCallback, this._element, true)

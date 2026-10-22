@@ -225,6 +225,44 @@ describe('Offcanvas', () => {
 
       expect(document.activeElement).toBe(other)
     })
+
+    it('should restore focus when a hidden listener disposes the instance', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'active')
+      el.addEventListener('hidden.bs.offcanvas', () => instance.dispose(), { once: true })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should keep the new target when a hidden listener reopens it', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+      })
+      el.addEventListener('hidden.bs.offcanvas', () => instance.show(other), { once: true })
+      await close(el, instance)
+      await reopened
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should ignore the offcanvas itself as the trigger', async () => {
+      const { el, instance, trigger } = setup()
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        trigger.focus()
+        instance.show(el as HTMLElement)
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
   })
 
   describe('hide', () => {

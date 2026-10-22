@@ -95,8 +95,8 @@ const getElement = (object: unknown): HTMLElement | null => {
   return null
 }
 
-const getFocusReturnTarget = (relatedTarget?: HTMLElement): HTMLElement | null => {
-  if (isElement(relatedTarget)) {
+const getFocusReturnTarget = (relatedTarget: HTMLElement | undefined, container: HTMLElement): HTMLElement | null => {
+  if (isElement(relatedTarget) && !container.contains(relatedTarget)) {
     return relatedTarget
   }
 

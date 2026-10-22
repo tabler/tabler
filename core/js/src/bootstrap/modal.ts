@@ -124,7 +124,7 @@ class Modal extends BaseComponent {
       return
     }
 
-    this._returnFocusTarget = getFocusReturnTarget(relatedTarget)
+    this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
     this._isShown = true
     this._isTransitioning = true
 
@@ -267,9 +267,15 @@ class Modal extends BaseComponent {
       document.body.classList.remove(CLASS_NAME_OPEN)
       this._resetAdjustments()
       this._scrollBar.reset()
-      EventHandler.trigger(this._element, EVENT_HIDDEN)
-      restoreFocus(this._returnFocusTarget, this._element)
+      const element = this._element
+      const returnFocusTarget = this._returnFocusTarget
       this._returnFocusTarget = null
+
+      EventHandler.trigger(element, EVENT_HIDDEN)
+
+      if (!this._isShown) {
+        restoreFocus(returnFocusTarget, element)
+      }
     })
   }
 
