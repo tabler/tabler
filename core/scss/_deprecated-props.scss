@@ -6,6 +6,7 @@
 @use 'sass:color';
 @use 'sass:map';
 @use 'sass:math';
+@use 'sass:meta';
 @use 'config' as *;
 
 // `6, 111, 209`: whole numbers, as the 1.5 stylesheet had them.
@@ -21,8 +22,10 @@
   @if $enable-deprecated {
     :root {
       @each $name, $color in map.merge($theme-colors, $social-colors) {
-        --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
-        --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
+        @if meta.type-of($color) == 'color' {
+          --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
+          --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
+        }
       }
     }
   }
@@ -33,7 +36,9 @@
     @each $name, $value in $extra-colors {
       [data-bs-theme-primary='#{$name}'],
       [data-theme-primary='#{$name}'] {
-        --primary-rgb: #{deprecated-rgb-triplet($value)};
+        @if meta.type-of($value) == 'color' {
+          --primary-rgb: #{deprecated-rgb-triplet($value)};
+        }
       }
     }
   }
