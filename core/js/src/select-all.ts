@@ -52,7 +52,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
  * Ties a "select all" checkbox to the item checkboxes of a table or a list.
  * The checkbox checks or unchecks every enabled item, turns indeterminate
  * while only some are checked, and the counters show how many are selected.
- * Listeners sit on the element itself, so rows added later are picked up.
+ * Listeners sit on the element itself, and rows added or removed later
+ * refresh the state on their own.
  */
 
 class SelectAll extends BaseComponent {
@@ -60,6 +61,7 @@ class SelectAll extends BaseComponent {
   declare _config: ComponentConfig
   _lastItem: HTMLInputElement | null = null
   _silent = false
+  _observer: MutationObserver | null = null
 
   _onChange = (event: Event): void => this._handleChange(event)
   _onClick = (event: Event): void => this._handleClick(event as MouseEvent)
@@ -73,6 +75,8 @@ class SelectAll extends BaseComponent {
 
     this._element.addEventListener('change', this._onChange)
     this._element.addEventListener('click', this._onClick)
+    this._observer = new MutationObserver((records) => this._handleMutations(records))
+    this._observer.observe(this._element, { childList: true, subtree: true })
     this.update()
   }
 
@@ -126,6 +130,8 @@ class SelectAll extends BaseComponent {
   dispose(): void {
     this._element.removeEventListener('change', this._onChange)
     this._element.removeEventListener('click', this._onClick)
+    this._observer?.disconnect()
+    this._observer = null
     super.dispose()
   }
 
@@ -188,8 +194,15 @@ class SelectAll extends BaseComponent {
       item.checked = target.checked
     }
 
-    if (changed.length > 0) {
-      this._commit(changed)
+    this._dispatch(changed)
+  }
+
+  _handleMutations(records: MutationRecord[]): void {
+    const touchesItems = records.some((record) => [...record.addedNodes, ...record.removedNodes].some((node) => node instanceof Element && (node.matches(this._config.items) || node.querySelector(this._config.items) !== null)))
+
+    if (touchesItems) {
+      this._lastItem = this._lastItem?.isConnected ? this._lastItem : null
+      this.update()
     }
   }
 
@@ -197,14 +210,17 @@ class SelectAll extends BaseComponent {
     return element instanceof HTMLInputElement && element.matches(this._config.items) && !element.matches(SELECTOR_CHECK) && this._element.contains(element)
   }
 
-  _commit(changed: HTMLInputElement[]): void {
+  _dispatch(changed: HTMLInputElement[]): void {
     this._silent = true
     for (const item of changed) {
       item.dispatchEvent(new Event('input', { bubbles: true }))
       item.dispatchEvent(new Event('change', { bubbles: true }))
     }
     this._silent = false
+  }
 
+  _commit(changed: HTMLInputElement[]): void {
+    this._dispatch(changed)
     this.update()
 
     const selected = this.getSelected()
