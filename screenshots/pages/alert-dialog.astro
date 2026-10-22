@@ -1,0 +1,86 @@
+---
+// Alert dialogs drawn in place, not opened: the capture never clicks, and a real
+// dialog sits on a backdrop over the page. The markup is the one `AlertDialog`
+// builds, so the picture shows four of its layouts side by side: a plain confirm,
+// a danger confirm with an icon, a success alert, and the left aligned one.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Icon from '@ui/Icon.astro'
+
+const dialogs = [
+  { title: 'Publish this page?', message: 'It will be visible to everyone.', confirm: 'Publish', cancel: 'Cancel', variant: 'primary' },
+  { title: 'Delete 84 items?', message: 'What you have done cannot be undone.', confirm: 'Delete', cancel: 'Cancel', variant: 'danger', icon: 'trash' },
+  { title: 'Payment received', message: 'Thank you for your order.', confirm: 'OK', variant: 'success', icon: 'circle-check' },
+]
+const wide = { title: 'Enable notifications?', message: 'We will only send important updates.', confirm: 'Enable', cancel: 'Not now', variant: 'primary', icon: 'info-circle' }
+---
+
+<ScreenshotLayout title="Alert dialog" columns={3}>
+  <div class="row g-3 align-items-start">
+    {
+      dialogs.map((dialog) => (
+        <div class="col-4">
+          <div class="modal position-static d-block h-auto overflow-visible" style="--tblr-modal-border-color: var(--tblr-border-color)">
+            <div class="modal-dialog modal-sm m-0">
+              <div class="modal-content" role="alertdialog">
+                <div class="modal-body py-4 text-center">
+                  {dialog.icon && (
+                    <div class="mb-3">
+                      <span class={`avatar avatar-lg bg-${dialog.variant}-lt flex-shrink-0`}>
+                        <Icon name={dialog.icon} class="icon-lg" />
+                      </span>
+                    </div>
+                  )}
+                  <h3>{dialog.title}</h3>
+                  <div class="text-secondary">{dialog.message}</div>
+                </div>
+                <div class="modal-footer" style="--tblr-modal-footer-padding-y: 0.375rem">
+                  <div class="row gx-2 w-100">
+                    {dialog.cancel && (
+                      <div class="col">
+                        <button type="button" class="btn w-100">
+                          {dialog.cancel}
+                        </button>
+                      </div>
+                    )}
+                    <div class="col">
+                      <button type="button" class={`btn w-100 btn-${dialog.variant}`}>
+                        {dialog.confirm}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+    <div class="col-12">
+      <div class="modal position-static d-block h-auto overflow-visible" style="--tblr-modal-border-color: var(--tblr-border-color)">
+        <div class="modal-dialog m-0 mx-auto">
+          <div class="modal-content" role="alertdialog">
+            <div class="modal-body py-4 d-flex gap-3">
+              <span class={`avatar avatar-lg bg-${wide.variant}-lt flex-shrink-0`}>
+                <Icon name={wide.icon} class="icon-lg" />
+              </span>
+              <div>
+                <h3>{wide.title}</h3>
+                <div class="text-secondary">{wide.message}</div>
+              </div>
+            </div>
+            <div class="modal-footer" style="--tblr-modal-footer-padding-y: 0.375rem">
+              <div class="row gx-2 ms-auto">
+                <div class="col-auto">
+                  <button type="button" class="btn">{wide.cancel}</button>
+                </div>
+                <div class="col-auto">
+                  <button type="button" class={`btn btn-${wide.variant}`}>{wide.confirm}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ScreenshotLayout>
