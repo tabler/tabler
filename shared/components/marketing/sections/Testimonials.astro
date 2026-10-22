@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { class: className, limit = 99, hideHeader } = Astro.props
+const NameTag = hideHeader ? 'h2' : 'h3'
 
 const base = relativeBase(Astro.url.pathname)
 
@@ -62,7 +63,7 @@ const cards = groups.map((group) =>
                           <Avatar person={person} size="md" base={base} />
                         </div>
                         <div class="col">
-                          <h2 class="h3 m-0">{person.full_name}</h2>
+                          <NameTag class="h3 m-0">{person.full_name}</NameTag>
                           <div class="text-secondary">{person.job_title}</div>
                         </div>
                       </div>
