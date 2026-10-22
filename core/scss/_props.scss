@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:meta';
 @use 'config' as *;
 
 :root,
@@ -44,7 +45,7 @@
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    --#{$name}-fg: #{if(sass(meta.type-of($color) != 'color'): contrast-color-css(var(--#{$name}), $light, $dark); else: if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark)))};
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);

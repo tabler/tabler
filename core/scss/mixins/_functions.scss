@@ -11,6 +11,9 @@
 // clips the result to the sRGB gamut so every consumer (`luminance()`,
 // `to-rgb()`, the emitted `rgb()` values) keeps working on legacy channels.
 @function mix-color($color1, $color2, $weight: 50%) {
+  @if meta.type-of($color1) != 'color' or meta.type-of($color2) != 'color' {
+    @return mix-color-css($color1, $color2, $weight);
+  }
   @return color.to-gamut(color.mix($color1, $color2, $weight, $method: oklab), $space: rgb, $method: clip);
 }
 
@@ -88,6 +91,9 @@
 
 // Colors
 @function to-rgb($value) {
+  @if meta.type-of($value) != 'color' {
+    @return null;
+  }
   @return color.channel($value, 'red', $space: rgb), color.channel($value, 'green', $space: rgb), color.channel($value, 'blue', $space: rgb);
 }
 
@@ -185,7 +191,20 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   0.4621 0.4678 0.4735 0.4793 0.4851 0.491 0.4969 0.5029 0.5089 0.5149 0.521 0.5271 0.5333 0.5395 0.5457 0.552 0.5583 0.5647 0.5711 0.5776 0.5841 0.5906 0.5972 0.6038 0.6105 0.6172 0.624 0.6308 0.6376 0.6445 0.6514 0.6584 0.6654 0.6724 0.6795 0.6867 0.6939 0.7011 0.7084 0.7157 0.7231 0.7305 0.7379 0.7454 0.7529 0.7605
   0.7682 0.7758 0.7835 0.7913 0.7991 0.807 0.8148 0.8228 0.8308 0.8388 0.8469 0.855 0.8632 0.8714 0.8796 0.8879 0.8963 0.9047 0.9131 0.9216 0.9301 0.9387 0.9473 0.956 0.9647 0.9734 0.9823 0.9911 1;
 
+// Runtime counterpart of `color-contrast()` for a background Sass cannot read
+// (`light-dark()`, `var()`): picks `$light` below the oklch lightness that gives
+// `$min-contrast-ratio` against white, `$dark` above it. Both must be grays.
+@function contrast-color-css($background, $light: $color-contrast-light, $dark: $color-contrast-dark, $min-contrast-ratio: $min-contrast-ratio) {
+  $threshold: math.pow(math.div(1.05, $min-contrast-ratio) - 0.05, math.div(1, 3));
+  $l-light: math.div(color.channel($light, 'lightness', $space: oklch), 100%);
+  $l-dark: math.div(color.channel($dark, 'lightness', $space: oklch), 100%);
+  @return oklch(from #{$background} clamp(#{$l-dark}, (#{$threshold} - l) * 1000, #{$l-light}) 0 0);
+}
+
 @function color-contrast($background, $color-contrast-dark: $color-contrast-dark, $color-contrast-light: $color-contrast-light, $min-contrast-ratio: $min-contrast-ratio) {
+  @if meta.type-of($background) != 'color' {
+    @return contrast-color-css($background, $color-contrast-light, $color-contrast-dark, $min-contrast-ratio);
+  }
   $foregrounds: $color-contrast-light, $color-contrast-dark, $white, $black;
   $max-ratio: 0;
   $max-ratio-color: null;
@@ -238,6 +257,9 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
 // Return opaque color
 // opaque(#fff, rgba(0, 0, 0, .5)) => #808080
 @function opaque($background, $foreground) {
+  @if meta.type-of($background) != 'color' or meta.type-of($foreground) != 'color' {
+    @return $foreground;
+  }
   @return color.mix(color.change($foreground, $alpha: 1), $background, color.channel($foreground, 'alpha') * 100%, $method: srgb);
 }
 
