@@ -251,6 +251,18 @@ describe('Offcanvas', () => {
       expect(document.activeElement).toBe(other)
     })
 
+    it('should unwrap a jQuery trigger', async () => {
+      const { el, instance, trigger } = setup()
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        instance.show({ jquery: '3.7.1', 0: trigger, length: 1 } as never)
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
     it('should ignore the offcanvas itself as the trigger', async () => {
       const { el, instance, trigger } = setup()
 

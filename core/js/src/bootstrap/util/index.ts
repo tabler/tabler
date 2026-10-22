@@ -95,9 +95,11 @@ const getElement = (object: unknown): HTMLElement | null => {
   return null
 }
 
-const getFocusReturnTarget = (relatedTarget: HTMLElement | undefined, container: HTMLElement): HTMLElement | null => {
-  if (isElement(relatedTarget) && !container.contains(relatedTarget)) {
-    return relatedTarget
+const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): HTMLElement | null => {
+  const target = unwrapJQuery(relatedTarget)
+
+  if (isElement(target) && !container.contains(target)) {
+    return target
   }
 
   const { activeElement } = document
