@@ -10,7 +10,7 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
 import DocsLink from '@ui/DocsLink.astro'
 
-type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
+type ColorEntry = [string, { title: string; hex: string; prop?: string; abbr?: string; icon?: string }]
 
 const colors = Object.entries(site.colors) as ColorEntry[]
 const lightColors = Object.entries(site.lightColors) as ColorEntry[]
@@ -20,7 +20,7 @@ const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
 ---
 
-<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with CSS variables, and a gradient builder.">
   <DocsLink slot="page-header-actions" path="/ui/base/colors" />
 
   <div class="row row-cards">
@@ -28,7 +28,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
-          <CardSubtitle>The extended color palette, with hex values.</CardSubtitle>
+          <CardSubtitle>The extended color palette, with CSS variables.</CardSubtitle>
           <div class="row g-3">
             {
               colors.map(([name, color]) => (
@@ -40,7 +40,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
                     <div class="col">
                       {color.title}
                       <br />
-                      <code>{color.hex}</code>
+                      <code>{`var(${color.prop})`}</code>
                     </div>
                   </div>
                 </div>
@@ -66,7 +66,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
                     <div class="col">
                       {color.title}
                       <br />
-                      <code>{color.hex}</code>
+                      <code>{`var(${color.prop})`}</code>
                     </div>
                   </div>
                 </div>
