@@ -15,7 +15,7 @@ Every step below has a skill in `.agents/skills/<name>/SKILL.md`. Read the skill
 
 Find out what the component is. The caller names it, or you derive it from the change:
 
-- `git status -sb`, `git diff origin/dev...HEAD --stat`, and `git diff` for uncommitted work.
+- `git status -sb`, `git diff origin/next...HEAD --stat` (new features live on branches off `next`; use `origin/dev` if the branch came from `dev`), and `git diff` for uncommitted work.
 - Styles: `core/scss/ui/_<name>.scss` - list every class, modifier, size and custom property.
 - JavaScript: `core/js/src/**` - list the options, `data-bs-*` attributes, events and public methods. A third-party library is listed in `core/libs.json`.
 - Shared component: `shared/ui/<Name>.astro` and its `Props` interface.
