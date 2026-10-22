@@ -25,8 +25,6 @@ interface Props {
 	hideUsername?: boolean;
 	/** bg-{background} class on the header (ignored when transparent) */
 	background?: string;
-	/** inline `background:` style on the header */
-	backgroundColor?: string;
 	/** extra classes on the header */
 	class?: string | undefined;
 	/** id of the collapsible menu; pass a unique one when a page renders several navbars */
@@ -49,7 +47,6 @@ const {
 	hideIcons = false,
 	hideUsername = false,
 	background,
-	backgroundColor,
 	class: className,
 	menuId = 'navbar-menu',
 } = Astro.props;
@@ -67,7 +64,6 @@ const headerClass = [
 <!-- BEGIN NAVBAR -->
 <header
 	class:list={headerClass}
-	style={backgroundColor ? `background: ${backgroundColor}` : undefined}
 	data-bs-theme={dark ? 'dark' : undefined}
 >
 	<div class="container-xl">

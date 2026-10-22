@@ -1,5 +1,4 @@
 // Legend
-@use 'sass:map';
 
 @use '../config' as *;
 
@@ -14,7 +13,7 @@
   width: var(--legend-size);
   height: var(--legend-size);
   background: var(--legend-color);
-  border: 1px solid var(--border-color-translucent);
+  border: var(--border-width) solid var(--border-color-translucent);
   @include border-radius($legend-border-radius);
 }
 
@@ -107,7 +106,7 @@ button.legend {
   }
 }
 
-@each $name, $color in map.merge($theme-colors, $social-colors) {
+@each $name, $color in $theme-colors {
   .legend-#{$name} {
     --legend-color: var(--#{$name});
   }

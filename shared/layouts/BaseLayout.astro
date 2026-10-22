@@ -1,6 +1,7 @@
 ---
 import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
 import { site } from '@shared/lib/site'
+import { tablerJsPath } from '@shared/lib/assets'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import Analytics from '@shared/components/Analytics.astro'
@@ -140,9 +141,11 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     {libModules.map((code) => <Fragment set:html={`<script type="module">\n      ${code}\n    </script>`} />)}
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
-    {libAddons.map((addon) => <script is:inline src={`${base}/dist/js/${addon}${min}.js`} defer />)}
-    {libMaps.map((map) => <script is:inline src={`${base}/dist/js/maps/${map}.js`} defer />)}
+    <script is:inline type="module" src={tablerJsPath(base)}></script>
+    <!-- Add-on bundles are ES modules too. A map file only exports its map, so register it
+    in the global `VectorMap` reads; maps are drawn after DOMContentLoaded, once every module has run. -->
+    {libAddons.map((addon) => <script is:inline type="module" src={`${base}/dist/js/${addon}${min}.js`} />)}
+    {libMaps.map((map) => <script is:inline type="module" set:html={`import * as maps from '${base}/dist/js/maps/${map}.js';\nObject.assign((window.tablerVectorMaps ??= {}), maps);`} />)}
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <PageScripts />

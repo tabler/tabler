@@ -1,15 +1,9 @@
 // Notes on the classes:
 //
-// 1. .carousel.pointer-event should ideally be pan-y (to allow for users to scroll vertically)
-//    even when their scroll action started on a carousel, but for compatibility (with Firefox)
-//    we're preventing all actions instead
-// 2. The .carousel-item-start and .carousel-item-end is used to indicate where
-//    the active slide is heading.
-// 3. .active.carousel-item is the current slide.
-// 4. .active.carousel-item-start and .active.carousel-item-end is the current
-//    slide in its in-transition state. Only one of these occurs at a time.
-// 5. .carousel-item-next.carousel-item-start and .carousel-item-prev.carousel-item-end
-//    is the upcoming slide in transition.
+// 1. .carousel-inner scrolls natively (CSS scroll-snap); the browser drives the slide
+//    transition, momentum and touch gestures instead of a JS transform/float engine.
+// 2. .active.carousel-item is the current slide, kept in sync by an IntersectionObserver
+//    in carousel.ts — it no longer controls layout, only indicator/API state.
 
 @use '../config' as *;
 
@@ -17,43 +11,31 @@
   position: relative;
 }
 
-.carousel.pointer-event {
-  touch-action: pan-y;
-}
-
 .carousel-inner {
   position: relative;
+  display: flex;
   width: 100%;
-  overflow: hidden;
-  @include clearfix();
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 .carousel-item {
   position: relative;
-  display: none;
-  float: inline-start;
-  width: 100%;
-  margin-inline-end: -100%;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   backface-visibility: hidden;
-  @include transition($carousel-transition);
-}
-
-.carousel-item.active,
-.carousel-item-next,
-.carousel-item-prev {
-  display: block;
-}
-
-.carousel-item-next:not(.carousel-item-start),
-.active.carousel-item-end {
-  /* rtl:ignore */
-  transform: translateX(calc(var(--dir) * 100%));
-}
-
-.carousel-item-prev:not(.carousel-item-end),
-.active.carousel-item-start {
-  /* rtl:ignore */
-  transform: translateX(calc(var(--dir) * -100%));
 }
 
 //
@@ -61,24 +43,25 @@
 //
 
 .carousel-fade {
+  .carousel-inner {
+    display: grid;
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
   .carousel-item {
-    opacity: 0;
-    transition-property: opacity;
-    transform: none;
-  }
-
-  .carousel-item.active,
-  .carousel-item-next.carousel-item-start,
-  .carousel-item-prev.carousel-item-end {
-    z-index: 1;
-    opacity: 1;
-  }
-
-  .active.carousel-item-start,
-  .active.carousel-item-end {
+    grid-area: 1 / 1;
     z-index: 0;
+    visibility: hidden;
     opacity: 0;
-    @include transition(opacity 0s $carousel-transition-duration);
+    @include transition(opacity $carousel-transition-duration ease-in-out, visibility 0s $carousel-transition-duration);
+  }
+
+  .carousel-item.active {
+    z-index: 1;
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
   }
 }
 

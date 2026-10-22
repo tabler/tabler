@@ -1,10 +1,23 @@
 @use 'sass:list';
+@use 'sass:map';
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
 @use 'functions' as *;
 @use 'bootstrap/transition' as *;
 @use 'bootstrap/border-radius' as *;
+
+// Emit a token map as CSS custom properties on the current selector.
+// Ported from Bootstrap v6 `scss/mixins/_tokens.scss`. Pair it with
+// `defaults()` so one map feeds both `@use … with ()` and runtime overrides.
+//
+// scss-docs-start tokens-mixin
+@mixin tokens($map) {
+  @each $prop, $value in $map {
+    #{$prop}: #{$value};
+  }
+}
+// scss-docs-end tokens-mixin
 
 @mixin subheader($include-color: true, $include-line-height: true) {
   font-size: $h5-font-size;
@@ -133,4 +146,106 @@
   }
   $default: add($input-btn-line-height, add(calc($input-btn-padding-y * 2), calc(#{$input-btn-border-width} * 2), false));
   @return if(sass($input-height == $default): var(--btn-input-min-height); else: $input-height);
+}
+
+// The palette custom properties of each color in `$colors` (a name → color
+// map): the color, its foreground, a darker shade and two tints.
+@mixin color-props($colors) {
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
+    --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
+    --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
+  }
+}
+
+// `.btn-{c}`, `.btn-outline-{c}` and `.btn-ghost-{c}` for each color name in
+// `$colors`. Each color class only points the --btn-variant* tokens at its
+// palette colors; the shared rules below turn them into the button tokens. The
+// rules are grouped by variant (solid, outline, ghost) rather than by color, so
+// each token list is written once instead of once per color.
+@function btn-color-selectors($colors, $patterns...) {
+  $selectors: ();
+  @each $pattern in $patterns {
+    @each $color in $colors {
+      $selectors: list.append($selectors, str-replace($pattern, '{c}', '#{$color}'), $separator: comma);
+    }
+  }
+  @return $selectors;
+}
+
+@mixin button-color-variants($colors) {
+  @each $color in $colors {
+    .btn-#{$color},
+    .btn-outline-#{$color},
+    .btn-ghost-#{$color} {
+      --btn-variant: var(--#{$color});
+      --btn-variant-fg: var(--#{$color}-fg);
+      --btn-variant-darken: var(--#{$color}-darken);
+    }
+  }
+
+  #{btn-color-selectors($colors, '.btn-{c}')} {
+    --btn-border-color: #{$btn-variant-border-color};
+    --btn-hover-border-color: #{$btn-variant-border-color};
+    --btn-active-border-color: #{$btn-variant-border-color};
+    --btn-color: var(--btn-variant-fg, #{$white});
+    --btn-bg: var(--btn-variant);
+    --btn-hover-color: var(--btn-variant-fg);
+    --btn-hover-bg: var(--btn-variant-darken);
+    --btn-active-color: var(--btn-variant-fg);
+    --btn-active-bg: var(--btn-variant-darken);
+    --btn-disabled-bg: var(--btn-variant);
+    --btn-disabled-color: var(--btn-variant-fg);
+    // A lighter 1px edge along the top, a darker one along the bottom and a faint
+    // white gradient, so the filled button reads as slightly raised. The press
+    // state replaces the edges with `--btn-active-shadow`.
+    --btn-box-shadow: inset 0 1px 0 0 #{$btn-highlight-color}, inset 0 -1px 0 0 #{$btn-shade-color}, var(--shadow-input);
+    --btn-gradient: #{$btn-gradient};
+    background-image: var(--btn-gradient);
+  }
+
+  @if list.index($colors, 'dark') {
+    .btn-dark {
+      --btn-border-color: var(--dark-mode-border-color);
+      --btn-hover-border-color: var(--dark-mode-border-active-color);
+      --btn-active-border-color: var(--dark-mode-border-active-color);
+    }
+  }
+
+  #{btn-color-selectors($colors, '.btn-outline-{c}', '.btn-outline.btn-{c}')} {
+    --btn-color: var(--btn-variant);
+    --btn-bg: transparent;
+    --btn-border-color: var(--btn-variant);
+    --btn-hover-color: var(--btn-variant-fg);
+    --btn-hover-border-color: transparent;
+    --btn-hover-bg: var(--btn-variant);
+    --btn-active-color: var(--btn-variant-fg);
+    --btn-active-bg: var(--btn-variant);
+    --btn-active-border-color: var(--btn-variant);
+    --btn-disabled-color: var(--btn-variant);
+    --btn-disabled-border-color: var(--btn-variant);
+    --btn-gradient: none;
+    --btn-box-shadow: none;
+  }
+
+  #{btn-color-selectors($colors, '.btn-ghost-{c}', '.btn-ghost.btn-{c}')} {
+    --btn-color: var(--btn-variant);
+    --btn-bg: transparent;
+    --btn-border-color: transparent;
+    --btn-hover-color: var(--btn-variant-fg);
+    --btn-hover-bg: var(--btn-variant);
+    --btn-hover-border-color: var(--btn-variant);
+    --btn-active-color: var(--btn-variant-fg);
+    --btn-active-bg: var(--btn-variant);
+    --btn-active-border-color: transparent;
+    --btn-active-shadow: #{$btn-active-box-shadow};
+    --btn-disabled-color: var(--btn-variant);
+    --btn-disabled-bg: transparent;
+    --btn-disabled-border-color: transparent;
+    --gradient: none;
+    --btn-gradient: none;
+    --btn-box-shadow: none;
+  }
 }

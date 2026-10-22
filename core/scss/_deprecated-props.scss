@@ -4,7 +4,6 @@
 //
 // Removed in 2.0, together with this file.
 @use 'sass:color';
-@use 'sass:map';
 @use 'sass:math';
 @use 'config' as *;
 
@@ -17,10 +16,10 @@
 // deprecated(2.0): `--tblr-*-rgb`. Tabler mixes colours with `color-mix()` and
 // reads none of these. They are static, as they were in 1.5: overriding
 // `--tblr-primary` does not change `--tblr-primary-rgb`.
-@mixin deprecated-color-props() {
+@mixin deprecated-color-props($colors: $theme-colors) {
   @if $enable-deprecated {
     :root {
-      @each $name, $color in map.merge($theme-colors, $social-colors) {
+      @each $name, $color in $colors {
         --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
         --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
       }

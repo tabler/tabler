@@ -11,8 +11,32 @@ import Sparkline from '@ui/Sparkline.astro'
 import type { SparklineType } from '@ui/Sparkline.astro'
 import site from '@data/site.json'
 import { ucFirst } from '@shared/lib/string-format'
+import { tablerJsPath } from '@shared/lib/assets'
 
 const colors = Object.keys(site.colors)
+
+// tabler.js is an ES module with no `window.tabler` global, so the script imports
+// the component it drives. Built as a string because the import path depends on
+// the build (`.min` outside development) and `define:vars` cannot carry an import.
+const updateScript = `
+      /*
+      Pushes random data into a sparkline and counts the updated.bs.sparkline events.
+      */
+      import { Sparkline } from '${tablerJsPath()}'
+
+      const element = document.getElementById('sparkline-orders')
+      const sparkline = Sparkline.getOrCreateInstance(element)
+      let updates = 0
+
+      document.getElementById('sparkline-update').addEventListener('click', () => {
+        sparkline.update(Array.from({ length: 10 }, () => Math.floor(Math.random() * 30)))
+      })
+
+      element.addEventListener('updated.bs.sparkline', () => {
+        updates += 1
+        document.getElementById('sparkline-updates').textContent = updates + (updates === 1 ? ' update' : ' updates')
+      })
+    `
 
 const metrics: { name: string; value: string; color: string; type: SparklineType; fill?: string; values: string }[] = [
   { name: 'Revenue', value: '$12.4k', color: 'success', type: 'line', fill: 'auto', values: '5,6,7,6,8,9,10' },
@@ -200,26 +224,7 @@ const progress = [
           </div>
           <CaptureScript>
             <!-- BEGIN SCRIPT OF SPARKLINE -->
-            <script is:inline>
-              /*
-              Pushes random data into a sparkline and counts the updated.bs.sparkline events.
-              tabler.js is deferred, so the instance is looked up once the DOM is ready.
-              */
-              document.addEventListener('DOMContentLoaded', () => {
-                const element = document.getElementById('sparkline-orders')
-                const sparkline = tabler.Sparkline.getOrCreateInstance(element)
-                let updates = 0
-
-                document.getElementById('sparkline-update').addEventListener('click', () => {
-                  sparkline.update(Array.from({ length: 10 }, () => Math.floor(Math.random() * 30)))
-                })
-
-                element.addEventListener('updated.bs.sparkline', () => {
-                  updates += 1
-                  document.getElementById('sparkline-updates').textContent = `${updates} update${updates === 1 ? '' : 's'}`
-                })
-              })
-            </script>
+            <script is:inline type="module" set:html={updateScript} />
             <!-- END SCRIPT OF SPARKLINE -->
           </CaptureScript>
         </CardBody>

@@ -526,9 +526,11 @@ const relatedPages = await Promise.all(
 
 
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-		<script is:inline src="/dist/js/tabler.js" defer></script>
-		{docsLibAddons.map((addon) => <script is:inline src={`/dist/js/${addon}.js`} defer />)}
-		{docsLibMaps.map((map) => <script is:inline src={`/dist/js/maps/${map}.js`} defer />)}
+		<script is:inline type="module" src="/dist/js/tabler.js"></script>
+		<!-- Add-on bundles are ES modules too. A map file only exports its map, so register it
+		in the global `VectorMap` reads; maps are drawn after DOMContentLoaded, once every module has run. -->
+		{docsLibAddons.map((addon) => <script is:inline type="module" src={`/dist/js/${addon}.js`} />)}
+		{docsLibMaps.map((map) => <script is:inline type="module" set:html={`import * as maps from '/dist/js/maps/${map}.js';\nObject.assign((window.tablerVectorMaps ??= {}), maps);`} />)}
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
 
 		<PageScripts />
