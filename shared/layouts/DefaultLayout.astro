@@ -83,25 +83,27 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
     <!-- END NAVBAR  -->
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
-      <!-- BEGIN PAGE HEADER -->
-      <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile}>
-        <slot name="page-header-actions" slot="actions" />
-      </PageHeader>
-      <!-- END PAGE HEADER -->
+      <main id="content" class="d-flex flex-column flex-fill">
+        <!-- BEGIN PAGE HEADER -->
+        <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile}>
+          <slot name="page-header-actions" slot="actions" />
+        </PageHeader>
+        <!-- END PAGE HEADER -->
 
-      <!-- BEGIN PAGE BODY -->
-      <main id="content" class="page-body">
-        {
-          wrapperFull ? (
-            <slot />
-          ) : (
-            <div class={`container-xl${containerCentered ? ' my-auto' : ''}${containerClass ? ` ${containerClass}` : ''}`}>
+        <!-- BEGIN PAGE BODY -->
+        <div class="page-body">
+          {
+            wrapperFull ? (
               <slot />
-            </div>
-          )
-        }
+            ) : (
+              <div class={`container-xl${containerCentered ? ' my-auto' : ''}${containerClass ? ` ${containerClass}` : ''}`}>
+                <slot />
+              </div>
+            )
+          }
+        </div>
+        <!-- END PAGE BODY -->
       </main>
-      <!-- END PAGE BODY -->
 
       <!-- BEGIN FOOTER -->
       <Footer />

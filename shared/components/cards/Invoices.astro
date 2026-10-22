@@ -41,11 +41,11 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
       </div>
     </div>
   </div>
-  <div class="table-responsive">
+  <div class="table-responsive" tabindex="0">
     <table id={tableId} class="table table-selectable card-table table-vcenter text-nowrap datatable">
       <thead>
         <tr>
-          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices" data-select-all /></th>
+          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all" data-select-all /></th>
           <th class="w-1">No. <Icon name="chevron-up" inline class="icon-sm" /></th>
           <th>Invoice Subject</th>
           <th>Client</th>
@@ -53,7 +53,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
           <th>Created</th>
           <th>Status</th>
           <th>Price</th>
-          <th></th>
+          <th><span class="visually-hidden">Actions</span></th>
         </tr>
       </thead>
 
@@ -62,7 +62,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
           invoices.slice(0, 8).map((invoice, index) => (
             <tr>
               <td>
-                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" />
+                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label={`Select invoice 00${index + 1 + 1400}`} />
               </td>
               <td>
                 <span class="text-secondary">00{index + 1 + 1400}</span>
@@ -103,7 +103,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
         <p class="m-0 text-secondary">Showing <strong>1 to 8</strong> of <strong>16 entries</strong></p>
       </div>
       <div class="col-auto">
-        <Pagination count={5} activeItem={3} class="m-0 ms-auto" />
+        <Pagination count={5} activeItem={3} class="m-0 ms-auto" ariaLabel="Invoices pagination" />
       </div>
     </div>
   </div>

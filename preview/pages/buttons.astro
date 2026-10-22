@@ -49,15 +49,9 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
             <button type="button" class="btn">Default</button>
             <button type="button" class="btn btn-pill">Pill</button>
             <button type="button" class="btn btn-square">Square</button>
-            <button type="button" class="btn btn-icon">
-              <Icon name="star" />
-            </button>
-            <button type="button" class="btn btn-pill btn-icon">
-              <Icon name="star" />
-            </button>
-            <button type="button" class="btn btn-square btn-icon">
-              <Icon name="star" />
-            </button>
+            <Button iconOnly icon="star" text="Star" />
+            <Button iconOnly icon="star" text="Star (pill)" class="btn-pill" />
+            <Button iconOnly icon="star" text="Star (square)" class="btn-square" />
           </ButtonList>
         </CardBody>
       </Card>
@@ -260,15 +254,7 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
         <CardBody>
           <CardTitle>Icon buttons</CardTitle>
           <CardSubtitle>Social brand colors without a label, for compact toolbars.</CardSubtitle>
-          <ButtonList
-            >{
-              socialColors.map(([name, app]) => (
-                <button type="button" class={`btn btn-icon btn-${name}`}>
-                  {app.icon && <Icon name={app.icon} />}
-                </button>
-              ))
-            }</ButtonList
-          >
+          <ButtonList>{socialColors.map(([name, app]) => <Button iconOnly icon={app.icon} text={app.title} color={name} />)}</ButtonList>
         </CardBody>
       </Card>
     </div>
