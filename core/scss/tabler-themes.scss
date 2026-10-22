@@ -94,7 +94,15 @@
 @each $name, $value in $extra-colors {
   [data-bs-theme-primary='#{$name}'],
   [data-theme-primary='#{$name}'] {
-    --primary: #{theme-color-css($value, if(sass($enable-dark-mode): $theme-colors-dark-lightness-shift; else: 0%))};
+    --primary: #{$value};
+
+    $lifted: if(sass($enable-dark-mode): lift-theme-color($value, $theme-colors-dark-lightness-shift); else: null);
+    @if $lifted {
+      &:is([data-bs-theme='dark'], [data-theme='dark']),
+      :is([data-bs-theme='dark'], [data-theme='dark']) {
+        --primary: #{$lifted};
+      }
+    }
   }
 }
 

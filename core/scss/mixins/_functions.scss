@@ -351,15 +351,21 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return $value;
 }
 
-// Emits a theme color that is lighter in dark mode: a `light-dark()` whose dark
-// branch is `adjust-lightness($color, $amount)`. Neutral colors and a zero amount keep
-// the plain value, since lifting a gray only washes it out.
-@function theme-color-css($color, $amount) {
+// The dark-mode shade of a theme color: `$color` lifted by `$amount` of oklch
+// lightness, or `null` for a neutral color and for a zero amount, since lifting
+// a gray only washes it out.
+@function lift-theme-color($color, $amount) {
   @if $amount == 0 or $amount == 0% or color.channel($color, 'chroma', $space: oklch) < 0.03 {
-    @return $color;
+    @return null;
   }
 
-  @return light-dark(#{$color}, #{oklch-css(adjust-lightness($color, $amount))});
+  @return oklch-css(adjust-lightness($color, $amount));
+}
+
+// The text color that reads on `$color`: `--light` when the contrast clears
+// `$min-contrast-ratio`, `--dark` otherwise.
+@function theme-color-fg($color) {
+  @return if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark));
 }
 
 // Emits a color as `oklch()` with the channels rounded the way the palette is

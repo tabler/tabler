@@ -42,11 +42,9 @@
   --brand: #{$primary};
 
   // Theme colors
-  $dark-shift: if(sass($enable-dark-mode): $theme-colors-dark-lightness-shift; else: 0%);
-
   @each $name, $color in map.merge($theme-colors, $social-colors) {
-    --#{$name}: #{theme-color-css($color, if(sass(map.has-key($social-colors, $name)): 0%; else: $dark-shift))};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    --#{$name}: #{$color};
+    --#{$name}-fg: #{theme-color-fg($color)};
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
@@ -143,6 +141,39 @@
   }
   --backdrop-blur: #{$backdrop-blur};
   --backdrop-filter: blur(var(--backdrop-blur));
+}
+
+// Chromatic theme colors are a step lighter in dark mode. Plain values per
+// mode rather than `light-dark()`, so `oklch(from var(--primary) ...)` keeps a
+// plain origin and the nested light block restores the shade inside a dark page.
+@if $enable-dark-mode {
+  $dark-theme-colors: ();
+  @each $name, $color in $theme-colors {
+    $lifted: lift-theme-color($color, $theme-colors-dark-lightness-shift);
+    @if $lifted {
+      $dark-theme-colors: map.set($dark-theme-colors, $name, $lifted);
+    }
+  }
+
+  @include color-mode(light) {
+    @each $name, $lifted in $dark-theme-colors {
+      $color: map.get($theme-colors, $name);
+      --#{$name}: #{$color};
+      @if theme-color-fg($color) != theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift)) {
+        --#{$name}-fg: #{theme-color-fg($color)};
+      }
+    }
+  }
+
+  @include color-mode(dark) {
+    @each $name, $lifted in $dark-theme-colors {
+      $color: map.get($theme-colors, $name);
+      --#{$name}: #{$lifted};
+      @if theme-color-fg($color) != theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift)) {
+        --#{$name}-fg: #{theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift))};
+      }
+    }
+  }
 }
 
 [dir='ltr'] {
