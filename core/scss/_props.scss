@@ -43,8 +43,18 @@
 
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
-    --#{$name}: #{$color};
-    --#{$name}-fg: #{theme-color-fg($color)};
+    $dark: if(sass($theme-colors-dark): map.get($theme-colors-dark, $name); else: null);
+    @if $dark {
+      --#{$name}: light-dark(#{$color}, #{$dark});
+      @if theme-color-fg($color) == theme-color-fg($dark) {
+        --#{$name}-fg: #{theme-color-fg($color)};
+      } @else {
+        --#{$name}-fg: light-dark(#{theme-color-fg($color)}, #{theme-color-fg($dark)});
+      }
+    } @else {
+      --#{$name}: #{$color};
+      --#{$name}-fg: #{theme-color-fg($color)};
+    }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
@@ -141,39 +151,6 @@
   }
   --backdrop-blur: #{$backdrop-blur};
   --backdrop-filter: blur(var(--backdrop-blur));
-}
-
-// Chromatic theme colors are a step lighter in dark mode. Plain values per
-// mode rather than `light-dark()`, so `oklch(from var(--primary) ...)` keeps a
-// plain origin and the nested light block restores the shade inside a dark page.
-@if $enable-dark-mode {
-  $dark-theme-colors: ();
-  @each $name, $color in $theme-colors {
-    $lifted: lift-theme-color($color, $theme-colors-dark-lightness-shift);
-    @if $lifted {
-      $dark-theme-colors: map.set($dark-theme-colors, $name, $lifted);
-    }
-  }
-
-  @include color-mode(light) {
-    @each $name, $lifted in $dark-theme-colors {
-      $color: map.get($theme-colors, $name);
-      --#{$name}: #{$color};
-      @if theme-color-fg($color) != theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift)) {
-        --#{$name}-fg: #{theme-color-fg($color)};
-      }
-    }
-  }
-
-  @include color-mode(dark) {
-    @each $name, $lifted in $dark-theme-colors {
-      $color: map.get($theme-colors, $name);
-      --#{$name}: #{$lifted};
-      @if theme-color-fg($color) != theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift)) {
-        --#{$name}-fg: #{theme-color-fg(adjust-lightness($color, $theme-colors-dark-lightness-shift))};
-      }
-    }
-  }
 }
 
 [dir='ltr'] {

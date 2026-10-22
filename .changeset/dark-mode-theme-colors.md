@@ -3,4 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Added lighter theme colors in dark mode, set by the `$theme-colors-dark-lightness-shift` Sass variable.
+Added lighter dark-mode shades for `primary`, `success`, `info`, `warning` and `danger` via the `$<color>-dark` Sass variables.

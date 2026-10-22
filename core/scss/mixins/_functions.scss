@@ -351,29 +351,8 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return $value;
 }
 
-// The dark-mode shade of a theme color: `$color` lifted by `$amount` of oklch
-// lightness, or `null` for a neutral color and for a zero amount, since lifting
-// a gray only washes it out.
-@function lift-theme-color($color, $amount) {
-  @if $amount == 0 or $amount == 0% or color.channel($color, 'chroma', $space: oklch) < 0.03 {
-    @return null;
-  }
-
-  @return oklch-css(adjust-lightness($color, $amount));
-}
-
 // The text color that reads on `$color`: `--light` when the contrast clears
 // `$min-contrast-ratio`, `--dark` otherwise.
 @function theme-color-fg($color) {
   @return if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark));
-}
-
-// Emits a color as `oklch()` with the channels rounded the way the palette is
-// written: two decimals for `l` and `h`, four for `c`.
-@function oklch-css($color) {
-  $l: math.div(math.round(color.channel($color, 'lightness', $space: oklch) * 100), 100);
-  $c: math.div(math.round(color.channel($color, 'chroma', $space: oklch) * 10000), 10000);
-  $h: math.div(math.round(color.channel($color, 'hue', $space: oklch) * 100), 100);
-
-  @return string.unquote('oklch(#{$l} #{$c} #{$h})');
 }
