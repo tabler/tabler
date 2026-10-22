@@ -97,6 +97,16 @@
     border-radius: inherit !important;
   }
 
+  // The control sits inside the wrapper's border, so its corners follow the
+  // border's inner curve. Not in an input group, where the wrapper's corners
+  // differ, nor on a wrapper a `.rounded-*` utility reshapes (`.rounded-pill`),
+  // whose radius is not the token: those keep `inherit`.
+  @if $enable-rounded {
+    &:not(.input-group > *):not([class*='rounded']) .ts-control {
+      border-radius: max(0px, calc(var(--control-border-radius) - var(--control-border-width))) !important;
+    }
+  }
+
   &.multi.has-items .ts-control {
     padding-top: calc(var(--control-padding-y) - 2px) !important;
     padding-bottom: calc(var(--control-padding-y) - 5px);
