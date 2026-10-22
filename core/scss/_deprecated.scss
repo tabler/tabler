@@ -14,6 +14,7 @@
 
 @if $enable-deprecated {
   @include deprecated-color-props();
+  @include deprecated-border-props();
 
   :root {
     --white-rgb: #{deprecated-rgb-triplet($white)};
@@ -36,6 +37,11 @@
     @if $input-btn-focus-color != color-transparent(var(--primary), $input-btn-focus-color-opacity) {
       --focus-ring-color: #{$input-btn-focus-color};
     }
+
+    // deprecated(2.0): `$border-color-translucent` was the second border color
+    @if $border-color-translucent != $border-color {
+      --border-color-translucent: #{$border-color-translucent};
+    }
   }
 
   @if $enable-dark-mode {
@@ -49,6 +55,10 @@
       --tertiary-bg-rgb: #{deprecated-rgb-triplet($body-tertiary-bg-dark)};
       --link-color-rgb: #{deprecated-rgb-triplet($link-color-dark)};
       --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color-dark)};
+
+      @if $border-color-translucent-dark != rgba(72, 110, 149, 0.14) {
+        --border-color-translucent: #{$border-color-translucent-dark};
+      }
     }
   }
 
