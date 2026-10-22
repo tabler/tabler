@@ -26,6 +26,13 @@
 .page-text {
   padding-inline-start: var(--page-text-padding-x);
   padding-inline-end: var(--page-text-padding-x);
+  @include font-size(var(--pagination-font-size));
+
+  // A text item without `.page-link` (a "Page 1 of 9" label or an ellipsis) gets the link's box, so its text lines up with the links.
+  &:not(.page-link) {
+    display: block;
+    padding-block: calc(var(--pagination-padding-y) + var(--pagination-border-width));
+  }
 }
 
 .page-item {
