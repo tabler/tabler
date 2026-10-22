@@ -4,19 +4,21 @@
   --list-group-header-padding-y: #{$list-group-header-padding-y};
   --list-group-item-gap: #{$list-group-item-gap};
   --list-group-nested-indent: #{$list-group-nested-indent};
+  --list-group-header-color: #{$list-group-header-color};
+  --list-group-header-bg: #{$list-group-header-bg};
 
   margin-inline-start: 0;
   margin-inline-end: 0;
 }
 
 .list-group-header {
-  padding: var(--list-group-header-padding-y) $list-group-item-padding-x;
+  padding: var(--list-group-header-padding-y) var(--list-group-item-padding-x);
   font-size: $h5-font-size;
   font-weight: var(--font-weight-medium);
   line-height: 1;
-  color: $list-group-header-color;
+  color: var(--list-group-header-color);
   text-transform: uppercase;
-  background: $list-group-header-bg;
+  background: var(--list-group-header-bg);
   border-bottom: var(--border-width) var(--border-style) var(--border-color);
 
   .list-group-flush > & {
@@ -164,7 +166,7 @@
 
 .list-group-transparent {
   --list-group-border-radius: 0;
-  margin: 0 (-$list-group-item-padding-x);
+  margin: 0 calc(-1 * var(--list-group-item-padding-x));
 
   .list-group-item {
     background: none;
