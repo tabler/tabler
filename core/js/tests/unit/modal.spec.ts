@@ -253,6 +253,35 @@ describe('Modal', () => {
       expect(document.activeElement).toBe(trigger)
     })
 
+    it('should not restore focus when a hidden listener opens a new instance', async () => {
+      const { el, instance, trigger, other } = setup()
+      const focusTrigger = vi.spyOn(trigger, 'focus')
+      let replacement: Modal | undefined
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.modal', () => resolve(), { once: true })
+      })
+      el.addEventListener(
+        'hidden.bs.modal',
+        () => {
+          instance.dispose()
+          replacement = new Modal(el)
+          replacement.show(other)
+        },
+        { once: true },
+      )
+      focusTrigger.mockClear()
+      await close(el, instance)
+
+      expect(focusTrigger).not.toHaveBeenCalled()
+
+      await reopened
+      await close(el, replacement!)
+
+      expect(document.activeElement).toBe(other)
+    })
+
     it('should keep the new target when a hidden listener reopens it', async () => {
       const { el, instance, trigger, other } = setup()
 

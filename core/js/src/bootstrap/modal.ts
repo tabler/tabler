@@ -274,7 +274,7 @@ class Modal extends BaseComponent {
 
       EventHandler.trigger(element, EVENT_HIDDEN)
 
-      if (!this._isShown) {
+      if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
         restoreFocus(returnFocusTarget, element)
       }
     })

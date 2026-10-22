@@ -169,7 +169,7 @@ class Offcanvas extends BaseComponent {
 
       EventHandler.trigger(element, EVENT_HIDDEN)
 
-      if (!this._isShown) {
+      if (!(Offcanvas.getInstance(element) as Offcanvas | null)?._isShown) {
         restoreFocus(returnFocusTarget, element)
       }
     }
