@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
+import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
 export type VectorMapRegion = {
   name: string
@@ -272,8 +273,6 @@ const project = ({ projection }: VectorMapData, lng: number, lat: number): Point
 const round = (value: number): number => Math.round(value * 10) / 10
 
 const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max)
-
-const reducedMotion = (): boolean => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * Class definition
@@ -650,7 +649,7 @@ class VectorMap extends BaseComponent {
   _animateTo(target: View): void {
     cancelAnimationFrame(this._frame)
 
-    if (!this._map || reducedMotion()) {
+    if (!this._map || prefersReducedMotion()) {
       this._setView(target)
       return
     }
