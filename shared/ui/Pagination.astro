@@ -12,9 +12,11 @@ interface Props {
   text?: boolean
   prevDescription?: string
   nextDescription?: string
+  /** Accessible name of the navigation landmark */
+  ariaLabel?: string
 }
 
-const { count, offset = count, activeItem = 1, class: className, firstLast, text, prevDescription, nextDescription } = Astro.props
+const { count, offset = count, activeItem = 1, class: className, firstLast, text, prevDescription, nextDescription, ariaLabel = 'Pagination' } = Astro.props
 
 // (1..offset), then (count-offset+1..count) when there is a tail
 const firstPages = range(1, offset)
@@ -23,7 +25,7 @@ const lastPages = offset < count ? range(countOffset, count) : []
 ---
 
 <!-- BEGIN PAGINATION -->
-<nav aria-label="Pagination">
+<nav aria-label={ariaLabel}>
   <ul class={`pagination${className ? ` ${className}` : ''}`}>
     {
       firstLast && (
