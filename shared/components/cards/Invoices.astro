@@ -11,12 +11,12 @@ import countries from '@data/countries.json'
 const countryNames = Object.fromEntries((countries as { code: string; name: string }[]).map((c) => [c.code, c.name]))
 ---
 
-<div class="card">
+<div class="card" data-bs-toggle="select-all">
   <div class="card-header">
     <CardTitle>Invoices</CardTitle>
   </div>
-  <div class="card-body border-bottom py-3">
-    <div class="d-flex">
+  <div class="card-body border-bottom py-2 selection-toolbar">
+    <div class="on-unchecked">
       <div class="text-secondary">
         Show
         <div class="mx-2 d-inline-block">
@@ -32,12 +32,19 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
         </div>
       </div>
     </div>
+    <div class="on-checked">
+      <span class="fw-medium" aria-live="polite"><span data-bs-select-all-count>0</span> of <span data-bs-select-all-total>8</span> selected</span>
+      <div class="btn-list ms-auto">
+        <button type="button" class="btn btn-sm">Mark as paid</button>
+        <button type="button" class="btn btn-sm btn-ghost-danger">Delete</button>
+      </div>
+    </div>
   </div>
   <div class="table-responsive">
     <table class="table table-selectable card-table table-vcenter text-nowrap datatable">
       <thead>
         <tr>
-          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices" /></th>
+          <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices" data-bs-select-all-check /></th>
           <th class="w-1">No. <Icon name="chevron-up" inline class="icon-sm" /></th>
           <th>Invoice Subject</th>
           <th>Client</th>
