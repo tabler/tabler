@@ -359,5 +359,15 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
     @return $color;
   }
 
-  @return light-dark(#{$color}, #{adjust-lightness($color, $amount)});
+  @return light-dark(#{$color}, #{oklch-css(adjust-lightness($color, $amount))});
+}
+
+// Emits a color as `oklch()` with the channels rounded the way the palette is
+// written: two decimals for `l` and `h`, four for `c`.
+@function oklch-css($color) {
+  $l: math.div(math.round(color.channel($color, 'lightness', $space: oklch) * 100), 100);
+  $c: math.div(math.round(color.channel($color, 'chroma', $space: oklch) * 10000), 10000);
+  $h: math.div(math.round(color.channel($color, 'hue', $space: oklch) * 100), 100);
+
+  @return string.unquote('oklch(#{$l} #{$c} #{$h})');
 }
