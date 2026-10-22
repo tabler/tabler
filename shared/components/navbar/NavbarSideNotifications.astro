@@ -1,103 +1,20 @@
 ---
 import Icon from '@ui/Icon.astro'
-import Avatar from '@ui/Avatar.astro'
-import Badge from '@ui/Badge.astro'
-import Button from '@ui/Button.astro'
-import ListGroup from '@ui/ListGroup.astro'
-import ListGroupHeader from '@ui/ListGroupHeader.astro'
-import ListGroupItem from '@ui/ListGroupItem.astro'
-import CardTitle from '@ui/CardTitle.astro'
-import StatusDot from '@ui/StatusDot.astro'
-import { personById } from '@shared/lib/people'
+import NotificationsCard from '../cards/NotificationsCard.astro'
+import feed from '@data/notifications-feed.json'
 
-interface Notification {
-  person?: number
-  icon?: string
-  color?: string
-  actor?: string
-  action: string
-  description: string
-  time: string
-  unread?: boolean
-}
-
-const groups: { title: string; items: Notification[] }[] = [
-  {
-    title: 'Today',
-    items: [
-      { person: 2, action: 'commented on #29604', description: 'Looks good, but the text decoration classes need a docs entry.', time: '2m', unread: true },
-      { icon: 'rocket', color: 'green', actor: 'Deployment', action: 'finished', description: 'tabler-preview is live on production', time: '1h', unread: true },
-      { person: 5, action: 'mentioned you in #29734', description: '@you can we rename justify-content:between before the release?', time: '3h', unread: true },
-      { icon: 'alert-triangle', color: 'red', actor: 'Build #4821', action: 'failed', description: 'Lint step exited with code 1 on branch dev', time: '4h', unread: true },
-      { person: 11, action: 'approved your pull request', description: 'Add CSS variables for card header tabs', time: '6h' },
-    ],
-  },
-  {
-    title: 'Yesterday',
-    items: [
-      { icon: 'credit-card', color: 'blue', actor: 'Invoice #1042', action: 'was paid', description: '$1,250.00 from Acme Corporation', time: '1d' },
-      { person: 14, action: 'joined your team', description: 'Design · invited by Paweł Kuna', time: '1d' },
-      { icon: 'git-merge', color: 'purple', actor: 'Pull request #3396', action: 'was merged', description: 'Add CSS variables for card header tabs and stamp', time: '1d' },
-      { person: 17, action: 'replied to your comment', description: 'Agreed, the stamp should follow the card radius.', time: '1d' },
-    ],
-  },
-  {
-    title: 'Earlier',
-    items: [
-      { person: 8, action: 'assigned you to #29736', description: 'Update change-version.js', time: '2d' },
-      { icon: 'lock', color: 'orange', actor: 'New sign-in', action: 'from Chrome on macOS', description: 'Warsaw, Poland · if this was not you, reset your password', time: '3d' },
-      { person: 20, action: 'starred tabler/tabler', description: 'You now have 40,000 stars', time: '5d' },
-      { icon: 'download', color: 'teal', actor: 'Export', action: 'is ready', description: 'customers-2026-10.csv · 2.4 MB', time: '1w' },
-    ],
-  },
-]
-
-const unreadCount = groups.flatMap((group) => group.items).filter((item) => item.unread).length
+const hasUnread = feed.some((group) => group.items.some((item) => 'unread' in item && item.unread))
 ---
 
 <!-- BEGIN NOTIFICATIONS -->
 <div class="nav-item dropdown d-none d-md-flex">
   <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
     <Icon name="bell" />
-    {unreadCount > 0 && <span class="badge bg-red" />}
+    {hasUnread && <span class="badge bg-red" />}
   </a>
   <!-- BEGIN NAVBAR NOTIFICATIONS -->
   <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card" style="width: 24rem">
-    <div class="card">
-      <div class="card-header gap-2">
-        <CardTitle>Notifications</CardTitle>
-        {unreadCount > 0 && <Badge color="primary" light text={`${unreadCount} new`} />}
-        <Button href="#" variant="ghost" size="sm" class="ms-auto" text="Mark all as read" />
-      </div>
-      <div class="scrollable" style="max-height: 24rem">
-        <ListGroup flush hoverable>
-          {
-            groups.map((group) => (
-              <Fragment>
-                <ListGroupHeader class="sticky-top bg-surface-secondary">{group.title}</ListGroupHeader>
-                {group.items.map((item) => {
-                  const person = item.person ? personById(item.person) : undefined
-                  return (
-                    <ListGroupItem>
-                      <Avatar slot="media" size="sm" person={person} icon={item.icon} color={item.color} />
-                      <a href="#" class:list={['list-group-item-title stretched-link', item.unread ? 'text-reset' : 'text-secondary']}>
-                        <strong>{person?.full_name ?? item.actor}</strong> {item.action}
-                      </a>
-                      <div class="list-group-item-description">{item.description}</div>
-                      <div slot="meta" class="d-flex align-items-center gap-2 small">
-                        {item.time}
-                        <StatusDot color={item.unread ? 'primary' : undefined} class={item.unread ? undefined : 'invisible'} ariaLabel={item.unread ? 'Unread' : 'Read'} />
-                      </div>
-                    </ListGroupItem>
-                  )
-                })}
-              </Fragment>
-            ))
-          }
-        </ListGroup>
-      </div>
-      <a href="#" class="card-footer text-center">View all notifications</a>
-    </div>
+    <NotificationsCard />
   </div>
   <!-- END NAVBAR NOTIFICATIONS -->
 </div>
