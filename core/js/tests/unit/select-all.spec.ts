@@ -125,6 +125,30 @@ describe('SelectAll', () => {
       expect(total()).toBe('4')
     })
 
+    it('should refresh when rows are added to an empty table', async () => {
+      fixtureEl.innerHTML = markup([])
+      new SelectAll(element())
+      expect(check().disabled).toBe(true)
+
+      fixtureEl.querySelector('tbody')!.insertAdjacentHTML('beforeend', '<tr><td><input type="checkbox" class="table-selectable-check" /></td></tr>')
+      await Promise.resolve()
+
+      expect(check().disabled).toBe(false)
+      expect(total()).toBe('1')
+    })
+
+    it('should refresh when rows are removed', async () => {
+      fixtureEl.innerHTML = markup(['checked', 'checked', ''])
+      new SelectAll(element())
+
+      fixtureEl.querySelector('tbody tr:last-child')!.remove()
+      await Promise.resolve()
+
+      expect(count()).toBe('2')
+      expect(total()).toBe('2')
+      expect(check().checked).toBe(true)
+    })
+
     it('should check a range with shift-click', () => {
       fixtureEl.innerHTML = markup(['', '', '', ''])
       new SelectAll(element())
@@ -157,6 +181,17 @@ describe('SelectAll', () => {
       expect(detail.count).toBe(1)
       expect(detail.total).toBe(3)
       expect(detail.selected).toEqual([items()[1]])
+    })
+
+    it('should trigger change.bs.selectAll once per shift-click', () => {
+      fixtureEl.innerHTML = markup(['', '', '', ''])
+      new SelectAll(element())
+      items()[0].click()
+      const counts: number[] = []
+      element().addEventListener('change.bs.selectAll', (event) => counts.push((event as unknown as { count: number }).count))
+
+      items()[3].dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, shiftKey: true }))
+      expect(counts).toEqual([4])
     })
   })
 
