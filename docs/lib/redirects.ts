@@ -9,8 +9,6 @@ export const redirects: Record<string, Redirect> = {
   // Payments became its own product section, like icons/illustrations/emails;
   // the old plugin page's content lives on /payments/css, keeping anchors valid.
   '/ui/plugins/payments': { status: 301, destination: '/payments/css' },
-  // Flags followed Payments into its own section in 1.7.
-  '/ui/plugins/flags': { status: 301, destination: '/flags/css' },
   // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
   '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
   // pre-Astro plural slugs, still present in the Google index and backlinks
