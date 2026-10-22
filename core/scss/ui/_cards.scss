@@ -74,7 +74,7 @@
   overflow: hidden;
   pointer-events: none;
   border-start-end-radius: $border-radius;
-  opacity: $card-stamp-opacity;
+  opacity: var(--card-stamp-opacity);
 }
 
 .card-stamp-lg {
@@ -143,7 +143,7 @@
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding: $card-spacer-y $card-spacer-x;
+  padding: var(--card-spacer-y) var(--card-spacer-x);
   font-weight: var(--font-weight-medium);
   color: inherit;
   text-align: center;
@@ -180,7 +180,7 @@
 
 .card-cover {
   position: relative;
-  padding: $card-spacer-y $card-spacer-x;
+  padding: var(--card-spacer-y) var(--card-spacer-x);
   background: #666 no-repeat center/cover;
 
   &::before {
@@ -229,7 +229,7 @@
 }
 
 .card-header-light {
-  background: var(--bg-surface-tertiary);
+  background: var(--fill-quaternary);
   border-bottom-color: transparent;
 }
 
@@ -237,7 +237,7 @@
   flex: 1;
   padding: calc(var(--card-cap-padding-y) * 0.5) calc(var(--card-cap-padding-x) * 0.5) 0;
   margin: calc(var(--card-cap-padding-y) * -1) calc(var(--card-cap-padding-x) * -1);
-  background: $card-header-tabs-bg;
+  background: var(--card-header-tabs-bg);
   @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
 }
 
@@ -357,7 +357,7 @@
 
 .card-subtitle {
   --card-subtitle-margin-start: #{$card-subtitle-margin-start};
-  margin-bottom: $card-title-spacer-y;
+  margin-bottom: var(--card-title-spacer-y);
   font-weight: 400;
   color: var(--secondary);
 
@@ -471,12 +471,12 @@
     td,
     th {
       &:first-child {
-        padding-inline-start: $card-spacer-x;
+        padding-inline-start: var(--card-spacer-x, #{$card-spacer-x});
         border-inline-start: 0;
       }
 
       &:last-child {
-        padding-inline-end: $card-spacer-x;
+        padding-inline-end: var(--card-spacer-x, #{$card-spacer-x});
         border-inline-end: 0;
       }
     }
@@ -616,8 +616,8 @@ Card list group
   }
 
   .list-group-item {
-    padding-inline-start: $card-spacer-x;
-    padding-inline-end: $card-spacer-x;
+    padding-inline-start: var(--card-spacer-x);
+    padding-inline-end: var(--card-spacer-x);
     border-inline-start: 0;
     border-inline-end: 0;
     border-radius: 0;

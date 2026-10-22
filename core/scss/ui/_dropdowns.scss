@@ -15,7 +15,7 @@
 
   &.card {
     display: none;
-    min-width: $dropdown-max-width;
+    min-width: var(--dropdown-max-width);
     padding: 0;
 
     &.show {
@@ -32,7 +32,7 @@
   display: flex;
   gap: var(--dropdown-item-gap, #{$dropdown-item-gap});
   align-items: center;
-  min-width: $dropdown-min-width;
+  min-width: var(--dropdown-min-width, #{$dropdown-min-width});
   margin: 0;
   line-height: $line-height-base;
 }
@@ -60,13 +60,13 @@
 
 .dropdown-menu-scrollable {
   height: auto;
-  max-height: $dropdown-scrollable-height;
+  max-height: var(--dropdown-scrollable-height);
   overflow-x: hidden;
   overscroll-behavior: contain;
 }
 
 .dropdown-menu-column {
-  min-width: $dropdown-min-width;
+  min-width: var(--dropdown-min-width);
 
   .dropdown-item {
     min-width: 0;
@@ -113,7 +113,7 @@
 .dropend {
   > .dropdown-menu {
     margin-inline-start: calc(-1 * var(--dropdown-dropend-offset));
-    margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
+    margin-top: calc(-1 * var(--dropdown-padding-y) - 1px);
   }
 
   .dropdown-toggle {
