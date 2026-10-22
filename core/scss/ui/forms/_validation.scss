@@ -76,3 +76,22 @@
     --otp-slot-border-color: #{map.get($data, 'border-color')};
   }
 }
+
+@if $enable-dark-mode and $enable-validation-icons {
+  @include color-mode(dark) {
+    @each $state, $icon in $form-feedback-icons-dark {
+      .form-control.is-#{$state},
+      .was-validated .form-control:#{$state} {
+        background-image: escape-svg($icon);
+      }
+
+      .form-select.is-#{$state},
+      .was-validated .form-select:#{$state} {
+        &:not([multiple]):not([size]),
+        &:not([multiple])[size='1'] {
+          --form-select-bg-icon: #{escape-svg($icon)};
+        }
+      }
+    }
+  }
+}
