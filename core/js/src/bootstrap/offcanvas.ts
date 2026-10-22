@@ -154,6 +154,10 @@ class Offcanvas extends BaseComponent {
     this._element.classList.add(CLASS_NAME_HIDING)
     this._backdrop.hide()
 
+    const element = this._element
+    const returnFocusTarget = this._returnFocusTarget
+    this._returnFocusTarget = null
+
     const completeCallback = () => {
       this._element.classList.remove(CLASS_NAME_SHOW, CLASS_NAME_HIDING)
       this._element.removeAttribute('aria-modal')
@@ -162,10 +166,6 @@ class Offcanvas extends BaseComponent {
       if (!this._config.scroll) {
         new ScrollBarHelper().reset()
       }
-
-      const element = this._element
-      const returnFocusTarget = this._returnFocusTarget
-      this._returnFocusTarget = null
 
       EventHandler.trigger(element, EVENT_HIDDEN)
 

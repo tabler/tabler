@@ -154,7 +154,10 @@ class Modal extends BaseComponent {
 
     this._element.classList.remove(CLASS_NAME_SHOW)
 
-    this._queueCallback(() => this._hideModal(), this._element, this._isAnimated())
+    const returnFocusTarget = this._returnFocusTarget
+    this._returnFocusTarget = null
+
+    this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
   }
 
   dispose(): void {
@@ -256,7 +259,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  _hideModal(): void {
+  _hideModal(returnFocusTarget: HTMLElement | null): void {
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
@@ -268,8 +271,6 @@ class Modal extends BaseComponent {
       this._resetAdjustments()
       this._scrollBar.reset()
       const element = this._element
-      const returnFocusTarget = this._returnFocusTarget
-      this._returnFocusTarget = null
 
       EventHandler.trigger(element, EVENT_HIDDEN)
 

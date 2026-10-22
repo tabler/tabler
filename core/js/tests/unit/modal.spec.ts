@@ -292,6 +292,43 @@ describe('Modal', () => {
 
       expect(document.activeElement).toBe(trigger)
     })
+
+    it('should keep the new target when reopened during the backdrop hide', async () => {
+      fixtureEl.innerHTML = `<button id="trigger">Open</button><button id="other">Other</button>${createModalHTML().replace('class="modal"', 'class="modal fade"')}`
+      const el = fixtureEl.querySelector<HTMLElement>('.modal')!
+      const instance = new Modal(el)
+      const trigger = fixtureEl.querySelector<HTMLElement>('#trigger')!
+      const other = fixtureEl.querySelector<HTMLElement>('#other')!
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.modal', () => resolve(), { once: true })
+      })
+      const hideBackdrop = instance._backdrop.hide.bind(instance._backdrop)
+      vi.spyOn(instance._backdrop, 'hide').mockImplementationOnce((callback) => {
+        hideBackdrop(callback)
+        instance.show(other)
+      })
+      instance.hide()
+      await reopened
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should focus the Data API trigger on hide', async () => {
+      fixtureEl.innerHTML = `<button data-tblr-toggle="modal" data-tblr-target="#testModal">Open</button>${createModalHTML().replace('class="modal"', 'class="modal" id="testModal"')}`
+      const el = fixtureEl.querySelector<HTMLElement>('#testModal')!
+      const btn = fixtureEl.querySelector<HTMLElement>('[data-tblr-toggle="modal"]')!
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.modal', () => resolve(), { once: true })
+        btn.click()
+      })
+      await close(el, Modal.getInstance(el) as Modal)
+
+      expect(document.activeElement).toBe(btn)
+    })
   })
 
   describe('hide', () => {

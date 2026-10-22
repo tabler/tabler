@@ -275,6 +275,35 @@ describe('Offcanvas', () => {
 
       expect(document.activeElement).toBe(trigger)
     })
+
+    it('should keep the new target when reopened during the hide transition', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+      })
+      instance.hide()
+      instance.show(other)
+      await reopened
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should focus the Data API trigger on hide', async () => {
+      fixtureEl.innerHTML = '<button data-tblr-toggle="offcanvas" data-tblr-target="#testOffcanvas">Open</button><div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1"><div class="offcanvas-body">Content</div></div>'
+      const el = fixtureEl.querySelector<HTMLElement>('#testOffcanvas')!
+      const btn = fixtureEl.querySelector<HTMLElement>('[data-tblr-toggle="offcanvas"]')!
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        btn.click()
+      })
+      await close(el, Offcanvas.getInstance(el) as Offcanvas)
+
+      expect(document.activeElement).toBe(btn)
+    })
   })
 
   describe('hide', () => {
