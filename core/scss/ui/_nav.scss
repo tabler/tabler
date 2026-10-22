@@ -33,7 +33,7 @@
   }
 
   &.nav-pills {
-    margin: 0 calc(-1 * $nav-link-padding-x);
+    margin: 0 calc(-1 * var(--nav-link-padding-x));
   }
 }
 
@@ -41,20 +41,26 @@
 // Nav bordered
 //
 .nav-bordered {
-  border-bottom: $nav-bordered-border-width var(--border-style) $nav-bordered-border-color;
+  --nav-bordered-border-width: #{$nav-bordered-border-width};
+  --nav-bordered-border-color: #{$nav-bordered-border-color};
+  --nav-bordered-margin-x: #{$nav-bordered-margin-x};
+  --nav-bordered-link-active-color: #{$nav-bordered-link-active-color};
+  --nav-bordered-link-active-border-color: #{$nav-bordered-link-active-border-color};
+  --nav-bordered-link-active-border-width: #{$nav-bordered-link-active-border-width};
+  border-bottom: var(--nav-bordered-border-width) var(--border-style) var(--nav-bordered-border-color);
 
   .nav-item {
     + .nav-item {
-      margin-inline-start: $nav-bordered-margin-x;
+      margin-inline-start: var(--nav-bordered-margin-x);
     }
   }
 
   .nav-link {
     padding-inline-start: 0;
     padding-inline-end: 0;
-    margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
+    margin: 0 0 calc(-1 * var(--nav-bordered-border-width));
     border: 0;
-    border-bottom: $nav-bordered-link-active-border-width var(--border-style) transparent;
+    border-bottom: var(--nav-bordered-link-active-border-width) var(--border-style) transparent;
 
     &:hover {
       background-color: transparent;
@@ -63,8 +69,8 @@
 
   .nav-link.active,
   .nav-item.show .nav-link {
-    color: $nav-bordered-link-active-color;
-    border-color: $nav-bordered-link-active-border-color;
+    color: var(--nav-bordered-link-active-color);
+    border-color: var(--nav-bordered-link-active-border-color);
   }
 }
 
