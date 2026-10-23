@@ -1,5 +1,5 @@
 ---
-'@tabler/preview': patch
+"@tabler/preview": patch
 ---
 
-Gave the split dropdown toggle and the icon-only button demos an accessible name.
+Added an accessible name to the split dropdown toggle and the icon-only button demos.
