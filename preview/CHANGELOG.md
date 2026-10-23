@@ -1,5 +1,24 @@
 # @tabler/preview
 
+## 1.7.1
+
+### Patch Changes
+
+- 76b309f: Fixed the unnamed search input in the `AdvancedTable` demo by adding an `aria-label`.
+- 74f6193: Fixed the heading order on the dashboard and other preview pages so no heading level is skipped.
+- 041d4e9: Added an accessible name to the split dropdown toggle and the icon-only button demos.
+- 1dfe93d: Fixed the missing accessible name on the invalid state input in the form elements demo by adding `aria-label`.
+- 2225064: Fixed the select all checkbox in the `Invoices` table on the tables preview page.
+- ae7cd30: Added `aria-label` to the row checkboxes in the invoices, tasks and advanced table demos and the input group checkbox and radio.
+- ac6615c: Fixed the page header in `DefaultLayout` so it sits inside the `<main>` landmark.
+- fcf5276: Added an `ariaLabel` prop to `Pagination` and gave each pagination on a page its own name.
+- 276c904: Added an `ariaLabel` prop to `Range` and named the noUiSlider handles on the form elements pages.
+- ac8eb82: Fixed ApexCharts demos and Dropzone previews to respect `prefers-reduced-motion`, with a shared `prefersReducedMotion()` helper.
+- 6acc5c5: Fixed unlabeled `<select>` elements on the form demo pages and added an `ariaLabel` prop to the `Select` component.
+- c15dac2: Added hidden text to empty `<th>` cells in the `Table`, `AdvancedTable`, `TopDeals` and `Invoices` demos and the tour page.
+- 9beef3a: Updated the demo `Toast` to use `role="status"` and `aria-live="polite"` by default, with an `urgent` prop for `alert`.
+- c3ae0ed: Fixed the height of the Traffic summary chart on the dashboard page.
+
 ## 1.7.0
 
 ### Minor Changes
