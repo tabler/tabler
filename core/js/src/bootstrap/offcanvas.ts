@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, isDisabled, isVisible } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -73,11 +73,13 @@ class Offcanvas extends BaseComponent {
   _isShown: boolean
   _backdrop: Backdrop
   _focustrap: FocusTrap
+  _returnFocusTarget: HTMLElement | SVGElement | null
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isShown = false
+    this._returnFocusTarget = null
     this._backdrop = this._initializeBackDrop()
     this._focustrap = this._initializeFocusTrap()
     this._addEventListeners()
@@ -110,6 +112,7 @@ class Offcanvas extends BaseComponent {
       return
     }
 
+    this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
     this._isShown = true
     this._backdrop.show()
 
@@ -151,6 +154,10 @@ class Offcanvas extends BaseComponent {
     this._element.classList.add(CLASS_NAME_HIDING)
     this._backdrop.hide()
 
+    const element = this._element
+    const returnFocusTarget = this._returnFocusTarget
+    this._returnFocusTarget = null
+
     const completeCallback = () => {
       this._element.classList.remove(CLASS_NAME_SHOW, CLASS_NAME_HIDING)
       this._element.removeAttribute('aria-modal')
@@ -160,7 +167,11 @@ class Offcanvas extends BaseComponent {
         new ScrollBarHelper().reset()
       }
 
-      EventHandler.trigger(this._element, EVENT_HIDDEN)
+      EventHandler.trigger(element, EVENT_HIDDEN)
+
+      if (!(Offcanvas.getInstance(element) as Offcanvas | null)?._isShown) {
+        restoreFocus(returnFocusTarget, element)
+      }
     }
 
     this._queueCallback(completeCallback, this._element, true)
@@ -249,12 +260,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   if (isDisabled(this)) {
     return
   }
-
-  EventHandler.one(target, EVENT_HIDDEN, () => {
-    if (isVisible(this)) {
-      this.focus()
-    }
-  })
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen && alreadyOpen !== target) {

@@ -172,6 +172,184 @@ describe('Offcanvas', () => {
     })
   })
 
+  describe('return focus', () => {
+    const open = (trigger: HTMLElement, el: Element, instance: Offcanvas, via: 'active' | 'related') =>
+      new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        trigger.focus()
+        instance.show(via === 'related' ? trigger : undefined)
+      })
+
+    const close = (el: Element, instance: Offcanvas) =>
+      new Promise<void>((resolve) => {
+        el.addEventListener('hidden.bs.offcanvas', () => resolve(), { once: true })
+        instance.hide()
+      })
+
+    const setup = () => {
+      fixtureEl.innerHTML = `<button id="trigger">Open</button><button id="other">Other</button>${createOffcanvasHTML()}`
+      const el = fixtureEl.querySelector('.offcanvas')!
+      return {
+        el,
+        instance: new Offcanvas(el),
+        trigger: fixtureEl.querySelector<HTMLElement>('#trigger')!,
+        other: fixtureEl.querySelector<HTMLElement>('#other')!,
+      }
+    }
+
+    it('should focus the previously focused element on hide', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'active')
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should focus the relatedTarget on hide', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'related')
+      trigger.blur()
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should not steal focus when the app moved it elsewhere', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      el.addEventListener('hidden.bs.offcanvas', () => other.focus(), { once: true })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should focus a previously focused SVG element on hide', async () => {
+      const { el, instance } = setup()
+      fixtureEl.insertAdjacentHTML('afterbegin', '<svg id="svg-trigger" tabindex="0" width="16" height="16"><rect width="16" height="16" /></svg>')
+      const svg = fixtureEl.querySelector<SVGSVGElement>('#svg-trigger')!
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        svg.focus()
+        instance.show()
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(svg)
+    })
+
+    it('should restore focus when a hidden listener disposes the instance', async () => {
+      const { el, instance, trigger } = setup()
+
+      await open(trigger, el, instance, 'active')
+      el.addEventListener('hidden.bs.offcanvas', () => instance.dispose(), { once: true })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should not restore focus when a hidden listener opens a new instance', async () => {
+      const { el, instance, trigger, other } = setup()
+      const focusTrigger = vi.spyOn(trigger, 'focus')
+      let replacement: Offcanvas | undefined
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+      })
+      el.addEventListener(
+        'hidden.bs.offcanvas',
+        () => {
+          instance.dispose()
+          replacement = new Offcanvas(el)
+          replacement.show(other)
+        },
+        { once: true },
+      )
+      focusTrigger.mockClear()
+      await close(el, instance)
+
+      expect(focusTrigger).not.toHaveBeenCalled()
+
+      await reopened
+      await close(el, replacement!)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should keep the new target when a hidden listener reopens it', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+      })
+      el.addEventListener('hidden.bs.offcanvas', () => instance.show(other), { once: true })
+      await close(el, instance)
+      await reopened
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should unwrap a jQuery trigger', async () => {
+      const { el, instance, trigger } = setup()
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        instance.show({ jquery: '3.7.1', 0: trigger, length: 1 } as never)
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should ignore the offcanvas itself as the trigger', async () => {
+      const { el, instance, trigger } = setup()
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        trigger.focus()
+        instance.show(el as HTMLElement)
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(trigger)
+    })
+
+    it('should keep the new target when reopened during the hide transition', async () => {
+      const { el, instance, trigger, other } = setup()
+
+      await open(trigger, el, instance, 'active')
+      const reopened = new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+      })
+      instance.hide()
+      instance.show(other)
+      await reopened
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(other)
+    })
+
+    it('should focus the Data API trigger on hide', async () => {
+      fixtureEl.innerHTML = '<button data-tblr-toggle="offcanvas" data-tblr-target="#testOffcanvas">Open</button><div class="offcanvas offcanvas-start" id="testOffcanvas" tabindex="-1"><div class="offcanvas-body">Content</div></div>'
+      const el = fixtureEl.querySelector<HTMLElement>('#testOffcanvas')!
+      const btn = fixtureEl.querySelector<HTMLElement>('[data-tblr-toggle="offcanvas"]')!
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        btn.click()
+      })
+      await close(el, Offcanvas.getInstance(el) as Offcanvas)
+
+      expect(document.activeElement).toBe(btn)
+    })
+  })
+
   describe('hide', () => {
     it('should hide offcanvas', () => {
       return new Promise<void>((resolve) => {
