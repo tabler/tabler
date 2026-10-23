@@ -12,8 +12,9 @@
 // The tokens are resolved the same way docs/lib/agent-skills.ts does it. That module imports the
 // skill through vite (`?raw`) and the docs path aliases, so it cannot run under tsx; the few lines
 // of cdn-snippet logic are repeated here instead. `check` also compares against the built docs
-// output when docs/dist exists, so the two cannot drift apart unnoticed.
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+// output when docs/dist exists and is newer than everything that goes into it, so the two cannot
+// drift apart unnoticed; a build from before a release or a source edit proves nothing and is skipped.
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { site } from '../shared/lib/site'
@@ -28,6 +29,9 @@ const repoRoot = join(__dirname, '..')
 const sourceDir = join(repoRoot, 'docs/lib/agent-skills')
 const outputDir = join(repoRoot, 'skills')
 const docsDist = join(repoRoot, 'docs/dist/.well-known/agent-skills')
+
+// Everything the built docs copy depends on. A docs/dist older than any of these is stale.
+const buildInputs = ['shared/data/sri.json', 'shared/lib/site.ts', 'core/package.json', 'docs/lib/agent-skills.ts', 'docs/lib/cdn-snippets.ts'].map((file) => join(repoRoot, file))
 
 const sri: SriData = JSON.parse(readFileSync(join(repoRoot, 'shared/data/sri.json'), 'utf8'))
 
@@ -70,6 +74,20 @@ const resolveSkill = (name: string): string => {
   return content
 }
 
+const mtime = (file: string): number => statSync(file).mtimeMs
+
+/** The built copy is worth comparing only when it is newer than every file it was made from. */
+const isCurrentBuild = (builtFile: string, name: string): boolean => {
+  const built = mtime(builtFile)
+  const stale = [...buildInputs, join(sourceDir, name, 'SKILL.md')].filter((file) => existsSync(file) && mtime(file) > built)
+
+  if (stale.length > 0) {
+    console.log(`check:agent-skills: skipping the docs build comparison for ${name}, docs/dist is older than ${stale.map((file) => file.slice(repoRoot.length + 1)).join(', ')}`)
+  }
+
+  return stale.length === 0
+}
+
 /** `pnpm run check:agent-skills` - every committed copy has to match its source. */
 function check(): void {
   const problems: string[] = []
@@ -91,7 +109,7 @@ function check(): void {
     // hand, the two outputs have to be identical, or the token logic here has drifted from the docs.
     const builtFile = join(docsDist, name, 'SKILL.md')
 
-    if (existsSync(builtFile) && readFileSync(builtFile, 'utf8') !== expected) {
+    if (existsSync(builtFile) && isCurrentBuild(builtFile, name) && readFileSync(builtFile, 'utf8') !== expected) {
       problems.push(`skills/${name}/SKILL.md differs from the docs build at docs/dist/.well-known/agent-skills/${name}/SKILL.md - the token logic in .build/generate-agent-skills.ts and docs/lib/agent-skills.ts has drifted`)
     }
   }
