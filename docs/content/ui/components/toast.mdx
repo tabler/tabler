@@ -28,7 +28,7 @@ import CodeDocs from '@components/CodeDocs.astro';
 The default toast has a header with the sender and the time, a body with the message, and a close button.
 
 <Example>
-<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+<div class="toast show" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
   <div class="toast-header">
     <span class="avatar avatar-xs me-2" style="background-image: url(/static/avatars/018f.jpg)"></span>
     <strong class="me-auto">Mallory Hulme</strong>
@@ -44,7 +44,7 @@ The default toast has a header with the sender and the time, a body with the mes
 Toasts are translucent, so the page shows through them. In browsers that support `backdrop-filter`, the content under a toast is blurred.
 
 <Example>
-<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+<div class="toast show" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
   <div class="toast-header">
     <span class="avatar avatar-xs me-2" style="background-image: url(/static/avatars/029m.jpg)"></span>
     <strong class="me-auto">Mallory Hulme</strong>
@@ -61,7 +61,7 @@ Stack multiple toasts together by putting them within one `.toast-container`.
 
 <Example height="25rem" centered>
 <div class="toast-container">
-  <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+  <div class="toast show" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
     <div class="toast-header">
       <span class="avatar avatar-xs me-2" style="background-image: url(/static/avatars/008m.jpg)"></span>
       <strong class="me-auto">Dunn Slane</strong>
@@ -70,7 +70,7 @@ Stack multiple toasts together by putting them within one `.toast-container`.
     </div>
     <div class="toast-body">Hello, world! This is a toast message.</div>
   </div>
-  <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+  <div class="toast show" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
     <div class="toast-header">
       <span class="avatar avatar-xs me-2" style="background-image: url(/static/avatars/020m.jpg)"></span>
       <strong class="me-auto">Mallory Hulme</strong>
@@ -90,7 +90,8 @@ Tabler binds every element with `data-bs-toggle="toast"` to show the toast from 
 
 ## Accessibility
 
-- Put `role="status"` and `aria-live="polite"` on a toast that reports success, and `role="alert"` with `aria-live="assertive"` on one that reports an error. Assertive interrupts the reader, so keep it for things that matter.
+- Use `role="status"` with `aria-live="polite"` for most toasts, such as a success message. The reader announces it when it is idle.
+- Use `role="alert"` with `aria-live="assertive"` only for urgent toasts, such as an error. Assertive interrupts the reader, so keep it for things that matter.
 - The live region has to be in the DOM before the message arrives. Render an empty toast container on page load and fill it, rather than inserting the whole toast at the moment of the event.
 - Toasts hide themselves after `data-bs-delay`. That is too fast to read for many people - set `data-bs-autohide="false"` for anything the user has to act on.
 - A toast does not take focus. Never put the only copy of an action inside one.

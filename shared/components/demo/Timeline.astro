@@ -8,9 +8,11 @@ import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   simple?: boolean
+  /** heading level of the event titles; use h3 under a card title */
+  titleAs?: 'h2' | 'h3'
 }
 
-const { simple } = Astro.props
+const { simple, titleAs: TitleTag = 'h2' } = Astro.props
 
 const avatarPeople = people.slice(0, 3)
 const timelinePhotos = photos as { file: string; title: string }[]
@@ -23,7 +25,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">10 hrs ago</div>
-        <h4>+1150 Followers</h4>
+        <TitleTag class="h4">+1150 Followers</TitleTag>
         <p class="text-secondary">You’re getting more and more followers, keep it up!</p>
       </div>
     </div>
@@ -33,7 +35,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">2 hrs ago</div>
-        <h4>+3 New Products were added!</h4>
+        <TitleTag class="h4">+3 New Products were added!</TitleTag>
         <p class="text-secondary">Congratulations!</p>
       </div>
     </div>
@@ -43,7 +45,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">1 day ago</div>
-        <h4>Database backup completed!</h4>
+        <TitleTag class="h4">Database backup completed!</TitleTag>
         <p class="text-secondary">Download the <a href="#">latest backup</a>.</p>
       </div>
     </div>
@@ -53,7 +55,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">1 day ago</div>
-        <h4>+290 Page Likes</h4>
+        <TitleTag class="h4">+290 Page Likes</TitleTag>
         <p class="text-secondary">This is great, keep it up!</p>
       </div>
     </div>
@@ -63,7 +65,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">2 days ago</div>
-        <h4>+3 Friend Requests</h4>
+        <TitleTag class="h4">+3 Friend Requests</TitleTag>
         <div class="avatar-list mt-3">
           {avatarPeople.map((person) => <Avatar person={person} status="success" statusLabel="Online" />)}
         </div>
@@ -75,7 +77,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">3 days ago</div>
-        <h4>+3 New photos</h4>
+        <TitleTag class="h4">+3 New photos</TitleTag>
         <div class="mt-3">
           <div class="row g-2">
             <div class="col-4">
@@ -100,7 +102,7 @@ const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
     <div class="card timeline-event-card">
       <div class="card-body">
         <div class="text-secondary float-end">2 weeks ago</div>
-        <h4>System updated to v2.02</h4>
+        <TitleTag class="h4">System updated to v2.02</TitleTag>
         <p class="text-secondary">Check the complete changelog at the <a href="#">activity page</a>.</p>
       </div>
     </div>

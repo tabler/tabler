@@ -7,7 +7,6 @@
 }
 
 .focus .ts-control {
-  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
   --focus-ring-offset: -1px;
   box-shadow: $input-box-shadow;
   @include border-radius(var(--border-radius));
@@ -16,6 +15,7 @@
 
 .ts-control {
   color: inherit;
+  @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
 
   .dropdown-menu {
     width: 100%;
@@ -87,11 +87,24 @@
 // preset CSS is loaded after `tabler-vendors.css`.
 .ts-wrapper.form-control,
 .ts-wrapper.form-select {
+  // Keeps a dropdown rendered inside the wrapper at the control's size on phones.
+  --form-control-mobile-font-size: var(--control-font-size);
+
   .ts-control {
     padding: var(--control-padding-y) var(--control-padding-x);
     font-size: var(--control-font-size) !important;
     line-height: var(--control-line-height);
     border-radius: inherit !important;
+  }
+
+  // The control sits inside the wrapper's border, so its corners follow the
+  // border's inner curve. Not in an input group, where the wrapper's corners
+  // differ, nor on a wrapper a `.rounded-*` utility reshapes (`.rounded-pill`),
+  // whose radius is not the token: those keep `inherit`.
+  @if $enable-rounded {
+    &:not(.input-group > *):not([class*='rounded']) .ts-control {
+      border-radius: max(0px, calc(var(--control-border-radius) - var(--control-border-width))) !important;
+    }
   }
 
   &.multi.has-items .ts-control {

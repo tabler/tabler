@@ -11,6 +11,7 @@ import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { isDisabled } from './bootstrap/util/index'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
+import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
 type ComponentConfig = {
   /** how many pieces one burst pours out */
@@ -377,7 +378,7 @@ class Confetti extends BaseComponent {
     // in the air keep falling.
     this.stop()
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (prefersReducedMotion()) {
       EventHandler.trigger(this._element, EVENT_END)
       return
     }
