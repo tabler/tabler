@@ -6,7 +6,8 @@
 // cdn version as the rest of the docs; the copy in skills/ has them resolved, because the skills
 // CLI serves the file straight from the repository, with no build step in between.
 //
-//      pnpm run generate:agent-skills    (after editing a source skill, or after a release)
+//      pnpm run generate:agent-skills    (after editing a source skill; `pnpm run version` and
+//                                         `release:main` run it on their own)
 //      pnpm run check:agent-skills       (the committed copies still match the sources)
 //
 // The tokens are resolved the same way docs/lib/agent-skills.ts does it. That module imports the
