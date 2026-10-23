@@ -38,12 +38,17 @@
 }
 
 .btn-group {
-  @include border-radius($btn-border-radius);
+  // scss-docs-start btn-group-css-vars
+  --btn-group-border-width: #{$btn-border-width};
+  --btn-group-border-radius: #{$btn-border-radius};
+  // scss-docs-end btn-group-css-vars
+
+  @include border-radius(var(--btn-group-border-radius));
 
   // Prevent double borders when buttons are next to each other
   > :not(.btn-check:first-child) + .btn,
   > .btn-group:not(:first-child) {
-    margin-inline-start: calc(-1 * #{$btn-border-width}); // stylelint-disable-line function-disallowed-list
+    margin-inline-start: calc(-1 * var(--btn-group-border-width)); // stylelint-disable-line function-disallowed-list
   }
 
   // Reset rounded corners

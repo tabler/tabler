@@ -1,12 +1,18 @@
 @use '../config' as *;
 
 .placeholder {
+  // scss-docs-start placeholder-css-vars
+  --placeholder-bg: currentColor;
+  --placeholder-opacity-max: #{$placeholder-opacity-max};
+  --placeholder-opacity-min: #{$placeholder-opacity-min};
+  // scss-docs-end placeholder-css-vars
+
   display: inline-block;
   min-height: 1em;
   vertical-align: middle;
   cursor: wait;
-  background-color: currentColor;
-  opacity: $placeholder-opacity-max;
+  background-color: var(--placeholder-bg);
+  opacity: var(--placeholder-opacity-max);
 
   &.btn::before {
     display: inline-block;
@@ -40,7 +46,7 @@
 
 @keyframes placeholder-glow {
   50% {
-    opacity: $placeholder-opacity-min;
+    opacity: var(--placeholder-opacity-min);
   }
 }
 

@@ -2,6 +2,10 @@
 
 // The wrapper is measured, so it must never size to the nav inside it
 .nav-overflow {
+  // scss-docs-start nav-overflow-css-vars
+  --nav-overflow-icon-size: #{$nav-link-icon-size};
+  // scss-docs-end nav-overflow-css-vars
+
   contain: inline-size;
   flex: 1 1 0;
   min-width: 0;
@@ -35,7 +39,7 @@
   display: flex;
 
   .icon {
-    width: var(--nav-link-icon-width, #{$nav-link-icon-size});
-    height: var(--nav-link-icon-height, #{$nav-link-icon-size});
+    width: var(--nav-link-icon-width, var(--nav-overflow-icon-size));
+    height: var(--nav-link-icon-height, var(--nav-overflow-icon-size));
   }
 }
