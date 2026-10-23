@@ -1,5 +1,13 @@
 # @tabler/docs
 
+## 1.7.1
+
+### Patch Changes
+
+- 74f6193: Fixed the heading order on the dashboard and other preview pages so no heading level is skipped.
+- f076113: Fixed the arrow position and the room kept for it in `.form-select-sm` and `.form-select-lg`.
+- 9beef3a: Updated the demo `Toast` to use `role="status"` and `aria-live="polite"` by default, with an `urgent` prop for `alert`.
+
 ## 1.7.0
 
 ### Minor Changes

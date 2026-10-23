@@ -1,5 +1,29 @@
 # @tabler/core
 
+## 1.7.1
+
+### Patch Changes
+
+- 50c15e7: Fixed `.breadcrumb` link styles applying to the items of a dropdown placed inside it.
+- 2bdbab3: Fixed dark mode contrast of `.text-muted` and other `muted` theme color utilities with a lighter `--tblr-muted` value.
+- 1745d1f: Fixed the `.flag` size classes, which were stretched to one height inside flex containers because the height came from `aspect-ratio`.
+- db649f4: Fixed `.form-check-label` stretching the clickable area of a checkbox or radio across the whole row.
+- f076113: Fixed the arrow position and the room kept for it in `.form-select-sm` and `.form-select-lg`.
+- 0d2e253: Fixed `.modal-lg` and `.modal-xl` falling back to the default width in viewports below the `lg` and `xl` breakpoints.
+- 5d5186e: Fixed `Modal` and `Offcanvas` not returning focus to the element that opened them when closed.
+- e069052: Fixed `.page-text` in pagination using the body font size instead of `--tblr-pagination-font-size`, including `pagination-sm` and `pagination-lg`.
+- ac8eb82: Fixed ApexCharts demos and Dropzone previews to respect `prefers-reduced-motion`, with a shared `prefersReducedMotion()` helper.
+- 8336b33: Added a focus ring to `.card-body-scrollable` and `.table-responsive` so a scrollable region that is focused with the keyboard is visible.
+- cf3ceaa: Fixed the native clear button missing from `.form-control` search inputs in Chrome and Safari.
+- 73392da: Fixed `.sortable-drag` tilting the dragged element itself in native drag mode, which broke the drag.
+- c9e9b9b: Fixed the uneven `.table-bordered` grid in the dark theme by using the opaque border color.
+- f1a49aa: Fixed `.text-bg-*` and `.progress-bar` hard-coding white text instead of reading the `--tblr-*-fg` tokens.
+- 3eaeb74: Fixed the Tom Select focus ring leaving the wrapper border visible at the corners.
+- 0df5946: Fixed the Tom Select focus ring flashing black before it fades in.
+- 7ee278f: Fixed the square start corners of a Tom Select that opens an `.input-group`.
+- 01f6a6c: Fixed the Tom Select dropdown text growing to the mobile font size on phones.
+- fa4c175: Fixed the bright dividers before the remove button of Tom Select chips in the dark theme.
+
 ## 1.7.0
 
 ### Minor Changes
