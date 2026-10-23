@@ -226,6 +226,21 @@ describe('Offcanvas', () => {
       expect(document.activeElement).toBe(other)
     })
 
+    it('should focus a previously focused SVG element on hide', async () => {
+      const { el, instance } = setup()
+      fixtureEl.insertAdjacentHTML('afterbegin', '<svg id="svg-trigger" tabindex="0" width="16" height="16"><rect width="16" height="16" /></svg>')
+      const svg = fixtureEl.querySelector<SVGSVGElement>('#svg-trigger')!
+
+      await new Promise<void>((resolve) => {
+        el.addEventListener('shown.bs.offcanvas', () => resolve(), { once: true })
+        svg.focus()
+        instance.show()
+      })
+      await close(el, instance)
+
+      expect(document.activeElement).toBe(svg)
+    })
+
     it('should restore focus when a hidden listener disposes the instance', async () => {
       const { el, instance, trigger } = setup()
 

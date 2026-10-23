@@ -95,7 +95,7 @@ const getElement = (object: unknown): HTMLElement | null => {
   return null
 }
 
-const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): HTMLElement | null => {
+const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): HTMLElement | SVGElement | null => {
   const target = unwrapJQuery(relatedTarget)
 
   if (isElement(target) && !container.contains(target)) {
@@ -108,10 +108,10 @@ const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): H
     activeElement = activeElement.shadowRoot.activeElement
   }
 
-  return activeElement instanceof HTMLElement && activeElement !== document.body && !container.contains(activeElement) ? activeElement : null
+  return (activeElement instanceof HTMLElement || activeElement instanceof SVGElement) && activeElement !== document.body && !container.contains(activeElement) ? activeElement : null
 }
 
-const restoreFocus = (target: HTMLElement | null, container: HTMLElement): void => {
+const restoreFocus = (target: HTMLElement | SVGElement | null, container: HTMLElement): void => {
   if (!target || !isVisible(target)) {
     return
   }
@@ -123,7 +123,7 @@ const restoreFocus = (target: HTMLElement | null, container: HTMLElement): void 
   }
 }
 
-const isVisible = (element: HTMLElement): boolean => {
+const isVisible = (element: Element): boolean => {
   if (!isElement(element) || element.getClientRects().length === 0) {
     return false
   }

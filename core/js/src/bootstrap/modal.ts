@@ -78,7 +78,7 @@ class Modal extends BaseComponent {
   _focustrap: FocusTrap
   _isShown: boolean
   _isTransitioning: boolean
-  _returnFocusTarget: HTMLElement | null
+  _returnFocusTarget: HTMLElement | SVGElement | null
   _scrollBar: ScrollBarHelper
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
@@ -259,7 +259,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  _hideModal(returnFocusTarget: HTMLElement | null): void {
+  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
