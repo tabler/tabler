@@ -1,5 +1,12 @@
 # @tabler/core
 
+## 1.8.0
+
+### Minor Changes
+
+- 69c712f: Set `accent-color` to the primary color on the root element, so native checkboxes, radios, range inputs and `<progress>` without Tabler classes use the theme color.
+- 323a30b: Added `.justify-items-*` and `.place-items-*` utilities (`start`, `end`, `center`, `baseline`, `stretch`) with responsive variants.
+
 ## 1.7.1
 
 ### Patch Changes
