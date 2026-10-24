@@ -29,3 +29,18 @@ import Example from '@components/Example.astro';
 <div class="w-max-content p-2 mb-2 bg-primary-lt rounded">Max content width</div>
 <div class="w-fit-content p-2 bg-primary-lt rounded">Fit content width</div>
 </Example>
+
+## Minimum width and height
+
+`.min-w-0`, `.min-w-100`, `.min-h-0`, and `.min-h-100` set `min-width` or `min-height` to `0` or `100%`.
+
+A flex child does not shrink below the width of its content by default, so a long word, a table, or a code block pushes the layout wider than its parent. Add `.min-w-0` to the child to let it shrink, for example to make `.text-truncate` work inside a flex row.
+
+<Example>
+<div class="d-flex gap-2 p-2 border rounded" style="max-width: 20rem">
+  <span class="avatar avatar-sm">AB</span>
+  <div class="min-w-0">
+    <div class="text-truncate">A very long name that has to be truncated inside a flex row</div>
+  </div>
+</div>
+</Example>
