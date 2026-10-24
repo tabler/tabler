@@ -1,0 +1,57 @@
+---
+title: Display
+summary: Display utilities set the display property of an element with a class, on every screen size or from a breakpoint up.
+description: Change the display property with utility classes - show, hide, or switch elements to block, flex, grid, flow-root, or contents.
+related: [/ui/utilities/grid-alignment, /ui/utilities/printing]
+---
+import Example from '@components/Example.astro';
+
+## Display values
+
+Use `.d-{value}` to set the `display` property. The available values are `none`, `inline`, `inline-block`, `block`, `grid`, `inline-grid`, `table`, `table-row`, `table-cell`, `flex`, `inline-flex`, `flow-root`, and `contents`.
+
+```html
+<div class="d-inline">Inline</div>
+<div class="d-block">Block</div>
+<div class="d-flex">Flex</div>
+<div class="d-none">Hidden</div>
+```
+
+## Flow root
+
+`.d-flow-root` makes an element contain its floated children, so it grows to their height. It replaces the old clearfix pattern.
+
+<Example>
+<div class="d-flow-root p-2 border rounded">
+  <div class="float-start p-3 me-3 bg-primary-lt rounded">Float</div>
+  The border wraps the floated box because the container uses flow root.
+</div>
+</Example>
+
+## Contents
+
+`.d-contents` removes the element's own box, so its children take part in the parent's flex or grid layout as if the wrapper was not there.
+
+<Example>
+<div class="d-flex gap-2">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="d-contents">
+    <div class="p-2 bg-primary-lt rounded">Two</div>
+    <div class="p-2 bg-primary-lt rounded">Three</div>
+  </div>
+</div>
+</Example>
+
+## Responsive
+
+Every value has responsive variants, for example `.d-md-flex` or `.d-lg-none`. Combine them to show an element only on some screen sizes.
+
+```html
+<div class="d-none d-md-block">Visible from the md breakpoint up</div>
+<div class="d-md-none">Visible below the md breakpoint</div>
+```
+
+## Accessibility
+
+- `.d-none` hides the element from screen readers too. To hide it only visually, use the [visually hidden](/ui/utilities/visually-hidden) classes.
+- Some browsers drop the semantics of an element with `display: contents`, for example a button, a list or a table row. Use `.d-contents` on plain wrappers such as a `div`.
