@@ -23,7 +23,7 @@
 @each $color, $value in map.merge($theme-colors, $social-colors) {
   .btn-#{$color},
   .status-#{$color} {
-    @extend %theme-#{$color};
+    @include theme-color($color);
   }
 }
 
@@ -31,19 +31,19 @@
   .alert-#{$name},
   .toast-#{$name},
   .bg-pattern-#{$name} {
-    @extend %theme-#{$name};
+    @include theme-color($name);
   }
 }
 
 @each $name, $color in $extra-colors {
   .steps-#{$name} {
-    @extend %theme-#{$name};
+    @include theme-color($name);
   }
 
   // The -lt modifier swaps which theme property feeds --steps-color
   // (ui/_steps.scss), so it can't just join the combined selector above.
   .steps-#{$name}-lt {
-    @extend %theme-#{$name};
+    @include theme-color($name);
     --steps-color: var(--theme-lt);
   }
 }
