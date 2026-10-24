@@ -37,6 +37,28 @@
   }
 }
 
+@if $enable-cssgrid {
+  .grid-bento {
+    // scss-docs-start grid-bento-css-vars
+    --grid-bento-row-height: #{$grid-bento-row-height};
+    // scss-docs-end grid-bento-css-vars
+    grid-template-rows: none;
+    grid-auto-rows: minmax(var(--grid-bento-row-height), auto);
+  }
+
+  @each $breakpoint in map.keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    @include media-breakpoint-up($breakpoint) {
+      @for $i from 1 through $grid-bento-row-spans {
+        .g-row#{$infix}-#{$i} {
+          grid-row: auto / span $i;
+        }
+      }
+    }
+  }
+}
+
 .row-deck {
   > .col,
   > [class*='col-'] {
