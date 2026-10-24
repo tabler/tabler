@@ -2,6 +2,7 @@
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
+@use '../variables-deprecated' as *;
 @use 'functions' as *;
 @use 'bootstrap/transition' as *;
 @use 'bootstrap/border-radius' as *;
@@ -90,6 +91,14 @@
 @mixin focus-ring-transition($transitions...) {
   outline-color: transparent;
   @include transition(list.append($transitions, $focus-ring-transition, comma)...);
+}
+
+@mixin btn-transition($property: $btn-transition-property, $duration: $btn-transition-duration, $timing: $btn-transition-timing) {
+  @if $btn-transition == transition-list($btn-transition-property, $btn-transition-duration, $btn-transition-timing) {
+    @include transition-tokens($property, $duration, $timing);
+  } @else {
+    @include transition($btn-transition);
+  }
 }
 
 //

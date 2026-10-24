@@ -41,3 +41,33 @@
     }
   }
 }
+
+@include describe('transition-list') {
+  @include it('repeats the duration and timing for every property') {
+    @include assert-equal(transition-list((color, box-shadow), 0.15s, ease-in-out), (color 0.15s ease-in-out, box-shadow 0.15s ease-in-out));
+  }
+}
+
+@include describe('transition-tokens') {
+  @include it('emits the longhands plus a reduced-motion reset') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include transition-tokens(color, 0.3s, linear);
+        }
+      }
+      @include expect() {
+        .t {
+          transition-property: color;
+          transition-duration: 0.3s;
+          transition-timing-function: linear;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .t {
+            transition: none;
+          }
+        }
+      }
+    }
+  }
+}
