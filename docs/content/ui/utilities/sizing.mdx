@@ -1,0 +1,22 @@
+---
+title: Sizing
+summary: Sizing utilities set the width and height of an element relative to its parent or to the viewport.
+description: Set width and height with utility classes - relative to the parent, to the viewport, or to the visible viewport on mobile.
+related: [/ui/utilities/display]
+---
+import Example from '@components/Example.astro';
+
+## Minimum width and height
+
+`.min-w-0`, `.min-w-100`, `.min-h-0`, and `.min-h-100` set `min-width` or `min-height` to `0` or `100%`.
+
+A flex child does not shrink below the width of its content by default, so a long word, a table, or a code block pushes the layout wider than its parent. Add `.min-w-0` to the child to let it shrink, for example to make `.text-truncate` work inside a flex row.
+
+<Example>
+<div class="d-flex gap-2 p-2 border rounded" style="max-width: 20rem">
+  <span class="avatar avatar-sm">AB</span>
+  <div class="min-w-0">
+    <div class="text-truncate">A very long name that has to be truncated inside a flex row</div>
+  </div>
+</div>
+</Example>
