@@ -1,12 +1,12 @@
 // Output tests for the `transition` mixin in scss/mixins/bootstrap/_transition.scss.
 // With `$enable-transitions` and `$enable-reduced-motion` both true (the
-// defaults), a real transition also emits a `prefers-reduced-motion` reset —
-// except when the value itself is `none`.
+// defaults), a real transition is emitted only inside
+// `prefers-reduced-motion: no-preference` — except when the value is `none`.
 
 @use '../mixins/bootstrap/transition' as *;
 
 @include describe('transition') {
-  @include it('emits the transition plus a reduced-motion reset') {
+  @include it('emits the transition inside a no-preference query') {
     @include assert() {
       @include output() {
         .t {
@@ -14,19 +14,16 @@
         }
       }
       @include expect() {
-        .t {
-          transition: color 0.3s;
-        }
-        @media (prefers-reduced-motion: reduce) {
+        @media (prefers-reduced-motion: no-preference) {
           .t {
-            transition: none;
+            transition: color 0.3s;
           }
         }
       }
     }
   }
 
-  @include it('skips the reduced-motion reset when the value is none') {
+  @include it('emits none outside the query') {
     @include assert() {
       @include output() {
         .t {
@@ -36,6 +33,21 @@
       @include expect() {
         .t {
           transition: none;
+        }
+      }
+    }
+  }
+
+  @include it('emits none !important outside the query') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include transition(none !important);
+        }
+      }
+      @include expect() {
+        .t {
+          transition: none !important;
         }
       }
     }
