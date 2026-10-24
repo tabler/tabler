@@ -1,5 +1,13 @@
 # @tabler/preview
 
+## 1.8.0-next.0
+
+### Patch Changes
+
+- 07fa459: Updated card headers, table headers, modal footer and other neutral backgrounds to use the `--tblr-fill-*` tokens.
+- 2609a06: Added a Tabler Flags docs section with `@tabler/flags-*` library pages; `/ui/plugins/flags` now redirects to `/flags/css`.
+- 546946a: Updated the navbar notifications dropdown with avatars, timestamps, unread dots, day groups and a scrollable list.
+
 ## 1.7.1
 
 ### Patch Changes
