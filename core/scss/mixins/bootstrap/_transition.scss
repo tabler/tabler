@@ -30,3 +30,25 @@
     }
   }
 }
+
+@function transition-list($properties, $duration, $timing) {
+  $transition: ();
+  @each $property in $properties {
+    $transition: list.append($transition, $property $duration $timing, comma);
+  }
+  @return $transition;
+}
+
+@mixin transition-tokens($property, $duration, $timing) {
+  @if $enable-transitions {
+    transition-property: $property;
+    transition-duration: $duration;
+    transition-timing-function: $timing;
+
+    @if $enable-reduced-motion {
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+  }
+}
