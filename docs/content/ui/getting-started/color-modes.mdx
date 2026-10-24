@@ -120,6 +120,19 @@ window.localStorage.removeItem('tabler-theme')
 
 `ThemeSettings.astro`'s "Reset changes" button does this for every key at once, and also strips them from the URL's query string.
 
+## Color scheme of one element
+
+`.color-scheme-light`, `.color-scheme-dark`, and `.color-scheme-auto` set the CSS `color-scheme` of a single element. `auto` means `light dark`, so the element follows the operating system setting.
+
+Use them for an element that needs a different scheme than the page, for example an `<iframe>` with a third-party page that has no dark mode, or a native control such as a date input.
+
+```html
+<iframe class="color-scheme-light" src="https://example.com"></iframe>
+<input type="date" class="form-control color-scheme-dark">
+```
+
+The class also changes the Tabler colors inside the element that are defined with `light-dark()`. To switch a whole section to the other theme, with every component, use `data-bs-theme` on it instead.
+
 ## Accessibility
 
 `auto` mode respects the visitor's OS-level `prefers-color-scheme` setting instead of forcing a choice on them, which is the accessible default when you don't have a stronger reason to pick one. If you do force `light` or `dark`, still offer a visible way to switch modes rather than only reading the OS preference once - some visitors change their preference based on time of day or lighting conditions.
