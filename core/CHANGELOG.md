@@ -1,5 +1,25 @@
 # @tabler/core
 
+## 1.8.0-next.0
+
+### Minor Changes
+
+- 600cc36: Added `--tblr-card-header-tabs-bg` and `--tblr-card-stamp-opacity` CSS variables to the card component.
+- 6eb45b2: Added `--tblr-carousel-indicator-*` CSS variables for indicator size, spacing, hit area, dot and thumb styles.
+- 45df3ed: Added CSS variables to loaders, timeline, stars, placeholder, button group, pricing, social, flags, payments and nav-overflow.
+- 3cb68de: Added `--tblr-dropdown-max-width` and `--tblr-dropdown-scrollable-height` CSS variables to dropdowns.
+- c9fe7c2: Added dark mode values for the base colors `$blue` to `$cyan` using `light-dark()`.
+- 302683f: Added `--tblr-list-group-header-color` and `--tblr-list-group-header-bg` CSS variables to the list group header.
+- 6bb0bfe: Added `--tblr-modal-header-height`, `--tblr-modal-header-bg`, `--tblr-modal-status-size` and `--tblr-modal-backdrop-blur`.
+- 030cb0b: Added `--tblr-nav-bordered-*` CSS variables for border, gap and active link styles to `.nav-bordered`.
+- 5b52e6a: Added `--tblr-offcanvas-border-radius` and used the offcanvas padding variables in `.offcanvas-footer`.
+- 75c540b: Added `--tblr-table-*` CSS variables for cell padding, border width and header styles to the table component.
+
+### Patch Changes
+
+- 1d01569: Fixed vendor and marketing styles to read `--tblr-bg-surface-secondary` and `--tblr-bg-surface-tertiary` as fallbacks again.
+- 07fa459: Updated card headers, table headers, modal footer and other neutral backgrounds to use the `--tblr-fill-*` tokens.
+
 ## 1.7.1
 
 ### Patch Changes

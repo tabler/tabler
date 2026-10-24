@@ -22,8 +22,8 @@ Before writing markup for a component, fetch its `.md` page and copy the example
 Plain HTML, from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.1/dist/css/tabler.min.css" integrity="sha384-FwFRx3iCRjX2MYq9Ni5guhu0G/HAeKcgZhAMxMtZkceAylYMpaOn6hHeId2bywU9" crossorigin="anonymous" />
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.7.1/dist/js/tabler.min.js" integrity="sha384-eqBhoRQcupNldY9cDRl77mvk57Y7DWYa+nVjNzLLwtwVynw+RpM/FotWDnIODMwM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.8.0-next.0/dist/css/tabler.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.8.0-next.0/dist/js/tabler.min.js"></script>
 ```
 
 Put the stylesheet in `<head>` and the script at the end of `<body>`. When the tags carry `integrity` and `crossorigin` attributes, keep them unchanged; the hashes belong to this exact version. In a project with a bundler install the package and import the same files:
