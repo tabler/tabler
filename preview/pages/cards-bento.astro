@@ -1,0 +1,110 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import { staticPath } from '@shared/lib/assets'
+
+const photo = (file: string) => staticPath(`photos/${file}`)
+
+const features = [
+  { icon: 'bolt', color: 'yellow', title: 'Fast by default', text: 'Plain CSS and a few kilobytes of JavaScript, so pages load in an instant.' },
+  { icon: 'shield-check', color: 'green', title: 'Accessible', text: 'Focus states, contrast and labels are checked on every component.' },
+  { icon: 'device-mobile', color: 'blue', title: 'Responsive', text: 'Every tile drops to a single column on small screens.' },
+]
+
+const stats = [
+  { title: 'New customers', value: '1,284', change: '+12%' },
+  { title: 'Orders', value: '3,920', change: '+4%' },
+]
+---
+
+<DefaultLayout title="Bento grid" pageMenu="base.cards.bento" description="A bento grid lays out cards of different sizes, with tiles that span several columns and rows.">
+  <DocsLink slot="page-header-actions" path="/ui/layout/bento-grid" />
+
+  <div class="space-y-5">
+    <div class="grid grid-bento">
+      <Card class="g-col-12 g-col-lg-6 g-row-lg-2">
+        <CardBody class="d-flex flex-column">
+          <span class="avatar avatar-md bg-primary-lt mb-3"><Icon name="layout-grid" /></span>
+          <CardTitle>Build any layout</CardTitle>
+          <CardSubtitle>Add <code>.grid-bento</code> to a <code>.grid</code> and size each tile with <code>.g-col-*</code> and <code>.g-row-*</code>.</CardSubtitle>
+          <div class="ratio ratio-21x9 mt-auto">
+            <img src={photo('a-woman-works-on-a-laptop-at-home.jpg')} class="rounded object-cover" alt="A woman working on a laptop" />
+          </div>
+        </CardBody>
+      </Card>
+      {
+        features.map((feature, i) => (
+          <Card class:list={['g-col-12', i === 2 ? 'g-col-lg-6' : 'g-col-md-6 g-col-lg-3']}>
+            <CardBody>
+              <span class={`avatar bg-${feature.color}-lt mb-3`}>
+                <Icon name={feature.icon} />
+              </span>
+              <CardTitle>{feature.title}</CardTitle>
+              <CardSubtitle>{feature.text}</CardSubtitle>
+            </CardBody>
+          </Card>
+        ))
+      }
+    </div>
+
+    <div class="grid grid-bento">
+      <Card class="g-col-12 g-col-md-8 g-row-md-2">
+        <CardBody class="d-flex flex-column">
+          <div class="subheader">Revenue this month</div>
+          <div class="h1 mb-1">$48,920</div>
+          <div class="text-green d-flex align-items-center gap-1">
+            <Icon name="trending-up" />
+            8% more than last month
+          </div>
+          <div class="mt-auto">
+            <div class="d-flex justify-content-between mb-1">
+              <span>Monthly goal</span>
+              <span class="text-secondary">72%</span>
+            </div>
+            <Progress value={72} size="sm" aria-label="72% of the monthly goal" />
+          </div>
+        </CardBody>
+      </Card>
+      {
+        stats.map((stat) => (
+          <Card class="g-col-12 g-col-sm-6 g-col-md-4">
+            <CardBody>
+              <div class="subheader">{stat.title}</div>
+              <div class="h1 mb-1">{stat.value}</div>
+              <div class="text-green">{stat.change} this week</div>
+            </CardBody>
+          </Card>
+        ))
+      }
+      <Card class="g-col-12 g-col-md-4 g-row-md-2 overflow-hidden">
+        <img src={photo('blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg')} class="w-100 h-100 object-cover" alt="A blue sofa in a living room" />
+      </Card>
+      <Card class="g-col-12 g-col-md-8">
+        <CardBody>
+          <CardTitle>Wide tile</CardTitle>
+          <CardSubtitle>A tile without <code>.g-row-*</code> takes one row of <code>--grid-bento-row-height</code> and grows when its content is taller.</CardSubtitle>
+        </CardBody>
+      </Card>
+      <Card class="g-col-12 g-col-sm-6 g-col-md-4">
+        <CardBody>
+          <span class="avatar bg-azure-lt mb-3"><Icon name="clock" /></span>
+          <CardTitle>Avg. response</CardTitle>
+          <div class="h1 mb-0">2h 14m</div>
+        </CardBody>
+      </Card>
+      <Card class="g-col-12 g-col-sm-6 g-col-md-4">
+        <CardBody>
+          <span class="avatar bg-purple-lt mb-3"><Icon name="users" /></span>
+          <CardTitle>Active users</CardTitle>
+          <div class="h1 mb-0">642</div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
