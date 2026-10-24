@@ -14,11 +14,7 @@
   // Stronger tint than --theme-lt (10%), for a hover/active background on
   // subtle-surface components — matches Bootstrap v6's `--theme-bg-muted`.
   --theme-muted: var(--#{$color}-200);
-  @if $color == 'dark' {
-    --theme-border: var(--dark-mode-border-color);
-  } @else {
-    --theme-border: transparent;
-  }
+  --theme-border: transparent;
 }
 // scss-docs-end theme-color-vars-mixin
 
@@ -36,27 +32,20 @@
   }
 }
 
-// No theme class is generated for `dark`: `.theme-dark` is already the dark
-// color mode selector in 1.x (mixins/bootstrap/_color-mode.scss).
+// Every color that gets a `.theme-{color}` class. `dark` gets none:
+// `.theme-dark` is already the dark color mode selector in 1.x
+// (mixins/bootstrap/_color-mode.scss), so its component variants keep their
+// own rules.
+$theme-class-colors: map.remove(map.merge($theme-colors, $social-colors), 'dark');
+
 // scss-docs-start generate-theme-classes-mixin
 @mixin generate-theme-classes() {
   @include theme-color-properties();
 
-  @each $color, $value in map.remove(map.merge($theme-colors, $social-colors), 'dark') {
+  @each $color, $value in $theme-class-colors {
     .theme-#{$color} {
       @include theme-color-vars($color);
     }
   }
 }
 // scss-docs-end generate-theme-classes-mixin
-
-// Points a component's color variant (`.btn-red`, `.alert-dark`) at the theme
-// tokens by extending its `.theme-{color}` class. `dark` has no class to
-// extend, so its variants get the tokens on their own selector.
-@mixin theme-color($color) {
-  @if $color == 'dark' {
-    @include theme-color-vars($color);
-  } @else {
-    @extend .theme-#{$color};
-  }
-}

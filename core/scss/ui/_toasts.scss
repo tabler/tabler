@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../config' as *;
 
 .toast {
@@ -24,3 +26,10 @@
 
 // `.toast-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
 // its header comment: @extend only reaches modules this file loads).
+
+@if map.has-key($theme-colors, 'dark') {
+  // No `.theme-dark` to extend (see mixins/_theme.scss).
+  .toast-dark {
+    --toast-color: var(--dark);
+  }
+}

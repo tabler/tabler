@@ -20,30 +20,32 @@
 // any sibling module) from ui/_alerts.scss etc.
 @include generate-theme-classes();
 
-@each $color, $value in map.merge($theme-colors, $social-colors) {
+@each $color, $value in $theme-class-colors {
   .btn-#{$color},
   .status-#{$color} {
-    @include theme-color($color);
+    @extend .theme-#{$color};
   }
 }
 
-@each $name, $color in $theme-colors {
-  .alert-#{$name},
-  .toast-#{$name},
-  .bg-pattern-#{$name} {
-    @include theme-color($name);
+@each $name in map.keys($theme-colors) {
+  @if map.has-key($theme-class-colors, $name) {
+    .alert-#{$name},
+    .toast-#{$name},
+    .bg-pattern-#{$name} {
+      @extend .theme-#{$name};
+    }
   }
 }
 
 @each $name, $color in $extra-colors {
   .steps-#{$name} {
-    @include theme-color($name);
+    @extend .theme-#{$name};
   }
 
   // The -lt modifier swaps which theme property feeds --steps-color
   // (ui/_steps.scss), so it can't just join the combined selector above.
   .steps-#{$name}-lt {
-    @include theme-color($name);
+    @extend .theme-#{$name};
     --steps-color: var(--theme-lt);
   }
 }
