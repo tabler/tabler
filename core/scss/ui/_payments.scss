@@ -4,14 +4,20 @@
 @use '../config' as *;
 
 .payment {
+  // scss-docs-start payment-css-vars
+  --payment-height: #{config.$avatar-size};
+  --payment-border-radius: var(--border-radius);
+  --payment-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  // scss-docs-end payment-css-vars
+
   display: inline-block;
-  height: config.$avatar-size;
+  height: var(--payment-height);
   aspect-ratio: 1.66666;
   font-style: normal;
   vertical-align: bottom;
   background: no-repeat center/100% 100%;
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
-  @include config.border-radius(var(--border-radius));
+  box-shadow: var(--payment-box-shadow);
+  @include config.border-radius(var(--payment-border-radius));
 }
 
 @each $payment in config.$payment-providers {
@@ -26,6 +32,6 @@
 
 @each $payment-size, $size in config.$payment-sizes {
   .payment-#{$payment-size} {
-    height: map.get($size, size);
+    --payment-height: #{map.get($size, size)};
   }
 }
