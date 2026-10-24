@@ -5,7 +5,7 @@
 
 .steps {
   // scss-docs-start steps-css-vars
-  --steps-color: #{$steps-color};
+  --steps-color: var(--theme-bg, #{$steps-color});
   --steps-inactive-color: #{$steps-inactive-color};
   --steps-dot-size: #{$steps-dot-size};
   --steps-border-width: #{$steps-border-width};
@@ -24,15 +24,9 @@
   }
 }
 
-@each $name, $color in $extra-colors {
-  .steps-#{$name} {
-    --steps-color: var(--#{$name});
-
-    &-lt {
-      --steps-color: var(--#{$name}-lt);
-    }
-  }
-}
+// `.steps-{color}` (@extend .theme-{color}) and `.steps-{color}-lt` (same,
+// plus its own --steps-color swap) live in _extends.scss: @extend only
+// reaches modules this file loads.
 
 //
 // Step item

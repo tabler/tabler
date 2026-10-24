@@ -46,7 +46,7 @@
 .status {
   // scss-docs-start status-css-vars
   --status-height: #{$status-height};
-  --status-color: #{$text-secondary};
+  --status-color: var(--theme-bg, #{$text-secondary});
   --status-padding-y: #{$status-padding-y};
   --status-padding-x: #{$status-padding-x};
   --status-gap: #{$status-gap};
@@ -82,17 +82,14 @@
   border: var(--border-width) var(--border-style) var(--border-color) !important;
 }
 
-@each $name, $color in map.merge($theme-colors, $social-colors) {
-  .status-#{$name} {
-    --status-color: var(--#{$name});
-  }
-}
+// `.status-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+// its header comment: @extend only reaches modules this file loads).
 
 //
 // Status dot
 //
 .status-dot {
-  --status-dot-color: var(--status-color, #{$text-secondary});
+  --status-dot-color: var(--status-color, var(--theme-bg, #{$text-secondary}));
   --status-size: #{$status-dot-size};
   position: relative;
   display: inline-block;
@@ -120,7 +117,7 @@
 //
 .status-indicator {
   --status-indicator-size: #{$status-indicator-size};
-  --status-indicator-color: var(--status-color, #{$text-secondary});
+  --status-indicator-color: var(--status-color, var(--theme-bg, #{$text-secondary}));
   position: relative;
   display: block;
   width: var(--status-indicator-size);
@@ -135,7 +132,8 @@
   width: var(--status-circle-size);
   height: var(--status-circle-size);
   margin: calc(var(--status-circle-size) / -2) 0 0 calc(var(--status-circle-size) / -2);
-  background: var(--status-color);
+  // Set on the indicator, so it carries the indicator's own `.status-{color}`.
+  background: var(--status-indicator-color);
   @include border-radius(var(--border-radius-pill));
 
   &:nth-child(1) {
