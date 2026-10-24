@@ -1,7 +1,5 @@
 @use 'sass:map';
-@use '../settings' as *;
 @use '../variables' as *;
-@use 'functions' as *;
 
 // Ported from Bootstrap v6's `.theme-*` generator (scss/_theme.scss): one
 // mixin maps a color's tokens onto a generic `--theme-*` contract, so a
@@ -16,27 +14,11 @@
   // Stronger tint than --theme-lt (10%), for a hover/active background on
   // subtle-surface components — matches Bootstrap v6's `--theme-bg-muted`.
   --theme-muted: var(--#{$color}-200);
-  @include theme-border-var($color);
-}
-// scss-docs-end theme-color-vars-mixin
-
-// The same tokens for a color with only its base `--{color}` custom property
-// (`white`, `black`, `gray`, `gray-500`, …): the other shades are derived here
-// the way `_props.scss` derives them for the theme colors.
-@mixin theme-color-vars-derived($color, $value) {
-  --theme-bg: var(--#{$color});
-  --theme-fg: #{if(sass(contrast-ratio($value) > $min-contrast-ratio): var(--light); else: var(--dark))};
-  --theme-darken: #{adjust-lightness-css(var(--#{$color}), -6%)};
-  --theme-lt: color-mix(in oklab, var(--#{$color}) 10%, transparent);
-  --theme-muted: color-mix(in oklab, var(--#{$color}) 20%, transparent);
-  @include theme-border-var($color);
-}
-
-@mixin theme-border-var($color) {
   // Shaded a little towards black, like the border of the filled button
   // variants (`$btn-variant-border-color`).
   --theme-border: color-mix(in oklab, var(--#{$color}), var(--black) 10%);
 }
+// scss-docs-end theme-color-vars-mixin
 
 // The tokens color only the element that carries the class. If they inherited,
 // every plain `.btn` or `.badge` inside an `.alert-success` would turn into a
@@ -52,16 +34,11 @@
   }
 }
 
-// The colors whose component variants (`.btn-red`, `.alert-red`) extend a
-// `.theme-{color}` class: every theme and social color but `dark`.
+// Every color that gets a `.theme-{color}` class. `dark` gets none:
 // `.theme-dark` is already the dark color mode selector in 1.x
-// (mixins/bootstrap/_color-mode.scss), so the `-dark` variants keep their own
-// rules and `dark` gets no theme class.
+// (mixins/bootstrap/_color-mode.scss), so its component variants keep their
+// own rules.
 $theme-class-colors: map.remove(map.merge($theme-colors, $social-colors), 'dark');
-
-// Colors that also get a `.theme-{color}` class, but have only their base
-// custom property and no component variants.
-$theme-class-extra-colors: map.merge(map.remove($colors, map.keys($theme-class-colors)...), $gray-colors);
 
 // scss-docs-start generate-theme-classes-mixin
 @mixin generate-theme-classes() {
@@ -70,12 +47,6 @@ $theme-class-extra-colors: map.merge(map.remove($colors, map.keys($theme-class-c
   @each $color, $value in $theme-class-colors {
     .theme-#{$color} {
       @include theme-color-vars($color);
-    }
-  }
-
-  @each $color, $value in $theme-class-extra-colors {
-    .theme-#{$color} {
-      @include theme-color-vars-derived($color, $value);
     }
   }
 }
