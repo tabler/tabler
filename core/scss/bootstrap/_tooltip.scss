@@ -33,6 +33,11 @@
     opacity: var(--tooltip-opacity);
   }
 
+  &::before {
+    position: absolute;
+    content: '';
+  }
+
   .tooltip-arrow {
     display: block;
     width: var(--tooltip-arrow-width);
@@ -121,3 +126,26 @@
   background-color: var(--tooltip-bg);
   @include border-radius(var(--tooltip-border-radius));
 }
+
+.bs-tooltip-top::before {
+  inset: 100% 0 auto;
+  height: var(--tooltip-bridge, 0.5rem);
+}
+
+.bs-tooltip-bottom::before {
+  inset: auto 0 100%;
+  height: var(--tooltip-bridge, 0.5rem);
+}
+
+/* rtl:begin:ignore */
+.bs-tooltip-start::before {
+  inset: 0 auto 0 100%;
+  width: var(--tooltip-bridge, 0.5rem);
+}
+
+.bs-tooltip-end::before {
+  inset: 0 100% 0 auto;
+  width: var(--tooltip-bridge, 0.5rem);
+}
+
+/* rtl:end:ignore */

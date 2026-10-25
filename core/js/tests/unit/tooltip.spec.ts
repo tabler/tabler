@@ -658,6 +658,56 @@ describe('Tooltip', () => {
     })
   })
 
+  describe('hoverable tip', () => {
+    const showTooltip = (options = {}) => {
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
+      const el = fixtureEl.querySelector('a')!
+      const tooltip = new Tooltip(el, { animation: false, ...options })
+      tooltip.show()
+      return { el, tooltip }
+    }
+
+    it('should keep the tooltip open while the pointer is over the tip', () => {
+      vi.useFakeTimers()
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      vi.runAllTimers()
+
+      expect(tooltip._isShown()).toBe(true)
+      vi.useRealTimers()
+    })
+
+    it('should hide the tooltip after the pointer leaves the tip', () => {
+      vi.useFakeTimers()
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      vi.runAllTimers()
+
+      expect(tooltip._isShown()).toBe(false)
+      vi.useRealTimers()
+    })
+
+    it('should hide the tooltip on Escape', () => {
+      const { tooltip } = showTooltip()
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should not listen on the tip without a hover trigger', () => {
+      const { tooltip } = showTooltip({ trigger: 'click' })
+      const spy = vi.spyOn(tooltip, '_enter')
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+  })
+
   describe('_isWithActiveTrigger', () => {
     it('should return false with no active triggers', () => {
       fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
