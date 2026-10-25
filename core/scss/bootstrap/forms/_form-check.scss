@@ -79,7 +79,9 @@
     content: '';
     background-color: var(--form-check-icon-color);
     opacity: 0;
+    transform: scale(0.5);
     @include mask-icon(var(--form-check-icon));
+    @include transition($form-check-mark-transition);
   }
 
   &[type='checkbox'] {
@@ -110,6 +112,7 @@
 
     &::before {
       opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -122,6 +125,7 @@
 
     &::before {
       opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -191,6 +195,7 @@
       // stylelint-disable-next-line property-disallowed-list
       border-radius: 50%;
       opacity: 1;
+      transform: none;
       mask-image: none;
       @include transition($form-switch-knob-transition);
     }
