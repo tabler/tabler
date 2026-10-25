@@ -151,8 +151,7 @@ class Tooltip extends BaseComponent {
   _hideModalHandler: () => void
   _isHoverable: boolean
   _escapeHandler: (event: KeyboardEvent) => void
-  _tipEnterHandler: () => void
-  _tipLeaveHandler: () => void
+  _tipHandler: (event: Event) => void
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     if (typeof Popper === 'undefined') {
@@ -182,13 +181,14 @@ class Tooltip extends BaseComponent {
         this.hide()
       }
     }
-    this._tipEnterHandler = () => {
-      this._activeTrigger[TRIGGER_HOVER] = true
-      this._enter()
-    }
-    this._tipLeaveHandler = () => {
-      this._activeTrigger[TRIGGER_HOVER] = false
-      this._leave()
+    this._tipHandler = (event: Event) => {
+      const isEnter = event.type === 'mouseover'
+      this._activeTrigger[TRIGGER_HOVER] = isEnter
+      if (isEnter) {
+        this._enter()
+      } else {
+        this._leave()
+      }
     }
 
     this._setListeners()
@@ -283,7 +283,7 @@ class Tooltip extends BaseComponent {
 
     tip.classList.add(CLASS_NAME_SHOW)
 
-    this._addTipListeners(tip)
+    this._toggleTipListeners(tip, true)
 
     if ('ontouchstart' in document.documentElement) {
       for (const element of Array.from(document.body.children)) {
@@ -316,7 +316,7 @@ class Tooltip extends BaseComponent {
 
     const tip = this._getTipElement()
     tip!.classList.remove(CLASS_NAME_SHOW)
-    this._removeTipListeners(tip)
+    this._toggleTipListeners(tip, false)
 
     if ('ontouchstart' in document.documentElement) {
       for (const element of Array.from(document.body.children)) {
@@ -647,26 +647,20 @@ class Tooltip extends BaseComponent {
     return config
   }
 
-  _addTipListeners(tip: HTMLElement): void {
-    EventHandler.on(document, (this.constructor as typeof Tooltip).eventName(EVENT_KEYDOWN), this._escapeHandler)
+  _toggleTipListeners(tip: HTMLElement | null, add: boolean): void {
+    const method = add ? 'on' : 'off'
+    const eventName = (name: string) => (this.constructor as typeof Tooltip).eventName(name)
 
-    if (this._isHoverable) {
-      EventHandler.on(tip, (this.constructor as typeof Tooltip).eventName(EVENT_MOUSEENTER), this._tipEnterHandler)
-      EventHandler.on(tip, (this.constructor as typeof Tooltip).eventName(EVENT_MOUSELEAVE), this._tipLeaveHandler)
-    }
-  }
+    EventHandler[method](document, eventName(EVENT_KEYDOWN), this._escapeHandler)
 
-  _removeTipListeners(tip: HTMLElement | null): void {
-    EventHandler.off(document, (this.constructor as typeof Tooltip).eventName(EVENT_KEYDOWN), this._escapeHandler)
-
-    if (tip) {
-      EventHandler.off(tip, (this.constructor as typeof Tooltip).eventName(EVENT_MOUSEENTER), this._tipEnterHandler)
-      EventHandler.off(tip, (this.constructor as typeof Tooltip).eventName(EVENT_MOUSELEAVE), this._tipLeaveHandler)
+    if (tip && this._isHoverable) {
+      EventHandler[method](tip, eventName(EVENT_MOUSEENTER), this._tipHandler)
+      EventHandler[method](tip, eventName(EVENT_MOUSELEAVE), this._tipHandler)
     }
   }
 
   _disposePopper(): void {
-    this._removeTipListeners(this.tip)
+    this._toggleTipListeners(this.tip, false)
 
     if (this._popper) {
       this._popper.destroy()
