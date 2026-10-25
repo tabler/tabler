@@ -77,11 +77,11 @@ class Toast extends BaseComponent {
     return NAME
   }
 
-  show(): void {
+  show(): Promise<void> {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW)
 
     if (showEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
     this._clearTimeout()
@@ -101,18 +101,18 @@ class Toast extends BaseComponent {
     reflow(this._element)
     this._element.classList.add(CLASS_NAME_SHOW, CLASS_NAME_SHOWING)
 
-    this._queueCallback(complete, this._element, this._config.animation)
+    return this._queueCallback(complete, this._element, this._config.animation)
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (!this.isShown()) {
-      return
+      return Promise.resolve()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
     const complete = () => {
@@ -122,7 +122,7 @@ class Toast extends BaseComponent {
     }
 
     this._element.classList.add(CLASS_NAME_SHOWING)
-    this._queueCallback(complete, this._element, this._config.animation)
+    return this._queueCallback(complete, this._element, this._config.animation)
   }
 
   dispose(): void {
@@ -149,7 +149,7 @@ class Toast extends BaseComponent {
     }
 
     this._timeout = setTimeout(() => {
-      this.hide()
+      void this.hide()
     }, this._config.delay)
   }
 

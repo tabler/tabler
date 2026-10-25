@@ -83,7 +83,7 @@ class Collapse extends BaseComponent {
     }
 
     if (this._config.toggle) {
-      this.toggle()
+      void this.toggle()
     }
   }
 
@@ -99,17 +99,13 @@ class Collapse extends BaseComponent {
     return NAME
   }
 
-  toggle(): void {
-    if (this._isShown()) {
-      this.hide()
-    } else {
-      this.show()
-    }
+  toggle(): Promise<void> {
+    return this._isShown() ? this.hide() : this.show()
   }
 
-  show(): void {
+  show(): Promise<void> {
     if (this._isTransitioning || this._isShown()) {
-      return
+      return Promise.resolve()
     }
 
     let activeChildren: Collapse[] = []
@@ -121,16 +117,16 @@ class Collapse extends BaseComponent {
     }
 
     if (activeChildren.length && activeChildren[0]._isTransitioning) {
-      return
+      return Promise.resolve()
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_SHOW)
     if (startEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
     for (const activeInstance of activeChildren) {
-      activeInstance.hide()
+      void activeInstance.hide()
     }
 
     const dimension = this._getDimension()
@@ -157,18 +153,19 @@ class Collapse extends BaseComponent {
     const capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1)
     const scrollSize = `scroll${capitalizedDimension}` as 'scrollWidth' | 'scrollHeight'
 
-    this._queueCallback(complete, this._element, true)
+    const transition = this._queueCallback(complete, this._element, true)
     this._element.style[dimension] = `${this._element[scrollSize]}px`
+    return transition
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (this._isTransitioning || !this._isShown()) {
-      return
+      return Promise.resolve()
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_HIDE)
     if (startEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
     const dimension = this._getDimension()
@@ -199,7 +196,7 @@ class Collapse extends BaseComponent {
 
     this._element.style[dimension] = ''
 
-    this._queueCallback(complete, this._element, true)
+    return this._queueCallback(complete, this._element, true)
   }
 
   _isShown(element: HTMLElement = this._element): boolean {
@@ -275,7 +272,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   for (const element of SelectorEngine.getMultipleElementsFromSelector(this)) {
-    ;(Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
+    void (Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
   }
 })
 

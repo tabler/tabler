@@ -25,17 +25,17 @@ class Alert extends BaseComponent {
     return NAME
   }
 
-  close(): void {
+  close(): Promise<void> {
     const closeEvent = EventHandler.trigger(this._element, EVENT_CLOSE)
 
     if (closeEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
     this._element.classList.remove(CLASS_NAME_SHOW)
 
     const isAnimated = this._element.classList.contains(CLASS_NAME_FADE)
-    this._queueCallback(() => this._destroyElement(), this._element, isAnimated)
+    return this._queueCallback(() => this._destroyElement(), this._element, isAnimated)
   }
 
   _destroyElement(): void {

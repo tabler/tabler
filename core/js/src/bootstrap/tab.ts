@@ -67,10 +67,10 @@ class Tab extends BaseComponent {
     return NAME
   }
 
-  show(): void {
+  show(): Promise<void> {
     const innerElem = this._element
     if (this._elemIsActive(innerElem)) {
-      return
+      return Promise.resolve()
     }
 
     const active = this._getActiveElem()
@@ -80,21 +80,20 @@ class Tab extends BaseComponent {
     const showEvent = EventHandler.trigger(innerElem, EVENT_SHOW, { relatedTarget: active })
 
     if (showEvent?.defaultPrevented || hideEvent?.defaultPrevented) {
-      return
+      return Promise.resolve()
     }
 
-    this._deactivate(active, innerElem)
-    this._activate(innerElem, active)
+    return Promise.all([this._deactivate(active, innerElem), this._activate(innerElem, active)]).then(() => undefined)
   }
 
-  _activate(element: HTMLElement | null, relatedElem?: HTMLElement | null): void {
+  _activate(element: HTMLElement | null, relatedElem?: HTMLElement | null): Promise<void> {
     if (!element) {
-      return
+      return Promise.resolve()
     }
 
     element.classList.add(CLASS_NAME_ACTIVE)
 
-    this._activate(SelectorEngine.getElementFromSelector(element))
+    const panelTransition = this._activate(SelectorEngine.getElementFromSelector(element))
 
     const complete = () => {
       if (element.getAttribute('role') !== 'tab') {
@@ -110,18 +109,18 @@ class Tab extends BaseComponent {
       })
     }
 
-    this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))
+    return Promise.all([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))]).then(() => undefined)
   }
 
-  _deactivate(element: HTMLElement | null, relatedElem?: HTMLElement | null): void {
+  _deactivate(element: HTMLElement | null, relatedElem?: HTMLElement | null): Promise<void> {
     if (!element) {
-      return
+      return Promise.resolve()
     }
 
     element.classList.remove(CLASS_NAME_ACTIVE)
     element.blur()
 
-    this._deactivate(SelectorEngine.getElementFromSelector(element))
+    const panelTransition = this._deactivate(SelectorEngine.getElementFromSelector(element))
 
     const complete = () => {
       if (element.getAttribute('role') !== 'tab') {
@@ -135,7 +134,7 @@ class Tab extends BaseComponent {
       EventHandler.trigger(element, EVENT_HIDDEN, { relatedTarget: relatedElem })
     }
 
-    this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))
+    return Promise.all([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))]).then(() => undefined)
   }
 
   _keydown(event: KeyboardEvent): void {
@@ -158,7 +157,7 @@ class Tab extends BaseComponent {
 
     if (nextActiveElement) {
       nextActiveElement.focus({ preventScroll: true })
-      ;(Tab.getOrCreateInstance(nextActiveElement) as Tab).show()
+      void (Tab.getOrCreateInstance(nextActiveElement) as Tab).show()
     }
   }
 
@@ -273,7 +272,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     return
   }
 
-  ;(Tab.getOrCreateInstance(this) as Tab).show()
+  void (Tab.getOrCreateInstance(this) as Tab).show()
 })
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {

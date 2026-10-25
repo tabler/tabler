@@ -44,16 +44,21 @@ class BaseComponent extends Config {
     }
   }
 
-  _queueCallback(callback: () => void, element: HTMLElement, isAnimated = true): void {
-    executeAfterTransition(
-      () => {
-        if (this._element) {
-          callback()
-        }
-      },
-      element,
-      isAnimated,
-    )
+  _queueCallback(callback: () => void | Promise<void>, element: HTMLElement, isAnimated = true): Promise<void> {
+    return new Promise((resolve) => {
+      executeAfterTransition(
+        () => {
+          if (this._element) {
+            resolve(Promise.resolve(callback()))
+            return
+          }
+
+          resolve()
+        },
+        element,
+        isAnimated,
+      )
+    })
   }
 
   _getConfig(config?: ComponentConfig): ComponentConfig {
