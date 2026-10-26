@@ -1,0 +1,88 @@
+---
+import Button from '@ui/Button.astro'
+import CardFooter from '@ui/CardFooter.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+
+interface Metric {
+  name: string
+  current: number
+  previous: number
+  /** a drop is an improvement (tickets, response time) */
+  lowerIsBetter?: boolean
+  format: (value: number) => string
+}
+
+const minutes = (value: number) => `${Math.floor(value / 60)}h ${String(value % 60).padStart(2, '0')}m`
+const number = (value: number) => value.toLocaleString('en-US')
+const percent = (value: number) => `${value.toFixed(1)}%`
+const money = (value: number) => `$${number(value)}`
+
+const metrics: Metric[] = [
+  { name: 'Signups', current: 1284, previous: 1152, format: number },
+  { name: 'Activation rate', current: 42.3, previous: 44.1, format: percent },
+  { name: 'Weekly active teams', current: 318, previous: 302, format: number },
+  { name: 'Revenue', current: 48920, previous: 46310, format: money },
+  { name: 'Support tickets', current: 164, previous: 191, lowerIsBetter: true, format: number },
+  { name: 'Median response time', current: 102, previous: 125, lowerIsBetter: true, format: minutes },
+]
+
+const rows = metrics.map((metric) => {
+  const change = ((metric.current - metric.previous) / metric.previous) * 100
+  const improved = metric.lowerIsBetter ? change < 0 : change > 0
+  return {
+    ...metric,
+    change: `${change > 0 ? '+' : ''}${change.toFixed(1)}%`,
+    color: change === 0 ? 'secondary' : improved ? 'green' : 'red',
+    icon: change === 0 ? 'minus' : change > 0 ? 'arrow-up-right' : 'arrow-down-right',
+    label: change === 0 ? 'No change' : improved ? 'Improved' : 'Regressed',
+  }
+})
+---
+
+<div class:list={['card', className]}>
+  <CardHeader>
+    <div>
+      <CardTitle>Weekly metrics</CardTitle>
+      <CardSubtitle>13–19 Oct compared with 6–12 Oct 2026</CardSubtitle>
+    </div>
+    <Button text="Export" class="ms-auto" />
+  </CardHeader>
+  <div class="table-responsive">
+    <table class="table table-sm table-vcenter card-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="text-end">This week</th>
+          <th class="text-end">Last week</th>
+          <th class="text-end">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              <td>{row.name}</td>
+              <td class="text-end">{row.format(row.current)}</td>
+              <td class="text-end text-secondary">{row.format(row.previous)}</td>
+              <td class:list={['text-end', `text-${row.color}`]}>
+                <span class="visually-hidden">{row.label} </span>
+                <Icon name={row.icon} size="sm" class="me-1" />
+                {row.change}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <CardFooter class="text-secondary">Revenue is normalised to constant currency, so the change excludes exchange-rate movements.</CardFooter>
+</div>
