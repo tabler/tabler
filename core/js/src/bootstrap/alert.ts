@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
 import { enableDismissTrigger } from './util/component-functions'
-import { defineJQueryPlugin } from './util/index.js'
+import { defineJQueryPlugin, resolved } from './util/index.js'
 import type { JQueryCollectionLike } from './types'
 
 const NAME = 'alert'
@@ -29,7 +29,7 @@ class Alert extends BaseComponent {
     const closeEvent = EventHandler.trigger(this._element, EVENT_CLOSE)
 
     if (closeEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._element.classList.remove(CLASS_NAME_SHOW)

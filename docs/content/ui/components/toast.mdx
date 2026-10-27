@@ -88,6 +88,18 @@ Tabler binds every element with `data-bs-toggle="toast"` to show the toast from 
 
 <CodeDocs name="toast-init" file="core/js/src/toast.ts" />
 
+### Promise return values
+
+`show()` and `hide()` return a Promise that resolves after the transition ends, right after `shown.bs.toast` or `hidden.bs.toast` fires. Use it to run code after the toast has finished opening or closing:
+
+```js
+const toast = tabler.Toast.getOrCreateInstance(el);
+await toast.show();
+console.log('Toast is visible');
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: `hide()` is called on a toast that is not shown, or a listener called `preventDefault()` on `show.bs.toast` or `hide.bs.toast`. To act only when the toast really changed state, listen for `shown.bs.toast` or `hidden.bs.toast` instead.
+
 ## Accessibility
 
 - Use `role="status"` with `aria-live="polite"` for most toasts, such as a success message. The reader announces it when it is idle.

@@ -54,6 +54,18 @@ new tabler.Tooltip(el, { customClass: 'tooltip-wide', delay: 300 });
 
 To read or control the existing instance without changing its options, use `tabler.Tooltip.getInstance(el)` or `tabler.Tooltip.getOrCreateInstance(el)`.
 
+### Promise return values
+
+`show()`, `hide()` and `toggle()` return a Promise that resolves after the transition ends, right after `shown.bs.tooltip` or `hidden.bs.tooltip` fires. Use it to run code after the tooltip has finished opening or closing:
+
+```js
+const tooltip = tabler.Tooltip.getOrCreateInstance(el);
+await tooltip.show();
+console.log('Tooltip is visible');
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the tooltip is already shown or hidden, it has no content, it is disabled, or a listener called `preventDefault()` on `show.bs.tooltip` or `hide.bs.tooltip`. `toggle()` waits for the `delay` option first. If another call replaces it during that wait - the pointer leaves, focus moves, or `toggle()` runs again - the earlier Promise resolves without the tooltip being shown or hidden, so `await tooltip.toggle()` does not guarantee that the tooltip is visible. To act only when the tooltip really changed state, listen for `shown.bs.tooltip` or `hidden.bs.tooltip` instead.
+
 ## Accessibility
 
 - A tooltip only describes; it never replaces a name. The trigger still needs its own text or `aria-label`.

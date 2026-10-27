@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -103,13 +103,13 @@ class Offcanvas extends BaseComponent {
 
   show(relatedTarget?: HTMLElement): Promise<void> {
     if (this._isShown) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, { relatedTarget })
 
     if (showEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
@@ -139,13 +139,13 @@ class Offcanvas extends BaseComponent {
 
   hide(): Promise<void> {
     if (!this._isShown) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._focustrap.deactivate()

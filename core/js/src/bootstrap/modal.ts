@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -113,7 +113,7 @@ class Modal extends BaseComponent {
 
   show(relatedTarget?: HTMLElement): Promise<void> {
     if (this._isShown || this._isTransitioning) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
@@ -121,7 +121,7 @@ class Modal extends BaseComponent {
     })
 
     if (showEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
@@ -141,13 +141,13 @@ class Modal extends BaseComponent {
 
   hide(): Promise<void> {
     if (!this._isShown || this._isTransitioning) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._isShown = false

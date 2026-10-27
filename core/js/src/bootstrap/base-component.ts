@@ -48,12 +48,7 @@ class BaseComponent extends Config {
     return new Promise((resolve) => {
       executeAfterTransition(
         () => {
-          if (this._element) {
-            resolve(Promise.resolve(callback()))
-            return
-          }
-
-          resolve()
+          resolve(this._element ? callback() : undefined)
         },
         element,
         isAnimated,

@@ -9,7 +9,7 @@ import * as Popper from '@popperjs/core'
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
-import { defineJQueryPlugin, execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
+import { defineJQueryPlugin, execute, findShadowRoot, getElement, getUID, isRTL, noop, resolved } from './util/index'
 import { DefaultAllowlist } from './util/sanitizer'
 import TemplateFactory from './util/template-factory'
 import type { AllowList, ComponentConfig as BaseComponentConfig, JQueryCollectionLike, SanitizeFn } from './types'
@@ -203,7 +203,7 @@ class Tooltip extends BaseComponent {
 
   toggle(): Promise<void> {
     if (!this._isEnabled) {
-      return Promise.resolve()
+      return resolved()
     }
 
     return this._isShown() ? this._leave() : this._enter()
@@ -229,7 +229,7 @@ class Tooltip extends BaseComponent {
     }
 
     if (!(this._isWithContent() && this._isEnabled)) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_SHOW))
@@ -237,7 +237,7 @@ class Tooltip extends BaseComponent {
     const isInTheDom = (shadowRoot || this._element.ownerDocument.documentElement).contains(this._element)
 
     if (showEvent?.defaultPrevented || !isInTheDom) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._disposePopper()
@@ -279,12 +279,12 @@ class Tooltip extends BaseComponent {
 
   hide(): Promise<void> {
     if (!this._isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_HIDE))
     if (hideEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const tip = this._getTipElement()
@@ -519,7 +519,7 @@ class Tooltip extends BaseComponent {
   _enter(): Promise<void> {
     if (this._isShown() || this._isHovered) {
       this._isHovered = true
-      return Promise.resolve()
+      return resolved()
     }
 
     this._isHovered = true
@@ -529,7 +529,7 @@ class Tooltip extends BaseComponent {
 
   _leave(): Promise<void> {
     if (this._isWithActiveTrigger()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._isHovered = false

@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, getNextActiveElement, isDisabled } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isDisabled, resolved, settle } from './util/index'
 import type { JQueryCollectionLike } from './types'
 
 const NAME = 'tab'
@@ -70,7 +70,7 @@ class Tab extends BaseComponent {
   show(): Promise<void> {
     const innerElem = this._element
     if (this._elemIsActive(innerElem)) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const active = this._getActiveElem()
@@ -80,15 +80,15 @@ class Tab extends BaseComponent {
     const showEvent = EventHandler.trigger(innerElem, EVENT_SHOW, { relatedTarget: active })
 
     if (showEvent?.defaultPrevented || hideEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
-    return Promise.all([this._deactivate(active, innerElem), this._activate(innerElem, active)]).then(() => undefined)
+    return settle([this._deactivate(active, innerElem), this._activate(innerElem, active)])
   }
 
   _activate(element: HTMLElement | null, relatedElem?: HTMLElement | null): Promise<void> {
     if (!element) {
-      return Promise.resolve()
+      return resolved()
     }
 
     element.classList.add(CLASS_NAME_ACTIVE)
@@ -109,12 +109,12 @@ class Tab extends BaseComponent {
       })
     }
 
-    return Promise.all([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))]).then(() => undefined)
+    return settle([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))])
   }
 
   _deactivate(element: HTMLElement | null, relatedElem?: HTMLElement | null): Promise<void> {
     if (!element) {
-      return Promise.resolve()
+      return resolved()
     }
 
     element.classList.remove(CLASS_NAME_ACTIVE)
@@ -134,7 +134,7 @@ class Tab extends BaseComponent {
       EventHandler.trigger(element, EVENT_HIDDEN, { relatedTarget: relatedElem })
     }
 
-    return Promise.all([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))]).then(() => undefined)
+    return settle([panelTransition, this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE))])
   }
 
   _keydown(event: KeyboardEvent): void {

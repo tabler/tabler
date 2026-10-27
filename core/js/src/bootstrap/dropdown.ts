@@ -10,7 +10,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
+import { defineJQueryPlugin, execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop, resolved } from './util/index'
 import type { DelegatedEvent } from './dom/event-handler'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -128,7 +128,7 @@ class Dropdown extends BaseComponent {
 
   show(): Promise<void> {
     if (isDisabled(this._element) || this._isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const relatedTarget = {
@@ -138,7 +138,7 @@ class Dropdown extends BaseComponent {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, relatedTarget)
 
     if (showEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._createPopper()
@@ -155,12 +155,12 @@ class Dropdown extends BaseComponent {
     this._menu.classList.add(CLASS_NAME_SHOW)
     this._element.classList.add(CLASS_NAME_SHOW)
     EventHandler.trigger(this._element, EVENT_SHOWN, relatedTarget)
-    return Promise.resolve()
+    return resolved()
   }
 
   hide(): Promise<void> {
     if (isDisabled(this._element) || !this._isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const relatedTarget = {
@@ -168,7 +168,7 @@ class Dropdown extends BaseComponent {
     }
 
     this._completeHide(relatedTarget)
-    return Promise.resolve()
+    return resolved()
   }
 
   dispose(): void {

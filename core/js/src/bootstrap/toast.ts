@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
 import { enableDismissTrigger } from './util/component-functions'
-import { defineJQueryPlugin, reflow } from './util/index.js'
+import { defineJQueryPlugin, reflow, resolved } from './util/index.js'
 import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
 type ComponentConfig = {
@@ -81,7 +81,7 @@ class Toast extends BaseComponent {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW)
 
     if (showEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     this._clearTimeout()
@@ -106,13 +106,13 @@ class Toast extends BaseComponent {
 
   hide(): Promise<void> {
     if (!this.isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const complete = () => {

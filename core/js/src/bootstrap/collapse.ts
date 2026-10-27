@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, getElement, reflow } from './util/index'
+import { defineJQueryPlugin, getElement, reflow, resolved } from './util/index'
 import type { DelegatedEvent } from './dom/event-handler'
 import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
@@ -105,7 +105,7 @@ class Collapse extends BaseComponent {
 
   show(): Promise<void> {
     if (this._isTransitioning || this._isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     let activeChildren: Collapse[] = []
@@ -117,12 +117,12 @@ class Collapse extends BaseComponent {
     }
 
     if (activeChildren.length && activeChildren[0]._isTransitioning) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_SHOW)
     if (startEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     for (const activeInstance of activeChildren) {
@@ -160,12 +160,12 @@ class Collapse extends BaseComponent {
 
   hide(): Promise<void> {
     if (this._isTransitioning || !this._isShown()) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_HIDE)
     if (startEvent?.defaultPrevented) {
-      return Promise.resolve()
+      return resolved()
     }
 
     const dimension = this._getDimension()
