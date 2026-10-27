@@ -185,6 +185,7 @@ class Tooltip extends BaseComponent {
       const isEnter = event.type === 'mouseover'
       this._activeTrigger[TRIGGER_HOVER] = isEnter
       if (isEnter) {
+        clearTimeout(this._timeout)
         this._enter()
       } else {
         this._leave()

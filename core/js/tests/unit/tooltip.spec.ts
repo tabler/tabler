@@ -692,6 +692,21 @@ describe('Tooltip', () => {
       vi.useRealTimers()
     })
 
+    it('should keep the tip open when it is entered during the fade-in', async () => {
+      fixtureEl.innerHTML = '<style>.tooltip.fade { transition: opacity 50ms linear }</style><a href="#" title="Tooltip">Trigger</a>'
+      const el = fixtureEl.querySelector('a')!
+      const tooltip = new Tooltip(el, { delay: { show: 0, hide: 100 } })
+      const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      await wait(10)
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      await wait(200)
+
+      expect(tooltip._isShown()).toBe(true)
+    })
+
     it('should hide the tooltip on Escape', () => {
       const { tooltip } = showTooltip()
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
