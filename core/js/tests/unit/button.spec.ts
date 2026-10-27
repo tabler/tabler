@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
-import Button from '../../src/bootstrap/button'
+import Button, { initPressedState } from '../../src/bootstrap/button'
 import { clearFixture, getFixture } from '../helpers/fixture'
 
 describe('Button', () => {
@@ -69,6 +69,18 @@ describe('Button', () => {
 
       expect(btnEl.getAttribute('aria-pressed')).toBe('true')
       expect(btnEl.classList.contains('active')).toBe(true)
+    })
+  })
+
+  describe('initial aria-pressed', () => {
+    it('should add aria-pressed to toggle buttons that lack it, based on .active', () => {
+      fixtureEl.innerHTML = ['<button class="btn" id="off" data-bs-toggle="button"></button>', '<button class="btn active" id="on" data-bs-toggle="button"></button>', '<button class="btn active" id="keep" data-bs-toggle="button" aria-pressed="false"></button>'].join('')
+
+      initPressedState()
+
+      expect(fixtureEl.querySelector('#off')!.getAttribute('aria-pressed')).toBe('false')
+      expect(fixtureEl.querySelector('#on')!.getAttribute('aria-pressed')).toBe('true')
+      expect(fixtureEl.querySelector('#keep')!.getAttribute('aria-pressed')).toBe('false')
     })
   })
 
