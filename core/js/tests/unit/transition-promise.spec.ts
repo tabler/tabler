@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import Alert from '../../src/bootstrap/alert'
 import Collapse from '../../src/bootstrap/collapse'
 import Dropdown from '../../src/bootstrap/dropdown'
@@ -9,6 +9,8 @@ import Tab from '../../src/bootstrap/tab'
 import Toast from '../../src/bootstrap/toast'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearFixture, getFixture } from '../helpers/fixture'
+
+const settlesWithin = (promise: Promise<void>, ms = 200): Promise<boolean> => Promise.race([promise.then(() => true), new Promise<boolean>((resolve) => setTimeout(() => resolve(false), ms))])
 
 describe('transition promises', () => {
   let fixtureEl: HTMLElement
@@ -99,6 +101,35 @@ describe('transition promises', () => {
     expect(fixtureEl.querySelector('.modal')!.classList.contains('show')).toBe(false)
   })
 
+  it('Modal#show resolves when the modal is disposed while the backdrop opens', async () => {
+    fixtureEl.innerHTML = '<div class="modal fade"><div class="modal-dialog"></div></div>'
+    const modal = new Modal(fixtureEl.querySelector<HTMLElement>('.modal')!)
+    const backdrop = modal._backdrop
+    const show = backdrop.show.bind(backdrop)
+    vi.spyOn(backdrop, 'show').mockImplementation((callback) => {
+      modal.dispose()
+      show(callback)
+    })
+
+    expect(await settlesWithin(modal.show())).toBe(true)
+  })
+
+  it('Modal#hide resolves when the modal is disposed while the backdrop closes', async () => {
+    fixtureEl.innerHTML = '<div class="modal fade"><div class="modal-dialog"></div></div>'
+    const el = fixtureEl.querySelector<HTMLElement>('.modal')!
+    const modal = new Modal(el)
+    await modal.show()
+    const backdrop = modal._backdrop
+    const hide = backdrop.hide.bind(backdrop)
+    vi.spyOn(backdrop, 'hide').mockImplementation((callback) => {
+      modal.dispose()
+      hide(callback)
+    })
+
+    expect(await settlesWithin(modal.hide())).toBe(true)
+    expect(document.body.classList.contains('modal-open')).toBe(false)
+  })
+
   it('Offcanvas show and hide resolve after shown and hidden', async () => {
     fixtureEl.innerHTML = '<div class="offcanvas"></div>'
     const el = fixtureEl.querySelector<HTMLElement>('.offcanvas')!
@@ -126,6 +157,23 @@ describe('transition promises', () => {
     expect(second.classList.contains('active')).toBe(true)
     expect(fixtureEl.querySelector('#b')!.classList.contains('show')).toBe(true)
     expect(fixtureEl.querySelector('#a')!.classList.contains('show')).toBe(false)
+  })
+
+  it('Tab#show resolves after the new pane finishes fading in', async () => {
+    fixtureEl.innerHTML = [
+      '<style>.fade { transition: opacity 50ms linear } .fade:not(.show) { opacity: 0 }</style>',
+      '<ul class="nav" role="tablist">',
+      '<li><button class="nav-link active" data-bs-target="#a" role="tab">A</button></li>',
+      '<li><button class="nav-link" data-bs-target="#b" role="tab">B</button></li>',
+      '</ul>',
+      '<div class="tab-content"><div class="tab-pane fade show active" id="a"></div><div class="tab-pane fade" id="b"></div></div>',
+    ].join('')
+    const [, second] = Array.from(fixtureEl.querySelectorAll<HTMLElement>('.nav-link'))
+    const pane = fixtureEl.querySelector<HTMLElement>('#b')!
+
+    await new Tab(second).show()
+
+    expect(getComputedStyle(pane).opacity).toBe('1')
   })
 
   it('Toast show and hide resolve', async () => {
@@ -157,5 +205,20 @@ describe('transition promises', () => {
 
     await tooltip.toggle()
     expect(tooltip.tip!.classList.contains('show')).toBe(true)
+  })
+
+  it('Tooltip#toggle resolves when the trigger is hidden during the show delay', async () => {
+    fixtureEl.innerHTML = '<a href="#" title="tip">Tip</a>'
+    const el = fixtureEl.querySelector<HTMLElement>('a')!
+    const tooltip = new Tooltip(el, { delay: { show: 20, hide: 0 } })
+    const onError = vi.fn((event: ErrorEvent) => event.preventDefault())
+    window.addEventListener('error', onError)
+
+    const toggled = tooltip.toggle()
+    el.style.display = 'none'
+
+    expect(await settlesWithin(toggled)).toBe(true)
+    expect(onError).toHaveBeenCalledOnce()
+    window.removeEventListener('error', onError)
   })
 })

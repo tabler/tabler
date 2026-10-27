@@ -550,7 +550,11 @@ class Tooltip extends BaseComponent {
       this._settleTimeout = resolve
       this._timeout = setTimeout(() => {
         this._settleTimeout = undefined
-        resolve(handler())
+        try {
+          resolve(handler())
+        } finally {
+          resolve()
+        }
       }, timeout)
     })
   }

@@ -135,7 +135,7 @@ class Modal extends BaseComponent {
     this._adjustDialog()
 
     return new Promise((resolve) => {
-      this._backdrop.show(() => resolve(this._showElement(relatedTarget)))
+      this._backdrop.show(() => resolve(this._element ? this._showElement(relatedTarget) : undefined))
     })
   }
 
@@ -262,6 +262,9 @@ class Modal extends BaseComponent {
   }
 
   _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): Promise<void> {
+    const element = this._element
+    const scrollBar = this._scrollBar
+
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
@@ -271,9 +274,10 @@ class Modal extends BaseComponent {
     return new Promise((resolve) => {
       this._backdrop.hide(() => {
         document.body.classList.remove(CLASS_NAME_OPEN)
-        this._resetAdjustments()
-        this._scrollBar.reset()
-        const element = this._element
+        if (this._element) {
+          this._resetAdjustments()
+        }
+        scrollBar.reset()
 
         EventHandler.trigger(element, EVENT_HIDDEN)
 

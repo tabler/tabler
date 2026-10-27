@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, getNextActiveElement, isDisabled, resolved, settle } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isDisabled, noop, resolved, settle } from './util/index'
 import type { JQueryCollectionLike } from './types'
 
 const NAME = 'tab'
@@ -98,7 +98,7 @@ class Tab extends BaseComponent {
     const complete = () => {
       if (element.getAttribute('role') !== 'tab') {
         element.classList.add(CLASS_NAME_SHOW)
-        return
+        return this._queueCallback(noop, element, element.classList.contains(CLASS_NAME_FADE))
       }
 
       element.removeAttribute('tabindex')
