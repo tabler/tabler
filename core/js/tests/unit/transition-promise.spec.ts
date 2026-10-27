@@ -170,10 +170,14 @@ describe('transition promises', () => {
     ].join('')
     const [, second] = Array.from(fixtureEl.querySelectorAll<HTMLElement>('.nav-link'))
     const pane = fixtureEl.querySelector<HTMLElement>('#b')!
+    let fadeInEnded = false
+    pane.addEventListener('transitionend', () => {
+      fadeInEnded ||= pane.classList.contains('show')
+    })
 
     await new Tab(second).show()
 
-    expect(getComputedStyle(pane).opacity).toBe('1')
+    expect(fadeInEnded).toBe(true)
   })
 
   it('Toast show and hide resolve', async () => {
