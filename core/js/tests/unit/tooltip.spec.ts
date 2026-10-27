@@ -166,7 +166,7 @@ describe('Tooltip', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
-        const tooltip = new Tooltip(el, { animation: false })
+        const tooltip = new Tooltip(el, { animation: false, trigger: 'manual' })
 
         el.addEventListener('shown.bs.tooltip', () => {
           expect(tooltip._isShown()).toBe(true)
@@ -256,7 +256,7 @@ describe('Tooltip', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
-        const tooltip = new Tooltip(el, { animation: false })
+        const tooltip = new Tooltip(el, { animation: false, trigger: 'manual' })
 
         el.addEventListener('shown.bs.tooltip', () => {
           tooltip.hide()
