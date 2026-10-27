@@ -376,6 +376,10 @@ class Tooltip extends BaseComponent {
 
     if (this._isHoverable) {
       tip.classList.add(`bs-${(this.constructor as typeof Tooltip).NAME}-hoverable`)
+      const offset = this._getOffset()
+      if (Array.isArray(offset)) {
+        tip.style.setProperty(`--tblr-${(this.constructor as typeof Tooltip).NAME}-bridge`, `${offset[1]}px`)
+      }
     }
 
     const tipId = getUID((this.constructor as typeof Tooltip).NAME).toString()
@@ -656,7 +660,11 @@ class Tooltip extends BaseComponent {
     const method = add ? 'on' : 'off'
     const eventName = (name: string) => (this.constructor as typeof Tooltip).eventName(name)
 
-    EventHandler[method](document, eventName(EVENT_KEYDOWN), this._escapeHandler)
+    if (add) {
+      this._element.ownerDocument.addEventListener(EVENT_KEYDOWN, this._escapeHandler, true)
+    } else {
+      this._element.ownerDocument.removeEventListener(EVENT_KEYDOWN, this._escapeHandler, true)
+    }
 
     if (tip && this._isHoverable) {
       EventHandler[method](tip, eventName(EVENT_MOUSEENTER), this._tipHandler)

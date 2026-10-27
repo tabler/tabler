@@ -714,6 +714,37 @@ describe('Tooltip', () => {
       expect(tooltip._isShown()).toBe(false)
     })
 
+    it('should hide the tooltip on Escape when a capturing listener stops propagation', () => {
+      const stop = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.stopPropagation()
+        }
+      }
+      document.addEventListener('keydown', stop, true)
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      document.removeEventListener('keydown', stop, true)
+
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should stop listening for Escape after dispose', () => {
+      const { tooltip } = showTooltip()
+      const spy = vi.spyOn(tooltip, 'hide')
+      tooltip.dispose()
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('should size the bridge from the Popper offset', () => {
+      expect(showTooltip().tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('6px')
+      expect(showTooltip({ offset: [0, 10] }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('10px')
+      expect(showTooltip({ offset: '0,12' }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('12px')
+      expect(showTooltip({ offset: () => [0, 4] }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('')
+      expect(showTooltip({ trigger: 'click' }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('')
+    })
+
     it('should mark the tip as hoverable only with a hover trigger', () => {
       expect(showTooltip().tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(true)
       expect(showTooltip({ trigger: 'click' }).tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(false)
