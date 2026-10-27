@@ -8,7 +8,7 @@ import Offcanvas from '../../src/bootstrap/offcanvas'
 import Tab from '../../src/bootstrap/tab'
 import Toast from '../../src/bootstrap/toast'
 import Tooltip from '../../src/bootstrap/tooltip'
-import { clearFixture, getFixture } from '../helpers/fixture'
+import { clearBodyAndDocument, clearFixture, getFixture } from '../helpers/fixture'
 
 const settlesWithin = (promise: Promise<void>, ms = 200): Promise<boolean> => Promise.race([promise.then(() => true), new Promise<boolean>((resolve) => setTimeout(() => resolve(false), ms))])
 
@@ -21,6 +21,12 @@ describe('transition promises', () => {
 
   afterEach(() => {
     clearFixture()
+    clearBodyAndDocument()
+    vi.restoreAllMocks()
+    document.body.classList.remove('modal-open')
+    for (const el of document.querySelectorAll('.modal-backdrop, .tooltip, .popover')) {
+      el.remove()
+    }
   })
 
   it('Alert#close resolves after the alert is removed', async () => {
@@ -190,6 +196,16 @@ describe('transition promises', () => {
 
     await toast.hide()
     expect(el.classList.contains('show')).toBe(false)
+  })
+
+  it.each([true, false])('Toast#show resolves when the toast is disposed in shown.bs.toast (animation: %s)', async (animation) => {
+    fixtureEl.innerHTML = '<div class="toast"></div>'
+    const el = fixtureEl.querySelector<HTMLElement>('.toast')!
+    const toast = new Toast(el, { animation })
+    EventHandler.on(el, 'shown.bs.toast', () => toast.dispose())
+
+    expect(await settlesWithin(toast.show())).toBe(true)
+    expect(Toast.getInstance(el)).toBeNull()
   })
 
   it('Tooltip show and hide resolve', async () => {

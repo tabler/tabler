@@ -237,7 +237,7 @@ This runs on `DOMContentLoaded`, so `show.bs.tab` and `shown.bs.tab` for the has
 
 ### Promise return values
 
-`show()` returns a Promise that resolves after both the old and the new panel finish their fade, right after `shown.bs.tab` fires. Use it to run code after the tab has finished switching:
+`show()` returns a Promise that resolves after both the old and the new panel finish their fade. `shown.bs.tab` fires earlier, as soon as the tab itself is active, so wait for the Promise when the code needs the panel to be visible:
 
 ```js
 const tab = tabler.Tab.getOrCreateInstance(el);

@@ -94,7 +94,9 @@ class Toast extends BaseComponent {
       this._element.classList.remove(CLASS_NAME_SHOWING)
       EventHandler.trigger(this._element, EVENT_SHOWN)
 
-      this._maybeScheduleHide()
+      if (this._config) {
+        this._maybeScheduleHide()
+      }
     }
 
     this._element.classList.remove(CLASS_NAME_HIDE)

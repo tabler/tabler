@@ -45,15 +45,24 @@ class BaseComponent extends Config {
   }
 
   _queueCallback(callback: () => void | Promise<void>, element: HTMLElement, isAnimated = true): Promise<void> {
-    return new Promise((resolve) => {
-      executeAfterTransition(
-        () => {
-          resolve(this._element ? callback() : undefined)
-        },
-        element,
-        isAnimated,
-      )
+    let settle!: (result?: void | Promise<void>) => void
+    const promise = new Promise<void>((resolve) => {
+      settle = resolve
     })
+
+    executeAfterTransition(
+      () => {
+        try {
+          settle(this._element ? callback() : undefined)
+        } finally {
+          settle()
+        }
+      },
+      element,
+      isAnimated,
+    )
+
+    return promise
   }
 
   _getConfig(config?: ComponentConfig): ComponentConfig {

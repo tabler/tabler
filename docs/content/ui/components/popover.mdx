@@ -74,7 +74,7 @@ await popover.show();
 console.log('Popover is visible');
 ```
 
-The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the popover is already shown or hidden, it has no content, it is disabled, or a listener called `preventDefault()` on `show.bs.popover` or `hide.bs.popover`. `toggle()` waits for the `delay` option first. If another call replaces it during that wait - the pointer leaves, focus moves, or `toggle()` runs again - the earlier Promise resolves without the popover being shown or hidden, so `await popover.toggle()` does not guarantee that the popover is visible. To act only when the popover really changed state, listen for `shown.bs.popover` or `hidden.bs.popover` instead.
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect. `show()` does nothing when the popover has no content, is disabled, or a listener called `preventDefault()` on `show.bs.popover`; on a popover that is already shown it rebuilds the tip. `hide()` does nothing when the popover is already hidden or `hide.bs.popover` was prevented. `toggle()` does nothing when the popover is disabled. Otherwise it waits for the `delay` option first. A call in the other direction during that wait - the pointer leaves or focus moves - replaces the pending one, and the earlier Promise resolves without the popover being shown or hidden. A repeated `toggle()` in the same direction resolves at once and leaves the pending one running. So `await popover.toggle()` does not guarantee that the popover is visible. To act only when the popover really changed state, listen for `shown.bs.popover` or `hidden.bs.popover` instead.
 
 ## Accessibility
 
