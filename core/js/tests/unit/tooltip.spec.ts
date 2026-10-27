@@ -699,6 +699,12 @@ describe('Tooltip', () => {
       expect(tooltip._isShown()).toBe(false)
     })
 
+    it('should mark the tip as hoverable only with a hover trigger', () => {
+      expect(showTooltip().tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(true)
+      expect(showTooltip({ trigger: 'click' }).tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(false)
+      expect(showTooltip({ trigger: 'focus' }).tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(false)
+    })
+
     it('should not listen on the tip without a hover trigger', () => {
       const { tooltip } = showTooltip({ trigger: 'click' })
       const spy = vi.spyOn(tooltip, '_enter')
