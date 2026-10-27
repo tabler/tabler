@@ -373,6 +373,10 @@ class Tooltip extends BaseComponent {
     tip.classList.remove(CLASS_NAME_FADE, CLASS_NAME_SHOW)
     tip.classList.add(`bs-${(this.constructor as typeof Tooltip).NAME}-auto`)
 
+    if (this._isHoverable) {
+      tip.classList.add(`bs-${(this.constructor as typeof Tooltip).NAME}-hoverable`)
+    }
+
     const tipId = getUID((this.constructor as typeof Tooltip).NAME).toString()
 
     tip.setAttribute('id', tipId)
