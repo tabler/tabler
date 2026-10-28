@@ -3,6 +3,48 @@ title: Typography
 summary: How Tabler styles headings, paragraphs, semantic text elements, horizontal rules and the text utilities.
 description: How Tabler styles headings, paragraphs and text elements to keep content readable.
 css-vars: kbd
+classnames:
+  component:
+    - class: heading-{size}
+      desc: Heading size, weight and color on any element; xs, sm, md, lg, xl, 2xl or 3xl
+    - class: text-{size}
+      desc: Font size and line height of body text; 2xs, xs, sm, md, lg or xl
+    - class: label-{size}
+      desc: Text size with the medium weight; 2xs, xs, sm, md or lg
+    - class: subheader
+      desc: Small uppercase caption in the secondary color
+    - class: lead
+      desc: Opening paragraph in the secondary color
+    - class: hr-text
+      desc: Horizontal rule with a label
+    - class: kbd
+      desc: Key the user presses, same look as the kbd element
+  part:
+    - class: kbd-group
+      desc: Keeps the keys of one shortcut together
+  modifier:
+    - class: text-selected
+      desc: Highlights text like a browser selection
+    - class: text-balance
+      desc: Balances the line lengths of a short block
+    - class: text-pretty
+      desc: Avoids a single word on the last line
+    - class: tracking-{value}
+      desc: Letter spacing; tight, normal or wide
+    - class: lh-{value}
+      desc: Line height; 1, sm, base or lg
+    - class: underline-thickness-{n}
+      desc: Underline thickness from 1 to 5 pixels
+    - class: antialiased
+      desc: Subpixel antialiased text
+  direction:
+    - class: hr-text-start
+      desc: Moves the rule label to the start
+    - class: hr-text-end
+      desc: Moves the rule label to the end
+  size:
+    - class: subheader-sm
+      desc: Smaller subheader for dense layouts
 related: [/ui/base/prose]
 ---
 import Example from '@components/Example.astro';
@@ -20,6 +62,54 @@ Below are examples of headings with different levels:
 <h4>H4 Heading</h4>
 <h5>H5 Heading</h5>
 <h6>H6 Heading</h6>
+</Example>
+
+## Heading sizes
+
+The `h1` to `h6` tags set the size by the level of the heading. When the structure and the look do not match, keep the right tag and set the size with a `.heading-*` class. The scale runs from `heading-xs` (12px) to `heading-3xl` (40px); `heading-xl`, `heading-lg`, `heading-md`, `heading-sm` and `heading-xs` equal `h1` to `h5`, and `heading-2xl` and `heading-3xl` add two larger sizes for page titles and marketing pages. Every class sets the font size, the line height, the weight and the heading color.
+
+<Example>
+<div class="heading-3xl">Heading 3xl</div>
+<div class="heading-2xl">Heading 2xl</div>
+<div class="heading-xl">Heading xl</div>
+<div class="heading-lg">Heading lg</div>
+<div class="heading-md">Heading md</div>
+<div class="heading-sm">Heading sm</div>
+<div class="heading-xs">Heading xs</div>
+</Example>
+
+## Text sizes
+
+The `.text-*` classes set the font size and the line height of body text, from `text-2xs` (10px) to `text-xl` (20px). `text-md` is the default body text. The classes change only the size, so the weight and the color come from the parent or from other utilities. Note that `text-xs` and `text-sm` share the 12px font size and differ in the line height: `text-xs` is set tight for captions and badges, `text-sm` keeps the body line height for small paragraphs.
+
+<Example>
+<div class="text-xl">Text xl</div>
+<div class="text-lg">Text lg</div>
+<div class="text-md">Text md</div>
+<div class="text-sm">Text sm</div>
+<div class="text-xs">Text xs</div>
+<div class="text-2xs">Text 2xs</div>
+</Example>
+
+## Labels
+
+A label is a short piece of text in the medium weight, used for form labels, table headers, names in a list or any caption that has to stand out from the text next to it without being a heading. The `.label-*` classes set the same sizes as `.text-*`, from `label-2xs` to `label-lg`, with the medium font weight.
+
+<Example>
+<div class="label-lg">Label lg</div>
+<div class="label-md">Label md</div>
+<div class="label-sm">Label sm</div>
+<div class="label-xs">Label xs</div>
+<div class="label-2xs">Label 2xs</div>
+</Example>
+
+## Subheaders
+
+A subheader is a small uppercase caption in the secondary color, used over a group of content or a value. `.subheader` is the default size and `.subheader-sm` is a smaller variant for dense layouts.
+
+<Example>
+<div class="subheader">Subheader</div>
+<div class="subheader-sm">Subheader small</div>
 </Example>
 
 ## Paragraphs
