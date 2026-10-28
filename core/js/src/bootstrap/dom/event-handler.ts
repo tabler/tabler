@@ -111,22 +111,18 @@ function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHan
 
 function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: EventCallback): BootstrapHandler {
   return function handler(this: EventTarget, event: Event) {
-    const domElements = (element as HTMLElement).querySelectorAll(selector)
-
     for (let { target } = event; target && target !== this; target = (target as HTMLElement).parentNode) {
-      for (const domElement of domElements) {
-        if (domElement !== target) {
-          continue
-        }
-
-        hydrateObj(event, { delegateTarget: target })
-
-        if ((handler as BootstrapHandler).oneOff) {
-          EventHandler.off(element, event.type, selector, fn)
-        }
-
-        return fn.apply(target as HTMLElement, [event])
+      if (!(target instanceof Element) || !target.matches(selector)) {
+        continue
       }
+
+      hydrateObj(event, { delegateTarget: target })
+
+      if ((handler as BootstrapHandler).oneOff) {
+        EventHandler.off(element, event.type, selector, fn)
+      }
+
+      return fn.apply(target as HTMLElement, [event])
     }
   }
 }
