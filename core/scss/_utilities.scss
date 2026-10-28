@@ -687,6 +687,50 @@ $utilities: map.merge(
       class: column-gap,
       values: $spacers,
     ),
+    'space-x': (
+      responsive: true,
+      property: margin-inline-end,
+      class: space-x,
+      child-selector: ':not(:last-child)',
+      values: map.merge(
+          (
+            null: $spacer,
+          ),
+          $spacers
+        ),
+    ),
+    'space-y': (
+      responsive: true,
+      property: margin-block-end,
+      class: space-y,
+      child-selector: ':not(:last-child)',
+      values: map.merge(
+          (
+            null: $spacer,
+          ),
+          $spacers
+        ),
+    ),
+    'divide-x': (
+      responsive: true,
+      property: border-inline-start,
+      class: divide-x,
+      child-selector: ':not(:first-child)',
+      values: (
+        null: var(--border-width) var(--border-style) var(--border-color),
+        0: 0,
+      ),
+    ),
+    'divide-y': (
+      responsive: true,
+      property: border-block-start,
+      class: divide-y,
+      child-selector: ':not(:first-child)',
+      values: (
+        null: var(--border-width) var(--border-style) var(--border-color),
+        0: 0,
+      ),
+    ),
     'bg-gradient': (
       property: background,
       class: bg-gradient,
