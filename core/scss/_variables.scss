@@ -440,24 +440,6 @@ $line-height-sm: divide(1rem, $font-size-base) !default;
 $line-height-lg: divide(1.5rem, $font-size-base) !default;
 $line-height-xl: divide(1.75rem, $font-size-base) !default;
 
-$h1-font-size: 1.5rem !default;
-$h1-line-height: 2rem !default;
-
-$h2-font-size: 1.25rem !default;
-$h2-line-height: 1.75rem !default;
-
-$h3-font-size: 1rem !default;
-$h3-line-height: 1.5rem !default;
-
-$h4-font-size: 0.875rem !default;
-$h4-line-height: 1.25rem !default;
-
-$h5-font-size: 0.75rem !default;
-$h5-line-height: 1rem !default;
-
-$h6-font-size: $h5-font-size !default;
-$h6-line-height: $h5-line-height !default;
-
 $font-size-2xs: 0.625rem !default;
 $line-height-2xs: 1rem !default;
 
@@ -489,49 +471,28 @@ $text-sizes: (
   ),
 ) !default;
 
-$label-sizes: (
-  '2xs': (
-    font-size: $font-size-2xs,
-    line-height: $line-height-2xs,
-  ),
+$label-sizes: map.remove($text-sizes, 'xl') !default;
+
+$heading-sizes: (
   'xs': (
     font-size: 0.75rem,
     line-height: 1rem,
   ),
   'sm': (
-    font-size: 0.75rem,
-    line-height: 1.25rem,
-  ),
-  'md': (
     font-size: 0.875rem,
     line-height: 1.25rem,
   ),
-  'lg': (
+  'md': (
     font-size: 1rem,
     line-height: 1.5rem,
   ),
-) !default;
-
-$heading-sizes: (
-  'xs': (
-    font-size: $h5-font-size,
-    line-height: $h5-line-height,
-  ),
-  'sm': (
-    font-size: $h4-font-size,
-    line-height: $h4-line-height,
-  ),
-  'md': (
-    font-size: $h3-font-size,
-    line-height: $h3-line-height,
-  ),
   'lg': (
-    font-size: $h2-font-size,
-    line-height: $h2-line-height,
+    font-size: 1.25rem,
+    line-height: 1.75rem,
   ),
   'xl': (
-    font-size: $h1-font-size,
-    line-height: $h1-line-height,
+    font-size: 1.5rem,
+    line-height: 2rem,
   ),
   '2xl': (
     font-size: 2rem,
@@ -551,6 +512,19 @@ $heading-levels: (
   5: 'xs',
   6: 'xs',
 ) !default;
+
+$h1-font-size: map.get($heading-sizes, map.get($heading-levels, 1), font-size) !default;
+$h1-line-height: map.get($heading-sizes, map.get($heading-levels, 1), line-height) !default;
+$h2-font-size: map.get($heading-sizes, map.get($heading-levels, 2), font-size) !default;
+$h2-line-height: map.get($heading-sizes, map.get($heading-levels, 2), line-height) !default;
+$h3-font-size: map.get($heading-sizes, map.get($heading-levels, 3), font-size) !default;
+$h3-line-height: map.get($heading-sizes, map.get($heading-levels, 3), line-height) !default;
+$h4-font-size: map.get($heading-sizes, map.get($heading-levels, 4), font-size) !default;
+$h4-line-height: map.get($heading-sizes, map.get($heading-levels, 4), line-height) !default;
+$h5-font-size: map.get($heading-sizes, map.get($heading-levels, 5), font-size) !default;
+$h5-line-height: map.get($heading-sizes, map.get($heading-levels, 5), line-height) !default;
+$h6-font-size: map.get($heading-sizes, map.get($heading-levels, 6), font-size) !default;
+$h6-line-height: map.get($heading-sizes, map.get($heading-levels, 6), line-height) !default;
 
 $label-font-weight: var(--font-weight-medium) !default;
 $subheader-sm-font-size: $font-size-2xs !default;

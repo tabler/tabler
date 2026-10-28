@@ -80,8 +80,9 @@
   }
 
   @each $name, $value in $font-sizes {
-    @if map.has-key($heading-levels, $name) {
-      --font-size-h#{$name}: var(--font-size-heading-#{map.get($heading-levels, $name)});
+    $size: map.get($heading-levels, $name);
+    @if $size and $value == map.get($heading-sizes, $size, font-size) {
+      --font-size-h#{$name}: var(--font-size-heading-#{$size});
     } @else {
       --font-size-h#{$name}: #{$value};
     }
@@ -93,8 +94,9 @@
   }
 
   @each $name, $value in $line-heights {
-    @if map.has-key($heading-line-heights, $name) {
-      --line-height-#{$name}: var(--line-height-heading-#{map.get($heading-line-heights, $name)});
+    $size: map.get($heading-line-heights, $name);
+    @if $size and $value == map.get($heading-sizes, $size, line-height) {
+      --line-height-#{$name}: var(--line-height-heading-#{$size});
     } @else {
       --line-height-#{$name}: #{$value};
     }
