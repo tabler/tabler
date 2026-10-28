@@ -39,7 +39,7 @@ const callMethod = (instance: ComponentInstance, method: string): void => {
   }
 }
 
-const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'): void => {
+const enableDismissTrigger = (component: DismissibleComponent, method = 'hide', closestSelector = `.${component.NAME}`): void => {
   const clickEvent = `click.dismiss${component.EVENT_KEY}`
   const name = component.NAME
 
@@ -52,7 +52,7 @@ const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'):
       return
     }
 
-    const target = SelectorEngine.getElementFromSelector(this) || this.closest(`.${name}`)
+    const target = SelectorEngine.getElementFromSelector(this) || this.closest(closestSelector)
     callMethod(component.getOrCreateInstance(target), method)
   })
 }
