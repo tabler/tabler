@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use '../../config' as *;
+
+@each $name, $style in $text-sizes {
+  .text-#{$name} {
+    font-size: map.get($style, font-size);
+    line-height: map.get($style, line-height);
+  }
+}
+
+@each $name, $style in $label-sizes {
+  .label-#{$name} {
+    font-size: map.get($style, font-size);
+    font-weight: $label-font-weight;
+    line-height: map.get($style, line-height);
+  }
+}
+
+@each $name, $style in $heading-sizes {
+  .heading-#{$name} {
+    font-size: map.get($style, font-size);
+    font-weight: $headings-font-weight;
+    line-height: map.get($style, line-height);
+    color: var(--heading-color);
+  }
+}
+
+.subheader-sm {
+  font-size: $subheader-sm-font-size;
+  font-weight: $subheader-sm-font-weight;
+  line-height: $subheader-sm-line-height;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
