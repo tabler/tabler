@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatCompact, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
 
 describe('getDocsUrl', () => {
@@ -93,5 +93,19 @@ describe('slugify', () => {
 
   it('trims leading and trailing dashes', () => {
     expect(slugify('  Hello, world!  ')).toBe('hello-world')
+  })
+})
+
+describe('formatCompact', () => {
+  it('adds a k, M or B suffix with up to two decimals', () => {
+    expect(formatCompact(1880000)).toBe('1.88M')
+    expect(formatCompact(98280)).toBe('98.28k')
+    expect(formatCompact(1700000)).toBe('1.7M')
+    expect(formatCompact(2500000000)).toBe('2.5B')
+  })
+
+  it('leaves small numbers as they are', () => {
+    expect(formatCompact(974)).toBe('974')
+    expect(formatCompact(0)).toBe('0')
   })
 })
