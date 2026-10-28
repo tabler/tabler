@@ -102,6 +102,24 @@
     }
   }
 
+  @each $level, $value in $display-font-sizes {
+    $size: map.get($display-levels, $level);
+    @if $size and $value == map.get($heading-sizes, $size, font-size) {
+      --font-size-display-#{$level}: var(--font-size-heading-#{$size});
+    } @else {
+      --font-size-display-#{$level}: #{$value};
+    }
+    $line-height: map.get($display-line-heights, $level);
+    @if $display-line-height {
+      $line-height: $display-line-height;
+    }
+    @if $size and $line-height == map.get($heading-sizes, $size, line-height) {
+      --line-height-display-#{$level}: var(--line-height-heading-#{$size});
+    } @else {
+      --line-height-display-#{$level}: #{$line-height};
+    }
+  }
+
   // Shadows
   --shadow-color: #{$box-shadow-color};
   @each $name, $value in $box-shadows {

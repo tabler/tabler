@@ -502,6 +502,26 @@ $heading-sizes: (
     font-size: 2.5rem,
     line-height: 3rem,
   ),
+  '4xl': (
+    font-size: 3rem,
+    line-height: 3.5rem,
+  ),
+  '5xl': (
+    font-size: 3.5rem,
+    line-height: 4rem,
+  ),
+  '6xl': (
+    font-size: 4rem,
+    line-height: 4.5rem,
+  ),
+  '7xl': (
+    font-size: 4.5rem,
+    line-height: 5rem,
+  ),
+  '8xl': (
+    font-size: 5rem,
+    line-height: 5.5rem,
+  ),
 ) !default;
 
 $heading-levels: (
@@ -561,19 +581,36 @@ $line-heights: (
   xl: $line-height-xl,
 ) !default;
 
+$display-levels: (
+  1: '8xl',
+  2: '7xl',
+  3: '6xl',
+  4: '5xl',
+  5: '4xl',
+  6: '2xl',
+) !default;
+
 $display-font-sizes: (
-  1: 5rem,
-  2: 4.5rem,
-  3: 4rem,
-  4: 3.5rem,
-  5: 3rem,
-  6: 2rem,
+  1: map.get($heading-sizes, map.get($display-levels, 1), font-size),
+  2: map.get($heading-sizes, map.get($display-levels, 2), font-size),
+  3: map.get($heading-sizes, map.get($display-levels, 3), font-size),
+  4: map.get($heading-sizes, map.get($display-levels, 4), font-size),
+  5: map.get($heading-sizes, map.get($display-levels, 5), font-size),
+  6: map.get($heading-sizes, map.get($display-levels, 6), font-size),
+) !default;
+$display-line-heights: (
+  1: map.get($heading-sizes, map.get($display-levels, 1), line-height),
+  2: map.get($heading-sizes, map.get($display-levels, 2), line-height),
+  3: map.get($heading-sizes, map.get($display-levels, 3), line-height),
+  4: map.get($heading-sizes, map.get($display-levels, 4), line-height),
+  5: map.get($heading-sizes, map.get($display-levels, 5), line-height),
+  6: map.get($heading-sizes, map.get($display-levels, 6), line-height),
 ) !default;
 
 $display-font-family: null !default;
 $display-font-style: null !default;
 $display-font-weight: 300 !default;
-$display-line-height: $headings-line-height !default;
+$display-line-height: null !default;
 
 $lead-font-size: $font-size-base !default;
 $lead-font-weight: var(--font-weight-normal) !default;
