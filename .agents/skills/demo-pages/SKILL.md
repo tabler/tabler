@@ -73,7 +73,22 @@ Anything to the right of the title goes in the `page-header-actions` slot, as a 
 
 `CardTitle` and `CardHeader` render `h2`, directly under the page `h1`. Pass `as="h3"` only for a card nested under its own `h2` section heading. Do not introduce raw `<h3>`/`<h4>` headings for card titles; that is what made pages mix levels before.
 
-## 5. Spacing between inline elements
+## 5. Typography
+
+Use the type scale classes, not `fs-*` / `fw-*` / `text-secondary` combinations assembled by hand:
+
+| Class | For |
+| --- | --- |
+| `heading-*` | titles: `heading-2xl` page title, `heading-xl` KPI value or section title, `heading-lg` big number, `heading-sm` widget or list-item title |
+| `text-*` | body copy: `text-md` default, `text-sm` descriptions under titles, `text-xs` timestamps and meta |
+| `label-*` | form labels, names in lists, links in `card-actions` |
+| `subheader` | eyebrow above a title, section header in a card or list, the label above the value in a stats card |
+
+- A card title is always `card-title` (16px, the `heading-md` size), whatever the card's width. Never step down to `heading-sm` or up to `heading-lg` for a card title.
+- In a stats card the label above the number is `subheader`, not `label-sm text-secondary`; the value is `heading-xl`, the meta line `text-xs text-secondary`.
+- `subheader-sm` (10px) is for genuinely tight spots only. The default eyebrow is `subheader`.
+
+## 6. Spacing between inline elements
 
 Use the list wrappers instead of margin utilities on each child:
 
@@ -88,13 +103,13 @@ The pluralised class names (`.badges-list`, `.tags-list`) are deprecated aliases
 
 Icon action buttons: `btn-action` is always combined with `btn` (`btn btn-action`, plus `btn-sm` when small) — never use `btn-action` on its own.
 
-## 6. No page-level styles
+## 7. No page-level styles
 
 Never add a `<style>` block to a preview page or a shared component, and never import CSS from the frontmatter. The built HTML is the product: a plain `<style>` makes Astro stamp `data-astro-cid-*` on every element of the page, so a copied page carries dozens of attributes nobody wants. The block also bypasses `build-css.ts`, so a custom property written bare (`var(--table-color)`) stays unprefixed and never matches Tabler's `--tblr-*` names. `is:global` or `is:inline` avoids the stamping but not the prefix problem, and still hides styling where nobody looks for it.
 
 If a demo needs a look the framework does not have, either use existing utilities in the markup or add the class to `core/scss/` (`core-scss` skill). If neither fits, keep the plain markup; a demo page never justifies a one-off rule.
 
-## 7. Accessible demo markup
+## 8. Accessible demo markup
 
 Demo markup is copied as-is, so a shortcut here becomes a shortcut in every user's app. The four that keep coming back:
 
@@ -105,17 +120,17 @@ Demo markup is copied as-is, so a shortcut here becomes a shortcut in every user
 
 Dropdown toggles are `<button type="button" data-bs-toggle="dropdown">`, or `<a href="#" role="button" …>` inside a nav; never a `<label>`. One `.dropdown-menu` per toggle — Bootstrap shows only the first sibling.
 
-## 8. Data and repetition
+## 9. Data and repetition
 
 - Loop over `shared/data/*.json` (`site.json` colors, `people.json`, `flags.json`) instead of pasting 20 near-identical blocks.
 - Cast JSON entries to a named type in the frontmatter when you index into them; `astro check` is part of the quality gates.
 
-## 9. Registering the page
+## 10. Registering the page
 
 - Add the page to `shared/data/menu.json` so it is reachable, and use the same key in `pageMenu`.
 - A new `shared/ui` component usually needs both a demo page and a docs page. After finishing here, check `docs/content/**` and consult the `write-docs` skill if it is missing.
 
-## 10. Verify in the browser
+## 11. Verify in the browser
 
 Never hand the page to the user unchecked.
 
@@ -129,12 +144,13 @@ curl -s http://localhost:3000/badges | grep -o '<h[1-6]' | sort | uniq -c
 
 A demo page should show exactly one `h1` and then `h2`s — no `h3` in the card grid.
 
-## 11. Quality checklist
+## 12. Quality checklist
 
 - [ ] `title` and `description` set; no `pageHeader` repeating the title
 - [ ] `DocsLink` present when a docs page exists; `pnpm run check:docs-links` passes
 - [ ] One card per variant; `CardTitle` + `CardSubtitle` on each
 - [ ] No raw `card-title` / `card-subtitle` / `page-title` markup
+- [ ] Type scale classes: card titles at the `card-title` size, `subheader` for eyebrows and stats labels, no hand-made `fs-*`/`fw-*` combinations
 - [ ] List wrappers instead of per-item margins
 - [ ] No `<style>` block and no CSS import; new looks go to `core/scss/`
 - [ ] Actions are `<button type="button">`, controls and icon-only links have a name, every `<label>` matches one control
