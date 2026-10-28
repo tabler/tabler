@@ -303,6 +303,21 @@ describe('EventHandler', () => {
       EventHandler.off(div, 'click')
     })
 
+    it('should resolve :scope against the delegation root', () => {
+      const handler = vi.fn()
+      fixtureEl.innerHTML = '<div id="scoped"><button id="direct">a</button><p><button id="nested">b</button></p></div>'
+      const scoped = fixtureEl.querySelector<HTMLElement>('#scoped')!
+
+      EventHandler.on(scoped, 'click', ':scope > button', handler)
+      fixtureEl.querySelector<HTMLElement>('#nested')!.click()
+      expect(handler).not.toHaveBeenCalled()
+
+      fixtureEl.querySelector<HTMLElement>('#direct')!.click()
+      expect(handler).toHaveBeenCalledOnce()
+
+      EventHandler.off(scoped, 'click')
+    })
+
     it('should set delegateTarget on the event', () => {
       let delegateTarget: EventTarget | null = null
       const btn = fixtureEl.querySelector('button')!

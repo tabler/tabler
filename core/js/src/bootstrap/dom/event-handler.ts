@@ -28,7 +28,7 @@ interface EventableElement extends EventTarget {
 const namespaceRegex = /[^.]*(?=\..*)\.|.*/
 const stripNameRegex = /\..*/
 const stripUidRegex = /::\d+$/
-const eventRegistry: Record<string | number, Record<string, Record<string | number, BootstrapHandler>>> = {}
+const eventRegistry = new WeakMap<EventableElement, Record<string, Record<string | number, BootstrapHandler>>>()
 let uidEvent = 1
 const customEvents: Record<string, string> = {
   mouseenter: 'mouseover',
@@ -89,12 +89,15 @@ function makeEventUid(element: EventableElement | EventCallback, uid?: string): 
 }
 
 function getElementEvents(element: EventableElement): Record<string, Record<string | number, BootstrapHandler>> {
-  const uid = makeEventUid(element)
+  element.uidEvent = makeEventUid(element)
 
-  element.uidEvent = uid
-  eventRegistry[uid] = eventRegistry[uid] || {}
+  let events = eventRegistry.get(element)
+  if (!events) {
+    events = {}
+    eventRegistry.set(element, events)
+  }
 
-  return eventRegistry[uid]
+  return events
 }
 
 function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHandler {
@@ -110,9 +113,14 @@ function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHan
 }
 
 function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: EventCallback): BootstrapHandler {
+  // `:scope` means the delegation root, which `matches()` cannot express
+  const scoped = selector.includes(':scope')
+
   return function handler(this: EventTarget, event: Event) {
+    const domElements = scoped ? (element as HTMLElement).querySelectorAll(selector) : null
+
     for (let { target } = event; target && target !== this; target = (target as HTMLElement).parentNode) {
-      if (!(target instanceof Element) || !target.matches(selector)) {
+      if (!(target instanceof Element) || (domElements ? !Array.prototype.includes.call(domElements, target) : !target.matches(selector))) {
         continue
       }
 
