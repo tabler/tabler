@@ -17,6 +17,16 @@
     #{if(sass(&): "&"; else: "")}.is-#{$state} {
       @content;
     }
+
+    @if $state == 'valid' {
+      form[data-bs-validate='valid'] #{if(sass(&): "&"; else: "")}:is(:user-valid) {
+        @content;
+      }
+    } @else {
+      form[data-bs-validate] #{if(sass(&): "&"; else: "")}:is(:user-invalid) {
+        @content;
+      }
+    }
   } @else {
     #{if(sass(&): "&"; else: "")}.is-#{$state} {
       @content;

@@ -44,6 +44,8 @@
 }
 
 @each $state, $data in $form-validation-states {
+  $user: if(sass($state == 'valid'): "form[data-bs-validate='valid']"; else: 'form[data-bs-validate]');
+
   .form-control.is-#{$state}-lite {
     @extend %validation-lite;
   }
@@ -52,23 +54,28 @@
     @extend %validation-lite;
   }
 
-  .form-control.is-#{$state} {
+  .form-control.is-#{$state},
+  #{$user} .form-control:is(:user-#{$state}) {
     @extend %validation-icon-size;
   }
 
-  .form-select.is-#{$state} {
+  .form-select.is-#{$state},
+  #{$user} .form-select:is(:user-#{$state}) {
     @extend %validation-icon-size-select;
   }
 
-  .form-control-sm.is-#{$state} {
+  .form-control-sm.is-#{$state},
+  #{$user} .form-control-sm:is(:user-#{$state}) {
     @extend %validation-icon-size-sm;
   }
 
-  .form-control-lg.is-#{$state} {
+  .form-control-lg.is-#{$state},
+  #{$user} .form-control-lg:is(:user-#{$state}) {
     @extend %validation-icon-size-lg;
   }
 
-  textarea.form-control.is-#{$state} {
+  textarea.form-control.is-#{$state},
+  #{$user} textarea.form-control:is(:user-#{$state}) {
     @extend %validation-icon-size-textarea;
   }
 

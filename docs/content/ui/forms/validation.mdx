@@ -48,6 +48,30 @@ You can also use the `.valid-feedback` to provide users with positive feedback.
 </div>
 </Example>
 
+## Validate after interaction
+
+To show states without any JavaScript, add `data-bs-validate` to a `<form>`. Fields are styled with the `:user-invalid` pseudo-class, so an error shows only after the user has interacted with the field and left it.
+
+Add `data-bs-validate="valid"` to also show the success styling with `:user-valid`.
+
+<Example column>
+<form data-bs-validate="valid" novalidate>
+  <div class="mb-3">
+    <label class="form-label required" for="user-email">Email</label>
+    <input type="email" id="user-email" class="form-control" required placeholder="name@example.com" />
+    <div class="invalid-feedback">Please provide a valid email.</div>
+    <div class="valid-feedback">Looks good!</div>
+  </div>
+  <div>
+    <label class="form-label required" for="user-city">City</label>
+    <input type="text" id="user-city" class="form-control" required />
+    <div class="invalid-feedback">Please provide a city.</div>
+  </div>
+</form>
+</Example>
+
+The `.was-validated` class on a form and the `.is-valid` / `.is-invalid` classes on a field work as before. Use `.is-*` for server-side validation, and `data-bs-validate` when the browser checks the field.
+
 ## Subtle validation states
 
 For a quieter version, show a tick or a cross icon instead of the colored frame and the feedback message.
