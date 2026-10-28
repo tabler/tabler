@@ -63,6 +63,8 @@ Every page renders **both** navigations — the vertical sidebar and the horizon
 | `bodyClass` | free-form body classes; use `layout` for the container width |
 | `rtl` | `dir="rtl"` plus the RTL stylesheets |
 
+The layout already wraps the body in `.container-xl`, and `.page-body` already provides the vertical spacing. A page never adds its own `container*` wrapper or `py-*` on the container; `containerClass` is for a genuinely extra class, not for padding, and `wrapperFull` drops the container when the page needs the full width.
+
 There is no `sidebar`, `hideTopbar` or `sidebarUser` prop any more: which navigation shows is `navbarPosition`, not which one is rendered, and the sidebar always carries the user block, like the navbar always carries the user menu.
 
 ## 4. The page-header slot
