@@ -13,10 +13,12 @@ interface Props {
   items: TopListItem[]
   /** bar color, a palette name */
   color?: string
+  /** text after each value, e.g. "GB" */
+  unit?: string | undefined
   class?: string
 }
 
-const { title, items, color = 'primary', class: className } = Astro.props
+const { title, items, color = 'primary', unit, class: className } = Astro.props
 
 const max = Math.max(...items.map((item) => item.value), 1)
 ---
@@ -45,7 +47,10 @@ const max = Math.max(...items.map((item) => item.value), 1)
                   <div class:list={['progress-bar', `bg-${color}`]} style={`width: ${(item.value / max) * 100}%`} role="progressbar" aria-valuenow={item.value} aria-valuemin="0" aria-valuemax={max} aria-label={item.label} />
                 </div>
               </td>
-              <td class="text-end text-secondary w-1 text-nowrap">{formatCompact(item.value)}</td>
+              <td class="text-end text-secondary w-1 text-nowrap">
+                {formatCompact(item.value)}
+                {unit && ` ${unit}`}
+              </td>
             </tr>
           ))
         }
