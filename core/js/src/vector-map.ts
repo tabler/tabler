@@ -296,8 +296,9 @@ class VectorMap extends BaseComponent {
   _userConfig: ComponentConfigInput = {}
   _map: VectorMapData | null = null
   _tooltip: HTMLElement | null = null
-  // The box of the element while a pointer hovers it; the tooltip follows the pointer inside it
+  // The box of the element, measured once per frame while the tooltip follows the pointer
   _hoverRect: DOMRect | null = null
+  _hoverRectFrame = 0
   _actionButtons: HTMLButtonElement[] = []
   _view: View = { x: 0, y: 0, scale: 1 }
   _frame = 0
@@ -327,7 +328,6 @@ class VectorMap extends BaseComponent {
       this._onPointerMove(event)
     })
     EventHandler.on(this._element, EVENT_POINTERLEAVE, () => {
-      this._hoverRect = null
       this._hideTooltip()
     })
     EventHandler.on(this._element, EVENT_POINTERDOWN, (event: PointerEvent) => {
@@ -456,6 +456,7 @@ class VectorMap extends BaseComponent {
 
   dispose(): void {
     cancelAnimationFrame(this._frame)
+    cancelAnimationFrame(this._hoverRectFrame)
     this._getSvg()?.remove()
     this._getControls()?.remove()
     this._getLegend()?.remove()
@@ -821,7 +822,13 @@ class VectorMap extends BaseComponent {
       this._element.append(this._tooltip)
     }
 
-    this._hoverRect ??= this._element.getBoundingClientRect()
+    if (!this._hoverRect) {
+      this._hoverRect = this._element.getBoundingClientRect()
+      this._hoverRectFrame = requestAnimationFrame(() => {
+        this._hoverRect = null
+      })
+    }
+
     const rect = this._hoverRect
     this._tooltip.textContent = text
     this._tooltip.hidden = false

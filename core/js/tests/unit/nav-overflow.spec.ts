@@ -258,6 +258,19 @@ describe('NavOverflow', () => {
       spy.mockRestore()
     })
 
+    it('should restore the items when the nav turns vertical at the same width', async () => {
+      fixtureEl.innerHTML = nav(360, links(6))
+
+      new NavOverflow(wrapper())
+      expect(hidden()).toHaveLength(3)
+
+      fixtureEl.querySelector<HTMLElement>('.nav')!.style.flexDirection = 'column'
+      wrapper().style.height = '400px'
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+      expect(hidden()).toHaveLength(0)
+    })
+
     it('should keep an open menu open when nothing moves', () => {
       fixtureEl.innerHTML = nav(360, links(6))
 
