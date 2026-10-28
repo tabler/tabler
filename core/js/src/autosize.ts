@@ -114,9 +114,11 @@ class Autosize extends BaseComponent {
     const height = `${target}px`
     element.style.height = height
 
-    // Past max-height the content no longer fits, so let the field scroll.
-    const maxHeight = Number.parseFloat(style.maxHeight)
-    element.style.overflowY = Number.isFinite(maxHeight) && target > maxHeight ? 'auto' : 'hidden'
+    // Past max-height the content no longer fits, so let the field scroll. A
+    // pixel limit is known without another layout; anything else is measured.
+    const { maxHeight } = style
+    const overflows = maxHeight.endsWith('px') ? target > Number.parseFloat(maxHeight) : maxHeight !== 'none' && element.scrollHeight > element.clientHeight
+    element.style.overflowY = overflows ? 'auto' : 'hidden'
     if (document.documentElement.scrollTop !== scrollTop) {
       document.documentElement.scrollTop = scrollTop
     }

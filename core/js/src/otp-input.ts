@@ -315,6 +315,10 @@ class OtpInput extends BaseComponent {
     for (const type of SYNC_EVENTS) {
       this._input.addEventListener(type, this._onSync)
     }
+
+    if (document.activeElement === this._input) {
+      document.addEventListener('selectionchange', this._onSelectionChange)
+    }
   }
 
   _handleFocus(): void {

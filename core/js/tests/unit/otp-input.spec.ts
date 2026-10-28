@@ -363,6 +363,17 @@ describe('OtpInput', () => {
   })
 
   describe('selectionchange', () => {
+    it('should listen on document when the input is focused before construction', () => {
+      input().focus()
+      const add = vi.spyOn(document, 'addEventListener')
+      const instance = new OtpInput(otp())
+
+      expect(add.mock.calls.filter(([type]) => type === 'selectionchange')).toHaveLength(1)
+
+      instance.dispose()
+      add.mockRestore()
+    })
+
     it('should listen on document only while the input is focused', () => {
       const add = vi.spyOn(document, 'addEventListener')
       const remove = vi.spyOn(document, 'removeEventListener')

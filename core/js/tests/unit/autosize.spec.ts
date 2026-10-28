@@ -78,6 +78,19 @@ describe('Autosize', () => {
       expect(textarea().style.overflowY).toBe('auto')
     })
 
+    it('should scroll again past a percentage max-height', () => {
+      fixtureEl.style.height = '60px'
+      textarea().style.maxHeight = '100%'
+      const instance = new Autosize(textarea())
+
+      textarea().value = lines(5)
+      instance.update()
+
+      expect(textarea().clientHeight).toBe(60)
+      expect(textarea().style.overflowY).toBe('auto')
+      fixtureEl.style.height = ''
+    })
+
     it('should include the border when the box is border-box', () => {
       textarea().style.border = '3px solid red'
       textarea().value = lines(2)
