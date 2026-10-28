@@ -120,7 +120,13 @@ class OtpInput extends BaseComponent {
     this._composedValue = this._input.value
   }
   _onBeforeInput = (event: Event): void => this._handleBeforeInput(event as InputEvent)
-  _onFocus = (): void => this._handleFocus()
+  _onFocus = (): void => {
+    document.addEventListener('selectionchange', this._onSelectionChange)
+    this._handleFocus()
+  }
+  _onBlur = (): void => {
+    document.removeEventListener('selectionchange', this._onSelectionChange)
+  }
   _onPointerDown = (event: Event): void => this._handlePointerDown(event as PointerEvent)
   _onPointerEnd = (): void => {
     this._pointerActive = false
@@ -201,6 +207,7 @@ class OtpInput extends BaseComponent {
     this._input.removeEventListener('input', this._onInput)
     this._input.removeEventListener('beforeinput', this._onBeforeInput)
     this._input.removeEventListener('focus', this._onFocus)
+    this._input.removeEventListener('blur', this._onBlur)
     this._input.removeEventListener('pointerdown', this._onPointerDown)
     this._input.removeEventListener('compositionend', this._onCompositionEnd)
     for (const type of POINTER_END_EVENTS) {
@@ -298,13 +305,12 @@ class OtpInput extends BaseComponent {
     this._input.addEventListener('input', this._onInput)
     this._input.addEventListener('beforeinput', this._onBeforeInput)
     this._input.addEventListener('focus', this._onFocus)
+    this._input.addEventListener('blur', this._onBlur)
     this._input.addEventListener('pointerdown', this._onPointerDown)
     this._input.addEventListener('compositionend', this._onCompositionEnd)
     for (const type of POINTER_END_EVENTS) {
       this._input.addEventListener(type, this._onPointerEnd)
     }
-
-    document.addEventListener('selectionchange', this._onSelectionChange)
 
     for (const type of SYNC_EVENTS) {
       this._input.addEventListener(type, this._onSync)

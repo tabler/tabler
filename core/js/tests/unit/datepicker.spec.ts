@@ -236,6 +236,25 @@ describe('Datepicker', () => {
       expect(instance._isShown).toBe(false)
     })
 
+    it('should watch document focus only while shown', async () => {
+      fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
+      const add = vi.spyOn(document, 'addEventListener')
+      const remove = vi.spyOn(document, 'removeEventListener')
+      const count = (spy: typeof add): number => spy.mock.calls.filter(([type]) => type === 'focusin').length
+
+      const instance = new Datepicker(input())
+      expect(count(add)).toBe(0)
+
+      await instance.show()
+      expect(count(add)).toBe(1)
+
+      await instance.hide()
+      expect(count(remove)).toBe(1)
+
+      add.mockRestore()
+      remove.mockRestore()
+    })
+
     it('should show again after the plugin throws while showing', async () => {
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
 

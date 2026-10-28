@@ -362,6 +362,28 @@ describe('OtpInput', () => {
     })
   })
 
+  describe('selectionchange', () => {
+    it('should listen on document only while the input is focused', () => {
+      const add = vi.spyOn(document, 'addEventListener')
+      const remove = vi.spyOn(document, 'removeEventListener')
+      const instance = new OtpInput(otp())
+      const added = (): number => add.mock.calls.filter(([type]) => type === 'selectionchange').length
+      const removed = (): number => remove.mock.calls.filter(([type]) => type === 'selectionchange').length
+
+      expect(added()).toBe(0)
+
+      input().focus()
+      expect(added()).toBe(1)
+
+      input().blur()
+      expect(removed()).toBe(1)
+
+      instance.dispose()
+      add.mockRestore()
+      remove.mockRestore()
+    })
+  })
+
   describe('dispose', () => {
     it('should remove the rendered slots and instance', () => {
       const instance = new OtpInput(otp())
