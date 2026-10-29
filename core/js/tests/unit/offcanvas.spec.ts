@@ -641,4 +641,18 @@ describe('Offcanvas', () => {
       expect(swipeDismisses('offcanvas-end', [200, 0], [50, 0], 'rtl')).toBe(true)
     })
   })
+
+  describe('open on load', () => {
+    it('should not open a panel that is not positioned as an overlay', () => {
+      fixtureEl.innerHTML = createOffcanvasHTML().replace('offcanvas-start', 'offcanvas-start show position-static')
+      const el = fixtureEl.querySelector<HTMLElement>('.offcanvas')!
+      const overflow = document.body.style.overflow
+
+      window.dispatchEvent(new Event('load'))
+
+      expect(Offcanvas.getInstance(el)).toBeNull()
+      expect(document.querySelector('.offcanvas-backdrop')).toBeNull()
+      expect(document.body.style.overflow).toBe(overflow)
+    })
+  })
 })

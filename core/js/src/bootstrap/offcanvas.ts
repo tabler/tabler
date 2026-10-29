@@ -307,6 +307,10 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
   for (const selector of SelectorEngine.find(OPEN_SELECTOR)) {
+    if (getComputedStyle(selector).position !== 'fixed') {
+      continue
+    }
+
     ;(Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
   }
 })
