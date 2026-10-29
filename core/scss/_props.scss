@@ -69,12 +69,55 @@
     --font-weight-#{$name}: #{$value};
   }
 
+  @each $name, $style in $text-sizes {
+    --font-size-text-#{$name}: #{map.get($style, font-size)};
+    --line-height-text-#{$name}: #{map.get($style, line-height)};
+  }
+
+  @each $name, $style in $heading-sizes {
+    --font-size-heading-#{$name}: #{map.get($style, font-size)};
+    --line-height-heading-#{$name}: #{map.get($style, line-height)};
+  }
+
   @each $name, $value in $font-sizes {
-    --font-size-h#{$name}: #{$value};
+    $size: map.get($heading-levels, $name);
+    @if $size and $value == map.get($heading-sizes, $size, font-size) {
+      --font-size-h#{$name}: var(--font-size-heading-#{$size});
+    } @else {
+      --font-size-h#{$name}: #{$value};
+    }
+  }
+
+  $heading-line-heights: ();
+  @each $level, $size in $heading-levels {
+    $heading-line-heights: map.set($heading-line-heights, 'h#{$level}', $size);
   }
 
   @each $name, $value in $line-heights {
-    --line-height-#{$name}: #{$value};
+    $size: map.get($heading-line-heights, $name);
+    @if $size and $value == map.get($heading-sizes, $size, line-height) {
+      --line-height-#{$name}: var(--line-height-heading-#{$size});
+    } @else {
+      --line-height-#{$name}: #{$value};
+    }
+  }
+
+  @each $level, $value in $display-font-sizes {
+    $size: map.get($display-levels, $level);
+    @if $size and $value == map.get($heading-sizes, $size, font-size) {
+      --font-size-display-#{$level}: var(--font-size-heading-#{$size});
+    } @else {
+      --font-size-display-#{$level}: #{$value};
+    }
+    $line-height: map.get($display-line-heights, $level);
+    @if $display-line-height {
+      $line-height: $display-line-height;
+    }
+    @if $size and $line-height == map.get($heading-sizes, $size, line-height) {
+      --line-height-display-#{$level}: var(--line-height-heading-#{$size});
+    } @else {
+      --line-height-display-#{$level}: #{$line-height};
+    }
   }
 
   // Shadows

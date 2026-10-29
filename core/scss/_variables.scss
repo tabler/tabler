@@ -440,23 +440,117 @@ $line-height-sm: divide(1rem, $font-size-base) !default;
 $line-height-lg: divide(1.5rem, $font-size-base) !default;
 $line-height-xl: divide(1.75rem, $font-size-base) !default;
 
-$h1-font-size: 1.5rem !default;
-$h1-line-height: 2rem !default;
+$font-size-2xs: 0.625rem !default;
+$line-height-2xs: 1rem !default;
 
-$h2-font-size: 1.25rem !default;
-$h2-line-height: 1.75rem !default;
+// scss-docs-start text-styles-variables
+$text-sizes: (
+  '2xs': (
+    font-size: $font-size-2xs,
+    line-height: $line-height-2xs,
+  ),
+  'xs': (
+    font-size: 0.75rem,
+    line-height: 1rem,
+  ),
+  'sm': (
+    font-size: 0.75rem,
+    line-height: 1.25rem,
+  ),
+  'md': (
+    font-size: 0.875rem,
+    line-height: 1.25rem,
+  ),
+  'lg': (
+    font-size: 1rem,
+    line-height: 1.5rem,
+  ),
+  'xl': (
+    font-size: 1.25rem,
+    line-height: 1.75rem,
+  ),
+) !default;
 
-$h3-font-size: 1rem !default;
-$h3-line-height: 1.5rem !default;
+$label-sizes: map.remove($text-sizes, 'xl') !default;
 
-$h4-font-size: 0.875rem !default;
-$h4-line-height: 1.25rem !default;
+$heading-sizes: (
+  'xs': (
+    font-size: 0.75rem,
+    line-height: 1rem,
+  ),
+  'sm': (
+    font-size: 0.875rem,
+    line-height: 1.25rem,
+  ),
+  'md': (
+    font-size: 1rem,
+    line-height: 1.5rem,
+  ),
+  'lg': (
+    font-size: 1.25rem,
+    line-height: 1.75rem,
+  ),
+  'xl': (
+    font-size: 1.5rem,
+    line-height: 2rem,
+  ),
+  '2xl': (
+    font-size: 2rem,
+    line-height: 2.5rem,
+  ),
+  '3xl': (
+    font-size: 2.5rem,
+    line-height: 3rem,
+  ),
+  '4xl': (
+    font-size: 3rem,
+    line-height: 3.5rem,
+  ),
+  '5xl': (
+    font-size: 3.5rem,
+    line-height: 4rem,
+  ),
+  '6xl': (
+    font-size: 4rem,
+    line-height: 4.5rem,
+  ),
+  '7xl': (
+    font-size: 4.5rem,
+    line-height: 5rem,
+  ),
+  '8xl': (
+    font-size: 5rem,
+    line-height: 5.5rem,
+  ),
+) !default;
 
-$h5-font-size: 0.75rem !default;
-$h5-line-height: 1rem !default;
+$heading-levels: (
+  1: 'xl',
+  2: 'lg',
+  3: 'md',
+  4: 'sm',
+  5: 'xs',
+  6: 'xs',
+) !default;
 
-$h6-font-size: 0.625rem !default;
-$h6-line-height: 1rem !default;
+$h1-font-size: map.get($heading-sizes, map.get($heading-levels, 1), font-size) !default;
+$h1-line-height: map.get($heading-sizes, map.get($heading-levels, 1), line-height) !default;
+$h2-font-size: map.get($heading-sizes, map.get($heading-levels, 2), font-size) !default;
+$h2-line-height: map.get($heading-sizes, map.get($heading-levels, 2), line-height) !default;
+$h3-font-size: map.get($heading-sizes, map.get($heading-levels, 3), font-size) !default;
+$h3-line-height: map.get($heading-sizes, map.get($heading-levels, 3), line-height) !default;
+$h4-font-size: map.get($heading-sizes, map.get($heading-levels, 4), font-size) !default;
+$h4-line-height: map.get($heading-sizes, map.get($heading-levels, 4), line-height) !default;
+$h5-font-size: map.get($heading-sizes, map.get($heading-levels, 5), font-size) !default;
+$h5-line-height: map.get($heading-sizes, map.get($heading-levels, 5), line-height) !default;
+$h6-font-size: map.get($heading-sizes, map.get($heading-levels, 6), font-size) !default;
+$h6-line-height: map.get($heading-sizes, map.get($heading-levels, 6), line-height) !default;
+
+$label-font-weight: var(--font-weight-medium) !default;
+$subheader-sm-font-size: $font-size-2xs !default;
+$subheader-sm-line-height: $line-height-2xs !default;
+$subheader-sm-font-weight: var(--font-weight-semibold) !default;
+// scss-docs-end text-styles-variables
 
 $font-size-reative-xs: 0.71428571em !default;
 $font-size-reative-sm: 0.85714285em !default;
@@ -487,19 +581,36 @@ $line-heights: (
   xl: $line-height-xl,
 ) !default;
 
+$display-levels: (
+  1: '8xl',
+  2: '7xl',
+  3: '6xl',
+  4: '5xl',
+  5: '4xl',
+  6: '2xl',
+) !default;
+
 $display-font-sizes: (
-  1: 5rem,
-  2: 4.5rem,
-  3: 4rem,
-  4: 3.5rem,
-  5: 3rem,
-  6: 2rem,
+  1: map.get($heading-sizes, map.get($display-levels, 1), font-size),
+  2: map.get($heading-sizes, map.get($display-levels, 2), font-size),
+  3: map.get($heading-sizes, map.get($display-levels, 3), font-size),
+  4: map.get($heading-sizes, map.get($display-levels, 4), font-size),
+  5: map.get($heading-sizes, map.get($display-levels, 5), font-size),
+  6: map.get($heading-sizes, map.get($display-levels, 6), font-size),
+) !default;
+$display-line-heights: (
+  1: map.get($heading-sizes, map.get($display-levels, 1), line-height),
+  2: map.get($heading-sizes, map.get($display-levels, 2), line-height),
+  3: map.get($heading-sizes, map.get($display-levels, 3), line-height),
+  4: map.get($heading-sizes, map.get($display-levels, 4), line-height),
+  5: map.get($heading-sizes, map.get($display-levels, 5), line-height),
+  6: map.get($heading-sizes, map.get($display-levels, 6), line-height),
 ) !default;
 
 $display-font-family: null !default;
 $display-font-style: null !default;
 $display-font-weight: 300 !default;
-$display-line-height: $headings-line-height !default;
+$display-line-height: null !default;
 
 $lead-font-size: $font-size-base !default;
 $lead-font-weight: var(--font-weight-normal) !default;
@@ -800,7 +911,7 @@ $avatar-sizes: (
   ),
   'xs': (
     size: 1.25rem,
-    font-size: $h6-font-size,
+    font-size: $font-size-2xs,
     icon-size: 0.75rem,
     status-size: 0.375rem,
     brand-size: 0.75rem,
@@ -1290,7 +1401,7 @@ $card-stamp-opacity: 0.2 !default;
 
 $card-ribbon-margin: 0.25rem !default;
 $card-ribbon-border-radius: var(--border-radius) !default;
-$card-ribbon-font-size: $h6-font-size !default;
+$card-ribbon-font-size: $font-size-2xs !default;
 $card-ribbon-icon-size: $icon-size !default;
 
 $card-header-tabs-bg: var(--fill-quaternary) !default;
@@ -1864,7 +1975,7 @@ $mockup-browser-sm-toolbar-min-height: 1.5rem !default;
 $mockup-browser-sm-toolbar-padding-y: 0.25rem !default;
 $mockup-browser-sm-control-size: 0.5rem !default;
 $mockup-browser-sm-control-gap: 0.25rem !default;
-$mockup-browser-sm-url-font-size: $h6-font-size !default;
+$mockup-browser-sm-url-font-size: $font-size-2xs !default;
 $mockup-browser-sm-url-icon-size: 0.75rem !default;
 // scss-docs-end mockup-browser-variables
 
@@ -2414,7 +2525,7 @@ $sparkline-fill: color-mix(in oklab, currentColor 10%, transparent) !default;
 $sparkline-track: color-mix(in oklab, currentColor 15%, transparent) !default;
 $sparkline-spot: currentColor !default;
 $sparkline-spot-size: 2 !default;
-$sparkline-label-font-size: $h6-font-size !default;
+$sparkline-label-font-size: $font-size-2xs !default;
 $sparkline-label-color: var(--body-color) !default;
 $sparkline-disabled-color: var(--disabled-color) !default;
 $sparkline-sizes: (
