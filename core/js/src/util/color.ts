@@ -24,7 +24,7 @@ const HEX_PATTERN = /^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i
 // run of spaces backtrack; the arguments are trimmed by `splitArguments` instead
 const FUNCTION_PATTERN = /^(rgba?|hsla?|oklch)\(([^)]*)\)$/i
 
-const NUMBER_PATTERN = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i
+const NUMBER_PATTERN = /^[+-]?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i
 
 const clamp = (value: number, min: number, max: number): number => Math.min(Math.max(value, min), max)
 
