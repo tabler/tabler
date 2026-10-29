@@ -3,33 +3,11 @@ title: Input mask
 order: 11
 summary: An input mask formats what the user types to a pattern, such as a phone number or a date, which makes the expected format clear and cuts validation errors.
 description: Format user input automatically with input masks for dates, phone numbers, and other patterns to reduce validation errors.
-docs-libs: [imask]
 related: [/ui/forms/elements]
 ---
 
 import Example from '@components/Example.astro'
-import TabsPackage from '@components/TabsPackage.astro'
 import CodeDocs from '@components/CodeDocs.astro';
-
-## Installation
-
-Install the imask library:
-
-<TabsPackage name="imask" />
-
-And import or require:
-
-```javascript
-import IMask from 'imask'
-```
-
-Or include it from a CDN:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/imask"></script>
-```
-
-The [IMask documentation](https://imask.js.org/guide.html#installation) covers other ways to install it.
 
 ## Default markup
 
@@ -54,38 +32,159 @@ To create an input mask, add the `data-mask` attribute to the input element:
 <input type="text" id="mask-phone" name="input-mask" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true" placeholder="(00) 0000-0000" autocomplete="off" />
 </Example>
 
-## More examples
+## Pattern
 
-If you need more examples of input masks, you can find them in the [IMask documentation](https://imask.js.org/guide.html#masked-input).
+| Character | Accepts |
+| --- | --- |
+| `0` | a digit |
+| `a` | a letter |
+| `*` | any character |
+| `\` | makes the next character a literal, so `\0` is a plain `0` |
+
+Every other character is a literal, and Tabler adds it for the user as they type. Paste works too: the value is cut to the pattern and the characters that do not fit are dropped.
+
+<Example column>
+<label class="form-label" for="mask-date">Date</label>
+<input type="text" id="mask-date" class="form-control mb-3" data-mask="00/00/0000" placeholder="00/00/0000" autocomplete="off" />
+<label class="form-label" for="mask-plate">Plate</label>
+<input type="text" id="mask-plate" class="form-control" data-mask="aa-0000" data-mask-visible="true" autocomplete="off" />
+</Example>
+
+## Dates and times
+
+`data-mask-type="date"` builds a pattern from a format and keeps every part in its range. The parts are `YYYY`, `MM` (month), `DD`, `HH`, `mm` (minutes) and `ss`. A digit that cannot start a valid part gets a `0` in front, so typing `4` in the day gives `04`. A part that is too high is pulled back to the highest value, and the day stays inside the month, with leap years.
+
+<Example column>
+<label class="form-label" for="mask-date-type">Date</label>
+<input type="text" id="mask-date-type" class="form-control mb-3" data-mask-type="date" data-mask-format="DD/MM/YYYY" data-mask-visible="true" autocomplete="off" />
+<label class="form-label" for="mask-datetime">Date and time</label>
+<input type="text" id="mask-datetime" class="form-control" data-mask-type="date" data-mask-format="YYYY-MM-DD HH:mm" data-mask-visible="true" autocomplete="off" />
+</Example>
+
+```html
+<input type="text" class="form-control" data-mask-type="date" data-mask-format="YYYY-MM-DD HH:mm" />
+```
+
+## Ranges
+
+To limit the groups of digits of any other pattern, add `data-mask-ranges` with one `min-max` for every group, in order. Here every part of an IP address stays between 0 and 255:
+
+<Example column>
+<label class="form-label" for="mask-ip">IP address</label>
+<input type="text" id="mask-ip" class="form-control" data-mask="000.000.000.000" data-mask-ranges="0-255 0-255 0-255 0-255" data-mask-visible="true" autocomplete="off" />
+</Example>
+
+```html
+<input type="text" class="form-control" data-mask="000.000.000.000" data-mask-ranges="0-255 0-255 0-255 0-255" />
+```
+
+In JavaScript, `ranges` is an array: `ranges: [[0, 255], [0, 255], [0, 255], [0, 255]]`. A group has a fixed length, so write `001` and not `1`.
+
+## Numbers
+
+For amounts and other numbers, use `data-mask-type="number"` instead of a pattern. The user types freely and Tabler groups the thousands, keeps the fraction to `scale` digits and drops everything that is not a number.
+
+<Example column>
+<label class="form-label" for="mask-number">Number</label>
+<input type="text" id="mask-number" class="form-control mb-3" data-mask-type="number" data-mask-scale="0" data-mask-thousands-separator=" " placeholder="1 234 567" autocomplete="off" />
+<label class="form-label" for="mask-money">Money</label>
+<input type="text" id="mask-money" class="form-control mb-3" data-mask-type="number" data-mask-prefix="$" data-mask-thousands-separator="," data-mask-min="0" data-mask-pad-fractional-zeros="true" placeholder="$0.00" autocomplete="off" />
+<label class="form-label" for="mask-percent">Percent</label>
+<input type="text" id="mask-percent" class="form-control" data-mask-type="number" data-mask-suffix=" %" data-mask-scale="1" data-mask-min="0" data-mask-max="100" placeholder="0 %" autocomplete="off" />
+</Example>
+
+```html
+<input
+  type="text"
+  class="form-control"
+  data-mask-type="number"
+  data-mask-prefix="$"
+  data-mask-thousands-separator=","
+  data-mask-min="0"
+  data-mask-pad-fractional-zeros="true"
+/>
+```
+
+| Option | Attribute | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `data-mask-type="number"` | | Turns the mask into a number mask. |
+| `scale` | `data-mask-scale` | `2` | Digits after the radix. Use `0` for whole numbers. |
+| `radix` | `data-mask-radix` | `.` | The fractional separator. |
+| `thousandsSeparator` | `data-mask-thousands-separator` | none | The character that groups thousands. |
+| `mapToRadix` | | `,` for `.`, `.` for `,` | Other characters that the user can type as the radix. |
+| `min`, `max` | `data-mask-min`, `data-mask-max` | none | The range. A `min` of `0` or more also removes the minus sign. |
+| `prefix`, `suffix` | `data-mask-prefix`, `data-mask-suffix` | none | Text around the number, such as a currency symbol. |
+| `padFractionalZeros` | `data-mask-pad-fractional-zeros` | `false` | Adds zeros up to `scale` when the field loses focus. |
+
+`unmaskedValue` is the number as plain text, with a `.` as the radix and no separators, so `parseFloat(unmaskedValue)` works whatever the format on screen. A value above `max` is cut down to `max` as the user types, and a value below `min` is raised to it when the field loses focus.
+
+## Options
+
+| Option | Attribute | Default | Description |
+| --- | --- | --- | --- |
+| `mask` | `data-mask` | `''` | The pattern, or a function that gets the unmasked value and returns the pattern. |
+| `lazy` | `data-mask-visible="true"` | `true` | With `data-mask-visible` the whole pattern shows before the user types. |
+| `placeholderChar` | `data-mask-placeholder-char` | `_` | The character for an empty slot when the pattern is visible. |
+| `type` | `data-mask-type` | | `date` or `number`, instead of a pattern. |
+| `format` | `data-mask-format` | `DD/MM/YYYY` | The date format, for `type: 'date'`. |
+| `ranges` | `data-mask-ranges` | none | The range of every group of digits in the pattern. |
+| `tokens` | | `{}` | Extra pattern characters, each with the RegExp one character has to match. |
 
 ## JavaScript
 
-Tabler wraps the plugin in an `InputMask` component that works like the Bootstrap components: it is created once per element and stored on it. On page load Tabler creates one for every element with `data-mask`. This is the code that runs:
+Tabler creates an `InputMask` for every element with `data-mask`, the same way as the Bootstrap components. This is the code that runs:
 
 <CodeDocs name="input-mask-init" file="core/js/src/input-mask.ts" />
 
-Create the component yourself for a field added later. The pattern comes from `data-mask`, or from the config object, which wins:
+Create the component yourself for a field added later. The config object wins over the attributes:
 
 ```js
 const phone = new tabler.InputMask(document.getElementById('phone'), { mask: '(00) 0000-0000' });
 ```
 
-`data-mask-visible="true"` shows the pattern before the user types. In the config object that is `lazy: false`.
-
-The `mask` getter returns the IMask instance, so everything from the [IMask API](https://imask.js.org/guide.html#api) is available:
+A custom token, here a hexadecimal digit:
 
 ```js
-const phone = tabler.InputMask.getOrCreateInstance(document.getElementById('phone'));
-console.log(phone.mask.unmaskedValue);
+new tabler.InputMask(document.getElementById('color'), {
+  mask: '#HHHHHH',
+  tokens: { H: /[0-9a-f]/i },
+});
 ```
 
-| Method | Description |
+A function as the mask changes the pattern while the user types, for example for a card number:
+
+```js
+new tabler.InputMask(document.getElementById('card'), {
+  mask: (value) => (/^3[47]/.test(value) ? '0000 000000 00000' : '0000 0000 0000 0000'),
+});
+```
+
+### Methods and properties
+
+| Name | Description |
 | --- | --- |
+| `value` | The value as shown, with the literals. |
+| `unmaskedValue` | Only what the user typed. Send this one to a server. |
+| `isComplete` | `true` when every slot is filled. |
 | `update()` | Re-applies the mask after the value was changed from code. |
-| `mask` | Getter. The IMask instance, or `null` when the library is not loaded. |
 | `dispose()` | Removes the mask and the component from the element. |
 | `getInstance(element)` | Static. Returns the component for the element, or `null`. |
 | `getOrCreateInstance(element, config)` | Static. Returns the component for the element and creates it when needed. |
+
+### Events
+
+The events are triggered on the input.
+
+| Event | Description |
+| --- | --- |
+| `accept.bs.input-mask` | The unmasked value changed. Has `value` and `unmaskedValue`. |
+| `complete.bs.input-mask` | The last slot was filled. Has `value` and `unmaskedValue`. |
+
+```js
+input.addEventListener('complete.bs.input-mask', (event) => {
+  console.log(event.unmaskedValue);
+});
+```
 
 ## Accessibility
 
