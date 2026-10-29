@@ -240,6 +240,37 @@ describe('NavOverflow', () => {
       expect(hidden()).toHaveLength(3)
     })
 
+    it('should not measure the items again when only the height changes', async () => {
+      fixtureEl.innerHTML = nav(360, links(6))
+
+      new NavOverflow(wrapper())
+      const spy = vi.spyOn(wrapper(), 'clientWidth', 'get')
+      const measured = (): number => spy.mock.calls.length
+      const toggle = fixtureEl.querySelector<HTMLElement>('.nav-overflow-toggle')!
+      const before = toggle.closest('.nav-item')!.classList.contains('d-none')
+
+      wrapper().style.height = '200px'
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+      expect(measured()).toBe(1)
+      expect(toggle.closest('.nav-item')!.classList.contains('d-none')).toBe(before)
+      expect(hidden()).toHaveLength(3)
+      spy.mockRestore()
+    })
+
+    it('should restore the items when the nav turns vertical at the same width', async () => {
+      fixtureEl.innerHTML = nav(360, links(6))
+
+      new NavOverflow(wrapper())
+      expect(hidden()).toHaveLength(3)
+
+      fixtureEl.querySelector<HTMLElement>('.nav')!.style.flexDirection = 'column'
+      wrapper().style.height = '400px'
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+      expect(hidden()).toHaveLength(0)
+    })
+
     it('should keep an open menu open when nothing moves', () => {
       fixtureEl.innerHTML = nav(360, links(6))
 

@@ -296,6 +296,10 @@ class VectorMap extends BaseComponent {
   _userConfig: ComponentConfigInput = {}
   _map: VectorMapData | null = null
   _tooltip: HTMLElement | null = null
+  // The box of the element, measured once per frame while the tooltip follows the pointer
+  _hoverRect: DOMRect | null = null
+  _hoverRectFrame = 0
+  _actionButtons: HTMLButtonElement[] = []
   _view: View = { x: 0, y: 0, scale: 1 }
   _frame = 0
   // Pointers that are down on the map, with where each was last seen
@@ -452,6 +456,7 @@ class VectorMap extends BaseComponent {
 
   dispose(): void {
     cancelAnimationFrame(this._frame)
+    cancelAnimationFrame(this._hoverRectFrame)
     this._getSvg()?.remove()
     this._getControls()?.remove()
     this._getLegend()?.remove()
@@ -587,6 +592,7 @@ class VectorMap extends BaseComponent {
   _renderControls(): void {
     const { zoom, zoomInLabel, zoomOutLabel } = this._config
     this._getControls()?.remove()
+    this._actionButtons = []
     this._element.classList.toggle(CLASS_NAME_ZOOMABLE, zoom)
 
     if (!zoom) {
@@ -615,6 +621,7 @@ class VectorMap extends BaseComponent {
       svg.append(path)
       button.append(svg)
       controls.append(button)
+      this._actionButtons.push(button)
     }
 
     this._element.append(controls)
@@ -639,7 +646,7 @@ class VectorMap extends BaseComponent {
     this._view = { x, y, scale }
     svg.setAttribute('viewBox', `${round(x)} ${round(y)} ${round(viewWidth)} ${round(viewHeight)}`)
 
-    for (const button of this._element.querySelectorAll<HTMLButtonElement>(SELECTOR_ACTION)) {
+    for (const button of this._actionButtons) {
       button.disabled = button.getAttribute(ATTRIBUTE_ACTION) === ACTION_ZOOM_IN ? scale >= max : scale <= 1
     }
   }
@@ -815,7 +822,14 @@ class VectorMap extends BaseComponent {
       this._element.append(this._tooltip)
     }
 
-    const rect = this._element.getBoundingClientRect()
+    if (!this._hoverRect) {
+      this._hoverRect = this._element.getBoundingClientRect()
+      this._hoverRectFrame = requestAnimationFrame(() => {
+        this._hoverRect = null
+      })
+    }
+
+    const rect = this._hoverRect
     this._tooltip.textContent = text
     this._tooltip.hidden = false
     this._tooltip.style.left = `${event.clientX - rect.left}px`

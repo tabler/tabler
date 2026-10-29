@@ -112,6 +112,7 @@ class NavOverflow extends BaseComponent {
   _resizeObserver: ResizeObserver | null
   _resizeHandler: (() => void) | null
   _collapseBelow: number
+  _lastLayout = ''
   _itemMenus: Map<HTMLElement, HTMLElement>
   _relocatedMenus: Map<HTMLElement, RelocatedMenu>
 
@@ -157,6 +158,7 @@ class NavOverflow extends BaseComponent {
 
   // Public
   update(): void {
+    this._lastLayout = ''
     this._calculateOverflow()
     EventHandler.trigger(this._element, EVENT_UPDATE)
   }
@@ -331,6 +333,13 @@ class NavOverflow extends BaseComponent {
   }
 
   _calculateOverflow(): void {
+    // A resize that keeps the width and the direction, like a taller wrapper, changes nothing
+    const layout = `${this._availableWidth()}:${getComputedStyle(this._nav).flexDirection}`
+    if (layout === this._lastLayout) {
+      return
+    }
+
+    this._lastLayout = layout
     const overflowItem = this._overflowToggle?.closest<HTMLElement>(SELECTOR_NAV_ITEM) ?? null
 
     // Measure with every item shown, so widths never depend on the last pass
