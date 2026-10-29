@@ -1,0 +1,94 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+
+const colors = ['blue-lt', 'green-lt', 'orange-lt'] as const
+---
+
+<DefaultLayout title="Toggler" pageMenu="base.toggler" description="Toggler switches a class or an attribute on click, with data attributes only and no custom JavaScript.">
+  <DocsLink slot="page-header-actions" path="/ui/components/toggler" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Toggle a class</CardTitle>
+          <CardSubtitle>The button toggles the class from <code>data-bs-value</code> on itself.</CardSubtitle>
+          <button type="button" class="btn" data-bs-toggle="toggler" data-bs-value="btn-primary">Toggle <code>btn-primary</code></button>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Remove an existing class</CardTitle>
+          <CardSubtitle>When the element already has the class, the first click removes it.</CardSubtitle>
+          <button type="button" class="btn btn-primary" data-bs-toggle="toggler" data-bs-value="btn-primary">Starts with <code>btn-primary</code></button>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Target element</CardTitle>
+          <CardSubtitle>Point <code>data-bs-target</code> at another element. The value lives on the target.</CardSubtitle>
+          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="#toggler-target">Toggle</button>
+          <div id="toggler-target" class="p-3 rounded border" data-bs-value="bg-primary-lt">The button toggles <code>bg-primary-lt</code> here.</div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Multiple elements</CardTitle>
+          <CardSubtitle>A selector with many matches toggles every one, each with its own value.</CardSubtitle>
+          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="[data-toggler-demo]">Toggle all</button>
+          <div class="space-y-2">
+            {
+              colors.map((color) => (
+                <div class="p-3 rounded border" data-toggler-demo data-bs-value={`bg-${color}`}>
+                  Toggles <code>bg-{color}</code>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Toggle an attribute</CardTitle>
+          <CardSubtitle>Set <code>data-bs-attribute</code> to toggle an attribute instead, here <code>hidden</code>.</CardSubtitle>
+          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="#toggler-hidden">Show or hide</button>
+          <div id="toggler-hidden" class="p-3 rounded border" data-bs-attribute="hidden" data-bs-value="true">Now you see me.</div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Disable a form</CardTitle>
+          <CardSubtitle>Toggle <code>disabled</code> on a <code>fieldset</code> to lock every control inside.</CardSubtitle>
+          <button type="button" class="btn mb-3" data-bs-toggle="toggler" data-bs-target="#toggler-fieldset">Lock or unlock</button>
+          <fieldset id="toggler-fieldset" data-bs-attribute="disabled" data-bs-value="disabled">
+            <div class="mb-3">
+              <label class="form-label" for="toggler-name">Name</label>
+              <input type="text" class="form-control" id="toggler-name" placeholder="Your name" />
+            </div>
+            <button type="button" class="btn btn-primary">Save</button>
+          </fieldset>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
