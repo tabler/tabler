@@ -11,10 +11,12 @@ classnames:
     - class: placeholder
       desc: Grey block standing in for content that is still loading
   behavior:
-    - class: placeholder-glow
-      desc: Fades the placeholders inside it, applied to the wrapper
     - class: placeholder-wave
       desc: Sweeps a highlight across them, applied to the wrapper
+    - class: placeholder-pulse
+      desc: Fades the placeholders inside it, applied to the wrapper
+    - class: placeholder-glow
+      desc: Alias of placeholder-pulse
   size:
     - class: placeholder-xs
       desc: Extra small, for a caption line
@@ -136,11 +138,11 @@ The sizes of placeholders are based on the typographic style of the parent eleme
 
 ## Animation
 
-Animate placeholders with `.placeholder-glow` or `.placeholder-wave` to better convey the perception of something being actively loaded.
+Animate placeholders with `.placeholder-wave` or `.placeholder-pulse` to better convey the perception of something being actively loaded. `.placeholder-glow` is an alias of `.placeholder-pulse` and keeps working.
 
 <Example column>
-<p class="placeholder-glow"><span class="placeholder col-12"></span></p>
 <p class="placeholder-wave"><span class="placeholder col-12"></span></p>
+<p class="placeholder-pulse"><span class="placeholder col-12"></span></p>
 </Example>
 
 ## Live examples
@@ -253,5 +255,5 @@ See in the following examples how else you can use the placeholder component
 
 - A placeholder is a picture of content that is not there yet. Hide it from screen readers with `aria-hidden="true"` and mark the container `aria-busy="true"`, so the reader waits for the real thing.
 - Announce the load from one live region, not from the placeholder itself. Otherwise every skeleton block is announced separately.
-- `placeholder-glow` and `placeholder-wave` animate continuously. Turn them off under `prefers-reduced-motion`.
+- `placeholder-pulse` and `placeholder-wave` animate continuously. Turn them off under `prefers-reduced-motion`.
 - Keep the layout of the placeholder close to the real content, so nothing jumps when it arrives.
