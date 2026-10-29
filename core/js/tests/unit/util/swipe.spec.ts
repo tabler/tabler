@@ -40,6 +40,7 @@ function createPointerEvent(type: string, opts: Partial<PointerEvent> = {}): Poi
     bubbles: true,
     cancelable: true,
     clientX: opts.clientX ?? 0,
+    clientY: opts.clientY ?? 0,
     pointerType: ((opts as Record<string, unknown>).pointerType as string) ?? 'touch',
     ...opts,
   })
@@ -305,6 +306,8 @@ describe('Swipe', () => {
         endCallback: null,
         leftCallback: null,
         rightCallback: null,
+        upCallback: null,
+        downCallback: null,
       })
     })
 
@@ -313,7 +316,38 @@ describe('Swipe', () => {
         endCallback: '(function|null)',
         leftCallback: '(function|null)',
         rightCallback: '(function|null)',
+        upCallback: '(function|null)',
+        downCallback: '(function|null)',
       })
+    })
+  })
+
+  describe('vertical swipe', () => {
+    it('should call downCallback and upCallback on vertical pointer swipes', () => {
+      const downCallback = vi.fn()
+      const upCallback = vi.fn()
+      const rightCallback = vi.fn()
+      const swipe = new Swipe(div, { downCallback, upCallback, rightCallback })
+
+      div.dispatchEvent(createPointerEvent('pointerdown', { clientX: 100, clientY: 50 }))
+      div.dispatchEvent(createPointerEvent('pointerup', { clientX: 110, clientY: 150 }))
+      expect(downCallback).toHaveBeenCalledTimes(1)
+
+      div.dispatchEvent(createPointerEvent('pointerdown', { clientX: 100, clientY: 150 }))
+      div.dispatchEvent(createPointerEvent('pointerup', { clientX: 100, clientY: 50 }))
+      expect(upCallback).toHaveBeenCalledTimes(1)
+      expect(rightCallback).not.toHaveBeenCalled()
+      swipe.dispose()
+    })
+
+    it('should keep horizontal behaviour when no vertical callback is set', () => {
+      const rightCallback = vi.fn()
+      const swipe = new Swipe(div, { rightCallback })
+
+      div.dispatchEvent(createPointerEvent('pointerdown', { clientX: 0, clientY: 0 }))
+      div.dispatchEvent(createPointerEvent('pointerup', { clientX: 100, clientY: 150 }))
+      expect(rightCallback).toHaveBeenCalledTimes(1)
+      swipe.dispose()
     })
   })
 })
