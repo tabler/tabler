@@ -89,11 +89,13 @@
 .ts-wrapper.form-select {
   // Keeps a dropdown rendered inside the wrapper at the control's size on phones.
   --form-control-mobile-font-size: var(--control-font-size);
+  min-height: var(--control-min-height);
 
   .ts-control {
     padding: var(--control-padding-y) var(--control-padding-x);
     font-size: var(--control-font-size) !important;
     line-height: var(--control-line-height);
+    border: 0;
     border-radius: inherit !important;
   }
 
@@ -111,6 +113,14 @@
     padding-top: calc(var(--control-padding-y) - 2px) !important;
     padding-bottom: calc(var(--control-padding-y) - 5px);
   }
+}
+
+// The preset's small-size rule has the same `!important` at the same
+// specificity, and its value reads `--bs-border-width`.
+.ts-wrapper.form-control.form-control-sm.multi.has-items .ts-control,
+.ts-wrapper.form-select.form-select-sm.multi.has-items .ts-control,
+.input-group-sm > .ts-wrapper:is(.form-control, .form-select).multi.has-items .ts-control {
+  padding-top: calc(var(--control-padding-y) - 2px) !important;
 }
 
 // In an `.input-icon`, the wrapper carries the `.form-select` class that gets the room for
@@ -144,10 +154,28 @@
   z-index: $zindex-popover !important;
   color: var(--body-color) !important;
   background: var(--bg-surface) !important;
+  // Like `.dropdown-menu`: no border, the shadow draws the edge.
+  border: 0 !important;
   box-shadow: var(--shadow-dropdown) !important;
+  @if $enable-rounded {
+    border-radius: $dropdown-border-radius !important;
+  }
 
   .option {
     padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+  }
+
+  .optgroup::before {
+    border-top: $dropdown-border-width solid $dropdown-divider-bg !important;
+  }
+
+  .dropdown-header {
+    background: var(--bg-surface) !important;
+    border-bottom: $dropdown-border-width solid $dropdown-divider-bg !important;
+    @if $enable-rounded {
+      border-start-start-radius: $dropdown-border-radius !important;
+      border-start-end-radius: $dropdown-border-radius !important;
+    }
   }
 
   // Tom Select marks the highlighted row with .active; match the row only, so an
@@ -191,10 +219,11 @@
 
 .ts-wrapper.multi,
 .ts-wrapper.multi.disabled {
-  .ts-control > div {
+  .ts-control > .item {
     color: var(--body-color);
     background: var(--bg-surface-secondary);
     border: 1px solid var(--border-color);
+    border-radius: calc(var(--control-border-radius, var(--border-radius)) - 1px);
   }
 }
 
