@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -97,19 +97,19 @@ class Offcanvas extends BaseComponent {
     return NAME
   }
 
-  toggle(relatedTarget?: HTMLElement): void {
+  toggle(relatedTarget?: HTMLElement): Promise<void> {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget?: HTMLElement): void {
+  show(relatedTarget?: HTMLElement): Promise<void> {
     if (this._isShown) {
-      return
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, { relatedTarget })
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
@@ -134,18 +134,18 @@ class Offcanvas extends BaseComponent {
       EventHandler.trigger(this._element, EVENT_SHOWN, { relatedTarget })
     }
 
-    this._queueCallback(completeCallBack, this._element, true)
+    return this._queueCallback(completeCallBack, this._element, true)
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (!this._isShown) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._focustrap.deactivate()
@@ -174,7 +174,7 @@ class Offcanvas extends BaseComponent {
       }
     }
 
-    this._queueCallback(completeCallback, this._element, true)
+    return this._queueCallback(completeCallback, this._element, true)
   }
 
   dispose(): void {
@@ -190,7 +190,7 @@ class Offcanvas extends BaseComponent {
         return
       }
 
-      this.hide()
+      void this.hide()
     }
 
     const isBackdropVisible = Boolean(this._config.backdrop)
@@ -217,7 +217,7 @@ class Offcanvas extends BaseComponent {
       }
 
       if (this._config.keyboard) {
-        this.hide()
+        void this.hide()
         return
       }
 
@@ -263,23 +263,23 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen && alreadyOpen !== target) {
-    ;(Offcanvas.getInstance(alreadyOpen) as Offcanvas).hide()
+    void (Offcanvas.getInstance(alreadyOpen) as Offcanvas).hide()
   }
 
   const data = Offcanvas.getOrCreateInstance(target) as Offcanvas
-  data.toggle(this)
+  void data.toggle(this)
 })
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
   for (const selector of SelectorEngine.find(OPEN_SELECTOR)) {
-    ;(Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
+    void (Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
   }
 })
 
 EventHandler.on(window, EVENT_RESIZE, () => {
   for (const element of SelectorEngine.find('[aria-modal][class*=show][class*=offcanvas-]')) {
     if (getComputedStyle(element).position !== 'fixed') {
-      ;(Offcanvas.getOrCreateInstance(element) as Offcanvas).hide()
+      void (Offcanvas.getOrCreateInstance(element) as Offcanvas).hide()
     }
   }
 })

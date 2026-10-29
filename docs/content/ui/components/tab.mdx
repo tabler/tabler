@@ -235,6 +235,18 @@ Tabler activates the tab that matches the URL hash on page load, so you can link
 
 This runs on `DOMContentLoaded`, so `show.bs.tab` and `shown.bs.tab` for the hash tab fire before any script that itself waits for `DOMContentLoaded`. Add the listener earlier (a plain `<script>`, not one that is deferred or waits for the load event), or read `Tab.getInstance(triggerEl)` after `DOMContentLoaded` to find the tab that was activated.
 
+### Promise return values
+
+`show()` returns a Promise that resolves after both the old and the new panel finish their fade. `shown.bs.tab` fires earlier, as soon as the tab itself is active, so wait for the Promise when the code needs the panel to be visible:
+
+```js
+const tab = tabler.Tab.getOrCreateInstance(el);
+await tab.show();
+panel.querySelector('input')?.focus();
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the tab is already active, or a listener called `preventDefault()` on `show.bs.tab` or `hide.bs.tab`. To act only when the tab really changed state, listen for `shown.bs.tab` instead.
+
 ## Accessibility
 
 - Wrap the tabs in an element with `role="tablist"`, give each trigger `role="tab"` and each panel `role="tabpanel"`, and link them with `aria-controls` and `aria-labelledby`.

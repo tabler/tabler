@@ -10,7 +10,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
+import { defineJQueryPlugin, execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop, resolved } from './util/index'
 import type { DelegatedEvent } from './dom/event-handler'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -122,17 +122,13 @@ class Dropdown extends BaseComponent {
     return NAME
   }
 
-  toggle(): void {
-    if (this._isShown()) {
-      this.hide()
-    } else {
-      this.show()
-    }
+  toggle(): Promise<void> {
+    return this._isShown() ? this.hide() : this.show()
   }
 
-  show(): void {
+  show(): Promise<void> {
     if (isDisabled(this._element) || this._isShown()) {
-      return
+      return resolved()
     }
 
     const relatedTarget = {
@@ -142,7 +138,7 @@ class Dropdown extends BaseComponent {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, relatedTarget)
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._createPopper()
@@ -159,11 +155,12 @@ class Dropdown extends BaseComponent {
     this._menu.classList.add(CLASS_NAME_SHOW)
     this._element.classList.add(CLASS_NAME_SHOW)
     EventHandler.trigger(this._element, EVENT_SHOWN, relatedTarget)
+    return resolved()
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (isDisabled(this._element) || !this._isShown()) {
-      return
+      return resolved()
     }
 
     const relatedTarget = {
@@ -171,6 +168,7 @@ class Dropdown extends BaseComponent {
     }
 
     this._completeHide(relatedTarget)
+    return resolved()
   }
 
   dispose(): void {
@@ -391,14 +389,14 @@ class Dropdown extends BaseComponent {
 
     if (isUpOrDownEvent) {
       event.stopPropagation()
-      instance.show()
+      void instance.show()
       instance._selectMenuItem(event)
       return
     }
 
     if (instance._isShown()) {
       event.stopPropagation()
-      instance.hide()
+      void instance.hide()
       getToggleButton.focus()
     }
   }
@@ -426,7 +424,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, Dropdown.clearMenus)
 EventHandler.on(document, EVENT_KEYUP_DATA_API, Dropdown.clearMenus)
 EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
   event.preventDefault()
-  ;(Dropdown.getOrCreateInstance(this) as Dropdown).toggle()
+  void (Dropdown.getOrCreateInstance(this) as Dropdown).toggle()
 })
 
 defineJQueryPlugin(Dropdown)
