@@ -34,9 +34,31 @@ Tabler provides `.pe-none` and `.pe-auto` classes to prevent or add element inte
 <a href="#" class="btn btn-primary transition-none">Without transition</a>
 </Example>
 
+## Hover lift
+
+`.hover-lift` raises an element and deepens its shadow on `:hover` and `:focus-visible`. Use it on clickable cards, tiles and list items.
+
+<Example>
+<a href="#" class="card card-sm hover-lift"><div class="card-body">Clickable card</div></a>
+</Example>
+
+Change the effect with these custom properties on the element or on a parent.
+
+| Property | Default |
+| --- | --- |
+| `--tblr-hover-lift-transform` | `translateY(-0.25rem)` |
+| `--tblr-hover-lift-box-shadow` | `var(--tblr-box-shadow-lg)` |
+| `--tblr-hover-lift-transition-duration` | `0.2s` |
+| `--tblr-hover-lift-transition-timing` | `ease-out` |
+
+<Example>
+<a href="#" class="card card-sm hover-lift" style="--tblr-hover-lift-transform: translateY(-0.5rem) scale(1.02)"><div class="card-body">Higher lift</div></a>
+</Example>
+
 ## Accessibility
 
 - `user-select-none` stops users from selecting and copying text. Never put it on content people may want to copy, such as a code snippet, an address, or an error message.
 - `pe-none` blocks the mouse but leaves the element in the tab order, so a keyboard user can still reach and activate it. Add `tabindex="-1"` and `aria-disabled="true"`, as the example above does, or use the `disabled` attribute on a real control.
 - `aria-disabled="true"` tells assistive technology the control is off, but it does not stop the click. `disabled` on a `button` or an `input` does both, and is the better choice when the element supports it.
 - `user-select-all` selects the whole block on one click, which helps for a token or a key. Keep it off long text, where users expect to select a part.
+- `hover-lift` runs its transition only when the user has not asked for reduced motion. The element still moves on hover and focus, so do not use the lift as the only sign of a state.
