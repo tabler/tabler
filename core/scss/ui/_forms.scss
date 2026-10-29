@@ -208,7 +208,8 @@ fieldset:empty {
     $focus-ring-color: map.get($data, 'focus-ring-color');
 
     &:has(.form-control.is-#{$state}),
-    .was-validated &:has(.form-control:#{$state}) {
+    .was-validated &:has(.form-control:#{$state}),
+    #{if(sass($state == 'valid'): "form[data-bs-validate='valid']"; else: 'form[data-bs-validate]')} &:has(.form-control:is(:user-#{$state})) {
       .input-group-text {
         border-color: $border-color;
       }

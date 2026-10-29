@@ -70,7 +70,8 @@ Number input (a field with a decrease and an increase button)
     // with one.
     @each $state, $data in $form-validation-states {
       &.is-#{$state},
-      .was-validated &:#{$state} {
+      .was-validated &:#{$state},
+      #{if(sass($state == 'valid'): "form[data-bs-validate='valid']"; else: 'form[data-bs-validate]')} &:is(:user-#{$state}) {
         padding-inline-end: 0.25rem !important;
         background-image: none;
       }
@@ -124,7 +125,8 @@ Number input (a field with a decrease and an increase button)
 
   @each $state, $data in $form-validation-states {
     &:has(> .form-control.is-#{$state}),
-    .was-validated &:has(> .form-control:#{$state}) {
+    .was-validated &:has(> .form-control:#{$state}),
+    #{if(sass($state == 'valid'): "form[data-bs-validate='valid']"; else: 'form[data-bs-validate]')} &:has(> .form-control:is(:user-#{$state})) {
       border-color: map.get($data, 'border-color');
 
       &:focus-within {
