@@ -166,7 +166,7 @@ describe('Tooltip', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
-        const tooltip = new Tooltip(el, { animation: false })
+        const tooltip = new Tooltip(el, { animation: false, trigger: 'manual' })
 
         el.addEventListener('shown.bs.tooltip', () => {
           expect(tooltip._isShown()).toBe(true)
@@ -256,7 +256,7 @@ describe('Tooltip', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
-        const tooltip = new Tooltip(el, { animation: false })
+        const tooltip = new Tooltip(el, { animation: false, trigger: 'manual' })
 
         el.addEventListener('shown.bs.tooltip', () => {
           tooltip.hide()
@@ -655,6 +655,108 @@ describe('Tooltip', () => {
       tooltip._isHovered = true
       tooltip._leave()
       expect(tooltip._isHovered).toBe(true)
+    })
+  })
+
+  describe('hoverable tip', () => {
+    const showTooltip = (options = {}) => {
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
+      const el = fixtureEl.querySelector('a')!
+      const tooltip = new Tooltip(el, { animation: false, ...options })
+      tooltip.show()
+      return { el, tooltip }
+    }
+
+    it('should keep the tooltip open while the pointer is over the tip', () => {
+      vi.useFakeTimers()
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      vi.runAllTimers()
+
+      expect(tooltip._isShown()).toBe(true)
+      vi.useRealTimers()
+    })
+
+    it('should hide the tooltip after the pointer leaves the tip', () => {
+      vi.useFakeTimers()
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      vi.runAllTimers()
+
+      expect(tooltip._isShown()).toBe(false)
+      vi.useRealTimers()
+    })
+
+    it('should keep the tip open when it is entered during the fade-in', async () => {
+      fixtureEl.innerHTML = '<style>.tooltip.fade { transition: opacity 50ms linear }</style><a href="#" title="Tooltip">Trigger</a>'
+      const el = fixtureEl.querySelector('a')!
+      const tooltip = new Tooltip(el, { delay: { show: 0, hide: 100 } })
+      const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      await wait(10)
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      await wait(200)
+
+      expect(tooltip._isShown()).toBe(true)
+    })
+
+    it('should hide the tooltip on Escape', () => {
+      const { tooltip } = showTooltip()
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should hide the tooltip on Escape when a capturing listener stops propagation', () => {
+      const stop = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.stopPropagation()
+        }
+      }
+      document.addEventListener('keydown', stop, true)
+      const { el, tooltip } = showTooltip()
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      document.removeEventListener('keydown', stop, true)
+
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should stop listening for Escape after dispose', () => {
+      const { tooltip } = showTooltip()
+      const spy = vi.spyOn(tooltip, 'hide')
+      tooltip.dispose()
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+
+    it('should size the bridge from the Popper offset', () => {
+      expect(showTooltip().tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('6px')
+      expect(showTooltip({ offset: [0, 10] }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('10px')
+      expect(showTooltip({ offset: '0,12' }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('12px')
+      expect(showTooltip({ offset: () => [0, 4] }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('')
+      expect(showTooltip({ trigger: 'click' }).tooltip.tip!.style.getPropertyValue('--tblr-tooltip-bridge')).toBe('')
+    })
+
+    it('should mark the tip as hoverable only with a hover trigger', () => {
+      expect(showTooltip().tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(true)
+      expect(showTooltip({ trigger: 'click' }).tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(false)
+      expect(showTooltip({ trigger: 'focus' }).tooltip.tip!.classList.contains('bs-tooltip-hoverable')).toBe(false)
+    })
+
+    it('should not listen on the tip without a hover trigger', () => {
+      const { tooltip } = showTooltip({ trigger: 'click' })
+      const spy = vi.spyOn(tooltip, '_enter')
+      tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+
+      expect(spy).not.toHaveBeenCalled()
     })
   })
 
