@@ -1,5 +1,45 @@
 # @tabler/core
 
+## 1.8.0-next.0
+
+### Minor Changes
+
+- 2171393: Set `accent-color` to the primary color on the root element, so native checkboxes, radios, range inputs and `<progress>` without Tabler classes use the theme color.
+- d7e0070: Added animated check, radio and switch marks with `--tblr-control-transition-duration`, `--tblr-control-transition-timing` and `--tblr-control-transition-overshoot`.
+- b03e9fb: Added `.border-keyline`, a `0.5px` border width backed by the `--tblr-border-width-keyline` custom property.
+- 7c68c42: Added `--tblr-btn-transition-property`, `-duration` and `-timing` tokens for buttons and deprecated `$btn-transition`.
+- e71e2bd: Added a default `aria-pressed` to `[data-bs-toggle="button"]` buttons on load, based on `.active`.
+- 600cc36: Added `--tblr-card-header-tabs-bg` and `--tblr-card-stamp-opacity` CSS variables to the card component.
+- 6eb45b2: Added `--tblr-carousel-indicator-*` CSS variables for indicator size, spacing, hit area, dot and thumb styles.
+- ed3bde2: Added `.color-scheme-light`, `.color-scheme-dark` and `.color-scheme-auto` utilities that set `color-scheme` on one element.
+- 45df3ed: Added CSS variables to loaders, timeline, stars, placeholder, button group, pricing, social, flags, payments and nav-overflow.
+- aceb3fc: Added `.contains-inline` and `.contains-size` utilities that set `container-type` for container queries.
+- ca60445: Added `flow-root` and `contents` to the display utilities, as `.d-flow-root` and `.d-contents` with responsive variants.
+- 3cb68de: Added `--tblr-dropdown-max-width` and `--tblr-dropdown-scrollable-height` CSS variables to dropdowns.
+- 32aeb4c: Added `.dvh-100`, `.min-dvh-100`, `.dvw-100` and `.min-dvw-100` utilities based on dynamic viewport units.
+- 0697f0b: Added `.grid-auto-flow-row`, `.grid-auto-flow-column` and `.grid-auto-flow-dense` utilities with responsive variants.
+- 54f1615: Added `.grid-cols-*` utilities (`1`–`4`, `6`, `subgrid`) and `.grid-cols-fill` with responsive variants.
+- 4a111c3: Added `min-content`, `max-content` and `fit-content` to the `.w-*` and `.h-*` utilities, e.g. `.w-fit-content`.
+- c9fe7c2: Added dark mode values for the base colors `$blue` to `$cyan` using `light-dark()`.
+- 302683f: Added `--tblr-list-group-header-color` and `--tblr-list-group-header-bg` CSS variables to the list group header.
+- 1c2b70e: Added `.min-w-0`, `.min-w-100`, `.min-h-0` and `.min-h-100` utilities for `min-width` and `min-height`.
+- 6bb0bfe: Added `--tblr-modal-header-height`, `--tblr-modal-header-bg`, `--tblr-modal-status-size` and `--tblr-modal-backdrop-blur`.
+- 030cb0b: Added `--tblr-nav-bordered-*` CSS variables for border, gap and active link styles to `.nav-bordered`.
+- 5b52e6a: Added `--tblr-offcanvas-border-radius` and used the offcanvas padding variables in `.offcanvas-footer`.
+- 2171393: Added `.justify-items-*` and `.place-items-*` utilities (`start`, `end`, `center`, `baseline`, `stretch`) with responsive variants.
+- 5765ede: Updated the `transition` mixin and animated components to emit motion only inside `prefers-reduced-motion: no-preference`.
+- ba0b1c9: Added `.shadow-xs` and `.shadow-xl` utilities with the `--tblr-box-shadow-xs` and `--tblr-box-shadow-xl` tokens.
+- 75c540b: Added `--tblr-table-*` CSS variables for cell padding, border width and header styles to the table component.
+- fed28d2: Added `.text-balance` and `.text-pretty` utilities for `text-wrap`.
+- f46d68c: Added `.transition-none` and `.animation-none` utilities to switch off transitions and animations on one element.
+- 4fdcd12: Added `.underline-thickness-1` to `.underline-thickness-5` utilities for `text-decoration-thickness`.
+
+### Patch Changes
+
+- 03ef882: Updated `$dark` and `$body-color` to `$gray-900` for darker base text and dark backgrounds.
+- 1d01569: Fixed vendor and marketing styles to read `--tblr-bg-surface-secondary` and `--tblr-bg-surface-tertiary` as fallbacks again.
+- 07fa459: Updated card headers, table headers, modal footer and other neutral backgrounds to use the `--tblr-fill-*` tokens.
+
 ## 1.7.1
 
 ### Patch Changes
