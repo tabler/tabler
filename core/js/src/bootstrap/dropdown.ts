@@ -63,6 +63,7 @@ const SELECTOR_DATA_TOGGLE_SHOWN = SELECTOR_DATA_TOGGLE.split(', ')
   .join(', ')
 const SELECTOR_MENU = '.dropdown-menu'
 const SELECTOR_NAVBAR = '.navbar'
+const SELECTOR_NAVBAR_VERTICAL = '.navbar-vertical'
 const SELECTOR_NAVBAR_NAV = '.navbar-nav'
 const SELECTOR_VISIBLE_ITEMS = '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)'
 
@@ -188,6 +189,18 @@ class Dropdown extends BaseComponent {
     }
   }
 
+  _isStatic(): boolean {
+    if (this._config.display === 'static') {
+      return true
+    }
+
+    if (!this._inNavbar) {
+      return false
+    }
+
+    return this._element.closest(SELECTOR_NAVBAR_VERTICAL) !== null || getComputedStyle(this._menu).position === 'static'
+  }
+
   _completeHide(relatedTarget: RelatedTarget): void {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE, relatedTarget)
     if (hideEvent?.defaultPrevented) {
@@ -309,7 +322,7 @@ class Dropdown extends BaseComponent {
       ],
     }
 
-    if (this._inNavbar || this._config.display === 'static') {
+    if (this._isStatic()) {
       Manipulator.setDataAttribute(this._menu, 'popper', 'static')
       defaultBsPopperConfig.modifiers = [
         {
