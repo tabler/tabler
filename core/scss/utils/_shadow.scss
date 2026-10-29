@@ -1,6 +1,38 @@
 // stylelint-disable declaration-no-important
 
+@use 'sass:list';
+@use 'sass:map';
+
 @use '../config' as *;
+
+@property --sc {
+  syntax: '*';
+  inherits: false;
+}
+
+$shadow-colors: map.merge(
+  $theme-colors,
+  (
+    white: $white,
+    black: $black,
+    current: null,
+  )
+);
+$shadow-color-selectors: ();
+
+@each $color in map.keys($shadow-colors) {
+  $shadow-color-selectors: list.append($shadow-color-selectors, '.shadow-#{'' + $color}', comma);
+
+  .shadow-#{'' + $color} {
+    --sc: #{if(sass($color == current): currentColor; else: var(--#{'' + $color}))};
+  }
+}
+
+@each $class, $value in ('': $box-shadow, '-xs': $box-shadow-xs, '-sm': $box-shadow-sm, '-lg': $box-shadow-lg, '-xl': $box-shadow-xl) {
+  .shadow#{$class}:is(#{$shadow-color-selectors}) {
+    box-shadow: $value !important;
+  }
+}
 
 .hover-shadow-sm:hover {
   box-shadow: $box-shadow-sm !important;
