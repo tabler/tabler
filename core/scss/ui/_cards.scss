@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 
 @use '../config' as *;
@@ -554,13 +555,18 @@
   }
 }
 
+$card-table-responsive: ();
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $card-table-responsive: list.append($card-table-responsive, '.table-responsive#{breakpoint-infix($breakpoint)}', comma);
+}
+
 .card > .card-table:first-child,
-.card > .table-responsive:first-child > .card-table {
+.card > :is(#{$card-table-responsive}):first-child > .card-table {
   --card-table-top-radius: var(--card-border-radius);
 }
 
 .card > .card-table:last-child,
-.card > .table-responsive:last-child > .card-table {
+.card > :is(#{$card-table-responsive}):last-child > .card-table {
   --card-table-bottom-radius: calc(var(--card-border-radius) - var(--card-border-width));
 }
 
