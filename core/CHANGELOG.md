@@ -1,5 +1,14 @@
 # @tabler/core
 
+## 1.7.3
+
+### Patch Changes
+
+- 62faccc: Fixed `Autosize` moving the scroll position of a scrolled ancestor when the textarea is resized.
+- 21dc7f5: Fixed `.card-table` losing its rounded corners inside `.table-responsive-sm` to `.table-responsive-xxl` wrappers.
+- ec4b184: Fixed `.modal-header` vertical padding so multiline and wrapped `.modal-title` text no longer touches the header edges.
+- 8dec6f4: Fixed Tom Select chip `border-radius`, optgroup dividers and dropdown corners that read undefined `--bs-*` variables.
+
 ## 1.7.2
 
 ### Patch Changes
