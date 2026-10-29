@@ -64,9 +64,10 @@ class Autosize extends BaseComponent {
     // Text wraps differently when the field changes width (a resized window,
     // a collapsing sidebar), so the height is measured again then.
     if (typeof ResizeObserver !== 'undefined') {
-      this._observer = new ResizeObserver(() => {
-        if (this._element.offsetWidth !== this._width) {
-          this._width = this._element.offsetWidth
+      this._observer = new ResizeObserver(([entry]) => {
+        const width = entry?.contentRect.width ?? this._element.offsetWidth
+        if (width !== this._width) {
+          this._width = width
           this.update()
         }
       })
@@ -109,12 +110,18 @@ class Autosize extends BaseComponent {
     // would wrap the text and add a phantom line.
     element.style.overflowY = 'hidden'
     element.style.height = 'auto'
-    const height = `${element.scrollHeight + extra}px`
+    const target = element.scrollHeight + extra
+    const height = `${target}px`
     element.style.height = height
 
-    // Past max-height the content no longer fits, so let the field scroll.
-    element.style.overflowY = element.scrollHeight > element.clientHeight ? 'auto' : 'hidden'
-    document.documentElement.scrollTop = scrollTop
+    // Past max-height the content no longer fits, so let the field scroll. A
+    // pixel limit is known without another layout; anything else is measured.
+    const { maxHeight } = style
+    const overflows = maxHeight.endsWith('px') ? target > Number.parseFloat(maxHeight) : maxHeight !== 'none' && element.scrollHeight > element.clientHeight
+    element.style.overflowY = overflows ? 'auto' : 'hidden'
+    if (document.documentElement.scrollTop !== scrollTop) {
+      document.documentElement.scrollTop = scrollTop
+    }
 
     if (height !== before) {
       EventHandler.trigger(element, EVENT_RESIZED)

@@ -588,8 +588,6 @@ class Datepicker extends BaseComponent {
 
       void this.hide()
     }
-
-    EventHandler.on(document, EVENT_FOCUSIN, this._onFocusIn)
   }
 
   _silently(callback: () => void): void {
@@ -621,6 +619,10 @@ class Datepicker extends BaseComponent {
     this._alignToPositionElement()
     window.removeEventListener('resize', this._onResize)
     window.addEventListener('resize', this._onResize)
+    if (this._onFocusIn) {
+      EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
+      EventHandler.on(document, EVENT_FOCUSIN, this._onFocusIn)
+    }
 
     if (!wasShown) {
       EventHandler.trigger(this._element, EVENT_SHOWN)
@@ -644,6 +646,9 @@ class Datepicker extends BaseComponent {
 
     this._isShown = false
     window.removeEventListener('resize', this._onResize)
+    if (this._onFocusIn) {
+      EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
+    }
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
