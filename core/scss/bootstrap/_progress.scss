@@ -43,10 +43,14 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  color: var(--progress-bar-color, var(--progress-bar-fg, var(--primary-fg)));
+  // `var(--theme-x, ...)` first: --progress-bar-bg/-color are declared on the
+  // .progress container (above), one level up from where a `.theme-{color}`
+  // class would land on the .progress-bar itself, so the container-level
+  // default couldn't see this element's own theme.
+  color: var(--theme-fg, var(--progress-bar-color, var(--progress-bar-fg, var(--primary-fg))));
   text-align: center;
   white-space: nowrap;
-  background-color: var(--progress-bar-bg);
+  background-color: var(--theme-bg, var(--progress-bar-bg));
   @include transition(var(--progress-bar-transition));
 }
 
