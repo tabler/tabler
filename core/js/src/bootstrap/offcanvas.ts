@@ -284,7 +284,7 @@ EventHandler.on(window, EVENT_RESIZE, () => {
   }
 })
 
-enableDismissTrigger(Offcanvas)
+enableDismissTrigger(Offcanvas, 'hide', '.offcanvas, .offcanvas-sm, .offcanvas-md, .offcanvas-lg, .offcanvas-xl, .offcanvas-xxl')
 
 defineJQueryPlugin(Offcanvas)
 
