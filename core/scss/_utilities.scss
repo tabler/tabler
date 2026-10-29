@@ -881,6 +881,16 @@ $utilities: map.merge(
         3: 0.375em,
       ),
     ),
+    'underline-offset': (
+      property: text-underline-offset,
+      class: underline-offset,
+      state: hover,
+      values: (
+        1: 0.125em,
+        2: 0.25em,
+        3: 0.375em,
+      ),
+    ),
     'underline-thickness': (
       property: text-decoration-thickness,
       class: underline-thickness,
@@ -908,6 +918,33 @@ $utilities: map.merge(
     'link-underline-opacity': (
       css-var: true,
       class: link-underline-opacity,
+      state: hover,
+      values: (
+        0: 0,
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'underline': (
+      property: text-decoration-color,
+      class: underline,
+      local-vars: (
+        'link-underline-opacity': 1,
+      ),
+      values: map.merge(
+          $utilities-links-underline,
+          (
+            null: color-transparent(var(--link-color), calc(var(--link-underline-opacity, 1) * 100%)),
+          )
+        ),
+    ),
+    'underline-opacity': (
+      css-var: true,
+      css-variable-name: link-underline-opacity,
+      class: underline,
       state: hover,
       values: (
         0: 0,
