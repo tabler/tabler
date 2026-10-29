@@ -1,5 +1,13 @@
 # @tabler/core
 
+## 1.7.2
+
+### Patch Changes
+
+- f251b2f: Fixed `Datepicker` throwing on a click when the start of a range is clicked again to clear it.
+- 3dba8bc: Let `data-bs-dismiss="offcanvas"` close a responsive offcanvas (`.offcanvas-lg` etc.) without `data-bs-target`.
+- 19fc71a: Fixed `.table-primary`, `.table-warning` and other table variants showing light backgrounds in dark mode.
+
 ## 1.7.1
 
 ### Patch Changes
