@@ -13,6 +13,7 @@ import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
 import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
+import Swipe from './util/swipe'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
@@ -47,6 +48,7 @@ type ComponentConfig = {
   backdrop: boolean | 'static'
   keyboard: boolean
   scroll: boolean
+  swipe: boolean
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -55,12 +57,14 @@ const Default: ComponentConfig = {
   backdrop: true,
   keyboard: true,
   scroll: false,
+  swipe: true,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
   scroll: 'boolean',
+  swipe: 'boolean',
 }
 
 /**
@@ -74,15 +78,18 @@ class Offcanvas extends BaseComponent {
   _backdrop: Backdrop
   _focustrap: FocusTrap
   _returnFocusTarget: HTMLElement | SVGElement | null
+  _swipeHelper: Swipe | null
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isShown = false
     this._returnFocusTarget = null
+    this._swipeHelper = null
     this._backdrop = this._initializeBackDrop()
     this._focustrap = this._initializeFocusTrap()
     this._addEventListeners()
+    this._initSwipe()
   }
 
   static get Default(): ComponentConfig {
@@ -180,6 +187,7 @@ class Offcanvas extends BaseComponent {
   dispose(): void {
     this._backdrop.dispose()
     this._focustrap.deactivate()
+    this._swipeHelper?.dispose()
     super.dispose()
   }
 
@@ -223,6 +231,33 @@ class Offcanvas extends BaseComponent {
 
       EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED)
     })
+  }
+
+  _initSwipe(): void {
+    if (!this._config.swipe || !Swipe.isSupported()) {
+      return
+    }
+
+    const dismiss = () => {
+      if (this._isShown && this._config.backdrop !== 'static') {
+        this.hide()
+      }
+    }
+
+    const isRtl = document.documentElement.dir === 'rtl'
+    const isEnd = this._element.classList.contains('offcanvas-end')
+    const isStart = this._element.classList.contains('offcanvas-start')
+    const isTop = this._element.classList.contains('offcanvas-top')
+    const isBottom = this._element.classList.contains('offcanvas-bottom')
+
+    const swipeConfig = {
+      leftCallback: (isStart && !isRtl) || (isEnd && isRtl) ? dismiss : null,
+      rightCallback: (isEnd && !isRtl) || (isStart && isRtl) ? dismiss : null,
+      upCallback: isTop ? dismiss : null,
+      downCallback: isBottom ? dismiss : null,
+    }
+
+    this._swipeHelper = new Swipe(this._element, swipeConfig)
   }
 
   static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {

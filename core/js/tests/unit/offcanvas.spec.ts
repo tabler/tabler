@@ -32,6 +32,7 @@ describe('Offcanvas', () => {
       expect(Offcanvas.Default.backdrop).toBe(true)
       expect(Offcanvas.Default.keyboard).toBe(true)
       expect(Offcanvas.Default.scroll).toBe(false)
+      expect(Offcanvas.Default.swipe).toBe(true)
     })
   })
 
@@ -607,6 +608,37 @@ describe('Offcanvas', () => {
 
         instance.show()
       })
+    })
+  })
+
+  describe('swipe to dismiss', () => {
+    const swipeDismisses = (placement: string, from: [number, number], to: [number, number], dir = 'ltr') => {
+      Object.defineProperty(document.documentElement, 'ontouchstart', { value: () => {}, configurable: true })
+      document.documentElement.dir = dir
+      fixtureEl.innerHTML = createOffcanvasHTML().replace('offcanvas-start', placement)
+      const el = fixtureEl.querySelector<HTMLElement>('.offcanvas')!
+      const offcanvas = new Offcanvas(el)
+      const hide = vi.spyOn(offcanvas, 'hide')
+      offcanvas._isShown = true
+      const init = { bubbles: true, pointerType: 'touch' }
+      el.dispatchEvent(new PointerEvent('pointerdown', { ...init, clientX: from[0], clientY: from[1] }))
+      el.dispatchEvent(new PointerEvent('pointerup', { ...init, clientX: to[0], clientY: to[1] }))
+      document.documentElement.dir = ''
+      delete (document.documentElement as Record<string, unknown>).ontouchstart
+      return hide.mock.calls.length === 1
+    }
+
+    it('should follow the placement', () => {
+      expect(swipeDismisses('offcanvas-start', [200, 0], [50, 0])).toBe(true)
+      expect(swipeDismisses('offcanvas-start', [50, 0], [200, 0])).toBe(false)
+      expect(swipeDismisses('offcanvas-end', [50, 0], [200, 0])).toBe(true)
+      expect(swipeDismisses('offcanvas-bottom', [0, 50], [0, 200])).toBe(true)
+      expect(swipeDismisses('offcanvas-top', [0, 200], [0, 50])).toBe(true)
+    })
+
+    it('should mirror horizontal placements in RTL', () => {
+      expect(swipeDismisses('offcanvas-start', [50, 0], [200, 0], 'rtl')).toBe(true)
+      expect(swipeDismisses('offcanvas-end', [200, 0], [50, 0], 'rtl')).toBe(true)
     })
   })
 })
