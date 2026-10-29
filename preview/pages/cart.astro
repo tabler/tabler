@@ -13,7 +13,7 @@ import Icon from '@ui/Icon.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import Payment from '@ui/Payment.astro'
-import Stepper from '@ui/Stepper.astro'
+import NumberInput from '@ui/NumberInput.astro'
 import Tag from '@ui/Tag.astro'
 import TagList from '@ui/TagList.astro'
 import products from '@shared/data/products.json'
@@ -81,7 +81,7 @@ const deliveries = [
                     {line.quantity >= line.stock && <Badge text="Last items in stock" color="orange" light class="mt-1" />}
                   </div>
                   <div class="col-12 col-sm-auto d-flex align-items-center gap-3">
-                    <Stepper value={line.quantity} min={1} max={line.stock} ariaLabel={`Quantity of ${line.name}`} />
+                    <NumberInput value={line.quantity} min={1} max={line.stock} ariaLabel={`Quantity of ${line.name}`} />
                     <div class="fw-medium text-nowrap text-end ms-auto ms-sm-0">{money(line.price * line.quantity)}</div>
                     <button type="button" class="btn btn-action" aria-label={`Remove ${line.name}`}>
                       <Icon name="trash" />
