@@ -214,13 +214,15 @@ describe('Modal', () => {
       }
     }
 
-    it('should focus the previously focused element on hide', async () => {
+    it('should focus the previously focused element on hide without scrolling', async () => {
       const { el, instance, trigger } = setup()
 
       await open(trigger, el, instance, 'active')
+      const focus = vi.spyOn(trigger, 'focus')
       await close(el, instance)
 
       expect(document.activeElement).toBe(trigger)
+      expect(focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true })
     })
 
     it('should focus the relatedTarget on hide', async () => {
@@ -337,7 +339,7 @@ describe('Modal', () => {
       expect(document.activeElement).toBe(trigger)
     })
 
-    it('should keep the new target when reopened during the backdrop hide', async () => {
+    it('should ignore show during the backdrop hide and allow reopening after hidden', async () => {
       fixtureEl.innerHTML = `<button id="trigger">Open</button><button id="other">Other</button>${createModalHTML().replace('class="modal"', 'class="modal fade"')}`
       const el = fixtureEl.querySelector<HTMLElement>('.modal')!
       const instance = new Modal(el)
@@ -345,16 +347,20 @@ describe('Modal', () => {
       const other = fixtureEl.querySelector<HTMLElement>('#other')!
 
       await open(trigger, el, instance, 'active')
-      const reopened = new Promise<void>((resolve) => {
-        el.addEventListener('shown.bs.modal', () => resolve(), { once: true })
-      })
       const hideBackdrop = instance._backdrop.hide.bind(instance._backdrop)
+      const show = vi.fn()
+      el.addEventListener('show.bs.modal', show)
       vi.spyOn(instance._backdrop, 'hide').mockImplementationOnce((callback) => {
         hideBackdrop(callback)
         instance.show(other)
+        expect(show).not.toHaveBeenCalled()
       })
-      instance.hide()
-      await reopened
+      await close(el, instance)
+      expect(document.activeElement).toBe(trigger)
+
+      await open(other, el, instance, 'related')
+      expect(document.body.classList.contains('modal-open')).toBe(true)
+      expect(document.querySelector('.modal-backdrop')).not.toBeNull()
       await close(el, instance)
 
       expect(document.activeElement).toBe(other)
@@ -437,6 +443,73 @@ describe('Modal', () => {
 
       modal.dispose()
       expect(Modal.getInstance(modalEl)).toBeNull()
+    })
+
+    it.each(['unused', 'opening backdrop', 'opening dialog', 'shown', 'backdrop feedback', 'closing dialog', 'closing backdrop', 'hidden'])('should restore its own body and ignore pending callbacks when %s', (phase) => {
+      const oldBody = document.body
+      const originalStyle = oldBody.style.cssText
+      oldBody.style.overflow = 'auto'
+      oldBody.style.paddingRight = '12px'
+      fixtureEl.innerHTML = createModalHTML().replace('class="modal"', 'class="modal fade"')
+      const el = fixtureEl.querySelector<HTMLElement>('.modal')!
+      const dialog = el.querySelector<HTMLElement>('.modal-dialog')!
+      const instance = new Modal(el, { backdrop: 'static' })
+      vi.useFakeTimers()
+
+      try {
+        // Step through each transition, leaving its fallback timer pending.
+        if (phase !== 'unused') {
+          instance.show()
+          const backdrop = oldBody.querySelector<HTMLElement>('.modal-backdrop')!
+          if (phase !== 'opening backdrop') backdrop.dispatchEvent(new Event('transitionend'))
+          if (!['opening backdrop', 'opening dialog'].includes(phase)) dialog.dispatchEvent(new Event('transitionend'))
+          if (phase.startsWith('closing') || phase === 'hidden') instance.hide()
+          if (['closing backdrop', 'hidden'].includes(phase)) el.dispatchEvent(new Event('transitionend'))
+          if (phase === 'hidden') backdrop.dispatchEvent(new Event('transitionend'))
+          if (phase === 'backdrop feedback') {
+            el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+            el.click()
+            expect(el.classList.contains('modal-static')).toBe(true)
+          }
+        }
+
+        const shown = vi.fn()
+        const hidden = vi.fn()
+        el.addEventListener('shown.bs.modal', shown)
+        el.addEventListener('hidden.bs.modal', hidden)
+        const newBody = document.createElement('body')
+        newBody.className = 'modal-open'
+        newBody.style.cssText = 'overflow: scroll; padding-right: 24px'
+        const input = document.createElement('input')
+        newBody.append(input)
+        oldBody.replaceWith(newBody)
+        input.focus()
+
+        instance.dispose()
+        vi.runAllTimers()
+
+        expect(Modal.getInstance(el)).toBeNull()
+        expect(el.isConnected).toBe(false)
+        expect(el.classList.contains('show')).toBe(false)
+        expect(el.classList.contains('modal-static')).toBe(false)
+        expect(el.style.overflowY).toBe('')
+        expect(oldBody.querySelector('.modal-backdrop')).toBeNull()
+        expect(oldBody.classList.contains('modal-open')).toBe(false)
+        expect(oldBody.style.overflow).toBe('auto')
+        expect(oldBody.style.paddingRight).toBe('12px')
+        expect(newBody.classList.contains('modal-open')).toBe(true)
+        expect(newBody.style.overflow).toBe('scroll')
+        expect(newBody.style.paddingRight).toBe('24px')
+        expect(newBody.childElementCount).toBe(1)
+        expect(document.activeElement).toBe(input)
+        expect(shown).not.toHaveBeenCalled()
+        expect(hidden).not.toHaveBeenCalled()
+      } finally {
+        Modal.getInstance(el)?.dispose()
+        vi.useRealTimers()
+        if (document.body !== oldBody) document.body.replaceWith(oldBody)
+        oldBody.style.cssText = originalStyle
+      }
     })
   })
 

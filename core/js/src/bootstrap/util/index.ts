@@ -119,7 +119,7 @@ const restoreFocus = (target: HTMLElement | SVGElement | null, container: HTMLEl
   const { activeElement } = document
 
   if (!activeElement || activeElement === document.body || container.contains(activeElement)) {
-    target.focus()
+    target.focus({ preventScroll: true })
   }
 }
 

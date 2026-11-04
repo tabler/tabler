@@ -80,6 +80,7 @@ class Modal extends BaseComponent {
   _isTransitioning: boolean
   _returnFocusTarget: HTMLElement | SVGElement | null
   _scrollBar: ScrollBarHelper
+  _body: HTMLElement
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
@@ -91,6 +92,7 @@ class Modal extends BaseComponent {
     this._isTransitioning = false
     this._returnFocusTarget = null
     this._scrollBar = new ScrollBarHelper()
+    this._body = document.body
 
     this._addEventListeners()
   }
@@ -130,7 +132,7 @@ class Modal extends BaseComponent {
 
     this._scrollBar.hide()
 
-    document.body.classList.add(CLASS_NAME_OPEN)
+    this._body.classList.add(CLASS_NAME_OPEN)
 
     this._adjustDialog()
 
@@ -167,6 +169,13 @@ class Modal extends BaseComponent {
     this._backdrop.dispose()
     this._focustrap.deactivate()
 
+    if (this._isShown || this._isTransitioning) {
+      this._hideElement()
+      this._resetAdjustments()
+      this._scrollBar.reset()
+      this._body.classList.remove(CLASS_NAME_OPEN)
+    }
+
     super.dispose()
   }
 
@@ -188,8 +197,12 @@ class Modal extends BaseComponent {
   }
 
   _showElement(relatedTarget?: HTMLElement): void {
-    if (!document.body.contains(this._element)) {
-      document.body.append(this._element)
+    if (!this._element) {
+      return
+    }
+
+    if (!this._body.contains(this._element)) {
+      this._body.append(this._element)
     }
 
     this._element.style.display = 'block'
@@ -259,15 +272,25 @@ class Modal extends BaseComponent {
     })
   }
 
-  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
+  _hideElement(): void {
+    this._element.classList.remove(CLASS_NAME_SHOW, CLASS_NAME_STATIC)
     this._element.style.display = 'none'
+    this._element.style.overflowY = ''
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
     this._element.removeAttribute('role')
-    this._isTransitioning = false
+  }
+
+  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
+    this._hideElement()
 
     this._backdrop.hide(() => {
-      document.body.classList.remove(CLASS_NAME_OPEN)
+      if (!this._element) {
+        return
+      }
+
+      this._isTransitioning = false
+      this._body.classList.remove(CLASS_NAME_OPEN)
       this._resetAdjustments()
       this._scrollBar.reset()
       const element = this._element

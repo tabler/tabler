@@ -197,13 +197,15 @@ describe('Offcanvas', () => {
       }
     }
 
-    it('should focus the previously focused element on hide', async () => {
+    it('should focus the previously focused element on hide without scrolling', async () => {
       const { el, instance, trigger } = setup()
 
       await open(trigger, el, instance, 'active')
+      const focus = vi.spyOn(trigger, 'focus')
       await close(el, instance)
 
       expect(document.activeElement).toBe(trigger)
+      expect(focus).toHaveBeenCalledExactlyOnceWith({ preventScroll: true })
     })
 
     it('should focus the relatedTarget on hide', async () => {
