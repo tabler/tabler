@@ -11,6 +11,8 @@ export const redirects: Record<string, Redirect> = {
   '/ui/plugins/payments': { status: 301, destination: '/payments/css' },
   // Flags followed Payments into its own section in 1.7.
   '/ui/plugins/flags': { status: 301, destination: '/flags/css' },
+  // The color picker is a Tabler plugin since 1.7, not a third-party library.
+  '/ui/plugins/color-picker': { status: 301, destination: '/ui/forms/color-picker' },
   // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
   '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
   // pre-Astro plural slugs, still present in the Google index and backlinks
@@ -51,7 +53,7 @@ export const redirects: Record<string, Redirect> = {
   '/ui/forms/form-image-check': { status: 301, destination: '/ui/forms/image-check' },
   '/ui/forms/form-color-check': { status: 301, destination: '/ui/forms/color-check' },
   '/ui/forms/form-select-tomselect': { status: 301, destination: '/ui/plugins/advanced-select' },
-  '/ui/forms/form-colorpicker': { status: 301, destination: '/ui/plugins/color-picker' },
+  '/ui/forms/form-colorpicker': { status: 301, destination: '/ui/forms/color-picker' },
   '/ui/forms/form-datepicker': { status: 301, destination: '/ui/plugins/date-picker' },
   '/ui/forms/form-input-mask': { status: 301, destination: '/ui/plugins/input-mask' },
   '/ui/forms/form-validation': { status: 301, destination: '/ui/forms/validation' },

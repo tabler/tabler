@@ -1,0 +1,44 @@
+---
+// The Colorpicker plugin added in 1.7, on its own: the color field with its
+// panel open under it, opacity slider and format select included. The panel
+// is opened here rather than left to a focus the capture tool cannot make,
+// and the fake cursor rests on the handle in the gradient.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Colorpicker from '@ui/Colorpicker.astro'
+---
+
+<ScreenshotLayout title="Color picker" zoom={1.25}>
+  <Colorpicker value="#ae3ec9cc" alpha formatToggle id="colorpicker-color" ariaLabel="Label color" />
+
+  <!-- The field is as wide as the panel, so the two read as one piece. The
+  panel hangs below the field, so the field moves up to keep the pair centred
+  in the frame and the panel clear of the logo. -->
+  <style is:inline>
+    [data-screenshot-target] {
+      position: relative;
+      width: 15rem;
+      margin-bottom: 26rem;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('colorpicker-color')
+      if (!input || !window.tabler?.Colorpicker) return
+
+      // The panel lives next to the field, not in <body>: the capture hides
+      // the theme toggle after the page is ready, which moves the frame, and
+      // the picture is taken before the panel has a frame to follow the field.
+      new window.tabler.Colorpicker(input, { container: input.closest('[data-screenshot-target]') }).show().then(() => {
+        const marker = document.querySelector('.colorpicker-panel .colorpicker-marker')
+        if (!marker) return
+
+        const cursor = document.createElement('span')
+        cursor.className = 'cursor'
+        cursor.style.top = '70%'
+        cursor.style.left = '60%'
+        marker.append(cursor)
+      })
+    })
+  </script>
+</ScreenshotLayout>
