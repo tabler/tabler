@@ -5,7 +5,7 @@
 
 @use '../config' as *;
 
-@property --sc {
+@property --shadow-tint {
   syntax: '*';
   inherits: false;
 }
@@ -24,7 +24,7 @@ $shadow-color-selectors: ();
   $shadow-color-selectors: list.append($shadow-color-selectors, '.shadow-#{'' + $color}', comma);
 
   .shadow-#{'' + $color} {
-    --sc: #{if(sass($color == current): currentColor; else: var(--#{'' + $color}))};
+    --shadow-tint: #{if(sass($color == current): currentColor; else: var(--#{'' + $color}))};
   }
 }
 
