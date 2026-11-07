@@ -9,14 +9,14 @@
 .btn {
   --btn-icon-size: #{$input-btn-icon-size};
   --btn-icon-color: inherit;
-  --btn-bg: var(--bg-surface);
-  --btn-color: var(--body-color);
-  --btn-border-color: #{$btn-border-color};
-  --btn-hover-bg: #{$btn-hover-bg};
-  --btn-hover-border-color: var(--border-active-color);
-  --btn-active-color: #{$active-color};
-  --btn-active-bg: #{$btn-active-bg};
-  --btn-active-border-color: #{$active-border-color};
+  --btn-bg: var(--theme-bg, var(--bg-surface));
+  --btn-color: var(--theme-fg, var(--body-color));
+  --btn-border-color: var(--theme-border, #{$btn-border-color});
+  --btn-hover-bg: var(--theme-darken, #{$btn-hover-bg});
+  --btn-hover-border-color: var(--theme-border, var(--border-active-color));
+  --btn-active-color: var(--theme-fg, #{$active-color});
+  --btn-active-bg: var(--theme-darken, #{$btn-active-bg});
+  --btn-active-border-color: var(--theme-border, #{$active-border-color});
   position: relative;
 
   display: inline-flex;
@@ -98,6 +98,7 @@
 // colors; the shared rules below turn them into the button tokens. The rules
 // are grouped by variant (solid, outline, ghost) rather than by color, so each
 // token list is written once instead of once per color.
+// `.btn-{color} { @extend .theme-{color}; }` lives in _extends.scss.
 $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 
 @function btn-color-selectors($patterns...) {
@@ -337,7 +338,7 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   }
 
   &.show {
-    color: var(--primary);
+    color: var(--theme-bg, var(--primary));
     background: var(--active-bg);
   }
 

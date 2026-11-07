@@ -1,6 +1,9 @@
+@use 'sass:map';
+
 @use '../config' as *;
 
 .toast {
+  --toast-color: var(--theme-bg);
   --toast-border-width: #{$alert-border-width};
   --toast-border-color: #{$alert-border-color};
   --toast-box-shadow: #{$alert-shadow};
@@ -21,8 +24,12 @@
   }
 }
 
-@each $state, $value in $theme-colors {
-  .toast-#{$state} {
-    --toast-color: var(--#{$state});
+// `.toast-{color} { @extend .theme-{color}; }` lives in _extends.scss (see
+// its header comment: @extend only reaches modules this file loads).
+
+@if map.has-key($theme-colors, 'dark') {
+  // No `.theme-dark` to extend (see mixins/_theme.scss).
+  .toast-dark {
+    --toast-color: var(--dark);
   }
 }

@@ -1,0 +1,53 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+// Ported from Bootstrap v6's `.theme-*` generator (scss/_theme.scss): one
+// mixin maps a color's tokens onto a generic `--theme-*` contract, so a
+// component reads `--theme-bg`/`--theme-fg` instead of getting its own
+// per-color ruleset.
+// scss-docs-start theme-color-vars-mixin
+@mixin theme-color-vars($color) {
+  --theme-bg: var(--#{$color});
+  --theme-fg: var(--#{$color}-fg);
+  --theme-darken: var(--#{$color}-darken);
+  --theme-lt: var(--#{$color}-lt);
+  // Stronger tint than --theme-lt (10%), for a hover/active background on
+  // subtle-surface components — matches Bootstrap v6's `--theme-bg-muted`.
+  --theme-muted: var(--#{$color}-200);
+  // Shaded a little towards black, like the border of the filled button
+  // variants (`$btn-variant-border-color`).
+  --theme-border: color-mix(in oklab, var(--#{$color}), var(--black) 10%);
+}
+// scss-docs-end theme-color-vars-mixin
+
+// The tokens color only the element that carries the class. If they inherited,
+// every plain `.btn` or `.badge` inside an `.alert-success` would turn into a
+// filled button or badge of that color. `syntax: '*'` needs no initial value,
+// so an unset token stays guaranteed-invalid and each `var(--theme-bg, …)`
+// falls back to the component's own default.
+@mixin theme-color-properties() {
+  @each $name in (bg, fg, darken, lt, muted, border) {
+    @property --theme-#{$name} {
+      syntax: '*';
+      inherits: false;
+    }
+  }
+}
+
+// Every color that gets a `.theme-{color}` class. `dark` gets none:
+// `.theme-dark` is already the dark color mode selector in 1.x
+// (mixins/bootstrap/_color-mode.scss), so its component variants keep their
+// own rules.
+$theme-class-colors: map.remove(map.merge($theme-colors, $social-colors), 'dark');
+
+// scss-docs-start generate-theme-classes-mixin
+@mixin generate-theme-classes() {
+  @include theme-color-properties();
+
+  @each $color, $value in $theme-class-colors {
+    .theme-#{$color} {
+      @include theme-color-vars($color);
+    }
+  }
+}
+// scss-docs-end generate-theme-classes-mixin
