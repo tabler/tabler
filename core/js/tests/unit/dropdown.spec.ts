@@ -531,6 +531,28 @@ describe('Dropdown', () => {
       expect(config.modifiers!.some((m: any) => m.name === 'applyStyles' && m.enabled === false)).toBe(true)
     })
 
+    it('should keep popper styles in an expanded navbar', () => {
+      fixtureEl.innerHTML = ['<nav class="navbar navbar-expand">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</nav>'].join('')
+
+      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const dropdown = new Dropdown(btn)
+
+      const config = dropdown._getPopperConfig()
+      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles')).toBe(false)
+      expect(config.modifiers!.some((m: any) => m.name === 'preventOverflow')).toBe(true)
+      expect(dropdown._menu.hasAttribute('data-bs-popper')).toBe(false)
+    })
+
+    it('should set popper static in a vertical navbar flyout', () => {
+      fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical navbar-expand-lg">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</aside>'].join('')
+
+      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const dropdown = new Dropdown(btn)
+
+      const config = dropdown._getPopperConfig()
+      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles' && m.enabled === false)).toBe(true)
+    })
+
     it('should set popper static when display is static', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
 
