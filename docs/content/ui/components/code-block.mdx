@@ -1,0 +1,119 @@
+---
+title: Code block
+summary: A code block shows a snippet on a dark surface, with an optional header and a copy button.
+description: Show code in a dark block with a title, a language label, a copy button, line numbers, highlighted lines and a max height.
+related: [/ui/plugins/clipboard, /ui/base/typography]
+source: core/scss/ui/_code-block.scss
+css-vars: code-block
+classnames:
+  component:
+    - class: code-block
+      desc: The wrapper with the dark surface and rounded corners
+  modifier:
+    - class: code-block-numbered
+      desc: Shows a line number before every `.code-line`
+    - class: code-block-scroll
+      desc: Limits the height of the code and scrolls it vertically
+  part:
+    - class: code-block-header
+      desc: The bar above the code with the title, the language and the copy button
+    - class: code-block-title
+      desc: The title or file name in the header
+    - class: code-block-lang
+      desc: The language label in the header
+    - class: code-block-copy
+      desc: The copy button. Without a header it floats in the top right corner
+    - class: code-line
+      desc: One line of code, used for line numbers and highlighting
+    - class: code-line-highlight
+      desc: Highlights a `.code-line`
+---
+import Example from '@components/Example.astro';
+
+## Default markup
+
+A `.code-block` wraps a `pre`. The copy button uses the [Clipboard](/ui/plugins/clipboard) plugin: `data-bs-target` points to the element with the code. Without a header, the button sits in the top right corner.
+
+<Example>
+<div class="code-block">
+  <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-target="#code-block-basic" aria-label="Copy code">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-label" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-feedback" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
+  </button>
+  <pre id="code-block-basic"><code>npm install @tabler/core</code></pre>
+</div>
+</Example>
+
+## Header
+
+Add a `.code-block-header` with a `.code-block-title` and a `.code-block-lang`. The copy button moves into the header.
+
+<Example>
+<div class="code-block">
+  <div class="code-block-header">
+    <span class="code-block-title">tabler.config.js</span>
+    <span class="code-block-lang">JavaScript</span>
+    <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-target="#code-block-header" aria-label="Copy code">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-label" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-feedback" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
+  </button>
+  </div>
+  <pre id="code-block-header"><code>export default &#123;
+  theme: 'dark',
+  radius: 'lg',
+&#125;</code></pre>
+</div>
+</Example>
+
+## Line numbers and highlighted lines
+
+Add `.code-block-numbered` and put every line in a `.code-line`. Add `.code-line-highlight` to the lines you want to point out. Write the lines next to each other without line breaks between the tags.
+
+<Example>
+<div class="code-block code-block-numbered">
+  <div class="code-block-header">
+    <span class="code-block-title">share.js</span>
+    <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-target="#code-block-numbered" aria-label="Copy code">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-label" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-feedback" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
+  </button>
+  </div>
+  <pre id="code-block-numbered"><code><span class="code-line">const button = document.querySelector('#share')</span><span class="code-line"></span><span class="code-line code-line-highlight">Clipboard.getOrCreateInstance(button, &#123;</span><span class="code-line code-line-highlight">  text: window.location.href,</span><span class="code-line code-line-highlight">&#125;).copy()</span></code></pre>
+</div>
+</Example>
+
+## Max height
+
+Add `.code-block-scroll` to scroll long code vertically. Change the height with `--tblr-code-block-max-height`. Long lines always scroll horizontally.
+
+<Example>
+<div class="code-block code-block-scroll code-block-numbered" style="--tblr-code-block-max-height: 7rem">
+  <button type="button" class="code-block-copy" data-bs-toggle="clipboard" data-bs-target="#code-block-scroll" aria-label="Copy code">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-label" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon clipboard-feedback" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
+  </button>
+  <pre id="code-block-scroll"><code><span class="code-line">import &#123; Clipboard &#125; from '@tabler/core'</span><span class="code-line"></span><span class="code-line">const button = document.querySelector('#share')</span><span class="code-line">const clipboard = Clipboard.getOrCreateInstance(button, &#123;</span><span class="code-line">  text: window.location.href,</span><span class="code-line">&#125;)</span><span class="code-line"></span><span class="code-line">clipboard.copy()</span></code></pre>
+</div>
+</Example>
+
+## Without copy button
+
+Leave out the `.code-block-copy` button for a plain block.
+
+<Example>
+<div class="code-block">
+  <pre><code>npm install @tabler/core</code></pre>
+</div>
+</Example>
+
+## Syntax highlighting
+
+The code block does not highlight syntax. Put the output of a highlighter, such as Prism or Shiki, inside the `code` element. The copy button reads the text, so the markup of the highlighter does not end up in the clipboard.
+
+## Component
+
+In Astro, use the `CodeBlock` component. It takes the code as a prop and renders the lines, the header and the copy button.
+
+```astro
+<CodeBlock code={code} title="share.js" language="JavaScript" numbered highlight={[3, 4]} />
+```
