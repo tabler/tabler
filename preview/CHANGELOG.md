@@ -1,5 +1,11 @@
 # @tabler/preview
 
+## 1.7.4
+
+### Patch Changes
+
+- 3c81e6d: Fixed the dashboard welcome card illustration to use the `Illustration` component, so it follows dark mode.
+
 ## 1.7.3
 
 No changes in this release.

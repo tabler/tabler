@@ -1,5 +1,11 @@
 # @tabler/docs
 
+## 1.7.4
+
+### Patch Changes
+
+- f7ab6f7: Fixed table of contents links in the docs not updating the URL `#fragment` after clicking.
+
 ## 1.7.3
 
 No changes in this release.
