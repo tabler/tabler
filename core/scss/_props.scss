@@ -64,7 +64,13 @@
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
     }
     @if not map.has-key($social-colors, $name) and $color != $light and $color != $dark {
-      --#{$name}-text: light-dark(#{mix-color-css($black, var(--#{$name}), $text-shade-percentage)}, #{mix-color-css($white, var(--#{$name}), $text-tint-percentage)});
+      $shade: $text-shade-percentage;
+      @each $key, $percentage in $text-shade-percentages {
+        @if $name == $key or $color == map.get($colors, $key) {
+          $shade: $percentage;
+        }
+      }
+      --#{$name}-text: light-dark(#{mix-color-css($black, var(--#{$name}), $shade)}, #{mix-color-css($white, var(--#{$name}), $text-tint-percentage)});
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
