@@ -3,24 +3,39 @@
 @use '../functions' as *;
 @use 'breakpoints' as *;
 @use 'sass:math';
+@use 'sass:meta';
 
 @mixin table-variant($state, $background) {
   .table-#{$state} {
-    $color: color-contrast(opaque($body-bg, $background));
-    $hover-bg: mix-color($color, $background, math.percentage($table-hover-bg-factor));
-    $striped-bg: mix-color($color, $background, math.percentage($table-striped-bg-factor));
-    $active-bg: mix-color($color, $background, math.percentage($table-active-bg-factor));
-    $table-border-color: mix-color($color, $background, math.percentage($table-border-factor));
+    @if meta.type-of($background) == color {
+      $color: color-contrast(opaque($body-bg, $background));
+      $hover-bg: mix-color($color, $background, math.percentage($table-hover-bg-factor));
+      $striped-bg: mix-color($color, $background, math.percentage($table-striped-bg-factor));
+      $active-bg: mix-color($color, $background, math.percentage($table-active-bg-factor));
+      $table-border-color: mix-color($color, $background, math.percentage($table-border-factor));
 
-    --table-color: #{$color};
-    --table-bg: #{$background};
-    --table-border-color: #{$table-border-color};
-    --table-striped-bg: #{$striped-bg};
-    --table-striped-color: #{color-contrast($striped-bg)};
-    --table-active-bg: #{$active-bg};
-    --table-active-color: #{color-contrast($active-bg)};
-    --table-hover-bg: #{$hover-bg};
-    --table-hover-color: #{color-contrast($hover-bg)};
+      --table-color: #{$color};
+      --table-bg: #{$background};
+      --table-border-color: #{$table-border-color};
+      --table-striped-bg: #{$striped-bg};
+      --table-striped-color: #{color-contrast($striped-bg)};
+      --table-active-bg: #{$active-bg};
+      --table-active-color: #{color-contrast($active-bg)};
+      --table-hover-bg: #{$hover-bg};
+      --table-hover-color: #{color-contrast($hover-bg)};
+    } @else {
+      $color: var(--body-color);
+
+      --table-color: #{$color};
+      --table-bg: #{$background};
+      --table-border-color: #{mix-color-css($color, $background, math.percentage($table-border-factor))};
+      --table-striped-bg: #{mix-color-css($color, $background, math.percentage($table-striped-bg-factor))};
+      --table-striped-color: #{$color};
+      --table-active-bg: #{mix-color-css($color, $background, math.percentage($table-active-bg-factor))};
+      --table-active-color: #{$color};
+      --table-hover-bg: #{mix-color-css($color, $background, math.percentage($table-hover-bg-factor))};
+      --table-hover-color: #{$color};
+    }
 
     color: var(--table-color);
     border-color: var(--table-border-color);

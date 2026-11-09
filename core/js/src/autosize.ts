@@ -96,9 +96,9 @@ class Autosize extends BaseComponent {
       return
     }
 
-    // Collapsing the field to measure it can move the page; the scroll
-    // position is put back afterwards.
-    const { scrollTop } = document.documentElement
+    // Collapsing the field to measure it can move the page and any
+    // scrolled ancestor; their scroll positions are put back afterwards.
+    const scrolled = this._scrolledAncestors()
     const style = getComputedStyle(element)
     // scrollHeight is the padding box: a border-box field adds its borders, a
     // content-box field drops its padding.
@@ -114,11 +114,29 @@ class Autosize extends BaseComponent {
 
     // Past max-height the content no longer fits, so let the field scroll.
     element.style.overflowY = element.scrollHeight > element.clientHeight ? 'auto' : 'hidden'
-    document.documentElement.scrollTop = scrollTop
+    for (const [ancestor, scrollTop] of scrolled) {
+      ancestor.scrollTop = scrollTop
+    }
 
     if (height !== before) {
       EventHandler.trigger(element, EVENT_RESIZED)
     }
+  }
+
+  // Private
+  _scrolledAncestors(): Array<[Element, number]> {
+    const scrolled: Array<[Element, number]> = []
+    let node: Element | null = this._element.parentElement
+    while (node) {
+      if (node.scrollTop > 0) {
+        scrolled.push([node, node.scrollTop])
+      }
+
+      node = node.parentElement
+    }
+
+    scrolled.push([document.documentElement, document.documentElement.scrollTop])
+    return scrolled
   }
 
   dispose(): void {

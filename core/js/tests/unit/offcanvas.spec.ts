@@ -609,4 +609,47 @@ describe('Offcanvas', () => {
       })
     })
   })
+  describe('data-bs-dismiss in a responsive offcanvas', () => {
+    it('should close .offcanvas-lg without data-bs-target', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="offcanvas-lg offcanvas-start" tabindex="-1">', '  <div class="offcanvas-header">', '    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>', '  </div>', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
+
+        const el = fixtureEl.querySelector('.offcanvas-lg')!
+        const dismissBtn = fixtureEl.querySelector('[data-bs-dismiss="offcanvas"]') as HTMLElement
+        const instance = new Offcanvas(el)
+
+        el.addEventListener('shown.bs.offcanvas', () => {
+          dismissBtn.click()
+        })
+
+        el.addEventListener('hidden.bs.offcanvas', () => {
+          expect(instance._isShown).toBe(false)
+          resolve()
+        })
+
+        instance.show()
+      })
+    })
+
+    it('should close .offcanvas-md via data-tblr-dismiss without data-bs-target', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="offcanvas-md offcanvas-end" tabindex="-1">', '  <div class="offcanvas-header">', '    <button type="button" class="btn-close" data-tblr-dismiss="offcanvas"></button>', '  </div>', '  <div class="offcanvas-body">Content</div>', '</div>'].join('')
+
+        const el = fixtureEl.querySelector('.offcanvas-md')!
+        const dismissBtn = fixtureEl.querySelector('[data-tblr-dismiss="offcanvas"]') as HTMLElement
+        const instance = new Offcanvas(el)
+
+        el.addEventListener('shown.bs.offcanvas', () => {
+          dismissBtn.click()
+        })
+
+        el.addEventListener('hidden.bs.offcanvas', () => {
+          expect(instance._isShown).toBe(false)
+          resolve()
+        })
+
+        instance.show()
+      })
+    })
+  })
 })
