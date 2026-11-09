@@ -40,7 +40,16 @@
   --brand: #{$primary};
 
   // Theme colors
-  @each $name, $color in map.merge($theme-colors, $social-colors) {
+  $theme-and-social-colors: map.merge($theme-colors, $social-colors);
+
+  // The `-fg` tokens below read these two, also when a custom `$theme-colors` leaves them out.
+  @each $name, $color in ('dark': $dark, 'light': $light) {
+    @if not map.has-key($theme-and-social-colors, $name) {
+      --#{$name}: #{$color};
+    }
+  }
+
+  @each $name, $color in $theme-and-social-colors {
     --#{$name}: #{$color};
     --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
