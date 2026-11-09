@@ -234,12 +234,6 @@ $color-mode-pairs: ();
   @return color.to-space(color.to-gamut($color, $space: rgb, $method: clip), srgb-linear);
 }
 
-// WCAG relative luminance, without the 8-bit rounding of `luminance()`.
-@function relative-luminance($color) {
-  $linear: linear-rgb($color);
-  @return 0.2126 * color.channel($linear, 'red') + 0.7152 * color.channel($linear, 'green') + 0.0722 * color.channel($linear, 'blue');
-}
-
 @function scale-linear-rgb($color, $scale, $offset) {
   $linear: linear-rgb($color);
   $r: color.channel($linear, 'red');
@@ -253,14 +247,14 @@ $color-mode-pairs: ();
 // background of `$background-luminance`.
 @function contrast-shade($color, $ratio: 4.5, $background-luminance: 1) {
   $max: math.div($background-luminance + 0.05, $ratio) - 0.05;
-  @return scale-linear-rgb($color, math.min(1, math.div($max, math.max(relative-luminance($color), 0.0001))), 0);
+  @return scale-linear-rgb($color, math.min(1, math.div($max, math.max(luminance($color), 0.0001))), 0);
 }
 
 // `$color`, lightened only as far as needed to reach `$ratio` against a dark
 // background of `$background-luminance`.
 @function contrast-tint($color, $ratio: 4.5, $background-luminance: 0) {
   $min: ($background-luminance + 0.05) * $ratio - 0.05;
-  $y: relative-luminance($color);
+  $y: luminance($color);
   $mix: math.max(0, math.div($min - $y, 1 - $y));
   @return scale-linear-rgb($color, 1 - $mix, $mix);
 }
@@ -269,12 +263,12 @@ $color-mode-pairs: ();
 // lightened on `$dark-background`. Returns a `light-dark-color()`.
 @function contrast-text-color($color, $ratio, $light-background, $dark-background) {
   $pair: color-pair($color);
-  @return light-dark-color(contrast-shade(list.nth($pair, 1), $ratio, relative-luminance($light-background)), contrast-tint(list.nth($pair, 2), $ratio, relative-luminance($dark-background)));
+  @return light-dark-color(contrast-shade(list.nth($pair, 1), $ratio, luminance($light-background)), contrast-tint(list.nth($pair, 2), $ratio, luminance($dark-background)));
 }
 
 // `true` when `$light` has a higher contrast on `$background` than `$dark`.
 @function prefers-light-foreground($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
-  @return relative-luminance($background) < math.sqrt((relative-luminance($light) + 0.05) * (relative-luminance($dark) + 0.05)) - 0.05;
+  @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);
 }
 
 // CIE L* of a Sass color: depends on its luminance only.
