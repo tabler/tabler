@@ -1,6 +1,7 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Dropzone from '@ui/Dropzone.astro'
+import DropzoneItem from '@ui/DropzoneItem.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
@@ -8,33 +9,62 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Dropzone" pageMenu="plugins.dropzone" pageLibs={['dropzone']}>
-  <DocsLink slot="page-header-actions" path="/ui/plugins/dropzone" />
+<DefaultLayout title="Dropzone" pageMenu="plugins.dropzone" description="A dropzone is a file field users can drop files onto, with a list of the chosen files below it.">
+  <DocsLink slot="page-header-actions" path="/ui/forms/dropzone" />
+
   <div class="row row-cards">
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Basic Usage</CardTitle>
-          <CardSubtitle>Drag a file in or click to browse — a single drop target for one upload.</CardSubtitle>
-          <Dropzone id="default" />
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="dropzone"</code> to a <code>.dropzone</code> with a file input inside. A new file replaces the old one.</CardSubtitle>
+          <Dropzone id="dropzone-basic" title="Drop a file here or click to upload" />
         </CardBody>
       </Card>
     </div>
+
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Multiple File Upload</CardTitle>
-          <CardSubtitle>Accept and preview several files at once from the same drop target.</CardSubtitle>
-          <Dropzone id="multiple" multiple={true} />
+          <CardTitle>Multiple files</CardTitle>
+          <CardSubtitle>Add <code>multiple</code> to the input to collect several files in the list.</CardSubtitle>
+          <Dropzone id="dropzone-multiple" name="files" multiple />
         </CardBody>
       </Card>
     </div>
+
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Custom Dropzone</CardTitle>
-          <CardSubtitle>Swap in your own label and helper text for the drop target.</CardSubtitle>
-          <Dropzone id="custom" custom={true} text="Your text here" description="Your custom description here" />
+          <CardTitle>Restrictions</CardTitle>
+          <CardSubtitle>Limit the files with <code>accept</code>, <code>data-bs-max-size</code> and <code>data-bs-max-files</code>. A file that breaks a rule is listed with the reason.</CardSubtitle>
+          <Dropzone id="dropzone-restrictions" name="images" multiple accept="image/*" maxSize={2097152} maxFiles={3} icon="photo" title="Drop images here or click to upload" description="Up to 3 images, 2 MB each" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>Add <code>disabled</code> to the input. The area is dimmed and takes no clicks or drops.</CardSubtitle>
+          <Dropzone id="dropzone-disabled" title="Drop a file here or click to upload" disabled />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>File list states</CardTitle>
+          <CardSubtitle>
+            Static <code>.dropzone-item</code> rows show an upload in progress (<code>.dropzone-item-uploading</code>), a finished one (<code>.dropzone-item-success</code>) and a failed one (<code>.dropzone-item-error</code>).
+          </CardSubtitle>
+          <Dropzone id="dropzone-states" name="documents" multiple description="PNG, JPG or PDF, up to 5 MB">
+            <DropzoneItem title="annual-report-2025.pdf" description="3.4 MB" status="uploading" value={62} />
+            <DropzoneItem title="team-photo.jpg" description="1.2 MB" status="success" />
+            <DropzoneItem title="product-demo.mp4" description="Upload failed" status="error" />
+          </Dropzone>
         </CardBody>
       </Card>
     </div>

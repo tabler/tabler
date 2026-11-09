@@ -1,0 +1,303 @@
+---
+title: Dropzone
+seoTitle: Dropzone file upload
+order: 14
+summary: A file field users can drop files onto, with a list of the chosen files, validation and optional uploads with a progress bar.
+description: Add a drag-and-drop file upload to a form with the native Tabler Dropzone plugin. No extra library is needed.
+related: [/ui/forms/elements, /ui/forms/validation, /ui/components/progress]
+added-in: '1.7.0'
+source: core/scss/ui/forms/_form-dropzone.scss
+css-vars: dropzone
+classnames:
+  component:
+    - class: dropzone
+      desc: Wrapper; stacks the drop area and the file list and holds the CSS variables
+  part:
+    - class: dropzone-area
+      desc: Dashed drop area; a label around the file input, so a click opens the file dialog
+    - class: dropzone-input
+      desc: The real file input, hidden visually but still focusable
+    - class: dropzone-title
+      desc: Main line of text in the drop area
+    - class: dropzone-hint
+      desc: Smaller second line, for the accepted types and the size limit
+    - class: dropzone-list
+      desc: Column of file rows; hidden while it is empty
+    - class: dropzone-item
+      desc: One file row with a border, the text and a remove button
+    - class: dropzone-item-body
+      desc: Text column of a row; takes the free width
+    - class: dropzone-item-name
+      desc: File name, cut with an ellipsis when it is too long
+    - class: dropzone-item-meta
+      desc: Small muted line for the file size or a message
+  behavior:
+    - class: dropzone-dragover
+      desc: Set on the wrapper while a file is dragged over it; highlights the drop area
+    - class: dropzone-item-success
+      desc: Row of an uploaded file; hides the progress bar
+    - class: dropzone-item-error
+      desc: Row of a rejected or failed file; shows the message in red and hides the progress bar
+---
+
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import Icon from '@ui/Icon.astro';
+
+## Overview
+
+A dropzone is a file field with a large drop area. Users can drop files on it or click it to open the file dialog. The chosen files are shown in a list below, each with its name, its size and a remove button.
+
+The plugin is part of `tabler.js` and needs no extra library. The drop area is a `<label>` around a real `<input type="file">`, so the field works with the keyboard and with a normal form submit.
+
+Add `data-bs-toggle="dropzone"` to a `.dropzone` element with a `.dropzone-area` label and a file input inside.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="file" />
+    <span class="dropzone-title">Drop a file here or click to upload</span>
+    <span class="dropzone-hint">PNG, JPG or PDF, up to 5 MB</span>
+  </label>
+</div>
+</Example>
+
+Without the `url` option the plugin does not send anything. It writes the chosen files back to the input, so they are sent when the form is submitted, like with any file field.
+
+## Usage
+
+### Multiple files
+
+Add the `multiple` attribute to the input to collect several files. Without it, a new file replaces the old one, the same way the native input does.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="files" multiple />
+    <span class="dropzone-title">Drop files here or click to upload</span>
+  </label>
+</div>
+</Example>
+
+### With an icon
+
+Put an icon before the title to make the drop area easier to spot.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="files" multiple />
+    <Icon name="cloud-upload" size="md" />
+    <span class="dropzone-title">Drop files here or click to upload</span>
+    <span class="dropzone-hint">Any file, up to 10 MB</span>
+  </label>
+</div>
+</Example>
+
+### Restrictions
+
+Limit what users can add:
+
+- `accept` on the input sets the allowed types. It takes the same values as the native attribute: an extension (`.pdf`), a MIME type (`image/png`) or a group (`image/*`). The file dialog filters by it and the plugin checks dropped files against it.
+- `data-bs-max-size` sets the largest file size in bytes.
+- `data-bs-max-files` sets how many files the dropzone takes.
+
+A file that breaks a rule is still shown in the list, with the reason in red, but it is not part of the value and is never uploaded.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone" data-bs-max-size="2097152" data-bs-max-files="3">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="images" accept="image/*" multiple />
+    <span class="dropzone-title">Drop images here or click to upload</span>
+    <span class="dropzone-hint">Up to 3 images, 2 MB each</span>
+  </label>
+</div>
+</Example>
+
+### Disabled
+
+Add `disabled` to the input. The area is dimmed and takes no clicks or drops.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="file" disabled />
+    <span class="dropzone-title">Drop a file here or click to upload</span>
+  </label>
+</div>
+</Example>
+
+### File list
+
+The plugin adds a `.dropzone-list` to the wrapper and one `.dropzone-item` row per file. If the wrapper already has a `.dropzone-list`, the plugin uses it, so you can put the list where you want it.
+
+You can also write the rows by hand, for example to show files that are already on the server. A row holds a `.dropzone-item-body` with the name and the meta line, and a remove button (`.btn-close.dropzone-item-remove`). The plugin adds `.dropzone-item-uploading`, `.dropzone-item-success` or `.dropzone-item-error` to a row to mark its state. Rows written by hand are not tracked by the plugin, so its remove button does not act on them.
+
+<Example column columnFullWidth>
+<div class="dropzone" data-bs-toggle="dropzone">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" name="files" multiple />
+    <span class="dropzone-title">Drop files here or click to upload</span>
+  </label>
+  <div class="dropzone-list" aria-live="polite">
+    <div class="dropzone-item dropzone-item-uploading">
+      <div class="dropzone-item-body">
+        <div class="dropzone-item-name">annual-report-2025.pdf</div>
+        <div class="dropzone-item-meta">3.4 MB</div>
+        <div class="progress progress-sm">
+          <div class="progress-bar" style="width: 62%" role="progressbar" aria-label="annual-report-2025.pdf" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <button type="button" class="btn-close dropzone-item-remove" aria-label="Remove file"></button>
+    </div>
+    <div class="dropzone-item dropzone-item-success">
+      <div class="dropzone-item-body">
+        <div class="dropzone-item-name">team-photo.jpg</div>
+        <div class="dropzone-item-meta">1.2 MB</div>
+      </div>
+      <button type="button" class="btn-close dropzone-item-remove" aria-label="Remove file"></button>
+    </div>
+    <div class="dropzone-item dropzone-item-error">
+      <div class="dropzone-item-body">
+        <div class="dropzone-item-name">product-demo.mp4</div>
+        <div class="dropzone-item-meta">Upload failed</div>
+      </div>
+      <button type="button" class="btn-close dropzone-item-remove" aria-label="Remove file"></button>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Uploading files
+
+Set `data-bs-url` to send the files yourself instead of with the form. Each file goes to that address in its own `XMLHttpRequest`, as soon as it is added, and its row shows a progress bar. The input is kept empty in this mode, so a form submit does not send the files a second time.
+
+```html
+<div class="dropzone" data-bs-toggle="dropzone" data-bs-url="/api/upload" data-bs-param-name="attachment">
+  <label class="dropzone-area">
+    <input class="dropzone-input" type="file" multiple />
+    <span class="dropzone-title">Drop files here or click to upload</span>
+    <span class="dropzone-hint">Files are uploaded right away</span>
+  </label>
+</div>
+```
+
+The file is sent as `multipart/form-data`. The field name is the `paramName` option, then the `name` of the input, then `file`. A response with a 2xx status marks the row as done; any other status or a network error marks it as failed and shows the `textFailed` message.
+
+Use the `upload.bs.dropzone` event to add fields or headers to a request before it is sent, for example a CSRF token:
+
+```javascript
+const el = document.querySelector('.dropzone')
+
+el.addEventListener('upload.bs.dropzone', (event) => {
+  event.formData.append('folder', 'invoices')
+  event.xhr.setRequestHeader('X-CSRF-Token', token)
+})
+
+el.addEventListener('uploaded.bs.dropzone', (event) => {
+  console.log(event.file.name, JSON.parse(event.xhr.responseText))
+})
+```
+
+To wait for a button instead, set `data-bs-auto-upload="false"` and call `upload()`:
+
+```javascript
+document.querySelector('#send').addEventListener('click', () => {
+  tabler.Dropzone.getInstance(el).upload()
+})
+```
+
+## Options
+
+Options are read from `data-bs-*` attributes on the `.dropzone` element (the `data-tblr-*` alias also works), or passed to the constructor. Write an option in kebab-case as an attribute: `maxFiles` is `data-bs-max-files`.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `accept` | string or null | `null` | Allowed file types, in the format of the native `accept` attribute. When `null`, the `accept` attribute of the input is used. |
+| `maxFiles` | number or null | `null` | How many files the dropzone takes. |
+| `maxSize` | number or null | `null` | Largest file size, in bytes. |
+| `url` | string or null | `null` | Address the files are uploaded to. When `null`, the files stay in the input and go with the form. |
+| `method` | string | `'post'` | HTTP method of the upload request. |
+| `paramName` | string or null | `null` | Field name of the file in the upload request. When `null`, the `name` of the input is used, or `file`. |
+| `headers` | object or null | `null` | Extra request headers, for example `{ "X-CSRF-Token": "..." }`. As an attribute, write it as JSON. |
+| `autoUpload` | boolean | `true` | Uploads a file as soon as it is added. Set it to `false` and call `upload()` yourself. |
+| `textFailed` | string | `'Upload failed'` | Message for a failed upload. |
+| `textInvalidType` | string | `'This file type is not allowed'` | Message for a file of a type that is not allowed. |
+| `textRemove` | string | `'Remove file'` | Accessible name of the remove button. |
+| `textTooLarge` | string | `'File is too large (max {size})'` | Message for a file over `maxSize`. `{size}` is replaced with the limit. |
+| `textTooMany` | string | `'Too many files (max {count})'` | Message for a file over `maxFiles`. `{count}` is replaced with the limit. |
+
+## JavaScript
+
+Tabler creates a `Dropzone` for every element matching `[data-bs-toggle="dropzone"]` (or `[data-tblr-toggle="dropzone"]`):
+
+<CodeDocs name="dropzone-init" file="core/js/src/dropzone.ts" />
+
+Create one manually, or get an existing instance:
+
+```javascript
+const el = document.querySelector('.dropzone')
+const dropzone = tabler.Dropzone.getOrCreateInstance(el, { maxFiles: 5, maxSize: 5 * 1024 * 1024 })
+```
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `getFiles()` | Returns the accepted files as an array of `File` objects. Rejected files are left out. |
+| `addFiles(files)` | Adds files from a `FileList` or an array, with the same checks as a drop. |
+| `removeFile(file)` | Removes one file and its row. Stops its upload if it is still running. |
+| `clear()` | Removes all files. |
+| `upload()` | Uploads the files that are waiting. Does nothing without the `url` option. |
+| `dispose()` | Removes the listeners, the rows and the instance. |
+| `getInstance(element)` | Static. Returns the instance bound to the element, or `null`. |
+| `getOrCreateInstance(element, config)` | Static. Returns the existing instance, or creates one. |
+
+A form `reset` clears the dropzone too.
+
+### Events
+
+All events fire on the `.dropzone` element and carry the file as `event.file`.
+
+| Event | Description |
+| --- | --- |
+| `add.bs.dropzone` | Fires before a valid file is added. Call `event.preventDefault()` to skip the file. |
+| `added.bs.dropzone` | Fires after a file is added to the list. |
+| `removed.bs.dropzone` | Fires after a file is removed from the list. |
+| `rejected.bs.dropzone` | Fires when a file breaks a rule. `event.reason` is `type`, `size` or `count`. |
+| `upload.bs.dropzone` | Fires before a file is sent. `event.formData` and `event.xhr` can be changed. Call `event.preventDefault()` to stop this request. |
+| `progress.bs.dropzone` | Fires while a file is uploading. `event.progress` is a number from 0 to 100. |
+| `uploaded.bs.dropzone` | Fires after a successful upload. `event.xhr` holds the response. |
+| `failed.bs.dropzone` | Fires after a failed upload. `event.xhr` holds the response. |
+
+```javascript
+el.addEventListener('rejected.bs.dropzone', (event) => {
+  console.log(`${event.file.name} was rejected: ${event.reason}`)
+})
+```
+
+## Accessibility
+
+- The drop area is a `<label>` around a real file input. The input is hidden visually but stays focusable, so <kbd>Tab</kbd> reaches it, <kbd>Enter</kbd> or <kbd>Space</kbd> opens the file dialog, and the area shows a focus ring.
+- The text in the label is the accessible name of the field. Keep a `.dropzone-title` that says what to do, and say in `.dropzone-hint` which files are accepted and how large they can be.
+- Drag and drop is only a shortcut. Everything it does can also be done through the file dialog.
+- The list the plugin creates has `aria-live="polite"`, so added files and error messages are announced. Add the attribute yourself when you write the `.dropzone-list` by hand.
+- Errors are written as text in the row, not shown by color alone.
+- Every remove button has an accessible name from the `textRemove` option. Translate it together with the other `text*` options.
+
+## Migration from Dropzone.js
+
+Tabler 1.6 and older used the [Dropzone.js](https://www.dropzone.dev/) library for this. It is deprecated: `dist/libs/dropzone` and its styles in `tabler-vendors.css` stay until 2.0, so existing pages keep working.
+
+Both use the `.dropzone` class. The old styles apply only to a `.dropzone` without a `.dropzone-area` inside, so the two can live on the same page, but do not use both on the same `.dropzone` element.
+
+| Dropzone.js | Dropzone plugin |
+| --- | --- |
+| `new Dropzone('#el')` | `data-bs-toggle="dropzone"` on the element |
+| `<form class="dropzone" action="...">` | `<div class="dropzone" data-bs-url="...">`, or no `url` and a normal form submit |
+| `.dz-message` | `.dropzone-area` with `.dropzone-title` and `.dropzone-hint` |
+| `acceptedFiles` | `accept` on the input, or `data-bs-accept` |
+| `maxFilesize` (in MB) | `data-bs-max-size` (in bytes) |
+| `maxFiles` | `data-bs-max-files` |
+| `autoProcessQueue: false` and `processQueue()` | `data-bs-auto-upload="false"` and `upload()` |
+| `addedfile`, `removedfile`, `success`, `error` events | `added.bs.dropzone`, `removed.bs.dropzone`, `uploaded.bs.dropzone`, `failed.bs.dropzone` |
