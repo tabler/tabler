@@ -84,7 +84,7 @@ const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${N
 // values are the fallback for a page that loads the script without the CSS.
 const PALETTE: [string, string][] = [
   ['blue', '#066fd1'],
-  ['azure', '#4299e1'],
+  ['azure', '#1877bd'],
   ['indigo', '#4263eb'],
   ['purple', '#ae3ec9'],
   ['pink', '#d3306a'],
