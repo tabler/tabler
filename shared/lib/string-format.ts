@@ -29,6 +29,21 @@ export function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
+/** Shortens a number with a k/M/B suffix and up to two decimals, e.g. 1880000 -> "1.88M", 974 -> "974". */
+export function formatCompact(value: number): string {
+  const units: [number, string][] = [
+    [1e9, 'B'],
+    [1e6, 'M'],
+    [1e3, 'k'],
+  ]
+  for (const [limit, suffix] of units) {
+    if (Math.abs(value) >= limit) {
+      return `${parseFloat((value / limit).toFixed(2))}${suffix}`
+    }
+  }
+  return formatNumber(value)
+}
+
 /** Lowercases and collapses non-alphanumeric runs into single dashes, trimming edge dashes (e.g. "Create your URL" -> "create-your-url"). */
 export function slugify(text: string): string {
   return text

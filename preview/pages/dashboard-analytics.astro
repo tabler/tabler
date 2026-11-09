@@ -1,0 +1,285 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import Subheader from '@ui/Subheader.astro'
+import Trending from '@ui/Trending.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Chart from '@components/demo/Chart.astro'
+import TopList from '@components/cards/TopList.astro'
+
+type TopListItem = { label: string; value: number }
+
+const stats = [
+  { title: 'Total requests', value: '1.88M', change: 8.7, chart: 'analytics-requests-trend' },
+  { title: 'Total data transfer', value: '35.71 GB', change: 9.5, chart: 'analytics-transfer-trend' },
+  { title: 'Total visits', value: '46.23k', change: 14.7, chart: 'analytics-visits-trend' },
+  { title: 'Cache hit rate', value: '70.00%', change: 1.2, chart: 'analytics-cache-trend' },
+  { title: '5xx error rate', value: '0.02%', change: -84.6, chart: 'analytics-errors-trend' },
+  { title: 'Edge TTFB (p95)', value: '261 ms', change: 10.9, chart: 'analytics-ttfb-trend' },
+]
+
+const groupBy = ['None', 'Host', 'Country', 'Status code', 'Cache status']
+
+const statusCodes = [
+  { name: '2xx', color: 'primary', value: '1.73M' },
+  { name: '3xx', color: 'yellow', value: '93.33k' },
+  { name: '4xx', color: 'orange', value: '49.36k' },
+  { name: '5xx', color: 'red', value: '396' },
+]
+
+const cacheStatus = [
+  { name: 'Hit', color: 'orange', value: '740.45k' },
+  { name: 'Revalidated', color: 'teal', value: '550.97k' },
+  { name: 'Dynamic', color: 'azure', value: '392.14k' },
+  { name: 'Miss', color: 'pink', value: '127.06k' },
+  { name: 'None', color: 'purple', value: '35.12k' },
+]
+
+const ttfb = [
+  { name: 'p50', color: 'primary', value: 30 },
+  { name: 'p95', color: 'yellow', value: 261 },
+  { name: 'p99', color: 'pink', value: 441 },
+]
+
+const lists: Record<string, TopListItem[]> = {
+  'Top paths': [
+    { label: '/_next/image', value: 98280 },
+    { label: '/api/search', value: 55750 },
+    { label: '/changelog', value: 47510 },
+    { label: '/api/events', value: 46770 },
+    { label: '/assets/css/app.min.css', value: 34520 },
+    { label: '/assets/css/vendors.min.css', value: 34160 },
+    { label: '/assets/js/app.min.js', value: 32550 },
+    { label: '/assets/css/flags.min.css', value: 31470 },
+    { label: '/assets/css/icons.min.css', value: 31190 },
+  ],
+  'Top countries': [
+    { label: 'United States', value: 187330 },
+    { label: 'Thailand', value: 134310 },
+    { label: 'India', value: 104010 },
+    { label: 'Germany', value: 95200 },
+    { label: 'Indonesia', value: 84540 },
+    { label: 'China', value: 81360 },
+    { label: 'Brazil', value: 72000 },
+    { label: 'Vietnam', value: 69760 },
+    { label: 'Hong Kong', value: 55160 },
+  ],
+  'Top client IPs': [
+    { label: '203.0.113.71', value: 20610 },
+    { label: '198.51.100.21', value: 19300 },
+    { label: '192.0.2.137', value: 13590 },
+    { label: '203.0.113.35', value: 9510 },
+    { label: '198.51.100.151', value: 8170 },
+    { label: '2001:db8:4116:1e48:c58d:d21b:a329:df5', value: 6870 },
+    { label: '192.0.2.19', value: 6790 },
+    { label: '203.0.113.182', value: 6440 },
+    { label: '198.51.100.60', value: 6000 },
+  ],
+  'Top ASNs': [
+    { label: 'Northwind Telecom (64496)', value: 41610 },
+    { label: 'Contoso Cloud Services (64497)', value: 30910 },
+    { label: 'Fabrikam Wireless (64498)', value: 30750 },
+    { label: 'Globex Corporation (64499)', value: 28500 },
+    { label: 'Initech Networks (64500)', value: 24910 },
+    { label: 'Umbrella Backbone (64501)', value: 21620 },
+    { label: 'Acme Hosting Ltd. (64502)', value: 20740 },
+    { label: 'Wayne Fibre (64503)', value: 20720 },
+    { label: 'Stark Telemedia Services (64504)', value: 20570 },
+  ],
+  'Top referrers': [
+    { label: 'app.example.com', value: 791050 },
+    { label: 'example.com', value: 708010 },
+    { label: 'None', value: 119870 },
+    { label: 'docs.example.com', value: 98390 },
+    { label: 'news.example.net', value: 51950 },
+    { label: 'blog.example.org', value: 48910 },
+    { label: 'r.example.com', value: 7910 },
+    { label: 'dev.example.com', value: 5210 },
+    { label: 'partner.example.net', value: 4630 },
+  ],
+  'Top hosts': [
+    { label: 'app.example.com', value: 929590 },
+    { label: 'example.com', value: 797880 },
+    { label: 'docs.example.com', value: 101270 },
+    { label: 'scripts.example.com', value: 17330 },
+    { label: 'r.example.com', value: 13950 },
+    { label: 'dev.example.com', value: 8830 },
+    { label: 'docs-dev.example.com', value: 2060 },
+    { label: 'demo.example.com', value: 1550 },
+    { label: 'shop.example.com', value: 1090 },
+  ],
+  'Top browsers': [
+    { label: 'Chrome', value: 1090000 },
+    { label: 'Firefox', value: 191610 },
+    { label: 'Edge', value: 160990 },
+    { label: 'Unknown/Others', value: 126750 },
+    { label: 'Safari', value: 73580 },
+    { label: 'ChromeMobile', value: 62870 },
+    { label: 'ChromeHeadless', value: 49490 },
+    { label: 'ChromeMobileWebview', value: 38370 },
+    { label: 'MobileSafari', value: 28840 },
+  ],
+  'Top operating systems': [
+    { label: 'Windows', value: 966740 },
+    { label: 'MacOSX', value: 475180 },
+    { label: 'Linux', value: 153540 },
+    { label: 'Unknown/Others', value: 134320 },
+    { label: 'Android', value: 106000 },
+    { label: 'iOS', value: 39940 },
+    { label: 'ChromeOS', value: 132 },
+  ],
+  'Top device types': [
+    { label: 'Desktop', value: 1700000 },
+    { label: 'Mobile', value: 170780 },
+    { label: 'Tablet', value: 2690 },
+  ],
+  'Top user agents': [
+    { label: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', value: 469890 },
+    { label: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', value: 150230 },
+    { label: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', value: 141170 },
+    { label: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', value: 111530 },
+    { label: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', value: 110920 },
+    { label: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0', value: 67770 },
+    { label: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/142.0.0.0 Safari/537.36', value: 37760 },
+    { label: 'Mozilla/5.0 (X11; Linux x86_64; rv:158.0) Gecko/20100101 Firefox/158.0', value: 26880 },
+    { label: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:158.0) Gecko/20100101 Firefox/158.0', value: 24600 },
+  ],
+  'Top HTTP versions': [
+    { label: 'HTTP/3', value: 1250000 },
+    { label: 'HTTP/2', value: 549450 },
+    { label: 'HTTP/1.1', value: 78990 },
+    { label: 'HTTP/1.0', value: 289 },
+  ],
+  'Top status codes': [
+    { label: '200 OK', value: 1730000 },
+    { label: '304 Not Modified', value: 56510 },
+    { label: '404 Not Found', value: 35000 },
+    { label: '308 Permanent Redirect', value: 31080 },
+    { label: '403 Forbidden', value: 10220 },
+    { label: '301 Moved Permanently', value: 5060 },
+    { label: '400 Bad Request', value: 2310 },
+    { label: '499 Client Closed Request', value: 1820 },
+    { label: '206 Partial Content', value: 974 },
+  ],
+  'Top data centers': [
+    { label: 'Singapore, Singapore (SIN)', value: 199780 },
+    { label: 'Hong Kong, Hong Kong (HKG)', value: 114900 },
+    { label: 'Frankfurt, Germany (FRA)', value: 106300 },
+    { label: 'Bangkok, Thailand (BKK)', value: 102000 },
+    { label: 'Amsterdam, Netherlands (AMS)', value: 93230 },
+    { label: 'Los Angeles, United States (LAX)', value: 64140 },
+    { label: 'São Paulo, Brazil (GRU)', value: 59110 },
+    { label: 'Warsaw, Poland (WAW)', value: 57370 },
+    { label: 'Tokyo, Japan (NRT)', value: 53340 },
+  ],
+}
+---
+
+<DefaultLayout title="Web Analytics" description="Traffic, caching and performance of your sites over the last 24 hours." pageMenu="dashboards.analytics" pageLibs={['apexcharts']}>
+  <div class="row row-cards">
+    {
+      stats.map((stat) => (
+        <div class="col-sm-6 col-lg-4 col-xl-2">
+          <Card>
+            <CardBody>
+              <Subheader as="h2">{stat.title}</Subheader>
+              <div class="d-flex align-items-baseline">
+                <div class="h2 mb-0 me-2">{stat.value}</div>
+                <Trending value={stat.change} />
+              </div>
+            </CardBody>
+            <Chart chartId={stat.chart} size="sm" class="rounded-bottom-3" label={`${stat.title} over the last 24 hours`} />
+          </Card>
+        </div>
+      ))
+    }
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Requests over time">
+          <div class="card-actions d-flex align-items-center gap-2">
+            <label for="requests-group-by" class="form-label mb-0 text-secondary">Group by</label>
+            <select id="requests-group-by" class="form-select form-select-sm w-auto">
+              {groupBy.map((option) => <option>{option}</option>)}
+            </select>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <LegendList class="mb-3">
+            <Legend color="primary" text="Requests" value="1.88M" />
+          </LegendList>
+          <Chart chartId="analytics-requests" height={15} label="Requests over time" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Data transfer">
+          <div class="card-actions d-flex align-items-center gap-2">
+            <label for="transfer-group-by" class="form-label mb-0 text-secondary">Group by</label>
+            <select id="transfer-group-by" class="form-select form-select-sm w-auto">
+              {groupBy.map((option) => <option>{option}</option>)}
+            </select>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <LegendList class="mb-3">
+            <Legend color="primary" text="Data transfer" value="35.71 GB" />
+          </LegendList>
+          <Chart chartId="analytics-transfer" height={15} label="Data transfer over time" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Requests by status code" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {statusCodes.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+          <Chart chartId="analytics-status-codes" height={15} label="Requests by status code" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Requests by cache status" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {cacheStatus.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+          <Chart chartId="analytics-cache-status" height={15} label="Requests by cache status" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Edge TTFB percentiles" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {ttfb.map((item) => <Legend color={item.color} text={item.name} value={item.value} unit="ms" />)}
+          </LegendList>
+          <Chart chartId="analytics-ttfb" height={15} label="Edge time to first byte percentiles" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <TopList title="Top paths" items={lists['Top paths'] ?? []} class="h-100" />
+    </div>
+
+    {
+      Object.entries(lists)
+        .filter(([title]) => title !== 'Top paths')
+        .map(([title, items]) => (
+          <div class="col-lg-6">
+            <TopList title={title} items={items} class="h-100" />
+          </div>
+        ))
+    }
+  </div>
+</DefaultLayout>
