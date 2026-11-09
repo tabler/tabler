@@ -1,0 +1,98 @@
+---
+// `.grid-bento` with `.g-row-*`: a small dashboard overview on four columns.
+// The revenue tile spans two columns and two rows, the photo two rows, and the
+// stat tiles fill the cells around them, so every edge lines up.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import AvatarList from '@ui/AvatarList.astro'
+import Icon from '@ui/Icon.astro'
+import Progress from '@ui/Progress.astro'
+import Subheader from '@ui/Subheader.astro'
+
+const team = ['avatars/000m.jpg', 'avatars/002m.jpg', 'avatars/003f.jpg', 'avatars/004m.jpg']
+
+const channels = [
+  { name: 'Online store', value: '$31,240' },
+  { name: 'Retail', value: '$12,480' },
+  { name: 'Marketplace', value: '$5,200' },
+]
+---
+
+<ScreenshotLayout title="Bento grid" columns={3} showLogo={false}>
+  <div class="grid grid-bento" style="--tblr-columns: 4; --tblr-gap: 1rem; --tblr-grid-bento-row-height: 9.5rem">
+    <div class="card g-col-2 g-row-2">
+      <div class="card-body d-flex flex-column">
+        <Subheader>Revenue this month</Subheader>
+        <div class="h1 mb-1">$48,920</div>
+        <div class="text-green d-flex align-items-center gap-1">
+          <Icon name="trending-up" />
+          8% more than last month
+        </div>
+        <div class="mt-4">
+          {
+            channels.map((channel) => (
+              <div class="d-flex justify-content-between py-1">
+                <span class="text-secondary">{channel.name}</span>
+                <span class="fw-medium">{channel.value}</span>
+              </div>
+            ))
+          }
+        </div>
+        <div class="mt-auto">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Monthly goal</span>
+            <span class="text-secondary">72%</span>
+          </div>
+          <Progress value={72} aria-label="72% of the monthly goal" />
+        </div>
+      </div>
+    </div>
+    <div class="card g-col-1 g-row-2 overflow-hidden">
+      <img src="/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg" class="w-100 h-100 object-cover" alt="" />
+    </div>
+    <div class="card g-col-1">
+      <div class="card-body">
+        <Subheader>New customers</Subheader>
+        <div class="h1 mb-1">1,284</div>
+        <div class="text-green">+12% this week</div>
+      </div>
+    </div>
+    <div class="card g-col-1">
+      <div class="card-body">
+        <Subheader>Orders</Subheader>
+        <div class="h1 mb-1">3,920</div>
+        <div class="text-green">+4% this week</div>
+      </div>
+    </div>
+    <div class="card g-col-2">
+      <div class="card-body d-flex flex-column">
+        <Subheader>Active now</Subheader>
+        <div class="h1 mb-0">642 users</div>
+        <div class="d-flex align-items-center gap-2 mt-auto">
+          <AvatarList stacked>
+            {team.map((photo) => <Avatar src={`static/${photo}`} />)}
+          </AvatarList>
+          <span class="text-secondary">and 638 more</span>
+        </div>
+      </div>
+    </div>
+    <div class="card g-col-1">
+      <div class="card-body d-flex flex-column">
+        <span class="avatar bg-azure-lt"><Icon name="clock" /></span>
+        <div class="mt-auto">
+          <Subheader>Avg. response</Subheader>
+          <div class="h2 mb-0">2h 14m</div>
+        </div>
+      </div>
+    </div>
+    <div class="card g-col-1 bg-primary text-primary-fg">
+      <div class="card-body d-flex flex-column">
+        <span class="avatar bg-white-lt text-white"><Icon name="shield-check" /></span>
+        <div class="mt-auto">
+          <div class="subheader text-white opacity-75">Uptime</div>
+          <div class="h2 mb-0 text-white">99.98%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ScreenshotLayout>
