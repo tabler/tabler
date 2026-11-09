@@ -49,7 +49,7 @@
       --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
     } @else {
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
-      --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, var(--#{$name}));
+      --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, #{contrast-tint-css(var(--#{$name}), $text-contrast-ratio, luminance($gray-800))});
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);

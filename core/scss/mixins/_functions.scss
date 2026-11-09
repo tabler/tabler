@@ -223,6 +223,15 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return color(from #{$color} srgb-linear calc(r * #{$scale}) calc(g * #{$scale}) calc(b * #{$scale}));
 }
 
+// Runtime tint of `$color`, lightened only as far as needed to reach
+// `$ratio` against a dark background of `$background-luminance`.
+@function contrast-tint-css($color, $ratio: 4.5, $background-luminance: 0) {
+  $min: math.div(math.round((($background-luminance + 0.05) * $ratio - 0.05) * 10000), 10000);
+  $y: '(0.2126 * r + 0.7152 * g + 0.0722 * b)';
+  $mix: max(0, (#{$min} - #{$y}) / (1 - #{$y}));
+  @return color(from #{$color} srgb-linear calc(r + (1 - r) * #{$mix}) calc(g + (1 - g) * #{$mix}) calc(b + (1 - b) * #{$mix}));
+}
+
 @function color-contrast($background, $color-contrast-dark: $color-contrast-dark, $color-contrast-light: $color-contrast-light, $min-contrast-ratio: $min-contrast-ratio) {
   @if meta.type-of($background) != 'color' {
     @return contrast-color-css($background, $color-contrast-light, $color-contrast-dark, $min-contrast-ratio);
