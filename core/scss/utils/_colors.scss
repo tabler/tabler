@@ -14,7 +14,7 @@
 }
 
 @function lt-text-color($color) {
-  @return if(sass(has-text-shade($color)): mix-color-css(light-dark($black, var(--#{$color})), var(--#{$color}-text), $text-lt-shade-percentage); else: var(--#{$color}));
+  @return if(sass(has-text-shade($color)): light-dark(mix-color-css($black, var(--#{$color}-text), $text-lt-shade-percentage), mix-color-css($white, var(--#{$color}-text), $text-lt-tint-percentage)); else: var(--#{$color}));
 }
 
 @each $color,
@@ -58,7 +58,7 @@
   }
 
   .link-#{'' + $color} {
-    color: color-transparent(var(--#{$color}), calc(var(--link-opacity, 1) * 100%)) !important;
+    color: color-transparent(text-color-var($color), calc(var(--link-opacity, 1) * 100%)) !important;
     text-decoration-color: color-transparent(var(--#{$color}), calc(var(--link-underline-opacity, 1) * 100%)) !important;
 
     @if $link-shade-percentage != 0 {
