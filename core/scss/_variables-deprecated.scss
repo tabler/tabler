@@ -8,6 +8,7 @@
 @use 'settings' as *;
 @use 'variables' as *;
 @use 'mixins/functions' as *;
+@use 'mixins/bootstrap/transition' as *;
 
 // deprecated(2.0): `--active-bg` now carries its own dark value in `$active-bg`
 $lighten-dark: adjust-lightness-css(var(--dark), 2%) !default;
@@ -37,6 +38,10 @@ $form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-c
 $form-range-thumb-focus-box-shadow:
   0 0 0 1px var(--body-bg),
   $input-focus-box-shadow !default;
+
+// deprecated(2.0): split into `$btn-transition-property`, `$btn-transition-duration`
+// and `$btn-transition-timing`. A customised value still replaces them.
+$btn-transition: transition-list($btn-transition-property, $btn-transition-duration, $btn-transition-timing) !default;
 
 // deprecated(2.0): `.form-hint` is `.form-text`
 $form-hint-margin-top: 0.25rem !default;

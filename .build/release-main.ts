@@ -2,8 +2,9 @@
 // Publishes a release to docs.tabler.io, which is built from `main`. Run it on `dev` once the
 // release workflow has put the new version on npm:
 //
-//   1. refreshes shared/data/sri.json for that version (`generate:sri --wait`),
-//   2. commits it and pushes `dev`,
+//   1. refreshes shared/data/sri.json for that version (`generate:sri --wait`) and the public
+//      skills in skills/ that quote those hashes,
+//   2. commits them and pushes `dev`,
 //   3. merges `dev` into `main` and pushes `main`,
 //   4. merges `dev` into `next`, when that branch exists, so the next minor carries the fix.
 //

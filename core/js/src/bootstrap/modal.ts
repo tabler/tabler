@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, isRTL, isVisible, reflow } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -78,6 +78,7 @@ class Modal extends BaseComponent {
   _focustrap: FocusTrap
   _isShown: boolean
   _isTransitioning: boolean
+  _returnFocusTarget: HTMLElement | SVGElement | null
   _scrollBar: ScrollBarHelper
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
@@ -88,6 +89,7 @@ class Modal extends BaseComponent {
     this._focustrap = this._initializeFocusTrap()
     this._isShown = false
     this._isTransitioning = false
+    this._returnFocusTarget = null
     this._scrollBar = new ScrollBarHelper()
 
     this._addEventListeners()
@@ -122,6 +124,7 @@ class Modal extends BaseComponent {
       return
     }
 
+    this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
     this._isShown = true
     this._isTransitioning = true
 
@@ -151,7 +154,10 @@ class Modal extends BaseComponent {
 
     this._element.classList.remove(CLASS_NAME_SHOW)
 
-    this._queueCallback(() => this._hideModal(), this._element, this._isAnimated())
+    const returnFocusTarget = this._returnFocusTarget
+    this._returnFocusTarget = null
+
+    this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
   }
 
   dispose(): void {
@@ -253,7 +259,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  _hideModal(): void {
+  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
@@ -264,7 +270,13 @@ class Modal extends BaseComponent {
       document.body.classList.remove(CLASS_NAME_OPEN)
       this._resetAdjustments()
       this._scrollBar.reset()
-      EventHandler.trigger(this._element, EVENT_HIDDEN)
+      const element = this._element
+
+      EventHandler.trigger(element, EVENT_HIDDEN)
+
+      if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
+        restoreFocus(returnFocusTarget, element)
+      }
     })
   }
 
@@ -351,18 +363,6 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   if (!target) {
     return
   }
-
-  EventHandler.one(target, EVENT_SHOW, (showEvent: Event) => {
-    if (showEvent?.defaultPrevented) {
-      return
-    }
-
-    EventHandler.one(target, EVENT_HIDDEN, () => {
-      if (isVisible(this)) {
-        this.focus()
-      }
-    })
-  })
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen) {

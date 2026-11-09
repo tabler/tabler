@@ -30,7 +30,7 @@ $dropdown-tokens: defaults(
 
   &.card {
     display: none;
-    min-width: $dropdown-max-width;
+    min-width: var(--dropdown-max-width);
     padding: 0;
 
     &.show {
@@ -47,7 +47,7 @@ $dropdown-tokens: defaults(
   display: flex;
   gap: var(--dropdown-item-gap, #{$dropdown-item-gap});
   align-items: center;
-  min-width: $dropdown-min-width;
+  min-width: var(--dropdown-min-width, #{$dropdown-min-width});
   margin: 0;
   line-height: $line-height-base;
 }
@@ -55,6 +55,10 @@ $dropdown-tokens: defaults(
 .dropdown-item-icon {
   width: var(--dropdown-item-icon-size) !important;
   height: var(--dropdown-item-icon-size) !important;
+  // Sizes an icon font glyph, such as a Tabler Icons webfont `.ti`, to the box,
+  // so its line fills the box and it lines up with the label.
+  font-size: var(--dropdown-item-icon-size);
+  line-height: 1;
   color: var(--dropdown-item-icon-color);
   text-align: center;
 }
@@ -75,13 +79,13 @@ $dropdown-tokens: defaults(
 
 .dropdown-menu-scrollable {
   height: auto;
-  max-height: $dropdown-scrollable-height;
+  max-height: var(--dropdown-scrollable-height);
   overflow-x: hidden;
   overscroll-behavior: contain;
 }
 
 .dropdown-menu-column {
-  min-width: $dropdown-min-width;
+  min-width: var(--dropdown-min-width);
 
   .dropdown-item {
     min-width: 0;
@@ -107,10 +111,10 @@ $dropdown-tokens: defaults(
     background: inherit;
     // The menu draws its edge with the 1px ring in --dropdown-box-shadow and has
     // no border, so `inherit` would give the arrow the text color.
-    border: 1px solid var(--dropdown-border-color);
+    border: var(--border-width) var(--border-style) var(--dropdown-border-color);
     // clip-path + border + rotate renders garbled edges on Firefox; only the
     // top/left border survives the clip anyway, so drop the rest.
-    border-width: 1px 0 0 1px;
+    border-width: var(--border-width) 0 0 var(--border-width);
 
     /* rtl:ignore */
     transform: rotate(45deg);
@@ -128,7 +132,7 @@ $dropdown-tokens: defaults(
 .dropend {
   > .dropdown-menu {
     margin-inline-start: calc(-1 * var(--dropdown-dropend-offset));
-    margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
+    margin-top: calc(-1 * var(--dropdown-padding-y) - 1px);
   }
 
   .dropdown-toggle {

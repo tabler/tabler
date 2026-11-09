@@ -6,6 +6,7 @@
 @use 'sass:color';
 @use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
 @use 'functions' as *;
@@ -22,6 +23,9 @@
 // deprecated(2.0): use `mix-color($color, $background, 10%)`
 @function theme-color-lighter($color, $background: #fff) {
   $warned: -deprecated('theme-color-lighter()', 'Use mix-color() instead.');
+  @if meta.type-of($color) != 'color' or meta.type-of($background) != 'color' {
+    @return mix-color-css($color, $background, 10%);
+  }
   @return color.to-gamut(color.mix($color, $background, 10%, $method: rgb), $space: rgb, $method: clip);
 }
 

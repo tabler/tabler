@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
+import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
 type SparklineType = 'line' | 'bar' | 'circle' | 'tristate'
 type SparklineFill = 'none' | 'auto'
@@ -351,7 +352,7 @@ class Sparkline extends BaseComponent {
   }
 
   _canAnimate(from: SVGSVGElement, to: SVGSVGElement): boolean {
-    if (this._config.animation <= 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (this._config.animation <= 0 || prefersReducedMotion()) {
       return false
     }
 

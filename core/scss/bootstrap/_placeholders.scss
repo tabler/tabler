@@ -1,12 +1,18 @@
 @use '../config' as *;
 
 .placeholder {
+  // scss-docs-start placeholder-css-vars
+  --placeholder-bg: currentColor;
+  --placeholder-opacity-max: #{$placeholder-opacity-max};
+  --placeholder-opacity-min: #{$placeholder-opacity-min};
+  // scss-docs-end placeholder-css-vars
+
   display: inline-block;
   min-height: 1em;
   vertical-align: middle;
   cursor: wait;
-  background-color: currentColor;
-  opacity: $placeholder-opacity-max;
+  background-color: var(--placeholder-bg);
+  opacity: var(--placeholder-opacity-max);
 
   &.btn::before {
     display: inline-block;
@@ -28,29 +34,27 @@
 }
 
 // Animation
-.placeholder-glow {
+.placeholder-glow,
+.placeholder-pulse {
   .placeholder {
-    animation: placeholder-glow 2s ease-in-out infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
+    @media (prefers-reduced-motion: no-preference) {
+      animation: placeholder-glow 2s ease-in-out infinite;
     }
   }
 }
 
 @keyframes placeholder-glow {
   50% {
-    opacity: $placeholder-opacity-min;
+    opacity: var(--placeholder-opacity-min);
   }
 }
 
 .placeholder-wave {
   mask-image: linear-gradient(130deg, $black 55%, rgba(0, 0, 0, (1 - $placeholder-opacity-min)) 75%, $black 95%);
   mask-size: 200% 100%;
-  animation: placeholder-wave 2s linear infinite;
 
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: placeholder-wave 2s linear infinite;
   }
 }
 

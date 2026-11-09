@@ -3,6 +3,8 @@
 // Replaces the browser default select with a custom one, mostly pulled from
 // https://primer.github.io/.
 
+@use 'sass:list';
+@use 'sass:meta';
 @use '../../config' as *;
 
 // The `--control-*` tokens come from the shared block in `_form-control.scss`.
@@ -18,11 +20,11 @@
   // scss-docs-start form-select-css-vars
   --control-select-bg: #{escape-svg($form-select-indicator)};
   --control-select-bg-dark: #{escape-svg($form-select-indicator-dark)};
-  --control-select-bg-position: #{$form-select-bg-position};
+  --control-select-bg-position: #{if(sass($form-select-bg-position == (right $form-select-padding-x center)): right var(--control-padding-x) center; else: $form-select-bg-position)};
   --control-select-bg-size: #{$form-select-bg-size};
-  // Room for the arrow. Reads the root scale, not `--control-padding-x`, so the
-  // size modifiers keep the same 3rem they always had.
-  --control-select-indicator-padding: #{if(sass($form-select-indicator-padding == $form-select-padding-x * 3 and $form-select-padding-x == $input-btn-padding-x): calc(var(--btn-input-padding-x) * 3); else: $form-select-indicator-padding)};
+  // Room for the arrow: the padding on both sides of it plus its width. A
+  // keyword size (`auto`, `cover`) has no width to add, so it keeps the Sass value.
+  --control-select-indicator-padding: #{if(sass($form-select-indicator-padding == $form-select-padding-x * 3 and meta.type-of(list.nth($form-select-bg-size, 1)) == number): calc(var(--control-padding-x) * 2 + #{list.nth($form-select-bg-size, 1)}); else: $form-select-indicator-padding)};
   // scss-docs-end form-select-css-vars
   @include -select-token(--control-padding-y, $form-select-padding-y, $input-padding-y);
   @include -select-token(--control-padding-x, $form-select-padding-x, $input-padding-x);

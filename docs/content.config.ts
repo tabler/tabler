@@ -59,16 +59,17 @@ const docs = defineCollection({
       /**
        * Custom-property family the component exposes, as the part after
        * `--tblr-`: `badge` lists every `--tblr-badge-*` variable. Rendered
-       * below the class reference by DocsCssVars from the compiled CSS.
+       * below the class reference by DocsCssVars from the compiled CSS. A list
+       * shows several blocks on one page (`[btn, btn-group]`).
        */
-      'css-vars': z.string().optional(),
+      'css-vars': z.union([z.string(), z.array(z.string())]).optional(),
       /**
        * Sass defaults block: the `<name>-variables` marker in `_variables.scss`.
        * Defaults to the `css-vars` name; set it when the marker is named
        * differently (`nav` for nav-tabs) or when the component has Sass
        * variables but no custom properties of its own.
        */
-      'sass-vars': z.string().optional(),
+      'sass-vars': z.union([z.string(), z.array(z.string())]).optional(),
     })
     // strict so a mistyped key fails the build instead of being silently dropped
     .strict()

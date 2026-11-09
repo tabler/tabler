@@ -95,7 +95,35 @@ const getElement = (object: unknown): HTMLElement | null => {
   return null
 }
 
-const isVisible = (element: HTMLElement): boolean => {
+const getFocusReturnTarget = (relatedTarget: unknown, container: HTMLElement): HTMLElement | SVGElement | null => {
+  const target = unwrapJQuery(relatedTarget)
+
+  if (isElement(target) && !container.contains(target)) {
+    return target
+  }
+
+  let activeElement = document.activeElement
+
+  while (activeElement?.shadowRoot?.activeElement) {
+    activeElement = activeElement.shadowRoot.activeElement
+  }
+
+  return (activeElement instanceof HTMLElement || activeElement instanceof SVGElement) && activeElement !== document.body && !container.contains(activeElement) ? activeElement : null
+}
+
+const restoreFocus = (target: HTMLElement | SVGElement | null, container: HTMLElement): void => {
+  if (!target || !isVisible(target)) {
+    return
+  }
+
+  const { activeElement } = document
+
+  if (!activeElement || activeElement === document.body || container.contains(activeElement)) {
+    target.focus()
+  }
+}
+
+const isVisible = (element: Element): boolean => {
   if (!isElement(element) || element.getClientRects().length === 0) {
     return false
   }
@@ -263,4 +291,26 @@ const getNextActiveElement = <T>(list: T[], activeElement: T, shouldGetNext: boo
   return list[Math.max(0, Math.min(index, listLength - 1))]
 }
 
-export { defineJQueryPlugin, execute, executeAfterTransition, findShadowRoot, getElement, getjQuery, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, onDOMContentLoaded, parseSelector, reflow, triggerTransitionEnd, toType }
+export {
+  defineJQueryPlugin,
+  execute,
+  executeAfterTransition,
+  findShadowRoot,
+  getElement,
+  getFocusReturnTarget,
+  getjQuery,
+  getNextActiveElement,
+  getTransitionDurationFromElement,
+  getUID,
+  isDisabled,
+  isElement,
+  isRTL,
+  isVisible,
+  noop,
+  onDOMContentLoaded,
+  parseSelector,
+  reflow,
+  restoreFocus,
+  triggerTransitionEnd,
+  toType,
+}

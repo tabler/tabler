@@ -20,8 +20,8 @@ export interface ScssDocsBlock {
 }
 
 export interface CssSection {
-  css?: ScssDocsBlock | undefined
-  sass?: ScssDocsBlock | undefined
+  css: ScssDocsBlock[]
+  sass: ScssDocsBlock[]
 }
 
 let cachedSources: Promise<{ path: string; source: string }[]> | undefined
@@ -45,16 +45,22 @@ export async function scssDocsBlock(name: string): Promise<ScssDocsBlock | undef
     .split('\n')
     .filter((line) => !/^\s*\/\//.test(line))
     .join('\n')
-  // the rule the block sits in: the nearest non-comment line above the marker
+  // the rule the block sits in: the nearest non-comment lines above the marker,
+  // joined when the selector list spans several lines (`.a,\n.b {`)
   const above = file.source
     .slice(0, file.source.indexOf(`// scss-docs-start ${name}`))
     .split('\n')
+    .slice(0, -1)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('//'))
     .reverse()
-  const opener = above
-    .slice(1)
-    .find((line) => line.trim() && !/^\s*\/\//.test(line))
-    ?.trim()
-  const selector = opener?.endsWith('{') ? opener.slice(0, -1).trim() : undefined
+  const opener = above[0]
+  const parts = opener?.endsWith('{') ? [opener.slice(0, -1).trim()] : []
+  for (const line of above.slice(1)) {
+    if (!line.endsWith(',')) break
+    parts.unshift(line.slice(0, -1).trim())
+  }
+  const selector = parts.length ? parts.join(', ') : undefined
   return { path: file.path, code, selector }
 }
 
@@ -68,20 +74,29 @@ async function familyCssVarsMarker(prefix: string) {
   return undefined
 }
 
+const asList = (names: string | string[] | undefined) => (names === undefined ? [] : Array.isArray(names) ? names : [names])
+
 /**
  * Resolves a page's `css-vars` and `sass-vars` front matter to the blocks to
- * show. A missing `css-vars` marker is an error, since the page asked for it
- * by name; a missing `<name>-variables` marker only drops the Sass part,
- * because `sass-vars` defaults to `css-vars` and not every component has one.
+ * show; either may name one block or a list of them. A missing `css-vars`
+ * marker is an error, since the page asked for it by name; a missing
+ * `<name>-variables` marker only drops that Sass part, because `sass-vars`
+ * defaults to `css-vars` and not every component has one.
  */
-export async function cssSection(cssVars?: string, sassVars: string | undefined = cssVars): Promise<CssSection> {
-  let css: ScssDocsBlock | undefined
-  if (cssVars) {
-    const marker = (await scssDocsBlock(`${cssVars}-css-vars`)) ? `${cssVars}-css-vars` : await familyCssVarsMarker(cssVars)
-    css = marker ? await scssDocsBlock(marker) : undefined
-    if (!css) throw new Error(`css-vars: no "// scss-docs-start ${cssVars}-css-vars" marker in core/scss`)
+export async function cssSection(cssVars?: string | string[], sassVars: string | string[] | undefined = cssVars): Promise<CssSection> {
+  const css: ScssDocsBlock[] = []
+  for (const name of asList(cssVars)) {
+    const marker = (await scssDocsBlock(`${name}-css-vars`)) ? `${name}-css-vars` : await familyCssVarsMarker(name)
+    const block = marker ? await scssDocsBlock(marker) : undefined
+    if (!block) throw new Error(`css-vars: no "// scss-docs-start ${name}-css-vars" marker in core/scss`)
+    css.push(block)
   }
-  const sass = sassVars ? await scssDocsBlock(`${sassVars}-variables`) : undefined
-  if (sassVars && !sass && sassVars !== cssVars) throw new Error(`sass-vars: no "// scss-docs-start ${sassVars}-variables" marker in core/scss`)
+  const sass: ScssDocsBlock[] = []
+  const explicit = sassVars !== cssVars
+  for (const name of asList(sassVars)) {
+    const block = await scssDocsBlock(`${name}-variables`)
+    if (block) sass.push(block)
+    else if (explicit) throw new Error(`sass-vars: no "// scss-docs-start ${name}-variables" marker in core/scss`)
+  }
   return { css, sass }
 }

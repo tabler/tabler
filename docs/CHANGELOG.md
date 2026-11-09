@@ -1,5 +1,29 @@
 # @tabler/docs
 
+## 1.7.4
+
+### Patch Changes
+
+- f7ab6f7: Fixed table of contents links in the docs not updating the URL `#fragment` after clicking.
+
+## 1.7.3
+
+No changes in this release.
+
+## 1.7.2
+
+### Patch Changes
+
+- 40a1a91: Fixed a chart tooltip crash when the `thousands` or `suffix-k` axis formatter gets an empty value.
+
+## 1.7.1
+
+### Patch Changes
+
+- 74f6193: Fixed the heading order on the dashboard and other preview pages so no heading level is skipped.
+- f076113: Fixed the arrow position and the room kept for it in `.form-select-sm` and `.form-select-lg`.
+- 9beef3a: Updated the demo `Toast` to use `role="status"` and `aria-live="polite"` by default, with an `urgent` prop for `alert`.
+
 ## 1.7.0
 
 ### Minor Changes

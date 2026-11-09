@@ -18,14 +18,11 @@ runs:
         path: ~/.cache/ms-playwright
         key: ${{ runner.os }}-playwright-${{ steps.playwright.outputs.version }}
 
+    # On a cache hit nothing else runs: the libraries Chromium links against are
+    # part of the runner image, and `install-deps` would only add fonts and
+    # minor upgrades through apt, which takes seconds or ten minutes depending
+    # on the mirror.
     - name: Install Chromium and its system packages
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm exec playwright install --with-deps chromium
-
-    # The browser comes from the cache, but its system packages live in the
-    # runner image and have to be there on every run.
-    - name: Install the system packages
-      if: steps.cache.outputs.cache-hit == 'true'
-      shell: bash
-      run: pnpm exec playwright install-deps chromium

@@ -7,6 +7,7 @@
 // with `@extend`, which only reaches modules upstream of this one.
 //
 // Removed in 2.0, together with this file and `_deprecated-props.scss`.
+@use 'sass:meta';
 @use 'config' as *;
 @use 'core';
 @use 'deprecated-props' as *;
@@ -24,8 +25,12 @@
     --secondary-bg-rgb: #{deprecated-rgb-triplet($body-secondary-bg)};
     --tertiary-color-rgb: #{deprecated-rgb-triplet($body-color)};
     --tertiary-bg-rgb: #{deprecated-rgb-triplet($body-tertiary-bg)};
-    --link-color-rgb: #{deprecated-rgb-triplet($link-color)};
-    --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color)};
+    @if meta.type-of($link-color) == 'color' {
+      --link-color-rgb: #{deprecated-rgb-triplet($link-color)};
+    }
+    @if meta.type-of($link-hover-color) == 'color' {
+      --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color)};
+    }
 
     // deprecated(2.0): `$input-btn-focus-width` and `$input-btn-focus-color`
     // were the way to restyle the focus ring from Sass
@@ -46,8 +51,12 @@
       --secondary-bg-rgb: #{deprecated-rgb-triplet($body-secondary-bg-dark)};
       --tertiary-color-rgb: #{deprecated-rgb-triplet($body-color-dark)};
       --tertiary-bg-rgb: #{deprecated-rgb-triplet($body-tertiary-bg-dark)};
-      --link-color-rgb: #{deprecated-rgb-triplet($link-color-dark)};
-      --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color-dark)};
+      @if meta.type-of($link-color-dark) == 'color' {
+        --link-color-rgb: #{deprecated-rgb-triplet($link-color-dark)};
+      }
+      @if meta.type-of($link-hover-color-dark) == 'color' {
+        --link-hover-color-rgb: #{deprecated-rgb-triplet($link-hover-color-dark)};
+      }
     }
   }
 
@@ -97,8 +106,10 @@
   }
 
   @each $name, $color in $theme-colors {
-    .status-#{$name} {
-      --status-color-rgb: var(--#{$name}-rgb);
+    @if meta.type-of($color) == 'color' {
+      .status-#{$name} {
+        --status-color-rgb: var(--#{$name}-rgb);
+      }
     }
   }
 

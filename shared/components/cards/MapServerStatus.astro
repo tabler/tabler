@@ -30,7 +30,7 @@ const regions: { name: string; code: string; state: keyof typeof states; latency
   <Map mapId="servers" title="Server status" center={[20, 40]} zoom={0.45} height="20rem" rounded={false}>
     {regions.map((region) => <span class:list={['map-marker map-marker-dot', `map-marker-${states[region.state].color}`, region.state !== 'ok' && 'map-marker-pulse']} data-bs-lng={region.lng} data-bs-lat={region.lat} data-bs-popup={`${region.name}: ${states[region.state].label}`} />)}
   </Map>
-  <div class="table-responsive">
+  <div class="table-responsive" tabindex="0">
     <table class="table table-vcenter card-table">
       <thead>
         <tr>

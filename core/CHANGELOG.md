@@ -1,5 +1,57 @@
 # @tabler/core
 
+## 1.7.4
+
+### Patch Changes
+
+- 7ecb816: Fixed `.card-table` bottom border on the last `tfoot` row and on row header `th` cells, and kept the rule above a `tfoot`.
+- 4d92aae: Updated `$border-color-translucent-dark` to white at 8% so card, table and dropdown borders stay visible in dark mode.
+- dd50698: Fixed Tabler Icons webfont `.ti` size in `.empty-icon` and its alignment in `.dropdown-item-icon`.
+- 141b9f3: Fixed dropdown menus in an expanded `.navbar` overflowing the viewport edge by letting Popper position them.
+- 9ccd968: Fixed hard-coded colors and shadows in `.ribbon`, `.loader`, `.stars`, `.card-cover`, forms and marketing with CSS variables.
+- 93191c3: Fixed hard-coded `1px` borders, font weights, hero font sizes and transition times to use the shared tokens.
+
+## 1.7.3
+
+### Patch Changes
+
+- 62faccc: Fixed `Autosize` moving the scroll position of a scrolled ancestor when the textarea is resized.
+- 21dc7f5: Fixed `.card-table` losing its rounded corners inside `.table-responsive-sm` to `.table-responsive-xxl` wrappers.
+- ec4b184: Fixed `.modal-header` vertical padding so multiline and wrapped `.modal-title` text no longer touches the header edges.
+- 8dec6f4: Fixed Tom Select chip `border-radius`, optgroup dividers and dropdown corners that read undefined `--bs-*` variables.
+
+## 1.7.2
+
+### Patch Changes
+
+- f251b2f: Fixed `Datepicker` throwing on a click when the start of a range is clicked again to clear it.
+- 3dba8bc: Let `data-bs-dismiss="offcanvas"` close a responsive offcanvas (`.offcanvas-lg` etc.) without `data-bs-target`.
+- 19fc71a: Fixed `.table-primary`, `.table-warning` and other table variants showing light backgrounds in dark mode.
+
+## 1.7.1
+
+### Patch Changes
+
+- 50c15e7: Fixed `.breadcrumb` link styles applying to the items of a dropdown placed inside it.
+- 2bdbab3: Fixed dark mode contrast of `.text-muted` and other `muted` theme color utilities with a lighter `--tblr-muted` value.
+- 1745d1f: Fixed the `.flag` size classes, which were stretched to one height inside flex containers because the height came from `aspect-ratio`.
+- db649f4: Fixed `.form-check-label` stretching the clickable area of a checkbox or radio across the whole row.
+- f076113: Fixed the arrow position and the room kept for it in `.form-select-sm` and `.form-select-lg`.
+- 0d2e253: Fixed `.modal-lg` and `.modal-xl` falling back to the default width in viewports below the `lg` and `xl` breakpoints.
+- 5d5186e: Fixed `Modal` and `Offcanvas` not returning focus to the element that opened them when closed.
+- e069052: Fixed `.page-text` in pagination using the body font size instead of `--tblr-pagination-font-size`, including `pagination-sm` and `pagination-lg`.
+- ac8eb82: Fixed ApexCharts demos and Dropzone previews to respect `prefers-reduced-motion`, with a shared `prefersReducedMotion()` helper.
+- 8336b33: Added a focus ring to `.card-body-scrollable` and `.table-responsive` so a scrollable region that is focused with the keyboard is visible.
+- cf3ceaa: Fixed the native clear button missing from `.form-control` search inputs in Chrome and Safari.
+- 73392da: Fixed `.sortable-drag` tilting the dragged element itself in native drag mode, which broke the drag.
+- c9e9b9b: Fixed the uneven `.table-bordered` grid in the dark theme by using the opaque border color.
+- f1a49aa: Fixed `.text-bg-*` and `.progress-bar` hard-coding white text instead of reading the `--tblr-*-fg` tokens.
+- 3eaeb74: Fixed the Tom Select focus ring leaving the wrapper border visible at the corners.
+- 0df5946: Fixed the Tom Select focus ring flashing black before it fades in.
+- 7ee278f: Fixed the square start corners of a Tom Select that opens an `.input-group`.
+- 01f6a6c: Fixed the Tom Select dropdown text growing to the mobile font size on phones.
+- fa4c175: Fixed the bright dividers before the remove button of Tom Select chips in the dark theme.
+
 ## 1.7.0
 
 ### Minor Changes

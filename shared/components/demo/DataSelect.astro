@@ -14,6 +14,7 @@ interface Props {
 	class?: string;
 	state?: FormValidationState | undefined;
 	placeholder?: string;
+	ariaLabel?: string;
 	/** option decoration: 'avatar' | 'flag' | 'label' | 'signal' */
 	indicator?: string;
 	/** plain value list — overrides the selects.json lookup */
@@ -26,6 +27,7 @@ const {
 	class: className,
 	state,
 	placeholder,
+	ariaLabel,
 	indicator,
 	values,
 } = Astro.props;
@@ -90,4 +92,4 @@ if (values) {
 }
 ---
 
-<Select id={id} class={className} state={state} placeholder={placeholder} multiple={isMultiple} options={options} optgroups={optgroups} />
+<Select id={id} class={className} state={state} placeholder={placeholder} ariaLabel={ariaLabel} multiple={isMultiple} options={options} optgroups={optgroups} />

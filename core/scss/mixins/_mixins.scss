@@ -3,6 +3,7 @@
 @use 'sass:meta';
 @use '../settings' as *;
 @use '../variables' as *;
+@use '../variables-deprecated' as *;
 @use 'functions' as *;
 @use 'bootstrap/transition' as *;
 @use 'bootstrap/border-radius' as *;
@@ -105,6 +106,14 @@
   @include transition(list.append($transitions, $focus-ring-transition, comma)...);
 }
 
+@mixin btn-transition($property: $btn-transition-property, $duration: $btn-transition-duration, $timing: $btn-transition-timing) {
+  @if $btn-transition == transition-list($btn-transition-property, $btn-transition-duration, $btn-transition-timing) {
+    @include transition-tokens($property, $duration, $timing);
+  } @else {
+    @include transition($btn-transition);
+  }
+}
+
 //
 // Print styles
 //
@@ -153,7 +162,7 @@
 @mixin color-props($colors) {
   @each $name, $color in $colors {
     --#{$name}: #{$color};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    --#{$name}-fg: #{if(sass(meta.type-of($color) != 'color'): contrast-color-css(var(--#{$name}), $light, $dark); else: if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark)))};
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
@@ -190,7 +199,7 @@
     --btn-border-color: #{$btn-variant-border-color};
     --btn-hover-border-color: #{$btn-variant-border-color};
     --btn-active-border-color: #{$btn-variant-border-color};
-    --btn-color: var(--btn-variant-fg, #{$white});
+    --btn-color: var(--btn-variant-fg, var(--white));
     --btn-bg: var(--btn-variant);
     --btn-hover-color: var(--btn-variant-fg);
     --btn-hover-bg: var(--btn-variant-darken);

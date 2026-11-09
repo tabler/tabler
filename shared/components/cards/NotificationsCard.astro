@@ -1,0 +1,72 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupHeader from '@ui/ListGroupHeader.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import StatusDot from '@ui/StatusDot.astro'
+import { personById } from '@shared/lib/people'
+import feed from '@data/notifications-feed.json'
+
+interface Props {
+  /** max-height of the scrollable list */
+  height?: string
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+interface Notification {
+  person?: number
+  icon?: string
+  color?: string
+  actor?: string
+  action: string
+  description: string
+  time: string
+  unread?: boolean
+}
+
+const { height = '24rem', class: className, ...rest } = Astro.props
+
+const groups = feed as { title: string; items: Notification[] }[]
+const unreadCount = groups.flatMap((group) => group.items).filter((item) => item.unread).length
+---
+
+<div class:list={['card', className]} {...rest}>
+  <div class="card-header gap-2">
+    <CardTitle>Notifications</CardTitle>
+    {unreadCount > 0 && <Badge color="primary" light text={`${unreadCount} new`} />}
+    <Button href="#" variant="ghost" size="sm" class="ms-auto" text="Mark all as read" />
+  </div>
+  <div class="scrollable" style={`max-height: ${height}`}>
+    <ListGroup flush hoverable>
+      {
+        groups.map((group) => (
+          <Fragment>
+            <ListGroupHeader class="sticky-top bg-surface-secondary">{group.title}</ListGroupHeader>
+            {group.items.map((item) => {
+              const person = item.person ? personById(item.person) : undefined
+              return (
+                <ListGroupItem>
+                  <Avatar slot="media" size="sm" person={person} icon={item.icon} color={item.color} />
+                  <a href="#" class:list={['list-group-item-title stretched-link', item.unread ? 'text-reset' : 'text-secondary']}>
+                    <strong>{person?.full_name ?? item.actor}</strong> {item.action}
+                  </a>
+                  <div class="list-group-item-description">{item.description}</div>
+                  <div slot="meta" class="d-flex align-items-center gap-2 small">
+                    {item.time}
+                    {item.unread ? <StatusDot color="primary" ariaLabel="Unread" /> : <StatusDot class="invisible" ariaLabel="Read" />}
+                  </div>
+                </ListGroupItem>
+              )
+            })}
+          </Fragment>
+        ))
+      }
+    </ListGroup>
+  </div>
+  <a href="#" class="card-footer text-center">View all notifications</a>
+</div>

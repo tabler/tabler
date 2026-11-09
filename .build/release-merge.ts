@@ -11,6 +11,8 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 export const repoRoot = join(__dirname, '..')
 const sriFile = 'shared/data/sri.json'
+// The public skill quotes the cdn snippet, hashes included, so it changes with the SRI data.
+const skillsDir = 'skills'
 
 export const git = (args: string[], cwd = repoRoot): string => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim()
 export const run = (command: string, args: string[], cwd = repoRoot): void => {
@@ -41,15 +43,21 @@ export const fetchBranchIfExists = (branch: string): boolean => {
   return true
 }
 
-/** Runs `generate:sri --wait` and commits shared/data/sri.json when it changed. */
+/** Runs `generate:sri --wait`, regenerates the public skills and commits what changed. */
 export const commitSriHashes = (script: string, version: string): void => {
-  run(join(repoRoot, 'node_modules', '.bin', 'tsx'), [join('.build', 'generate-sri.ts'), '--wait'])
+  const tsx = join(repoRoot, 'node_modules', '.bin', 'tsx')
+  run(tsx, [join('.build', 'generate-sri.ts'), '--wait'])
+  run(tsx, [join('.build', 'generate-agent-skills.ts')])
 
-  if (git(['status', '--porcelain', '--', sriFile]) === '') {
-    console.log(`${script}: ${sriFile} is already up to date`)
+  const changed = git(['status', '--porcelain', '--', sriFile, skillsDir])
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => line.slice(3))
+  if (changed.length === 0) {
+    console.log(`${script}: ${sriFile} and ${skillsDir}/ are already up to date`)
   } else {
-    git(['commit', '-m', `Update SRI hashes for v${version}`, '--', sriFile])
-    console.log(`${script}: committed ${sriFile}`)
+    git(['commit', '-m', `Update SRI hashes for v${version}`, '--', sriFile, skillsDir])
+    console.log(`${script}: committed ${changed.join(', ')}`)
   }
 }
 

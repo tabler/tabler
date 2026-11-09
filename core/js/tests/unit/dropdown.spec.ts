@@ -506,6 +506,32 @@ describe('Dropdown', () => {
       expect(dropdown._floatingUi._cleanup).toBeNull()
     })
 
+    it('should position the menu in an expanded navbar', () => {
+      fixtureEl.innerHTML = ['<nav class="navbar navbar-expand">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</nav>'].join('')
+
+      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
+      const dropdown = new Dropdown(btn)
+
+      dropdown._createFloatingUi()
+
+      expect(menu.hasAttribute('data-bs-popper')).toBe(false)
+      expect(dropdown._floatingUi._cleanup).not.toBeNull()
+    })
+
+    it('should mark the menu static in a vertical navbar flyout', () => {
+      fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical navbar-expand-lg">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</aside>'].join('')
+
+      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
+      const dropdown = new Dropdown(btn)
+
+      dropdown._createFloatingUi()
+
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
+      expect(dropdown._floatingUi._cleanup).toBeNull()
+    })
+
     it('should mark the menu static when display is static', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
 

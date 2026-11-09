@@ -1,7 +1,7 @@
 @use '../config' as *;
 
 %hover-animation {
-  transition: transform 0.3s ease;
+  transition: transform $transition-time ease;
 
   &:hover {
     will-change: transform;
@@ -45,5 +45,24 @@
 
   &:hover {
     transform: rotate(-4deg);
+  }
+}
+
+.hover-lift {
+  --hover-lift-transform: #{$hover-lift-transform};
+  --hover-lift-box-shadow: #{$hover-lift-box-shadow};
+  --hover-lift-transition-duration: #{$hover-lift-transition-duration};
+  --hover-lift-transition-timing: #{$hover-lift-transition-timing};
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      transform var(--hover-lift-transition-duration) var(--hover-lift-transition-timing),
+      box-shadow var(--hover-lift-transition-duration) var(--hover-lift-transition-timing);
+  }
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: var(--hover-lift-box-shadow);
+    transform: var(--hover-lift-transform);
   }
 }

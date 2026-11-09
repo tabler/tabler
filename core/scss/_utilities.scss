@@ -115,7 +115,7 @@ $utilities: map.merge(
       print: true,
       property: display,
       class: d,
-      values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none,
+      values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex flow-root contents none,
     ),
     'shadow': (
       property: box-shadow,
@@ -282,6 +282,14 @@ $utilities: map.merge(
         100: 100%,
       ),
     ),
+    'min-width': (
+      property: min-width,
+      class: min-w,
+      values: (
+        0: 0,
+        100: 100%,
+      ),
+    ),
     'viewport-width': (
       property: width,
       class: vw,
@@ -296,6 +304,20 @@ $utilities: map.merge(
         100: 100vw,
       ),
     ),
+    'dynamic-viewport-width': (
+      property: width,
+      class: dvw,
+      values: (
+        100: 100dvw,
+      ),
+    ),
+    'min-dynamic-viewport-width': (
+      property: min-width,
+      class: min-dvw,
+      values: (
+        100: 100dvw,
+      ),
+    ),
     'height': (
       property: height,
       class: h,
@@ -305,6 +327,14 @@ $utilities: map.merge(
       property: max-height,
       class: mh,
       values: (
+        100: 100%,
+      ),
+    ),
+    'min-height': (
+      property: min-height,
+      class: min-h,
+      values: (
+        0: 0,
         100: 100%,
       ),
     ),
@@ -322,11 +352,33 @@ $utilities: map.merge(
         100: 100vh,
       ),
     ),
+    'dynamic-viewport-height': (
+      property: height,
+      class: dvh,
+      values: (
+        100: 100dvh,
+      ),
+    ),
+    'min-dynamic-viewport-height': (
+      property: min-height,
+      class: min-dvh,
+      values: (
+        100: 100dvh,
+      ),
+    ),
     'columns': (
       property: columns,
       class: columns,
       responsive: true,
       values: 2 3 4,
+    ),
+    'container-type': (
+      property: container-type,
+      class: contains,
+      values: (
+        inline: inline-size,
+        size: size,
+      ),
     ),
     // Flex utilities
     'flex': (
@@ -411,6 +463,59 @@ $utilities: map.merge(
         center: center,
         baseline: baseline,
         stretch: stretch,
+      ),
+    ),
+    'justify-items': (
+      responsive: true,
+      property: justify-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        baseline: baseline,
+        stretch: stretch,
+      ),
+    ),
+    'place-items': (
+      responsive: true,
+      property: place-items,
+      values: (
+        start: start,
+        end: end,
+        center: center,
+        baseline: baseline,
+        stretch: stretch,
+      ),
+    ),
+    'grid-cols': (
+      responsive: true,
+      property: grid-template-columns,
+      class: grid-cols,
+      values: (
+        1: repeat(1, minmax(0, 1fr)),
+        2: repeat(2, minmax(0, 1fr)),
+        3: repeat(3, minmax(0, 1fr)),
+        4: repeat(4, minmax(0, 1fr)),
+        6: repeat(6, minmax(0, 1fr)),
+        subgrid: subgrid,
+      ),
+    ),
+    'grid-cols-fill': (
+      responsive: true,
+      property: grid-column,
+      class: grid-cols,
+      values: (
+        fill: #{'1 / -1'},
+      ),
+    ),
+    'grid-auto-flow': (
+      responsive: true,
+      property: grid-auto-flow,
+      class: grid-auto-flow,
+      values: (
+        row: row,
+        column: column,
+        dense: dense,
       ),
     ),
     'order': (
@@ -689,6 +794,7 @@ $utilities: map.merge(
         1: 1,
         sm: $line-height-sm,
         base: $line-height-base,
+        md: $line-height-base,
         lg: $line-height-lg,
       ),
     ),
@@ -718,6 +824,11 @@ $utilities: map.merge(
         wrap: normal,
         nowrap: nowrap,
       ),
+    ),
+    'text-wrap': (
+      property: text-wrap,
+      class: text,
+      values: balance pretty,
     ),
     'word-wrap': (
       property: word-wrap word-break,
@@ -789,6 +900,27 @@ $utilities: map.merge(
         3: 0.375em,
       ),
     ),
+    'underline-offset': (
+      property: text-underline-offset,
+      class: underline-offset,
+      state: hover,
+      values: (
+        1: 0.125em,
+        2: 0.25em,
+        3: 0.375em,
+      ),
+    ),
+    'underline-thickness': (
+      property: text-decoration-thickness,
+      class: underline-thickness,
+      values: (
+        1: 1px,
+        2: 2px,
+        3: 3px,
+        4: 4px,
+        5: 5px,
+      ),
+    ),
     'link-underline': (
       property: text-decoration-color,
       class: link-underline,
@@ -805,6 +937,33 @@ $utilities: map.merge(
     'link-underline-opacity': (
       css-var: true,
       class: link-underline-opacity,
+      state: hover,
+      values: (
+        0: 0,
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'underline': (
+      property: text-decoration-color,
+      class: underline,
+      local-vars: (
+        'link-underline-opacity': 1,
+      ),
+      values: map.merge(
+          $utilities-links-underline,
+          (
+            null: color-transparent(var(--link-color), calc(var(--link-underline-opacity, 1) * 100%)),
+          )
+        ),
+    ),
+    'underline-opacity': (
+      css-var: true,
+      css-variable-name: link-underline-opacity,
+      class: underline,
       state: hover,
       values: (
         0: 0,
@@ -855,9 +1014,26 @@ $utilities: map.merge(
       class: bg,
       values: $utilities-bg-subtle,
     ),
+    'color-scheme': (
+      property: color-scheme,
+      class: color-scheme,
+      values: (
+        light: light,
+        dark: dark,
+        auto: light dark,
+      ),
+    ),
     'user-select': (
       property: user-select,
       values: all auto none,
+    ),
+    'transition': (
+      property: transition,
+      values: none,
+    ),
+    'animation': (
+      property: animation,
+      values: none,
     ),
     'pointer-events': (
       property: pointer-events,
@@ -912,52 +1088,6 @@ $utilities: map.merge(
           size: size,
         ),
       ),
-    // Grid column counts, responsive like `justify-content`.
-    'grid-column-counts': (
-        responsive: true,
-        property: grid-template-columns,
-        class: grid-cols,
-        values: (
-          1: repeat(1, minmax(0, 1fr)),
-          2: repeat(2, minmax(0, 1fr)),
-          3: repeat(3, minmax(0, 1fr)),
-          4: repeat(4, minmax(0, 1fr)),
-          6: repeat(6, minmax(0, 1fr)),
-          subgrid: subgrid,
-        ),
-      ),
-    // `.grid-cols-fill` — span every column of the parent grid.
-    'grid-columns': (
-        property: grid-column,
-        class: grid-cols,
-        values: (
-          fill: #{'1 / -1'},
-        ),
-      ),
-    'grid-auto-flow': (
-      property: grid-auto-flow,
-      class: grid-auto-flow,
-      values: row column dense,
-    ),
-    'justify-items': (
-      property: justify-items,
-      values: (
-        start: start,
-        end: end,
-        center: center,
-        stretch: stretch,
-      ),
-    ),
-    'place-items': (
-      responsive: true,
-      property: place-items,
-      values: (
-        start: start,
-        end: end,
-        center: center,
-        stretch: stretch,
-      ),
-    ),
   ),
   $utilities
 );

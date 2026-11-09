@@ -29,7 +29,7 @@
   @include it('grid column counts emit .grid-cols-1…6 and .grid-cols-subgrid') {
     @include assert() {
       @include output() {
-        @include generate-utility(map.get($utilities, 'grid-column-counts'));
+        @include generate-utility(map.get($utilities, 'grid-cols'));
       }
       @include expect() {
         .grid-cols-1 {
@@ -57,7 +57,7 @@
   @include it('grid column span emits .grid-cols-fill') {
     @include assert() {
       @include output() {
-        @include generate-utility(map.get($utilities, 'grid-columns'));
+        @include generate-utility(map.get($utilities, 'grid-cols-fill'));
       }
       @include expect() {
         .grid-cols-fill {
@@ -86,7 +86,7 @@
     }
   }
 
-  @include it('justify-items and place-items emit start/end/center/stretch') {
+  @include it('justify-items and place-items emit start/end/center/baseline/stretch') {
     @include assert() {
       @include output() {
         @include generate-utility(map.get($utilities, 'justify-items'));
@@ -102,6 +102,9 @@
         .justify-items-center {
           justify-items: center !important;
         }
+        .justify-items-baseline {
+          justify-items: baseline !important;
+        }
         .justify-items-stretch {
           justify-items: stretch !important;
         }
@@ -113,6 +116,9 @@
         }
         .place-items-center {
           place-items: center !important;
+        }
+        .place-items-baseline {
+          place-items: baseline !important;
         }
         .place-items-stretch {
           place-items: stretch !important;

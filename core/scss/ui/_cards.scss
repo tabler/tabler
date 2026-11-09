@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 
 @use '../config' as *;
@@ -27,6 +28,8 @@ $card-tokens: defaults(
     --card-bg: $card-bg,
     --card-img-overlay-padding: $card-img-overlay-padding,
     --card-group-margin: $card-group-margin,
+    --card-header-tabs-bg: $card-header-tabs-bg,
+    --card-stamp-opacity: $card-stamp-opacity,
   ),
   $card-tokens
 );
@@ -107,7 +110,7 @@ $card-tokens: defaults(
   overflow: hidden;
   pointer-events: none;
   border-start-end-radius: var(--card-border-radius);
-  opacity: $card-stamp-opacity;
+  opacity: var(--card-stamp-opacity);
 }
 
 .card-stamp-lg {
@@ -214,7 +217,7 @@ $card-tokens: defaults(
 .card-cover {
   position: relative;
   padding: var(--card-spacer-y) var(--card-spacer-x);
-  background: #666 no-repeat center/cover;
+  background: var(--gray-600) no-repeat center/cover;
 
   &::before {
     position: absolute;
@@ -262,7 +265,7 @@ $card-tokens: defaults(
 }
 
 .card-header-light {
-  background: var(--bg-surface-tertiary);
+  background: var(--fill-quaternary);
   border-bottom-color: transparent;
 }
 
@@ -270,7 +273,7 @@ $card-tokens: defaults(
   flex: 1;
   padding: calc(var(--card-cap-padding-y) * 0.5) calc(var(--card-cap-padding-x) * 0.5) 0;
   margin: calc(var(--card-cap-padding-y) * -1) calc(var(--card-cap-padding-x) * -1);
-  background: $card-header-tabs-bg;
+  background: var(--card-header-tabs-bg);
   @include border-radius(var(--card-border-radius) var(--card-border-radius) 0 0);
 }
 
@@ -390,7 +393,7 @@ $card-tokens: defaults(
 
 .card-subtitle {
   --card-subtitle-margin-start: #{$card-subtitle-margin-start};
-  margin-bottom: $card-title-spacer-y;
+  margin-bottom: var(--card-title-spacer-y);
   font-weight: var(--font-weight-normal);
   color: var(--secondary);
 
@@ -447,6 +450,11 @@ $card-tokens: defaults(
 
 .card-body-scrollable {
   overflow: auto;
+
+  &:focus-visible {
+    --focus-ring-offset: -2px;
+    @include focus-ring(true);
+  }
 }
 
 // Card optinos
@@ -558,23 +566,12 @@ $card-tokens: defaults(
     }
   }
 
-  tbody {
-    tr {
-      &:last-child {
-        // stylelint-disable-next-line selector-max-type
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-  }
-
-  tfoot {
-    tr {
-      &:last-child {
-        border-bottom: 0;
-      }
-    }
+  // The card's own border closes the table, so the last row of the table loses
+  // its bottom rule. Bootstrap draws that rule on the cells, not on the row, and
+  // it only goes when the row is the last one in the table: a `tbody` followed by
+  // a `tfoot` keeps the rule between the items and the totals.
+  > :last-child > tr:last-child > * {
+    border-bottom: 0;
   }
 
   .card-body + & {
@@ -582,13 +579,18 @@ $card-tokens: defaults(
   }
 }
 
+$card-table-responsive: ();
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $card-table-responsive: list.append($card-table-responsive, '.table-responsive#{breakpoint-infix($breakpoint)}', comma);
+}
+
 .card > .card-table:first-child,
-.card > .table-responsive:first-child > .card-table {
+.card > :is(#{$card-table-responsive}):first-child > .card-table {
   --card-table-top-radius: var(--card-border-radius);
 }
 
 .card > .card-table:last-child,
-.card > .table-responsive:last-child > .card-table {
+.card > :is(#{$card-table-responsive}):last-child > .card-table {
   --card-table-bottom-radius: calc(var(--card-border-radius) - var(--card-border-width));
 }
 

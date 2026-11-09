@@ -453,6 +453,93 @@ describe('Datepicker', () => {
     })
   })
 
+  describe('click on a day', () => {
+    const june2026 = { dateFormat: 'iso', vcpOptions: { selectedMonth: 5, selectedYear: 2026 } } as const
+
+    const open = async (config: Record<string, unknown>): Promise<{ instance: Datepicker; changes: string[][] }> => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input(), { ...june2026, ...config })
+      const changes: string[][] = []
+      input().addEventListener('change.bs.datepicker', (event) => {
+        changes.push((event as Event & { dates: string[] }).dates)
+      })
+      await instance.show()
+      return { instance, changes }
+    }
+
+    const clickDay = (instance: Datepicker, date: string): void => {
+      const mainElement = instance.calendar!.context.mainElement as HTMLElement
+      mainElement.querySelector<HTMLElement>(`[data-vc-date="${date}"] [data-vc-date-btn]`)!.click()
+    }
+
+    it('writes a single date', async () => {
+      const { instance, changes } = await open({})
+
+      clickDay(instance, '2026-06-10')
+
+      expect(input().value).toBe('2026-06-10')
+      expect(changes).toEqual([['2026-06-10']])
+    })
+
+    it('writes multiple dates', async () => {
+      const { instance, changes } = await open({ selectionMode: 'multiple' })
+
+      clickDay(instance, '2026-06-10')
+      clickDay(instance, '2026-06-12')
+
+      expect(input().value).toBe('2026-06-10, 2026-06-12')
+      expect(changes).toEqual([['2026-06-10'], ['2026-06-10', '2026-06-12']])
+    })
+
+    it('writes a range', async () => {
+      const { instance, changes } = await open({ selectionMode: 'multiple-ranged' })
+
+      clickDay(instance, '2026-06-10')
+      clickDay(instance, '2026-06-18')
+
+      expect(input().value).toBe('2026-06-10 – 2026-06-18')
+      expect(changes).toEqual([['2026-06-10'], ['2026-06-10', '2026-06-18']])
+    })
+
+    it('clears a range when its start is clicked again', async () => {
+      const errors: unknown[] = []
+      const onError = (event: ErrorEvent): void => {
+        errors.push(event.error)
+      }
+      window.addEventListener('error', onError)
+
+      fixtureEl.innerHTML = '<input type="text"><input type="hidden" name="stay">'
+      const instance = new Datepicker(input(), { ...june2026, selectionMode: 'multiple-ranged', boundInput: 'input[name="stay"]' })
+      const changes: string[][] = []
+      input().addEventListener('change.bs.datepicker', (event) => {
+        changes.push((event as Event & { dates: string[] }).dates)
+      })
+      await instance.show()
+
+      clickDay(instance, '2026-06-10')
+      clickDay(instance, '2026-06-10')
+      window.removeEventListener('error', onError)
+
+      expect(errors).toEqual([])
+      expect(input().value).toBe('')
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[name="stay"]')!.value).toBe('')
+      expect(changes).toEqual([['2026-06-10'], []])
+      expect(instance.getSelectedDates()).toEqual([])
+
+      clickDay(instance, '2026-06-12')
+      clickDay(instance, '2026-06-14')
+
+      expect(input().value).toBe('2026-06-12 – 2026-06-14')
+    })
+
+    it('skips invalid entries when it formats the field', () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input(), { dateFormat: 'iso' })
+
+      expect(instance._formatDateForInput([undefined, '2026-06-10', 'June'] as unknown as string[])).toBe('2026-06-10')
+    })
+  })
+
   describe('resize and initial value', () => {
     const groupMarkup = '<div class="input-group" style="display: flex; margin-left: 40px"><span style="width: 120px"></span><input type="text"></div>'
 
