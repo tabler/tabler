@@ -20,6 +20,8 @@ import './src/number-input'
 // Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
 
+export { init, dispose } from './src/init'
+
 // Tabler's own components
 export { default as Autosize } from './src/autosize'
 export { default as Clipboard } from './src/clipboard'
