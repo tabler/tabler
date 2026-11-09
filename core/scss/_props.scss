@@ -45,13 +45,9 @@
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
-    @if map.has-key($theme-colors-fg, $name) {
-      --#{$name}-fg: #{map.get($theme-colors-fg, $name)};
-    } @else {
-      --#{$name}-fg: #{if(sass(meta.type-of($color) != 'color'): contrast-color-css(var(--#{$name}), $light, $dark); else: if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark)))};
-    }
-    @if map.has-key($theme-colors-text, $name) {
-      --#{$name}-text: #{map.get($theme-colors-text, $name)};
+    --#{$name}-fg: #{if(sass(meta.type-of($color) != 'color'): contrast-fg-css(var(--#{$name}), $light, $dark); else: if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark)))};
+    @if meta.type-of($color) != 'color' {
+      --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, var(--#{$name}));
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);

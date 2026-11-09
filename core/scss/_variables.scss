@@ -593,9 +593,9 @@ $disabled-color: color-transparent(var(--body-color), 0.4) !default;
 $primary: $blue !default;
 $secondary: $text-secondary !default;
 $muted: $text-secondary !default;
-$success: light-dark(#13852b, var(--green)) !default;
-$info: light-dark(#1877bd, var(--azure)) !default;
-$warning: light-dark(#a76200, var(--yellow)) !default;
+$success: var(--green-text) !default;
+$info: var(--azure-text) !default;
+$warning: var(--yellow-text) !default;
 $danger: $red !default;
 
 $link-color: var(--primary) !default;
@@ -670,38 +670,10 @@ $gray-colors: (
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
 
-// Colors that are too light to carry light text or to be read as text:
-// `$theme-colors-fg` replaces the computed `--{color}-fg`, `$theme-colors-text`
-// adds a `--{color}-text` shade used by `.text-{color}` and `.bg-{color}-lt`.
-$yellow-text: light-dark(#ab6400, var(--yellow)) !default;
-$azure-text: light-dark(#1877bd, var(--azure)) !default;
-$green-text: light-dark(#13852b, var(--green)) !default;
-
-$theme-colors-fg: (
-  'info': light-dark(var(--light), var(--dark)),
-  'azure': var(--dark),
-  'success': light-dark(var(--light), var(--dark)),
-  'green': var(--dark),
-  'yellow': var(--dark),
-) !default;
-
-$theme-colors-text: (
-  'azure': $azure-text,
-  'green': $green-text,
-  'yellow': $yellow-text,
-) !default;
-
-// Text on the `.bg-{color}-lt` tint, where it has to be darker than on a surface.
-$theme-colors-lt-text: (
-  'info': light-dark(#0c71b6, var(--info)),
-  'azure': light-dark(#1173b9, var(--azure)),
-  'success': light-dark(#047f24, var(--success)),
-  'green': light-dark(#0a8126, var(--green)),
-  'danger': light-dark(#ca2c2f, var(--danger)),
-  'red': light-dark(#ca2c2f, var(--red)),
-  'warning': light-dark(#9c5d00, var(--warning)),
-  'yellow': light-dark(#a06200, var(--yellow)),
-) !default;
+// Contrast ratio the `--{color}-text` shade reaches against `--light`, and how
+// much black is mixed in for text on the `.bg-{color}-lt` tint.
+$text-contrast-ratio: 4.6 !default;
+$text-lt-shade-percentage: 6% !default;
 
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;

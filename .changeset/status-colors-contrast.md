@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Updated the warning, danger, success and info colors and the `-fg` text of yellow, green and azure to pass WCAG AA contrast.
+Added computed `--tblr-{color}-text` shades and `-fg` colors so text in and on theme colors passes WCAG AA contrast.

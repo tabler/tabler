@@ -1,10 +1,19 @@
 @use 'sass:map';
+@use 'sass:meta';
 
 // All colors
 @use '../config' as *;
 
+@function has-text-shade($color) {
+  @return map.has-key($theme-colors, '' + $color) and meta.type-of(map.get($theme-colors, '' + $color)) != 'color';
+}
+
 @function text-color-var($color) {
-  @return if(sass(map.has-key($theme-colors-text, '' + $color)): var(--#{$color}-text); else: var(--#{$color}));
+  @return if(sass(has-text-shade($color)): var(--#{$color}-text); else: var(--#{$color}));
+}
+
+@function lt-text-color($color) {
+  @return if(sass(has-text-shade($color)): mix-color-css(light-dark($black, var(--#{$color})), var(--#{$color}-text), $text-lt-shade-percentage); else: var(--#{$color}));
 }
 
 @each $color,
@@ -21,7 +30,7 @@
   }
 
   .bg-#{'' + $color}-lt {
-    color: color-transparent(map.get($theme-colors-lt-text, '' + $color) or text-color-var($color), calc(var(--text-opacity, 1) * 100%)) !important;
+    color: color-transparent(lt-text-color($color), calc(var(--text-opacity, 1) * 100%)) !important;
     background-color: color-transparent(var(--#{$color}-lt), calc(var(--bg-opacity, 1) * 100%)) !important;
   }
 
