@@ -230,6 +230,12 @@ $color-mode-pairs: ();
   @return map.get($color-mode-pairs, '' + $value);
 }
 
+// Text shade of a color: shaded in light mode, tinted in dark mode.
+@function text-shade-color($color, $shade: 16%, $tint: 20%) {
+  $pair: color-pair($color);
+  @return light-dark-color(shade-color(list.nth($pair, 1), $shade), tint-color(list.nth($pair, 2), $tint));
+}
+
 // `true` when `$light` has a higher contrast on `$background` than `$dark`.
 @function prefers-light-foreground($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
   @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);

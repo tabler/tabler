@@ -77,6 +77,21 @@ $green: light-dark-color(oklch(67.38% 0.1885 145.43deg), oklch(73.38% 0.1734 145
 $teal: light-dark-color(oklch(64.32% 0.1338 164.7deg), oklch(70.32% 0.1231 164.7deg)) !default; // #0ca678, #43b78c
 $cyan: light-dark-color(oklch(65.52% 0.1105 212.17deg), oklch(71.52% 0.1017 212.17deg)) !default; // #17a2b8, #47b4c8
 
+// Shades of the colors for text on a surface: darker in light mode, lighter in
+// dark mode. Bright colors take a darker shade to stay readable.
+$blue-text: text-shade-color($blue) !default;
+$azure-text: text-shade-color($azure) !default;
+$indigo-text: text-shade-color($indigo) !default;
+$purple-text: text-shade-color($purple) !default;
+$pink-text: text-shade-color($pink) !default;
+$red-text: text-shade-color($red) !default;
+$orange-text: text-shade-color($orange) !default;
+$yellow-text: text-shade-color($yellow, 32%) !default;
+$lime-text: text-shade-color($lime, 32%) !default;
+$green-text: text-shade-color($green, 32%) !default;
+$teal-text: text-shade-color($teal) !default;
+$cyan-text: text-shade-color($cyan) !default;
+
 $colors: (
   'blue': $blue,
   'azure': $azure,
@@ -590,16 +605,8 @@ $hover-bg: var(--fill-tertiary) !default;
 $disabled-bg: var(--bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--body-color), 0.4) !default;
 
-// How much black (light mode) or white (dark mode) is mixed into a color for
-// its `--{color}-text` shade, and then again for text on the `.bg-{color}-lt` tint.
-$text-shade-percentage: 16% !default;
-$text-tint-percentage: 20% !default;
-// Bright colors that need a darker step to stay readable in light mode.
-$text-shade-percentages: (
-  'yellow': 32%,
-  'lime': 32%,
-  'green': 32%,
-) !default;
+// How much black (light mode) or white (dark mode) is mixed into the
+// `--{color}-text` shade for text on the `.bg-{color}-lt` tint.
 $text-lt-shade-percentage: 6% !default;
 $text-lt-tint-percentage: 9% !default;
 
@@ -610,6 +617,14 @@ $success: $green !default;
 $info: $azure !default;
 $warning: $yellow !default;
 $danger: $red !default;
+
+$primary-text: $blue-text !default;
+$secondary-text: light-dark-color(shade-color($text-secondary, 16%), tint-color($text-secondary-light, 20%)) !default;
+$muted-text: $secondary-text !default;
+$success-text: $green-text !default;
+$info-text: $azure-text !default;
+$warning-text: $yellow-text !default;
+$danger-text: $red-text !default;
 
 $link-color: var(--primary) !default;
 $link-shade-percentage: 20% !default;
@@ -682,6 +697,28 @@ $gray-colors: (
 ) !default;
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
+
+$theme-text-colors: (
+  'primary': $primary-text,
+  'secondary': $secondary-text,
+  'success': $success-text,
+  'info': $info-text,
+  'warning': $warning-text,
+  'danger': $danger-text,
+  'muted': $muted-text,
+  'blue': $blue-text,
+  'azure': $azure-text,
+  'indigo': $indigo-text,
+  'purple': $purple-text,
+  'pink': $pink-text,
+  'red': $red-text,
+  'orange': $orange-text,
+  'yellow': $yellow-text,
+  'lime': $lime-text,
+  'green': $green-text,
+  'teal': $teal-text,
+  'cyan': $cyan-text,
+) !default;
 
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;

@@ -63,14 +63,8 @@
     } @else {
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
     }
-    @if not map.has-key($social-colors, $name) and $color != $light and $color != $dark {
-      $shade: $text-shade-percentage;
-      @each $key, $percentage in $text-shade-percentages {
-        @if $name == $key or $color == map.get($colors, $key) {
-          $shade: $percentage;
-        }
-      }
-      --#{$name}-text: light-dark(#{mix-color-css($black, var(--#{$name}), $shade)}, #{mix-color-css($white, var(--#{$name}), $text-tint-percentage)});
+    @if map.has-key($theme-text-colors, $name) {
+      --#{$name}-text: #{map.get($theme-text-colors, $name)};
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
