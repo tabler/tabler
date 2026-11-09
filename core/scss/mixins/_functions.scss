@@ -215,6 +215,20 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return oklch(math.div(math.round(color.channel($dark, 'lightness', $space: oklch) * 100), 100) math.div(math.round(color.channel($dark, 'chroma', $space: oklch) * 10000), 10000) math.div(math.round(color.channel($dark, 'hue', $space: oklch) * 100), 100));
 }
 
+// `true` when `$text` is a shade of `$color`: a close oklch hue, or both without chroma.
+@function is-shade-of($text, $color) {
+  @if meta.type-of($text) != 'color' or meta.type-of($color) != 'color' {
+    @return true;
+  }
+  $gray-text: color.channel($text, 'chroma', $space: oklch) < 0.01;
+  $gray-color: color.channel($color, 'chroma', $space: oklch) < 0.01;
+  @if $gray-text or $gray-color {
+    @return $gray-text and $gray-color;
+  }
+  $difference: math.abs(color.channel($text, 'hue', $space: oklch) - color.channel($color, 'hue', $space: oklch));
+  @return math.min($difference, 360deg - $difference) < 30deg;
+}
+
 // `true` when `$light` has a higher contrast on `$background` than `$dark`.
 @function prefers-light-foreground($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
   @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);
