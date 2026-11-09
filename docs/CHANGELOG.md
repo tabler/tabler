@@ -1,5 +1,22 @@
 # @tabler/docs
 
+## 1.8.0-next.0
+
+### Minor Changes
+
+- 2609a06: Added a Tabler Flags docs section with `@tabler/flags-*` library pages; `/ui/plugins/flags` now redirects to `/flags/css`.
+
+### Patch Changes
+
+- d7e0070: Added animated check, radio and switch marks with `--tblr-control-transition-duration`, `--tblr-control-transition-timing` and `--tblr-control-transition-overshoot`.
+- e71e2bd: Added a default `aria-pressed` to `[data-bs-toggle="button"]` buttons on load, based on `.active`.
+- 6eb45b2: Added `--tblr-carousel-indicator-*` CSS variables for indicator size, spacing, hit area, dot and thumb styles.
+- 45df3ed: Added CSS variables to loaders, timeline, stars, placeholder, button group, pricing, social, flags, payments and nav-overflow.
+- 02a1d96: Added `.hover-lift` helper that raises an element and deepens its shadow on `:hover` and `:focus-visible`.
+- 030cb0b: Added `--tblr-nav-bordered-*` CSS variables for border, gap and active link styles to `.nav-bordered`.
+- 5a84ea7: Added swipe to dismiss, `.offcanvas-inset` and `--tblr-offcanvas-backdrop-blur` to Offcanvas.
+- 2610998: Added `.placeholder-pulse` as an alias of `.placeholder-glow` for the placeholder opacity animation.
+
 ## 1.7.4
 
 ### Patch Changes
