@@ -41,30 +41,32 @@
   --light: #{$light};
 
   // Brand colors
-  --brand: #{$primary};
+  --brand: var(--primary);
 
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
-    --#{$name}: #{$color};
-    // `--secondary` and `--muted` switch to the lighter gray in dark mode (see `layout/_root.scss`).
-    $pair: if(
-      sass($color == $text-secondary): (
-          $text-secondary,
-          $text-secondary-light,
-        );
-        else: color-pair($color)
-    );
-    @if map.has-key($social-colors, $name) or $color == $light or $color == $dark {
+    $brand: map.has-key($social-colors, $name) or $color == $light or $color == $dark;
+    $dark-color: null;
+    @if not $brand and meta.type-of($color) == 'color' {
+      // `--secondary` and `--muted` switch to the lighter gray in dark mode (see `layout/_root.scss`).
+      $dark-color: if(sass($color == $text-secondary): $text-secondary-light; else: dark-mode-color($color));
+    }
+    @if $dark-color {
+      --#{$name}: light-dark(#{$color}, #{$dark-color});
+    } @else {
+      --#{$name}: #{$color};
+    }
+    @if $brand {
       --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    } @else if $pair {
-      $fg-light: if(sass(prefers-light-foreground(list.nth($pair, 1), $light, $dark)): var(--light); else: var(--dark));
-      $fg-dark: if(sass(prefers-light-foreground(list.nth($pair, 2), $light, $dark)): var(--light); else: var(--dark));
+    } @else if $dark-color {
+      $fg-light: if(sass(prefers-light-foreground($color, $light, $dark)): var(--light); else: var(--dark));
+      $fg-dark: if(sass(prefers-light-foreground($dark-color, $light, $dark)): var(--light); else: var(--dark));
       --#{$name}-fg: #{if(sass($fg-light == $fg-dark): $fg-light; else: light-dark($fg-light, $fg-dark))};
     } @else {
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
     }
-    @if map.has-key($theme-text-colors, $name) {
-      --#{$name}-text: #{map.get($theme-text-colors, $name)};
+    @if $dark-color and map.has-key($theme-text-colors, $name) {
+      --#{$name}-text: light-dark(#{map.get($theme-text-colors, $name)}, #{css-color(tint-color($dark-color, 20%))});
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);

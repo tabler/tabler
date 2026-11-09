@@ -201,11 +201,6 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return oklch(from #{$background} clamp(#{$l-dark}, (#{$threshold} - l) * 1000, #{$l-light}) 0 0);
 }
 
-// Colors declared with `light-dark-color()`, keyed by their CSS value, so the
-// build can read both modes back and compute shades from them.
-// stylelint-disable-next-line scss/dollar-variable-default
-$color-mode-pairs: ();
-
 // Serializes an sRGB color as hex; other color spaces stay as written.
 @function css-color($color) {
   @if meta.type-of($color) != 'color' or color.space($color) != rgb or color.alpha($color) != 1 {
@@ -214,26 +209,10 @@ $color-mode-pairs: ();
   @return string.unquote('#' + string.to-lower-case(string.slice(color.ie-hex-str($color), 4)));
 }
 
-// A color with a light and a dark mode value. Emits `light-dark()` and
-// remembers the pair for `color-pair()`.
-@function light-dark-color($light, $dark) {
-  $value: light-dark(#{css-color($light)}, #{css-color($dark)});
-  $color-mode-pairs: map.merge($color-mode-pairs, ('' + $value: ($light, $dark))) !global;
-  @return $value;
-}
-
-// The (light, dark) pair of a color, or `null` when Sass cannot read it.
-@function color-pair($value) {
-  @if meta.type-of($value) == 'color' {
-    @return ($value, $value);
-  }
-  @return map.get($color-mode-pairs, '' + $value);
-}
-
-// Text shade of a color: shaded in light mode, tinted in dark mode.
-@function text-shade-color($color, $shade: 16%, $tint: 20%) {
-  $pair: color-pair($color);
-  @return light-dark-color(shade-color(list.nth($pair, 1), $shade), tint-color(list.nth($pair, 2), $tint));
+// Dark mode value of a color: 6% lighter in oklch with 8% less chroma, clipped to sRGB.
+@function dark-mode-color($color) {
+  $dark: color.to-gamut(color.scale(color.adjust($color, $lightness: 6%, $space: oklch), $chroma: -8%, $space: oklch), $space: rgb, $method: clip);
+  @return oklch(math.div(math.round(color.channel($dark, 'lightness', $space: oklch) * 100), 100) math.div(math.round(color.channel($dark, 'chroma', $space: oklch) * 10000), 10000) math.div(math.round(color.channel($dark, 'hue', $space: oklch) * 100), 100));
 }
 
 // `true` when `$light` has a higher contrast on `$background` than `$dark`.
