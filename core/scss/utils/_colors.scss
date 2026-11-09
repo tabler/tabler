@@ -3,6 +3,10 @@
 // All colors
 @use '../config' as *;
 
+@function text-color-var($color) {
+  @return if(sass(map.has-key($theme-colors-text, '' + $color)): var(--#{$color}-text); else: var(--#{$color}));
+}
+
 @each $color,
   $value
     in map.merge(
@@ -17,7 +21,7 @@
   }
 
   .bg-#{'' + $color}-lt {
-    color: color-transparent(var(--#{$color}), calc(var(--text-opacity, 1) * 100%)) !important;
+    color: color-transparent(map.get($theme-colors-lt-text, '' + $color) or text-color-var($color), calc(var(--text-opacity, 1) * 100%)) !important;
     background-color: color-transparent(var(--#{$color}-lt), calc(var(--bg-opacity, 1) * 100%)) !important;
   }
 
@@ -75,7 +79,7 @@
 @each $color, $value in $theme-colors {
   .text-#{'' + $color} {
     --text-opacity: 1;
-    color: color-transparent(var(--#{$color}), calc(var(--text-opacity) * 100%)) !important;
+    color: color-transparent(text-color-var($color), calc(var(--text-opacity) * 100%)) !important;
   }
 
   .text-#{'' + $color}-fg {

@@ -69,7 +69,7 @@ $azure: light-dark(oklch(66.26% 0.1358 246.81deg), oklch(72.26% 0.1249 246.81deg
 $indigo: light-dark(oklch(55.66% 0.2082 268.35deg), oklch(61.66% 0.1915 268.35deg)) !default; // #4263eb, #5579f7
 $purple: light-dark(oklch(57.83% 0.2186 319.15deg), oklch(63.83% 0.2011 319.15deg)) !default; // #ae3ec9, #be5ad7
 $pink: light-dark(oklch(58.81% 0.201 5.25deg), oklch(64.81% 0.1849 5.25deg)) !default; // #d6336c, #e5527f
-$red: light-dark(oklch(58.29% 0.1941 25.59deg), oklch(64.29% 0.1786 25.59deg)) !default; // #d63939, #e55751
+$red: light-dark(oklch(57.5% 0.1941 25.59deg), oklch(64.29% 0.1786 25.59deg)) !default; // #d33637, #e55751
 $orange: light-dark(oklch(68.51% 0.1954 44.57deg), oklch(74.51% 0.1638 44.57deg)) !default; // #f76707, #ff864c
 $yellow: light-dark(oklch(77.02% 0.1658 71.02deg), oklch(83.02% 0.137 71.02deg)) !default; // #f59f00, #ffb75a
 $lime: light-dark(oklch(70.99% 0.1897 131.53deg), oklch(76.99% 0.1745 131.53deg)) !default; // #74b816, #8aca47
@@ -593,9 +593,9 @@ $disabled-color: color-transparent(var(--body-color), 0.4) !default;
 $primary: $blue !default;
 $secondary: $text-secondary !default;
 $muted: $text-secondary !default;
-$success: $green !default;
-$info: $azure !default;
-$warning: $yellow !default;
+$success: light-dark(#13852b, var(--green)) !default;
+$info: light-dark(#1877bd, var(--azure)) !default;
+$warning: light-dark(#a76200, var(--yellow)) !default;
 $danger: $red !default;
 
 $link-color: var(--primary) !default;
@@ -669,6 +669,39 @@ $gray-colors: (
 ) !default;
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
+
+// Colors that are too light to carry light text or to be read as text:
+// `$theme-colors-fg` replaces the computed `--{color}-fg`, `$theme-colors-text`
+// adds a `--{color}-text` shade used by `.text-{color}` and `.bg-{color}-lt`.
+$yellow-text: light-dark(#ab6400, var(--yellow)) !default;
+$azure-text: light-dark(#1877bd, var(--azure)) !default;
+$green-text: light-dark(#13852b, var(--green)) !default;
+
+$theme-colors-fg: (
+  'info': light-dark(var(--light), var(--dark)),
+  'azure': var(--dark),
+  'success': light-dark(var(--light), var(--dark)),
+  'green': var(--dark),
+  'yellow': var(--dark),
+) !default;
+
+$theme-colors-text: (
+  'azure': $azure-text,
+  'green': $green-text,
+  'yellow': $yellow-text,
+) !default;
+
+// Text on the `.bg-{color}-lt` tint, where it has to be darker than on a surface.
+$theme-colors-lt-text: (
+  'info': light-dark(#0c71b6, var(--info)),
+  'azure': light-dark(#1173b9, var(--azure)),
+  'success': light-dark(#047f24, var(--success)),
+  'green': light-dark(#0a8126, var(--green)),
+  'danger': light-dark(#ca2c2f, var(--danger)),
+  'red': light-dark(#ca2c2f, var(--red)),
+  'warning': light-dark(#9c5d00, var(--warning)),
+  'yellow': light-dark(#a06200, var(--yellow)),
+) !default;
 
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;
@@ -2253,7 +2286,7 @@ $form-feedback-valid-color: var(--success) !default;
 $form-feedback-invalid-color: var(--danger) !default;
 
 $form-feedback-icon-valid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#2fb344' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>") !default;
-$form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#d63939' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>") !default;
+$form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#d33637' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>") !default;
 // Form validation states
 // scss-docs-start form-validation-variables
 $form-validation-states: (

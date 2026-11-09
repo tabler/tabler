@@ -88,7 +88,7 @@ const PALETTE: [string, string][] = [
   ['indigo', '#4263eb'],
   ['purple', '#ae3ec9'],
   ['pink', '#d6336c'],
-  ['red', '#d63939'],
+  ['red', '#d33637'],
   ['orange', '#f76707'],
   ['yellow', '#f59f00'],
   ['lime', '#74b816'],
