@@ -1,0 +1,263 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import ProjectHeader from '@shared/components/parts/ProjectHeader.astro'
+import Badge from '@ui/Badge.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import NavSegmented from '@ui/NavSegmented.astro'
+
+const settingsNav = [
+  { label: 'General', href: '#general', active: true },
+  { label: 'Domains', href: '#domains' },
+  { label: 'Environment', href: '#env' },
+  { label: 'Git', href: '#git' },
+  { label: 'Danger zone', href: '#danger', danger: true },
+]
+
+const domains = [
+  { host: 'api.pulsehq.dev', description: 'Production, valid configuration', badge: 'Primary', color: 'success' },
+  { host: 'pulse-api.relay.app', description: 'Production, auto-assigned', badge: 'System', color: 'secondary' },
+  { host: 'staging-api.pulsehq.dev', description: 'Preview, DNS pending', badge: 'Pending', color: 'warning' },
+]
+
+const envVars = [
+  { key: 'DATABASE_URL', value: '••••••••••••••••••••', masked: true },
+  { key: 'REDIS_URL', value: '••••••••••••••••', masked: true },
+  { key: 'WEBHOOK_SECRET', value: '••••••••••••', masked: true },
+  { key: 'NEXT_PUBLIC_APP_URL', value: 'https://api.pulsehq.dev', masked: false },
+]
+
+const switches = [
+  { id: 'fluid-compute', label: 'Fluid compute', description: 'Scale functions with shared concurrency' },
+  { id: 'auto-deploy', label: 'Auto-deploy on push', description: 'Create a deployment for every commit' },
+  { id: 'preview-deploys', label: 'Preview deployments', description: 'Deploy pull request branches automatically' },
+]
+---
+
+<DefaultLayout title="Project settings" pageHeader={false} pageMenu="extra.project-settings" description="Project settings with general options, domains, environment variables, git integration and a danger zone.">
+  <ProjectHeader name="pulse-api" section="Settings" badge="Production" badgeColor="success" active="settings">
+    <ButtonList>
+      <Button text="Discard" />
+      <Button text="Save changes" color="primary" />
+    </ButtonList>
+  </ProjectHeader>
+
+  <div class="row row-cards">
+    <div class="col-lg-3">
+      <Card class="sticky-top">
+        <CardBody class="p-2">
+          <nav class="nav nav-vertical" aria-label="Settings sections">
+            {
+              settingsNav.map((item) => (
+                <a href={item.href} class:list={['nav-link', { 'active': item.active, 'text-danger': item.danger }]} aria-current={item.active ? 'true' : undefined}>
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-9">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card as="form" id="general">
+            <CardHeader>
+              <CardTitle>General</CardTitle>
+              <CardActions>
+                <span class="text-secondary">Project identity and runtime</span>
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <FormGroup label="Project name" for="project-name">
+                <input class="form-control" type="text" id="project-name" value="pulse-api" />
+              </FormGroup>
+              <FormGroup label="Framework" for="framework">
+                <select class="form-select" id="framework">
+                  <option value="nextjs" selected>Next.js</option>
+                  <option value="nodejs">Node.js</option>
+                  <option value="other">Other</option>
+                </select>
+              </FormGroup>
+              <FormGroup label="Node.js version" for="node-version">
+                <select class="form-select" id="node-version">
+                  <option value="20">20.x</option>
+                  <option value="22" selected>22.x</option>
+                </select>
+              </FormGroup>
+              <FormGroup label="Region" for="region">
+                <select class="form-select" id="region">
+                  <option value="fra1" selected>fra1, Frankfurt, Germany</option>
+                  <option value="iad1">iad1, Washington, D.C., USA</option>
+                  <option value="sfo1">sfo1, San Francisco, USA</option>
+                </select>
+              </FormGroup>
+              {
+                switches.slice(0, 1).map((item) => (
+                  <div class="d-flex align-items-center justify-content-between gap-3">
+                    <div>
+                      <label class="form-label mb-0" for={item.id}>
+                        {item.label}
+                      </label>
+                      <div class="text-secondary">{item.description}</div>
+                    </div>
+                    <label class="form-check form-switch m-0">
+                      <input class="form-check-input" type="checkbox" id={item.id} checked />
+                    </label>
+                  </div>
+                ))
+              }
+            </CardBody>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card id="domains">
+            <CardHeader>
+              <CardTitle>Domains</CardTitle>
+              <CardActions>
+                <Button text="Add domain" size="sm" icon="plus" />
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group">
+              {
+                domains.map((domain) => (
+                  <ListGroupItem>
+                    <div class="row align-items-center g-3">
+                      <div class="col">
+                        <div class="fw-medium">{domain.host}</div>
+                        <div class="text-secondary">{domain.description}</div>
+                      </div>
+                      <div class="col-auto">
+                        <Badge text={domain.badge} color={domain.color} light />
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card id="env">
+            <CardHeader>
+              <CardTitle>Environment variables</CardTitle>
+              <CardActions>
+                <span class="text-secondary">18 variables, updated Jul 20</span>
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+                <NavSegmented items={['Production', 'Preview', 'Development']} size="sm" />
+                <Button text="Add variable" size="sm" icon="plus" />
+              </div>
+            </CardBody>
+            <ListGroup class="card-list-group">
+              {
+                envVars.map((item) => (
+                  <ListGroupItem>
+                    <div class="row align-items-center g-3">
+                      <div class="col-12 col-sm-auto">
+                        <code>{item.key}</code>
+                      </div>
+                      <div class="col">
+                        <span class:list={['text-secondary', 'text-truncate', 'd-block', { 'font-monospace': !item.masked }]} aria-label={item.masked ? 'Masked value' : undefined}>
+                          {item.value}
+                        </span>
+                      </div>
+                      <div class="col-auto">
+                        <Button text={item.masked ? 'Reveal' : 'Copy'} icon={item.masked ? 'eye' : 'copy'} size="sm" variant="ghost" />
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))
+              }
+            </ListGroup>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card as="form" id="git">
+            <CardHeader>
+              <CardTitle>Git</CardTitle>
+              <CardActions>
+                <span class="text-secondary">Connected repository</span>
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <div class="mb-3">
+                <div class="form-label">Repository</div>
+                <a href="#">pulsehq/pulse-api</a>
+              </div>
+              <FormGroup label="Production branch" for="production-branch">
+                <input class="form-control" type="text" id="production-branch" value="main" />
+              </FormGroup>
+              <div class="space-y">
+                {
+                  switches.slice(1).map((item) => (
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                      <div>
+                        <label class="form-label mb-0" for={item.id}>
+                          {item.label}
+                        </label>
+                        <div class="text-secondary">{item.description}</div>
+                      </div>
+                      <label class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id={item.id} checked />
+                      </label>
+                    </div>
+                  ))
+                }
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+
+        <div class="col-12">
+          <Card class="border-danger" id="danger">
+            <CardHeader>
+              <CardTitle class="text-danger">Danger zone</CardTitle>
+              <CardActions>
+                <span class="text-secondary">Irreversible actions</span>
+              </CardActions>
+            </CardHeader>
+            <ListGroup class="card-list-group">
+              <ListGroupItem>
+                <div class="row align-items-center g-3">
+                  <div class="col">
+                    <div class="fw-medium">Transfer project</div>
+                    <div class="text-secondary">Move pulse-api to another team or personal account</div>
+                  </div>
+                  <div class="col-auto">
+                    <Button text="Transfer" />
+                  </div>
+                </div>
+              </ListGroupItem>
+              <ListGroupItem>
+                <div class="row align-items-center g-3">
+                  <div class="col">
+                    <div class="fw-medium">Delete project</div>
+                    <div class="text-secondary">Permanently remove deployments, domains, and environment variables</div>
+                  </div>
+                  <div class="col-auto">
+                    <Button text="Delete project" color="danger" />
+                  </div>
+                </div>
+              </ListGroupItem>
+            </ListGroup>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>
