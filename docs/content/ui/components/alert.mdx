@@ -301,6 +301,18 @@ You're not limited to the 4 default alert colors. You can use any [base color](/
 </div>
 </Example>
 
+## JavaScript
+
+Tabler closes an alert when a `data-bs-dismiss="alert"` button inside it is clicked. To close one from your own code, call `close()`. It returns a Promise that resolves after the fade ends and the alert is removed from the page, right after `closed.bs.alert` fires:
+
+```js
+const alert = tabler.Alert.getOrCreateInstance(el);
+await alert.close();
+document.getElementById('next-step')?.focus();
+```
+
+The Promise never rejects. It also resolves, without removing anything, when a listener called `preventDefault()` on `close.bs.alert`. To act only when the alert was really removed, listen for `closed.bs.alert` instead.
+
 ## Accessibility
 
 - Give an alert a role that matches how urgent it is. `role="alert"` interrupts the screen reader and suits an error; `role="status"` waits for a pause and suits a confirmation.

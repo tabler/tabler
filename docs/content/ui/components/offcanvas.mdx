@@ -86,6 +86,18 @@ An offcanvas at the bottom edge also works as a cookie banner. It stays visible 
 <div class="offcanvas offcanvas-bottom h-auto show position-static" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true" > <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="#">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>
 </Example>
 
+## JavaScript
+
+`show()`, `hide()` and `toggle()` return a Promise that resolves after the transition ends, right after `shown.bs.offcanvas` or `hidden.bs.offcanvas` fires. Use it to run code after the panel has finished opening or closing:
+
+```js
+const panel = tabler.Offcanvas.getOrCreateInstance(el);
+await panel.show();
+el.querySelector('input')?.focus();
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the panel is already open or closed, or a listener called `preventDefault()` on `show.bs.offcanvas` or `hide.bs.offcanvas`. To act only when the panel really changed state, listen for `shown.bs.offcanvas` or `hidden.bs.offcanvas` instead.
+
 ## Accessibility
 
 - Point `aria-labelledby` at the offcanvas title so the panel is announced by name.

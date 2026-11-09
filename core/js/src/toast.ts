@@ -15,7 +15,7 @@ onDOMContentLoaded(() => {
 
       const toast = Toast.getOrCreateInstance(toastEl) as InstanceType<typeof Toast>
       toastTriggerEl.addEventListener('click', () => {
-        toast.show()
+        void toast.show()
       })
     } catch (error) {
       console.error(error)

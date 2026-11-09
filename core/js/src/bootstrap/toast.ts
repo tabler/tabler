@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
 import { enableDismissTrigger } from './util/component-functions'
-import { defineJQueryPlugin, reflow } from './util/index.js'
+import { defineJQueryPlugin, reflow, resolved } from './util/index.js'
 import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
 type ComponentConfig = {
@@ -77,11 +77,11 @@ class Toast extends BaseComponent {
     return NAME
   }
 
-  show(): void {
+  show(): Promise<void> {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW)
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._clearTimeout()
@@ -94,25 +94,27 @@ class Toast extends BaseComponent {
       this._element.classList.remove(CLASS_NAME_SHOWING)
       EventHandler.trigger(this._element, EVENT_SHOWN)
 
-      this._maybeScheduleHide()
+      if (this._config) {
+        this._maybeScheduleHide()
+      }
     }
 
     this._element.classList.remove(CLASS_NAME_HIDE)
     reflow(this._element)
     this._element.classList.add(CLASS_NAME_SHOW, CLASS_NAME_SHOWING)
 
-    this._queueCallback(complete, this._element, this._config.animation)
+    return this._queueCallback(complete, this._element, this._config.animation)
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (!this.isShown()) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     const complete = () => {
@@ -122,7 +124,7 @@ class Toast extends BaseComponent {
     }
 
     this._element.classList.add(CLASS_NAME_SHOWING)
-    this._queueCallback(complete, this._element, this._config.animation)
+    return this._queueCallback(complete, this._element, this._config.animation)
   }
 
   dispose(): void {
@@ -149,7 +151,7 @@ class Toast extends BaseComponent {
     }
 
     this._timeout = setTimeout(() => {
-      this.hide()
+      void this.hide()
     }, this._config.delay)
   }
 

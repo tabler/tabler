@@ -279,6 +279,18 @@ The Bootstrap size classes cover the smaller steps: `modal-sm`, `modal-lg` and `
 </div>
 ```
 
+## JavaScript
+
+`show()`, `hide()` and `toggle()` return a Promise that resolves after the transition ends, right after `shown.bs.modal` or `hidden.bs.modal` fires. Use it to run code after the modal has finished opening or closing:
+
+```js
+const modal = tabler.Modal.getOrCreateInstance(el);
+await modal.show();
+el.querySelector('input')?.focus();
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the modal is already open or closed, a transition is still running, or a listener called `preventDefault()` on `show.bs.modal` or `hide.bs.modal`. To act only when the modal really changed state, listen for `shown.bs.modal` or `hidden.bs.modal` instead.
+
 ## Accessibility
 
 - Set `tabindex="-1"` on the modal and point `aria-labelledby` at the title. Bootstrap then moves focus into the dialog, traps it while the dialog is open, and returns it to the trigger on close.

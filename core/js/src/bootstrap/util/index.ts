@@ -188,6 +188,10 @@ const findShadowRoot = (element: Node): ShadowRoot | null => {
 
 const noop = (): void => {}
 
+const resolved = (): Promise<void> => Promise.resolve()
+
+const settle = (promises: Array<Promise<void>>): Promise<void> => Promise.all(promises).then(noop)
+
 /**
  * Trick to restart an element's animation
  *
@@ -310,7 +314,9 @@ export {
   onDOMContentLoaded,
   parseSelector,
   reflow,
+  resolved,
   restoreFocus,
+  settle,
   triggerTransitionEnd,
   toType,
 }

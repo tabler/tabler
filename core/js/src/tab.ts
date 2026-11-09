@@ -17,7 +17,7 @@ export const EnableActivationTabsFromLocationHash = (): void => {
     // A tab link outside a .nav/.list-group has no parent to switch in;
     // show() would throw and stop the rest of the bundle.
     try {
-      ;(Tab.getOrCreateInstance(tab) as InstanceType<typeof Tab>).show()
+      void (Tab.getOrCreateInstance(tab) as InstanceType<typeof Tab>).show()
     } catch (error) {
       console.error(error)
     }
