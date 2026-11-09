@@ -155,6 +155,59 @@
       }
     }
   }
+
+  @include it('scopes the declaration to the child selector') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(
+          (
+            property: margin-block-end,
+            class: space-y,
+            child-selector: ':not(:last-child)',
+            values: (
+              0: 0,
+              3: 1rem,
+            ),
+          )
+        );
+      }
+      @include expect() {
+        .space-y-0 > :not(:last-child) {
+          margin-block-end: 0 !important;
+        }
+        .space-y-3 > :not(:last-child) {
+          margin-block-end: 1rem !important;
+        }
+      }
+    }
+  }
+
+  @include it('combines the child selector with the responsive infix and a null key') {
+    @include assert() {
+      @include output() {
+        @include generate-utility(
+          (
+            property: border-inline-start,
+            class: divide-x,
+            child-selector: ':not(:first-child)',
+            values: (
+              null: 1px solid,
+              0: 0,
+            ),
+          ),
+          '-md'
+        );
+      }
+      @include expect() {
+        .divide-x-md > :not(:first-child) {
+          border-inline-start: 1px solid !important;
+        }
+        .divide-x-md-0 > :not(:first-child) {
+          border-inline-start: 0 !important;
+        }
+      }
+    }
+  }
 }
 
 // `generate-utility` itself does not read the `responsive` key — that gate lives

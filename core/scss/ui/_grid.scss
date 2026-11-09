@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 @use '../config' as *;
 
 .row > * {
@@ -56,69 +54,6 @@
 
   .row-cards {
     flex: 1;
-  }
-}
-
-@each $name,
-  $size
-    in map.merge(
-      (
-        null: $spacer,
-      ),
-      $spacers
-    )
-{
-  $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
-
-  .space-y#{$name-prefixed} {
-    display: flex;
-    flex-direction: column;
-    gap: $size;
-  }
-
-  .space-x#{$name-prefixed} {
-    display: flex;
-    gap: $size;
-  }
-}
-
-@each $name,
-  $size
-    in map.merge(
-      (
-        null: $spacer,
-      ),
-      $spacers
-    )
-{
-  $name-prefixed: if(sass($name == null): null; else: '-#{$name}');
-
-  .divide-y#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      border-top: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
-    }
-
-    > :not(template):not(:first-child) {
-      padding-top: $size !important;
-    }
-
-    > :not(template):not(:last-child) {
-      padding-bottom: $size !important;
-    }
-  }
-
-  .divide-x#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
-    }
-
-    > :not(template):not(:first-child) {
-      padding-inline-start: $size !important;
-    }
-
-    > :not(template):not(:last-child) {
-      padding-inline-end: $size !important;
-    }
   }
 }
 

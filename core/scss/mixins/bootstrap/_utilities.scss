@@ -56,6 +56,7 @@
     $is-css-var: map.get($utility, css-var);
     $is-local-vars: map.get($utility, local-vars);
     $is-rtl: map.get($utility, rtl);
+    $child-selector: map.get($utility, child-selector);
 
     @if $value != null {
       @if $is-rtl == false {
@@ -70,6 +71,12 @@
         @each $pseudo in $state {
           .#{$property-class + $infix + $property-class-modifier}-#{$pseudo}:#{$pseudo} {
             --#{$css-variable-name}: #{$value};
+          }
+        }
+      } @else if $child-selector {
+        .#{$property-class + $infix + $property-class-modifier} > #{$child-selector} {
+          @each $property in $properties {
+            #{$property}: $value if(sass($enable-important-utilities): !important; else: null);
           }
         }
       } @else {

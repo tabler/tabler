@@ -1,0 +1,48 @@
+---
+title: Divide
+description: Utility classes that add a border between the direct children of a container.
+summary: Separate the direct children of a container with a border using one class on the parent, and change it per breakpoint.
+---
+import Example from '@components/Example.astro';
+
+Use `.divide-y` and `.divide-x` to add a border between the direct children of a container. You put one class on the parent, so no child needs a border class.
+
+## Horizontal dividers
+
+`.divide-y` adds a top border to every child except the first one. The children get no padding, so add it yourself.
+
+<Example>
+<div class="divide-y">
+  <div class="py-2">One</div>
+  <div class="py-2">Two</div>
+  <div class="py-2">Three</div>
+</div>
+</Example>
+
+## Vertical dividers
+
+`.divide-x` adds a start border to every child except the first one, so it follows the text direction.
+
+<Example>
+<div class="d-flex divide-x">
+  <div class="px-3">One</div>
+  <div class="px-3">Two</div>
+  <div class="px-3">Three</div>
+</div>
+</Example>
+
+## Remove dividers
+
+`.divide-y-0` and `.divide-x-0` remove the borders. They are useful together with a breakpoint.
+
+## Responsive
+
+Add a breakpoint to change the dividers on larger screens, like `.divide-y-md-0` or `.divide-x-md`.
+
+<Example>
+<div class="d-flex flex-column flex-md-row divide-y divide-y-md-0 divide-x-md">
+  <div class="p-3">One</div>
+  <div class="p-3">Two</div>
+  <div class="p-3">Three</div>
+</div>
+</Example>
