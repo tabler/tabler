@@ -45,8 +45,10 @@
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
-    --#{$name}-fg: #{if(sass(meta.type-of($color) != 'color'): contrast-fg-css(var(--#{$name}), $light, $dark); else: if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark)))};
-    @if meta.type-of($color) != 'color' {
+    @if map.has-key($social-colors, $name) or $color == $light or $color == $dark {
+      --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    } @else {
+      --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
       --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, var(--#{$name}));
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};

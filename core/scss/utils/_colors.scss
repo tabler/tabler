@@ -5,7 +5,8 @@
 @use '../config' as *;
 
 @function has-text-shade($color) {
-  @return map.has-key($theme-colors, '' + $color) and meta.type-of(map.get($theme-colors, '' + $color)) != 'color';
+  $value: map.get($theme-colors, '' + $color);
+  @return $value != null and $value != $light and $value != $dark;
 }
 
 @function text-color-var($color) {
