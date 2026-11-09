@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 @use 'sass:meta';
 @use 'config' as *;
@@ -45,8 +46,21 @@
   // Theme colors
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$name}: #{$color};
+    // `--secondary` and `--muted` switch to the lighter gray in dark mode (see `layout/_root.scss`).
+    $pair: if(
+      sass($color == $text-secondary): (
+          $text-secondary,
+          $text-secondary-light,
+        );
+        else: color-pair($color)
+    );
     @if map.has-key($social-colors, $name) or $color == $light or $color == $dark {
       --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    } @else if $pair {
+      $fg-light: if(sass(prefers-light-foreground(list.nth($pair, 1), $light, $dark)): var(--light); else: var(--dark));
+      $fg-dark: if(sass(prefers-light-foreground(list.nth($pair, 2), $light, $dark)): var(--light); else: var(--dark));
+      --#{$name}-fg: #{if(sass($fg-light == $fg-dark): $fg-light; else: light-dark($fg-light, $fg-dark))};
+      --#{$name}-text: light-dark(#{css-color(contrast-shade(list.nth($pair, 1), $text-contrast-ratio, relative-luminance($light)))}, #{css-color(contrast-tint(list.nth($pair, 2), $text-contrast-ratio, relative-luminance($gray-800)))});
     } @else {
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
       --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, #{contrast-tint-css(var(--#{$name}), $text-contrast-ratio, luminance($gray-800))});

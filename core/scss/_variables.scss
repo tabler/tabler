@@ -64,18 +64,18 @@ $grays: (
   '900': $gray-900,
 ) !default;
 
-$blue: light-dark(oklch(54.6% 0.1724 254.2deg), oklch(60.6% 0.1586 254.2deg)) !default; // #066fd1, #3283de
-$azure: light-dark(oklch(55.4% 0.1358 246.81deg), oklch(72.26% 0.1249 246.81deg)) !default; // #1877bd, #5facef
-$indigo: light-dark(oklch(55.66% 0.2082 268.35deg), oklch(61.66% 0.1915 268.35deg)) !default; // #4263eb, #5579f7
-$purple: light-dark(oklch(57.83% 0.2186 319.15deg), oklch(63.83% 0.2011 319.15deg)) !default; // #ae3ec9, #be5ad7
-$pink: light-dark(oklch(58% 0.201 5.25deg), oklch(64.81% 0.1849 5.25deg)) !default; // #d3306a, #e5527f
-$red: light-dark(oklch(57.5% 0.1941 25.59deg), oklch(64.29% 0.1786 25.59deg)) !default; // #d33637, #e55751
-$orange: light-dark(oklch(68.51% 0.1954 44.57deg), oklch(74.51% 0.1638 44.57deg)) !default; // #f76707, #ff864c
-$yellow: light-dark(oklch(77.02% 0.1658 71.02deg), oklch(83.02% 0.137 71.02deg)) !default; // #f59f00, #ffb75a
-$lime: light-dark(oklch(70.99% 0.1897 131.53deg), oklch(76.99% 0.1745 131.53deg)) !default; // #74b816, #8aca47
-$green: light-dark(oklch(67.38% 0.1885 145.43deg), oklch(73.38% 0.1734 145.43deg)) !default; // #2fb344, #54c560
-$teal: light-dark(oklch(64.32% 0.1338 164.7deg), oklch(70.32% 0.1231 164.7deg)) !default; // #0ca678, #43b78c
-$cyan: light-dark(oklch(65.52% 0.1105 212.17deg), oklch(71.52% 0.1017 212.17deg)) !default; // #17a2b8, #47b4c8
+$blue: light-dark-color(oklch(54.6% 0.1724 254.2deg), oklch(60.6% 0.1586 254.2deg)) !default; // #066fd1, #3283de
+$azure: light-dark-color(oklch(55.4% 0.1358 246.81deg), oklch(72.26% 0.1249 246.81deg)) !default; // #1877bd, #5facef
+$indigo: light-dark-color(oklch(55.66% 0.2082 268.35deg), oklch(61.66% 0.1915 268.35deg)) !default; // #4263eb, #5579f7
+$purple: light-dark-color(oklch(57.83% 0.2186 319.15deg), oklch(63.83% 0.2011 319.15deg)) !default; // #ae3ec9, #be5ad7
+$pink: light-dark-color(oklch(58% 0.201 5.25deg), oklch(64.81% 0.1849 5.25deg)) !default; // #d3306a, #e5527f
+$red: light-dark-color(oklch(57.5% 0.1941 25.59deg), oklch(64.29% 0.1786 25.59deg)) !default; // #d33637, #e55751
+$orange: light-dark-color(oklch(68.51% 0.1954 44.57deg), oklch(74.51% 0.1638 44.57deg)) !default; // #f76707, #ff864c
+$yellow: light-dark-color(oklch(77.02% 0.1658 71.02deg), oklch(83.02% 0.137 71.02deg)) !default; // #f59f00, #ffb75a
+$lime: light-dark-color(oklch(70.99% 0.1897 131.53deg), oklch(76.99% 0.1745 131.53deg)) !default; // #74b816, #8aca47
+$green: light-dark-color(oklch(67.38% 0.1885 145.43deg), oklch(73.38% 0.1734 145.43deg)) !default; // #2fb344, #54c560
+$teal: light-dark-color(oklch(64.32% 0.1338 164.7deg), oklch(70.32% 0.1231 164.7deg)) !default; // #0ca678, #43b78c
+$cyan: light-dark-color(oklch(65.52% 0.1105 212.17deg), oklch(71.52% 0.1017 212.17deg)) !default; // #17a2b8, #47b4c8
 
 $colors: (
   'blue': $blue,
@@ -590,12 +590,19 @@ $hover-bg: var(--fill-tertiary) !default;
 $disabled-bg: var(--bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--body-color), 0.4) !default;
 
+// Contrast ratio the `--{color}-text` shade reaches against `--light`, and how
+// much black (light mode) or white (dark mode) is mixed in for text on the
+// `.bg-{color}-lt` tint.
+$text-contrast-ratio: 4.6 !default;
+$text-lt-shade-percentage: 6% !default;
+$text-lt-tint-percentage: 9% !default;
+
 $primary: $blue !default;
 $secondary: $text-secondary !default;
 $muted: $text-secondary !default;
-$success: var(--green-text) !default;
-$info: var(--azure-text) !default;
-$warning: var(--yellow-text) !default;
+$success: contrast-text-color($green, $text-contrast-ratio, $light, $gray-800) !default;
+$info: contrast-text-color($azure, $text-contrast-ratio, $light, $gray-800) !default;
+$warning: contrast-text-color($yellow, $text-contrast-ratio, $light, $gray-800) !default;
 $danger: $red !default;
 
 $link-color: var(--primary) !default;
@@ -669,13 +676,6 @@ $gray-colors: (
 ) !default;
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
-
-// Contrast ratio the `--{color}-text` shade reaches against `--light`, and how
-// much black (light mode) or white (dark mode) is mixed in for text on the
-// `.bg-{color}-lt` tint.
-$text-contrast-ratio: 4.6 !default;
-$text-lt-shade-percentage: 6% !default;
-$text-lt-tint-percentage: 9% !default;
 
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;
