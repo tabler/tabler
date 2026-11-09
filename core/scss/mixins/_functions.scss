@@ -220,20 +220,6 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);
 }
 
-// CIE L* of a Sass color: depends on its luminance only.
-@function lab-lightness($color) {
-  $y: luminance($color);
-  @return math.div(math.round(if(sass($y > 0.008856): 116 * math.pow($y, math.div(1, 3)) - 16; else: 903.3 * $y) * 100), 100);
-}
-
-// Runtime foreground for a background Sass cannot read: `$light` or `$dark`,
-// whichever has the higher WCAG contrast against it. Both must be grays.
-@function contrast-fg-css($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
-  $threshold: math.sqrt((luminance($light) + 0.05) * (luminance($dark) + 0.05)) - 0.05;
-  $l-threshold: math.div(math.round((116 * math.pow($threshold, math.div(1, 3)) - 16) * 100), 100);
-  @return lab(from #{$background} clamp(#{lab-lightness($dark)}, (#{$l-threshold} - l) * 1000, #{lab-lightness($light)}) 0 0);
-}
-
 @function color-contrast($background, $color-contrast-dark: $color-contrast-dark, $color-contrast-light: $color-contrast-light, $min-contrast-ratio: $min-contrast-ratio) {
   @if meta.type-of($background) != 'color' {
     @return contrast-color-css($background, $color-contrast-light, $color-contrast-dark, $min-contrast-ratio);

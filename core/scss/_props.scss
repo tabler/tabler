@@ -63,7 +63,7 @@
       $fg-dark: if(sass(prefers-light-foreground($dark-color, $light, $dark)): var(--light); else: var(--dark));
       --#{$name}-fg: #{if(sass($fg-light == $fg-dark): $fg-light; else: light-dark($fg-light, $fg-dark))};
     } @else {
-      --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
+      --#{$name}-fg: #{contrast-color-css(var(--#{$name}), $light, $dark)};
     }
     @if $dark-color and map.has-key($theme-text-colors, $name) {
       --#{$name}-text: light-dark(#{map.get($theme-text-colors, $name)}, #{css-color(tint-color($dark-color, 20%))});
