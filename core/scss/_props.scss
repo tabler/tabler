@@ -60,10 +60,11 @@
       $fg-light: if(sass(prefers-light-foreground(list.nth($pair, 1), $light, $dark)): var(--light); else: var(--dark));
       $fg-dark: if(sass(prefers-light-foreground(list.nth($pair, 2), $light, $dark)): var(--light); else: var(--dark));
       --#{$name}-fg: #{if(sass($fg-light == $fg-dark): $fg-light; else: light-dark($fg-light, $fg-dark))};
-      --#{$name}-text: light-dark(#{css-color(contrast-shade(list.nth($pair, 1), $text-contrast-ratio, luminance($light)))}, #{css-color(contrast-tint(list.nth($pair, 2), $text-contrast-ratio, luminance($gray-800)))});
     } @else {
       --#{$name}-fg: #{contrast-fg-css(var(--#{$name}), $light, $dark)};
-      --#{$name}-text: light-dark(#{contrast-shade-css(var(--#{$name}), $text-contrast-ratio, luminance($light))}, #{contrast-tint-css(var(--#{$name}), $text-contrast-ratio, luminance($gray-800))});
+    }
+    @if not map.has-key($social-colors, $name) and $color != $light and $color != $dark {
+      --#{$name}-text: light-dark(#{mix-color-css($black, var(--#{$name}), $text-shade-percentage)}, #{mix-color-css($white, var(--#{$name}), $text-tint-percentage)});
     }
     --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
     --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);

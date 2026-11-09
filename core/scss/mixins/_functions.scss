@@ -230,42 +230,6 @@ $color-mode-pairs: ();
   @return map.get($color-mode-pairs, '' + $value);
 }
 
-@function linear-rgb($color) {
-  @return color.to-space(color.to-gamut($color, $space: rgb, $method: clip), srgb-linear);
-}
-
-@function scale-linear-rgb($color, $scale, $offset) {
-  $linear: linear-rgb($color);
-  $r: color.channel($linear, 'red');
-  $g: color.channel($linear, 'green');
-  $b: color.channel($linear, 'blue');
-  $rgb: color.to-space(color.change($linear, $red: $r * $scale + $offset, $green: $g * $scale + $offset, $blue: $b * $scale + $offset), rgb);
-  @return rgb(math.round(color.channel($rgb, 'red')), math.round(color.channel($rgb, 'green')), math.round(color.channel($rgb, 'blue')));
-}
-
-// `$color`, darkened only as far as needed to reach `$ratio` against a
-// background of `$background-luminance`.
-@function contrast-shade($color, $ratio: 4.5, $background-luminance: 1) {
-  $max: math.div($background-luminance + 0.05, $ratio) - 0.05;
-  @return scale-linear-rgb($color, math.min(1, math.div($max, math.max(luminance($color), 0.0001))), 0);
-}
-
-// `$color`, lightened only as far as needed to reach `$ratio` against a dark
-// background of `$background-luminance`.
-@function contrast-tint($color, $ratio: 4.5, $background-luminance: 0) {
-  $min: ($background-luminance + 0.05) * $ratio - 0.05;
-  $y: luminance($color);
-  $mix: math.max(0, math.div($min - $y, 1 - $y));
-  @return scale-linear-rgb($color, 1 - $mix, $mix);
-}
-
-// Text shade of a color for both modes: darkened on `$light-background`,
-// lightened on `$dark-background`. Returns a `light-dark-color()`.
-@function contrast-text-color($color, $ratio, $light-background, $dark-background) {
-  $pair: color-pair($color);
-  @return light-dark-color(contrast-shade(list.nth($pair, 1), $ratio, luminance($light-background)), contrast-tint(list.nth($pair, 2), $ratio, luminance($dark-background)));
-}
-
 // `true` when `$light` has a higher contrast on `$background` than `$dark`.
 @function prefers-light-foreground($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
   @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);
@@ -283,23 +247,6 @@ $color-mode-pairs: ();
   $threshold: math.sqrt((luminance($light) + 0.05) * (luminance($dark) + 0.05)) - 0.05;
   $l-threshold: math.div(math.round((116 * math.pow($threshold, math.div(1, 3)) - 16) * 100), 100);
   @return lab(from #{$background} clamp(#{lab-lightness($dark)}, (#{$l-threshold} - l) * 1000, #{lab-lightness($light)}) 0 0);
-}
-
-// Runtime shade of `$color`, darkened only as far as needed to reach
-// `$ratio` against a background of `$background-luminance`.
-@function contrast-shade-css($color, $ratio: 4.5, $background-luminance: 1) {
-  $max: math.div(math.round((math.div($background-luminance + 0.05, $ratio) - 0.05) * 10000), 10000);
-  $scale: min(1, #{$max} / (0.2126 * r + 0.7152 * g + 0.0722 * b));
-  @return color(from #{$color} srgb-linear calc(r * #{$scale}) calc(g * #{$scale}) calc(b * #{$scale}));
-}
-
-// Runtime tint of `$color`, lightened only as far as needed to reach
-// `$ratio` against a dark background of `$background-luminance`.
-@function contrast-tint-css($color, $ratio: 4.5, $background-luminance: 0) {
-  $min: math.div(math.round((($background-luminance + 0.05) * $ratio - 0.05) * 10000), 10000);
-  $y: '(0.2126 * r + 0.7152 * g + 0.0722 * b)';
-  $mix: max(0, (#{$min} - #{$y}) / (1 - #{$y}));
-  @return color(from #{$color} srgb-linear calc(r + (1 - r) * #{$mix}) calc(g + (1 - g) * #{$mix}) calc(b + (1 - b) * #{$mix}));
 }
 
 @function color-contrast($background, $color-contrast-dark: $color-contrast-dark, $color-contrast-light: $color-contrast-light, $min-contrast-ratio: $min-contrast-ratio) {
