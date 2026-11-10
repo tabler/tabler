@@ -422,6 +422,14 @@ describe('Datepicker', () => {
       expect(instance.calendar!.context.selectedYear).toBe(1990)
     })
 
+    it('leaves an initial value it cannot read for sure untouched', () => {
+      fixtureEl.innerHTML = '<input type="text" value="05.03.2025">'
+      const instance = new Datepicker(input(), { locale: 'pl-PL' })
+
+      expect(input().value).toBe('05.03.2025')
+      expect(instance.getSelectedDates()).toEqual([])
+    })
+
     it('opens on the month of an initial value', () => {
       fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
       const instance = new Datepicker(input())
