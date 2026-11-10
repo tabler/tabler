@@ -209,19 +209,27 @@ const getjQuery = (): JQueryStaticLike | null => {
 
 const DOMContentLoadedCallbacks: Array<() => void> = []
 
+const runDOMContentLoadedCallback = (callback: () => void): void => {
+  try {
+    callback()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const onDOMContentLoaded = (callback: () => void): void => {
   if (document.readyState === 'loading') {
     if (!DOMContentLoadedCallbacks.length) {
       document.addEventListener('DOMContentLoaded', () => {
         for (const domCallback of DOMContentLoadedCallbacks) {
-          domCallback()
+          runDOMContentLoadedCallback(domCallback)
         }
       })
     }
 
     DOMContentLoadedCallbacks.push(callback)
   } else {
-    callback()
+    runDOMContentLoadedCallback(callback)
   }
 }
 
