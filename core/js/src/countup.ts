@@ -108,7 +108,7 @@ const coerceOptions = (options: Record<string, unknown>): Record<string, unknown
 // Strips thousands separators, currency symbols and other non-numeric
 // characters, so formatted targets like "1,234", "1 234" or "$99.5" parse.
 // A `time` value like "3:28" is read as minutes.
-const parseValue = (input: string | number, format: CountUpFormat): number => {
+const parseValue = (input: string | number, { format, separator, decimal }: Pick<ComponentConfig, 'format' | 'separator' | 'decimal'>): number => {
   if (typeof input === 'number') {
     return input
   }
@@ -120,7 +120,12 @@ const parseValue = (input: string | number, format: CountUpFormat): number => {
     return match ? Number(match[1]) * 60 + Number(match[2]) : Number.NaN
   }
 
-  return Number.parseFloat(input.replace(/[^0-9.-]/g, ''))
+  let text = separator ? input.split(separator).join('') : input
+  if (decimal && decimal !== '.') {
+    text = text.split(decimal).join('.')
+  }
+
+  return Number.parseFloat(text.replace(/[^0-9.-]/g, ''))
 }
 
 // easeOutExpo, the same curve countUp.js used
@@ -147,6 +152,7 @@ class CountUp extends BaseComponent {
   _running = false
   _paused = false
   _started = false
+  _parsed = false
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -155,11 +161,12 @@ class CountUp extends BaseComponent {
       return
     }
 
-    const value = parseValue(this._element.textContent ?? '', this._config.format)
+    const value = parseValue(this._element.textContent ?? '', this._config)
     if (Number.isNaN(value)) {
       return
     }
 
+    this._parsed = true
     this._endVal = value
     this._value = this._config.startVal
     this._print(this._value)
@@ -206,7 +213,7 @@ class CountUp extends BaseComponent {
   }
 
   update(value: number | string): void {
-    const parsed = parseValue(value, this._config.format)
+    const parsed = parseValue(value, this._config)
     if (Number.isNaN(parsed)) {
       return
     }
@@ -228,6 +235,10 @@ class CountUp extends BaseComponent {
   dispose(): void {
     this._stop()
     this._observer?.disconnect()
+    if (this._parsed) {
+      this._print(this._endVal)
+    }
+
     super.dispose()
   }
 
