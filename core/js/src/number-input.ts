@@ -389,7 +389,7 @@ class NumberInput extends BaseComponent {
     }
 
     const handler = steps[event.key]
-    if (!handler) {
+    if (!handler || this._isLocked()) {
       return
     }
 
@@ -471,23 +471,30 @@ class NumberInput extends BaseComponent {
 
   _commit(value: number): void {
     const input = this._input!
-    const previousValue = this.getValue()
+    const previousValue = this._parse(this._lastValue)
     const next = this._clamp(value)
     const formatted = this._format(next)
 
-    const changed = input.value !== formatted
+    const changed = this._lastValue !== formatted
+    const rewritten = input.value !== formatted
     input.value = formatted
     this._lastValue = formatted
     this._update()
 
-    if (!changed) {
+    if (!changed && !rewritten) {
       return
     }
 
     // The field itself fires `input` and `change`, so a form, a framework
     // binding or validation sees a stepped value like a typed one.
-    input.dispatchEvent(new Event('input', { bubbles: true }))
-    input.dispatchEvent(new Event('change', { bubbles: true }))
+    if (rewritten) {
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+
+    if (!changed) {
+      return
+    }
 
     EventHandler.trigger(this._element, EVENT_CHANGE, { value: next, previousValue })
 
