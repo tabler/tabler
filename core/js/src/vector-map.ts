@@ -318,7 +318,6 @@ class VectorMap extends BaseComponent {
 
     // Kept so that render() can re-read the data attributes on top of it.
     this._userConfig = { ...config }
-    this.render()
 
     EventHandler.on(this._element, EVENT_POINTERMOVE, (event: PointerEvent) => {
       this._onPointerMove(event)
@@ -354,6 +353,13 @@ class VectorMap extends BaseComponent {
         this.zoomOut()
       }
     })
+
+    try {
+      this.render()
+    } catch (error) {
+      this.dispose()
+      throw error
+    }
   }
 
   // Getters
