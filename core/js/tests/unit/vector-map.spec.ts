@@ -764,6 +764,18 @@ describe('VectorMap', () => {
       expect(viewBox()).toEqual([15, 2.5, 15, 5])
     })
 
+    it('should stop following a pointer that is released outside the map', () => {
+      zoomable({ zoomMax: 2 })
+      wheel(-5000)
+
+      pointer('pointerdown', 100, 50)
+      document.body.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1, pointerType: 'mouse' }))
+
+      pointer('pointermove', 60, 50)
+      expect(viewBox()).toEqual([7.5, 2.5, 15, 5])
+      expect(el().classList.contains('vector-map-dragging')).toBe(false)
+    })
+
     it('should not drag a map that cannot be zoomed', () => {
       fixtureEl.innerHTML = '<div class="vector-map" style="width: 300px"></div>'
       new VectorMap(el(), { map: squares })
