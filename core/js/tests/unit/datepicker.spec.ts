@@ -12,6 +12,7 @@ describe('Datepicker', () => {
   })
 
   beforeEach(() => {
+    // The page loads the plugin as a global; the tests hand it over the same way.
     window.VanillaCalendarPro = VanillaCalendarPro
   })
 
@@ -19,6 +20,7 @@ describe('Datepicker', () => {
     clearFixture()
     delete window.VanillaCalendarPro
 
+    // The plugin mounts popups on <body>, outside the fixture
     for (const calendarEl of document.querySelectorAll('[data-vc="calendar"]')) {
       calendarEl.remove()
     }

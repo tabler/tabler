@@ -1,3 +1,8 @@
+// Base class
+//
+// Kickstart any navigation component with a set of style resets. Works with
+// `<nav>`s, `<ul>`s or `<ol>`s.
+
 @use '../config' as *;
 
 .nav {
@@ -40,6 +45,7 @@
     @include focus-ring(true);
   }
 
+  // Disabled state lightens text
   &.disabled,
   &:disabled {
     color: var(--nav-link-disabled-color);
@@ -47,6 +53,10 @@
     cursor: default;
   }
 }
+
+//
+// Tabs
+//
 
 .nav-tabs {
   // scss-docs-start nav-tabs-css-vars
@@ -68,6 +78,7 @@
 
     &:hover,
     &:focus {
+      // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
       isolation: isolate;
       border-color: var(--nav-tabs-link-hover-border-color);
     }
@@ -81,10 +92,16 @@
   }
 
   .dropdown-menu {
+    // Make dropdown border overlap tab border
     margin-top: calc(-1 * var(--nav-tabs-border-width)); // stylelint-disable-line function-disallowed-list
+    // Remove the top rounded corners here since there is a hard edge above the menu
     @include border-top-radius(0);
   }
 }
+
+//
+// Pills
+//
 
 .nav-pills {
   // scss-docs-start nav-pills-css-vars
@@ -103,6 +120,10 @@
     @include gradient-bg(var(--nav-pills-link-active-bg));
   }
 }
+
+//
+// Underline
+//
 
 .nav-underline {
   // scss-docs-start nav-underline-css-vars
@@ -132,6 +153,10 @@
   }
 }
 
+//
+// Justified variants
+//
+
 .nav-fill {
   > .nav-link,
   .nav-item {
@@ -152,9 +177,13 @@
 .nav-fill,
 .nav-justified {
   .nav-item .nav-link {
-    width: 100%;
+    width: 100%; // Make sure button will grow
   }
 }
+
+// Tabbable tabs
+//
+// Hide tabbable panes to start, show them when `.active`
 
 .tab-content {
   > .tab-pane {

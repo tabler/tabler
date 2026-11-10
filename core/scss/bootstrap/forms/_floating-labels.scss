@@ -9,6 +9,8 @@
   --form-floating-input-padding-t: #{$form-floating-input-padding-t};
   --form-floating-input-padding-b: #{$form-floating-input-padding-b};
   --form-floating-label-height: #{$form-floating-label-height};
+  // The textarea label masks the text under it. It is a sibling of the control,
+  // so it cannot read the control's `--control-bg` and mirrors the scale instead.
   --form-floating-label-bg: #{var-if-default($input-bg, var(--bg-forms), '--btn-input-bg')};
   --form-floating-label-disabled-bg: #{$input-disabled-bg};
   --form-floating-label-border-radius: #{var-if-default($input-border-radius, var(--border-radius), '--btn-input-border-radius')};
@@ -34,7 +36,7 @@
     inset-inline-start: 0;
     z-index: 2;
     max-width: 100%;
-    height: 100%;
+    height: 100%; // allow textareas
     padding: var(--form-floating-padding-y) var(--form-floating-padding-x);
     overflow: hidden;
     color: color-transparent(var(--body-color), calc(var(--form-floating-label-opacity) * 100%));
@@ -42,7 +44,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     pointer-events: none;
-    border: $input-border-width solid transparent;
+    border: $input-border-width solid transparent; // Required for aligning label's text with the input as it affects inner box model
     transform-origin: 0 0;
     @include transition(var(--form-floating-transition));
   }
@@ -60,6 +62,7 @@
       padding-top: var(--form-floating-input-padding-t);
       padding-bottom: var(--form-floating-input-padding-b);
     }
+    // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
     &:-webkit-autofill {
       padding-top: var(--form-floating-input-padding-t);
       padding-bottom: var(--form-floating-input-padding-b);
@@ -80,6 +83,7 @@
       transform: var(--form-floating-label-transform);
     }
   }
+  // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
   > .form-control:-webkit-autofill {
     ~ label {
       transform: var(--form-floating-label-transform);
@@ -103,12 +107,13 @@
 
   > .form-control-plaintext {
     ~ label {
-      border-width: $input-border-width 0;
+      border-width: $input-border-width 0; // Required to properly position label text - as explained above
     }
   }
 
   > :disabled ~ label,
   > .form-control:disabled ~ label {
+    // Required for `.form-control`s because of specificity
     color: var(--form-floating-label-disabled-color);
   }
 }

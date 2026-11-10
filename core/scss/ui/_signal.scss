@@ -21,6 +21,7 @@
   vertical-align: middle;
 }
 
+// Each bar takes its share of the full height: the first of three is a third, the last is full
 .signal-bar {
   --signal-bar-index: 1;
   flex: 1;
@@ -40,6 +41,7 @@
   }
 }
 
+// The number of bars is read from the markup, so the steps stay even for any count
 @for $count from 2 through $signal-max-bars {
   @if $count != 3 {
     .signal:has(> .signal-bar:last-child:nth-child(#{$count})) {

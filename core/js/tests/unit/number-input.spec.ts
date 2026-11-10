@@ -178,6 +178,7 @@ describe('NumberInput', () => {
       vi.advanceTimersByTime(1000)
       expect(input().value).toBe('5')
 
+      // The click that ends the hold is not one more step
       incrementButton().click()
       expect(input().value).toBe('5')
     })

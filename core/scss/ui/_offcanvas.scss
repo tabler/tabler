@@ -31,6 +31,13 @@
   --offcanvas-width: var(--offcanvas-narrow-width);
 }
 
+// Floating variant: the panel keeps a gap from the viewport edges. Two routes
+// to the same state: the .offcanvas-floating class on the panel, or
+// data-bs-offcanvas-style="floating" on <html> (the theme settings), which
+// covers every panel on the page — found by its direction class.
+//
+// --offcanvas-margin is 0px above the breakpoint of a responsive variant, so
+// the inline content there is left alone.
 $offcanvas-floating-attr: "html[data-bs-offcanvas-style='floating']";
 
 .offcanvas-floating,
@@ -42,6 +49,7 @@ $offcanvas-floating-attr: "html[data-bs-offcanvas-style='floating']";
   border: var(--offcanvas-border-width) solid var(--offcanvas-border-color);
   border-radius: $offcanvas-border-radius;
 
+  // The closed panel has to travel past its own margin to leave the viewport.
   &.offcanvas-start {
     /* rtl:ignore */
     translate: calc(var(--dir) * -1 * var(--offcanvas-margin));

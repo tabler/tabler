@@ -1,3 +1,9 @@
+// Range
+//
+// Style range inputs the same across browsers. Vendor-specific rules for pseudo
+// elements cannot be mixed. As such, there are no shared styles for focus or
+// active states on prefixed selectors.
+
 @use '../../config' as *;
 
 .form-range {
@@ -21,13 +27,15 @@
 
   width: 100%;
   height: calc(var(--range-thumb-height) + #{$form-range-thumb-focus-box-shadow-width * 2});
-  padding: 0;
+  padding: 0; // Need to reset padding
   appearance: none;
   background-color: transparent;
 
   &:focus {
     outline: 0;
 
+    // Pseudo-elements must be split across multiple rulesets to have an effect.
+    // No box-shadow() mixin for focus accessibility.
     &::-webkit-slider-thumb {
       @include focus-ring(true);
     }
@@ -43,7 +51,7 @@
   &::-webkit-slider-thumb {
     width: var(--range-thumb-width);
     height: var(--range-thumb-height);
-    margin-top: calc((var(--range-track-height) - var(--range-thumb-height)) / 2);
+    margin-top: calc((var(--range-track-height) - var(--range-thumb-height)) / 2); // Webkit specific
     appearance: none;
     @include gradient-bg(var(--range-thumb-bg));
     border: var(--range-thumb-border);
@@ -60,7 +68,7 @@
   &::-webkit-slider-runnable-track {
     width: var(--range-track-width);
     height: var(--range-track-height);
-    color: transparent;
+    color: transparent; // Why?
     cursor: var(--range-track-cursor);
     background-color: var(--range-track-bg);
     border-color: transparent;
@@ -90,7 +98,7 @@
     color: transparent;
     cursor: var(--range-track-cursor);
     background-color: var(--range-track-bg);
-    border-color: transparent;
+    border-color: transparent; // Firefox specific?
     @include border-radius(var(--range-track-border-radius));
     @include box-shadow(var(--range-track-box-shadow));
   }

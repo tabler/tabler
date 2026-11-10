@@ -62,6 +62,7 @@ const triggerTransitionEnd = (element: HTMLElement): void => {
   element.dispatchEvent(new Event(TRANSITION_END))
 }
 
+// A jQuery collection stands in for its first element, as in upstream Bootstrap.
 const unwrapJQuery = (object: unknown): unknown => {
   if (object && typeof object === 'object' && typeof (object as { jquery?: unknown }).jquery !== 'undefined') {
     return (object as { 0?: unknown })[0]

@@ -39,6 +39,7 @@ type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
  */
 
 const NAME = 'numberInput'
+// the attribute spelling: `data-bs-toggle="number-input"`, `data-bs-number-input-action`
 const DATA_NAME = 'number-input'
 const DATA_KEY = `bs.${NAME}`
 const EVENT_KEY = `.${DATA_KEY}`
@@ -55,6 +56,7 @@ const SELECTOR_ACTION = `[data-bs-${DATA_NAME}-action], [data-tblr-${DATA_NAME}-
 const ATTRIBUTES_ACTION = [`data-bs-${DATA_NAME}-action`, `data-tblr-${DATA_NAME}-action`]
 const ATTRIBUTE_ACTION = ATTRIBUTES_ACTION[0]
 
+// `.form-control-sm` on a bare input becomes `.number-input-sm` on the rendered box
 const SIZES = ['sm', 'lg']
 
 const KEY_UP = 'ArrowUp'
@@ -62,6 +64,8 @@ const KEY_DOWN = 'ArrowDown'
 const KEY_HOME = 'Home'
 const KEY_END = 'End'
 
+// A held button stops repeating on any of these, so a drag off the button or
+// a cancelled touch never leaves the timer running.
 const POINTER_END_EVENTS = ['pointerup', 'pointercancel', 'pointerleave']
 
 const Default: ComponentConfig = {
@@ -104,15 +108,21 @@ class NumberInput extends BaseComponent {
   declare _config: ComponentConfig
   _input: HTMLInputElement | null = null
   _buttons: HTMLElement[] = []
+  // The box rendered around a bare input, removed again on dispose
   _wrapper: HTMLElement | null = null
   _min = Number.NEGATIVE_INFINITY
   _max = Number.POSITIVE_INFINITY
   _step = 1
   _precision = 0
+  // Characters the field accepts: digits, plus a minus sign and a decimal
+  // separator only when the bounds and the step call for them.
   _disallowed = /[^0-9]/g
   _holdTimer: ReturnType<typeof setTimeout> | null = null
   _repeatTimer: ReturnType<typeof setInterval> | null = null
+  // Set once a held button has stepped on its own, so the `click` that ends
+  // the hold does not add one more step.
   _held = false
+  // The last value the field held, restored after an edit that is not a number
   _lastValue = ''
 
   _onClick = (event: Event): void => this._handleClick(event)
@@ -148,6 +158,7 @@ class NumberInput extends BaseComponent {
     this._update()
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -160,6 +171,7 @@ class NumberInput extends BaseComponent {
     return NAME
   }
 
+  // Public
   getValue(): number | null {
     return this._parse(this._input?.value ?? '')
   }
@@ -206,6 +218,9 @@ class NumberInput extends BaseComponent {
     super.dispose()
   }
 
+  // Private
+  // Puts a bare input into a `.number-input` box with a button on each side. The
+  // buttons are empty: the stylesheet paints their icons.
   _renderWrapper(): void {
     const input = this._input!
     const wrapper = document.createElement('div')
@@ -236,6 +251,7 @@ class NumberInput extends BaseComponent {
     this._buttons = [decrement, increment]
   }
 
+  // Config wins over the input's own attributes; both are optional.
   _resolveBounds(): void {
     const input = this._input!
     const attribute = (name: string): number | null => {
@@ -249,6 +265,8 @@ class NumberInput extends BaseComponent {
     const step = this._config.step ?? attribute('step')
     this._step = step !== null && step > 0 ? step : 1
 
+    // `0.25` has two decimals: every result is rounded to the same precision,
+    // so repeated steps never drift into `0.30000000000000004`.
     const decimals = String(this._step).split('.')[1]
     this._precision = decimals ? decimals.length : 0
 
@@ -259,6 +277,8 @@ class NumberInput extends BaseComponent {
   _setUpInput(): void {
     const input = this._input!
 
+    // A text field keeps the native spin buttons away on every platform;
+    // the role tells assistive technology it still behaves like a number.
     if (input.type !== 'number') {
       input.setAttribute('role', 'spinbutton')
       if (!input.hasAttribute('inputmode')) {
@@ -279,6 +299,8 @@ class NumberInput extends BaseComponent {
 
     input.addEventListener('keydown', this._onKeyDown)
     input.addEventListener('beforeinput', this._onBeforeInput)
+    // `blur` as well as `change`: a value set by a script before the field is
+    // left fires no `change`, and the clamp must still happen.
     input.addEventListener('change', this._onInputChange)
     input.addEventListener('blur', this._onInputChange)
 
@@ -324,6 +346,8 @@ class NumberInput extends BaseComponent {
       return
     }
 
+    // Keep the focus on the field being edited; the step itself happens on
+    // `click`, which also covers keyboard activation.
     if ((event as PointerEvent).pointerType === 'mouse') {
       event.preventDefault()
     }
@@ -377,6 +401,8 @@ class NumberInput extends BaseComponent {
     handler()
   }
 
+  // Letters never get into the field: a typed one is dropped, a pasted text
+  // keeps only its digits (and the sign or separator when those are allowed).
   _handleBeforeInput(event: InputEvent): void {
     const { data, inputType } = event
     if (!data || !inputType.startsWith('insert')) {
@@ -401,6 +427,9 @@ class NumberInput extends BaseComponent {
     input.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
+  // A typed value is clamped once the field is left; a value that is not a
+  // number goes back to the previous one. An untouched field is left alone,
+  // so leaving it fires no events.
   _handleInputChange(): void {
     const input = this._input!
     if (input.value === this._lastValue) {
@@ -427,6 +456,7 @@ class NumberInput extends BaseComponent {
     this._commit(current + direction * this._step)
   }
 
+  // The value an empty field steps from: the nearest bound, or zero.
   _fallbackValue(): number {
     if (Number.isFinite(this._min) && this._min > 0) {
       return this._min
@@ -454,6 +484,8 @@ class NumberInput extends BaseComponent {
       return
     }
 
+    // The field itself fires `input` and `change`, so a form, a framework
+    // binding or validation sees a stepped value like a typed one.
     input.dispatchEvent(new Event('input', { bubbles: true }))
     input.dispatchEvent(new Event('change', { bubbles: true }))
 
@@ -487,6 +519,8 @@ class NumberInput extends BaseComponent {
     return value.toFixed(this._precision)
   }
 
+  // Buttons go inert at a bound or while the field is locked, and the
+  // spinbutton role gets its `aria-value*` attributes refreshed.
   _update(): void {
     const input = this._input!
     const value = this.getValue()

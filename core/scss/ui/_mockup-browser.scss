@@ -1,6 +1,7 @@
 @use 'sass:list';
 @use '../config' as *;
 
+// A frame that looks like a browser window, to show a page preview or a screenshot
 .mockup-browser {
   // scss-docs-start mockup-browser-css-vars
   --mockup-browser-bg: #{$mockup-browser-bg};
@@ -31,6 +32,7 @@
   @include border-radius(var(--mockup-browser-border-radius));
 }
 
+// Small: a 24px toolbar for thumbnails and cards
 .mockup-browser-sm {
   --mockup-browser-border-radius: #{$mockup-browser-sm-border-radius};
   --mockup-browser-toolbar-min-height: #{$mockup-browser-sm-toolbar-min-height};
@@ -41,6 +43,7 @@
   --mockup-browser-url-icon-size: #{$mockup-browser-sm-url-icon-size};
 }
 
+// The top bar: the window dots sit at the start, the address bar fills the middle
 .mockup-browser-toolbar {
   position: relative;
   display: flex;
@@ -49,9 +52,12 @@
   padding: var(--mockup-browser-toolbar-padding-y) var(--mockup-browser-toolbar-padding-x);
   color: var(--mockup-browser-toolbar-color);
   background: var(--mockup-browser-toolbar-bg);
+  // Drawn as an inset shadow so the line does not add to the toolbar height
   box-shadow: inset 0 calc(-1 * var(--border-width)) var(--mockup-browser-border-color);
 }
 
+// The three window dots, drawn with one element and two shadows. They are taken
+// out of the flow so the address bar stays centered whatever the frame width
 .mockup-browser-controls {
   position: absolute;
   inset-inline-start: var(--mockup-browser-control-offset);
@@ -64,6 +70,7 @@
     calc(2 * (var(--mockup-browser-control-size) + var(--mockup-browser-control-gap))) 0 0 var(--mockup-browser-control-color-3);
 }
 
+// The address, plain centered text
 .mockup-browser-url {
   display: flex;
   gap: 0.25rem;
@@ -86,6 +93,7 @@
   }
 }
 
+// The page: a screenshot fills the width, other content keeps its own layout
 .mockup-browser-body {
   flex: 1;
   min-height: 0;

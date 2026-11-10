@@ -3,6 +3,7 @@ import { clearFixture, getFixture } from '../helpers/fixture'
 import CountUp from '../../src/countup'
 
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+// Waits for the animation to end instead of a fixed time, since animation frames run late on a slow CI runner.
 const completed = (el: HTMLElement): Promise<void> => new Promise((resolve) => el.addEventListener('complete.bs.countup', () => resolve(), { once: true }))
 
 describe('CountUp', () => {
@@ -21,6 +22,7 @@ describe('CountUp', () => {
   })
 
   const element = (): HTMLElement => fixtureEl.querySelector('h1')!
+  // The fixture sits off screen, so an auto-animated countup never starts on its own.
   const quick = (config: Record<string, unknown> = {}): CountUp => new CountUp(element(), { autoAnimate: false, duration: 0.1, ...config })
 
   describe('NAME', () => {

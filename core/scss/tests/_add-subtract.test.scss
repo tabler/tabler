@@ -12,6 +12,8 @@
     @include assert-equal(add(2px, 3px), 5px);
   }
 
+  // add() returns a real `calculation` here; two structurally-identical
+  // calculations aren't `==` in Sass, so compare the rendered output instead.
   @include it('falls back to calc() for incompatible units') {
     @include assert-equal(meta.inspect(add(2px, 3%)), 'calc(2px + 3%)');
   }

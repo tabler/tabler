@@ -52,6 +52,7 @@ type PopperConfigFunction = (defaultConfig: Partial<Popper.Options>) => Partial<
 
 export type TooltipDelay = number | { show: number; hide: number }
 export type TooltipContent = string | HTMLElement | null | ((this: HTMLElement, element: HTMLElement) => string | HTMLElement | null)
+// Keys are selectors inside the template, values the content for that slot
 export type TooltipContentMap = Record<string, TooltipContent>
 export type TooltipPlacement = string | ((this: Tooltip, tip: HTMLElement, element: HTMLElement) => string)
 
@@ -251,6 +252,7 @@ class Tooltip extends BaseComponent {
     const { container } = this._config
 
     if (!this._element.ownerDocument.documentElement.contains(this.tip)) {
+      // `_configAfterMerge` resolved the container to an element
       ;(container as HTMLElement).append(tip)
       EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_INSERTED))
     }
@@ -589,6 +591,7 @@ class Tooltip extends BaseComponent {
       }
     }
 
+    // Numbers are accepted at runtime (`data-bs-title="42"`) even though the type says string
     const raw = config as Record<string, unknown>
     if (typeof raw.title === 'number') {
       raw.title = raw.title.toString()

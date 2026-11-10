@@ -137,6 +137,8 @@ pre {
 
   @include scrollbar();
 
+  // pre keeps its dark surface in both color schemes, so the light-mode
+  // selection tint (10% primary) is invisible here - use the dark-mode value
   &::selection,
   ::selection {
     background-color: $pre-selection-bg;
@@ -169,6 +171,7 @@ img {
   margin-inline-start: 0;
 }
 
+// Selection
 ::selection,
 .text-selected {
   background-color: $selection-bg;
@@ -178,6 +181,7 @@ img {
   display: inline-block;
 }
 
+// Links
 [class^='link-'],
 [class*=' link-'] {
   &.disabled {
@@ -201,10 +205,12 @@ a:hover:has(.icon) {
   }
 }
 
+// Subheader
 .subheader {
   @include subheader();
 }
 
+// Mentions
 .mention {
   display: inline-block;
   padding: calc(2em / 12) calc(8em / 12);
@@ -266,6 +272,15 @@ $text-variants: (
   }
 }
 
+// Numbered walkthrough for long-form content: every `h3` inside becomes a
+// numbered step on a vertical guideline.
+//
+// This shares the `.steps` name with the progress-tracker component in
+// `ui/_steps.scss`, and this file is loaded after it — so the selector excludes
+// anything holding `.step-item` children, which is what makes an element that
+// component. Everything else keeps matching, exactly as before. The component's
+// unqualified `.steps` rule still applies here though, so the layout it sets up
+// (flex row, full width, scrollable below `sm`) has to be undone.
 .steps:not(:has(> .step-item)) {
   --steps-padding: #{$steps-padding};
   --steps-item-size: #{$steps-item-size};

@@ -8,6 +8,8 @@
   background-clip: padding-box;
 }
 
+// The shared tokens are written once for every pattern through @extend; a
+// pattern with a different opacity only overrides --pattern-opacity.
 %pattern-base {
   @include pattern-base();
 }
@@ -162,12 +164,14 @@
   background-position: -1px -1px;
 }
 
+// Color variants
 @each $color, $value in $theme-colors {
   .bg-pattern-#{$color} {
     --pattern-color: #{$value};
   }
 }
 
+// Sizes
 $sizes: (
   'sm': $pattern-size-sm,
   'md': $pattern-size-md,

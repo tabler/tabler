@@ -1,6 +1,9 @@
 @use 'sass:list';
 @use 'sass:map';
 
+//
+// Button
+//
 @use '../config' as *;
 
 .btn {
@@ -59,6 +62,9 @@
 }
 
 .btn-link {
+  // Tokens, not just the plain properties below: the disabled state reads
+  // `--btn-bg` and `--btn-border-color`, so setting only `background-color`
+  // here would leave a disabled link button with the default surface and border.
   --btn-bg: transparent;
   --btn-border-color: transparent;
   color: #{adjust-lightness-css(var(--primary), 5%)};
@@ -76,6 +82,9 @@
   }
 }
 
+//
+// Button color variations
+//
 .btn-ghost {
   --btn-bg: transparent;
   --btn-border-color: transparent;
@@ -85,6 +94,10 @@
   --btn-hover-color: var(--body-color);
 }
 
+// Each color class only points the --btn-variant* tokens at its palette
+// colors; the shared rules below turn them into the button tokens. The rules
+// are grouped by variant (solid, outline, ghost) rather than by color, so each
+// token list is written once instead of once per color.
 $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
 
 @function btn-color-selectors($patterns...) {
@@ -119,6 +132,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-active-bg: var(--btn-variant-darken);
   --btn-disabled-bg: var(--btn-variant);
   --btn-disabled-color: var(--btn-variant-fg);
+  // A lighter 1px edge along the top, a darker one along the bottom and a faint
+  // white gradient, so the filled button reads as slightly raised. The press
+  // state replaces the edges with `--btn-active-shadow`.
   --btn-box-shadow: inset 0 1px 0 0 #{$btn-highlight-color}, inset 0 -1px 0 0 #{$btn-shade-color}, var(--shadow-input);
   --btn-gradient: #{$btn-gradient};
   background-image: var(--btn-gradient);
@@ -167,6 +183,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-box-shadow: none;
 }
 
+//
+// Button sizes
+//
 .btn-sm,
 .btn-group-sm > .btn {
   --btn-line-height: #{$input-btn-line-height-sm};
@@ -189,6 +208,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   --btn-border-radius: #{$btn-border-radius-xl};
 }
 
+//
+// Button shapes
+//
 .btn-pill {
   padding-inline-start: 1.5em;
   padding-inline-end: 1.5em;
@@ -205,6 +227,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   border-radius: 0;
 }
 
+//
+// Icon button
+//
 .btn-icon,
 .btn-action {
   @include focus-ring-transition();
@@ -217,6 +242,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   }
 }
 
+//
+// Button list
+//
 .btn-list {
   @include elements-list();
 }
@@ -225,9 +253,13 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   justify-content: center;
 }
 
+//
+// Button floating
+//
 .btn-floating {
   --btn-floating-offset: #{$btn-floating-offset};
   position: fixed;
+  // End side, Material-FAB style — the start side belongs to the sidebar.
   inset-inline-end: var(--btn-floating-offset);
   bottom: var(--btn-floating-offset);
   z-index: $zindex-fixed;
@@ -238,6 +270,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   }
 }
 
+//
+// Button loading
+//
 .btn-loading {
   position: relative;
   color: transparent !important;
@@ -265,6 +300,9 @@ $btn-colors: map.keys(map.merge($theme-colors, $social-colors));
   }
 }
 
+//
+// Action button
+//
 .btn-action {
   --border-color: transparent;
   --btn-bg: transparent;

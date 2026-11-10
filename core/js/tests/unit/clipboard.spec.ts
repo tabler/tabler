@@ -21,6 +21,7 @@ describe('Clipboard', () => {
 
   beforeEach(() => {
     written = []
+    // The real clipboard needs a user gesture and a secure context.
     vi.stubGlobal('navigator', {
       clipboard: {
         writeText: (text: string) => {

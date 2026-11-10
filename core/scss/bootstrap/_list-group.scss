@@ -1,6 +1,10 @@
 @use 'sass:list';
 @use 'sass:map';
 
+// Base class
+//
+// Easily usable on <ul>, <ol>, or <div>.
+
 @use '../config' as *;
 
 .list-group {
@@ -27,7 +31,8 @@
   display: flex;
   flex-direction: column;
 
-  padding-inline-start: 0;
+  // No need to set list-style: none; since .list-group-item is block level
+  padding-inline-start: 0; // reset padding because ul and ol
   margin-bottom: 0;
   @include border-radius(var(--list-group-border-radius));
 }
@@ -37,10 +42,15 @@
   counter-reset: section;
 
   > .list-group-item::before {
+    // Increments only this instance of the section counter
     content: counters(section, '.') '. ';
     counter-increment: section;
   }
 }
+
+// Individual list items
+//
+// Use on `li`s or `div`s within the `.list-group` parent.
 
 .list-group-item {
   position: relative;
@@ -66,8 +76,9 @@
     background-color: var(--list-group-disabled-bg);
   }
 
+  // Include both here for `<a>`s and `<button>`s
   &.active {
-    z-index: 2;
+    z-index: 2; // Place active items above their siblings for proper border styling
     color: var(--list-group-active-color);
     background-color: var(--list-group-active-bg);
     border-color: var(--list-group-active-border-color);
@@ -84,15 +95,21 @@
   }
 }
 
+// Interactive list items
+//
+// Use anchor or button elements instead of `li`s or `div`s to create interactive
+// list items. Includes an extra `.active` modifier class for selected items.
+
 .list-group-item-action {
-  width: 100%;
+  width: 100%; // For `<button>`s (anchors become 100% by default though)
   color: var(--list-group-action-color);
-  text-align: inherit;
+  text-align: inherit; // For `<button>`s (anchors inherit)
 
   &:not(.active) {
+    // Hover state
     &:hover,
     &:focus {
-      z-index: 1;
+      z-index: 1; // Place hover/focus items above their siblings for proper border styling
       color: var(--list-group-action-hover-color);
       text-decoration: none;
       background-color: var(--list-group-action-hover-bg);
@@ -104,6 +121,10 @@
     }
   }
 }
+
+// Horizontal
+//
+// Change the layout of list group items from vertical (default) to horizontal.
 
 @each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
@@ -141,6 +162,11 @@
   }
 }
 
+// Flush list items
+//
+// Remove borders and border-radius to keep list group items edge-to-edge. Most
+// useful within other components (e.g., cards).
+
 .list-group-flush {
   @include border-radius(0);
 
@@ -154,7 +180,20 @@
 }
 
 // scss-docs-start list-group-modifiers
+// List group contextual variants
+//
+// Add modifier classes to change text and background color on individual items.
+// Organizationally, this must come after the `:hover` states.
 
+// Built from the palette tokens every color has - `--{color}`, `--{color}-lt`
+// and `--{color}-fg` - rather than bootstrap's subtle/emphasis pairs. Tabler's
+// `$theme-colors` carries the twelve palette colors on top of bootstrap's own,
+// and the subtle/emphasis maps only cover the latter, so upstream's version
+// left `.list-group-item-azure` and twelve more reading tokens nobody defines.
+// The tint also matches the `bg-{color}-lt` utilities used elsewhere.
+// Each color class only points the --list-group-variant* tokens at its palette
+// colors; one shared rule turns them into the list group tokens, so the token
+// list is written once instead of once per color.
 $list-group-variant-selectors: ();
 
 @each $state in map.keys($theme-colors) {
@@ -176,6 +215,9 @@ $list-group-variant-selectors: ();
   --list-group-action-hover-bg: #{color-transparent(var(--list-group-variant), $list-group-variant-hover-alpha)};
   --list-group-action-active-color: var(--list-group-variant-fg);
   --list-group-action-active-bg: var(--list-group-variant);
+  // The selected row keeps the tint: `.list-group-item.active` paints its own
+  // neutral highlight, so a solid fill here would only show through as text
+  // on a background it was never matched against.
   --list-group-active-color: var(--list-group-variant);
   --list-group-active-bg: var(--list-group-variant-lt);
   --list-group-active-border-color: #{color-transparent(var(--list-group-variant), $list-group-variant-border-alpha)};

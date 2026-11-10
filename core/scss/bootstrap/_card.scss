@@ -1,3 +1,7 @@
+//
+// Base styles
+//
+
 @use '../config' as *;
 
 .card {
@@ -26,7 +30,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
   height: var(--card-height);
   color: var(--body-color);
   word-wrap: break-word;
@@ -56,6 +60,8 @@
     }
   }
 
+  // Due to specificity of the above selector (`.card > .list-group`), we must
+  // use a child selector here to prevent double borders.
   > .card-header + .list-group,
   > .list-group + .card-footer {
     border-top: 0;
@@ -63,6 +69,8 @@
 }
 
 .card-body {
+  // Enable `flex-grow: 1` for decks and groups so that card blocks take up
+  // as much space as possible, ensuring footers are aligned to the bottom.
   flex: 1 1 auto;
   padding: var(--card-spacer-y) var(--card-spacer-x);
   color: var(--card-color);
@@ -93,12 +101,16 @@
   }
 }
 
+//
+// Optional textual caps
+//
+
 .card-header {
   @if $card-header-bg != null {
     --card-header-bg: #{$card-header-bg};
   }
   padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
-  margin-bottom: 0;
+  margin-bottom: 0; // Removes the default margin-bottom of <hN>
   color: var(--card-cap-color);
   background-color: var(--card-header-bg, var(--card-cap-bg));
   border-bottom: var(--card-border-width) solid var(--card-border-color);
@@ -122,6 +134,10 @@
   }
 }
 
+//
+// Header navs
+//
+
 .card-header-tabs {
   margin-inline-end: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
   margin-bottom: calc(-1 * var(--card-cap-padding-y)); // stylelint-disable-line function-disallowed-list
@@ -139,6 +155,7 @@
   margin-inline-start: calc(-0.5 * var(--card-cap-padding-x)); // stylelint-disable-line function-disallowed-list
 }
 
+// Card image
 .card-img-overlay {
   position: absolute;
   inset: 0;
@@ -149,7 +166,7 @@
 .card-img,
 .card-img-top,
 .card-img-bottom {
-  width: 100%;
+  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
 }
 
 .card-img,
@@ -162,7 +179,13 @@
   @include border-bottom-radius(var(--card-inner-border-radius));
 }
 
+//
+// Card groups
+//
+
 .card-group {
+  // The child selector allows nested `.card` within `.card-group`
+  // to display properly.
   > .card {
     margin-bottom: var(--card-group-margin);
   }
@@ -170,6 +193,8 @@
   @include media-breakpoint-up(sm) {
     display: flex;
     flex-flow: row wrap;
+    // The child selector allows nested `.card` within `.card-group`
+    // to display properly.
     > .card {
       flex: 1 0 0;
       margin-bottom: 0;
@@ -179,6 +204,7 @@
         border-inline-start: 0;
       }
 
+      // Handle rounded corners
       @if $enable-rounded {
         &:not(:last-child) {
           @include border-end-radius(0);

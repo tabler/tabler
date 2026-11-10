@@ -80,6 +80,8 @@ const CLASS_NAME_CANVAS = `${NAME}-canvas`
 
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 
+// Palette names looked up as `--tblr-<name>` on the root element; the hex
+// values are the fallback for a page that loads the script without the CSS.
 const PALETTE: [string, string][] = [
   ['blue', '#066fd1'],
   ['azure', '#4299e1'],
@@ -95,6 +97,8 @@ const PALETTE: [string, string][] = [
   ['cyan', '#17a2b8'],
 ]
 
+// The physics below is tuned for this viewport height; taller windows get
+// proportionally faster pieces so the fall takes the same time everywhere.
 const REFERENCE_HEIGHT = 800
 const FRAME_MS = 1000 / 60
 const MAX_DPR = 2
@@ -200,6 +204,8 @@ const stage = {
       return
     }
 
+    // The backing store is scaled for HiDPI screens; the CSS size above keeps
+    // the element at the viewport size, so the drawing stays sharp and 1:1.
     const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
     this.canvas.width = document.documentElement.clientWidth * dpr
     this.canvas.height = window.innerHeight * dpr
@@ -229,6 +235,8 @@ const stage = {
     }
   },
 
+  // Pour: the share of pieces emitted by time t follows 1 - e^(-k t), so the
+  // first frames get the most and the tail thins out to single pieces.
   _pour(emitter: Emitter, now: number): void {
     const { count, duration, decay } = emitter.config
     const elapsed = now - emitter.startedAt
@@ -252,6 +260,8 @@ const stage = {
       return
     }
 
+    // Steps are scaled to the real frame time so a 120 Hz screen or a
+    // throttled tab animate at the same pace as 60 Hz.
     const step = Math.min((now - this.lastTick) / FRAME_MS, 3)
     this.lastTick = now
 
@@ -287,6 +297,7 @@ const stage = {
       context.globalAlpha = p.alpha
       context.translate(p.x, p.y)
       context.rotate(p.angle)
+      // The flip squashes the piece along one axis, which reads as tumbling.
       context.scale(1, Math.cos(p.flip))
       context.fillStyle = p.color
       context.fillRect(-p.w / 2, -p.h / 2, p.w, p.h)
@@ -303,6 +314,8 @@ const stage = {
     this.frame = requestAnimationFrame((next) => this._tick(next))
   },
 
+  // An emitter is finished once it pours nothing more and none of its pieces
+  // is still in the air; `end` fires on its element and it leaves the stage.
   _settle(now: number): void {
     for (let i = this.emitters.length - 1; i >= 0; i--) {
       const emitter = this.emitters[i]
@@ -340,6 +353,7 @@ class Confetti extends BaseComponent {
     super(element, config)
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -352,6 +366,7 @@ class Confetti extends BaseComponent {
     return NAME
   }
 
+  // Public
   burst(): void {
     const startEvent = EventHandler.trigger(this._element, EVENT_START)
 
@@ -359,6 +374,8 @@ class Confetti extends BaseComponent {
       return
     }
 
+    // A second burst while one is pouring restarts the pour; pieces already
+    // in the air keep falling.
     this.stop()
 
     if (prefersReducedMotion()) {
@@ -400,6 +417,7 @@ class Confetti extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _configAfterMerge(config: BaseConfig): BaseConfig {
     if (typeof config.colors === 'string') {
       config.colors = config.colors
@@ -417,6 +435,8 @@ class Confetti extends BaseComponent {
       return colors
     }
 
+    // The palette is read at burst time, so a theme switched at runtime is
+    // picked up without re-creating the instance.
     const style = getComputedStyle(document.documentElement)
     return PALETTE.map(([name, fallback]) => style.getPropertyValue(`--tblr-${name}`).trim() || fallback)
   }
@@ -442,6 +462,9 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   const config = Manipulator.getDataAttributes(this)
   const instance = Confetti.getOrCreateInstance(target, config) as Confetti
 
+  // The instance lives on the target and keeps the config it was created
+  // with, so re-read the trigger's options on every click; several triggers
+  // can then share one target with their own look.
   if (target !== this) {
     instance._config = instance._getConfig(config) as ComponentConfig
   }

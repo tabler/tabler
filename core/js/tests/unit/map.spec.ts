@@ -3,6 +3,8 @@ import { clearFixture, getFixture } from '../helpers/fixture'
 import MapView from '../../src/map'
 import type { MapLibrary } from '../../src/map'
 
+// A stand-in for MapLibre GL JS: it records what the component asks for,
+// so the tests need no WebGL and no network.
 type Listener = () => void
 
 class FakeMap {

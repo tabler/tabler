@@ -1,3 +1,7 @@
+//
+// Base styles
+//
+
 @use '../config' as *;
 
 .btn {
@@ -18,9 +22,14 @@
   --btn-hover-border-color: transparent;
   --btn-box-shadow: #{$btn-box-shadow};
   --btn-disabled-opacity: #{$btn-disabled-opacity};
+  // Disabled reuses the button's own colors, dimmed by the opacity above.
+  // Without these the `:disabled` rule reads tokens only the color variants
+  // set, so a plain button fell back to `currentColor` for the border.
   --btn-disabled-color: var(--btn-color);
   --btn-disabled-bg: var(--btn-bg);
   --btn-disabled-border-color: var(--btn-border-color);
+  // Zero-size shadow, not `none`: the active state is combined with the focus
+  // ring in one `box-shadow` list, where `none` would negate every other shadow
   --btn-active-shadow: 0 0 0 #000;
   // scss-docs-end btn-css-vars
 
@@ -42,6 +51,7 @@
   @include gradient-bg(var(--btn-bg));
   @include box-shadow(var(--btn-box-shadow));
   @include transition($btn-transition);
+  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
   &:hover {
@@ -52,6 +62,7 @@
   }
 
   .btn-check + &:hover {
+    // override for the checkbox/radio buttons
     color: var(--btn-color);
     background-color: var(--btn-bg);
     border-color: var(--btn-border-color);
@@ -76,6 +87,7 @@
   &.show {
     color: var(--btn-active-color);
     background-color: var(--btn-active-bg);
+    // Remove CSS gradients if they're enabled
     background-image: if(sass($enable-gradients): none; else: null);
     border-color: var(--btn-active-border-color);
     @include box-shadow(var(--btn-active-shadow));
@@ -93,6 +105,10 @@
     @include box-shadow(none);
   }
 }
+
+//
+// Alternate buttons
+//
 
 // scss-docs-start btn-variant-loops
 @each $color, $value in $theme-colors {
@@ -121,6 +137,11 @@
 }
 // scss-docs-end btn-variant-loops
 
+//
+// Link buttons
+//
+
+// Make a button look and behave like a link
 .btn-link {
   --btn-font-weight: #{$font-weight-normal};
   --btn-color: #{$btn-link-color};
@@ -132,7 +153,7 @@
   --btn-active-border-color: transparent;
   --btn-disabled-color: #{$btn-link-disabled-color};
   --btn-disabled-border-color: transparent;
-  --btn-box-shadow: 0 0 0 #000;
+  --btn-box-shadow: 0 0 0 #000; // Can't use `none` as keyword negates all values when used with multiple shadows
 
   text-decoration: $link-decoration;
   @if $enable-gradients {
@@ -151,7 +172,13 @@
   &:hover {
     color: var(--btn-hover-color);
   }
+
+  // No need for an active state here
 }
+
+//
+// Button Sizes
+//
 
 .btn-lg {
   @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $btn-border-radius-lg);

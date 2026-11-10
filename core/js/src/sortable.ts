@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
+// The part of a SortableJS instance the component uses
 interface SortableInstance {
   option(name: string, value?: unknown): unknown
   toArray(): string[]
@@ -29,6 +30,8 @@ const DATA_ATTRIBUTE = `data-${NAME}`
 
 const SELECTOR_DATA_SORTABLE = `[${DATA_ATTRIBUTE}]`
 
+// SortableJS defaults apply. Set `forceFallback: true` to drag an HTML copy that
+// `.sortable-drag` can style, instead of the browser's drag image.
 const Default: ComponentConfig = {}
 
 const DefaultType: Record<string, string> = {}
@@ -57,6 +60,7 @@ class Sortable extends BaseComponent {
     this._sortable = new window.Sortable(this._element, this._config)
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -74,6 +78,7 @@ class Sortable extends BaseComponent {
     return this._sortable
   }
 
+  // Public
   toArray(): string[] {
     return this._sortable?.toArray() ?? []
   }
@@ -87,13 +92,17 @@ class Sortable extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
+    // `data-sortable='{"animation":150}'` carries the options as JSON; a bare
+    // `data-sortable` or invalid JSON means defaults.
     let dataOptions: Record<string, unknown> = {}
     const raw = element?.getAttribute(DATA_ATTRIBUTE)
 
     if (raw) {
       try {
         const parsed: unknown = JSON.parse(raw)
+        // Only an object carries options; `null`, a number or an array is ignored.
         if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
           dataOptions = parsed as Record<string, unknown>
         }

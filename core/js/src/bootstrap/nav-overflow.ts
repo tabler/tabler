@@ -142,6 +142,7 @@ class NavOverflow extends BaseComponent {
     this._init()
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -154,6 +155,7 @@ class NavOverflow extends BaseComponent {
     return NAME
   }
 
+  // Public
   update(): void {
     this._calculateOverflow()
     EventHandler.trigger(this._element, EVENT_UPDATE)
@@ -182,6 +184,7 @@ class NavOverflow extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _init(): void {
     this._ownsClass = !this._element.classList.contains(CLASS_NAME_OVERFLOW)
     this._element.classList.add(CLASS_NAME_OVERFLOW)
@@ -195,6 +198,7 @@ class NavOverflow extends BaseComponent {
       }
     }
 
+    // Tabs switch on the original link, so copy the new state to the menu
     EventHandler.on(this._element, `${EVENT_TAB_SHOWN}${EVENT_KEY}`, () => this._syncStates())
 
     this._collapseBelow = this._resolveCollapseBelow()
@@ -307,6 +311,7 @@ class NavOverflow extends BaseComponent {
       return
     }
 
+    // Observe the wrapper, never the nav: collapsing items resizes the nav and would loop
     this._resizeObserver = new ResizeObserver(() => {
       this._calculateOverflow()
     })
@@ -328,9 +333,11 @@ class NavOverflow extends BaseComponent {
   _calculateOverflow(): void {
     const overflowItem = this._overflowToggle?.closest<HTMLElement>(SELECTOR_NAV_ITEM) ?? null
 
+    // Measure with every item shown, so widths never depend on the last pass
     this._setHidden([], overflowItem, false)
     const itemsToOverflow = this._getItemsToOverflow(overflowItem)
 
+    // Leave the menu alone when nothing moves, so a resize does not close it
     if (itemsToOverflow.length === this._lastOverflow.length && itemsToOverflow.every((item, index) => item === this._lastOverflow[index])) {
       this._setHidden(this._overflowItems, overflowItem)
       return
@@ -342,6 +349,7 @@ class NavOverflow extends BaseComponent {
   }
 
   _getItemsToOverflow(overflowItem: HTMLElement | null): HTMLElement[] {
+    // A vertical nav, like a collapsed navbar, has room for every item
     if (getComputedStyle(this._nav).flexDirection.startsWith('column')) {
       return []
     }
@@ -369,6 +377,7 @@ class NavOverflow extends BaseComponent {
       }
     }
 
+    // Everything fits once the toggle is gone, so do not reserve room for it
     if (itemsToOverflow.length > 0 && usedWidth <= availableWidth - keepWidth + 1) {
       itemsToOverflow = []
     }
@@ -447,6 +456,7 @@ class NavOverflow extends BaseComponent {
     return hasSubmenu
   }
 
+  // Move the original menu (not a clone) so nested dropdowns, ids and state stay on one element
   _relocateAsSubmenu(item: HTMLElement, link: HTMLElement, menu: HTMLElement): HTMLElement {
     this._resetMenu(link, menu)
     item.classList.remove(CLASS_NAME_SHOW)
@@ -457,6 +467,7 @@ class NavOverflow extends BaseComponent {
       nextSibling: menu.nextSibling,
     })
 
+    // An end-aligned menu sits at the inline end, so its submenus open towards the start
     const submenu = document.createElement('div')
     submenu.className = this._overflowMenu?.classList.contains(CLASS_NAME_MENU_END) ? CLASS_NAME_SUBMENU_START : CLASS_NAME_SUBMENU
     submenu.append(this._cloneAsMenuItem(link, true), menu)
@@ -464,6 +475,7 @@ class NavOverflow extends BaseComponent {
     return submenu
   }
 
+  // A link that drives a plugin, like a tab, acts through the original, which holds the state
   _cloneAsProxy(link: HTMLElement): HTMLElement {
     const clonedLink = this._cloneAsMenuItem(link)
 
@@ -605,6 +617,7 @@ class NavOverflow extends BaseComponent {
     this._overflowItems = []
   }
 
+  // Static
   static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
     return this.each(function (this: HTMLElement) {
       const data = NavOverflow.getOrCreateInstance(this, config as BaseComponentConfig) as unknown as Record<string, (arg?: unknown) => unknown>

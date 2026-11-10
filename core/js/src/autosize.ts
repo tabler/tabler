@@ -57,8 +57,12 @@ class Autosize extends BaseComponent {
     this._element.style.resize = 'none'
     this._element.style.overflowY = 'hidden'
 
+    // `input` is not in EventHandler's list of native events, so it is bound
+    // directly.
     this._element.addEventListener('input', this._onInput)
 
+    // Text wraps differently when the field changes width (a resized window,
+    // a collapsing sidebar), so the height is measured again then.
     if (typeof ResizeObserver !== 'undefined') {
       this._observer = new ResizeObserver(() => {
         if (this._element.offsetWidth !== this._width) {
@@ -72,6 +76,7 @@ class Autosize extends BaseComponent {
     this.update()
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -84,22 +89,30 @@ class Autosize extends BaseComponent {
     return NAME
   }
 
+  // Public
   update(): void {
     const element = this._element
     if (!element.isConnected || element.getClientRects().length === 0) {
       return
     }
 
+    // Collapsing the field to measure it can move the page and any
+    // scrolled ancestor; their scroll positions are put back afterwards.
     const scrolled = this._scrolledAncestors()
     const style = getComputedStyle(element)
+    // scrollHeight is the padding box: a border-box field adds its borders, a
+    // content-box field drops its padding.
     const extra = style.boxSizing === 'border-box' ? Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth) : -(Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom))
     const before = element.style.height
 
+    // Measured without a scrollbar: one left over from the previous size
+    // would wrap the text and add a phantom line.
     element.style.overflowY = 'hidden'
     element.style.height = 'auto'
     const height = `${element.scrollHeight + extra}px`
     element.style.height = height
 
+    // Past max-height the content no longer fits, so let the field scroll.
     element.style.overflowY = element.scrollHeight > element.clientHeight ? 'auto' : 'hidden'
     for (const [ancestor, scrollTop] of scrolled) {
       ancestor.scrollTop = scrollTop
@@ -110,6 +123,7 @@ class Autosize extends BaseComponent {
     }
   }
 
+  // Private
   _scrolledAncestors(): Array<[Element, number]> {
     const scrolled: Array<[Element, number]> = []
     let node: Element | null = this._element.parentElement

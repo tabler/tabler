@@ -58,6 +58,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
  * Helpers
  */
 
+// The `hidden` DOM property belongs to HTMLElement, so an `<svg>` ignores it.
+// The attribute works on any element.
 const toggleHidden = (element: Element, hidden: boolean): void => {
   if (hidden) {
     element.setAttribute('hidden', '')
@@ -92,10 +94,13 @@ class Clipboard extends BaseComponent {
       return
     }
 
+    // Several of each are allowed: an icon-only button pairs a check icon with
+    // a visually hidden word, and both switch together.
     this._labels = SelectorEngine.find(SELECTOR_LABEL, this._element)
     this._feedbacks = SelectorEngine.find(SELECTOR_FEEDBACK, this._element)
 
     for (const feedback of this._feedbacks) {
+      // Revealed rather than restyled, so a screen reader announces it.
       toggleHidden(feedback, true)
 
       if (!feedback.hasAttribute('role')) {
@@ -109,6 +114,7 @@ class Clipboard extends BaseComponent {
     })
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -136,9 +142,12 @@ class Clipboard extends BaseComponent {
       return source.value
     }
 
+    // innerText keeps line breaks and skips hidden text such as a
+    // visually-hidden label; textContent is the fallback for SVG.
     return (source instanceof HTMLElement ? source.innerText : ((source as Element).textContent ?? '')).trim()
   }
 
+  // Public
   async copy(): Promise<void> {
     const { text } = this
 
@@ -169,7 +178,10 @@ class Clipboard extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
+    // The text is copied as written: `data-bs-text="007"` or `"true"` must not
+    // be read as a number or a boolean the way other data attributes are.
     const raw = element?.getAttribute(ATTRIBUTE_TEXT) ?? element?.getAttribute(ATTRIBUTE_TEXT_ALIAS)
     const dataOptions: Record<string, unknown> = raw === null || raw === undefined ? {} : { text: raw }
 

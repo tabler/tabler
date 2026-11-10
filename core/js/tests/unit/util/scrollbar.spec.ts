@@ -92,6 +92,7 @@ describe('ScrollBar', () => {
       document.body.appendChild(fixtureEl)
 
       const fixedEl = fixtureEl.querySelector('.fixed-top')! as HTMLElement
+      // jsdom doesn't compute layout, so mock clientWidth to simulate full-width element
       vi.spyOn(fixedEl, 'clientWidth', 'get').mockReturnValue(window.innerWidth - 15)
       const scrollBar = new ScrollBarHelper()
       scrollBar.hide()
@@ -186,6 +187,8 @@ describe('ScrollBar', () => {
       document.body.appendChild(fixtureEl)
 
       const stickyEl = fixtureEl.querySelector('.sticky-top')! as HTMLElement
+      // clientWidth 0 (jsdom default) + scrollbarWidth 15 = 15, which is < innerWidth 1024
+      // So this element will be skipped
 
       const scrollBar = new ScrollBarHelper()
       scrollBar.hide()

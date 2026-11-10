@@ -66,9 +66,12 @@ class SwitchIcon extends BaseComponent {
       this._element.setAttribute('aria-pressed', String(this.isActive))
     }
 
+    // The button usually sits inside a clickable row or card; the click must
+    // not reach it.
     EventHandler.on(this._element, EVENT_CLICK, (event: Event) => {
       event.stopPropagation()
 
+      // `.disabled` only blocks the pointer; Enter and Space still fire a click
       if (this._element.classList.contains(CLASS_NAME_DISABLED) || this._element.getAttribute('aria-disabled') === 'true') {
         return
       }
@@ -77,6 +80,7 @@ class SwitchIcon extends BaseComponent {
     })
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -97,6 +101,7 @@ class SwitchIcon extends BaseComponent {
     return this.#iconElement.classList.contains(CLASS_NAME_LOADING)
   }
 
+  // Public
   toggle(force?: boolean): void {
     if (this.isLoading) {
       return
@@ -104,6 +109,9 @@ class SwitchIcon extends BaseComponent {
 
     const active = force ?? !this.isActive
 
+    // A listener can cancel with preventDefault(), or hand over a promise with
+    // wait(): the button shows a spinner until it settles and switches only
+    // when it resolves.
     let pending: Promise<unknown> | undefined
     const toggleEvent = EventHandler.trigger(this._element, EVENT_TOGGLE, {
       active,
@@ -131,11 +139,14 @@ class SwitchIcon extends BaseComponent {
   }
 
   dispose(): void {
+    // A wait() still pending must not leave the spinner on the button.
     this.#setLoading(false)
     super.dispose()
   }
 
+  // Private
   #setActive(active: boolean): void {
+    // A pending wait() may settle after dispose().
     if (!this._element) {
       return
     }

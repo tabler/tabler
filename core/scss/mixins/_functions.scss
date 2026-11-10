@@ -7,18 +7,33 @@
 @use '../settings' as *;
 @use 'bootstrap/breakpoints' as *;
 
+// Mixes two colours in `oklab` so tints and shades stay perceptually even, then
+// clips the result to the sRGB gamut so every consumer (`luminance()`,
+// `to-rgb()`, the emitted `rgb()` values) keeps working on legacy channels.
 @function mix-color($color1, $color2, $weight: 50%) {
   @return color.to-gamut(color.mix($color1, $color2, $weight, $method: oklab), $space: rgb, $method: clip);
 }
 
+// Runtime counterpart of `mix-color()`: returns a CSS `color-mix()` so the token
+// follows `--tblr-*` overrides in the browser. Use it only where the result is
+// emitted as-is; it cannot feed `color-contrast()`, `to-rgb()` or `luminance()`.
 @function mix-color-css($color1, $color2, $weight: 50%) {
   @return color-mix(in oklab, #{$color1} #{to-percentage($weight)}, #{$color2});
 }
 
+// Shifts lightness in `oklch` (perceptual, keeps hue and chroma) and clips the
+// result to sRGB. `$amount` is a percentage added to the oklch L channel.
 @function adjust-lightness($color, $amount) {
   @return color.to-gamut(color.adjust($color, $lightness: $amount, $space: oklch), $space: rgb, $method: clip);
 }
 
+// Runtime counterpart of `adjust-lightness()`: relative color syntax, so the
+// token follows `--tblr-*` overrides in the browser. Emit-only, like `mix-color-css()`.
+//
+// Only `l` goes through `calc()`. Safari before 18 resolves `h` to an angle, so
+// `calc(h + 30)` is invalid there and needs `calc(h + 30deg)`; `l` and `c` are
+// numbers in every browser. The origin must be a plain color: Safari before 18
+// does not take `currentcolor`, a system color or `light-dark()` there.
 @function adjust-lightness-css($color, $amount) {
   $delta: math.div($amount, 100%);
   $sign: if(sass($delta < 0): '-'; else: '+');
@@ -32,6 +47,9 @@
   @return $value;
 }
 
+// Mixes in `oklab` so tints against an opaque background (e.g. alert backgrounds
+// over `--bg-surface`) stay perceptually even; mixing with `transparent` gives
+// the same result in every color space.
 @function color-transparent($color, $alpha: 1, $background: transparent) {
   @if $alpha == 1 or $alpha == 100% {
     @return $color;
@@ -39,14 +57,26 @@
   @return color-mix(in oklab, #{$color} #{to-percentage($alpha)}, $background);
 }
 
+// Focus ring colour of `$color`, as in Bootstrap v6: mixed with the page background
+// instead of made transparent, so the ring is opaque and looks the same on any
+// surface, and stronger in dark mode, where a 50% mix is too faint.
 @function focus-ring-color($color) {
   @return light-dark(color-transparent($color, calc(var(--focus-ring-opacity) * 100%), var(--body-bg)), color-transparent($color, calc(var(--focus-ring-opacity-dark) * 100%), var(--body-bg)));
 }
 
+// Paints a monochrome svg data uri (authored with `black`) in a Sass colour, for
+// the few places that cannot use `mask-icon()`: a pseudo-element that already
+// carries a background, or a form control without pseudo-elements. Pass a Sass
+// colour, never `var()` — an svg image cannot resolve custom properties.
 @function svg-icon-color($svg, $color) {
   @return str-replace($svg, "'black'", "'#{$color}'");
 }
 
+// Bootstrap functions
+//
+// Utility mixins and functions for evaluating source code across our variables, maps, and mixins.
+
+// Colors
 @function to-rgb($value) {
   @return color.channel($value, 'red', $space: rgb), color.channel($value, 'green', $space: rgb), color.channel($value, 'blue', $space: rgb);
 }
@@ -66,6 +96,7 @@
   $_map: ();
 
   @each $key, $value in $map {
+    // allow to pass the $key and $value of the map as an function argument
     $_args: ();
     @each $arg in $args {
       $_args: list.append($_args, if(sass($arg == '$key'): $key; else: if(sass($arg == '$value'): $value; else: $arg)));
@@ -83,6 +114,8 @@
 }
 // stylelint-enable scss/dollar-variable-pattern
 
+// Internal Bootstrap function to turn maps into its negative variant.
+// It prefixes the keys with `n` and makes the value negative.
 @function negativify-map($map) {
   $result: ();
   @each $key, $value in $map {
@@ -93,6 +126,14 @@
   @return $result;
 }
 
+// Replace `$search` with `$replace` in `$string`
+// Used on our SVG icon backgrounds for custom forms.
+//
+// @author Kitty Giraudel
+// @param {String} $string - Initial string
+// @param {String} $search - Substring to replace
+// @param {String} $replace ('') - New value
+// @return {String} - Updated string
 @function str-replace($string, $search, $replace: '') {
   $index: string.index($string, $search);
 
@@ -103,9 +144,14 @@
   @return $string;
 }
 
+// See https://codepen.io/kevinweber/pen/dXWoRw
+//
+// Requires the use of quotes around data URIs.
+
 @function escape-svg($string) {
   @if string.index($string, 'data:image/svg+xml') {
     @each $char, $encoded in $escaped-characters {
+      // Do not escape the url brackets
       @if string.index($string, 'url(') == 1 {
         $string: url('#{str-replace(string.slice($string, 6, -3), $char, $encoded)}');
       } @else {
@@ -117,6 +163,10 @@
   @return $string;
 }
 
+// Color contrast
+// See https://github.com/twbs/bootstrap/pull/30168
+
+// A list of pre-calculated numbers of pow(divide((divide($value, 255) + .055), 1.055), 2.4). (from 0 to 255)
 // stylelint-disable-next-line scss/dollar-variable-default, scss/dollar-variable-pattern
 $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0.0027 0.003 0.0033 0.0037 0.004 0.0044 0.0048 0.0052 0.0056 0.006 0.0065 0.007 0.0075 0.008 0.0086 0.0091 0.0097 0.0103 0.011 0.0116 0.0123 0.013 0.0137 0.0144 0.0152 0.016 0.0168 0.0176 0.0185 0.0194 0.0203 0.0212 0.0222 0.0232 0.0242
   0.0252 0.0262 0.0273 0.0284 0.0296 0.0307 0.0319 0.0331 0.0343 0.0356 0.0369 0.0382 0.0395 0.0409 0.0423 0.0437 0.0452 0.0467 0.0482 0.0497 0.0513 0.0529 0.0545 0.0561 0.0578 0.0595 0.0612 0.063 0.0648 0.0666 0.0685 0.0704 0.0723 0.0742 0.0762 0.0782 0.0802 0.0823 0.0844 0.0865 0.0887 0.0908 0.0931 0.0953 0.0976
@@ -152,6 +202,9 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return if(sass($l1 > $l2): divide($l1 + 0.05, $l2 + 0.05); else: divide($l2 + 0.05, $l1 + 0.05));
 }
 
+// Return WCAG2.2 relative luminance
+// See https://www.w3.org/TR/WCAG/#dfn-relative-luminance
+// See https://www.w3.org/TR/WCAG/#dfn-contrast-ratio
 @function luminance($color) {
   $rgb: (
     'r': math.round(color.channel($color, 'red', $space: rgb)),
@@ -172,22 +225,28 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return (map.get($rgb, 'r') * 0.2126) + (map.get($rgb, 'g') * 0.7152) + (map.get($rgb, 'b') * 0.0722);
 }
 
+// Return opaque color
+// opaque(#fff, rgba(0, 0, 0, .5)) => #808080
 @function opaque($background, $foreground) {
   @return color.mix(color.change($foreground, $alpha: 1), $background, color.channel($foreground, 'alpha') * 100%, $method: srgb);
 }
 
+// Tint a color: mix a color with white (in oklab, see `mix-color()`)
 @function tint-color($color, $weight) {
   @return mix-color(white, $color, $weight);
 }
 
+// Shade a color: mix a color with black (in oklab, see `mix-color()`)
 @function shade-color($color, $weight) {
   @return mix-color(black, $color, $weight);
 }
 
+// Shade the color if the weight is positive, else tint it
 @function shift-color($color, $weight) {
   @return if(sass($weight > 0): shade-color($color, $weight); else: tint-color($color, -$weight));
 }
 
+// Return valid calc
 @function add($value1, $value2, $return-calc: true) {
   @if $value1 == null {
     @return $value2;
@@ -270,6 +329,11 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return $result;
 }
 
+// Seeds a component token from a Sass variable that has a `:root` scale
+// counterpart. While the variable still holds `$default`, the token reads the
+// scale (`var(--btn-input-padding-y)`) and follows it at runtime; once a
+// project configured the variable from Sass, that value wins, as it did before
+// the scale existed. `$token` is the bare name of the root custom property.
 @function var-if-default($value, $default, $token) {
   @if $value == $default {
     @return var(#{$token});

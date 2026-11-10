@@ -43,6 +43,10 @@ const SOURCE_DATA = 'tabler-data'
 const SOURCE_ROUTE = 'tabler-route'
 const SOURCE_ROUTE_REST = 'tabler-route-rest'
 
+// The public API is typed with local copies of the MapLibre GL JS types.
+// `maplibre-gl` is loaded separately as `window.maplibregl`, so the published
+// `dist/types` must not import it: a project that never shows a map would
+// otherwise fail to type-check.
 type LngLat = [number, number]
 
 /** The part of a MapLibre GL JS map the `map` getter promises. Cast it to `Map` from `maplibre-gl` for the full type. */
@@ -164,6 +168,7 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   mapOptions: 'object',
 }
 
+// The buttons each name in the `controls` option stands for
 const Controls: Record<string, MapAction[]> = {
   zoom: ['zoom-in', 'zoom-out'],
   north: ['north'],
@@ -179,6 +184,8 @@ const Labels: Record<MapAction, string> = {
   'fullscreen': 'Full screen',
 }
 
+// Paint values by layer id of the OpenFreeMap `positron` and `dark` styles:
+// the first rule that matches a layer is used.
 const WHITE_HALO = 'rgba(255, 255, 255, 0.8)'
 const BLACK_HALO = 'rgba(0, 0, 0, 0.7)'
 
@@ -257,10 +264,13 @@ class MapView extends BaseComponent {
     if (window.maplibregl) {
       this._initMap(window.maplibregl)
     } else if (library) {
+      // The specifier is only known at run time, so the bundler must leave this import alone
       import(/* @vite-ignore */ library).then(
         (module: MapLibrary) => {
+          // Scripts on the page reach the library the same way as when the page loads it
           window.maplibregl ??= module
 
+          // Disposed while the library was loading
           if (this._element) {
             this._initMap(window.maplibregl)
           }
@@ -270,6 +280,7 @@ class MapView extends BaseComponent {
     }
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -291,6 +302,8 @@ class MapView extends BaseComponent {
   get markers(): MapMarkerInstance[] {
     return this._markers
   }
+
+  // Static
 
   /**
    * Turns a CSS color, or a custom property such as `--tblr-primary`, into a
@@ -318,6 +331,8 @@ class MapView extends BaseComponent {
 
     return `rgb(${red}, ${green}, ${blue})`
   }
+
+  // Public
 
   /** Runs the callback once the MapLibre map exists: right away, or after the library has loaded. */
   ready(callback: (map: MapInstance) => void): void {
@@ -385,8 +400,10 @@ class MapView extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _initMap(library: MapLibrary): void {
     const { center, zoom, controls, globe, mapOptions } = this._config
+    // The markers are read before MapLibre takes over the element
     const markerElements = [...this._element.querySelectorAll<HTMLElement>(SELECTOR_MARKER)]
 
     const map = new library.Map({
@@ -399,6 +416,8 @@ class MapView extends BaseComponent {
 
     this._map = map
 
+    // The palette, the layers and the projection are part of the style, so they
+    // are set again each time a style loads, for example after a theme change.
     map.on('style.load', () => {
       this._applyPalette()
       this._addLayers()
@@ -428,6 +447,7 @@ class MapView extends BaseComponent {
     }
   }
 
+  // Tabler buttons over the map. The icons come from the stylesheet, by action.
   _createControls(controls: true | string): void {
     const container = document.createElement('div')
 
@@ -459,6 +479,7 @@ class MapView extends BaseComponent {
     const template = element.querySelector<HTMLTemplateElement>(':scope > template')
     const marker = new library.Marker({ element, anchor, draggable }).setLngLat([Number(lng), Number(lat)])
 
+    // A data attribute is a string, a number or a boolean; anything else is no popup text
     const text = typeof popupText === 'object' ? '' : String(popupText ?? '')
 
     if (template || text) {
@@ -467,6 +488,7 @@ class MapView extends BaseComponent {
         className: template?.className ?? '',
         closeButton: Boolean(template && Manipulator.getDataAttribute(template, 'close-button')),
         maxWidth: 'none',
+        // A popup that is open from the start must not move the focus to itself
         focusAfterOpen: !popupOpen,
       })
 
@@ -514,6 +536,7 @@ class MapView extends BaseComponent {
   _getStyle(): string {
     const style = this._getStyleName()
 
+    // A bare name is an OpenFreeMap style; anything else is a URL
     return /^[\w-]+$/.test(style) ? `${STYLE_URL}${style}` : style
   }
 
@@ -534,6 +557,7 @@ class MapView extends BaseComponent {
     }
   }
 
+  // The `route` and `geojson` options, drawn in the layer color
   _addLayers(): void {
     const { route, routeProgress, geojson, layerColor } = this._config
     const map = this._map
@@ -562,6 +586,7 @@ class MapView extends BaseComponent {
       const line = (coordinates: LngLat[]): Record<string, unknown> => ({ type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } })
       const reached = routeProgress === null ? route.length : routeProgress + 1
 
+      // The part still ahead is dashed, and added first so the solid part covers its start
       if (reached < route.length) {
         map.addSource(SOURCE_ROUTE_REST, line(route.slice(reached - 1)))
         map.addLayer({ id: SOURCE_ROUTE_REST, type: 'line', source: SOURCE_ROUTE_REST, paint: { 'line-color': color, 'line-width': 3, 'line-opacity': 0.6, 'line-dasharray': [1, 2] } })
@@ -573,6 +598,8 @@ class MapView extends BaseComponent {
   }
 
   _setupThemeObserver(): void {
+    // Watch the root element as well: `data-bs-theme` may be added to it
+    // later, for example by the theme switcher.
     const ancestor = this._element.closest(SELECTOR_THEME) ?? document.documentElement
 
     if (this._config.mapTheme !== 'auto') {

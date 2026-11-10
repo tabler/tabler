@@ -1,3 +1,7 @@
+//
+// Labels
+//
+
 @use '../../config' as *;
 
 .form-label {
@@ -8,11 +12,13 @@
   color: $form-label-color;
 }
 
+// For use with horizontal and inline forms, when you need the label (or legend)
+// text to align with the form controls.
 .col-form-label {
   padding-top: calc(#{var-if-default($input-padding-y, $input-btn-padding-y, '--btn-input-padding-y')} + #{$input-border-width});
   padding-bottom: calc(#{var-if-default($input-padding-y, $input-btn-padding-y, '--btn-input-padding-y')} + #{$input-border-width});
-  margin-bottom: 0;
-  @include font-size(inherit);
+  margin-bottom: 0; // Override the `<legend>` default
+  @include font-size(inherit); // Override the `<legend>` default
   font-style: $form-label-font-style;
   font-weight: $form-label-font-weight;
   line-height: #{var-if-default($input-line-height, $input-btn-line-height, '--btn-input-line-height')};

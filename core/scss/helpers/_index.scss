@@ -1,15 +1,24 @@
 @use 'sass:map';
 
+//
+// Clearfix
+//
 @use '../config' as *;
 
 .clearfix {
   @include clearfix();
 }
 
+//
+// Text truncation
+//
 .text-truncate {
   @include text-truncate();
 }
 
+//
+// Vertical rule
+//
 .vr {
   display: inline-block;
   align-self: stretch;
@@ -19,6 +28,9 @@
   opacity: $hr-opacity;
 }
 
+//
+// Stretched link
+//
 .stretched-link {
   &::after {
     position: absolute;
@@ -30,16 +42,23 @@
     content: '';
   }
 
+  // .btn is positioned, which would make the button itself the containing block
   &.btn {
     position: static;
   }
 }
 
+//
+// Visually hidden
+//
 .visually-hidden,
 .visually-hidden-focusable:not(:focus):not(:focus-within) {
   @include visually-hidden();
 }
 
+//
+// Stacks
+//
 .hstack {
   display: flex;
   flex-direction: row;
@@ -53,6 +72,11 @@
   flex-direction: column;
   align-self: stretch;
 }
+
+//
+// Position
+//
+// Shorthand
 
 .fixed-top {
   position: fixed;
@@ -70,6 +94,7 @@
   z-index: $zindex-fixed;
 }
 
+// Responsive sticky top and bottom
 @each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
@@ -88,6 +113,9 @@
   }
 }
 
+//
+// Aspect ratio
+//
 .ratio {
   position: relative;
   width: 100%;
@@ -113,6 +141,9 @@
   }
 }
 
+//
+// Focus ring
+//
 .focus-ring {
   @include focus-ring-transition();
 }

@@ -17,8 +17,10 @@ import './src/sparkline'
 import './src/strength'
 import './src/number-input'
 
+// Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
 
+// Tabler's own components
 export { default as Autosize } from './src/autosize'
 export { default as Clipboard } from './src/clipboard'
 export { default as Confetti } from './src/confetti'

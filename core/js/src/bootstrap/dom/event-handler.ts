@@ -8,6 +8,7 @@
 import { getjQuery } from '../util/index.js'
 import type { JQueryEventLike } from '../types'
 
+// `this` is the element the handler was bound to, or the delegate target
 export type EventCallback<E extends Event = Event> = (this: HTMLElement, event: E) => void
 
 export type DelegatedEvent<E extends Event = Event> = E & { delegateTarget: HTMLElement }

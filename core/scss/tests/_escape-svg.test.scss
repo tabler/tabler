@@ -1,4 +1,10 @@
 @use 'sass:meta';
+// Tests for `escape-svg()` from scss/mixins/_functions.scss.
+//
+// It iterates the global `$escaped-characters` map, which lives in
+// scss/_settings.scss (already `@use`d by functions.scss), so a plain `@use` of
+// the functions module is enough — no fixtures. Escaping only happens when the
+// string looks like an SVG data URI; anything else is returned untouched.
 
 @use '../mixins/functions' as *;
 

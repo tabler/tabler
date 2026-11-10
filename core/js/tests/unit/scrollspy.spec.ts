@@ -136,6 +136,7 @@ describe('ScrollSpy', () => {
         target: '#navigation',
       })
 
+      // jsdom elements are not "visible" (getClientRects returns empty), so maps are empty
       expect(scrollSpy._targetLinks).toBeInstanceOf(Map)
       expect(scrollSpy._observableSections).toBeInstanceOf(Map)
     })
@@ -437,6 +438,7 @@ describe('ScrollSpy', () => {
 
       scrollSpy._activateParents(link)
 
+      // nav-link itself is handled by _process, parents via SelectorEngine.prev
       expect(link).toBeDefined()
     })
   })
@@ -517,6 +519,7 @@ describe('ScrollSpy', () => {
       const link2 = fixtureEl.querySelector('#a2') as HTMLElement
 
       scrollSpy._activateParents(link2)
+      // list-group-item doesn't have .dropdown-item, so it goes through nav parents path
       expect(link2).toBeDefined()
     })
   })
@@ -567,17 +570,21 @@ describe('ScrollSpy', () => {
         configurable: true,
       })
 
+      // Manually set _rootElement to a plain object without scrollTo
       const scrollSpy = new ScrollSpy(div, { offset: 1, smoothScroll: true })
       scrollSpy._initializeTargetsAndObservables()
 
+      // Remove scrollTo to test fallback
       delete (div as any).scrollTo
       scrollSpy._rootElement = div
 
+      // Re-enable smoothScroll handler
       scrollSpy._maybeEnableSmoothScroll()
 
       const link = fixtureEl.querySelector('[href="#div-jsm-1"]') as HTMLElement
       link.click()
 
+      // Should not throw - scrollTop assignment is the fallback
       expect(ScrollSpy.getInstance(div)).not.toBeNull()
     })
 

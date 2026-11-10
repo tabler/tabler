@@ -18,6 +18,8 @@ const pointerDownOnSlot = (input: HTMLInputElement, slot: HTMLElement): void => 
   input.dispatchEvent(new PointerEvent('pointerdown', { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2, cancelable: true, bubbles: true }))
 }
 
+// The test page loads no stylesheet, so `.otp-slot` has no real flex layout;
+// force a horizontal row of fixed-width slots for coordinate-based hit tests.
 const layoutSlotsHorizontally = (container: HTMLElement, slotWidth = 40): void => {
   container.style.display = 'inline-flex'
   for (const slot of container.querySelectorAll<HTMLElement>('.otp-slot')) {

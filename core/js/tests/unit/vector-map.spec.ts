@@ -182,6 +182,7 @@ describe('VectorMap', () => {
       expect(colorVar(2)).toBe('yellow')
       expect(colorVar(3)).toBe('green')
       expect(colorVar(4)).toBe('')
+      // The share of a region stays the same, only the stylesheet reads it differently
       expect(ratio('BB')).toBe('0.5')
     })
 
@@ -280,6 +281,7 @@ describe('VectorMap', () => {
       region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
       expect(spy).not.toHaveBeenCalled()
 
+      // A press that moves by a pixel or two is still a click
       const viewBox = el().querySelector('svg')!.getAttribute('viewBox')
       pointer('pointerdown', 100)
       pointer('pointermove', 102)
@@ -424,6 +426,7 @@ describe('VectorMap', () => {
       expect(steps()[0].style.getPropertyValue('--tblr-vector-map-value')).toBe('0')
       expect(steps().at(-1)!.style.getPropertyValue('--tblr-vector-map-value')).toBe('1')
       expect(el().querySelector('.vector-map-legend-scale')!.getAttribute('aria-hidden')).toBe('true')
+      // The legend comes after the drawing
       expect(el().lastElementChild).toBe(legend())
     })
 
@@ -673,12 +676,14 @@ describe('VectorMap', () => {
     it('should zoom with the wheel around the pointer and keep the page from scrolling', () => {
       zoomable()
 
+      // exp(500 * 0.002) is a little under 3 times
       const event = wheel(-500)
 
       expect(event.defaultPrevented).toBe(true)
       const [x, y, width, height] = viewBox()
       expect(width).toBeCloseTo(30 / Math.E, 1)
       expect(height).toBeCloseTo(10 / Math.E, 1)
+      // The middle of the map was under the pointer, so it is still in the middle
       expect(x + width / 2).toBeCloseTo(15, 0)
       expect(y + height / 2).toBeCloseTo(5, 0)
       expect(button('zoom-out').disabled).toBe(false)
@@ -721,6 +726,7 @@ describe('VectorMap', () => {
 
       region('AA').dispatchEvent(new MouseEvent('dblclick', { bubbles: true, clientX: el().getBoundingClientRect().left, clientY: el().getBoundingClientRect().top }))
 
+      // The top left corner was under the pointer, so it stays in the corner
       await vi.waitFor(() => {
         expect(viewBox()).toEqual([0, 0, 15, 5])
       })
@@ -742,6 +748,7 @@ describe('VectorMap', () => {
       wheel(-5000)
       expect(viewBox()).toEqual([7.5, 2.5, 15, 5])
 
+      // 300px show 15 units, so 40px is 2 units
       pointer('pointerdown', 100, 50)
       pointer('pointermove', 60, 50)
       expect(viewBox()).toEqual([9.5, 2.5, 15, 5])
@@ -776,6 +783,7 @@ describe('VectorMap', () => {
       pointer('pointerdown', rect.left + 160, y, 2)
       pointer('pointermove', rect.left + 180, y, 2)
 
+      // 20px between the fingers became 40px
       expect(viewBox()[2]).toBe(15)
     })
 
@@ -836,6 +844,7 @@ describe('VectorMap', () => {
       }
 
       expect(world.regions.PL.point).toBeUndefined()
+      // Dependencies are left out
       expect(world.regions.GI).toBeUndefined()
     })
 
@@ -845,6 +854,7 @@ describe('VectorMap', () => {
       new VectorMap(el(), { map: world })
 
       const svg = el().querySelector('svg')!
+      // The shapes are rounded to one decimal place
       const box = svg.getBBox()
       expect(box.x).toBeGreaterThanOrEqual(-0.05)
       expect(box.y).toBeGreaterThanOrEqual(-0.05)

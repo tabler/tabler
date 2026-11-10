@@ -4,6 +4,8 @@ Number input (a field with a decrease and an increase button)
 @use 'sass:map';
 @use '../../config' as *;
 
+// One bordered box, like a `.form-control`: the field in the middle and the
+// two buttons inside it have no border of their own.
 .number-input {
   // scss-docs-start number-input-css-vars
   --number-input-input-width: #{$number-input-input-width};
@@ -14,6 +16,7 @@ Number input (a field with a decrease and an increase button)
   position: relative;
   display: inline-flex;
   align-items: stretch;
+  // Never stretched by a flex column parent: the box is as wide as its parts
   width: fit-content;
   vertical-align: middle;
   background-color: var(--number-input-bg);
@@ -22,6 +25,7 @@ Number input (a field with a decrease and an increase button)
   @include border-radius(var(--number-input-border-radius));
   @include focus-ring-transition(border-color);
 
+  // The box carries the focus ring for the field inside it.
   &:focus-within {
     --focus-ring-offset: -1px;
     border-color: $input-focus-border-color;
@@ -46,6 +50,8 @@ Number input (a field with a decrease and an increase button)
     border-radius: 0;
     box-shadow: none;
 
+    // A `type="number"` field keeps its keyboard behaviour but loses the
+    // native spin buttons, which the number input's own buttons replace.
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       margin: 0;
@@ -58,6 +64,10 @@ Number input (a field with a decrease and an increase button)
       box-shadow: none;
     }
 
+    // The field is too narrow for the validation icon, which would sit on
+    // top of the number; the box border alone carries the state.
+    // `!important` because forms/_validation.scss forces the icon padding
+    // with one.
     @each $state, $data in $form-validation-states {
       &.is-#{$state},
       .was-validated &:#{$state} {
@@ -68,6 +78,7 @@ Number input (a field with a decrease and an increase button)
   }
 
   > .btn {
+    // With a unit, or `calc()` in the button's `min-width` has nothing to add
     // stylelint-disable-next-line length-zero-no-unit
     --btn-border-width: 0px;
     --btn-bg: transparent;
@@ -77,10 +88,13 @@ Number input (a field with a decrease and an increase button)
     --btn-hover-bg: var(--hover-bg);
     --btn-box-shadow: none;
     --focus-ring-offset: -2px;
+    // A held button must not select text or open the context menu on touch.
     touch-action: manipulation;
     user-select: none;
     border-radius: 0;
 
+    // An empty button paints the default icon through a CSS mask, so the
+    // markup needs no svg; any content put inside replaces it.
     &[data-bs-number-input-action='decrement'],
     &[data-tblr-number-input-action='decrement'] {
       --number-input-icon: #{escape-svg($number-input-icon-decrement)};
@@ -117,6 +131,8 @@ Number input (a field with a decrease and an increase button)
         outline-color: map.get($data, 'focus-ring-color');
       }
 
+      // The box sits between the field and its feedback text, so the
+      // `.is-invalid ~ .invalid-feedback` rule has to be repeated from here.
       ~ .#{$state}-feedback,
       ~ .#{$state}-tooltip {
         display: block;
@@ -125,6 +141,8 @@ Number input (a field with a decrease and an increase button)
   }
 }
 
+// Sizes move the same tokens `.form-control-sm` / `.btn-sm` and their `-lg`
+// twins read, so the field and the buttons keep one height.
 @each $size in (sm, lg) {
   .number-input-#{$size} {
     --number-input-input-width: #{map.get($number-input-input-widths, $size)};

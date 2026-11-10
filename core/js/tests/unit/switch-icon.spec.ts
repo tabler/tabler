@@ -111,6 +111,7 @@ describe('SwitchIcon', () => {
       expect(button().getAttribute('aria-busy')).toBe('true')
       expect(instance.isActive).toBe(false)
 
+      // a toggle while loading is ignored
       instance.toggle()
       expect(instance.isLoading).toBe(true)
 

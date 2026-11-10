@@ -112,6 +112,7 @@ describe('Sparkline', () => {
       new Sparkline('#line')
       new Sparkline('#bars')
 
+      // The range widens to include the threshold, so its line sits at the top padding.
       const guide = fixtureEl.querySelector('#line line')!
       expect(guide.getAttribute('y1')).toBe('2')
       expect(guide.getAttribute('stroke')).toBe('var(--tblr-sparkline-threshold)')

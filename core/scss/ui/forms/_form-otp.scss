@@ -18,9 +18,16 @@
   gap: var(--otp-gap);
   align-items: center;
   min-height: var(--otp-size);
+  // `.otp` is the only content on its line, so its own baseline (derived from
+  // whichever slot the flex baseline algorithm picks) never has to matter -
+  // otherwise an empty vs. active slot resolve to different baselines and the
+  // line box around `.otp` grows or shrinks by a few pixels between them.
   vertical-align: bottom;
 }
 
+// Before the script renders the slots, the input keeps a `.form-control`-like
+// look and the `.otp` wrapper's `min-height` already matches it - no layout
+// shift once `.otp-rendered .otp-input` below takes over.
 .otp > input {
   width: 100%;
   height: var(--otp-size);
@@ -33,6 +40,8 @@
   @include border-radius(var(--otp-slot-border-radius));
 }
 
+// The real input is a transparent overlay on top of the rendered slots, so
+// screen readers, password managers and SMS autofill see one ordinary field.
 .otp-rendered .otp-input {
   position: absolute;
   inset: 0;
@@ -45,8 +54,12 @@
   caret-color: transparent;
   background-color: transparent;
   border: 0;
+  // The base `.otp > input` rule sets this for the pre-render fallback look;
+  // the overlay itself must stay invisible, or its shadow spans every slot.
   box-shadow: none;
 
+  // The active slot draws its own focus ring; the native outline would
+  // otherwise wrap the whole overlay input, spanning every slot at once.
   &:focus {
     outline: 0;
   }
@@ -81,6 +94,8 @@
 }
 
 .otp-slot-active {
+  // Bring the focused slot to the front so its ring isn't clipped by the
+  // next slot in `.otp-connected`, where slots overlap by their border width.
   z-index: 1;
 
   --focus-ring-offset: -1px;
@@ -102,6 +117,8 @@
   background-color: #{var-if-default($input-disabled-bg, var(--bg-forms-disabled), '--control-disabled-bg')};
 }
 
+// Zero gap with shared, merged borders; only the first and last slot keep a
+// rounded corner. Not meant to be combined with `groups`/`separator`.
 .otp-connected {
   --otp-gap: 0;
 

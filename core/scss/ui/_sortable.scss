@@ -1,3 +1,6 @@
+//
+// Sortable
+//
 @use '../config' as *;
 
 .sortable-ghost,
@@ -61,6 +64,8 @@ tr.sortable-selected {
   opacity: 1 !important; // stylelint-disable-line declaration-no-important
   transition: none;
 
+  // Only the `forceFallback` copy tilts: in native drag mode the class lands on
+  // the element itself, and rotating it moves the handle out from under the pointer.
   &.sortable-fallback {
     /* rtl:ignore */
     rotate: calc(var(--sortable-drag-rotate) * var(--dir));

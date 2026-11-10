@@ -1,3 +1,7 @@
+// Some functions return a `calculation`, an unquoted `color-mix(...)` string, or
+// a `url(...)` token; those are asserted through `meta.inspect(...)` so the
+// comparison is against the exact rendered output.
+
 @use 'sass:meta';
 @use '../mixins/functions' as *;
 
@@ -65,6 +69,9 @@
 }
 
 @include describe('map-loop') {
+  // Applies a module-level function (resolved by name via meta.get-function) to
+  // every value in the map. `to-percentage` lives in the same module, so it
+  // resolves correctly.
   @include it('maps every value through the named function') {
     @include assert-equal(
       map-loop(

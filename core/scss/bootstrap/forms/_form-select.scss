@@ -1,7 +1,15 @@
+// Select
+//
+// Replaces the browser default select with a custom one, mostly pulled from
+// https://primer.github.io/.
+
 @use 'sass:list';
 @use 'sass:meta';
 @use '../../config' as *;
 
+// The `--control-*` tokens come from the shared block in `_form-control.scss`.
+// A `$form-select-*` variable defaults to its `$input-*` twin; only a value a
+// project changed on its own has to be written again here.
 @mixin -select-token($token, $value, $default) {
   @if $value != $default {
     #{$token}: #{$value};
@@ -14,6 +22,8 @@
   --control-select-bg-dark: #{escape-svg($form-select-indicator-dark)};
   --control-select-bg-position: #{if(sass($form-select-bg-position == (right $form-select-padding-x center)): right var(--control-padding-x) center; else: $form-select-bg-position)};
   --control-select-bg-size: #{$form-select-bg-size};
+  // Room for the arrow: the padding on both sides of it plus its width. A
+  // keyword size (`auto`, `cover`) has no width to add, so it keeps the Sass value.
   --control-select-indicator-padding: #{if(sass($form-select-indicator-padding == $form-select-padding-x * 3 and meta.type-of(list.nth($form-select-bg-size, 1)) == number): calc(var(--control-padding-x) * 2 + #{list.nth($form-select-bg-size, 1)}); else: $form-select-indicator-padding)};
   // scss-docs-end form-select-css-vars
   @include -select-token(--control-padding-y, $form-select-padding-y, $input-padding-y);
@@ -52,6 +62,7 @@
   @include border-radius(var(--control-border-radius), 0);
   @include box-shadow(var(--control-box-shadow));
   @include transition(var(--control-transition));
+  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
   &:focus {
@@ -72,12 +83,15 @@
     border-color: var(--control-disabled-border-color);
   }
 
+  // Remove outline from select box in FF
   &:-moz-focusring {
     color: transparent;
     text-shadow: 0 0 0 var(--control-fg);
   }
 }
 
+// A size moves the same tokens as `.form-control-sm/-lg`, line height
+// included, so a select and an input of one size are equally tall.
 .form-select-sm {
   --control-padding-y: #{var-if-default($form-select-padding-y-sm, $input-btn-padding-y-sm, '--btn-input-sm-padding-y')};
   --control-padding-x: #{var-if-default($form-select-padding-x-sm, $input-btn-padding-x-sm, '--btn-input-sm-padding-x')};

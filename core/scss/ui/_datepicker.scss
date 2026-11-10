@@ -1,6 +1,17 @@
+// Datepicker
+//
+// Styles the `data-vc-*` markup that Vanilla Calendar Pro renders, the same way
+// Bootstrap 6 does: the calendar grid is one set of tokens (`--calendar-*`),
+// the popup surface the datepicker adds around it is another (`--datepicker-*`).
+// An inline calendar renders unadorned and takes the surface of its container.
+
 @use '../config' as *;
 
 // stylelint-disable selector-max-attribute, selector-no-qualifying-type -- the plugin marks everything with data attributes
+
+//
+// Calendar grid
+//
 
 [data-vc='calendar'] {
   --calendar-padding: #{$datepicker-calendar-padding};
@@ -41,6 +52,7 @@
   }
 }
 
+// Month navigation
 [data-vc-arrow] {
   position: relative;
   display: block;
@@ -74,6 +86,8 @@
   transform: rotate(-90deg);
 }
 
+// The controls overlay the header, so they repeat the calendar's own inset to
+// keep the arrows aligned with the content below.
 [data-vc='controls'] {
   position: absolute;
   top: 0;
@@ -102,6 +116,7 @@
   min-width: 240px;
 }
 
+// Header: month and year
 [data-vc='header'] {
   position: relative;
   display: flex;
@@ -138,6 +153,7 @@
   }
 }
 
+// Holds the week numbers column, when enabled, next to the month
 [data-vc='wrapper'] {
   display: flex;
   flex-grow: 1;
@@ -149,6 +165,8 @@
   flex-direction: column;
 }
 
+// Month and year views. The plugin wraps each set in role="row" and
+// role="gridcell" elements, so the column grid goes on the row.
 [data-vc='months'],
 [data-vc='years'] {
   display: flex;
@@ -214,6 +232,7 @@
   }
 }
 
+// Weekday header
 [data-vc='week'] {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -241,6 +260,8 @@ button[data-vc-week-day] {
   cursor: pointer;
 }
 
+// Week numbers: a column in front of the month, with a title that lines up
+// with the weekday header and one number for each row of dates.
 [data-vc-week='numbers'] {
   display: flex;
   flex-direction: column;
@@ -279,6 +300,7 @@ button[data-vc-week-day] {
   color: var(--calendar-week-number-color);
 }
 
+// Dates grid
 [data-vc='dates'] {
   pointer-events: none;
 }
@@ -308,6 +330,9 @@ button[data-vc-week-day] {
   }
 }
 
+// A day paints its background from two variables: the colour a state picks
+// and the opacity it gets. States change the variables, never `opacity`, so
+// the date stays readable on a faded background.
 [data-vc-date-btn] {
   --calendar-day-bg: transparent;
   --calendar-day-bg-opacity: 100%;
@@ -334,12 +359,14 @@ button[data-vc-week-day] {
   }
 }
 
+// Today
 [data-vc-date-today] [data-vc-date-btn] {
   font-weight: $font-weight-bold;
   --calendar-day-bg: var(--calendar-day-today-bg);
   color: var(--calendar-day-today-color);
 }
 
+// Days of the previous and next month
 [data-vc-date-month='next'] [data-vc-date-btn],
 [data-vc-date-month='prev'] [data-vc-date-btn] {
   --calendar-day-bg-opacity: 50%;
@@ -350,6 +377,8 @@ button[data-vc-week-day] {
   color: var(--calendar-day-disabled-color);
 }
 
+// Range selection: the hovered and selected runs join into one bar, so only the
+// outer corners keep their radius. Logical corners follow the writing direction.
 [data-vc-date-hover] [data-vc-date-btn] {
   --calendar-day-bg: var(--calendar-day-hover-bg);
   border-radius: 0;
@@ -374,6 +403,8 @@ button[data-vc-week-day] {
   color: var(--calendar-day-selected-color);
 }
 
+// Inside a range only the two ends are solid; the days between keep their own
+// text colour on a faint tint of the selected colour.
 [data-vc-date-selected='middle'] [data-vc-date-btn] {
   --calendar-day-bg-opacity: #{$datepicker-calendar-range-bg-opacity};
   color: var(--calendar-color);
@@ -398,6 +429,12 @@ button[data-vc-week-day] {
   border-radius: var(--calendar-border-radius);
 }
 
+//
+// Popup surface
+//
+// The plugin adds `[data-vc-input]` only when it owns a popup, so inline
+// calendars keep the bare grid styling above.
+
 [data-vc='calendar'][data-vc-input] {
   --datepicker-padding: #{$datepicker-padding};
   --datepicker-bg: #{$datepicker-bg};
@@ -409,10 +446,16 @@ button[data-vc-week-day] {
   position: absolute;
   z-index: var(--datepicker-zindex);
   min-width: var(--datepicker-min-width);
+  // Same surface as `.dropdown-menu`: the edge is the 1px ring inside the
+  // dropdown shadow, so the popup has no border of its own.
   background-color: var(--datepicker-bg);
   box-shadow: var(--datepicker-box-shadow);
   @include border-radius(var(--datepicker-border-radius));
 
+  // The plugin creates the popup at 0/0 with this attribute, positions it on
+  // show, and puts the attribute back on hide. The selector repeats the popup
+  // one so it wins on specificity; otherwise the popup flashes in the corner
+  // and never disappears.
   &[data-vc-calendar-hidden] {
     pointer-events: none;
     opacity: 0;

@@ -15,6 +15,8 @@ Password strength meter
   gap: var(--strength-gap);
   width: 100%;
 
+  // Spaced like a form hint, so the meter sits under the control it rates
+  // without a utility class at every call site.
   .form-control + &,
   .form-select + &,
   .input-group + &,
@@ -47,6 +49,7 @@ Password strength meter
   font-size: $strength-text-font-size;
   color: var(--strength-color, var(--secondary));
 
+  // An empty label must not reserve a line before the user types.
   &:empty {
     display: none;
   }

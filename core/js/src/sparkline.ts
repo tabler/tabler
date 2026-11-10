@@ -53,6 +53,8 @@ const CLASS_NAME_LABEL = 'sparkline-label'
 
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 
+// Custom properties are declared on `.sparkline` in scss/ui/_sparkline.scss and
+// get the `--tblr-` prefix at build time.
 const CSS_VAR_PREFIX = '--tblr-sparkline'
 const SVG_NS = 'http://www.w3.org/2000/svg'
 
@@ -111,6 +113,7 @@ const clampSpan = (min: number, max: number): number => {
   return span === 0 ? 1 : span
 }
 
+// Accepts "3,4,2" as well as a JSON array literal "[3,4,2]".
 const parseNumberList = (input: unknown): number[] => {
   const raw = typeof input === 'string' ? input.trim() : ''
   if (!raw) {
@@ -144,6 +147,9 @@ const toValues = (input: unknown): number[] => {
   return parseNumberList(input)
 }
 
+// The value range a chart is drawn in: forced by `min` / `max`, otherwise the
+// data itself, widened to include the threshold (and zero for bars) so those
+// lines are always inside the chart.
 const rangeOf = (values: number[], minForced: number | null, maxForced: number | null, ...include: number[]): { min: number; max: number; span: number } => {
   const min = minForced ?? Math.min(...values, ...include)
   const max = maxForced ?? Math.max(...values, ...include)
@@ -152,6 +158,9 @@ const rangeOf = (values: number[], minForced: number | null, maxForced: number |
 
 const NUMBER_RE = /-?\d*\.?\d+(?:e[-+]?\d+)?/g
 
+// Interpolates the numbers inside two attribute values with the same shape:
+// "0,20 40,10" → "0,10 40,20", or a path `d`. Falls back to the target when
+// the shapes differ.
 const lerpAttr = (from: string, to: string, t: number): string => {
   const a = from.match(NUMBER_RE)
   const b = to.match(NUMBER_RE)
@@ -218,10 +227,12 @@ class Sparkline extends BaseComponent {
       return
     }
 
+    // Kept so that render() can re-read the data attributes on top of it.
     this._userConfig = { ...config }
     this.render()
   }
 
+  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -234,11 +245,13 @@ class Sparkline extends BaseComponent {
     return NAME
   }
 
+  // Public
   update(values: SparklineValuesInput): void {
     const serialized = Array.isArray(values) ? values.join(',') : String(values)
     const attribute = this._element.hasAttribute('data-tblr-values') ? 'data-tblr-values' : 'data-bs-values'
     this._element.setAttribute(attribute, serialized)
 
+    // The attribute is now the source of truth for the values.
     delete this._userConfig.values
     this.render()
     EventHandler.trigger(this._element, EVENT_UPDATED)
@@ -272,6 +285,8 @@ class Sparkline extends BaseComponent {
         break
     }
 
+    // On an update with the same shape (type and number of values) the old
+    // SVG stays in place and its attributes are tweened to the new ones.
     if (previous && this._canAnimate(previous, svg)) {
       this._animate(previous, svg)
     } else {
@@ -280,6 +295,9 @@ class Sparkline extends BaseComponent {
       this._element.append(svg)
     }
 
+    // A text label centered over the chart, mainly for the circle type. Plain
+    // HTML rather than SVG text, so it keeps the page font and is not
+    // stretched with the viewBox.
     const text = this._labelText()
     if (text !== '') {
       const label = document.createElement('span')
@@ -298,11 +316,14 @@ class Sparkline extends BaseComponent {
     super.dispose()
   }
 
+  // Private
   _configAfterMerge(config: BaseConfig): BaseConfig {
     config.values = toValues(config.values)
     return config
   }
 
+  // `auto` (or `true`) derives the label from the data: the share of `max`
+  // for a circle, the last value otherwise. Anything else is printed as is.
   _labelText(): string {
     const { label, values, type } = this._config
     if (label === null || label === false || label === '') {
@@ -320,6 +341,8 @@ class Sparkline extends BaseComponent {
     return String(values[values.length - 1])
   }
 
+  // A single value is a share of `max` (default 100); a second value may be
+  // passed as the maximum instead: data-bs-values="72,100".
   _circleRatio(): number {
     const cfg = this._config
     const value = cfg.values[0] ?? 0
@@ -382,6 +405,7 @@ class Sparkline extends BaseComponent {
     this._frame = requestAnimationFrame(step)
   }
 
+  // A 1px horizontal guide: solid for the zero line, dashed for the threshold.
   _hairline(svg: SVGSVGElement, y: number, color: string, dashed = false): void {
     const line = svgEl('line')
     setAttr(line, {
@@ -475,16 +499,22 @@ class Sparkline extends BaseComponent {
 
     const count = cfg.values.length
     const barWidth = (cfg.width - cfg.barGap * (count - 1)) / count
+    // Bars grow from the zero line: upwards for positive values, downwards
+    // (in the "negative" color) for negative ones. With no negative values the
+    // zero line is the bottom edge; otherwise it is drawn as a hairline.
     const zeroY = yOf(0)
 
     if (min < 0) {
       this._hairline(svg, zeroY, 'zero')
     }
 
+    // With a threshold, the bars below it take the "negative" color instead.
     if (cfg.threshold !== null) {
       this._hairline(svg, yOf(cfg.threshold), 'threshold', true)
     }
 
+    // A bar spans from the zero line to its value, clipped to the chart when a
+    // forced `min` / `max` puts part of it (or the zero line) outside.
     const clip = (y: number): number => Math.max(0, Math.min(cfg.height, y))
 
     cfg.values.forEach((value, i) => {
@@ -506,6 +536,8 @@ class Sparkline extends BaseComponent {
     return svg
   }
 
+  // Win/loss: every value is a full bar up (positive), down (negative) or a
+  // short tick on the zero line (zero), regardless of its size.
   _renderTristate(): SVGSVGElement {
     const cfg = this._config
     const svg = this._createSvg()

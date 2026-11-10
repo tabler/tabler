@@ -4,6 +4,12 @@
 @use '../config' as *;
 
 :root {
+  // Note: Custom variable values only support SassScript inside `#{}`.
+
+  // Colors
+  //
+  // Generate palettes for full colors, grays, and theme colors.
+
   @each $color, $value in $colors {
     --#{$color}: #{$value};
   }
@@ -18,6 +24,7 @@
     }
   }
 
+  // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)
   @if $enable-dark-mode {
     @each $color, $value in $theme-colors-text {
       --#{$color}-text-emphasis: light-dark(#{$value}, #{map.get($theme-colors-text-dark, $color)});
@@ -44,10 +51,15 @@
     }
   }
 
+  // Fonts
+
+  // Note: Use `inspect` for lists so that quoted items keep the quotes.
+  // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
   --font-sans-serif: #{meta.inspect($font-family-sans-serif)};
   --font-monospace: #{meta.inspect($font-family-monospace)};
   --gradient: #{$gradient};
 
+  // Root and body
   // scss-docs-start root-body-variables
   @if $font-size-root != null {
     --root-font-size: #{$font-size-root};
@@ -79,6 +91,8 @@
     --link-hover-decoration: #{$link-hover-decoration};
   }
 
+  // $code-color is itself light-dark(gray-600, gray-400); layout/_root.scss re-declares
+  // --code-color afterwards and is the one that actually wins in the compiled cascade.
   --code-color: #{$code-color};
   --highlight-color: light-dark(#{$mark-color}, #{$mark-color-dark});
   --highlight-bg: light-dark(#{$mark-bg}, #{$mark-bg-dark});
@@ -103,6 +117,7 @@
   --box-shadow-lg: #{$box-shadow-lg};
   --box-shadow-inset: #{$box-shadow-inset};
 
+  // Focus styles
   // scss-docs-start root-focus-variables
   --focus-ring-width: #{$focus-ring-width};
   --focus-ring-offset: #{$focus-ring-offset};
@@ -128,6 +143,7 @@
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
     // scss-docs-start root-dark-mode-vars
+    // Non-color overrides can't be expressed inside light-dark(), so they stay here.
 
     --heading-color: #{$headings-color-dark};
 

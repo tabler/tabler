@@ -5,6 +5,10 @@
   border-color: var(--border-color) !important;
 }
 
+// Bootstrap sizes the valid/invalid icon off the input's own line-height and
+// padding, which makes it noticeably bigger than every other icon in the
+// design system. Match it to $input-btn-icon-size instead, the same token
+// `.btn`/`.btn-sm`/`.btn-lg` use for their own icons (see ui/_buttons.scss).
 %validation-icon-size {
   --form-feedback-icon-size: #{$input-btn-icon-size};
   --form-feedback-icon-inset: #{var-if-default($input-padding-x, $input-btn-padding-x, '--btn-input-padding-x')};
@@ -27,6 +31,11 @@
   background-position: top var(--form-feedback-icon-inset) right var(--form-feedback-icon-inset) !important;
 }
 
+// `.form-select` layers a second background (the feedback icon) behind its
+// own caret, so it needs its own override alongside %validation-icon-size —
+// same oversized-icon bug, but the caret's background-size must stay first.
+// Tom Select copies the select's classes onto its `.ts-wrapper`, which is
+// what actually paints these backgrounds, so this rule reaches that too.
 %validation-icon-size-select {
   --form-feedback-icon-size: #{$input-btn-icon-size};
   background-size:

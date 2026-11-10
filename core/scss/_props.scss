@@ -3,13 +3,16 @@
 
 :root,
 :host {
+  // Direction multiplier for physical transforms (1 = LTR, -1 = RTL)
   --dir: 1;
 
+  // Fonts
   --font-monospace: #{$font-family-monospace};
   --font-sans-serif: #{$font-family-sans-serif};
   --font-serif: #{$font-family-serif};
   --font-comic: #{$font-family-comic};
 
+  // Gray colors
   --gray-50: #{$gray-50};
   --gray-100: #{$gray-100};
   --gray-200: #{$gray-200};
@@ -27,14 +30,19 @@
   --black: #{$black};
   --gray: #{$gray-600};
   --gray-dark: #{$gray-800};
+  // `.shape-*` runs over `$colors`, which carries these three on top of the
+  // theme colors; the `-lt` tint below is generated for the theme colors only.
   --black-lt: color-mix(in oklab, var(--black) 10%, transparent);
   --gray-lt: color-mix(in oklab, var(--gray) 10%, transparent);
   --gray-dark-lt: color-mix(in oklab, var(--gray-dark) 10%, transparent);
 
+  // Brand colors
   --brand: #{$primary};
 
+  // Theme colors
   $theme-and-social-colors: map.merge($theme-colors, $social-colors);
 
+  // The `-fg` tokens below read these two, also when a custom `$theme-colors` leaves them out.
   @each $name, $color in ('dark': $dark, 'light': $light) {
     @if not map.has-key($theme-and-social-colors, $name) {
       --#{$name}: #{$color};
@@ -49,16 +57,20 @@
     --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
   }
 
+  // Gray colors
   @each $name, $color in $gray-colors {
     --#{$name}-fg: var(--#{$name});
   }
 
+  // Spacers
   @each $name, $value in $spacers {
     --spacer-#{$name}: #{$value};
   }
 
+  // Icons
   --icon-size: #{$icon-size};
 
+  // Font sizes
   @each $name, $value in $font-weights {
     --font-weight-#{$name}: #{$value};
   }
@@ -71,11 +83,13 @@
     --line-height-#{$name}: #{$value};
   }
 
+  // Shadows
   --shadow-color: #{$box-shadow-color};
   @each $name, $value in $box-shadows {
     --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
 
+  // Border radiuses
   --border-radius-scale: 1;
   @each $name, $value in $border-radiuses {
     @if $name {
@@ -85,6 +99,7 @@
     }
   }
 
+  // Buttons and form controls: one scale, in the names Bootstrap 6 uses
   // scss-docs-start btn-input-css-vars
   --btn-input-fg: var(--body-color);
   --btn-input-bg: var(--bg-forms);
@@ -117,6 +132,7 @@
   --btn-input-xl-min-height: calc(var(--btn-input-xl-line-height) + var(--btn-input-xl-padding-y) * 2 + #{$input-btn-border-width} * 2);
   // scss-docs-end btn-input-css-vars
 
+  // Checks, radios and switches: shared state colors, in the names Bootstrap 6 uses
   // scss-docs-start control-state-css-vars
   --control-checked-bg: #{$form-check-input-checked-bg-color};
   --control-checked-border-color: #{$form-check-input-checked-border-color};
@@ -124,6 +140,7 @@
   --control-disabled-opacity: #{$form-check-input-disabled-opacity};
   // scss-docs-end control-state-css-vars
 
+  // Backdrops
   --backdrop-opacity: #{$backdrop-opacity};
   --backdrop-bg: #{$backdrop-bg};
   @each $name, $value in $backdrops {

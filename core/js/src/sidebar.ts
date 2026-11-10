@@ -21,11 +21,15 @@ const hideSidebarDropdowns = (except?: Element | null): void => {
   }
 }
 
+// A sidebar rendered for the expanded state keeps its submenus open on outside
+// clicks (data-bs-auto-close="false"). Folded flyouts must not: close them on
+// any click outside their menu, and close the other flyouts when one opens.
 document.addEventListener('click', (event: MouseEvent) => {
   if (!sidebarIsFolded()) {
     return
   }
 
+  // A synthetic click dispatched on the document has no Element target.
   const target = event.target
   if (!(target instanceof Element) || target.closest('.navbar-vertical .dropdown-menu')) {
     return
@@ -34,6 +38,11 @@ document.addEventListener('click', (event: MouseEvent) => {
   hideSidebarDropdowns(target.closest('.navbar-vertical [data-bs-toggle="dropdown"]'))
 })
 
+// When a hover-expanding sidebar collapses back to the rail, close its open
+// submenus — an inline submenu left open would flash as a floating flyout.
+// Static folded rails are excluded: crossing the small gap between the rail
+// and an open flyout must not close it. mouseleave does not bubble, so the
+// listener runs in the capture phase.
 document.addEventListener(
   'mouseleave',
   (event: MouseEvent) => {
@@ -50,6 +59,10 @@ document.addEventListener(
   true,
 )
 
+// The folded state may come pre-render from localStorage (tabler-theme.js), so
+// align the toggle buttons with it once the DOM is available. Server-rendered
+// open submenus are also closed, so they don't hang as open flyouts.
+// onDOMContentLoaded runs at once when the script loads after the event.
 onDOMContentLoaded(() => {
   const folded = (document.documentElement.getAttribute('data-bs-sidebar') ?? '').startsWith('folded')
   syncSidebarToggles(folded)
@@ -71,12 +84,15 @@ document.addEventListener('click', (event: MouseEvent) => {
   const html = document.documentElement
   const willFold = !(html.getAttribute('data-bs-sidebar') ?? '').startsWith('folded')
 
+  // Unpinning folds to the hover variant: the rail expands on hover, where
+  // the pin button becomes visible again and can pin the sidebar back open.
   if (willFold) {
     html.setAttribute('data-bs-sidebar', 'folded-hover')
   } else {
     html.removeAttribute('data-bs-sidebar')
   }
 
+  // Storage may be blocked by the browser; the fold still applies to this page.
   try {
     localStorage.setItem('tabler-sidebar', willFold ? 'folded-hover' : 'default')
   } catch {
@@ -84,6 +100,8 @@ document.addEventListener('click', (event: MouseEvent) => {
   }
   syncSidebarToggles(willFold)
 
+  // Close open sidebar dropdowns so an inline submenu doesn't turn into a
+  // stuck flyout (and vice versa) when the layout mode changes.
   hideSidebarDropdowns()
 
   document.dispatchEvent(new CustomEvent('tabler:sidebar-folded', { detail: { folded: willFold } }))
