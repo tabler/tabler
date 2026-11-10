@@ -90,8 +90,7 @@ const EVENT_SELECTED = `selected${EVENT_KEY}`
 const EVENT_POINTERMOVE = `pointermove${EVENT_KEY}`
 const EVENT_POINTERLEAVE = `pointerleave${EVENT_KEY}`
 const EVENT_POINTERDOWN = `pointerdown${EVENT_KEY}`
-const EVENT_POINTERUP = `pointerup${EVENT_KEY}`
-const EVENT_POINTERCANCEL = `pointercancel${EVENT_KEY}`
+const POINTER_END_EVENTS = ['pointerup', 'pointercancel'] as const
 const EVENT_DBLCLICK = `dblclick${EVENT_KEY}`
 const EVENT_CLICK = `click${EVENT_KEY}`
 
@@ -329,12 +328,6 @@ class VectorMap extends BaseComponent {
     EventHandler.on(this._element, EVENT_POINTERDOWN, (event: PointerEvent) => {
       this._onPointerDown(event)
     })
-    for (const eventName of [EVENT_POINTERUP, EVENT_POINTERCANCEL]) {
-      EventHandler.on(this._element, eventName, (event: PointerEvent) => {
-        this._onPointerUp(event)
-      })
-    }
-
     // `wheel` is not among the native events EventHandler knows, and the
     // listener must not be passive to keep the page from scrolling.
     this._element.addEventListener('wheel', this._onWheel, { passive: false })
@@ -460,6 +453,7 @@ class VectorMap extends BaseComponent {
     this._applyColors()
     this._element.classList.remove(CLASS_NAME_ZOOMABLE, CLASS_NAME_DRAGGING, CLASS_NAME_SELECTABLE)
     this._element.removeEventListener('wheel', this._onWheel)
+    this._removePointerEndListeners()
     super.dispose()
   }
 
@@ -720,12 +714,23 @@ class VectorMap extends BaseComponent {
 
     this._pointers.set(event.pointerId, [event.clientX, event.clientY])
     cancelAnimationFrame(this._frame)
+
+    for (const type of POINTER_END_EVENTS) {
+      document.addEventListener(type, this._onPointerUp)
+    }
   }
 
-  _onPointerUp(event: PointerEvent): void {
+  _onPointerUp = (event: PointerEvent): void => {
     this._pointers.delete(event.pointerId)
     if (this._pointers.size === 0) {
       this._element.classList.remove(CLASS_NAME_DRAGGING)
+      this._removePointerEndListeners()
+    }
+  }
+
+  _removePointerEndListeners(): void {
+    for (const type of POINTER_END_EVENTS) {
+      document.removeEventListener(type, this._onPointerUp)
     }
   }
 
