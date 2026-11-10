@@ -422,6 +422,35 @@ describe('Datepicker', () => {
       expect(instance.calendar!.context.selectedYear).toBe(1990)
     })
 
+    it('does not copy the page theme onto an inline calendar', () => {
+      document.documentElement.setAttribute('data-bs-theme', 'dark')
+      fixtureEl.innerHTML = '<div class="inline-calendar"></div>'
+      const element = fixtureEl.querySelector<HTMLElement>('.inline-calendar')!
+
+      try {
+        new Datepicker(element, { inline: true })
+        expect(element.hasAttribute('data-bs-theme')).toBe(false)
+      } finally {
+        document.documentElement.removeAttribute('data-bs-theme')
+      }
+    })
+
+    it('follows a theme set on the page after an open popup was created', async () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      await instance.show()
+      const popup = instance.calendar!.context.mainElement
+      expect(popup.hasAttribute('data-bs-theme')).toBe(false)
+
+      try {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+        await tick()
+        expect(popup.getAttribute('data-bs-theme')).toBe('dark')
+      } finally {
+        document.documentElement.removeAttribute('data-bs-theme')
+      }
+    })
+
     it('opens on the month of an initial value', () => {
       fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
       const instance = new Datepicker(input())
