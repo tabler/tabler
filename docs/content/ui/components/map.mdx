@@ -63,7 +63,7 @@ ${cdnJsTag()}
 ${cdnMapJsTag()}`}
 />
 
-The add-on loads MapLibre GL JS by itself, from `dist/libs/maplibre-gl` next to the Tabler scripts. Tabler uses version 6, which is published as an ES module. When your files are somewhere else, point the `library` option at the module: `data-bs-library="/vendor/maplibre-gl.mjs"`. The library loads two more files from its own folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together.
+The add-on loads MapLibre GL JS by itself, from `dist/libs/maplibre-gl` next to the Tabler scripts. Tabler uses version 6, which is published as an ES module. When your files are somewhere else, point the `library` option at the module: `data-bs-library="/vendor/maplibre-gl.mjs"`. A data attribute accepts a URL on the same origin as the page only; to load the module from another origin, such as a CDN, pass `library` in the config object. The library loads two more files from its own folder, `maplibre-gl-shared.mjs` and `maplibre-gl-worker.mjs`, so keep the three together.
 
 If the page sets `window.maplibregl` before the add-on runs, the component uses that and loads nothing. This is the way to go with a bundler:
 
@@ -372,7 +372,7 @@ Pass options as data attributes, with the name written in kebab case after `data
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `library` | string | MapLibre in `dist/libs` | URL of the MapLibre GL JS module, loaded when `window.maplibregl` is not set. A relative URL starts at the Tabler script. `null` turns the loading off. |
+| `library` | string | MapLibre in `dist/libs` | URL of the MapLibre GL JS module, loaded when `window.maplibregl` is not set. A relative URL starts at the Tabler script. As a data attribute it must be on the same origin as the page. `null` turns the loading off. |
 | `center` | array, string | `[0, 0]` | Center of the map: `[longitude, latitude]`, or the two numbers in a string such as `"13.405,52.52"`. |
 | `zoom` | number | `1` | Zoom level, from 0 for the whole world to about 20 for a building. |
 | `mapStyle` | string | `'positron'` | Name of an OpenFreeMap style, or the URL of a MapLibre style. |

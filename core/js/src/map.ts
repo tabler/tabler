@@ -168,6 +168,14 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   mapOptions: 'object',
 }
 
+const isSameOrigin = (url: string): boolean => {
+  try {
+    return new URL(url, window.location.href).origin === window.location.origin
+  } catch {
+    return false
+  }
+}
+
 // The buttons each name in the `controls` option stands for
 const Controls: Record<string, MapAction[]> = {
   zoom: ['zoom-in', 'zoom-out'],
@@ -401,6 +409,20 @@ class MapView extends BaseComponent {
   }
 
   // Private
+  _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
+    const merged = super._mergeConfigObj(config, element)
+    const { library } = merged
+
+    // The module is imported and run, so markup alone must not be able to point
+    // it at another site: a data attribute may only name a same-origin URL.
+    if (typeof library === 'string' && library !== Default.library && config?.library === undefined && !isSameOrigin(library)) {
+      console.warn(`Tabler map: the "library" data attribute was ignored, because "${library}" is on another origin. Pass the URL in the config object instead.`)
+      merged.library = Default.library
+    }
+
+    return merged
+  }
+
   _initMap(library: MapLibrary): void {
     const { center, zoom, controls, globe, mapOptions } = this._config
     // The markers are read before MapLibre takes over the element
