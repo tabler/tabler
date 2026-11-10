@@ -422,6 +422,31 @@ describe('Datepicker', () => {
       expect(instance.calendar!.context.selectedYear).toBe(1990)
     })
 
+    it('does not open a button trigger on focus, so the click opens it once', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="datepicker"><span>Select date</span></button>'
+      const button = fixtureEl.querySelector<HTMLElement>('button')!
+      const instance = new Datepicker(button)
+
+      button.dispatchEvent(new FocusEvent('focus'))
+      await tick()
+      expect(instance._isShown).toBe(false)
+
+      button.click()
+      await tick()
+      expect(instance._isShown).toBe(true)
+
+      button.querySelector('span')!.click()
+      await tick()
+      expect(instance._isShown).toBe(false)
+    })
+
+    it('keeps an explicit openOnFocus from vcpOptions for a button trigger', () => {
+      fixtureEl.innerHTML = '<button type="button">Select date</button>'
+      const instance = new Datepicker(fixtureEl.querySelector<HTMLElement>('button')!, { vcpOptions: { openOnFocus: true } })
+
+      expect(instance._buildCalendarOptions().openOnFocus).toBe(true)
+    })
+
     it('opens on the month of an initial value', () => {
       fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
       const instance = new Datepicker(input())
