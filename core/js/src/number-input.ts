@@ -67,6 +67,7 @@ const KEY_END = 'End'
 // A held button stops repeating on any of these, so a drag off the button or
 // a cancelled touch never leaves the timer running.
 const POINTER_END_EVENTS = ['pointerup', 'pointercancel', 'pointerleave']
+const POINTER_ABORT_EVENTS = new Set(['pointercancel', 'pointerleave'])
 
 const Default: ComponentConfig = {
   min: null,
@@ -127,7 +128,7 @@ class NumberInput extends BaseComponent {
 
   _onClick = (event: Event): void => this._handleClick(event)
   _onPointerDown = (event: Event): void => this._handlePointerDown(event)
-  _onPointerEnd = (): void => this._stopRepeat()
+  _onPointerEnd = (event: Event): void => this._handlePointerEnd(event)
   _onKeyDown = (event: Event): void => this._handleKeyDown(event as KeyboardEvent)
   _onBeforeInput = (event: Event): void => this._handleBeforeInput(event as InputEvent)
   _onInputChange = (): void => this._handleInputChange()
@@ -341,6 +342,7 @@ class NumberInput extends BaseComponent {
     const action = this._actionOf(button)
 
     this._stopRepeat()
+    this._held = false
 
     if (!this._config.repeat || !action || isDisabled(button) || this._isLocked()) {
       return
@@ -352,12 +354,27 @@ class NumberInput extends BaseComponent {
       event.preventDefault()
     }
 
+    const step = (): void => {
+      this._runAction(action)
+      if (isDisabled(button)) {
+        this._held = false
+      }
+    }
+
     this._holdTimer = setTimeout(() => {
       this._holdTimer = null
       this._held = true
-      this._runAction(action)
-      this._repeatTimer = setInterval(() => this._runAction(action), this._config.repeatInterval)
+      this._repeatTimer = setInterval(step, this._config.repeatInterval)
+      step()
     }, this._config.repeatDelay)
+  }
+
+  _handlePointerEnd(event: Event): void {
+    this._stopRepeat()
+
+    if (POINTER_ABORT_EVENTS.has(event.type)) {
+      this._held = false
+    }
   }
 
   _stopRepeat(): void {

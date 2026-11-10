@@ -193,6 +193,32 @@ describe('NumberInput', () => {
       expect(instance._repeatTimer).toBeNull()
     })
 
+    it('should step on the next click after a hold that reached a bound', () => {
+      vi.useFakeTimers()
+      new NumberInput(numberInput(), { max: 3 })
+
+      incrementButton().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse' }))
+      vi.advanceTimersByTime(400 + 80 * 5)
+      expect(input().value).toBe('3')
+      expect(incrementButton().disabled).toBe(true)
+
+      decrementButton().click()
+      expect(input().value).toBe('2')
+    })
+
+    it('should step on the next click after a hold released outside the button', () => {
+      vi.useFakeTimers()
+      new NumberInput(numberInput(), { max: 100 })
+
+      incrementButton().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse' }))
+      vi.advanceTimersByTime(400)
+      expect(input().value).toBe('2')
+      incrementButton().dispatchEvent(new PointerEvent('pointerleave'))
+
+      decrementButton().click()
+      expect(input().value).toBe('1')
+    })
+
     it('should not repeat when the option is off', () => {
       vi.useFakeTimers()
       new NumberInput(numberInput(), { repeat: false, max: 100 })
