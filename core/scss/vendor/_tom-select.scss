@@ -38,12 +38,6 @@
     }
   }
 
-  // Tom Select's Bootstrap 5 stylesheet hardcodes Bootstrap's own caret and
-  // valid/invalid icons on `.ts-wrapper.is-valid` / `.is-invalid`, and those
-  // selectors outrank `.form-select`. Hand the backgrounds back to the
-  // `.form-select` custom properties so a validated select shows the same
-  // icons as a validated `.form-control`. `:not(.single)` matches the
-  // specificity of the vendor rule for multi selects.
   &.form-select.is-invalid,
   &.form-select.is-valid {
     &,
@@ -52,12 +46,6 @@
     }
   }
 
-  // The same preset also colours the wrapper border and the focused
-  // `.ts-control` with `var(--bs-form-valid-color)` / `--bs-form-invalid-color`.
-  // Those variables do not exist in Tabler, so the border falls back to
-  // `currentColor` and the focus ring disappears. Repeat Tabler's own
-  // validation colours; `!important` for the same reason as `.ts-dropdown`
-  // below.
   @each $state, $data in $form-validation-states {
     &.is-#{$state} {
       border-color: map.get($data, 'border-color') !important;
@@ -70,24 +58,8 @@
   }
 }
 
-// The bootstrap5 preset hardcodes Bootstrap's own input metrics on
-// `.ts-control` (0.375rem 0.75rem padding, 1.5 line-height), so a Tom Select
-// came out 5px shorter than a `.form-control` next to it (#2567). The wrapper
-// carries the `.form-control` / `.form-select` class, so it holds the
-// `--control-*` tokens: read them and every size follows on its own. The
-// multi-value control follows the preset's formula: take the item's 1px
-// padding, 1px border and 3px bottom margin out of the control's padding so
-// the chips fill the same height. The font size is `!important` because the
-// preset sets its own on `.form-select-sm.has-items .ts-control`, which
-// outranks this selector. The radius comes from the wrapper too: the preset
-// rounds `.ts-control` with `var(--bs-border-radius*)`, which Tabler does not
-// define, so the focus ring of a small or large select came out square. It is
-// `!important` because the preset's `.ts-wrapper.form-select-sm .ts-control`
-// (and `-lg`) has the same specificity, so it would otherwise win whenever the
-// preset CSS is loaded after `tabler-vendors.css`.
 .ts-wrapper.form-control,
 .ts-wrapper.form-select {
-  // Keeps a dropdown rendered inside the wrapper at the control's size on phones.
   --form-control-mobile-font-size: var(--control-font-size);
   min-height: var(--control-min-height);
 
@@ -99,10 +71,6 @@
     border-radius: inherit !important;
   }
 
-  // The control sits inside the wrapper's border, so its corners follow the
-  // border's inner curve. Not in an input group, where the wrapper's corners
-  // differ, nor on a wrapper a `.rounded-*` utility reshapes (`.rounded-pill`),
-  // whose radius is not the token: those keep `inherit`.
   @if $enable-rounded {
     &:not(.input-group > *):not([class*='rounded']) .ts-control {
       border-radius: max(0px, calc(var(--control-border-radius) - var(--control-border-width))) !important;
@@ -115,23 +83,16 @@
   }
 }
 
-// The preset's small-size rule has the same `!important` at the same
-// specificity, and its value reads `--bs-border-width`.
 .ts-wrapper.form-control.form-control-sm.multi.has-items .ts-control,
 .ts-wrapper.form-select.form-select-sm.multi.has-items .ts-control,
 .input-group-sm > .ts-wrapper:is(.form-control, .form-select).multi.has-items .ts-control {
   padding-top: calc(var(--control-padding-y) - 2px) !important;
 }
 
-// In an `.input-icon`, the wrapper carries the `.form-select` class that gets the room for
-// the icon, but the preset draws the text in `.ts-control` with its own padding: leave the
-// room for a leading icon there.
 .input-icon > .input-icon-addon ~ .ts-wrapper .ts-control {
   padding-inline-start: var(--input-icon-padding-start);
 }
 
-// The hidden `<select>` stays the group's first child, so the wrapper after it
-// matches the group's `:not(:first-child)` rule.
 .input-group > .ts-hidden-accessible:first-child + .ts-wrapper {
   margin-inline-start: 0 !important;
 
@@ -141,20 +102,10 @@
   }
 }
 
-// Every declaration below is `!important`: the bootstrap5 preset CSS targets
-// these same selectors at equal specificity, and whichever stylesheet is
-// included last otherwise wins outright (not just for z-index — the preset's
-// `--bs-*` vars are undefined outside Bootstrap, so once it wins a property it
-// renders as transparent/unstyled rather than merely off-theme) (#2600).
 .ts-dropdown {
-  // Tabler inits Tom Select with dropdownParent: 'body', so the dropdown is a
-  // direct child of <body> rather than of whatever contains the <select>. A
-  // select inside a modal therefore needs a z-index above the modal's, not
-  // just above other in-flow content.
   z-index: $zindex-popover !important;
   color: var(--body-color) !important;
   background: var(--bg-surface) !important;
-  // Like `.dropdown-menu`: no border, the shadow draws the edge.
   border: 0 !important;
   box-shadow: var(--shadow-dropdown) !important;
   @if $enable-rounded {
@@ -178,14 +129,11 @@
     }
   }
 
-  // Tom Select marks the highlighted row with .active; match the row only, so an
-  // .active element inside an option (a lit .signal-bar) keeps its own background
   [data-selectable].active {
     color: var(--body-color) !important;
     background-color: var(--active-bg) !important;
   }
 
-  // The library's own `.ts-dropdown .active` also hits a lit bar and clears its background
   .signal-bar.active {
     background-color: var(--signal-color);
   }
@@ -205,8 +153,6 @@
   color: var(--body-color);
 }
 
-// An item rendered with an indicator reuses `.dropdown-item`, whose `width: 100%` fills the
-// control and pushes the search input to a second line on focus
 .ts-control > .dropdown-item {
   width: auto;
 }
@@ -241,10 +187,6 @@
     }
   }
 
-  // The `.form-control` / `.form-select` wrapper draws the rounded border, so a
-  // background on the `.ts-control` inside it spilled over the corners. Paint the
-  // disabled state on the wrapper with the tokens of a native `:disabled` control,
-  // which also covers a single select with a value (`.full`, painted `--body-bg`).
   &.form-control,
   &.form-select {
     background-color: var(--control-disabled-bg);

@@ -1,15 +1,7 @@
 @use 'sass:math';
 
-//
-// General form controls (plus a few specific high-level interventions)
-//
-
 @use '../../config' as *;
 
-// The control tokens, in the names Bootstrap 6 uses. One block serves every
-// text-like control: `.form-select` and `.form-control-plaintext` stand alone
-// (no `.form-control`), so they need the same declarations. A token seeded from
-// a size variable reads the `:root` scale until the Sass variable is configured.
 .form-select,
 .form-control-plaintext,
 .form-control {
@@ -47,28 +39,25 @@
   font-weight: $input-font-weight;
   line-height: var(--control-line-height);
   color: var(--control-fg);
-  appearance: none; // Fix appearance for date inputs in Safari
+  appearance: none;
   background-color: var(--control-bg);
   background-clip: padding-box;
   border: var(--control-border-width) solid var(--control-border-color);
 
-  // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
   @include border-radius(var(--control-border-radius), 0);
 
   @include box-shadow(var(--control-box-shadow));
   @include transition(var(--control-transition));
-  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
   &[type='file'] {
-    overflow: hidden; // prevent pseudo element button overlap
+    overflow: hidden;
 
     &:not(:disabled):not([readonly]) {
       cursor: pointer;
     }
   }
 
-  // Customize the `:focus` state to imitate native WebKit styles.
   &:focus {
     color: var(--control-focus-fg);
     background-color: var(--control-focus-bg);
@@ -78,53 +67,30 @@
   }
 
   &::-webkit-date-and-time-value {
-    // On Android Chrome, form-control's "width: 100%" makes the input width too small
-    // Tested under Android 11 / Chrome 89, Android 12 / Chrome 100, Android 13 / Chrome 109
-    //
-    // On iOS Safari, form-control's "appearance: none" + "width: 100%" makes the input width too small
-    // Tested under iOS 16.2 / Safari 16.2
-    min-width: 85px; // Seems to be a good minimum safe width
+    min-width: 85px;
 
-    // Add some height to date inputs on iOS
-    // https://github.com/twbs/bootstrap/issues/23307
-    // TODO: we can remove this workaround once https://bugs.webkit.org/show_bug.cgi?id=198959 is resolved
-    // Multiply line-height by 1em if it has no unit
     height: if(sass(math.unit($input-line-height) == ''): $input-line-height * 1em; else: $input-line-height);
 
-    // Android Chrome type="date" is taller than the other inputs
-    // because of "margin: 1px 24px 1px 4px" inside the shadow DOM
-    // Tested under Android 11 / Chrome 89, Android 12 / Chrome 100, Android 13 / Chrome 109
     margin: 0;
   }
 
-  // Prevent excessive date input height in Webkit
-  // https://github.com/twbs/bootstrap/issues/34433
   &::-webkit-datetime-edit {
     display: block;
     padding: 0;
   }
 
-  // Placeholder
   &::placeholder {
     color: var(--control-placeholder-color);
-    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
     opacity: 1;
   }
 
-  // Disabled inputs
-  //
-  // HTML5 says that controls under a fieldset > legend:first-child won't be
-  // disabled if the fieldset is disabled. Due to implementation difficulty, we
-  // don't honor that edge case; we style them as disabled anyway.
   &:disabled {
     color: var(--control-disabled-color);
     background-color: var(--control-disabled-bg);
     border-color: var(--control-disabled-border-color);
-    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
   }
 
-  // File input buttons theming
   &::file-selector-button {
     padding: var(--control-padding-y) var(--control-padding-x);
     margin: calc(var(--control-padding-y) * -1) calc(var(--control-padding-x) * -1);
@@ -145,16 +111,11 @@
   }
 }
 
-// Readonly controls as plain text
-//
-// Apply class to a readonly input to make it appear like regular plain
-// text (without any border, background color, focus indicator)
-
 .form-control-plaintext {
   display: block;
   width: 100%;
   padding: var(--control-padding-y) 0;
-  margin-bottom: 0; // match inputs if this class comes on inputs with default margins
+  margin-bottom: 0;
   line-height: var(--control-line-height);
   color: #{var-if-default($input-plaintext-color, $input-color, '--control-fg')};
   background-color: transparent;
@@ -171,14 +132,6 @@
     padding-inline-start: 0;
   }
 }
-
-// Form control sizing
-//
-// Build on `.form-control` with modifier classes to decrease or increase the
-// height and font-size of form controls. A size only moves the tokens; the
-// height, the file button and the color swatch follow.
-//
-// Repeated in `_input_group.scss` to avoid Sass extend issues.
 
 .form-control-sm {
   min-height: var(--control-min-height);
@@ -200,8 +153,6 @@
   --control-border-radius: #{var-if-default($input-border-radius-lg, var(--border-radius-lg), '--btn-input-lg-border-radius')};
 }
 
-// Make sure textareas don't shrink too much when resized
-// https://github.com/twbs/bootstrap/pull/29124
 // stylelint-disable selector-no-qualifying-type
 textarea {
   &.form-control {

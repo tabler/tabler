@@ -1,6 +1,5 @@
 @use 'sass:map';
 
-// All colors
 @use '../config' as *;
 
 @each $color,
@@ -50,8 +49,6 @@
     @if $link-shade-percentage != 0 {
       &:hover,
       &:focus {
-        // Shade light-on-dark colours, tint the rest: decided at compile time from
-        // the palette, mixed at runtime so the hover follows a `--tblr-*` override.
         $hover-mix: if(sass(color-contrast($value) == $color-contrast-light): var(--black); else: var(--white));
         $hover-color: mix-color-css($hover-mix, var(--#{$color}), $link-shade-percentage);
         color: color-transparent($hover-color, calc(var(--link-opacity, 1) * 100%)) if(sass($enable-important-utilities): !important; else: null);
@@ -61,7 +58,6 @@
   }
 }
 
-// Fills
 .bg-fill {
   background-color: var(--fill) !important;
 }
@@ -129,7 +125,6 @@
   background-color: color-transparent($modal-backdrop-bg, $modal-backdrop-opacity) !important;
 }
 
-// Gradient stops that are not theme colors: fade to nothing, or to the inverted surface.
 @each $name, $value in ('transparent': transparent, 'inverted': var(--bg-surface-inverted)) {
   .bg-gradient-from-#{$name} {
     --gradient-from: #{$value};

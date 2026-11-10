@@ -1,15 +1,8 @@
 @use 'sass:map';
 @use 'sass:string';
 
-//
-// Base styles
-//
-
 @use '../../config' as *;
 
-// Addon tokens, in the names Bootstrap 6 uses. The addon sits next to the
-// control, not inside it, so it reads the `:root` scale rather than the
-// control's own `--control-*` tokens.
 .input-group {
   // scss-docs-start input-group-css-vars
   --input-group-addon-padding-y: #{var-if-default($input-group-addon-padding-y, $input-btn-padding-y, '--btn-input-padding-y')};
@@ -24,29 +17,25 @@
 
   position: relative;
   display: flex;
-  flex-wrap: wrap; // For form validation feedback
+  flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
 
   > .form-control,
   > .form-select,
   > .form-floating {
-    position: relative; // For focus state's z-index
+    position: relative;
     flex: 1 1 auto;
     width: 1%;
-    min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    min-width: 0;
   }
 
-  // Bring the "active" form control to the top of surrounding elements
   > .form-control:focus,
   > .form-select:focus,
   > .form-floating:focus-within {
     z-index: 5;
   }
 
-  // Ensure buttons are always above inputs for more visually pleasing borders.
-  // This isn't needed for `.input-group-text` since it shares the same border-color
-  // as our inputs.
   .btn {
     position: relative;
     z-index: 2;
@@ -57,16 +46,11 @@
   }
 }
 
-// Textual addons
-//
-// Serves as a catch-all element for any text or radio/checkbox input you wish
-// to prepend or append to an input.
-
 .input-group-text {
   display: flex;
   align-items: center;
   padding: var(--input-group-addon-padding-y) var(--input-group-addon-padding-x);
-  @include font-size(var(--input-group-addon-font-size)); // Match inputs
+  @include font-size(var(--input-group-addon-font-size));
   font-weight: $input-group-addon-font-weight;
   line-height: var(--input-group-addon-line-height);
   color: var(--input-group-addon-color);
@@ -76,11 +60,6 @@
   border: $input-border-width solid var(--input-group-addon-border-color);
   @include border-radius(var(--input-group-addon-border-radius));
 }
-
-// Sizing
-//
-// A size moves the addon and control tokens; the button keeps its own rules
-// until `.btn` reads the scale too.
 
 @mixin -input-group-size($size) {
   --input-group-addon-padding-y: #{var-if-default(map.get($-input-group-sizes, $size, 'padding-y'), map.get($-input-group-sizes, $size, 'scale-padding-y'), '--btn-input-#{$size}-padding-y')};
@@ -148,12 +127,6 @@ $-input-group-sizes: (
 .input-group-sm {
   @include -input-group-size('sm');
 }
-
-// Rounded corners
-//
-// These rulesets must come after the sizing ones to properly override sm and lg
-// border-radius values when extending. They're more specific than we'd like
-// with the `.input-group >` part, but without it, we cannot override the sizing.
 
 // stylelint-disable-next-line no-duplicate-selectors
 .input-group {

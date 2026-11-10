@@ -27,11 +27,8 @@
   z-index: var(--popover-zindex);
   display: block;
   max-width: var(--popover-max-width);
-  // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
-  // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text();
   @include font-size(var(--popover-font-size));
-  // Allow breaking very long words so they don't overflow the popover's bounds
   word-wrap: break-word;
   background-color: var(--popover-bg);
   background-clip: padding-box;
@@ -123,7 +120,6 @@
     }
   }
 
-  // This will remove the popover-header's border just below the arrow
   .popover-header::before {
     position: absolute;
     top: 0;
@@ -177,10 +173,9 @@
   }
 }
 
-// Offset the popover to account for the popover arrow
 .popover-header {
   padding: var(--popover-header-padding-y) var(--popover-header-padding-x);
-  margin-bottom: 0; // Reset the default from Reboot
+  margin-bottom: 0;
   @include font-size(var(--popover-header-font-size));
   color: var(--popover-header-color);
   background-color: var(--popover-header-bg);

@@ -1,11 +1,3 @@
-// Output tests for the Tabler mixins in scss/mixins/_mixins.scss.
-//
-// `@use "../mixins/mixins"` transitively pulls in the real settings/variables
-// chain (all relative to that file, so no extra load paths are needed), which
-// means the assertions run against real values — the real `$h5-font-size`,
-// etc. — instead of fixtures. Custom properties are expected unprefixed: the
-// `--tblr-` prefix is added later, by the css pipeline (.build/css-var-prefix.ts).
-
 @use '../mixins/mixins' as *;
 
 @include describe('subheader mixin') {
@@ -173,9 +165,6 @@
 }
 
 @include describe('scrollbar mixin') {
-  // The mixin resolves `&` to the current selector (or `*` at root); nested here,
-  // every rule is prefixed with `.scroll`. Also covers the reduced-motion query
-  // injected by the transition mixin.
   @include it('emits the webkit scrollbar rule set') {
     @include assert() {
       @include output() {

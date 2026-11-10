@@ -10,7 +10,6 @@ describe('Confetti', () => {
   })
 
   afterEach(() => {
-    // Let every burst land so one test's canvas never leaks into the next.
     for (const element of fixtureEl.querySelectorAll<HTMLElement>('button, div')) {
       Confetti.getInstance(element)?.dispose()
     }
@@ -23,7 +22,6 @@ describe('Confetti', () => {
   const button = (): HTMLElement => fixtureEl.querySelector('button')!
   const canvas = (): HTMLCanvasElement | null => document.querySelector('.confetti-canvas')
 
-  // A short pour with fast pieces: the whole shower is over well within a second.
   const QUICK = { count: 5, duration: 20, speed: 60 }
 
   const reduceMotion = (matches: boolean): void => {
@@ -182,7 +180,6 @@ describe('Confetti', () => {
 
       expect(colors).toHaveLength(12)
       expect(colors[0]).toBe('rgb(1, 2, 3)')
-      // No CSS is loaded in the test page: the other names fall back to hex.
       expect(colors[1]).toBe('#4299e1')
     })
   })

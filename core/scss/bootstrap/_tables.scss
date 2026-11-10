@@ -1,19 +1,13 @@
 @use 'sass:map';
 
-//
-// Basic Bootstrap table
-//
-
 @use '../config' as *;
 
 .table {
-  // Reset needed for nesting tables
   // scss-docs-start table-css-vars
   --table-color-type: initial;
   --table-bg-type: initial;
   --table-color-state: initial;
   --table-bg-state: initial;
-  // End of reset
   --table-color: #{$table-color};
   --table-bg: #{$table-bg};
   --table-border-color: #{$table-border-color};
@@ -31,14 +25,9 @@
   vertical-align: $table-cell-vertical-align;
   border-color: var(--table-border-color);
 
-  // Target th & td
-  // We need the child combinator to prevent styles leaking to nested tables which doesn't have a `.table` class.
-  // We use the universal selectors here to simplify the selector (else we would need 6 different selectors).
-  // Another advantage is that this generates less code and makes the selector less specific making it easier to override.
   // stylelint-disable-next-line selector-max-universal
   > :not(caption) > * > * {
     padding: $table-cell-padding-y $table-cell-padding-x;
-    // Following the precept of cascades: https://codepen.io/miriamsuzanne/full/vYNgodb
     color: var(--table-color-state, var(--table-color-type, var(--table-color)));
     background-color: var(--table-bg);
     border-bottom-width: $table-border-width;
@@ -58,17 +47,9 @@
   border-top: calc(#{$table-border-width} * 2) solid $table-group-separator-color; // stylelint-disable-line function-disallowed-list
 }
 
-//
-// Change placement of captions with a class
-//
-
 .caption-top {
   caption-side: top;
 }
-
-//
-// Condensed table w/ half padding
-//
 
 .table-sm {
   // stylelint-disable-next-line selector-max-universal
@@ -77,19 +58,7 @@
   }
 }
 
-// Border versions
-//
-// Add or remove borders all around the table and between all the columns.
-//
-// When borders are added on all sides of the cells, the corners can render odd when
-// these borders do not have the same color or if they are semi-transparent.
-// Therefore we add top and border bottoms to the `tr`s and left and right borders
-// to the `td`s or `th`s
-
 .table-bordered {
-  // Opaque by default: the translucent color doubles up where two cell
-  // borders overlap. A configured `$table-border-color` and the contextual
-  // variants below keep their own color.
   --table-border-color: #{var-if-default($table-border-color, var(--border-color-translucent), '--border-color')};
 
   > :not(caption) > * {
@@ -113,14 +82,6 @@
   }
 }
 
-// Zebra-striping
-//
-// Default zebra-stripe styles (alternating gray and transparent backgrounds)
-//
-// A row or cell that declares its own background wins over the stripe, so
-// `.bg-*`, `.table-*`, `.text-bg-*` and inline backgrounds stay visible.
-
-// For rows
 .table-striped {
   > tbody > tr:nth-of-type(#{$table-striped-order}):not(:is(#{$table-striped-exclude-selector})) > *:not(:is(#{$table-striped-exclude-selector})) {
     --table-color-type: var(--table-striped-color);
@@ -128,7 +89,6 @@
   }
 }
 
-// For columns
 .table-striped-columns {
   > :not(caption) > tr:not(:is(#{$table-striped-exclude-selector})) > :nth-child(#{$table-striped-columns-order}):not(:is(#{$table-striped-exclude-selector})) {
     --table-color-type: var(--table-striped-color);
@@ -136,18 +96,10 @@
   }
 }
 
-// Active table
-//
-// The `.table-active` class can be added to highlight rows or cells
-
 .table-active {
   --table-color-state: var(--table-active-color);
   --table-bg-state: var(--table-active-bg);
 }
-
-// Hover effect
-//
-// Placed here since it has to come after the potential zebra striping
 
 .table-hover {
   > tbody > tr:hover > * {
@@ -156,19 +108,9 @@
   }
 }
 
-// Table variants
-//
-// Table variants set the table cell backgrounds, border colors
-// and the colors of the striped, hovered & active tables
-
 @each $color, $value in $table-variants {
   @include table-variant($color, $value);
 }
-
-// Responsive tables
-//
-// Generate series of `.table-responsive-*` classes for configuring the screen
-// size of where your table will overflow.
 
 @each $breakpoint in map.keys($grid-breakpoints) {
   $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

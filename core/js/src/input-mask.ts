@@ -9,7 +9,6 @@ import BaseComponent from './bootstrap/base-component'
 import { initAll } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
-// The part of an IMask instance the component uses
 interface IMaskInstance {
   value: string
   unmaskedValue: string
@@ -66,11 +65,9 @@ class InputMask extends BaseComponent {
       return
     }
 
-    // Every option from the config reaches IMask, not only the two typed ones.
     this._mask = new window.IMask(this._element, { ...this._config })
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -88,7 +85,6 @@ class InputMask extends BaseComponent {
     return this._mask
   }
 
-  // Public
   update(): void {
     this._mask?.updateValue()
   }
@@ -98,10 +94,7 @@ class InputMask extends BaseComponent {
     super.dispose()
   }
 
-  // Private
   _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
-    // `data-mask` holds the pattern; `data-mask-visible="true"` shows it
-    // before typing, which is IMask's `lazy: false`.
     const dataOptions: Record<string, unknown> = {}
     const mask = element?.getAttribute(ATTRIBUTE_MASK)
 
@@ -109,7 +102,6 @@ class InputMask extends BaseComponent {
       dataOptions.mask = mask
     }
 
-    // A bare `data-mask-visible` means visible, like `="true"`.
     if (element?.hasAttribute(ATTRIBUTE_VISIBLE)) {
       dataOptions.lazy = element.getAttribute(ATTRIBUTE_VISIBLE) === 'false'
     }

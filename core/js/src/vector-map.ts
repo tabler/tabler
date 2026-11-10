@@ -49,7 +49,6 @@ type VectorMapTooltip = boolean | ((item: VectorMapTooltipItem) => string)
 type VectorMapLegend = boolean | ((value: number) => string)
 type VectorMapSelect = 'none' | 'single' | 'multiple'
 type Point = [number, number]
-// The part of the map in sight: its top left corner and how many times it is magnified
 type View = { x: number; y: number; scale: number }
 
 type ComponentConfig = {
@@ -125,46 +124,33 @@ const ATTRIBUTE_ACTION = 'data-bs-vector-map-action'
 
 const SELECTOR_TOOLTIP_TARGET = `.${CLASS_NAME_REGION}, .${CLASS_NAME_MARKER}`
 const SELECTOR_ACTION = `[${ATTRIBUTE_ACTION}]`
-// What a selected shape is moved in front of, so its outline is not covered
-// by the shapes around it but stays under everything drawn over the map
 const SELECTOR_OVER_SHAPES = `.${CLASS_NAME_POINT}, .${CLASS_NAME_LINE}, .${CLASS_NAME_MARKER}`
 
 const SELECT_NONE = 'none'
 const SELECT_MULTIPLE = 'multiple'
 
-// How far a pointer has to move, in pixels, before a press becomes a drag
-// and stops being a click
 const DRAG_THRESHOLD = 4
 
 const ACTION_ZOOM_IN = 'zoom-in'
 const ACTION_ZOOM_OUT = 'zoom-out'
 
-// One step of a button or a double click
 const ZOOM_STEP = 2
 const ZOOM_DURATION = 200
-// How much one unit of wheel movement magnifies. A pinch on a trackpad comes
-// as a wheel event with `ctrlKey` and much smaller numbers.
 const WHEEL_SPEED = 0.002
 const WHEEL_SPEED_PINCH = 0.01
 
 const ICON_ZOOM_IN = 'M12 5v14M5 12h14'
 const ICON_ZOOM_OUT = 'M5 12h14'
 
-// How far a line bends away from the straight one, as a share of its length
 const LINE_CURVE = 0.2
 const RADIANS = Math.PI / 180
 
 const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"], [data-tblr-toggle="${NAME}"]`
 
-// Declared on `.vector-map-region` in scss/ui/_vector-map.scss, where it gets
-// the `--tblr-` prefix at build time.
 const CSS_VAR_VALUE = '--tblr-vector-map-value'
-// The colours of a scale, numbered from 1, and how many of them there are.
-// scss/ui/_vector-map.scss mixes them, for at most this many.
 const CSS_VAR_COLOR = '--tblr-vector-map-color-'
 const CSS_VAR_COLORS = '--tblr-vector-map-colors'
 const COLORS_MAX = 5
-// Enough slices for the bar of the legend to read as one smooth gradient
 const LEGEND_STEPS = 24
 const SVG_NS = 'http://www.w3.org/2000/svg'
 
@@ -214,8 +200,6 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
 
 const svgEl = <K extends keyof SVGElementTagNameMap>(tag: K): SVGElementTagNameMap[K] => document.createElementNS(SVG_NS, tag)
 
-// Keeps the entries that are a real number, so a `null` or a typo in the data
-// leaves that region without a value instead of painting it as zero.
 const toValues = (input: unknown): VectorMapValues => {
   const values: VectorMapValues = {}
   if (typeof input !== 'object' || input === null) {
@@ -233,7 +217,6 @@ const toValues = (input: unknown): VectorMapValues => {
 
 const isRecord = (input: unknown): input is Record<string, unknown> => typeof input === 'object' && input !== null
 
-// Keeps the markers with real coordinates; one with a typo is left out.
 const toMarkers = (input: unknown): VectorMapMarker[] => {
   const markers: VectorMapMarker[] = []
   for (const item of Array.isArray(input) ? (input as unknown[]) : []) {
@@ -245,8 +228,6 @@ const toMarkers = (input: unknown): VectorMapMarker[] => {
   return markers
 }
 
-// A scale needs two colours at least; with one, or none, the map keeps the
-// single colour of `--tblr-vector-map-color`.
 const toColors = (input: unknown): string[] => {
   const colors = (Array.isArray(input) ? (input as unknown[]) : []).filter((color): color is string => typeof color === 'string' && color.trim() !== '')
   return colors.length < 2 ? [] : colors.slice(0, COLORS_MAX)
@@ -263,7 +244,6 @@ const toLines = (input: unknown): VectorMapLine[] => {
   return lines
 }
 
-// The same projection the map file was generated with (.build/generate-maps.ts)
 const project = ({ projection }: VectorMapData, lng: number, lat: number): Point => {
   const { scale, translate } = projection
   const y = 1.25 * Math.log(Math.tan(Math.PI / 4 + 0.4 * lat * RADIANS))
@@ -298,12 +278,8 @@ class VectorMap extends BaseComponent {
   _tooltip: HTMLElement | null = null
   _view: View = { x: 0, y: 0, scale: 1 }
   _frame = 0
-  // Pointers that are down on the map, with where each was last seen
   _pointers = new Map<number, Point>()
-  // Whether the pointers that are down have moved the map. A click that ends
-  // a drag is not a click on a region.
   _dragged = false
-  // The codes of the selected regions; filled from `selected` on the first render
   _selected: Set<string> | null = null
 
   /** Maps added with `addMap()`, by name */
@@ -316,7 +292,6 @@ class VectorMap extends BaseComponent {
       return
     }
 
-    // Kept so that render() can re-read the data attributes on top of it.
     this._userConfig = { ...config }
     this.render()
 
@@ -335,8 +310,6 @@ class VectorMap extends BaseComponent {
       })
     }
 
-    // `wheel` is not among the native events EventHandler knows, and the
-    // listener must not be passive to keep the page from scrolling.
     this._element.addEventListener('wheel', this._onWheel, { passive: false })
     EventHandler.on(this._element, EVENT_CLICK, (event: MouseEvent) => {
       this._onClick(event)
@@ -356,7 +329,6 @@ class VectorMap extends BaseComponent {
     })
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -369,12 +341,10 @@ class VectorMap extends BaseComponent {
     return NAME
   }
 
-  // Static
   static addMap(name: string, data: VectorMapData): void {
     VectorMap.maps[name] = data
   }
 
-  // Public
   render(): void {
     this._config = this._getConfig(this._userConfig) as ComponentConfig
     const map = (this._map = this._getMap())
@@ -384,8 +354,6 @@ class VectorMap extends BaseComponent {
     svg.setAttribute('class', CLASS_NAME_SVG)
     svg.setAttribute('viewBox', `0 0 ${map.width} ${map.height}`)
 
-    // Without a label the map says nothing to a screen reader, so it is hidden
-    // rather than announced as an unnamed image.
     if (label) {
       svg.setAttribute('role', 'img')
       svg.setAttribute('aria-label', label)
@@ -393,8 +361,6 @@ class VectorMap extends BaseComponent {
       svg.setAttribute('aria-hidden', 'true')
     }
 
-    // The points go in after the shapes, so a small country shows on top of
-    // the large one around it.
     const regions = Object.entries(map.regions)
     for (const [code, region] of [...regions.filter(([, { point }]) => !point), ...regions.filter(([, { point }]) => point)]) {
       svg.append(region.point ? this._createPoint(code, region) : this._createShape(code, region))
@@ -424,13 +390,10 @@ class VectorMap extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_UPDATED)
   }
 
-  // The codes of the selected regions, in the order they were selected
   getSelected(): string[] {
     return [...(this._selected ?? [])]
   }
 
-  // Selects exactly these regions. Codes that are not on the map are left
-  // out, and all but the first when only one region can be selected.
   setSelected(codes: string[]): void {
     this._selected = this._toSelected(codes)
     this._applySelected()
@@ -445,7 +408,6 @@ class VectorMap extends BaseComponent {
     this._zoomBy(1 / ZOOM_STEP, null, true)
   }
 
-  // Back to the whole map
   reset(): void {
     this._animateTo({ x: 0, y: 0, scale: 1 })
   }
@@ -463,7 +425,6 @@ class VectorMap extends BaseComponent {
     super.dispose()
   }
 
-  // Private
   _configAfterMerge(config: BaseConfig): BaseConfig {
     config.values = toValues(config.values)
     config.colors = toColors(config.colors)
@@ -482,7 +443,6 @@ class VectorMap extends BaseComponent {
       return map
     }
 
-    // `tablerVectorMaps` is what a map file loaded with a `<script>` tag fills.
     const data = VectorMap.maps[map] ?? window.tablerVectorMaps?.[map]
     if (!data) {
       throw new TypeError(`${NAME.toUpperCase()}: Map "${map}" is not loaded. Add its file from "dist/js/maps/" or call VectorMap.addMap().`)
@@ -499,8 +459,6 @@ class VectorMap extends BaseComponent {
     return path
   }
 
-  // A region like any other, so it takes a value and a tooltip. It is drawn
-  // the way a marker is: a dot with a ring that sets it apart from the land.
   _createPoint(code: string, region: VectorMapRegion): SVGElement {
     const group = svgEl('g')
     group.setAttribute('class', `${CLASS_NAME_REGION} ${CLASS_NAME_POINT}`)
@@ -516,7 +474,6 @@ class VectorMap extends BaseComponent {
     return group
   }
 
-  // Lines go in first, so the markers they join sit on top of their ends.
   _renderMarkers(svg: SVGSVGElement, map: VectorMapData): void {
     const { markers, lines } = this._config
     const points = markers.map((marker) => project(map, marker.lng, marker.lat))
@@ -529,7 +486,6 @@ class VectorMap extends BaseComponent {
         continue
       }
 
-      // A curve through a point pushed sideways from the middle of the line
       const controlX = (from[0] + to[0]) / 2 + (to[1] - from[1]) * LINE_CURVE
       const controlY = (from[1] + to[1]) / 2 - (to[0] - from[0]) * LINE_CURVE
       const path = svgEl('path')
@@ -539,8 +495,6 @@ class VectorMap extends BaseComponent {
     }
 
     for (const [index, marker] of markers.entries()) {
-      // A line of no length with round caps is drawn as a dot, and unlike a
-      // circle it keeps its size in pixels however large the map is.
       const d = `M${round(points[index][0])} ${round(points[index][1])}h0`
       const group = svgEl('g')
       group.setAttribute('class', CLASS_NAME_MARKER)
@@ -583,7 +537,6 @@ class VectorMap extends BaseComponent {
     return this._element.querySelector<HTMLElement>(`.${CLASS_NAME_CONTROLS}`)
   }
 
-  // The zoom buttons, laid over a corner of the map
   _renderControls(): void {
     const { zoom, zoomInLabel, zoomOutLabel } = this._config
     this._getControls()?.remove()
@@ -620,8 +573,6 @@ class VectorMap extends BaseComponent {
     this._element.append(controls)
   }
 
-  // Shows the given part of the map, kept inside the zoom range and the map
-  // itself, so the map can never be dragged out of sight.
   _setView({ x, y, scale }: View): void {
     const svg = this._getSvg()
     if (!this._map || !svg) {
@@ -644,8 +595,6 @@ class VectorMap extends BaseComponent {
     }
   }
 
-  // Moves to a view over a few frames. The corner and the size of the view
-  // change at the same pace, which keeps the point being zoomed at in place.
   _animateTo(target: View): void {
     cancelAnimationFrame(this._frame)
 
@@ -672,8 +621,6 @@ class VectorMap extends BaseComponent {
     this._frame = requestAnimationFrame(step)
   }
 
-  // Magnifies by a factor around a point of the map, which stays where it is
-  // on the screen. Without a point, around the middle of the view.
   _zoomBy(factor: number, anchor: Point | null = null, animate = false): void {
     if (!this._map) {
       return
@@ -693,7 +640,6 @@ class VectorMap extends BaseComponent {
     }
   }
 
-  // A point of the screen in the coordinates of the map
   _toMapPoint(clientX: number, clientY: number): Point {
     const matrix = this._getSvg()?.getScreenCTM()
     if (!matrix) {
@@ -704,7 +650,6 @@ class VectorMap extends BaseComponent {
     return [point.x, point.y]
   }
 
-  // Whether an event happened on the drawing, not on a button over it
   _isOnMap(event: Event): boolean {
     return event.target instanceof Element && event.target.closest(`.${CLASS_NAME_SVG}`) !== null
   }
@@ -729,7 +674,6 @@ class VectorMap extends BaseComponent {
     }
   }
 
-  // One pointer drags the map, two pinch it.
   _drag(event: PointerEvent): void {
     const previous = this._pointers.get(event.pointerId)
     const matrix = this._getSvg()?.getScreenCTM()
@@ -739,8 +683,6 @@ class VectorMap extends BaseComponent {
 
     const current: Point = [event.clientX, event.clientY]
 
-    // A press that barely moves is a click, not a drag. Until the pointer has
-    // moved far enough the map stays put, and the click reaches the region.
     if (!this._dragged) {
       if (this._pointers.size === 1 && Math.hypot(current[0] - previous[0], current[1] - previous[1]) < DRAG_THRESHOLD) {
         return
@@ -748,9 +690,6 @@ class VectorMap extends BaseComponent {
 
       this._dragged = true
 
-      // The map keeps getting the moves of this pointer when it leaves the
-      // map. Capturing throws for a pointer the browser does not know, which
-      // is what an event made in a script has.
       try {
         this._getSvg()?.setPointerCapture(event.pointerId)
       } catch {
@@ -763,7 +702,6 @@ class VectorMap extends BaseComponent {
     this._hideTooltip()
 
     if (this._pointers.size === 1) {
-      // `matrix.a` is how many pixels one unit of the map takes
       const { x, y, scale } = this._view
       this._setView({ x: x - (current[0] - previous[0]) / matrix.a, y: y - (current[1] - previous[1]) / matrix.d, scale })
       return
@@ -787,7 +725,6 @@ class VectorMap extends BaseComponent {
       return
     }
 
-    // The page must not scroll while the wheel zooms the map
     event.preventDefault()
     this._hideTooltip()
     const speed = event.ctrlKey ? WHEEL_SPEED_PINCH : WHEEL_SPEED
@@ -808,7 +745,6 @@ class VectorMap extends BaseComponent {
     }
 
     if (!this._tooltip) {
-      // For the eye only: the text repeats what the pointer is over
       this._tooltip = document.createElement('div')
       this._tooltip.className = CLASS_NAME_TOOLTIP
       this._tooltip.setAttribute('aria-hidden', 'true')
@@ -839,8 +775,6 @@ class VectorMap extends BaseComponent {
     return new Set(select === SELECT_MULTIPLE ? known : known.slice(0, 1))
   }
 
-  // Marks the selected regions for the stylesheet. A shape that gets selected
-  // moves after the other shapes, where nothing covers its outline.
   _applySelected(): void {
     const svg = this._getSvg()
     if (!svg) {
@@ -861,8 +795,6 @@ class VectorMap extends BaseComponent {
     }
   }
 
-  // A click on a region or on a marker becomes an event of the map. A click on
-  // a region also selects it, unless the event was prevented.
   _onClick(event: MouseEvent): void {
     if (this._dragged || !this._isOnMap(event) || !this._map) {
       return
@@ -888,7 +820,6 @@ class VectorMap extends BaseComponent {
       return
     }
 
-    // A click on a selected region takes it out again
     const selected = this.getSelected()
     const rest = selected.filter((other) => other !== code)
     const next = rest.length < selected.length ? rest : this._config.select === SELECT_MULTIPLE ? [...selected, code] : [code]
@@ -901,9 +832,6 @@ class VectorMap extends BaseComponent {
     return this._element.querySelector<HTMLElement>(`.${CLASS_NAME_LEGEND}`)
   }
 
-  // A bar with the colours of the scale between the lowest and the highest
-  // value. Every slice of the bar carries a share, like a region does, so the
-  // stylesheet colours it with the very rule it colours the map with.
   _renderLegend(min: number, max: number): void {
     const { legend } = this._config
     this._getLegend()?.remove()
@@ -936,8 +864,6 @@ class VectorMap extends BaseComponent {
     this._element.append(element)
   }
 
-  // Hands the colours of the scale to the stylesheet, which mixes the colour
-  // of every region from them and from its share. Nothing is computed here.
   _applyColors(): void {
     const { colors } = this._config
     const { style } = this._element
@@ -960,8 +886,6 @@ class VectorMap extends BaseComponent {
     this._element.classList.toggle(CLASS_NAME_COLORS, colors.length > 0)
   }
 
-  // Shades every region by where its value sits between `min` and `max`. Only
-  // that 0 to 1 ratio is written here; the colour is mixed in CSS.
   _applyValues(): void {
     const { values, min: minForced, max: maxForced } = this._config
     const numbers = Object.values(values)
@@ -980,7 +904,6 @@ class VectorMap extends BaseComponent {
         continue
       }
 
-      // With a single value, or all of them equal, everything gets the full colour.
       const ratio = span === 0 ? 1 : Math.min(Math.max((value - min) / span, 0), 1)
       path.setAttribute(ATTRIBUTE_VALUE, String(value))
       path.style.setProperty(CSS_VAR_VALUE, String(Math.round(ratio * 1000) / 1000))
@@ -992,10 +915,6 @@ class VectorMap extends BaseComponent {
  * Data API implementation
  */
 
-// A map file may come later in the page than this script, also when both are
-// deferred, so the maps are drawn once the document is parsed and not before.
-// The `load` listener covers a script added after that point; drawing twice is
-// harmless, an element keeps its one instance.
 // js-docs-start vector-map-init
 const init = (): void => {
   initAll(SELECTOR_DATA_TOGGLE, VectorMap)

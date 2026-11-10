@@ -423,7 +423,6 @@ describe('Carousel', () => {
             return
           }
 
-          // wrapped back to first
           expect(activeId).toBe('one')
           carousel.dispose()
           resolve()

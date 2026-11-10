@@ -93,8 +93,6 @@ class Strength extends BaseComponent {
   _input: HTMLInputElement | null = null
   _segments: HTMLElement[] = []
   _text: HTMLElement | null = null
-  // What the markup put in the label element: shown while the field is empty,
-  // so a form can keep its password rules there until a level replaces them.
   _emptyText = ''
   _level: StrengthLevel | null = null
   _onInput = (): void => this.evaluate()
@@ -121,7 +119,6 @@ class Strength extends BaseComponent {
     this.evaluate()
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -138,7 +135,6 @@ class Strength extends BaseComponent {
     return this._level
   }
 
-  // Public
   evaluate(): void {
     if (!this._input) {
       return
@@ -155,7 +151,6 @@ class Strength extends BaseComponent {
     this._level = level
     this._render(level)
 
-    // The password itself is never part of the payload.
     EventHandler.trigger(this._element, EVENT_CHANGE, { strength: level, score })
   }
 
@@ -164,9 +159,7 @@ class Strength extends BaseComponent {
     super.dispose()
   }
 
-  // Private
   _configAfterMerge(config: ComponentConfig): ComponentConfig {
-    // A partial `messages` or `weights` overrides only the keys it names.
     return {
       ...config,
       messages: { ...Default.messages, ...config.messages },
@@ -180,10 +173,6 @@ class Strength extends BaseComponent {
       return getElement(input) as HTMLInputElement | null
     }
 
-    // Without an explicit selector only the meter's own parent is searched.
-    // The nearest field before the meter wins, so a confirm-password field
-    // placed after it is never mistaken for the one being rated; a meter
-    // placed above its field falls back to the first field after it.
     const parent = this._element.parentElement
     const fields = parent ? (SelectorEngine.find(SELECTOR_PASSWORD, parent) as HTMLInputElement[]) : []
     const precedingFields = fields.filter((field) => Boolean(field.compareDocumentPosition(this._element) & Node.DOCUMENT_POSITION_FOLLOWING))
@@ -206,7 +195,6 @@ class Strength extends BaseComponent {
       element.setAttribute('aria-label', 'Password strength')
     }
 
-    // The segments are decoration; the level is read from the meter itself.
     for (const segment of this._segments) {
       segment.setAttribute('aria-hidden', 'true')
     }
@@ -238,7 +226,6 @@ class Strength extends BaseComponent {
     return rules.reduce((score, [passed, weight]) => score + (passed ? (weight ?? 0) : 0), 0)
   }
 
-  // Trailing underscore: `_level` is the field holding the current value.
   _level_(score: number): StrengthLevel | null {
     if (score <= 0) {
       return null
@@ -252,21 +239,15 @@ class Strength extends BaseComponent {
     const element = this._element
     const index = level ? LEVELS.indexOf(level) : -1
 
-    // Emptied rather than removed: `data-bs-strength` is also the attribute
-    // the data API looks for, and an empty value matches no level in CSS.
     element.dataset.bsStrength = level ?? ''
 
     element.setAttribute('aria-valuenow', String(index + 1))
-    // No level means no spoken value: `aria-valuenow` of 0 says it already,
-    // and an invented word here could not be translated through `messages`.
     if (level) {
       element.setAttribute('aria-valuetext', this._config.messages[level] ?? level)
     } else {
       element.removeAttribute('aria-valuetext')
     }
 
-    // The segments are filled in proportion, so a meter with three or five of
-    // them works as well as the usual four.
     const filled = level ? Math.ceil(((index + 1) / LEVELS.length) * this._segments.length) : 0
     for (const [position, segment] of this._segments.entries()) {
       segment.classList.toggle(CLASS_NAME_ACTIVE, position < filled)

@@ -1,7 +1,3 @@
-//
-// Check/radio
-//
-
 @use '../../config' as *;
 
 .form-check {
@@ -34,9 +30,6 @@
   }
 }
 
-// The checked, indeterminate and disabled tokens read the shared state colors
-// on `:root` (`--control-checked-bg` and friends) until the Sass variable is
-// configured, so one override retunes checks, radios and switches together.
 .form-check-input {
   // scss-docs-start form-check-input-css-vars
   --form-check-input-width: #{$form-check-input-width};
@@ -59,19 +52,15 @@
   flex-shrink: 0;
   width: var(--form-check-input-width);
   height: var(--form-check-input-width);
-  margin-top: ($line-height-base - $form-check-input-width) * 0.5; // line-height minus check height
+  margin-top: ($line-height-base - $form-check-input-width) * 0.5;
   vertical-align: top;
   appearance: none;
   background-color: var(--form-check-bg);
   border: var(--form-check-border);
-  print-color-adjust: exact; // Keep themed appearance for print
+  print-color-adjust: exact;
   @include transition(var(--form-check-transition));
-  // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 
-  // The check, dash or dot is a pseudo-element painted through a CSS mask, so
-  // its colour comes from `--form-check-icon-color` instead of a colour baked
-  // into the svg. Hidden until the input is checked or indeterminate.
   &::before {
     position: absolute;
     inset: 0;
@@ -131,8 +120,6 @@
     opacity: var(--form-check-disabled-opacity);
   }
 
-  // Use disabled attribute in addition of :disabled pseudo-class
-  // See: https://github.com/twbs/bootstrap/issues/28247
   &[disabled],
   &:disabled {
     ~ .form-check-label {
@@ -146,10 +133,6 @@
   color: $form-check-label-color;
   cursor: $form-check-label-cursor;
 }
-
-//
-// Switch
-//
 
 .form-switch {
   // scss-docs-start form-switch-css-vars
@@ -168,11 +151,8 @@
 
   .form-check-input {
     --form-switch-color: #{$form-switch-color};
-    // The knob is a circle with the same gap to the outer edge of the track on
-    // every side. The gap is a whole number of pixels, so the knob stays round.
     --form-switch-knob-offset: 0.125rem;
     --form-switch-knob-size: calc(var(--form-switch-height) - var(--form-switch-knob-offset) * 2);
-    // The knob is positioned inside the border, the gap is measured from outside it.
     --form-switch-knob-inset: calc(var(--form-switch-knob-offset) - var(--border-width));
 
     width: var(--form-switch-width);
@@ -180,7 +160,6 @@
     @include border-radius(var(--form-switch-border-radius), 0);
     @include transition($form-switch-transition);
 
-    // The knob replaces the masked check icon: a plain circle that slides.
     &::before {
       inset-block: 0;
       inset-inline: var(--form-switch-knob-inset) auto;
@@ -195,8 +174,6 @@
       @include transition($form-switch-knob-transition);
     }
 
-    // An off switch is a filled track with no outline, so it reads as a
-    // switch and not as an empty input.
     &:not(:checked, :disabled) {
       background-color: var(--form-switch-bg);
       border-color: transparent;

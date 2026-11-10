@@ -6,7 +6,6 @@
   line-height: $line-height-base;
 }
 
-// Tabler buttons over the map, in the top end corner
 .map-controls {
   position: absolute;
   inset-block-start: #{$map-controls-offset};
@@ -17,9 +16,6 @@
   gap: #{$map-controls-gap};
 }
 
-// The hover and active colors of a button are see-through, which would show
-// the map under it. For a button inside a map, or in an element laid over one,
-// keep the button color and draw the hover color as a layer on top.
 [data-bs-toggle='map'],
 [data-bs-toggle='map'] ~ *,
 [data-tblr-toggle='map'],
@@ -36,7 +32,6 @@
   }
 }
 
-// A map button with no content gets its icon from its action
 [data-bs-map-action]:empty::before {
   width: #{$map-control-icon-size};
   height: #{$map-control-icon-size};
@@ -51,7 +46,6 @@
   }
 }
 
-// Attribution
 .maplibregl-ctrl.maplibregl-ctrl-attrib {
   color: var(--secondary);
   background-color: color-transparent(var(--bg-surface), 0.7);
@@ -77,7 +71,6 @@
   border-color: var(--body-color);
 }
 
-// Popup: a small bordered panel with no arrow
 .maplibregl-popup .maplibregl-popup-content {
   padding: 0.75rem;
   color: var(--body-color);
@@ -92,7 +85,6 @@
   display: none;
 }
 
-// A popup fades in and grows a little as it opens
 .maplibregl-popup-content {
   animation: map-popup-in 0.2s ease-out;
 
@@ -108,7 +100,6 @@
   }
 }
 
-// Room for the close button, which MapLibre pins to the right edge in both directions
 .maplibregl-popup .maplibregl-popup-content:has(.maplibregl-popup-close-button) {
   /* rtl:ignore */
   padding-right: 2rem;
@@ -130,7 +121,6 @@
   }
 }
 
-// Popup used as a tooltip: a short inverted label, shown on hover
 .map-tooltip .maplibregl-popup-content {
   padding: 0.25rem 0.5rem;
   color: var(--text-inverted);
@@ -139,7 +129,6 @@
   box-shadow: #{$box-shadow-md};
 }
 
-// Popup that holds a card-like block: an image on top, padded content below
 .map-popup-card.maplibregl-popup {
   .maplibregl-popup-content {
     width: #{$map-popup-card-width};
@@ -153,15 +142,11 @@
   }
 }
 
-// Markers written as children of the map element stay hidden until the
-// component moves them onto the map
 [data-bs-toggle='map'] > [data-bs-lng],
 [data-tblr-toggle='map'] > [data-tblr-lng] {
   display: none;
 }
 
-// Marker drawn in HTML. MapLibre moves the marker with `transform`, so the
-// shape is drawn by the pseudo-element and the root keeps no transform.
 .map-marker {
   // scss-docs-start map-marker-css-vars
   --map-marker-size: #{$map-marker-size};
@@ -197,7 +182,6 @@
     @include border-radius(var(--border-radius-pill));
   }
 
-  // On a map the marker is positioned by MapLibre
   &.maplibregl-marker {
     position: absolute;
   }
@@ -211,7 +195,6 @@
   --map-marker-size: #{$map-marker-dot-size};
 }
 
-// A ring that grows out of the marker and fades, for a live position
 .map-marker-pulse::after {
   position: absolute;
   inset: 0;
@@ -237,7 +220,6 @@
   }
 }
 
-// Short text under a marker
 .map-marker-label {
   position: absolute;
   top: 100%;
@@ -255,8 +237,6 @@
   transform: translateX(-50%);
 }
 
-// Teardrop: a square with one sharp corner, turned to point down. Its tip
-// reaches 20.7% below the circle, so the root is that much taller.
 .map-marker-pin {
   box-sizing: content-box;
   width: var(--map-marker-size);
@@ -280,7 +260,6 @@
   }
 }
 
-// The attribution icon is a black SVG image
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .maplibregl-ctrl-attrib-button {

@@ -1,12 +1,3 @@
-// Next batch — self-contained helper functions from scss/mixins/_functions.scss
-// that need no project config (arguments passed inline). Covers colour channel
-// extraction, alpha flattening, percentage coercion, the transparent/SVG string
-// builders and the higher-order `map-loop`.
-//
-// Some functions return a `calculation`, an unquoted `color-mix(...)` string, or
-// a `url(...)` token; those are asserted through `meta.inspect(...)` so the
-// comparison is against the exact rendered output.
-
 @use 'sass:meta';
 @use '../mixins/functions' as *;
 
@@ -74,9 +65,6 @@
 }
 
 @include describe('map-loop') {
-  // Applies a module-level function (resolved by name via meta.get-function) to
-  // every value in the map. `to-percentage` lives in the same module, so it
-  // resolves correctly.
   @include it('maps every value through the named function') {
     @include assert-equal(
       map-loop(

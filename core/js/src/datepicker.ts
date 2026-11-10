@@ -36,29 +36,16 @@ const SELECTOR_DISPLAY = '[data-bs-datepicker-display], [data-tblr-datepicker-di
 const SELECTOR_INPUT_WRAPPER = '.input-icon, .input-group'
 const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
 
-const HIDE_DELAY = 100 // ms delay before hiding after selection
+const HIDE_DELAY = 100
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
 const FORMAT_TOKENS = /YYYY|MM|M|DD|D/g
 const ISO_FORMAT = 'YYYY-MM-DD'
 
-// Vanilla Calendar Pro 3.4 moved several months, the time picker, week
-// numbers, popups and animation into extensions that must be registered when
-// the calendar is created, or its constructor throws. The library is loaded
-// as a whole on `window`, so every extension it exports is registered;
-// 3.3 exports none and gets no `extensions` option.
 const EXTENSION_NAMES = ['annotations', 'months', 'motion', 'time', 'weeks'] as const
 
 const writtenSelections = new WeakMap<HTMLElement, { text: string; dates: string[] }>()
 
-// The public API is typed with local copies of the Vanilla Calendar Pro types.
-// `vanilla-calendar-pro` is an optional peer dependency, so the published
-// `dist/types` must not import it: a project that never loads the datepicker
-// would otherwise fail to type-check with TS2307. The unions match the
-// plugin's own, so a bad value is still a compile error. Members that need the
-// plugin's full types carry an internal JSDoc tag and are left out of
-// `dist/types` by `stripInternal` (the tag must not appear in plain comments,
-// or TypeScript strips the declaration that follows).
 type DateAny = Date | number | `${number}-${string}-${string}` | 'today'
 type DatesArr = Array<Date | number | string>
 type DateMode = 'single' | 'multiple' | 'multiple-ranged'
@@ -71,7 +58,6 @@ type WeekDayID = 0 | 1 | 2 | 3 | 4 | 5 | 6
  * Cast it to `Calendar` from `vanilla-calendar-pro` for the full type.
  */
 interface CalendarInstance {
-  // Loosely typed on purpose: the plugin's context is large and version-specific.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: Record<string, any>
   init(): unknown
@@ -172,8 +158,6 @@ const formatPattern = (date: Date, pattern: string): string => {
   return pattern.replace(FORMAT_TOKENS, (token) => parts[token])
 }
 
-// Reads text written with `pattern` back into `YYYY-MM-DD`, or null when it
-// does not match or names a day that does not exist.
 const parsePattern = (value: string, pattern: string): string | null => {
   const order: string[] = []
   const source = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(FORMAT_TOKENS, (token) => {
@@ -195,9 +179,6 @@ const parsePattern = (value: string, pattern: string): string | null => {
   return date.getMonth() === month - 1 && date.getDate() === day ? `${pad(year, 4)}-${pad(month)}-${pad(day)}` : null
 }
 
-// Delegated Data API handlers run in the capture phase, before the plugin's
-// own click listener, which opens the popup from a `setTimeout`. Two nested
-// timeouts are the first point that is after it for certain.
 const afterPluginTimers = (callback: () => void): void => {
   setTimeout(() => setTimeout(callback))
 }
@@ -217,9 +198,6 @@ class Datepicker extends BaseComponent {
   /** @internal */
   _calendar: Calendar | null = null
   _isShown = false
-  // The plugin opens and closes the popup on its own too (its click and focus
-  // listeners, Escape, a click outside), so `onShow` and `onHide` are what
-  // tracks the state and fires the events; these flags tell them who asked.
   _isShowing = false
   _isHiding = false
   _isSilent = false
@@ -235,8 +213,6 @@ class Datepicker extends BaseComponent {
   _themeObserver: MutationObserver | null = null
   _onFocusIn: ((event: Event) => void) | null = null
   _onResize = (): void => this._alignToPositionElement()
-  // The plugin builds a popup lazily, so its context has no selection until
-  // the first show; this mirror answers `getSelectedDates()` before that.
   _selectedDates: string[] = []
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
@@ -249,7 +225,6 @@ class Datepicker extends BaseComponent {
     this._initCalendar()
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -267,10 +242,9 @@ class Datepicker extends BaseComponent {
     return this._calendar
   }
 
-  // Public
   toggle(): Promise<void> {
     if (this._config.inline) {
-      return Promise.resolve() // Inline calendars are always visible
+      return Promise.resolve()
     }
 
     return this._isShown ? this.hide() : this.show()
@@ -278,11 +252,9 @@ class Datepicker extends BaseComponent {
 
   async show(): Promise<void> {
     if (this._config.inline) {
-      return // Inline calendars are always visible
+      return
     }
 
-    // The first `calendar.show()` clicks the element to build the popup, and
-    // that click comes back here through the Data API; `_isShowing` stops it.
     if (!this._calendar || isDisabled(this._element) || this._isShown || this._isShowing) {
       return
     }
@@ -295,11 +267,9 @@ class Datepicker extends BaseComponent {
     this._isShowing = true
     this._skipPluginShow = false
 
-    // Reset even if the plugin throws, or every later `show()` returns early
     try {
       this._calendar.show()
 
-      // The first show builds the popup and opens it a tick later
       if (!this._isShown) {
         await new Promise<void>((resolve) => {
           this._resolveShown = resolve
@@ -312,11 +282,10 @@ class Datepicker extends BaseComponent {
     }
   }
 
-  // `async` like `show()`, so a plugin error reaches the caller as a rejection
   // eslint-disable-next-line @typescript-eslint/require-await
   async hide(): Promise<void> {
     if (this._config.inline) {
-      return // Inline calendars are always visible
+      return
     }
 
     if (!this._calendar || !this._isShown) {
@@ -328,8 +297,6 @@ class Datepicker extends BaseComponent {
       return
     }
 
-    // On a click on a button trigger the plugin's own listener runs next and
-    // queues a `show()`; without this the popup would open again right away.
     this._skipPluginShow = true
     afterPluginTimers(() => {
       this._skipPluginShow = false
@@ -355,10 +322,6 @@ class Datepicker extends BaseComponent {
     if (this._calendar) {
       this._calendar.destroy()
 
-      // The plugin swaps the element for a clone taken at init, which has the
-      // value and listeners from back then. The live element goes back in;
-      // an inline calendar keeps the clone (its original children), so only
-      // the bound input moves back into it.
       const clone = this._calendar.context.mainElement as HTMLElement | undefined
       if (clone && clone !== this._element && clone.isConnected) {
         if (this._isInput) {
@@ -387,7 +350,6 @@ class Datepicker extends BaseComponent {
     this._writeSelection(this._selectedDates)
   }
 
-  // Private
   _initCalendar(): void {
     this._isInput = this._element.tagName === 'INPUT'
     this._isInline = this._config.inline
@@ -399,37 +361,26 @@ class Datepicker extends BaseComponent {
     this._displayElement = this._resolveDisplayElement()
     this._selectedDates = [...this._config.selectedDates]
 
-    // The calendar always attaches to the element itself. The plugin closes on
-    // any click whose target is not exactly its input, so handing it a wrapper
-    // makes a click on the field inside close and reopen the popup. The popup
-    // is aligned with the position element after each show instead.
     this._calendar = new window.VanillaCalendarPro!.Calendar(this._element, this._buildCalendarOptions())
     this._calendar.init()
 
-    // An inline calendar renders into the element and drops its children, so
-    // the bound input moves right after it to stay in the form.
     if (this._boundInput && !this._boundInput.isConnected) {
       this._element.after(this._boundInput)
     }
 
-    // Watch for theme changes on ancestor elements (for live theme switching)
     this._setupThemeObserver()
 
     this._setupDismissOnFocus()
 
-    // Set initial value if input has a value
     if (this._isInput && this._element.value) {
       this._parseInputValue()
     }
 
-    // The field shows localized text the next page load cannot read back, so
-    // a value the server rendered into the bound input selects the dates.
     const boundDates = this._boundInput?.value.split(',').filter((date) => DATE_PATTERN.test(date))
     if (this._selectedDates.length === 0 && boundDates?.length) {
       this._select(boundDates)
     }
 
-    // Populate input/display with preselected dates
     this._updateDisplayWithSelectedDates()
   }
 
@@ -465,7 +416,6 @@ class Datepicker extends BaseComponent {
       return getElement(boundInput) as HTMLInputElement | null
     }
 
-    // An inline calendar submits through a hidden input inside it
     return this._isInline && !this._isInput ? (SelectorEngine.findOne(SELECTOR_BOUND_INPUT, this._element) as HTMLInputElement | null) : null
   }
 
@@ -476,7 +426,6 @@ class Datepicker extends BaseComponent {
       positionElement = getElement(positionElement)
     }
 
-    // Use the input's wrapper when it sits in an icon or group wrapper
     if (!positionElement && this._isInput && !this._isInline) {
       positionElement = this._element.closest<HTMLElement>(SELECTOR_INPUT_WRAPPER)
     }
@@ -491,7 +440,6 @@ class Datepicker extends BaseComponent {
       return getElement(displayElement)
     }
 
-    // For buttons/non-inputs (not inline), look for a display child
     if (displayElement === true || (displayElement === null && !this._isInput && !this._isInline)) {
       return SelectorEngine.findOne(SELECTOR_DISPLAY, this._element) || this._element
     }
@@ -499,8 +447,6 @@ class Datepicker extends BaseComponent {
     return displayElement
   }
 
-  // The plugin positions the popup against the element; a wrapper such as
-  // `.input-icon` or `.input-group` wants the popup aligned with its own edges.
   _alignToPositionElement(): void {
     const mainElement = this._calendar?.context?.mainElement
     if (!mainElement || this._isInline || !this._positionElement || this._positionElement === this._element) {
@@ -525,7 +471,6 @@ class Datepicker extends BaseComponent {
   }
 
   _getEffectiveTheme(): string | null {
-    // Priority: explicit datepickerTheme config > inherited from ancestor > none
     const { datepickerTheme } = this._config
     if (datepickerTheme) {
       return datepickerTheme
@@ -542,8 +487,6 @@ class Datepicker extends BaseComponent {
     const theme = this._getEffectiveTheme()
 
     if (theme) {
-      // Copy the theme to the popup: the plugin appends it to <body>, which
-      // breaks inheritance from a themed container.
       element.setAttribute('data-bs-theme', theme)
     } else {
       element.removeAttribute('data-bs-theme')
@@ -553,7 +496,6 @@ class Datepicker extends BaseComponent {
   _setupThemeObserver(): void {
     const ancestor = this._getThemeAncestor()
     if (!ancestor || this._config.datepickerTheme) {
-      // No ancestor to watch, or explicit datepickerTheme overrides
       return
     }
 
@@ -567,8 +509,6 @@ class Datepicker extends BaseComponent {
     })
   }
 
-  // The plugin ignores focus and mounts the popup on <body>, so close it
-  // ourselves when focus leaves both the element and the calendar.
   _setupDismissOnFocus(): void {
     if (this._isInline) {
       return
@@ -605,8 +545,6 @@ class Datepicker extends BaseComponent {
     }
 
     if (!this._isSilent && !this._isShown) {
-      // Opened by the plugin itself: right after `hide()` on a trigger click it
-      // must stay closed, otherwise it gets the same cancelable `show` event.
       const prevented = this._skipPluginShow || (!this._isShowing && EventHandler.trigger(this._element, EVENT_SHOW)?.defaultPrevented)
 
       if (prevented) {
@@ -635,8 +573,6 @@ class Datepicker extends BaseComponent {
       return
     }
 
-    // Closed by the plugin itself (Escape, a click outside): `hide` is still
-    // cancelable, the popup opens again before the browser paints.
     if (!this._isHiding && EventHandler.trigger(this._element, EVENT_HIDE)?.defaultPrevented) {
       this._silently(() => calendar.show())
       return
@@ -647,8 +583,6 @@ class Datepicker extends BaseComponent {
     EventHandler.trigger(this._element, EVENT_HIDDEN)
   }
 
-  // The extensions the loaded library exports, after the ones the caller
-  // registered in `vcpOptions` themselves.
   /** @internal */
   _calendarExtensions(own: readonly CalendarExtension[] = []): CalendarExtension[] {
     const library = window.VanillaCalendarPro as Record<string, unknown> | undefined
@@ -666,7 +600,6 @@ class Datepicker extends BaseComponent {
 
   /** @internal */
   _buildCalendarOptions(): Options {
-    // The plugin uses 'system' for auto-detection, Bootstrap and Tabler use 'auto'
     const theme = this._getEffectiveTheme()
     const vcpTheme = !theme || theme === 'auto' ? 'system' : theme
 
@@ -695,11 +628,9 @@ class Datepicker extends BaseComponent {
       onHide: () => this._handlePluginHide(),
     }
 
-    // Navigate to the month of the first selected date
     const [firstSelected] = this._config.selectedDates
     if (firstSelected) {
       const firstDate = this._parseDate(firstSelected)
-      // `getMonth()` is always 0-11, which TypeScript cannot narrow on its own
       calendarOptions.selectedMonth = firstDate.getMonth() as Range<12>
       calendarOptions.selectedYear = firstDate.getFullYear()
     }
@@ -720,8 +651,6 @@ class Datepicker extends BaseComponent {
     const selectedDates = validDates(self.context.selectedDates)
     this._selectedDates = selectedDates
 
-    // Written even when empty: clicking the picked day again deselects it, and
-    // the field must not keep submitting the old date.
     this._writeSelection(selectedDates)
 
     const args: ChangeEventArgs = { dates: selectedDates, event }
@@ -753,22 +682,18 @@ class Datepicker extends BaseComponent {
     const locale = this._config.locale === 'default' ? undefined : this._config.locale
     const { dateFormat } = this._config
 
-    // Token pattern, independent of the locale
     if (typeof dateFormat === 'string') {
       return formatPattern(date, this._formatPattern()!)
     }
 
-    // Custom function formatter
     if (typeof dateFormat === 'function') {
       return dateFormat(date, locale)
     }
 
-    // Intl.DateTimeFormat options object
     if (dateFormat && typeof dateFormat === 'object') {
       return new Intl.DateTimeFormat(locale, dateFormat).format(date)
     }
 
-    // Default: locale-aware formatting
     return date.toLocaleDateString(locale)
   }
 
@@ -796,7 +721,6 @@ class Datepicker extends BaseComponent {
       return this._formatDate(dates[0])
     }
 
-    // For date ranges, use en-dash; for multiple dates, use comma
     return dates.map((date) => this._formatDate(date)).join(this._dateSeparator())
   }
 
@@ -812,7 +736,6 @@ class Datepicker extends BaseComponent {
       return
     }
 
-    // A pattern reads back what it wrote, e.g. a value the server sent again
     const pattern = this._formatPattern()
     if (pattern) {
       const parts = this._config.selectionMode === 'single' ? [value] : value.split(this._dateSeparator())
@@ -823,8 +746,6 @@ class Datepicker extends BaseComponent {
       }
     }
 
-    // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
-    // UTC midnight and land on the previous day west of Greenwich.
     const date = DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
     if (Number.isNaN(date.getTime())) {
       return
@@ -835,7 +756,6 @@ class Datepicker extends BaseComponent {
 
   _select(dates: string[]): void {
     this._selectedDates = [...dates]
-    // The calendar opens on the month of the selection, not on today.
     this._calendar?.set({ selectedDates: this._selectedDates, ...this._monthOf(this._selectedDates[0]) })
   }
 
@@ -862,7 +782,6 @@ class Datepicker extends BaseComponent {
     }
 
     const date = this._parseDate(value)
-    // `getMonth()` is always 0-11, which TypeScript cannot narrow on its own
     return { selectedMonth: date.getMonth() as Range<12>, selectedYear: date.getFullYear() }
   }
 }

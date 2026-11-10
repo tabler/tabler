@@ -1,11 +1,5 @@
 @use '../config' as *;
 
-// ApexCharts reads these tokens from the chart element's computed style (theme.tokens,
-// on by default since v6), so the library themes itself — including charts an app builds
-// on its own, without going through Tabler's chart helpers.
-//
-// The palette is the public part: override --tblr-chart-1 … --tblr-chart-5 to recolor
-// every chart at once, the same way --tblr-primary recolors the rest of the interface.
 :root {
   --chart-1: var(--primary);
   --chart-2: var(--green);
@@ -15,8 +9,6 @@
   --apx-accent: var(--chart-1);
   --apx-fore: var(--secondary);
   --apx-grid: var(--border-color);
-  // No --apx-surface on purpose: it makes ApexCharts paint a solid background behind the
-  // plot, which would cover the card underneath — tinted and gradient cards included.
   --apx-series-1: var(--chart-1);
   --apx-series-2: var(--chart-2);
   --apx-series-3: var(--chart-3);
@@ -25,16 +17,7 @@
 }
 
 .apexcharts-tooltip {
-  // ApexCharts paints the tooltip title and other muted text from this variable, and its
-  // default is a dark gray that disappears on the inverted Tabler tooltip surface.
-  // !important because ApexCharts injects its own stylesheet at runtime, after this one,
-  // and its default lands on the same selector.
   --apx-tt-color-muted: #{$tooltip-color} !important;
-  // The arrow connector is a separate element painted from these two tokens, not
-  // from the box's background: without them it stays white on the dark tooltip.
-  // The border token keeps the tooltip color rather than going transparent, and
-  // the box keeps its 1px border: ApexCharts parks the arrow's centre on that
-  // border line, so removing it leaves a 1px seam between box and arrow.
   --apx-tt-bg: #{$tooltip-bg} !important;
   --apx-tt-border: #{$tooltip-bg} !important;
 
@@ -45,10 +28,6 @@
   box-shadow: none !important;
 }
 
-// Paint the arrow directly as well: it reads its colour through two levels of
-// custom properties (--apx-tt-arrow-bg → --apx-tt-bg), and some browsers drop a
-// light-dark() value on the way, leaving a transparent arrow with a border in
-// the text colour — a white arrow on the dark tooltip.
 .apexcharts-tooltip-arrow {
   background: $tooltip-bg !important;
   border-color: $tooltip-bg !important;
@@ -82,8 +61,6 @@
   stroke: var(--border-color) !important;
 }
 
-// ApexCharts outlines markers, treemap cells and data label pills in white, so they
-// separate from the plot. On a dark background that outline is the thing that stands out.
 .apexcharts-marker,
 .apexcharts-treemap-rect,
 .apexcharts-data-labels rect {

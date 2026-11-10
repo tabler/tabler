@@ -1,5 +1,3 @@
-// Disable animation if transitions are disabled
-
 // scss-docs-start progress-keyframes
 @use '../config' as *;
 
@@ -20,8 +18,6 @@
   --progress-bg: #{$progress-bg};
   --progress-border-radius: #{$progress-border-radius};
   --progress-box-shadow: #{$progress-box-shadow};
-  // Left unset by default, so each bar falls back to the foreground of its own
-  // `.bg-*` colour; set it here (or inline) to color every bar's text at once.
   @if $progress-bar-color != $white {
     --progress-bar-color: #{$progress-bar-color};
   }
@@ -31,7 +27,7 @@
 
   display: flex;
   height: var(--progress-height);
-  overflow: hidden; // force rounded corners by cropping it
+  overflow: hidden;
   @include font-size(var(--progress-font-size));
   background-color: var(--progress-bg);
   @include border-radius(var(--progress-border-radius));

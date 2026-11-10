@@ -1,19 +1,6 @@
-// Cross-module `@extend` rules, loaded last from `tabler.scss`.
-//
-// With the Sass module system an extension only applies to upstream
-// stylesheets — the modules the extending file loads, directly or
-// transitively — never to sibling modules loaded elsewhere. The extends below
-// target element selectors spread across many modules (`h1`–`h6`, `hr`,
-// `.table`, `[data-bs-theme='dark']`), so they live here, with the whole
-// `core` upstream.
-//
-// Rules containing only `@extend` emit no CSS of their own, so placing them
-// here does not change the compiled output — each extension is applied
-// in-place to the rules it extends.
 @use 'config' as *;
 @use 'core';
 
-// Heading helpers (from `bootstrap/_type.scss`)
 .h1 {
   @extend h1;
 }
@@ -38,7 +25,6 @@
   @extend h6;
 }
 
-// Emphasis helpers (from `bootstrap/_type.scss`)
 .small {
   @extend small;
 }
@@ -47,12 +33,10 @@
   @extend mark;
 }
 
-// Horizontal rule helper (from `ui/typo/_hr.scss`)
 .hr {
   @extend hr;
 }
 
-// Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
 .prose > table,
 .markdown > table {
   @extend .table;
@@ -77,26 +61,12 @@
   }
 }
 
-// Light-scoped subtrees inside a dark body inherit the dark styles
-// (from `layout/_dark.scss`)
 @if $enable-dark-mode {
-  // The `i` flag makes this a different simple selector for Sass, so the navbar
-  // `@extend` below does not extend it into `body.navbar` selectors that never match.
   body[data-bs-theme='dark' i] [data-bs-theme='light'],
   body[data-theme='dark'] [data-theme='light'] {
     @extend [data-bs-theme='dark'];
   }
 
-  // Navbar theme chosen at runtime (data-bs-navbar-theme on <html>). It covers
-  // whichever navigation the page shows — the vertical sidebar is a .navbar
-  // too. Extending the dark color mode keeps this route identical to the
-  // static one, which sets data-bs-theme="dark" on the element itself; the
-  // primary variant is the dark palette on a primary background (see
-  // layout/_navbar.scss). The default value writes no attribute and means
-  // "follow the page", so there is no rule for it.
-  //
-  // The two-row navbar keeps its menu row in a collapse wrapper next to the
-  // header, so that row is matched on its own.
   html[data-bs-navbar-theme='dark'] .page > .navbar,
   html[data-bs-navbar-theme='primary'] .page > .navbar,
   html[data-bs-navbar-theme='dark'] .page > [class*='navbar-expand'] .navbar,

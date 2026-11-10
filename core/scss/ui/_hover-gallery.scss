@@ -1,6 +1,5 @@
 @use '../config' as *;
 
-// Every item is an equal, invisible column; hovering a column shows its image over the whole gallery
 .hover-gallery {
   // scss-docs-start hover-gallery-css-vars
   --hover-gallery-aspect-ratio: #{$hover-gallery-aspect-ratio};
@@ -41,12 +40,10 @@
   }
 }
 
-// One bar per item at the bottom edge, lit for the image on display
 .hover-gallery-indicators {
   gap: var(--hover-gallery-indicator-gap);
   padding: var(--hover-gallery-indicator-padding);
 
-  // Darkens the bottom edge so the bars stay visible on any image
   &::after {
     position: absolute;
     inset: auto 0 0;
@@ -61,7 +58,6 @@
     display: flex;
     align-items: flex-end;
 
-    // The gap between columns must not drop the hover, so the item reaches over it
     padding-inline: calc(var(--hover-gallery-indicator-gap) * 0.5);
     margin-inline: calc(var(--hover-gallery-indicator-gap) * -0.5);
 
@@ -86,7 +82,6 @@
   }
 }
 
-// Without hover the same markup becomes a swipeable strip
 @media (hover: none) {
   .hover-gallery {
     gap: 0;

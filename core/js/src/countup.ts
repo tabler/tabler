@@ -105,17 +105,12 @@ const coerceOptions = (options: Record<string, unknown>): Record<string, unknown
   return result
 }
 
-// Strips thousands separators, currency symbols and other non-numeric
-// characters, so formatted targets like "1,234", "1 234" or "$99.5" parse.
-// A `time` value like "3:28" is read as minutes.
 const parseValue = (input: string | number, format: CountUpFormat): number => {
   if (typeof input === 'number') {
     return input
   }
 
   if (format === 'time') {
-    // Anchored and bounded on purpose: an unanchored `\d+` would scan from
-    // every position of a long digit string.
     const match = /^\D{0,32}(\d{1,4}):(\d{1,2})/.exec(input)
     return match ? Number(match[1]) * 60 + Number(match[2]) : Number.NaN
   }
@@ -123,7 +118,6 @@ const parseValue = (input: string | number, format: CountUpFormat): number => {
   return Number.parseFloat(input.replace(/[^0-9.-]/g, ''))
 }
 
-// easeOutExpo, the same curve countUp.js used
 const easeOut = (t: number): number => (t >= 1 ? 1 : ((1 - 2 ** (-10 * t)) * 1024) / 1023)
 
 /**
@@ -141,7 +135,6 @@ class CountUp extends BaseComponent {
   _value = 0
   _frame = 0
   _observer: IntersectionObserver | null = null
-  // animation in progress: where it goes, how far it got
   _from = 0
   _elapsed = 0
   _running = false
@@ -169,7 +162,6 @@ class CountUp extends BaseComponent {
       return
     }
 
-    // Wait for the element to scroll into view, then run once.
     if (typeof IntersectionObserver === 'undefined') {
       this.start()
       return
@@ -179,7 +171,6 @@ class CountUp extends BaseComponent {
     this._observer.observe(this._element)
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -192,14 +183,12 @@ class CountUp extends BaseComponent {
     return NAME
   }
 
-  // Public
   start(): void {
     this._animate(this._value, this._endVal)
   }
 
   reset(): void {
     this._stop()
-    // Lets the observer start the animation again when the element comes into view.
     this._started = false
     this._value = this._config.startVal
     this._print(this._value)
@@ -231,17 +220,13 @@ class CountUp extends BaseComponent {
     super.dispose()
   }
 
-  // Private
   _mergeConfigObj(config?: Record<string, unknown>, element?: HTMLElement): Record<string, unknown> {
-    // `data-countup='{"duration":4}'` carries the options as JSON; a bare
-    // `data-countup` or invalid JSON means defaults.
     let dataOptions: Record<string, unknown> = {}
     const raw = element?.getAttribute(DATA_ATTRIBUTE) ?? element?.getAttribute(DATA_ATTRIBUTE_ALIAS)
 
     if (raw) {
       try {
         const parsed: unknown = JSON.parse(raw)
-        // Only an object carries options; `null`, a number or an array is ignored.
         if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
           dataOptions = parsed as Record<string, unknown>
         }
@@ -258,7 +243,6 @@ class CountUp extends BaseComponent {
       this._observer?.disconnect()
       this._observer = null
 
-      // update() may have already animated it while it was off screen.
       if (!this._started) {
         this.start()
       }
@@ -269,7 +253,6 @@ class CountUp extends BaseComponent {
     this._stop()
     this._started = true
 
-    // Users who asked for less motion get the final number at once.
     if (from === to || this._config.duration <= 0 || prefersReducedMotion()) {
       this._finish(to)
       return
@@ -330,8 +313,6 @@ class CountUp extends BaseComponent {
     }
 
     if (format === 'time') {
-      // Rounded away from zero on both sides, so -90.5 and 90.5 give the same
-      // minutes; a value that rounds to 0 stays unsigned (-0 < 0 is false).
       const rounded = Math.sign(value) * Math.round(Math.abs(value))
       const minutes = Math.abs(rounded)
       return `${rounded < 0 ? '-' : ''}${prefix}${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}${suffix}`

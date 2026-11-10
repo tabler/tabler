@@ -9,13 +9,8 @@ const params = new URLSearchParams(window.location.search)
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
-// A setting value is a short token: it ends up as a `data-bs-*` attribute on
-// <html> and in localStorage, so anything else from the URL is ignored.
 const VALUE_PATTERN = /^[a-z0-9-]{1,32}$/
 
-// Accessing localStorage throws when site data is blocked (Chrome "block all
-// cookies", Safari with storage disabled, partitioned third-party frames), so
-// every access is guarded and the switcher falls back to the page defaults.
 const storage = {
   get(key: string): string | null {
     try {
@@ -41,7 +36,6 @@ for (const key in themeDefaults) {
     storage.set('tabler-' + key, param)
     selectedValue = param
   } else {
-    // A stored choice wins; otherwise a server-rendered attribute is the starting value.
     const storedTheme = storage.get('tabler-' + key)
     const serverValue = document.documentElement.getAttribute('data-bs-' + key)
     selectedValue = storedTheme ?? serverValue ?? themeDefaults[key as ThemeKey]
@@ -59,7 +53,6 @@ for (const key in themeDefaults) {
 }
 
 prefersDark.addEventListener('change', (event) => {
-  // No stored choice means the default, which is auto.
   if ((storage.get('tabler-theme') ?? 'auto') === 'auto') {
     if (event.matches) {
       document.documentElement.setAttribute('data-bs-theme', 'dark')

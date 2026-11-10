@@ -45,22 +45,18 @@ const CLASS_NAME_SEPARATOR = 'otp-separator'
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="otp"], [data-tblr-toggle="otp"]'
 const SELECTOR_INPUT = 'input'
 
-// Keeps the active-slot highlight in sync with the caret as it moves without typing
 const SYNC_EVENTS = ['blur', 'keyup', 'select']
 
-// A touch focuses the input after `pointerup`, so the tap is only settled by `click`
 const POINTER_END_EVENTS = ['click', 'pointercancel']
 
 const MASK_CHARACTER = '•'
 
-// Per-type input mode, validation pattern, and a filter that strips disallowed characters
 const TYPES: Record<OtpInputType, { inputmode: string; pattern: string; filter: RegExp }> = {
   numeric: { inputmode: 'numeric', pattern: '[0-9]*', filter: /[^0-9]/g },
   alphanumeric: { inputmode: 'text', pattern: '[A-Za-z0-9]*', filter: /[^A-Za-z0-9]/g },
   alpha: { inputmode: 'text', pattern: '[A-Za-z]*', filter: /[^A-Za-z]/g },
 }
 
-// Upper bound for the slot count, whatever the config asks for.
 const MAX_LENGTH = 32
 
 const Default: ComponentConfig = {
@@ -96,8 +92,6 @@ class OtpInput extends BaseComponent {
   _wasComplete = false
   _slots: HTMLElement[] = []
   _slotsContainer: HTMLElement | null = null
-  // Tracks a tap so focus (fired natively by the browser) can respect the
-  // clicked slot instead of jumping to the first empty one
   _pointerActive = false
   _pointerIndex = 0
   _composedValue: string | null = null
@@ -155,7 +149,6 @@ class OtpInput extends BaseComponent {
     this._wasComplete = this._input.value.length === this._length
   }
 
-  // Getters
   static get Default(): ComponentConfig {
     return Default
   }
@@ -168,7 +161,6 @@ class OtpInput extends BaseComponent {
     return NAME
   }
 
-  // Public
   getValue(): string {
     return this._input.value
   }
@@ -217,7 +209,6 @@ class OtpInput extends BaseComponent {
     super.dispose()
   }
 
-  // Private
   _resolveLength(): number {
     const candidates: unknown[] = [this._config.length, Number.parseInt(this._input.getAttribute('maxlength') ?? '', 10)]
 
@@ -226,8 +217,6 @@ class OtpInput extends BaseComponent {
       candidates.push(groups.reduce<number>((sum, group) => sum + Number(group), 0))
     }
 
-    // The first usable value wins; a negative, fractional, or huge length
-    // would render no slots or flood the DOM.
     for (const candidate of candidates) {
       if (typeof candidate === 'number' && Number.isInteger(candidate) && candidate > 0) {
         return Math.min(candidate, MAX_LENGTH)
@@ -240,9 +229,6 @@ class OtpInput extends BaseComponent {
   _setupInput(): void {
     const input = this._input
 
-    // A single text field backs the whole control so screen readers, password
-    // managers, and SMS autofill treat it like any other input.
-    // Only text-like types support the selection API the slots rely on.
     if (input.type !== 'text' && input.type !== 'tel') {
       input.type = 'text'
     }
@@ -313,8 +299,6 @@ class OtpInput extends BaseComponent {
 
   _handleFocus(): void {
     if (this._pointerActive) {
-      // Wait for focus to settle before moving the caret, or iOS raises then
-      // immediately dismisses the on-screen keyboard.
       this._pointerActive = false
       this._selectSlot(this._pointerIndex)
       this._render()
@@ -325,9 +309,6 @@ class OtpInput extends BaseComponent {
     this._render()
   }
 
-  // Bulk path: paste, SMS autofill, or a programmatic change land here as a
-  // single multi-character `input` event. Single keystrokes are handled by
-  // `_handleBeforeInput` (overwrite semantics) and never reach this method.
   _handleInput(): void {
     const sanitized = this._sanitize(this._input.value)
     if (sanitized !== this._input.value) {
@@ -341,10 +322,6 @@ class OtpInput extends BaseComponent {
     this._afterValueChange()
   }
 
-  // Intercepts single-character typing, Backspace and Delete so each slot is
-  // overwritten in place rather than inserting and shifting the value.
-  // Anything else (paste, autofill) falls through to `_handleInput`; IME
-  // composition is sanitised once on `compositionend`.
   _handleBeforeInput(event: InputEvent): void {
     const { inputType, data } = event
 
@@ -421,28 +398,21 @@ class OtpInput extends BaseComponent {
     const target = Math.min(index, this._firstEmptyIndex())
 
     if (document.activeElement === this._input) {
-      // Already focused: safe to take over caret placement, it won't dismiss
-      // the on-screen keyboard.
       event.preventDefault()
       this._selectSlot(target)
       this._render()
       return
     }
 
-    // Not yet focused: let the browser focus the input natively so a tap
-    // raises the on-screen keyboard; the caret is placed once focus settles.
     this._pointerActive = true
     this._pointerIndex = target
   }
 
-  // Maps a viewport x-coordinate to the slot under it, clamped to the last slot.
   _slotIndexFromPoint(x: number): number | null {
     const rtl = getComputedStyle(this._element).direction === 'rtl'
 
     for (const [index, slot] of this._slots.entries()) {
       const rect = slot.getBoundingClientRect()
-      // RTL mirrors the visual slot order, so the boundary flips from the
-      // right edge (v6, LTR-only) to the left edge.
       const reached = rtl ? x >= rect.left : x <= rect.right
 
       if (reached || index === this._slots.length - 1) {
@@ -453,8 +423,6 @@ class OtpInput extends BaseComponent {
     return null
   }
 
-  // `before` is the value ahead of the edit: a Backspace in the first slot or
-  // a Delete past the last one changes nothing and fires no event.
   _afterValueChange(before?: string): void {
     this._render()
 
@@ -470,8 +438,6 @@ class OtpInput extends BaseComponent {
     return Math.min(this._input.value.length, this._length - 1)
   }
 
-  // Represents the active slot as a selection: a filled slot is selected so
-  // the next keystroke overwrites it; an empty slot gets a collapsed caret.
   _selectSlot(index: number): void {
     const clamped = Math.max(0, Math.min(index, this._length - 1))
     const end = clamped < this._input.value.length ? clamped + 1 : clamped
@@ -495,7 +461,6 @@ class OtpInput extends BaseComponent {
     }
   }
 
-  // Fires once when the value becomes full, not on every edit of a full value.
   _checkComplete(): void {
     const { value } = this._input
     const complete = value.length === this._length

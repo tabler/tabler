@@ -42,7 +42,6 @@
   }
 }
 
-// Card borderless
 .card-borderless {
   &,
   .card-header,
@@ -51,19 +50,16 @@
   }
 }
 
-// Card dashed
 .card-dashed {
   border: var(--border-width) dashed var(--border-color);
 }
 
-// Card transparent
 .card-transparent {
   background: transparent;
   border: var(--border-width) dashed var(--border-color);
   box-shadow: none;
 }
 
-// Card stamp
 .card-stamp {
   --stamp-size: #{$card-stamp-size};
   position: absolute;
@@ -104,7 +100,6 @@
   }
 }
 
-// Card image
 .card-img,
 .card-img-start {
   @include border-start-radius($card-inner-border-radius);
@@ -161,7 +156,6 @@
   }
 }
 
-// Stacked card
 .card-stacked {
   --card-stacked-offset: #{$card-stacked-offset};
   position: relative;
@@ -217,7 +211,6 @@
   }
 }
 
-// Card header
 .card-header {
   display: flex;
   align-items: center;
@@ -249,7 +242,6 @@
   margin-bottom: calc(-1 * var(--card-header-pills-margin));
 }
 
-// Card rotate
 .card-rotate-left,
 .card-rotate-start {
   transform: rotate(-1.5deg);
@@ -260,7 +252,6 @@
   transform: rotate(1.5deg);
 }
 
-// Card link
 .card-link {
   color: inherit;
 
@@ -281,7 +272,6 @@
   transform: translateY(-2px);
 }
 
-// Card footer
 .card-footer {
   margin-top: auto;
 
@@ -300,7 +290,6 @@
   border-top: none;
 }
 
-// Card progress
 .card-progress {
   --card-progress-height: #{$card-progress-height};
   height: var(--card-progress-height);
@@ -314,7 +303,6 @@
   }
 }
 
-// `.card >` outranks the fallback above and ui/_progress.scss's later `.progress { position: relative; }`.
 .card > .card-progress {
   --card-progress-offset: calc(-1 * var(--card-border-width));
   position: absolute;
@@ -422,7 +410,6 @@
   }
 }
 
-// Card optinos
 .card-options {
   --card-options-top: #{$card-options-top};
   --card-options-inset: #{$card-options-inset};
@@ -439,7 +426,6 @@
   color: var(--secondary);
 }
 
-// Card status
 .card-status-top,
 .card-status-start,
 .card-status-bottom {
@@ -467,7 +453,6 @@
   mask-image: linear-gradient(to top, #000 var(--card-status-size), transparent var(--card-status-size));
 }
 
-// Card table
 .card-table {
   --card-table-top-radius: 0;
   --card-table-bottom-radius: 0;
@@ -519,8 +504,6 @@
       &:first-child {
         border-top: 0;
 
-        // Plain semantic table markup (thead/tbody/tfoot > tr > td/th) has no class
-        // hooks to target instead.
         // stylelint-disable selector-max-type
         td,
         th {
@@ -531,10 +514,6 @@
     }
   }
 
-  // The card's own border closes the table, so the last row of the table loses
-  // its bottom rule. Bootstrap draws that rule on the cells, not on the row, and
-  // it only goes when the row is the last one in the table: a `tbody` followed by
-  // a `tfoot` keeps the rule between the items and the totals.
   > :last-child > tr:last-child > * {
     border-bottom: 0;
   }
@@ -566,8 +545,6 @@ Card code
   padding: 0;
   overflow: hidden;
 
-  // The code block is a dark box, so it follows the card's corners: rounded at
-  // the card's top or bottom edge, square when another section sits next to it.
   &:first-child {
     @include border-top-radius(var(--card-border-radius));
   }
@@ -598,7 +575,6 @@ Card chart
   height: var(--card-avatar-height);
 }
 
-// Card avatar
 .card-avatar {
   --card-avatar-ring-width: #{$card-avatar-ring-width};
   margin-inline-start: auto;
@@ -632,7 +608,6 @@ Card list group
   }
 }
 
-// Card tabs
 .card-tabs {
   .nav-tabs {
     position: relative;
@@ -721,16 +696,11 @@ Card list group
   }
 }
 
-// Card note
 .card-note {
   --card-bg: #{mix-color-css(var(--yellow), var(--bg-surface), 12%)};
   --card-border-color: #{mix-color-css(var(--yellow), var(--bg-surface), 20%)};
 }
 
-// Card gradient
-// Split out so scss/tests/_cards.test.scss can assert on it directly — a bare
-// top-level ruleset like .card-gradient can't be @include-d or otherwise
-// referenced in isolation by sass-true.
 @mixin card-gradient-background {
   background:
     radial-gradient(ellipse at center, var(--card-bg) 0%, color-transparent(var(--card-bg), 0) 80%) border-box,

@@ -1,10 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { themeDefaults, type ThemeKey } from '../../src/theme-config'
 
-// tabler-theme does its work at import time, so each case arranges the URL,
-// storage and attributes first and then imports a fresh instance of it. The
-// browser caches a module per URL, so the query string is what forces a new
-// evaluation — vi.resetModules() has no effect on the browser's registry.
 let run = 0
 async function runThemeScript(): Promise<void> {
   run += 1
