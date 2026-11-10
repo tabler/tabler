@@ -1,6 +1,8 @@
 import { Dropdown } from './bootstrap'
 import { onDOMContentLoaded } from './bootstrap/util/index'
 
+const SELECTOR_DROPDOWN_TOGGLE = ':is([data-bs-toggle="dropdown"], [data-tblr-toggle="dropdown"])'
+
 /*
 Folded sidebar toggle
  */
@@ -14,7 +16,7 @@ const syncSidebarToggles = (folded: boolean): void => {
 const sidebarIsFolded = (): boolean => (document.documentElement.getAttribute('data-bs-sidebar') ?? '').startsWith('folded') || !!document.querySelector('.navbar-vertical.navbar-folded, .navbar-vertical.navbar-folded-hover')
 
 const hideSidebarDropdowns = (except?: Element | null): void => {
-  for (const toggle of document.querySelectorAll<HTMLElement>('.navbar-vertical [data-bs-toggle="dropdown"][aria-expanded="true"]')) {
+  for (const toggle of document.querySelectorAll<HTMLElement>(`.navbar-vertical ${SELECTOR_DROPDOWN_TOGGLE}[aria-expanded="true"]`)) {
     if (toggle !== except) {
       ;(Dropdown.getInstance(toggle) as InstanceType<typeof Dropdown> | null)?.hide()
     }
@@ -35,7 +37,7 @@ document.addEventListener('click', (event: MouseEvent) => {
     return
   }
 
-  hideSidebarDropdowns(target.closest('.navbar-vertical [data-bs-toggle="dropdown"]'))
+  hideSidebarDropdowns(target.closest(`.navbar-vertical ${SELECTOR_DROPDOWN_TOGGLE}`))
 })
 
 // When a hover-expanding sidebar collapses back to the rail, close its open
@@ -70,7 +72,7 @@ onDOMContentLoaded(() => {
   if (folded) {
     for (const menu of document.querySelectorAll('.navbar-vertical .dropdown-menu.show')) {
       menu.classList.remove('show')
-      menu.parentElement?.querySelector('[data-bs-toggle="dropdown"]')?.setAttribute('aria-expanded', 'false')
+      menu.parentElement?.querySelector(SELECTOR_DROPDOWN_TOGGLE)?.setAttribute('aria-expanded', 'false')
     }
   }
 })
