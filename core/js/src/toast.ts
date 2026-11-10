@@ -1,25 +1,27 @@
 import { Toast } from './bootstrap'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { onDOMContentLoaded } from './bootstrap/util/index'
+import { isDisabled } from './bootstrap/util/index'
+
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="toast"], [data-tblr-toggle="toast"]'
 
 // js-docs-start toast-init
-onDOMContentLoaded(() => {
-  for (const toastTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-toggle="toast"], [data-tblr-toggle="toast"]')) {
-    try {
-      // A trigger whose target is missing is left alone instead of getting a
-      // click handler that throws.
-      const toastEl = SelectorEngine.getElementFromSelector(toastTriggerEl)
-      if (!toastEl) {
-        continue
-      }
+document.addEventListener('click', (event: MouseEvent) => {
+  const trigger = event.target instanceof Element ? event.target.closest<HTMLElement>(SELECTOR_DATA_TOGGLE) : null
+  if (!trigger) {
+    return
+  }
 
-      const toast = Toast.getOrCreateInstance(toastEl) as InstanceType<typeof Toast>
-      toastTriggerEl.addEventListener('click', () => {
-        toast.show()
-      })
-    } catch (error) {
-      console.error(error)
-    }
+  if (['A', 'AREA'].includes(trigger.tagName)) {
+    event.preventDefault()
+  }
+
+  if (isDisabled(trigger)) {
+    return
+  }
+
+  const toastEl = SelectorEngine.getElementFromSelector(trigger)
+  if (toastEl) {
+    ;(Toast.getOrCreateInstance(toastEl) as InstanceType<typeof Toast>).show()
   }
 })
 // js-docs-end toast-init
