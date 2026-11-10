@@ -412,12 +412,10 @@ class Datepicker extends BaseComponent {
       this._element.after(this._boundInput)
     }
 
-    // Watch for theme changes on ancestor elements (for live theme switching)
     this._setupThemeObserver()
 
     this._setupDismissOnFocus()
 
-    // Set initial value if input has a value
     if (this._isInput && this._element.value) {
       this._parseInputValue()
     }
@@ -429,7 +427,6 @@ class Datepicker extends BaseComponent {
       this._select(boundDates)
     }
 
-    // Populate input/display with preselected dates
     this._updateDisplayWithSelectedDates()
   }
 
@@ -476,7 +473,6 @@ class Datepicker extends BaseComponent {
       positionElement = getElement(positionElement)
     }
 
-    // Use the input's wrapper when it sits in an icon or group wrapper
     if (!positionElement && this._isInput && !this._isInline) {
       positionElement = this._element.closest<HTMLElement>(SELECTOR_INPUT_WRAPPER)
     }
@@ -491,7 +487,6 @@ class Datepicker extends BaseComponent {
       return getElement(displayElement)
     }
 
-    // For buttons/non-inputs (not inline), look for a display child
     if (displayElement === true || (displayElement === null && !this._isInput && !this._isInline)) {
       return SelectorEngine.findOne(SELECTOR_DISPLAY, this._element) || this._element
     }
@@ -553,7 +548,6 @@ class Datepicker extends BaseComponent {
   _setupThemeObserver(): void {
     const ancestor = this._getThemeAncestor()
     if (!ancestor || this._config.datepickerTheme) {
-      // No ancestor to watch, or explicit datepickerTheme overrides
       return
     }
 
@@ -695,7 +689,6 @@ class Datepicker extends BaseComponent {
       onHide: () => this._handlePluginHide(),
     }
 
-    // Navigate to the month of the first selected date
     const [firstSelected] = this._config.selectedDates
     if (firstSelected) {
       const firstDate = this._parseDate(firstSelected)
@@ -758,17 +751,14 @@ class Datepicker extends BaseComponent {
       return formatPattern(date, this._formatPattern()!)
     }
 
-    // Custom function formatter
     if (typeof dateFormat === 'function') {
       return dateFormat(date, locale)
     }
 
-    // Intl.DateTimeFormat options object
     if (dateFormat && typeof dateFormat === 'object') {
       return new Intl.DateTimeFormat(locale, dateFormat).format(date)
     }
 
-    // Default: locale-aware formatting
     return date.toLocaleDateString(locale)
   }
 
