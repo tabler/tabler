@@ -1,7 +1,20 @@
 @use 'sass:map';
+@use 'sass:meta';
 
 // All colors
 @use '../config' as *;
+
+@function has-text-shade($color) {
+  @return map.has-key($theme-text-colors, '' + $color);
+}
+
+@function text-color-var($color) {
+  @return if(sass(has-text-shade($color)): var(--#{$color}-text); else: var(--#{$color}));
+}
+
+@function lt-text-color($color) {
+  @return if(sass(has-text-shade($color)): light-dark(mix-color-css($black, var(--#{$color}-text), $text-lt-shade-percentage), mix-color-css($white, var(--#{$color}-text), $text-lt-tint-percentage)); else: var(--#{$color}));
+}
 
 @each $color,
   $value
@@ -17,7 +30,7 @@
   }
 
   .bg-#{'' + $color}-lt {
-    color: color-transparent(var(--#{$color}), calc(var(--text-opacity, 1) * 100%)) !important;
+    color: color-transparent(lt-text-color($color), calc(var(--text-opacity, 1) * 100%)) !important;
     background-color: color-transparent(var(--#{$color}-lt), calc(var(--bg-opacity, 1) * 100%)) !important;
   }
 
@@ -44,7 +57,7 @@
   }
 
   .link-#{'' + $color} {
-    color: color-transparent(var(--#{$color}), calc(var(--link-opacity, 1) * 100%)) !important;
+    color: color-transparent(text-color-var($color), calc(var(--link-opacity, 1) * 100%)) !important;
     text-decoration-color: color-transparent(var(--#{$color}), calc(var(--link-underline-opacity, 1) * 100%)) !important;
 
     @if $link-shade-percentage != 0 {
@@ -53,7 +66,7 @@
         // Shade light-on-dark colours, tint the rest: decided at compile time from
         // the palette, mixed at runtime so the hover follows a `--tblr-*` override.
         $hover-mix: if(sass(color-contrast($value) == $color-contrast-light): var(--black); else: var(--white));
-        $hover-color: mix-color-css($hover-mix, var(--#{$color}), $link-shade-percentage);
+        $hover-color: if(sass(has-text-shade($color)): mix-color-css(light-dark(var(--black), var(--white)), var(--#{$color}-text), $link-shade-percentage); else: mix-color-css($hover-mix, var(--#{$color}), $link-shade-percentage));
         color: color-transparent($hover-color, calc(var(--link-opacity, 1) * 100%)) if(sass($enable-important-utilities): !important; else: null);
         text-decoration-color: color-transparent($hover-color, calc(var(--link-underline-opacity, 1) * 100%)) if(sass($enable-important-utilities): !important; else: null);
       }
@@ -75,7 +88,7 @@
 @each $color, $value in $theme-colors {
   .text-#{'' + $color} {
     --text-opacity: 1;
-    color: color-transparent(var(--#{$color}), calc(var(--text-opacity) * 100%)) !important;
+    color: color-transparent(text-color-var($color), calc(var(--text-opacity) * 100%)) !important;
   }
 
   .text-#{'' + $color}-fg {

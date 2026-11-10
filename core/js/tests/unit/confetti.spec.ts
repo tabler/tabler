@@ -183,7 +183,7 @@ describe('Confetti', () => {
       expect(colors).toHaveLength(12)
       expect(colors[0]).toBe('rgb(1, 2, 3)')
       // No CSS is loaded in the test page: the other names fall back to hex.
-      expect(colors[1]).toBe('#4299e1')
+      expect(colors[1]).toBe('#1877bd')
     })
   })
 

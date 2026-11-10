@@ -64,18 +64,32 @@ $grays: (
   '900': $gray-900,
 ) !default;
 
-$blue: light-dark(oklch(54.6% 0.1724 254.2deg), oklch(60.6% 0.1586 254.2deg)) !default; // #066fd1, #3283de
-$azure: light-dark(oklch(66.26% 0.1358 246.81deg), oklch(72.26% 0.1249 246.81deg)) !default; // #4299e1, #5facef
-$indigo: light-dark(oklch(55.66% 0.2082 268.35deg), oklch(61.66% 0.1915 268.35deg)) !default; // #4263eb, #5579f7
-$purple: light-dark(oklch(57.83% 0.2186 319.15deg), oklch(63.83% 0.2011 319.15deg)) !default; // #ae3ec9, #be5ad7
-$pink: light-dark(oklch(58.81% 0.201 5.25deg), oklch(64.81% 0.1849 5.25deg)) !default; // #d6336c, #e5527f
-$red: light-dark(oklch(58.29% 0.1941 25.59deg), oklch(64.29% 0.1786 25.59deg)) !default; // #d63939, #e55751
-$orange: light-dark(oklch(68.51% 0.1954 44.57deg), oklch(74.51% 0.1638 44.57deg)) !default; // #f76707, #ff864c
-$yellow: light-dark(oklch(77.02% 0.1658 71.02deg), oklch(83.02% 0.137 71.02deg)) !default; // #f59f00, #ffb75a
-$lime: light-dark(oklch(70.99% 0.1897 131.53deg), oklch(76.99% 0.1745 131.53deg)) !default; // #74b816, #8aca47
-$green: light-dark(oklch(67.38% 0.1885 145.43deg), oklch(73.38% 0.1734 145.43deg)) !default; // #2fb344, #54c560
-$teal: light-dark(oklch(64.32% 0.1338 164.7deg), oklch(70.32% 0.1231 164.7deg)) !default; // #0ca678, #43b78c
-$cyan: light-dark(oklch(65.52% 0.1105 212.17deg), oklch(71.52% 0.1017 212.17deg)) !default; // #17a2b8, #47b4c8
+$blue: oklch(54.6% 0.1724 254.2deg) !default; // #066fd1
+$azure: oklch(55.4% 0.1358 246.81deg) !default; // #1877bd
+$indigo: oklch(55.66% 0.2082 268.35deg) !default; // #4263eb
+$purple: oklch(57.83% 0.2186 319.15deg) !default; // #ae3ec9
+$pink: oklch(58% 0.201 5.25deg) !default; // #d3306a
+$red: oklch(57.5% 0.1941 25.59deg) !default; // #d33637
+$orange: oklch(68.51% 0.1954 44.57deg) !default; // #f76707
+$yellow: oklch(77.02% 0.1658 71.02deg) !default; // #f59f00
+$lime: oklch(70.99% 0.1897 131.53deg) !default; // #74b816
+$green: oklch(67.38% 0.1885 145.43deg) !default; // #2fb344
+$teal: oklch(64.32% 0.1338 164.7deg) !default; // #0ca678
+$cyan: oklch(65.52% 0.1105 212.17deg) !default; // #17a2b8
+
+// Shades of the colors for text on a surface in light mode. Dark mode lightens them in `_props.scss`.
+$blue-text: oklch(45.86% 0.1448 254.2deg) !default; // #0357a5
+$azure-text: oklch(46.54% 0.1141 246.81deg) !default; // #105d95
+$indigo-text: oklch(46.75% 0.1749 268.35deg) !default; // #324dba
+$purple-text: oklch(48.58% 0.1836 319.15deg) !default; // #892f9f
+$pink-text: oklch(48.72% 0.1688 5.25deg) !default; // #a72452
+$red-text: oklch(48.3% 0.163 25.59deg) !default; // #a72929
+$orange-text: oklch(57.55% 0.1641 44.57deg) !default; // #c45004
+$yellow-text: oklch(52.37% 0.1127 71.02deg) !default; // #925d00
+$lime-text: oklch(48.27% 0.129 131.53deg) !default; // #426c08
+$green-text: oklch(45.82% 0.1282 145.43deg) !default; // #186925
+$teal-text: oklch(54.03% 0.1124 164.7deg) !default; // #07835e
+$cyan-text: oklch(55.04% 0.0928 212.17deg) !default; // #108091
 
 $colors: (
   'blue': $blue,
@@ -102,105 +116,105 @@ $colors: (
 // build consumes them yet, but they are kept as configurable API — hence
 // excluded from the unused-variable lint.
 // fusv-disable
-$blue-100: mix-color-css($white, $blue, 80%) !default;
-$blue-200: mix-color-css($white, $blue, 60%) !default;
-$blue-300: mix-color-css($white, $blue, 40%) !default;
-$blue-400: mix-color-css($white, $blue, 20%) !default;
-$blue-500: $blue !default;
-$blue-600: mix-color-css($black, $blue, 20%) !default;
-$blue-700: mix-color-css($black, $blue, 40%) !default;
-$blue-800: mix-color-css($black, $blue, 60%) !default;
-$blue-900: mix-color-css($black, $blue, 80%) !default;
+$blue-100: mix-color-css($white, var(--blue), 80%) !default;
+$blue-200: mix-color-css($white, var(--blue), 60%) !default;
+$blue-300: mix-color-css($white, var(--blue), 40%) !default;
+$blue-400: mix-color-css($white, var(--blue), 20%) !default;
+$blue-500: var(--blue) !default;
+$blue-600: mix-color-css($black, var(--blue), 20%) !default;
+$blue-700: mix-color-css($black, var(--blue), 40%) !default;
+$blue-800: mix-color-css($black, var(--blue), 60%) !default;
+$blue-900: mix-color-css($black, var(--blue), 80%) !default;
 
-$indigo-100: mix-color-css($white, $indigo, 80%) !default;
-$indigo-200: mix-color-css($white, $indigo, 60%) !default;
-$indigo-300: mix-color-css($white, $indigo, 40%) !default;
-$indigo-400: mix-color-css($white, $indigo, 20%) !default;
-$indigo-500: $indigo !default;
-$indigo-600: mix-color-css($black, $indigo, 20%) !default;
-$indigo-700: mix-color-css($black, $indigo, 40%) !default;
-$indigo-800: mix-color-css($black, $indigo, 60%) !default;
-$indigo-900: mix-color-css($black, $indigo, 80%) !default;
+$indigo-100: mix-color-css($white, var(--indigo), 80%) !default;
+$indigo-200: mix-color-css($white, var(--indigo), 60%) !default;
+$indigo-300: mix-color-css($white, var(--indigo), 40%) !default;
+$indigo-400: mix-color-css($white, var(--indigo), 20%) !default;
+$indigo-500: var(--indigo) !default;
+$indigo-600: mix-color-css($black, var(--indigo), 20%) !default;
+$indigo-700: mix-color-css($black, var(--indigo), 40%) !default;
+$indigo-800: mix-color-css($black, var(--indigo), 60%) !default;
+$indigo-900: mix-color-css($black, var(--indigo), 80%) !default;
 
-$purple-100: mix-color-css($white, $purple, 80%) !default;
-$purple-200: mix-color-css($white, $purple, 60%) !default;
-$purple-300: mix-color-css($white, $purple, 40%) !default;
-$purple-400: mix-color-css($white, $purple, 20%) !default;
-$purple-500: $purple !default;
-$purple-600: mix-color-css($black, $purple, 20%) !default;
-$purple-700: mix-color-css($black, $purple, 40%) !default;
-$purple-800: mix-color-css($black, $purple, 60%) !default;
-$purple-900: mix-color-css($black, $purple, 80%) !default;
+$purple-100: mix-color-css($white, var(--purple), 80%) !default;
+$purple-200: mix-color-css($white, var(--purple), 60%) !default;
+$purple-300: mix-color-css($white, var(--purple), 40%) !default;
+$purple-400: mix-color-css($white, var(--purple), 20%) !default;
+$purple-500: var(--purple) !default;
+$purple-600: mix-color-css($black, var(--purple), 20%) !default;
+$purple-700: mix-color-css($black, var(--purple), 40%) !default;
+$purple-800: mix-color-css($black, var(--purple), 60%) !default;
+$purple-900: mix-color-css($black, var(--purple), 80%) !default;
 
-$pink-100: mix-color-css($white, $pink, 80%) !default;
-$pink-200: mix-color-css($white, $pink, 60%) !default;
-$pink-300: mix-color-css($white, $pink, 40%) !default;
-$pink-400: mix-color-css($white, $pink, 20%) !default;
-$pink-500: $pink !default;
-$pink-600: mix-color-css($black, $pink, 20%) !default;
-$pink-700: mix-color-css($black, $pink, 40%) !default;
-$pink-800: mix-color-css($black, $pink, 60%) !default;
-$pink-900: mix-color-css($black, $pink, 80%) !default;
+$pink-100: mix-color-css($white, var(--pink), 80%) !default;
+$pink-200: mix-color-css($white, var(--pink), 60%) !default;
+$pink-300: mix-color-css($white, var(--pink), 40%) !default;
+$pink-400: mix-color-css($white, var(--pink), 20%) !default;
+$pink-500: var(--pink) !default;
+$pink-600: mix-color-css($black, var(--pink), 20%) !default;
+$pink-700: mix-color-css($black, var(--pink), 40%) !default;
+$pink-800: mix-color-css($black, var(--pink), 60%) !default;
+$pink-900: mix-color-css($black, var(--pink), 80%) !default;
 
-$red-100: mix-color-css($white, $red, 80%) !default;
-$red-200: mix-color-css($white, $red, 60%) !default;
-$red-300: mix-color-css($white, $red, 40%) !default;
-$red-400: mix-color-css($white, $red, 20%) !default;
-$red-500: $red !default;
-$red-600: mix-color-css($black, $red, 20%) !default;
-$red-700: mix-color-css($black, $red, 40%) !default;
-$red-800: mix-color-css($black, $red, 60%) !default;
-$red-900: mix-color-css($black, $red, 80%) !default;
+$red-100: mix-color-css($white, var(--red), 80%) !default;
+$red-200: mix-color-css($white, var(--red), 60%) !default;
+$red-300: mix-color-css($white, var(--red), 40%) !default;
+$red-400: mix-color-css($white, var(--red), 20%) !default;
+$red-500: var(--red) !default;
+$red-600: mix-color-css($black, var(--red), 20%) !default;
+$red-700: mix-color-css($black, var(--red), 40%) !default;
+$red-800: mix-color-css($black, var(--red), 60%) !default;
+$red-900: mix-color-css($black, var(--red), 80%) !default;
 
-$orange-100: mix-color-css($white, $orange, 80%) !default;
-$orange-200: mix-color-css($white, $orange, 60%) !default;
-$orange-300: mix-color-css($white, $orange, 40%) !default;
-$orange-400: mix-color-css($white, $orange, 20%) !default;
-$orange-500: $orange !default;
-$orange-600: mix-color-css($black, $orange, 20%) !default;
-$orange-700: mix-color-css($black, $orange, 40%) !default;
-$orange-800: mix-color-css($black, $orange, 60%) !default;
-$orange-900: mix-color-css($black, $orange, 80%) !default;
+$orange-100: mix-color-css($white, var(--orange), 80%) !default;
+$orange-200: mix-color-css($white, var(--orange), 60%) !default;
+$orange-300: mix-color-css($white, var(--orange), 40%) !default;
+$orange-400: mix-color-css($white, var(--orange), 20%) !default;
+$orange-500: var(--orange) !default;
+$orange-600: mix-color-css($black, var(--orange), 20%) !default;
+$orange-700: mix-color-css($black, var(--orange), 40%) !default;
+$orange-800: mix-color-css($black, var(--orange), 60%) !default;
+$orange-900: mix-color-css($black, var(--orange), 80%) !default;
 
-$yellow-100: mix-color-css($white, $yellow, 80%) !default;
-$yellow-200: mix-color-css($white, $yellow, 60%) !default;
-$yellow-300: mix-color-css($white, $yellow, 40%) !default;
-$yellow-400: mix-color-css($white, $yellow, 20%) !default;
-$yellow-500: $yellow !default;
-$yellow-600: mix-color-css($black, $yellow, 20%) !default;
-$yellow-700: mix-color-css($black, $yellow, 40%) !default;
-$yellow-800: mix-color-css($black, $yellow, 60%) !default;
-$yellow-900: mix-color-css($black, $yellow, 80%) !default;
+$yellow-100: mix-color-css($white, var(--yellow), 80%) !default;
+$yellow-200: mix-color-css($white, var(--yellow), 60%) !default;
+$yellow-300: mix-color-css($white, var(--yellow), 40%) !default;
+$yellow-400: mix-color-css($white, var(--yellow), 20%) !default;
+$yellow-500: var(--yellow) !default;
+$yellow-600: mix-color-css($black, var(--yellow), 20%) !default;
+$yellow-700: mix-color-css($black, var(--yellow), 40%) !default;
+$yellow-800: mix-color-css($black, var(--yellow), 60%) !default;
+$yellow-900: mix-color-css($black, var(--yellow), 80%) !default;
 
-$green-100: mix-color-css($white, $green, 80%) !default;
-$green-200: mix-color-css($white, $green, 60%) !default;
-$green-300: mix-color-css($white, $green, 40%) !default;
-$green-400: mix-color-css($white, $green, 20%) !default;
-$green-500: $green !default;
-$green-600: mix-color-css($black, $green, 20%) !default;
-$green-700: mix-color-css($black, $green, 40%) !default;
-$green-800: mix-color-css($black, $green, 60%) !default;
-$green-900: mix-color-css($black, $green, 80%) !default;
+$green-100: mix-color-css($white, var(--green), 80%) !default;
+$green-200: mix-color-css($white, var(--green), 60%) !default;
+$green-300: mix-color-css($white, var(--green), 40%) !default;
+$green-400: mix-color-css($white, var(--green), 20%) !default;
+$green-500: var(--green) !default;
+$green-600: mix-color-css($black, var(--green), 20%) !default;
+$green-700: mix-color-css($black, var(--green), 40%) !default;
+$green-800: mix-color-css($black, var(--green), 60%) !default;
+$green-900: mix-color-css($black, var(--green), 80%) !default;
 
-$teal-100: mix-color-css($white, $teal, 80%) !default;
-$teal-200: mix-color-css($white, $teal, 60%) !default;
-$teal-300: mix-color-css($white, $teal, 40%) !default;
-$teal-400: mix-color-css($white, $teal, 20%) !default;
-$teal-500: $teal !default;
-$teal-600: mix-color-css($black, $teal, 20%) !default;
-$teal-700: mix-color-css($black, $teal, 40%) !default;
-$teal-800: mix-color-css($black, $teal, 60%) !default;
-$teal-900: mix-color-css($black, $teal, 80%) !default;
+$teal-100: mix-color-css($white, var(--teal), 80%) !default;
+$teal-200: mix-color-css($white, var(--teal), 60%) !default;
+$teal-300: mix-color-css($white, var(--teal), 40%) !default;
+$teal-400: mix-color-css($white, var(--teal), 20%) !default;
+$teal-500: var(--teal) !default;
+$teal-600: mix-color-css($black, var(--teal), 20%) !default;
+$teal-700: mix-color-css($black, var(--teal), 40%) !default;
+$teal-800: mix-color-css($black, var(--teal), 60%) !default;
+$teal-900: mix-color-css($black, var(--teal), 80%) !default;
 
-$cyan-100: mix-color-css($white, $cyan, 80%) !default;
-$cyan-200: mix-color-css($white, $cyan, 60%) !default;
-$cyan-300: mix-color-css($white, $cyan, 40%) !default;
-$cyan-400: mix-color-css($white, $cyan, 20%) !default;
-$cyan-500: $cyan !default;
-$cyan-600: mix-color-css($black, $cyan, 20%) !default;
-$cyan-700: mix-color-css($black, $cyan, 40%) !default;
-$cyan-800: mix-color-css($black, $cyan, 60%) !default;
-$cyan-900: mix-color-css($black, $cyan, 80%) !default;
+$cyan-100: mix-color-css($white, var(--cyan), 80%) !default;
+$cyan-200: mix-color-css($white, var(--cyan), 60%) !default;
+$cyan-300: mix-color-css($white, var(--cyan), 40%) !default;
+$cyan-400: mix-color-css($white, var(--cyan), 20%) !default;
+$cyan-500: var(--cyan) !default;
+$cyan-600: mix-color-css($black, var(--cyan), 20%) !default;
+$cyan-700: mix-color-css($black, var(--cyan), 40%) !default;
+$cyan-800: mix-color-css($black, var(--cyan), 60%) !default;
+$cyan-900: mix-color-css($black, var(--cyan), 80%) !default;
 
 $blues: (
   'blue-100': $blue-100,
@@ -590,13 +604,26 @@ $hover-bg: var(--fill-tertiary) !default;
 $disabled-bg: var(--bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--body-color), 0.4) !default;
 
+// How much black (light mode) or white (dark mode) is mixed into the
+// `--{color}-text` shade for text on the `.bg-{color}-lt` tint.
+$text-lt-shade-percentage: 6% !default;
+$text-lt-tint-percentage: 9% !default;
+
 $primary: $blue !default;
 $secondary: $text-secondary !default;
 $muted: $text-secondary !default;
-$success: $green !default;
+$success: oklch(53% 0.16 145.43deg) !default; // #0d8227
 $info: $azure !default;
-$warning: $yellow !default;
+$warning: oklch(56% 0.15 71.02deg) !default; // #a96100
 $danger: $red !default;
+
+$primary-text: $blue-text !default;
+$secondary-text: oklch(46.66% 0 0deg) !default; // #5a5a5a
+$muted-text: $secondary-text !default;
+$success-text: oklch(44.52% 0.1344 145.43deg) !default; // #08661d
+$info-text: $azure-text !default;
+$warning-text: oklch(47.04% 0.126 71.02deg) !default; // #864b00
+$danger-text: $red-text !default;
 
 $link-color: var(--primary) !default;
 $link-shade-percentage: 20% !default;
@@ -669,6 +696,28 @@ $gray-colors: (
 ) !default;
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
+
+$theme-text-colors: (
+  'primary': $primary-text,
+  'secondary': $secondary-text,
+  'success': $success-text,
+  'info': $info-text,
+  'warning': $warning-text,
+  'danger': $danger-text,
+  'muted': $muted-text,
+  'blue': $blue-text,
+  'azure': $azure-text,
+  'indigo': $indigo-text,
+  'purple': $purple-text,
+  'pink': $pink-text,
+  'red': $red-text,
+  'orange': $orange-text,
+  'yellow': $yellow-text,
+  'lime': $lime-text,
+  'green': $green-text,
+  'teal': $teal-text,
+  'cyan': $cyan-text,
+) !default;
 
 // Theme color emphasis
 $primary-text-emphasis: mix-color-css(var(--black), var(--primary), 60%) !default;
@@ -2253,7 +2302,7 @@ $form-feedback-valid-color: var(--success) !default;
 $form-feedback-invalid-color: var(--danger) !default;
 
 $form-feedback-icon-valid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#2fb344' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>") !default;
-$form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#d63939' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>") !default;
+$form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#d33637' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>") !default;
 // Form validation states
 // scss-docs-start form-validation-variables
 $form-validation-states: (

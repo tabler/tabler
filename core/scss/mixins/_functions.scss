@@ -201,6 +201,39 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   @return oklch(from #{$background} clamp(#{$l-dark}, (#{$threshold} - l) * 1000, #{$l-light}) 0 0);
 }
 
+// Serializes an sRGB color as hex; other color spaces stay as written.
+@function css-color($color) {
+  @if meta.type-of($color) != 'color' or color.space($color) != rgb or color.alpha($color) != 1 {
+    @return $color;
+  }
+  @return string.unquote('#' + string.to-lower-case(string.slice(color.ie-hex-str($color), 4)));
+}
+
+// Dark mode value of a color: 6% lighter in oklch with 8% less chroma, clipped to sRGB.
+@function dark-mode-color($color) {
+  $dark: color.to-gamut(color.scale(color.adjust($color, $lightness: 6%, $space: oklch), $chroma: -8%, $space: oklch), $space: rgb, $method: clip);
+  @return oklch(math.div(math.round(color.channel($dark, 'lightness', $space: oklch) * 100), 100) math.div(math.round(color.channel($dark, 'chroma', $space: oklch) * 10000), 10000) math.div(math.round(color.channel($dark, 'hue', $space: oklch) * 100), 100));
+}
+
+// `true` when `$text` is a shade of `$color`: a close oklch hue, or both without chroma.
+@function is-shade-of($text, $color) {
+  @if meta.type-of($text) != 'color' or meta.type-of($color) != 'color' {
+    @return true;
+  }
+  $gray-text: color.channel($text, 'chroma', $space: oklch) < 0.01;
+  $gray-color: color.channel($color, 'chroma', $space: oklch) < 0.01;
+  @if $gray-text or $gray-color {
+    @return $gray-text and $gray-color;
+  }
+  $difference: math.abs(color.channel($text, 'hue', $space: oklch) - color.channel($color, 'hue', $space: oklch));
+  @return math.min($difference, 360deg - $difference) < 30deg;
+}
+
+// `true` when `$light` has a higher contrast on `$background` than `$dark`.
+@function prefers-light-foreground($background, $light: $color-contrast-light, $dark: $color-contrast-dark) {
+  @return contrast-ratio($background, $light) > contrast-ratio($background, $dark);
+}
+
 @function color-contrast($background, $color-contrast-dark: $color-contrast-dark, $color-contrast-light: $color-contrast-light, $min-contrast-ratio: $min-contrast-ratio) {
   @if meta.type-of($background) != 'color' {
     @return contrast-color-css($background, $color-contrast-light, $color-contrast-dark, $min-contrast-ratio);
