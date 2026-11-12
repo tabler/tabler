@@ -760,6 +760,98 @@ describe('Datepicker', () => {
       expect(input().value).toBe('30.09.2026')
     })
 
+    describe('typed value', () => {
+      const bound = '<input type="hidden" id="due" name="due" value="2026-01-15">'
+      const hidden = (): HTMLInputElement => fixtureEl.querySelector<HTMLInputElement>('#due')!
+      const type = (value: string): void => {
+        input().value = value
+        input().dispatchEvent(new Event('change', { bubbles: true }))
+      }
+
+      it('updates the bound input and the selection from a typed date', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="it-IT" data-bs-bound-input="#due">${bound}`
+        const instance = new Datepicker(input())
+        const changes: string[][] = []
+        input().addEventListener('change.bs.datepicker', (event) => changes.push((event as Event & { dates: string[] }).dates))
+
+        type('20/02/2026')
+
+        expect(hidden().value).toBe('2026-02-20')
+        expect(instance.getSelectedDates()).toEqual(['2026-02-20'])
+        expect(instance.calendar!.context.selectedMonth).toBe(1)
+        expect(changes).toEqual([['2026-02-20']])
+      })
+
+      it('reads a date typed without leading zeros and writes it the usual way', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('5.3.2026')
+
+        expect(hidden().value).toBe('2026-03-05')
+        expect(input().value).toBe('5.03.2026')
+      })
+
+      it('reads a date typed with the dateFormat pattern', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-date-format="DD/MM/YYYY" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('20/02/2026')
+
+        expect(hidden().value).toBe('2026-02-20')
+      })
+
+      it('reads a typed range', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-date-format="DD.MM.YYYY" data-bs-selection-mode="multiple-ranged" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('01.02.2026 – 03.02.2026')
+
+        expect(hidden().value.split(',')[0]).toBe('2026-02-01')
+        expect(hidden().value.split(',').at(-1)).toBe('2026-02-03')
+      })
+
+      it('clears the bound input when the field is emptied', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        const instance = new Datepicker(input())
+
+        type('')
+
+        expect(hidden().value).toBe('')
+        expect(instance.getSelectedDates()).toEqual([])
+      })
+
+      it('puts the selection back when the text cannot be read', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('31.02.2026')
+
+        expect(input().value).toBe('15.01.2026')
+        expect(hidden().value).toBe('2026-01-15')
+      })
+
+      it('leaves unreadable text alone in a field without a bound input', () => {
+        fixtureEl.innerHTML = '<input type="text" data-bs-locale="pl-PL">'
+        const instance = new Datepicker(input())
+        instance.setSelectedDates(['2026-01-15'])
+
+        type('next week')
+
+        expect(input().value).toBe('next week')
+        expect(instance.getSelectedDates()).toEqual(['2026-01-15'])
+      })
+
+      it('stops listening after dispose', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input()).dispose()
+
+        type('5.03.2026')
+
+        expect(hidden().value).toBe('2026-01-15')
+      })
+    })
+
     it('leaves a bound input outside the element in place on dispose', () => {
       fixtureEl.innerHTML = '<button type="button" data-bs-bound-input="#due">Pick</button><input type="hidden" id="due" name="due">'
       const hidden = fixtureEl.querySelector<HTMLInputElement>('#due')!
