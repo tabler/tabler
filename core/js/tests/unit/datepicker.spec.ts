@@ -431,6 +431,31 @@ describe('Datepicker', () => {
       expect(instance.getSelectedDates()).toEqual([])
     })
 
+    it('does not open a button trigger on focus, so the click opens it once', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="datepicker"><span>Select date</span></button>'
+      const button = fixtureEl.querySelector<HTMLElement>('button')!
+      const instance = new Datepicker(button)
+
+      button.dispatchEvent(new FocusEvent('focus'))
+      await tick()
+      expect(instance._isShown).toBe(false)
+
+      button.click()
+      await tick()
+      expect(instance._isShown).toBe(true)
+
+      button.querySelector('span')!.click()
+      await tick()
+      expect(instance._isShown).toBe(false)
+    })
+
+    it('keeps an explicit openOnFocus from vcpOptions for a button trigger', () => {
+      fixtureEl.innerHTML = '<button type="button">Select date</button>'
+      const instance = new Datepicker(fixtureEl.querySelector<HTMLElement>('button')!, { vcpOptions: { openOnFocus: true } })
+
+      expect(instance._buildCalendarOptions().openOnFocus).toBe(true)
+    })
+
     it('stays open when the focus moves into the popup of a field inside a modal', async () => {
       fixtureEl.innerHTML = '<div class="modal" tabindex="-1" style="display: block"><button type="button" id="first">First</button><input type="text"></div>'
       const first = fixtureEl.querySelector<HTMLElement>('#first')!
