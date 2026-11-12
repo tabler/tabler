@@ -1,5 +1,31 @@
 # @tabler/core
 
+## 1.7.5
+
+### Patch Changes
+
+- 4ccb046: Fixed `CountUp` losing its end value on `dispose()` and ignoring `separator` and `decimal` in the source text.
+- 986dabc: Fixed a `Datepicker` button trigger opening on focus and closing again on the click that follows.
+- a00cc81: Fixed a `Datepicker` inside a `.modal` or `.offcanvas` closing before a click on a day lands.
+- 3cb0195: Fixed an inline `Datepicker` keeping the theme it was created with.
+- e1c9a3e: Fixed `Datepicker` swapping the day and month of a localized initial value.
+- f83a6eb: Fixed `Datepicker` not updating the bound input and the selection when a date is typed or pasted into the field.
+- 6d247e5: Fixed one invalid `nav-overflow` element stopping the rest of the `tabler.js` bundle.
+- 873ca3b: Fixed keyboard navigation of tabs inside `nav-overflow` and a stale active item in its More menu.
+- 5dd7b14: Fixed `NumberInput` ignoring the next click after a hold that reached a bound or ended outside the button.
+- b073d67: Fixed `NumberInput` not firing `change.bs.numberInput` for a typed value, and Home/End editing a readonly field.
+- 17c8b74: Fixed `OtpInput` losing characters when a pasted code contains separators.
+- b8da7e9: Fixed sidebar icons sitting 2px off center in `.nav-link-icon`, visible in the folded sidebar.
+- 457a15c: Fixed folded sidebar dropdowns written with `data-tblr-toggle` not closing on an outside click.
+- 08652fa: Fixed `data-bs-toggle="toast"` triggers throwing after the toast is created again and following the link `href`.
+- cb1df03: Fixed `VectorMap` staying broken when its map data loads after the first initialisation.
+- 7c2dfff: Fixed `VectorMap` panning on hover after a pointer was released outside the map.
+- 81c2442: Fixed the map `library` option so a `data-bs-library` attribute only loads the module from the same origin as the page.
+- b0a29f9: Updated the `masonry` page library to ship from `masonry-layout` in `dist/libs/` instead of a cdnjs URL.
+- b0a29f9: Added minified `maps/world.min.js` and `maps/world.esm.min.js` builds with source maps.
+- b0a29f9: Removed the unused `mapbox` and `google-maps` entries from `libs.json`.
+- 417bd2a: Removed `body.navbar` selectors that never match and duplicated declarations in `:root`, `.text-correct` and `.text-incorrect`.
+
 ## 1.7.4
 
 ### Patch Changes
