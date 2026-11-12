@@ -26,24 +26,31 @@ type SwipeConfig = {
   endCallback: (() => void) | null
   leftCallback: (() => void) | null
   rightCallback: (() => void) | null
+  upCallback: (() => void) | null
+  downCallback: (() => void) | null
 }
 
 const Default: SwipeConfig = {
   endCallback: null,
   leftCallback: null,
   rightCallback: null,
+  upCallback: null,
+  downCallback: null,
 }
 
 const DefaultType: ComponentConfigType = {
   endCallback: '(function|null)',
   leftCallback: '(function|null)',
   rightCallback: '(function|null)',
+  upCallback: '(function|null)',
+  downCallback: '(function|null)',
 }
 
 class Swipe extends Config {
   declare _config: SwipeConfig & ComponentConfig
   _element: HTMLElement
   declare _deltaX: number
+  declare _deltaY: number
   declare _supportPointerEvents: boolean
 
   constructor(element: HTMLElement, config?: ComponentConfig) {
@@ -56,6 +63,7 @@ class Swipe extends Config {
 
     this._config = this._getConfig(config) as SwipeConfig & ComponentConfig
     this._deltaX = 0
+    this._deltaY = 0
     this._supportPointerEvents = Boolean(window.PointerEvent)
     this._initEvents()
   }
@@ -79,17 +87,20 @@ class Swipe extends Config {
   _start(event: Event): void {
     if (!this._supportPointerEvents) {
       this._deltaX = (event as TouchEvent).touches[0].clientX
+      this._deltaY = (event as TouchEvent).touches[0].clientY
       return
     }
 
     if (this._eventIsPointerPenTouch(event as PointerEvent)) {
       this._deltaX = (event as PointerEvent).clientX
+      this._deltaY = (event as PointerEvent).clientY
     }
   }
 
   _end(event: Event): void {
     if (this._eventIsPointerPenTouch(event as PointerEvent)) {
       this._deltaX = (event as PointerEvent).clientX - this._deltaX
+      this._deltaY = (event as PointerEvent).clientY - this._deltaY
     }
 
     this._handleSwipe()
@@ -97,11 +108,24 @@ class Swipe extends Config {
   }
 
   _move(event: Event): void {
-    this._deltaX = (event as TouchEvent).touches && (event as TouchEvent).touches.length > 1 ? 0 : (event as TouchEvent).touches[0].clientX - this._deltaX
+    const multiTouch = (event as TouchEvent).touches && (event as TouchEvent).touches.length > 1
+    this._deltaX = multiTouch ? 0 : (event as TouchEvent).touches[0].clientX - this._deltaX
+    this._deltaY = multiTouch ? 0 : (event as TouchEvent).touches[0].clientY - this._deltaY
   }
 
   _handleSwipe(): void {
     const absDeltaX = Math.abs(this._deltaX)
+    const absDeltaY = Math.abs(this._deltaY)
+
+    if (absDeltaY > SWIPE_THRESHOLD && absDeltaY > absDeltaX && (this._config.upCallback || this._config.downCallback)) {
+      const verticalDirection = this._deltaY > 0
+
+      this._deltaX = 0
+      this._deltaY = 0
+
+      execute(verticalDirection ? this._config.downCallback : this._config.upCallback)
+      return
+    }
 
     if (absDeltaX <= SWIPE_THRESHOLD) {
       return
@@ -110,6 +134,7 @@ class Swipe extends Config {
     const direction = absDeltaX / this._deltaX
 
     this._deltaX = 0
+    this._deltaY = 0
 
     if (!direction) {
       return
