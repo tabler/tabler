@@ -679,6 +679,9 @@ class Datepicker extends BaseComponent {
     const calendarOptions: Options = {
       ...vcpOptions,
       ...(extensions.length > 0 ? { extensions } : {}),
+      // A button trigger opens on click. Opening it on focus as well makes the
+      // click that gave it the focus close the popup again.
+      ...(this._isInput || vcpOptions.openOnFocus !== undefined ? {} : { openOnFocus: false }),
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
       firstWeekday: this._config.firstWeekday,
@@ -824,7 +827,11 @@ class Datepicker extends BaseComponent {
 
     // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
     // UTC midnight and land on the previous day west of Greenwich.
-    const date = DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
+    if (!DATE_PATTERN.test(value)) {
+      return
+    }
+
+    const date = this._parseDate(value)
     if (Number.isNaN(date.getTime())) {
       return
     }
