@@ -10,8 +10,7 @@
 //
 // An attribution names its library with "npm" (a package) or "lib" (a key in
 // core/libs.json, for a library loaded straight from a CDN). Vendored code has
-// neither, so it is listed in BUNDLED_SOURCE; a libs.json entry that is not
-// open source at all is listed in NOT_OPEN_SOURCE.
+// neither, so it is listed in BUNDLED_SOURCE.
 // Run: pnpm run check:open-source
 
 import { readFileSync } from 'node:fs'
@@ -23,9 +22,6 @@ const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
 
 // Attributed without a package: the source lives in this repo.
 const BUNDLED_SOURCE = new Set(['Bootstrap'])
-
-// Shipped, but nothing to attribute: a proprietary service loaded by url.
-const NOT_OPEN_SOURCE = new Set(['google-maps'])
 
 type Attribution = { name: string; npm?: string; lib?: string; url: string; description: string; license: string }
 type Lib = { npm?: string }
@@ -51,10 +47,6 @@ const ship = (id: string, source: string): void => {
 }
 
 for (const [key, lib] of Object.entries(libs)) {
-  if (NOT_OPEN_SOURCE.has(key)) {
-    continue
-  }
-
   ship(lib.npm ? `npm:${lib.npm}` : `lib:${key}`, `core/libs.json (${key})`)
 }
 

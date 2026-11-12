@@ -32,6 +32,7 @@ const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_FOCUSIN_DATA_API = `focusin${EVENT_KEY}${DATA_API_KEY}`
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="datepicker"], [data-tblr-toggle="datepicker"]'
+const SELECTOR_FOCUS_TRAP = '.modal, .offcanvas'
 const SELECTOR_DISPLAY = '[data-bs-datepicker-display], [data-tblr-datepicker-display]'
 const SELECTOR_INPUT_WRAPPER = '.input-icon, .input-group'
 const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
@@ -235,6 +236,9 @@ class Datepicker extends BaseComponent {
   _themeObserver: MutationObserver | null = null
   _onFocusIn: ((event: Event) => void) | null = null
   _onResize = (): void => this._alignToPositionElement()
+  // The popup sits on <body>, outside a modal or offcanvas. Their focus trap
+  // would pull the focus back and close the popup before a click on a day lands.
+  _onPopupFocusIn = (event: Event): void => event.stopPropagation()
   // The plugin builds a popup lazily, so its context has no selection until
   // the first show; this mirror answers `getSelectedDates()` before that.
   _selectedDates: string[] = []
@@ -612,6 +616,10 @@ class Datepicker extends BaseComponent {
 
     const wasShown = this._isShown
     this._isShown = true
+    if (this._element.closest(SELECTOR_FOCUS_TRAP)) {
+      calendar.context.mainElement.addEventListener('focusin', this._onPopupFocusIn)
+    }
+
     this._syncThemeAttribute(calendar.context.mainElement)
     this._alignToPositionElement()
     window.removeEventListener('resize', this._onResize)

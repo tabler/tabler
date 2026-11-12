@@ -3,6 +3,7 @@ import * as VanillaCalendarPro from 'vanilla-calendar-pro'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import Datepicker from '../../src/datepicker'
 import EventHandler from '../../src/bootstrap/dom/event-handler'
+import FocusTrap from '../../src/bootstrap/util/focustrap'
 
 describe('Datepicker', () => {
   let fixtureEl: HTMLElement
@@ -448,6 +449,26 @@ describe('Datepicker', () => {
         expect(popup.getAttribute('data-bs-theme')).toBe('dark')
       } finally {
         document.documentElement.removeAttribute('data-bs-theme')
+      }
+    })
+
+    it('stays open when the focus moves into the popup of a field inside a modal', async () => {
+      fixtureEl.innerHTML = '<div class="modal" tabindex="-1" style="display: block"><button type="button" id="first">First</button><input type="text"></div>'
+      const first = fixtureEl.querySelector<HTMLElement>('#first')!
+      const trap = new FocusTrap({ trapElement: fixtureEl.querySelector<HTMLElement>('.modal')! })
+      trap.activate()
+
+      try {
+        const instance = new Datepicker(input())
+        await instance.show()
+        const day = instance.calendar!.context.mainElement.querySelector<HTMLElement>('[data-vc-date-btn]')!
+        day.focus()
+        day.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+
+        expect(document.activeElement).not.toBe(first)
+        expect(instance._isShown).toBe(true)
+      } finally {
+        trap.deactivate()
       }
     })
 
