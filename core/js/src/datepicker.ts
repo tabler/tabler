@@ -826,7 +826,11 @@ class Datepicker extends BaseComponent {
 
     // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
     // UTC midnight and land on the previous day west of Greenwich.
-    const date = DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
+    if (!DATE_PATTERN.test(value)) {
+      return
+    }
+
+    const date = this._parseDate(value)
     if (Number.isNaN(date.getTime())) {
       return
     }

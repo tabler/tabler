@@ -423,6 +423,14 @@ describe('Datepicker', () => {
       expect(instance.calendar!.context.selectedYear).toBe(1990)
     })
 
+    it('leaves an initial value it cannot read for sure untouched', () => {
+      fixtureEl.innerHTML = '<input type="text" value="05.03.2025">'
+      const instance = new Datepicker(input(), { locale: 'pl-PL' })
+
+      expect(input().value).toBe('05.03.2025')
+      expect(instance.getSelectedDates()).toEqual([])
+    })
+
     it('does not open a button trigger on focus, so the click opens it once', async () => {
       fixtureEl.innerHTML = '<button type="button" data-bs-toggle="datepicker"><span>Select date</span></button>'
       const button = fixtureEl.querySelector<HTMLElement>('button')!
