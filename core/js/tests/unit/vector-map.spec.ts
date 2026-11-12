@@ -77,6 +77,23 @@ describe('VectorMap', () => {
       expect(() => new VectorMap(el())).toThrowError('VECTOR-MAP: Map "nowhere" is not loaded.')
     })
 
+    it('should work when the map is loaded after a failed start', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-map="later" data-bs-zoom="true"></div>'
+
+      expect(() => new VectorMap(el())).toThrowError('VECTOR-MAP: Map "later" is not loaded.')
+      expect(VectorMap.getInstance(el())).toBeNull()
+
+      VectorMap.addMap('later', squares)
+      const instance = VectorMap.getOrCreateInstance(el()) as VectorMap
+      expect(el().querySelectorAll(':scope > svg')).toHaveLength(1)
+
+      const spy = vi.fn()
+      el().addEventListener('regionclick.bs.vector-map', spy)
+      region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      expect(spy).toHaveBeenCalledTimes(1)
+      instance.dispose()
+    })
+
     it('should name the map for assistive technology when it has a label', () => {
       fixtureEl.innerHTML = '<div class="vector-map" data-bs-label="Sales by country"></div>'
 
