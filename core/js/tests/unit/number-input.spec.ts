@@ -193,6 +193,32 @@ describe('NumberInput', () => {
       expect(instance._repeatTimer).toBeNull()
     })
 
+    it('should step on the next click after a hold that reached a bound', () => {
+      vi.useFakeTimers()
+      new NumberInput(numberInput(), { max: 3 })
+
+      incrementButton().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse' }))
+      vi.advanceTimersByTime(400 + 80 * 5)
+      expect(input().value).toBe('3')
+      expect(incrementButton().disabled).toBe(true)
+
+      decrementButton().click()
+      expect(input().value).toBe('2')
+    })
+
+    it('should step on the next click after a hold released outside the button', () => {
+      vi.useFakeTimers()
+      new NumberInput(numberInput(), { max: 100 })
+
+      incrementButton().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse' }))
+      vi.advanceTimersByTime(400)
+      expect(input().value).toBe('2')
+      incrementButton().dispatchEvent(new PointerEvent('pointerleave'))
+
+      decrementButton().click()
+      expect(input().value).toBe('1')
+    })
+
     it('should not repeat when the option is off', () => {
       vi.useFakeTimers()
       new NumberInput(numberInput(), { repeat: false, max: 100 })
@@ -221,6 +247,18 @@ describe('NumberInput', () => {
       new NumberInput(numberInput())
       expect(keydown('End').defaultPrevented).toBe(false)
       expect(input().value).toBe('1')
+    })
+
+    it('should ignore Home and End on a readonly input', () => {
+      fixtureEl.innerHTML = markup('value="3" min="0" max="5" readonly')
+      new NumberInput(numberInput())
+      const onChange = vi.fn()
+      input().addEventListener('change', onChange)
+
+      expect(keydown('Home').defaultPrevented).toBe(false)
+      keydown('End')
+      expect(input().value).toBe('3')
+      expect(onChange).not.toHaveBeenCalled()
     })
 
     it('should leave other keys alone', () => {
@@ -348,6 +386,34 @@ describe('NumberInput', () => {
       instance.increment()
       expect(onInput).toHaveBeenCalledTimes(1)
       expect(onChange).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fire change.bs.numberInput for a typed value', () => {
+      new NumberInput(numberInput())
+      const spy = vi.fn()
+      const onChange = vi.fn()
+      numberInput().addEventListener('change.bs.numberInput', spy)
+      input().addEventListener('change', onChange)
+
+      change('4')
+      expect(spy).toHaveBeenCalledTimes(1)
+      const event = spy.mock.calls[0][0] as Event & { value: number; previousValue: number }
+      expect(event.value).toBe(4)
+      expect(event.previousValue).toBe(1)
+      // The typed text needs no rewrite, so the field fires no second `change`
+      expect(onChange).toHaveBeenCalledTimes(1)
+    })
+
+    it('should report the value before the edit when a typed value is clamped', () => {
+      new NumberInput(numberInput())
+      const spy = vi.fn()
+      numberInput().addEventListener('change.bs.numberInput', spy)
+
+      change('500')
+      expect(input().value).toBe('5')
+      const event = spy.mock.calls[0][0] as Event & { value: number; previousValue: number }
+      expect(event.value).toBe(5)
+      expect(event.previousValue).toBe(1)
     })
 
     it('should not fire when the value does not change', () => {
