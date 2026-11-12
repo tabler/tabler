@@ -1,0 +1,145 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import InputMask from '@ui/form/InputMask.astro'
+---
+
+<DefaultLayout title="Input mask" pageMenu="form.input-mask" description="An input mask formats what the user types to a pattern, such as a date, a phone number or an amount.">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/input-mask" />
+
+  <div class="row row-cards">
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Dates</CardTitle>
+          <CardSubtitle>Use <code>type="date"</code> with a <code>format</code>. Every part stays in its range and the day fits the month.</CardSubtitle>
+          <FormGroup label="Date" hint="DD/MM/YYYY"><InputMask type="date" format="DD/MM/YYYY" visible /></FormGroup>
+          <FormGroup label="ISO date" hint="YYYY-MM-DD"><InputMask type="date" format="YYYY-MM-DD" visible /></FormGroup>
+          <FormGroup label="US date" hint="MM/DD/YYYY"><InputMask type="date" format="MM/DD/YYYY" /></FormGroup>
+          <FormGroup label="Card expiry" hint="MM/YY" class="mb-0"><InputMask mask="00/00" ranges="1-12 0-99" placeholder="MM/YY" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Time</CardTitle>
+          <CardSubtitle>Hours stop at 23, minutes and seconds at 59. A digit that cannot start a part gets a <code>0</code> in front.</CardSubtitle>
+          <FormGroup label="Hour and minute" hint="HH:mm"><InputMask type="date" format="HH:mm" visible /></FormGroup>
+          <FormGroup label="With seconds" hint="HH:mm:ss"><InputMask type="date" format="HH:mm:ss" visible /></FormGroup>
+          <FormGroup label="Date and time" hint="DD/MM/YYYY HH:mm"><InputMask type="date" format="DD/MM/YYYY HH:mm" visible /></FormGroup>
+          <FormGroup label="Timestamp" hint="YYYY-MM-DD HH:mm:ss" class="mb-0"><InputMask type="date" format="YYYY-MM-DD HH:mm:ss" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Phone numbers</CardTitle>
+          <CardSubtitle>A plain pattern: <code>0</code> is a digit and every other character is added for the user.</CardSubtitle>
+          <FormGroup label="US" hint="(000) 000-0000"><InputMask mask="(000) 000-0000" visible /></FormGroup>
+          <FormGroup label="Poland" hint="+48 000 000 000"><InputMask mask="+48 000 000 000" visible /></FormGroup>
+          <FormGroup label="Brazil" hint="(00) 00000-0000"><InputMask mask="(00) 00000-0000" /></FormGroup>
+          <FormGroup label="Landline with area code" hint="(00) 0000-0000" class="mb-0"><InputMask mask="(00) 0000-0000" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Payments</CardTitle>
+          <CardSubtitle>Groups of digits for card details, with <code>ranges</code> where a part has a limit.</CardSubtitle>
+          <FormGroup label="Card number" hint="0000 0000 0000 0000"><InputMask mask="0000 0000 0000 0000" visible /></FormGroup>
+          <FormGroup label="Expiry date" hint="MM/YY"><InputMask mask="00/00" ranges="1-12 0-99" visible /></FormGroup>
+          <FormGroup label="Security code" hint="000"><InputMask mask="000" visible /></FormGroup>
+          <FormGroup label="IBAN (Poland)" hint="aa00 0000 0000 0000 0000 0000 00" class="mb-0"><InputMask mask="aa00 0000 0000 0000 0000 0000 00" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Postal codes and IDs</CardTitle>
+          <CardSubtitle>Use <code>a</code> for a letter and <code>*</code> for any character.</CardSubtitle>
+          <FormGroup label="ZIP code (US)" hint="00000"><InputMask mask="00000" /></FormGroup>
+          <FormGroup label="Postal code (Poland)" hint="00-000"><InputMask mask="00-000" visible /></FormGroup>
+          <FormGroup label="Postal code (UK)" hint="**** ***"><InputMask mask="**** ***" /></FormGroup>
+          <FormGroup label="Tax ID (Poland)" hint="000-000-00-00"><InputMask mask="000-000-00-00" visible /></FormGroup>
+          <FormGroup label="Licence plate" hint="aa-0000" class="mb-0"><InputMask mask="aa-0000" visible /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Network</CardTitle>
+          <CardSubtitle>Add <code>ranges</code> to keep every group of digits between a minimum and a maximum.</CardSubtitle>
+          <FormGroup label="IPv4 address" hint="000.000.000.000, every part 0 to 255"><InputMask mask="000.000.000.000" ranges="0-255 0-255 0-255 0-255" visible /></FormGroup>
+          <FormGroup label="IPv4 with a mask" hint="000.000.000.000/00"><InputMask mask="000.000.000.000/00" ranges="0-255 0-255 0-255 0-255 0-32" /></FormGroup>
+          <FormGroup label="Port" hint="Whole number, 0 to 65535" class="mb-0"><InputMask type="number" scale={0} min={0} max={65535} placeholder="8080" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Numbers</CardTitle>
+          <CardSubtitle>Use <code>type="number"</code>. Tabler groups the thousands and cuts the fraction to <code>scale</code>.</CardSubtitle>
+          <FormGroup label="Whole number" hint="scale 0, thousands separated by a space"><InputMask type="number" scale={0} thousandsSeparator=" " placeholder="1 234 567" /></FormGroup>
+          <FormGroup label="Decimal" hint="scale 3, comma as the radix"><InputMask type="number" scale={3} radix="," thousandsSeparator=" " placeholder="1 234,567" /></FormGroup>
+          <FormGroup label="Range" hint="-10 000 to 10 000"><InputMask type="number" scale={0} min={-10000} max={10000} thousandsSeparator=" " placeholder="0" /></FormGroup>
+          <FormGroup label="Positive only" hint="min 0 removes the minus sign" class="mb-0"><InputMask type="number" min={0} placeholder="0.00" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Money</CardTitle>
+          <CardSubtitle>A <code>prefix</code> or <code>suffix</code> for the currency. <code>padFractionalZeros</code> completes the cents when the field loses focus.</CardSubtitle>
+          <FormGroup label="US dollars" hint="$1,234.50"><InputMask type="number" prefix="$" thousandsSeparator="," min={0} padFractionalZeros placeholder="$0.00" /></FormGroup>
+          <FormGroup label="Euro" hint="1 234,50 €"><InputMask type="number" suffix=" €" radix="," thousandsSeparator=" " min={0} padFractionalZeros placeholder="0,00 €" /></FormGroup>
+          <FormGroup label="Polish zloty" hint="1.234,50 zł"><InputMask type="number" suffix=" zł" radix="," thousandsSeparator="." min={0} padFractionalZeros placeholder="0,00 zł" /></FormGroup>
+          <FormGroup label="Whole yen" hint="¥1,234" class="mb-0"><InputMask type="number" prefix="¥" scale={0} thousandsSeparator="," min={0} placeholder="¥0" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Units</CardTitle>
+          <CardSubtitle>A number with a unit, and a <code>max</code> that the value never goes over.</CardSubtitle>
+          <FormGroup label="Percent" hint="0 to 100, one decimal place"><InputMask type="number" suffix=" %" scale={1} min={0} max={100} placeholder="0 %" /></FormGroup>
+          <FormGroup label="Temperature" hint="Can be below zero"><InputMask type="number" suffix=" °C" scale={1} placeholder="21.5 °C" /></FormGroup>
+          <FormGroup label="Weight" hint="Three decimal places"><InputMask type="number" suffix=" kg" scale={3} min={0} placeholder="0.000 kg" /></FormGroup>
+          <FormGroup label="Distance" hint="Whole kilometres" class="mb-0"><InputMask type="number" suffix=" km" scale={0} min={0} thousandsSeparator=" " placeholder="0 km" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Visible pattern</CardTitle>
+          <CardSubtitle>Add <code>visible</code> to show the whole pattern before the user types. Change the empty slot with <code>placeholderChar</code>.</CardSubtitle>
+          <FormGroup label="Slots as underscores" hint="The default"><InputMask mask="00/00/0000" visible /></FormGroup>
+          <FormGroup label="Slots as hashes" hint='data-mask-placeholder-char="#"'><InputMask mask="(000) 000-000" visible placeholderChar="#" /></FormGroup>
+          <FormGroup label="Only what was typed" hint="Without visible, the field stays empty until the user types" class="mb-0"><InputMask mask="(000) 000-000" /></FormGroup>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

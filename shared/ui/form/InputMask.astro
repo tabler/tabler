@@ -1,14 +1,45 @@
 ---
-// IMask initializes from the data-mask attributes (tabler.js).
 interface Props {
   mask?: string
   visible?: boolean
   placeholder?: string
-  reverse?: boolean
+  type?: 'number' | 'date'
+  format?: string
+  ranges?: string
+  placeholderChar?: string
+  scale?: number
+  radix?: string
+  thousandsSeparator?: string
+  min?: number
+  max?: number
+  prefix?: string
+  suffix?: string
+  padFractionalZeros?: boolean
 }
 
-const { mask = '00/00/0000', visible, placeholder, reverse } = Astro.props
+const { mask, visible, placeholder, type, format, ranges, placeholderChar, scale, radix, thousandsSeparator, min, max, prefix, suffix, padFractionalZeros } = Astro.props
 const name = 'mask'
+const pattern = type ? undefined : (mask ?? '00/00/0000')
 ---
 
-<input type="text" name={`input-${name}`} class="form-control" data-mask={mask} data-mask-visible={visible ? 'true' : undefined} placeholder={placeholder ?? mask} data-mask-reverse={reverse ? 'true' : undefined} autocomplete="off" />
+<input
+  type="text"
+  name={`input-${name}`}
+  class="form-control"
+  data-mask={pattern}
+  data-mask-visible={visible ? 'true' : undefined}
+  data-mask-type={type}
+  data-mask-format={format}
+  data-mask-ranges={ranges}
+  data-mask-placeholder-char={placeholderChar}
+  data-mask-scale={scale}
+  data-mask-radix={radix}
+  data-mask-thousands-separator={thousandsSeparator}
+  data-mask-min={min}
+  data-mask-max={max}
+  data-mask-prefix={prefix}
+  data-mask-suffix={suffix}
+  data-mask-pad-fractional-zeros={padFractionalZeros ? 'true' : undefined}
+  placeholder={placeholder ?? pattern ?? format}
+  autocomplete="off"
+/>
