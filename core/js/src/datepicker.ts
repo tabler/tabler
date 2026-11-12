@@ -678,6 +678,9 @@ class Datepicker extends BaseComponent {
     const calendarOptions: Options = {
       ...vcpOptions,
       ...(extensions.length > 0 ? { extensions } : {}),
+      // A button trigger opens on click. Opening it on focus as well makes the
+      // click that gave it the focus close the popup again.
+      ...(this._isInput || vcpOptions.openOnFocus !== undefined ? {} : { openOnFocus: false }),
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
       firstWeekday: this._config.firstWeekday,
