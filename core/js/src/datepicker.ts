@@ -540,7 +540,7 @@ class Datepicker extends BaseComponent {
   }
 
   _syncThemeAttribute(element: HTMLElement | undefined): void {
-    if (!element) {
+    if (!element || (this._isInline && !this._config.datepickerTheme)) {
       return
     }
 
@@ -556,10 +556,11 @@ class Datepicker extends BaseComponent {
   }
 
   _setupThemeObserver(): void {
-    const ancestor = this._getThemeAncestor()
-    if (!ancestor || this._config.datepickerTheme) {
+    if (this._isInline || this._config.datepickerTheme) {
       return
     }
+
+    const ancestor = this._getThemeAncestor() ?? document.documentElement
 
     this._themeObserver = new MutationObserver(() => {
       this._syncThemeAttribute(this._calendar?.context?.mainElement)
