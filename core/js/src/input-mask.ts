@@ -176,6 +176,22 @@ const numberOptions = (config: ComponentConfig): NumberOptions => {
   }
 }
 
+// Blanks the prefix and the suffix and keeps every other character at its index
+const stripAffixes = (text: string, o: NumberOptions): string => {
+  let out = text
+
+  for (const [affix, at] of [
+    [o.prefix, o.prefix ? out.indexOf(o.prefix) : -1],
+    [o.suffix, o.suffix ? out.lastIndexOf(o.suffix) : -1],
+  ] as [string, number][]) {
+    if (at > -1) {
+      out = out.slice(0, at) + '\0'.repeat(affix.length) + out.slice(at + affix.length)
+    }
+  }
+
+  return out
+}
+
 // The canonical number: an optional `-`, digits and a `.`, whatever the radix shown. `-` and `12.` are valid while typing.
 const scanNumber = (text: string, o: NumberOptions, final = false): string => {
   const signed = o.min === null || o.min < 0
@@ -184,7 +200,7 @@ const scanNumber = (text: string, o: NumberOptions, final = false): string => {
   let frac = ''
   let radix = false
 
-  for (const char of o.prefix ? text.replace(o.prefix, '') : text) {
+  for (const char of stripAffixes(text, o)) {
     if (char >= '0' && char <= '9') {
       if (!radix) {
         int += char
@@ -214,7 +230,7 @@ const scanNumber = (text: string, o: NumberOptions, final = false): string => {
   }
 
   if (final) {
-    canon = canon.replace(/\.$/, '')
+    canon = /\d/.test(canon) ? canon.replace(/\.$/, '') : ''
 
     if (o.pad && o.scale > 0 && /\d/.test(canon)) {
       const [whole, decimals = ''] = canon.split('.')
@@ -288,7 +304,7 @@ const segmentsFromRanges = (slots: Slot[], ranges: [number, number][]): Segment[
 
 // Keeps every group of digits inside its range as the user types: a first digit that cannot start a valid
 // number gets a `0` in front, and a full group is pulled back into the range.
-const fixSegments = (digits: string, segments: Segment[]): string => {
+const fixSegments = (digits: string, segments: Segment[], pad = true): string => {
   const parts: string[] = []
   let rest = digits
 
@@ -297,7 +313,7 @@ const fixSegments = (digits: string, segments: Segment[]): string => {
       break
     }
 
-    if (length > 1 && Number(rest[0]) * 10 ** (length - 1) > max) {
+    if (pad && length > 1 && Number(rest[0]) * 10 ** (length - 1) > max) {
       rest = `0${rest}`
     }
 
@@ -425,6 +441,18 @@ class InputMask extends BaseComponent {
     return this._legacy ? this._legacy.unmaskedValue : this._unmasked
   }
 
+  set unmaskedValue(value: string) {
+    if (this._legacy) {
+      this._legacy.unmaskedValue = value
+    } else if (this._number) {
+      this._unmasked = scanNumber(String(value).replace('.', this._number.radix), this._number, true)
+      this._element.value = displayNumber(this._unmasked, this._number)
+    } else if (this._mask) {
+      this._element.value = this._format(String(value)).text
+      this.update()
+    }
+  }
+
   /** `true` when every slot of the mask is filled. */
   get isComplete(): boolean {
     return this._complete
@@ -440,6 +468,10 @@ class InputMask extends BaseComponent {
   update(): void {
     if (this._legacy) {
       this._legacy.updateValue()
+      return
+    }
+
+    if (!this._mask && !this._number) {
       return
     }
 
@@ -471,12 +503,13 @@ class InputMask extends BaseComponent {
     return parse(typeof mask === 'function' ? mask(unmasked) : mask, { ...TOKENS, ...tokens })
   }
 
-  _align(raw: string, caret: number): { raw: string; single: number } {
-    const text = this._format(this._unmasked).text
+  _align(raw: string, caret: number): { raw: string; caret: number; single: number; fixed: boolean } {
+    const none = { raw, caret, single: -1, fixed: false }
+    const { text, ends } = this._format(this._unmasked)
     const start = text.length - (raw.length - caret)
 
     if (start < 0 || raw.slice(caret) !== text.slice(start)) {
-      return { raw, single: -1 }
+      return none
     }
 
     let from = 0
@@ -485,29 +518,64 @@ class InputMask extends BaseComponent {
       from++
     }
 
-    if (from === caret) {
-      return { raw, single: -1 }
+    const slots = this._slots(this._unmasked)
+
+    if (this._segments.length && (ends[ends.length - 1] ?? 0) > start) {
+      const chars = text.split('')
+      let at = from
+
+      for (let i = from; i < start; i++) {
+        if (ends.includes(i + 1)) {
+          chars[i] = '0'
+        }
+      }
+
+      for (const char of raw.slice(from, caret)) {
+        while (at < slots.length && !slots[at].token) {
+          at++
+        }
+
+        if (!slots[at]?.token?.test(char)) {
+          continue
+        }
+
+        if (!slots[at - 1]?.token) {
+          const segment = this._segments[slots.slice(0, at).filter((slot, i) => slot.token && !slots[i - 1]?.token).length]
+
+          if (segment && segment.length > 1 && slots[at + 1]?.token && Number(char) * 10 ** (segment.length - 1) > segment.max) {
+            chars[at++] = '0'
+          }
+        }
+
+        chars[at++] = char
+      }
+
+      return { raw: chars.join(''), caret: at, single: -1, fixed: true }
     }
 
-    const slots = this._slots(this._unmasked)
+    if (from === caret) {
+      return none
+    }
+
     let to = from
 
     while (to < slots.length && !slots[to].token) {
       to++
     }
 
-    return { raw: raw.slice(0, caret) + text.slice(Math.max(start, to)), single: caret - from === 1 ? from : -1 }
+    return { raw: raw.slice(0, caret) + text.slice(Math.max(start, to)), caret, single: caret - from === 1 ? from : -1, fixed: false }
   }
 
-  _extract(raw: string, caret: number | null = null, single = -1): { unmasked: string; count: number | null } {
+  _extract(raw: string, caret: number | null = null, single = -1, fixed = false): { unmasked: string; count: number | null } {
     if (this._number) {
       const o = this._number
-      const before = caret === null ? null : raw.slice(0, caret)
+      const before = caret === null ? null : stripAffixes(raw, o).slice(0, caret)
 
       return { unmasked: scanNumber(raw, o), count: before === null ? null : [...before].filter((char) => /[\d-]/.test(char) || o.radixChars.includes(char)).length }
     }
 
     // A dynamic mask is resolved by what the value holds, so the first pass reads it with the previous mask
+    const blank = this._config.lazy ? null : this._config.placeholderChar
     let slots = this._slots(this._unmasked)
     let unmasked = ''
     let count: number | null = null
@@ -531,7 +599,7 @@ class InputMask extends BaseComponent {
           next++
         }
 
-        if (char !== this._config.placeholderChar && slots[next]?.token?.test(char)) {
+        if (char !== blank && slots[next]?.token?.test(char)) {
           unmasked += char
           position = next + 1
           slots = this._slots(unmasked)
@@ -554,7 +622,7 @@ class InputMask extends BaseComponent {
         continue
       }
 
-      if (char !== this._config.placeholderChar && token.test(char)) {
+      if (char !== blank && token.test(char)) {
         unmasked += char
         position++
         slots = this._slots(unmasked)
@@ -562,13 +630,13 @@ class InputMask extends BaseComponent {
     }
 
     if (this._segments.length) {
-      const fixed = fixSegments(unmasked, this._segments).slice(0, slots.filter((slot) => slot.token).length)
+      const digits = fixSegments(unmasked, this._segments, !fixed).slice(0, slots.filter((slot) => slot.token).length)
 
       if (count !== null) {
-        count = count === unmasked.length ? fixed.length : Math.min(fixed.length, count + fixed.length - unmasked.length)
+        count = count === unmasked.length ? digits.length : Math.min(digits.length, count + digits.length - unmasked.length)
       }
 
-      unmasked = fixed
+      unmasked = digits
     }
 
     return { unmasked, count }
@@ -577,10 +645,11 @@ class InputMask extends BaseComponent {
   _format(unmasked: string): { text: string; ends: number[]; complete: boolean } {
     if (this._number) {
       const text = displayNumber(unmasked, this._number)
+      const body = stripAffixes(text, this._number)
       const ends: number[] = []
 
-      for (let i = 0; i < text.length; i++) {
-        if (/[\d-]/.test(text[i]) || this._number.radixChars.includes(text[i])) {
+      for (let i = 0; i < body.length; i++) {
+        if (/[\d-]/.test(body[i]) || this._number.radixChars.includes(body[i])) {
           ends.push(i + 1)
         }
       }
@@ -629,7 +698,7 @@ class InputMask extends BaseComponent {
       this._element.value = text
     }
 
-    if (typed !== null && document.activeElement === this._element) {
+    if (typed !== null && document.activeElement === this._element && this._element.selectionStart !== null) {
       const caret = typed === 0 ? 0 : (ends[Math.min(typed, ends.length) - 1] ?? text.length)
       this._element.setSelectionRange(caret, caret)
     }
@@ -648,14 +717,15 @@ class InputMask extends BaseComponent {
       return
     }
 
-    const caret = this._element.selectionStart ?? this._element.value.length
+    const value = this._element.value
+    const position = this._element.selectionStart ?? value.length
     const previous = this._unmasked
-    const { raw, single } = this._number ? { raw: this._element.value, single: -1 } : this._align(this._element.value, caret)
-    let { unmasked, count } = this._extract(raw, caret, single)
+    const { raw, caret, single, fixed } = this._number ? { raw: value, caret: position, single: -1, fixed: false } : this._align(value, position)
+    let { unmasked, count } = this._extract(raw, caret, single, fixed)
     let typed = count ?? unmasked.length
 
     // Deleting a literal changes nothing after re-masking, so it removes the digit next to it
-    if (unmasked === previous && event.inputType.startsWith('delete') && typed > 0) {
+    if (!fixed && unmasked === previous && event.inputType.startsWith('delete') && typed > 0) {
       const at = event.inputType === 'deleteContentForward' ? typed : typed - 1
 
       if (at < unmasked.length) {

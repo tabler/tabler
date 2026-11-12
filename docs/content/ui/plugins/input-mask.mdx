@@ -41,7 +41,7 @@ To create an input mask, add the `data-mask` attribute to the input element:
 | `*` | any character |
 | `\` | makes the next character a literal, so `\0` is a plain `0` |
 
-Every other character is a literal, and Tabler adds it for the user as they type. Paste works too: the value is cut to the pattern and the characters that do not fit are dropped.
+Every other character is a literal, and Tabler adds it for the user as they type. Use the mask on an input with `type="text"` or `type="tel"`: a `number` input cannot hold the formatted value. Paste works too: the value is cut to the pattern and the characters that do not fit are dropped.
 
 <Example column>
 <label class="form-label" for="mask-date">Date</label>
@@ -52,7 +52,7 @@ Every other character is a literal, and Tabler adds it for the user as they type
 
 ## Dates and times
 
-`data-mask-type="date"` builds a pattern from a format and keeps every part in its range. The parts are `YYYY`, `MM` (month), `DD`, `HH`, `mm` (minutes) and `ss`. A digit that cannot start a valid part gets a `0` in front, so typing `4` in the day gives `04`. A part that is too high is pulled back to the highest value, and the day stays inside the month, with leap years.
+`data-mask-type="date"` builds a pattern from a format and keeps every part in its range. The parts are `YYYY`, `MM` (month), `DD`, `HH`, `mm` (minutes) and `ss`. A digit that cannot start a valid part gets a `0` in front, so typing `4` in the day gives `04`. When the user edits a part in the middle of a filled value, the other parts stay in place: a typed digit replaces the next one and a deleted digit becomes `0`. A part that is too high is pulled back to the highest value, and the day stays inside the month, with leap years.
 
 <Example column>
 <label class="form-label" for="mask-date-type">Date</label>
@@ -116,7 +116,7 @@ For amounts and other numbers, use `data-mask-type="number"` instead of a patter
 | `prefix`, `suffix` | `data-mask-prefix`, `data-mask-suffix` | none | Text around the number, such as a currency symbol. |
 | `padFractionalZeros` | `data-mask-pad-fractional-zeros` | `false` | Adds zeros up to `scale` when the field loses focus. |
 
-`unmaskedValue` is the number as plain text, with a `.` as the radix and no separators, so `parseFloat(unmaskedValue)` works whatever the format on screen. A value above `max` is cut down to `max` as the user types, and a value below `min` is raised to it when the field loses focus.
+`unmaskedValue` is the number as plain text, with a `.` as the radix and no separators, so `parseFloat(unmaskedValue)` works whatever the format on screen. It can be set too: `mask.unmaskedValue = '1234.5'` shows `1.234,50` with a `,` radix. The `value` attribute is read in the format on screen, so set a number from a server with `unmaskedValue` when the format uses a `.` to group thousands. A value above `max` is cut down to `max` as the user types, and a value below `min` is raised to it when the field loses focus.
 
 ## Options
 
@@ -174,7 +174,7 @@ To use the native mask on a page that loads IMask, add `data-mask-type="pattern"
 | Name | Description |
 | --- | --- |
 | `value` | The value as shown, with the literals. |
-| `unmaskedValue` | Only what the user typed. Send this one to a server. |
+| `unmaskedValue` | Only what the user typed. Send this one to a server. Set it to change the value from code. |
 | `isComplete` | `true` when every slot is filled. |
 | `update()` | Re-applies the mask after the value was changed from code. |
 | `dispose()` | Removes the mask and the component from the element. |

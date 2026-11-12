@@ -479,6 +479,148 @@ describe('InputMask', () => {
     })
   })
 
+  describe('edge cases', () => {
+    const number = (attributes: string): HTMLInputElement => {
+      fixtureEl.innerHTML = `<input type="text" data-mask-type="number" ${attributes}>`
+      return input()
+    }
+
+    it('should not read the digits and the radix of a suffix as input', () => {
+      const area = number('data-mask-suffix=" m2" data-mask-scale="0"')
+      const instance = new InputMask(area)
+
+      type(area, '1')
+      type(area, '12 m2', 'insertText', 2)
+      type(area, '123 m2', 'insertText', 3)
+      expect(area.value).toBe('123 m2')
+      expect(instance.unmaskedValue).toBe('123')
+
+      const price = number('data-mask-suffix=" kr."')
+      new InputMask(price)
+
+      type(price, '1')
+      type(price, '12 kr.', 'insertText', 2)
+      expect(price.value).toBe('12 kr.')
+    })
+
+    it('should keep the caret inside the number when the user types after the suffix', () => {
+      const el = number('data-mask-suffix=" m2" data-mask-scale="0"')
+      new InputMask(el)
+      el.focus()
+
+      type(el, '12')
+      type(el, '12 m23')
+      expect(el.value).toBe('123 m2')
+      expect(el.selectionStart).toBe(3)
+    })
+
+    it('should set a number from its canonical form with unmaskedValue', () => {
+      const el = number('data-mask-suffix=" zł" data-mask-radix="," data-mask-thousands-separator="." data-mask-pad-fractional-zeros="true"')
+      const instance = new InputMask(el)
+
+      instance.unmaskedValue = '1234.5'
+      expect(el.value).toBe('1.234,50 zł')
+      expect(instance.unmaskedValue).toBe('1234.50')
+    })
+
+    it('should set a pattern from unmaskedValue', () => {
+      const el = input()
+      const instance = new InputMask(el)
+
+      instance.unmaskedValue = '1234567890'
+      expect(el.value).toBe('(12) 3456-7890')
+      expect(instance.isComplete).toBe(true)
+    })
+
+    it('should clear a lone minus sign on blur', () => {
+      const el = number('')
+      const instance = new InputMask(el)
+
+      type(el, '-')
+      expect(el.value).toBe('-')
+
+      el.dispatchEvent(new FocusEvent('blur'))
+      expect(el.value).toBe('')
+      expect(instance.unmaskedValue).toBe('')
+    })
+
+    it('should accept the placeholder character when the mask is not visible', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="*****">'
+      const el = input()
+      new InputMask(el)
+
+      type(el, 'a_b_c')
+      expect(el.value).toBe('a_b_c')
+    })
+
+    it('should not throw on an input type without a selection', () => {
+      fixtureEl.innerHTML = '<input type="email" data-mask="aaa">'
+      const el = input()
+      new InputMask(el)
+      el.focus()
+      el.value = 'ab1c'
+
+      expect(() => el.dispatchEvent(new InputEvent('input', { inputType: 'insertText', bubbles: true }))).not.toThrow()
+      expect(el.value).toBe('abc')
+    })
+
+    it('should leave the value alone on update() without a mask', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask value="abc">'
+      const instance = new InputMask(input())
+
+      instance.update()
+      expect(input().value).toBe('abc')
+    })
+  })
+
+  describe('editing a mask with segments', () => {
+    const date = (): HTMLInputElement => {
+      fixtureEl.innerHTML = '<input type="text" data-mask-type="date" value="15/06/2024">'
+      return input()
+    }
+
+    it('should turn a deleted digit into a zero and keep the other parts', () => {
+      const el = date()
+      new InputMask(el)
+      el.focus()
+
+      type(el, '1/06/2024', 'deleteContentForward', 1)
+      expect(el.value).toBe('10/06/2024')
+      expect(el.selectionStart).toBe(1)
+    })
+
+    it('should overwrite the next digit instead of moving the rest', () => {
+      const el = date()
+      new InputMask(el)
+      el.focus()
+
+      type(el, '1/06/2024', 'deleteContentForward', 1)
+      type(el, '120/06/2024', 'insertText', 2)
+      expect(el.value).toBe('12/06/2024')
+
+      type(el, '129/06/2024', 'insertText', 3)
+      expect(el.value).toBe('12/09/2024')
+    })
+
+    it('should only move the caret when a literal is deleted', () => {
+      const el = date()
+      new InputMask(el)
+      el.focus()
+
+      type(el, '1506/2024', 'deleteContentBackward', 2)
+      expect(el.value).toBe('15/06/2024')
+      expect(el.selectionStart).toBe(2)
+    })
+
+    it('should still delete from the end', () => {
+      const el = date()
+      new InputMask(el)
+
+      type(el, '15/06/202', 'deleteContentBackward')
+      expect(el.value).toBe('15/06/202')
+    })
+  })
+
   describe('literal digits', () => {
     it('should take a typed digit as input when it equals a literal of the prefix', () => {
       fixtureEl.innerHTML = '<input type="text" data-mask="+48 000 000 000">'
