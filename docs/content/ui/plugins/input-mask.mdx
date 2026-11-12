@@ -125,7 +125,7 @@ For amounts and other numbers, use `data-mask-type="number"` instead of a patter
 | `mask` | `data-mask` | `''` | The pattern, or a function that gets the unmasked value and returns the pattern. |
 | `lazy` | `data-mask-visible="true"` | `true` | With `data-mask-visible` the whole pattern shows before the user types. |
 | `placeholderChar` | `data-mask-placeholder-char` | `_` | The character for an empty slot when the pattern is visible. |
-| `type` | `data-mask-type` | | `date` or `number`, instead of a pattern. |
+| `type` | `data-mask-type` | | `date` or `number`, instead of a pattern. `pattern` keeps a pattern native when IMask is loaded. |
 | `format` | `data-mask-format` | `DD/MM/YYYY` | The date format, for `type: 'date'`. |
 | `ranges` | `data-mask-ranges` | none | The range of every group of digits in the pattern. |
 | `tokens` | | `{}` | Extra pattern characters, each with the RegExp one character has to match. |
@@ -157,6 +157,16 @@ A function as the mask changes the pattern while the user types, for example for
 new tabler.InputMask(document.getElementById('card'), {
   mask: (value) => (/^3[47]/.test(value) ? '0000 000000 00000' : '0000 0000 0000 0000'),
 });
+```
+
+### With IMask
+
+Tabler does not need the [IMask](https://imask.js.org) library any more. If your page still loads it, a `data-mask` pattern goes to IMask as before, with every IMask option, and the `mask` getter returns the IMask instance. This keeps existing code working, and is deprecated: it goes away in the next major version.
+
+To use the native mask on a page that loads IMask, add `data-mask-type="pattern"`, or `type: 'pattern'` in the config object. The `date` and `number` types, `ranges` and `tokens` are always native.
+
+```html
+<input type="text" class="form-control" data-mask="00/00/0000" data-mask-type="pattern" />
 ```
 
 ### Methods and properties

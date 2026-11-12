@@ -30,7 +30,7 @@ type ComponentConfig = {
   placeholderChar: string
   /** extra pattern characters, each with the RegExp one typed character has to match */
   tokens: Record<string, RegExp>
-  /** `'number'` formats a number instead of a fixed pattern */
+  /** `'number'` formats a number and `'date'` a date instead of a fixed pattern; `'pattern'` keeps a pattern native when IMask is loaded */
   type?: 'pattern' | 'number' | 'date'
   /** date: the format, from `YYYY`, `MM`, `DD`, `HH`, `mm` and `ss` (default `DD/MM/YYYY`) */
   format?: string
@@ -380,11 +380,14 @@ class InputMask extends BaseComponent {
       return
     }
 
-    // deprecated(2.0): IMask object masks (`Number`, `Date`, a RegExp) stay on the IMask library when it is loaded
-    if (isLegacyMask(this._config.mask)) {
+    // deprecated(2.0): a mask stays on the IMask library when it is loaded, unless it has a `type`, `ranges` or `tokens`
+    const native = Boolean(this._config.type || this._config.ranges) || Object.keys(this._config.tokens).length > 0
+
+    if (isLegacyMask(this._config.mask) || (window.IMask && !native)) {
       if (window.IMask) {
         this._legacy = new window.IMask(this._element, { ...this._config })
       } else {
+        this._mask = ''
         console.warn('Tabler InputMask: only string and function masks are supported without IMask.')
       }
 
@@ -468,7 +471,35 @@ class InputMask extends BaseComponent {
     return parse(typeof mask === 'function' ? mask(unmasked) : mask, { ...TOKENS, ...tokens })
   }
 
-  _extract(raw: string, caret: number | null = null): { unmasked: string; count: number | null } {
+  _align(raw: string, caret: number): { raw: string; single: number } {
+    const text = this._format(this._unmasked).text
+    const start = text.length - (raw.length - caret)
+
+    if (start < 0 || raw.slice(caret) !== text.slice(start)) {
+      return { raw, single: -1 }
+    }
+
+    let from = 0
+
+    while (from < start && from < caret && raw[from] === text[from]) {
+      from++
+    }
+
+    if (from === caret) {
+      return { raw, single: -1 }
+    }
+
+    const slots = this._slots(this._unmasked)
+    let to = from
+
+    while (to < slots.length && !slots[to].token) {
+      to++
+    }
+
+    return { raw: raw.slice(0, caret) + text.slice(Math.max(start, to)), single: caret - from === 1 ? from : -1 }
+  }
+
+  _extract(raw: string, caret: number | null = null, single = -1): { unmasked: string; count: number | null } {
     if (this._number) {
       const o = this._number
       const before = caret === null ? null : raw.slice(0, caret)
@@ -491,6 +522,21 @@ class InputMask extends BaseComponent {
 
       if (char === undefined) {
         break
+      }
+
+      if (i === single) {
+        let next = position
+
+        while (next < slots.length && !slots[next].token) {
+          next++
+        }
+
+        if (char !== this._config.placeholderChar && slots[next]?.token?.test(char)) {
+          unmasked += char
+          position = next + 1
+          slots = this._slots(unmasked)
+          continue
+        }
       }
 
       while (position < slots.length && !slots[position].token && slots[position].char !== char) {
@@ -602,10 +648,10 @@ class InputMask extends BaseComponent {
       return
     }
 
-    const raw = this._element.value
-    const caret = this._element.selectionStart ?? raw.length
+    const caret = this._element.selectionStart ?? this._element.value.length
     const previous = this._unmasked
-    let { unmasked, count } = this._extract(raw, caret)
+    const { raw, single } = this._number ? { raw: this._element.value, single: -1 } : this._align(this._element.value, caret)
+    let { unmasked, count } = this._extract(raw, caret, single)
     let typed = count ?? unmasked.length
 
     // Deleting a literal changes nothing after re-masking, so it removes the digit next to it
@@ -667,8 +713,8 @@ class InputMask extends BaseComponent {
       }
     }
 
-    if (element?.getAttribute(ATTRIBUTE_TYPE) === 'date') {
-      dataOptions.type = 'date'
+    if (element?.getAttribute(ATTRIBUTE_TYPE) === 'date' || element?.getAttribute(ATTRIBUTE_TYPE) === 'pattern') {
+      dataOptions.type = element.getAttribute(ATTRIBUTE_TYPE)
     }
 
     const format = element?.getAttribute(ATTRIBUTE_FORMAT)

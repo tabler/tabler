@@ -437,6 +437,93 @@ describe('InputMask', () => {
       expect(plugin).toHaveBeenCalledTimes(1)
       expect(instance.mask).toBe(plugin.mock.instances[0])
     })
+
+    const loadIMask = (): ReturnType<typeof vi.fn> => {
+      const plugin = vi.fn(function (this: Record<string, unknown>) {
+        this.updateValue = vi.fn()
+        this.destroy = vi.fn()
+      })
+      window.IMask = plugin as unknown as Window['IMask']
+
+      return plugin
+    }
+
+    it('should hand a pattern and its options to IMask when it is loaded', () => {
+      const plugin = loadIMask()
+      const instance = new InputMask(input(), { mask: '00[0]', overwrite: true })
+
+      expect(plugin).toHaveBeenCalledTimes(1)
+      expect(plugin.mock.calls[0][1]).toMatchObject({ mask: '00[0]', overwrite: true })
+      expect(instance.mask).toBe(plugin.mock.instances[0])
+    })
+
+    it('should stay native with a type, ranges or tokens when IMask is loaded', () => {
+      const plugin = loadIMask()
+
+      fixtureEl.innerHTML = [
+        '<input type="text" data-mask="00/00" data-mask-type="pattern">',
+        '<input type="text" data-mask-type="date">',
+        '<input type="text" data-mask-type="number">',
+        '<input type="text" data-mask="000.000" data-mask-ranges="0-255 0-255">',
+        '<input type="text">',
+      ].join('')
+
+      const inputs = [...fixtureEl.querySelectorAll('input')]
+      const instances = inputs.map((el, i) => new InputMask(el, i === 4 ? { mask: 'HH', tokens: { H: /[0-9a-f]/i } } : {}))
+
+      expect(plugin).not.toHaveBeenCalled()
+      instances.forEach((instance) => expect(instance.mask).toBe(instance))
+
+      type(inputs[0], '1234')
+      expect(inputs[0].value).toBe('12/34')
+    })
+  })
+
+  describe('literal digits', () => {
+    it('should take a typed digit as input when it equals a literal of the prefix', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="+48 000 000 000">'
+      const el = input()
+      const instance = new InputMask(el)
+
+      type(el, '4')
+      expect(el.value).toBe('+48 4')
+
+      type(el, '+48 48')
+      expect(el.value).toBe('+48 48')
+      expect(instance.unmaskedValue).toBe('48')
+    })
+
+    it('should not read the prefix as input when the user types before it', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="+48 000 000 000" data-mask-visible="true">'
+      const el = input()
+      const instance = new InputMask(el)
+
+      type(el, '4+48 ___ ___ ___', 'insertText', 1)
+      expect(el.value).toBe('+48 4__ ___ ___')
+
+      type(el, '8+48 4__ ___ ___', 'insertText', 1)
+      expect(el.value).toBe('+48 84_ ___ ___')
+      expect(instance.unmaskedValue).toBe('84')
+    })
+
+    it('should replace a selected value with a digit that equals a literal', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="+48 000 000 000" data-mask-visible="true">'
+      const el = input()
+      const instance = new InputMask(el)
+
+      type(el, '8')
+      expect(el.value).toBe('+48 8__ ___ ___')
+      expect(instance.unmaskedValue).toBe('8')
+    })
+
+    it('should still drop the prefix of a pasted value', () => {
+      fixtureEl.innerHTML = '<input type="text" data-mask="+48 000 000 000">'
+      const el = input()
+      const instance = new InputMask(el)
+
+      type(el, '+48 600 100 200', 'insertFromPaste')
+      expect(instance.unmaskedValue).toBe('600100200')
+    })
   })
 
   describe('public API', () => {
