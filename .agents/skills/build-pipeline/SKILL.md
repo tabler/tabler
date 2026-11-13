@@ -23,7 +23,7 @@ Astro only renders pages. Every stylesheet, script, font and image on a page arr
 | `core/dist/` | `@tabler/core` (`css:dev`, `js:build`, `copy`) | the framework: css, js, fonts, img, vendored libs |
 | `preview/tmp-assets/` | `preview` `assets` / `watch:css` (`build-css.ts` + vite/terser) | demo css/js, isolated from Astro's output |
 | `docs/tmp-assets/css/` | `docs` `css` / `watch:css` (build-css, `--no-prefix`) | docs stylesheets |
-| `<pkg>/public/` | **`copy-assets` only** | fully generated, wiped and rebuilt on every Astro start |
+| `<pkg>/public/` | **`copy-assets` only** | fully generated, brought in line with the manifest on every Astro start |
 | `<pkg>/dist/` | `astro build` | the shipped site |
 
 `public/`, `tmp-assets/` and `dist/` are all git-ignored per package. Never hand-edit a file in any of them, and never commit one.
@@ -32,12 +32,12 @@ Astro only renders pages. Every stylesheet, script, font and image on a page arr
 
 An Astro integration, configured per package in `astro.config.mjs`:
 
-- On `astro:config:done` it **deletes `public/`** and rebuilds it from the `copies` manifest (core dist, the package's `tmp-assets`, `shared/static`, favicons). Running it twice must never accumulate content — that is why it starts from a clean directory.
+- On `astro:config:done` it makes `public/` an **exact copy** of the `copies` manifest (core dist, the package's `tmp-assets`, `shared/static`, favicons): files that are not in the manifest are removed, files whose size or mtime changed are copied, the rest is left alone. Running it twice must never accumulate content — that is why it removes everything it does not know.
 - It is skipped when the Astro command is `sync`, so `astro check` (and CI's type-check job) does not need built workspace assets.
 - In dev it watches `syncDirs` and copies changed files into `public/`, then sends one coalesced `full-reload` (250 ms window, `.map` files ride along with their source file).
 - `allowDestinationFallback` keeps the existing copy when the source vanishes mid-copy — `@tabler/core` cleaning `dist/` while `turbo dev` starts the dependents.
 
-**Rule for watchers:** `copy-assets` is the only writer of `public/`. It wipes the directory at startup, and the wipe can race a watcher that writes there directly — that was the `ENOENT` in #3006. Every watcher (preview's and docs' `watch:css`) writes into `tmp-assets/css`, and `copy-assets` syncs it into `public/` via `syncDirs`. Do the same for anything new.
+**Rule for watchers:** `copy-assets` is the only writer of `public/`. It removes every file it does not know at startup, and that cleanup can race a watcher that writes there directly — that was the `ENOENT` in #3006. Every watcher (preview's and docs' `watch:css`) writes into `tmp-assets/css`, and `copy-assets` syncs it into `public/` via `syncDirs`. Do the same for anything new.
 
 ## 3. Ordering
 
@@ -58,13 +58,13 @@ Do not undo these; each has a comment at the site:
 Work down this list; each step is cheap:
 
 1. **404 on `/dist/css/tabler.css` or `/preview/css/demo.css`** — the source was never built. `pnpm --dir core run dev:prepare`, then `pnpm --dir preview run dev:prepare`.
-2. **Assets vanished after restarting dev** — something wrote into `public/` that `copy-assets` does not know about; it was wiped at startup. Add it to the manifest, or write it into `tmp-assets` instead.
+2. **Assets vanished after restarting dev** — something wrote into `public/` that `copy-assets` does not know about; it was removed at startup. Add it to the manifest, or write it into `tmp-assets` instead.
 3. **CSS/JS edits do not appear** — the watcher is not running (started `astro dev` alone instead of the package's `dev` script), or its output dir is not in `syncDirs`.
 4. **Stale content that survives a rebuild** — `pnpm --dir <pkg> run clean`, then `dev:prepare`.
 5. **`dist/` grows between identical builds** — an output dir is nested inside another copy step (see the first trap).
 6. **CI type-check fails on missing assets** — something made `copy-assets` run for the `sync` command; keep the early return.
 
-Read the dev server's own log first: `copy-assets` logs `public/ rebuilt from workspace assets`, each fallback warning, and every reload with the file that caused it.
+Read the dev server's own log first: `copy-assets` logs `public/ synced from workspace assets` with the copied, removed and unchanged counts, each fallback warning, and every reload with the file that caused it.
 
 ## 6. When you change the pipeline
 

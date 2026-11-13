@@ -138,9 +138,9 @@ export default defineConfig({
           // demo css built by this package's sass pipeline, from tmp-assets/
           // (the `css` and `watch:css` scripts both write there). Not dist/,
           // which is Astro's own build output — see copy-assets.ts — and not
-          // public/, which copy-assets wipes on every restart: anything a
-          // watcher writes straight into public/ is lost, or worse, racing
-          // with the wipe (#3006).
+          // public/, where copy-assets removes whatever is not in this manifest
+          // on every restart: anything a watcher writes straight into public/
+          // is lost, or worse, racing with the cleanup (#3006).
           from: path('./tmp-assets'),
           to: path('./public/preview'),
           label: '@tabler/preview',
