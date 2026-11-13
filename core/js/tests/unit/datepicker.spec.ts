@@ -3,6 +3,7 @@ import * as VanillaCalendarPro from 'vanilla-calendar-pro'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import Datepicker from '../../src/datepicker'
 import EventHandler from '../../src/bootstrap/dom/event-handler'
+import FocusTrap from '../../src/bootstrap/util/focustrap'
 
 describe('Datepicker', () => {
   let fixtureEl: HTMLElement
@@ -422,6 +423,88 @@ describe('Datepicker', () => {
       expect(instance.calendar!.context.selectedYear).toBe(1990)
     })
 
+    it('does not copy the page theme onto an inline calendar', () => {
+      document.documentElement.setAttribute('data-bs-theme', 'dark')
+      fixtureEl.innerHTML = '<div class="inline-calendar"></div>'
+      const element = fixtureEl.querySelector<HTMLElement>('.inline-calendar')!
+
+      try {
+        new Datepicker(element, { inline: true })
+        expect(element.hasAttribute('data-bs-theme')).toBe(false)
+      } finally {
+        document.documentElement.removeAttribute('data-bs-theme')
+      }
+    })
+
+    it('follows a theme set on the page after an open popup was created', async () => {
+      fixtureEl.innerHTML = '<input type="text">'
+      const instance = new Datepicker(input())
+      await instance.show()
+      const popup = instance.calendar!.context.mainElement
+      expect(popup.hasAttribute('data-bs-theme')).toBe(false)
+
+      try {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+        await tick()
+        expect(popup.getAttribute('data-bs-theme')).toBe('dark')
+      } finally {
+        document.documentElement.removeAttribute('data-bs-theme')
+      }
+    })
+
+    it('leaves an initial value it cannot read for sure untouched', () => {
+      fixtureEl.innerHTML = '<input type="text" value="05.03.2025">'
+      const instance = new Datepicker(input(), { locale: 'pl-PL' })
+
+      expect(input().value).toBe('05.03.2025')
+      expect(instance.getSelectedDates()).toEqual([])
+    })
+
+    it('does not open a button trigger on focus, so the click opens it once', async () => {
+      fixtureEl.innerHTML = '<button type="button" data-bs-toggle="datepicker"><span>Select date</span></button>'
+      const button = fixtureEl.querySelector<HTMLElement>('button')!
+      const instance = new Datepicker(button)
+
+      button.dispatchEvent(new FocusEvent('focus'))
+      await tick()
+      expect(instance._isShown).toBe(false)
+
+      button.click()
+      await tick()
+      expect(instance._isShown).toBe(true)
+
+      button.querySelector('span')!.click()
+      await tick()
+      expect(instance._isShown).toBe(false)
+    })
+
+    it('keeps an explicit openOnFocus from vcpOptions for a button trigger', () => {
+      fixtureEl.innerHTML = '<button type="button">Select date</button>'
+      const instance = new Datepicker(fixtureEl.querySelector<HTMLElement>('button')!, { vcpOptions: { openOnFocus: true } })
+
+      expect(instance._buildCalendarOptions().openOnFocus).toBe(true)
+    })
+
+    it('stays open when the focus moves into the popup of a field inside a modal', async () => {
+      fixtureEl.innerHTML = '<div class="modal" tabindex="-1" style="display: block"><button type="button" id="first">First</button><input type="text"></div>'
+      const first = fixtureEl.querySelector<HTMLElement>('#first')!
+      const trap = new FocusTrap({ trapElement: fixtureEl.querySelector<HTMLElement>('.modal')! })
+      trap.activate()
+
+      try {
+        const instance = new Datepicker(input())
+        await instance.show()
+        const day = instance.calendar!.context.mainElement.querySelector<HTMLElement>('[data-vc-date-btn]')!
+        day.focus()
+        day.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+
+        expect(document.activeElement).not.toBe(first)
+        expect(instance._isShown).toBe(true)
+      } finally {
+        trap.deactivate()
+      }
+    })
+
     it('opens on the month of an initial value', () => {
       fixtureEl.innerHTML = '<input type="text" value="1990-06-20">'
       const instance = new Datepicker(input())
@@ -704,6 +787,98 @@ describe('Datepicker', () => {
 
       expect(instance.getSelectedDates()).toEqual(['2026-09-30'])
       expect(input().value).toBe('30.09.2026')
+    })
+
+    describe('typed value', () => {
+      const bound = '<input type="hidden" id="due" name="due" value="2026-01-15">'
+      const hidden = (): HTMLInputElement => fixtureEl.querySelector<HTMLInputElement>('#due')!
+      const type = (value: string): void => {
+        input().value = value
+        input().dispatchEvent(new Event('change', { bubbles: true }))
+      }
+
+      it('updates the bound input and the selection from a typed date', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="it-IT" data-bs-bound-input="#due">${bound}`
+        const instance = new Datepicker(input())
+        const changes: string[][] = []
+        input().addEventListener('change.bs.datepicker', (event) => changes.push((event as Event & { dates: string[] }).dates))
+
+        type('20/02/2026')
+
+        expect(hidden().value).toBe('2026-02-20')
+        expect(instance.getSelectedDates()).toEqual(['2026-02-20'])
+        expect(instance.calendar!.context.selectedMonth).toBe(1)
+        expect(changes).toEqual([['2026-02-20']])
+      })
+
+      it('reads a date typed without leading zeros and writes it the usual way', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('5.3.2026')
+
+        expect(hidden().value).toBe('2026-03-05')
+        expect(input().value).toBe('5.03.2026')
+      })
+
+      it('reads a date typed with the dateFormat pattern', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-date-format="DD/MM/YYYY" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('20/02/2026')
+
+        expect(hidden().value).toBe('2026-02-20')
+      })
+
+      it('reads a typed range', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-date-format="DD.MM.YYYY" data-bs-selection-mode="multiple-ranged" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('01.02.2026 – 03.02.2026')
+
+        expect(hidden().value.split(',')[0]).toBe('2026-02-01')
+        expect(hidden().value.split(',').at(-1)).toBe('2026-02-03')
+      })
+
+      it('clears the bound input when the field is emptied', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        const instance = new Datepicker(input())
+
+        type('')
+
+        expect(hidden().value).toBe('')
+        expect(instance.getSelectedDates()).toEqual([])
+      })
+
+      it('puts the selection back when the text cannot be read', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input())
+
+        type('31.02.2026')
+
+        expect(input().value).toBe('15.01.2026')
+        expect(hidden().value).toBe('2026-01-15')
+      })
+
+      it('leaves unreadable text alone in a field without a bound input', () => {
+        fixtureEl.innerHTML = '<input type="text" data-bs-locale="pl-PL">'
+        const instance = new Datepicker(input())
+        instance.setSelectedDates(['2026-01-15'])
+
+        type('next week')
+
+        expect(input().value).toBe('next week')
+        expect(instance.getSelectedDates()).toEqual(['2026-01-15'])
+      })
+
+      it('stops listening after dispose', () => {
+        fixtureEl.innerHTML = `<input type="text" data-bs-locale="pl-PL" data-bs-bound-input="#due">${bound}`
+        new Datepicker(input()).dispose()
+
+        type('5.03.2026')
+
+        expect(hidden().value).toBe('2026-01-15')
+      })
     })
 
     it('leaves a bound input outside the element in place on dispose', () => {

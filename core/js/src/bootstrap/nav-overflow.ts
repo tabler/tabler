@@ -9,6 +9,7 @@ import BaseComponent from './base-component'
 import Dropdown from './dropdown'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
+import { initAll } from './util/component-functions'
 import { defineJQueryPlugin, onDOMContentLoaded } from './util/index'
 import { DefaultIconAllowlist, sanitizeHtml } from './util/sanitizer'
 import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
@@ -70,6 +71,8 @@ const SELECTOR_MENU_TOGGLE = '[data-bs-toggle="dropdown"], [data-tblr-toggle="dr
 const SELECTOR_ANY_TOGGLE = '[data-bs-toggle], [data-tblr-toggle]'
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="nav-overflow"], [data-tblr-toggle="nav-overflow"]'
 
+const ATTRIBUTES_TAB = ['role', 'aria-selected', 'aria-controls', 'tabindex']
+
 const DEFAULT_TEXT = 'More'
 
 const Default: ComponentConfig = {
@@ -114,6 +117,7 @@ class NavOverflow extends BaseComponent {
   _collapseBelow: number
   _itemMenus: Map<HTMLElement, HTMLElement>
   _relocatedMenus: Map<HTMLElement, RelocatedMenu>
+  _onTabShown = (): void => this._syncStates()
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -169,6 +173,7 @@ class NavOverflow extends BaseComponent {
     }
 
     EventHandler.off(this._element, EVENT_KEY)
+    EventHandler.off(this._element, EVENT_TAB_SHOWN, this._onTabShown)
     this._restoreItems()
 
     if (this._ownsToggle) {
@@ -199,7 +204,7 @@ class NavOverflow extends BaseComponent {
     }
 
     // Tabs switch on the original link, so copy the new state to the menu
-    EventHandler.on(this._element, `${EVENT_TAB_SHOWN}${EVENT_KEY}`, () => this._syncStates())
+    EventHandler.on(this._element, EVENT_TAB_SHOWN, this._onTabShown)
 
     this._collapseBelow = this._resolveCollapseBelow()
     this._createOverflowMenu()
@@ -516,6 +521,13 @@ class NavOverflow extends BaseComponent {
     clonedLink.removeAttribute('id')
     this._clones.set(clonedLink, link)
 
+    // The copy is a menu item; the original stays the tab
+    if (clonedLink.getAttribute('role') === 'tab') {
+      for (const name of ATTRIBUTES_TAB) {
+        clonedLink.removeAttribute(name)
+      }
+    }
+
     if (this._isActive(link)) {
       clonedLink.classList.add(CLASS_NAME_ACTIVE)
     }
@@ -641,9 +653,7 @@ class NavOverflow extends BaseComponent {
 
 // js-docs-start nav-overflow-init
 onDOMContentLoaded(() => {
-  for (const element of SelectorEngine.find(SELECTOR_DATA_TOGGLE)) {
-    NavOverflow.getOrCreateInstance(element)
-  }
+  initAll(SELECTOR_DATA_TOGGLE, NavOverflow)
 })
 // js-docs-end nav-overflow-init
 

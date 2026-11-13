@@ -71,6 +71,20 @@ describe('sidebar folded toggle', () => {
     vi.restoreAllMocks()
   })
 
+  it('closes a sidebar dropdown written with data-tblr-toggle on an outside click when folded', () => {
+    document.documentElement.setAttribute('data-bs-sidebar', 'folded-hover')
+    fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical">', '  <div class="dropdown"><a class="dropdown-toggle" data-tblr-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"></div></div>', '</aside>', '<button type="button" id="outside">Outside</button>'].join('')
+    const hide = vi.fn()
+    vi.spyOn(Dropdown, 'getInstance').mockReturnValue({ hide, toggle: vi.fn() } as never)
+
+    fixtureEl.querySelector<HTMLButtonElement>('#outside')!.click()
+    expect(hide).toHaveBeenCalledTimes(1)
+
+    fixtureEl.querySelector<HTMLElement>('[data-tblr-toggle="dropdown"]')!.click()
+    expect(hide).toHaveBeenCalledTimes(1)
+    vi.restoreAllMocks()
+  })
+
   it('keeps an open sidebar dropdown when clicking inside its menu when folded', () => {
     document.documentElement.setAttribute('data-bs-sidebar', 'folded-hover')
     fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical">', '  <div class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"><button type="button" id="inside">Item</button></div></div>', '</aside>'].join('')

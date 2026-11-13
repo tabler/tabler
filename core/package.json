@@ -1,6 +1,6 @@
 {
   "name": "@tabler/core",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "type": "module",
@@ -24,11 +24,12 @@
     "js:build:theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
     "js:build:map": "cross-env BASE_NAME=tabler-map vite build --config .build/vite.config.mts",
     "js:build:standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
-    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\" \"pnpm run js:min:map\" \"pnpm run js:min:vector-map\"",
+    "js:min": "concurrently \"pnpm run js:min:standalone\" \"pnpm run js:min:theme\" \"pnpm run js:min:map\" \"pnpm run js:min:vector-map\" \"pnpm run js:min:maps\"",
     "js:min:standalone": "terser dist/js/tabler.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\" -o dist/js/tabler.min.js",
     "js:min:theme": "terser dist/js/tabler-theme.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\" -o dist/js/tabler-theme.min.js",
     "js:min:map": "terser dist/js/tabler-map.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-map.js.map,filename=dist/js/tabler-map.min.js.map,url=tabler-map.min.js.map\" -o dist/js/tabler-map.min.js",
     "js:min:vector-map": "terser dist/js/tabler-vector-map.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/tabler-vector-map.js.map,filename=dist/js/tabler-vector-map.min.js.map,url=tabler-vector-map.min.js.map\" -o dist/js/tabler-vector-map.min.js",
+    "js:min:maps": "terser dist/js/maps/world.js --module --compress passes=2,ecma=2020 --ecma 2020 --mangle --source-map \"content=dist/js/maps/world.js.map,filename=dist/js/maps/world.min.js.map,url=world.min.js.map\" -o dist/js/maps/world.min.js",
     "copy": "concurrently \"pnpm run copy:img\" \"pnpm run copy:libs\"",
     "copy:img": "tsx .build/copy-img.ts",
     "copy:libs": "tsx .build/copy-libs.ts",
@@ -112,7 +113,7 @@
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "84 kB"
+        "maxSize": "85 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
@@ -120,7 +121,7 @@
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "84 kB"
+        "maxSize": "85 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
@@ -176,7 +177,7 @@
       },
       {
         "path": "./dist/css/tabler-props.min.css",
-        "maxSize": "3.8 kB"
+        "maxSize": "3.9 kB"
       },
       {
         "path": "./dist/css/tabler-props.rtl.css",
@@ -184,7 +185,7 @@
       },
       {
         "path": "./dist/css/tabler-props.rtl.min.css",
-        "maxSize": "3.8 kB"
+        "maxSize": "3.9 kB"
       },
       {
         "path": "./dist/css/tabler-socials.css",
@@ -208,7 +209,7 @@
       },
       {
         "path": "./dist/css/tabler-themes.min.css",
-        "maxSize": "1.6 kB"
+        "maxSize": "1.7 kB"
       },
       {
         "path": "./dist/css/tabler-themes.rtl.css",
@@ -216,7 +217,7 @@
       },
       {
         "path": "./dist/css/tabler-themes.rtl.min.css",
-        "maxSize": "1.6 kB"
+        "maxSize": "1.7 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.css",
@@ -224,7 +225,7 @@
       },
       {
         "path": "./dist/css/tabler-vendors.min.css",
-        "maxSize": "5 kB"
+        "maxSize": "5.4 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.rtl.css",
@@ -232,7 +233,7 @@
       },
       {
         "path": "./dist/css/tabler-vendors.rtl.min.css",
-        "maxSize": "5 kB"
+        "maxSize": "5.4 kB"
       },
       {
         "path": "./dist/js/tabler.js",
@@ -240,7 +241,7 @@
       },
       {
         "path": "./dist/js/tabler.min.js",
-        "maxSize": "42 kB"
+        "maxSize": "44 kB"
       },
       {
         "path": "./dist/js/tabler-map.js",
@@ -269,6 +270,10 @@
       {
         "path": "./dist/js/maps/world.js",
         "maxSize": "28 kB"
+      },
+      {
+        "path": "./dist/js/maps/world.min.js",
+        "maxSize": "27.5 kB"
       }
     ]
   },
@@ -290,7 +295,7 @@
     "choices.js": "^11.2.4",
     "clipboard": "^2.0.11",
     "countup.js": "^2.10.1",
-    "driver.js": "^1.10.1",
+    "driver.js": "^1.11.0",
     "dropzone": "^6.3.5",
     "find-unused-sass-variables": "^6.2.1",
     "flatpickr": "^4.6.13",
@@ -301,16 +306,17 @@
     "jsvectormap": "^1.7.0",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
-    "maplibre-gl": "^6.16.0",
+    "maplibre-gl": "^6.17.0",
+    "masonry-layout": "^4.2.2",
     "nouislider": "^15.8.1",
-    "playwright": "1.64.1",
+    "playwright": "1.65.0",
     "plyr": "^3.8.5",
-    "sass": "1.107.1",
+    "sass": "1.108.1",
     "sass-true": "^10.1.0",
     "signature_pad": "^5.1.4",
     "sortablejs": "^1.15.7",
     "star-rating.js": "^4.3.1",
-    "tom-select": "^2.6.2",
+    "tom-select": "^2.7.0",
     "typed.js": "^3.0.0",
     "typescript": "^6.0.3",
     "vanilla-calendar-pro": "^3.4.0",

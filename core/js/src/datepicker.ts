@@ -32,6 +32,7 @@ const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_FOCUSIN_DATA_API = `focusin${EVENT_KEY}${DATA_API_KEY}`
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="datepicker"], [data-tblr-toggle="datepicker"]'
+const SELECTOR_FOCUS_TRAP = '.modal, .offcanvas'
 const SELECTOR_DISPLAY = '[data-bs-datepicker-display], [data-tblr-datepicker-display]'
 const SELECTOR_INPUT_WRAPPER = '.input-icon, .input-group'
 const SELECTOR_BOUND_INPUT = 'input[type="hidden"], input[name]'
@@ -116,7 +117,7 @@ type ComponentConfig = {
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
 
-type ChangeEventArgs = { dates: string[]; event: MouseEvent }
+type ChangeEventArgs = { dates: string[]; event: Event }
 
 const Default: ComponentConfig = {
   boundInput: null,
@@ -235,6 +236,10 @@ class Datepicker extends BaseComponent {
   _themeObserver: MutationObserver | null = null
   _onFocusIn: ((event: Event) => void) | null = null
   _onResize = (): void => this._alignToPositionElement()
+  // The popup sits on <body>, outside a modal or offcanvas. Their focus trap
+  // would pull the focus back and close the popup before a click on a day lands.
+  _onPopupFocusIn = (event: Event): void => event.stopPropagation()
+  _onInputChange = (event: Event): void => this._handleInputChange(event)
   // The plugin builds a popup lazily, so its context has no selection until
   // the first show; this mirror answers `getSelectedDates()` before that.
   _selectedDates: string[] = []
@@ -347,6 +352,7 @@ class Datepicker extends BaseComponent {
     window.clearTimeout(this._hideTimeout)
     this._themeObserver?.disconnect()
     window.removeEventListener('resize', this._onResize)
+    this._element.removeEventListener('change', this._onInputChange)
 
     if (this._onFocusIn) {
       EventHandler.off(document, EVENT_FOCUSIN, this._onFocusIn)
@@ -412,12 +418,14 @@ class Datepicker extends BaseComponent {
       this._element.after(this._boundInput)
     }
 
-    // Watch for theme changes on ancestor elements (for live theme switching)
     this._setupThemeObserver()
 
     this._setupDismissOnFocus()
 
-    // Set initial value if input has a value
+    if (this._isInput) {
+      this._element.addEventListener('change', this._onInputChange)
+    }
+
     if (this._isInput && this._element.value) {
       this._parseInputValue()
     }
@@ -429,7 +437,6 @@ class Datepicker extends BaseComponent {
       this._select(boundDates)
     }
 
-    // Populate input/display with preselected dates
     this._updateDisplayWithSelectedDates()
   }
 
@@ -476,7 +483,6 @@ class Datepicker extends BaseComponent {
       positionElement = getElement(positionElement)
     }
 
-    // Use the input's wrapper when it sits in an icon or group wrapper
     if (!positionElement && this._isInput && !this._isInline) {
       positionElement = this._element.closest<HTMLElement>(SELECTOR_INPUT_WRAPPER)
     }
@@ -491,7 +497,6 @@ class Datepicker extends BaseComponent {
       return getElement(displayElement)
     }
 
-    // For buttons/non-inputs (not inline), look for a display child
     if (displayElement === true || (displayElement === null && !this._isInput && !this._isInline)) {
       return SelectorEngine.findOne(SELECTOR_DISPLAY, this._element) || this._element
     }
@@ -535,7 +540,7 @@ class Datepicker extends BaseComponent {
   }
 
   _syncThemeAttribute(element: HTMLElement | undefined): void {
-    if (!element) {
+    if (!element || (this._isInline && !this._config.datepickerTheme)) {
       return
     }
 
@@ -551,11 +556,11 @@ class Datepicker extends BaseComponent {
   }
 
   _setupThemeObserver(): void {
-    const ancestor = this._getThemeAncestor()
-    if (!ancestor || this._config.datepickerTheme) {
-      // No ancestor to watch, or explicit datepickerTheme overrides
+    if (this._isInline || this._config.datepickerTheme) {
       return
     }
+
+    const ancestor = this._getThemeAncestor() ?? document.documentElement
 
     this._themeObserver = new MutationObserver(() => {
       this._syncThemeAttribute(this._calendar?.context?.mainElement)
@@ -617,6 +622,10 @@ class Datepicker extends BaseComponent {
 
     const wasShown = this._isShown
     this._isShown = true
+    if (this._element.closest(SELECTOR_FOCUS_TRAP)) {
+      calendar.context.mainElement.addEventListener('focusin', this._onPopupFocusIn)
+    }
+
     this._syncThemeAttribute(calendar.context.mainElement)
     this._alignToPositionElement()
     window.removeEventListener('resize', this._onResize)
@@ -676,6 +685,9 @@ class Datepicker extends BaseComponent {
     const calendarOptions: Options = {
       ...vcpOptions,
       ...(extensions.length > 0 ? { extensions } : {}),
+      // A button trigger opens on click. Opening it on focus as well makes the
+      // click that gave it the focus close the popup again.
+      ...(this._isInput || vcpOptions.openOnFocus !== undefined ? {} : { openOnFocus: false }),
       inputMode: !this._isInline,
       positionToInput: this._config.placement,
       firstWeekday: this._config.firstWeekday,
@@ -695,7 +707,6 @@ class Datepicker extends BaseComponent {
       onHide: () => this._handlePluginHide(),
     }
 
-    // Navigate to the month of the first selected date
     const [firstSelected] = this._config.selectedDates
     if (firstSelected) {
       const firstDate = this._parseDate(firstSelected)
@@ -758,17 +769,14 @@ class Datepicker extends BaseComponent {
       return formatPattern(date, this._formatPattern()!)
     }
 
-    // Custom function formatter
     if (typeof dateFormat === 'function') {
       return dateFormat(date, locale)
     }
 
-    // Intl.DateTimeFormat options object
     if (dateFormat && typeof dateFormat === 'object') {
       return new Intl.DateTimeFormat(locale, dateFormat).format(date)
     }
 
-    // Default: locale-aware formatting
     return date.toLocaleDateString(locale)
   }
 
@@ -813,24 +821,75 @@ class Datepicker extends BaseComponent {
     }
 
     // A pattern reads back what it wrote, e.g. a value the server sent again
-    const pattern = this._formatPattern()
-    if (pattern) {
-      const parts = this._config.selectionMode === 'single' ? [value] : value.split(this._dateSeparator())
-      const dates = parts.map((part) => parsePattern(part.trim(), pattern))
-      if (dates.every(Boolean)) {
-        this._select(dates as string[])
-        return
-      }
+    const dates = this._readDates(value, this._formatPattern())
+    if (dates) {
+      this._select(dates)
+      return
     }
 
     // `YYYY-MM-DD` is read as a local date: `new Date('2020-06-20')` would be
     // UTC midnight and land on the previous day west of Greenwich.
-    const date = DATE_PATTERN.test(value) ? this._parseDate(value) : new Date(value)
+    if (!DATE_PATTERN.test(value)) {
+      return
+    }
+
+    const date = this._parseDate(value)
     if (Number.isNaN(date.getTime())) {
       return
     }
 
     this._select([this._toIsoDate(date)])
+  }
+
+  // The dates the text stands for, or null when the pattern does not read it.
+  _readDates(value: string, pattern: string | null): string[] | null {
+    if (!pattern) {
+      return null
+    }
+
+    const parts = this._config.selectionMode === 'single' ? [value] : value.split(this._dateSeparator().trim())
+    const dates = parts.map((part) => parsePattern(part.trim(), pattern))
+    return dates.every(Boolean) ? (dates as string[]) : null
+  }
+
+  // The numeric pattern of the locale, e.g. `D.M.YYYY`, for reading a typed
+  // date when no `dateFormat` is set. Null when it does not read its own
+  // output back: another calendar, other digits, a two-digit year.
+  _localePattern(): string | null {
+    if (this._config.dateFormat !== null) {
+      return null
+    }
+
+    const locale = this._config.locale === 'default' ? undefined : this._config.locale
+    const tokens: Record<string, string> = { day: 'D', month: 'M', year: 'YYYY' }
+    const pattern = new Intl.DateTimeFormat(locale)
+      .formatToParts(new Date(2000, 10, 22))
+      .map(({ type, value }) => tokens[type] ?? value)
+      .join('')
+
+    return parsePattern(this._formatDate('2000-11-22'), pattern) === '2000-11-22' ? pattern : null
+  }
+
+  // A date typed or pasted into the field becomes the selection, like a
+  // picked one. Text that cannot be read goes back to the selection when a
+  // bound input submits it, so the form never sends another date than shown.
+  _handleInputChange(event: Event): void {
+    const value = this._element.value.trim()
+    const dates = value ? (this._readDates(value, this._formatPattern() ?? this._localePattern()) ?? this._readDates(value, ISO_FORMAT)) : []
+
+    if (!dates) {
+      if (this._boundInput) {
+        this._writeSelection(this._selectedDates)
+      }
+
+      return
+    }
+
+    this._select(dates)
+    this._writeSelection(dates)
+
+    const args: ChangeEventArgs = { dates, event }
+    EventHandler.trigger(this._element, EVENT_CHANGE, args)
   }
 
   _select(dates: string[]): void {

@@ -19,7 +19,9 @@
   }
 
   @each $color, $value in $theme-colors {
-    --#{$color}: #{$value};
+    @if not map.has-key($colors, $color) or map.get($colors, $color) != $value {
+      --#{$color}: #{$value};
+    }
   }
 
   // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)

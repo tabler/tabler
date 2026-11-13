@@ -77,6 +77,23 @@ describe('VectorMap', () => {
       expect(() => new VectorMap(el())).toThrowError('VECTOR-MAP: Map "nowhere" is not loaded.')
     })
 
+    it('should work when the map is loaded after a failed start', () => {
+      fixtureEl.innerHTML = '<div class="vector-map" data-bs-map="later" data-bs-zoom="true"></div>'
+
+      expect(() => new VectorMap(el())).toThrowError('VECTOR-MAP: Map "later" is not loaded.')
+      expect(VectorMap.getInstance(el())).toBeNull()
+
+      VectorMap.addMap('later', squares)
+      const instance = VectorMap.getOrCreateInstance(el()) as VectorMap
+      expect(el().querySelectorAll(':scope > svg')).toHaveLength(1)
+
+      const spy = vi.fn()
+      el().addEventListener('regionclick.bs.vector-map', spy)
+      region('BB').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      expect(spy).toHaveBeenCalledTimes(1)
+      instance.dispose()
+    })
+
     it('should name the map for assistive technology when it has a label', () => {
       fixtureEl.innerHTML = '<div class="vector-map" data-bs-label="Sales by country"></div>'
 
@@ -762,6 +779,18 @@ describe('VectorMap', () => {
 
       pointer('pointermove', 0, 50)
       expect(viewBox()).toEqual([15, 2.5, 15, 5])
+    })
+
+    it('should stop following a pointer that is released outside the map', () => {
+      zoomable({ zoomMax: 2 })
+      wheel(-5000)
+
+      pointer('pointerdown', 100, 50)
+      document.body.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1, pointerType: 'mouse' }))
+
+      pointer('pointermove', 60, 50)
+      expect(viewBox()).toEqual([7.5, 2.5, 15, 5])
+      expect(el().classList.contains('vector-map-dragging')).toBe(false)
     })
 
     it('should not drag a map that cannot be zoomed', () => {

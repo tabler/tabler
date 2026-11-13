@@ -165,6 +165,41 @@ describe('OtpInput', () => {
       expect(input().value).toBe('123456')
     })
 
+    it('should sanitise a pasted text before cutting it to the length', () => {
+      new OtpInput(otp())
+      const spy = vi.fn()
+      otp().addEventListener('complete.bs.otpInput', spy)
+
+      const clipboardData = new DataTransfer()
+      clipboardData.setData('text/plain', ' 123-456')
+      const event = new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true })
+      input().dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(input().value).toBe('123456')
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should replace the whole selection with a shorter pasted text', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().focus()
+
+      const paste = (text: string): void => {
+        const clipboardData = new DataTransfer()
+        clipboardData.setData('text/plain', text)
+        input().dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true }))
+      }
+
+      input().setSelectionRange(1, 4)
+      paste('9')
+      expect(input().value).toBe('1956')
+
+      input().setSelectionRange(0, 4)
+      paste('78')
+      expect(input().value).toBe('78')
+    })
+
     it('should keep letters for an alphanumeric type', () => {
       otp().setAttribute('data-bs-type', 'alphanumeric')
       new OtpInput(otp())
