@@ -360,8 +360,9 @@ class OtpInput extends BaseComponent {
     }
 
     const start = Math.min(this._input.selectionStart ?? 0, this._length - 1)
+    const end = this._input.selectionEnd ?? start
     const chars = [...this._input.value]
-    chars.splice(start, clean.length, ...clean)
+    chars.splice(start, Math.max(end - start, clean.length), ...clean)
     this._input.value = chars.join('').slice(0, this._length)
 
     this._selectSlot(this._firstEmptyIndex())
