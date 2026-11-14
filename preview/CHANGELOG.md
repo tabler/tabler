@@ -1,5 +1,9 @@
 # @tabler/preview
 
+## 1.7.6
+
+No changes in this release.
+
 ## 1.7.5
 
 ### Patch Changes
