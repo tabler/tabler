@@ -24,6 +24,14 @@
   --table-active-bg: #{$table-active-bg};
   --table-hover-color: #{$table-hover-color};
   --table-hover-bg: #{$table-hover-bg};
+  --table-cell-padding-x: #{$table-cell-padding-x};
+  --table-cell-padding-y: #{$table-cell-padding-y};
+  --table-border-width: #{$table-border-width};
+  --table-group-separator-color: #{$table-group-separator-color};
+  --table-th-padding-x: #{var-if-default($table-th-padding-x, $table-cell-padding-x, '--table-cell-padding-x')};
+  --table-th-padding-y: #{$table-th-padding-y};
+  --table-th-bg: #{$table-th-bg};
+  --table-th-color: var(--secondary);
   // scss-docs-end table-css-vars
 
   width: 100%;
@@ -37,11 +45,11 @@
   // Another advantage is that this generates less code and makes the selector less specific making it easier to override.
   // stylelint-disable-next-line selector-max-universal
   > :not(caption) > * > * {
-    padding: $table-cell-padding-y $table-cell-padding-x;
+    padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
     // Following the precept of cascades: https://codepen.io/miriamsuzanne/full/vYNgodb
     color: var(--table-color-state, var(--table-color-type, var(--table-color)));
     background-color: var(--table-bg);
-    border-bottom-width: $table-border-width;
+    border-bottom-width: var(--table-border-width);
     box-shadow: inset 0 0 0 9999px var(--table-bg-state, var(--table-bg-type, var(--table-accent-bg)));
   }
 
@@ -55,7 +63,7 @@
 }
 
 .table-group-divider {
-  border-top: calc(#{$table-border-width} * 2) solid $table-group-separator-color; // stylelint-disable-line function-disallowed-list
+  border-top: calc(var(--table-border-width) * 2) solid var(--table-group-separator-color);
 }
 
 //
@@ -71,10 +79,8 @@
 //
 
 .table-sm {
-  // stylelint-disable-next-line selector-max-universal
-  > :not(caption) > * > * {
-    padding: $table-cell-padding-y-sm $table-cell-padding-x-sm;
-  }
+  --table-cell-padding-x: #{$table-cell-padding-x-sm};
+  --table-cell-padding-y: #{$table-cell-padding-y-sm};
 }
 
 // Border versions
@@ -93,11 +99,11 @@
   --table-border-color: #{var-if-default($table-border-color, var(--border-color-translucent), '--border-color')};
 
   > :not(caption) > * {
-    border-width: $table-border-width 0;
+    border-width: var(--table-border-width) 0;
 
     // stylelint-disable-next-line selector-max-universal
     > * {
-      border-width: 0 $table-border-width;
+      border-width: 0 var(--table-border-width);
     }
   }
 }

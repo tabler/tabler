@@ -1,14 +1,7 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import Dropdown from '../../src/bootstrap/dropdown'
+import FloatingUi from '../../src/bootstrap/util/floating-ui'
 import { clearFixture, getFixture } from '../helpers/fixture'
-
-vi.mock('@popperjs/core', () => ({
-  createPopper: vi.fn(() => ({
-    destroy: vi.fn(),
-    update: vi.fn(),
-    setOptions: vi.fn(),
-  })),
-}))
 
 describe('Dropdown', () => {
   let fixtureEl: HTMLElement
@@ -60,13 +53,24 @@ describe('Dropdown', () => {
     it('should create offset from string data attribute', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-offset="10,20">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
 
-      const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')! as HTMLElement
       const dropdown = new Dropdown(btnDropdown)
 
-      expect(dropdown._getOffset()).toEqual([10, 20])
+      expect(FloatingUi.parseOffset(dropdown._config.offset, btnDropdown)).toEqual({ mainAxis: 20, crossAxis: 10 })
     })
 
-    it('should allow popperConfig override', () => {
+    it('should allow positionConfig override', () => {
+      fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
+
+      const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const dropdown = new Dropdown(btnDropdown, {
+        positionConfig: { placement: 'left' },
+      })
+
+      expect(dropdown._getFloatingConfig().placement).toBe('left')
+    })
+
+    it('should still accept the deprecated popperConfig option', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
 
       const btnDropdown = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
@@ -74,8 +78,7 @@ describe('Dropdown', () => {
         popperConfig: { placement: 'left' },
       })
 
-      const popperConfig = dropdown._getPopperConfig()
-      expect(popperConfig.placement).toBe('left')
+      expect(dropdown._getFloatingConfig().placement).toBe('left')
     })
   })
 
@@ -280,7 +283,7 @@ describe('Dropdown', () => {
   })
 
   describe('update', () => {
-    it('should call update on popper', () => {
+    it('should call update on the positioner', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
 
@@ -288,8 +291,9 @@ describe('Dropdown', () => {
         const dropdown = new Dropdown(btnDropdown)
 
         btnDropdown.addEventListener('shown.bs.dropdown', () => {
+          const updateSpy = vi.spyOn(dropdown._floatingUi, 'update')
           dropdown.update()
-          expect(dropdown._popper!.update).toHaveBeenCalled()
+          expect(updateSpy).toHaveBeenCalled()
           resolve()
         })
 
@@ -488,91 +492,80 @@ describe('Dropdown', () => {
     })
   })
 
-  describe('_getOffset', () => {
-    it('should handle function offset', () => {
-      fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
-
-      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
-      const offsetFn = vi.fn().mockReturnValue([10, 20])
-      const dropdown = new Dropdown(btn, { offset: offsetFn })
-
-      const offset = dropdown._getOffset()
-      expect(typeof offset).toBe('function')
-    })
-
-    it('should handle array offset', () => {
-      fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
-
-      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
-      const dropdown = new Dropdown(btn, { offset: [5, 10] })
-
-      expect(dropdown._getOffset()).toEqual([5, 10])
-    })
-
-    it('should handle string offset', () => {
-      fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
-
-      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
-      const dropdown = new Dropdown(btn, { offset: '10,20' as any })
-
-      expect(dropdown._getOffset()).toEqual([10, 20])
-    })
-  })
-
-  describe('_getPopperConfig', () => {
-    it('should set popper static in navbar', () => {
+  describe('_createFloatingUi', () => {
+    it('should mark the menu static in a navbar and skip positioning', () => {
       fixtureEl.innerHTML = ['<nav class="navbar">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu"></div>', '  </div>', '</nav>'].join('')
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
       const dropdown = new Dropdown(btn)
 
-      const config = dropdown._getPopperConfig()
-      expect(config.modifiers).toBeDefined()
-      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles' && m.enabled === false)).toBe(true)
+      dropdown._createFloatingUi()
+
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
+      expect(dropdown._floatingUi._cleanup).toBeNull()
     })
 
-    it('should keep popper styles in an expanded navbar', () => {
+    it('should position the menu in an expanded navbar', () => {
       fixtureEl.innerHTML = ['<nav class="navbar navbar-expand">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</nav>'].join('')
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
       const dropdown = new Dropdown(btn)
 
-      const config = dropdown._getPopperConfig()
-      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles')).toBe(false)
-      expect(config.modifiers!.some((m: any) => m.name === 'preventOverflow')).toBe(true)
-      expect(dropdown._menu.hasAttribute('data-bs-popper')).toBe(false)
+      dropdown._createFloatingUi()
+
+      expect(menu.hasAttribute('data-bs-popper')).toBe(false)
+      expect(dropdown._floatingUi._cleanup).not.toBeNull()
     })
 
-    it('should set popper static in a vertical navbar flyout', () => {
+    it('should mark the menu static in a vertical navbar flyout', () => {
       fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical navbar-expand-lg">', '  <div class="dropdown">', '    <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '    <div class="dropdown-menu" style="position: absolute"></div>', '  </div>', '</aside>'].join('')
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
       const dropdown = new Dropdown(btn)
 
-      const config = dropdown._getPopperConfig()
-      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles' && m.enabled === false)).toBe(true)
+      dropdown._createFloatingUi()
+
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
+      expect(dropdown._floatingUi._cleanup).toBeNull()
     })
 
-    it('should set popper static when display is static', () => {
+    it('should mark the menu static when display is static', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const menu = fixtureEl.querySelector('.dropdown-menu')!
       const dropdown = new Dropdown(btn, { display: 'static' })
 
-      const config = dropdown._getPopperConfig()
-      expect(config.modifiers).toBeDefined()
-      expect(config.modifiers!.some((m: any) => m.name === 'applyStyles' && m.enabled === false)).toBe(true)
-    })
+      dropdown._createFloatingUi()
 
-    it('should apply custom popperConfig function', () => {
+      expect(menu.getAttribute('data-bs-popper')).toBe('static')
+      expect(dropdown._floatingUi._cleanup).toBeNull()
+    })
+  })
+
+  describe('_getFloatingConfig', () => {
+    it('should build the default middleware', () => {
       fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
-      const customPopperConfig = (_defaultConfig: any) => ({ ..._defaultConfig, strategy: 'fixed' as const })
-      const dropdown = new Dropdown(btn, { popperConfig: customPopperConfig })
+      const dropdown = new Dropdown(btn)
 
-      const config = dropdown._getPopperConfig()
-      expect(config.strategy).toBe('fixed')
+      const config = dropdown._getFloatingConfig()
+      expect(config.placement).toBe('bottom-start')
+      expect(config.middleware!.map((middleware) => middleware.name)).toEqual(['offset', 'flip', 'shift'])
+    })
+
+    it('should apply a custom positionConfig function', () => {
+      fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu"></div>', '</div>'].join('')
+
+      const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+      const customConfig = (_defaultConfig: any) => ({ ..._defaultConfig, strategy: 'fixed' as const })
+      const dropdown = new Dropdown(btn, { positionConfig: customConfig })
+
+      expect(dropdown._getFloatingConfig().strategy).toBe('fixed')
     })
   })
 
@@ -693,7 +686,7 @@ describe('Dropdown', () => {
     })
   })
 
-  describe('_createPopper with reference', () => {
+  describe('_createFloatingUi with reference', () => {
     it('should use parent as reference', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
@@ -702,7 +695,7 @@ describe('Dropdown', () => {
         const dropdown = new Dropdown(btn, { reference: 'parent' })
 
         btn.addEventListener('shown.bs.dropdown', () => {
-          expect(dropdown._popper).not.toBeNull()
+          expect(dropdown._floatingUi._cleanup).not.toBeNull()
           resolve()
         })
 
@@ -718,7 +711,7 @@ describe('Dropdown', () => {
         const dropdown = new Dropdown(btn, { reference: fixtureEl })
 
         btn.addEventListener('shown.bs.dropdown', () => {
-          expect(dropdown._popper).not.toBeNull()
+          expect(dropdown._floatingUi._cleanup).not.toBeNull()
           resolve()
         })
 
@@ -738,7 +731,7 @@ describe('Dropdown', () => {
         const dropdown = new Dropdown(btn, { reference: virtualRef as any })
 
         btn.addEventListener('shown.bs.dropdown', () => {
-          expect(dropdown._popper).not.toBeNull()
+          expect(dropdown._floatingUi._cleanup).not.toBeNull()
           resolve()
         })
 
@@ -747,8 +740,8 @@ describe('Dropdown', () => {
     })
   })
 
-  describe('dispose with popper', () => {
-    it('should destroy popper on dispose', () => {
+  describe('dispose with a positioner', () => {
+    it('should stop the positioner on dispose', () => {
       return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
 
@@ -756,9 +749,9 @@ describe('Dropdown', () => {
         const dropdown = new Dropdown(btn)
 
         btn.addEventListener('shown.bs.dropdown', () => {
-          const destroySpy = dropdown._popper!.destroy
+          const stopSpy = vi.spyOn(dropdown._floatingUi, 'stop')
           dropdown.dispose()
-          expect(destroySpy).toHaveBeenCalled()
+          expect(stopSpy).toHaveBeenCalled()
           resolve()
         })
 

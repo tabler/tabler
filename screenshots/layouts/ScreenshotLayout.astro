@@ -174,9 +174,15 @@ const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * 
 
     {libJsFiles.map((src) => <script is:inline src={src} defer />)}
     {libModules.map((code) => <Fragment set:html={`<script type="module">${code}</script>`} />)}
-    <script is:inline src={`/dist/js/tabler${min}.js`} defer></script>
-    {libAddons.map((addon) => <script is:inline src={`/dist/js/${addon}${min}.js`} defer />)}
-    {libMaps.map((map) => <script is:inline src={`/dist/js/maps/${map}.js`} defer />)}
+    <!-- ESM-only build: load as a module and re-expose the namespace as a local
+    shim so the capture pages' window.tabler.Dropdown/Offcanvas calls keep working.
+    A static import (not import()) so window.tabler is set before DOMContentLoaded,
+    the way the old classic script guaranteed. -->
+    <script is:inline type="module" set:html={`import * as tabler from '/dist/js/tabler${min}.js';\nwindow.tabler = tabler;`} />
+    <!-- Add-on bundles are ES modules too. A map file only exports its map, so register it
+    in the global `VectorMap` reads; maps are drawn after DOMContentLoaded, once every module has run. -->
+    {libAddons.map((addon) => <script is:inline type="module" src={`/dist/js/${addon}${min}.js`} />)}
+    {libMaps.map((map) => <script is:inline type="module" set:html={`import * as maps from '/dist/js/maps/${map}.js';\nObject.assign((window.tablerVectorMaps ??= {}), maps);`} />)}
 
     <!-- components that render via CaptureScript (e.g. Chart) queue their init script
     into shared/lib/page-scripts instead of inlining it where used; this drains it. -->

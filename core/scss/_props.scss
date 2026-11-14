@@ -40,22 +40,16 @@
   --brand: #{$primary};
 
   // Theme colors
-  $theme-and-social-colors: map.merge($theme-colors, $social-colors);
+  // Brand colors (`$social-colors`) are set in `tabler-socials.css`
 
   // The `-fg` tokens below read these two, also when a custom `$theme-colors` leaves them out.
   @each $name, $color in ('dark': $dark, 'light': $light) {
-    @if not map.has-key($theme-and-social-colors, $name) {
+    @if not map.has-key($theme-colors, $name) {
       --#{$name}: #{$color};
     }
   }
 
-  @each $name, $color in $theme-and-social-colors {
-    --#{$name}: #{$color};
-    --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    --#{$name}-darken: #{adjust-lightness-css(var(--#{$name}), -6%)};
-    --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
-    --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
-  }
+  @include color-props($theme-colors);
 
   // Gray colors
   @each $name, $color in $gray-colors {
@@ -89,15 +83,22 @@
     --shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
 
+  // Borders
+  --border-width-keyline: 0.5px;
+
   // Border radiuses
   --border-radius-scale: 1;
+  @each $name, $value in $radii {
+    --radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+  }
   @each $name, $value in $border-radiuses {
     @if $name {
-      --border-radius-#{$name}: calc(#{$value} * var(--border-radius-scale, 1));
+      --border-radius-#{$name}: #{$value};
     } @else {
       --border-radius: #{$value};
     }
   }
+  --border-radius-2xl: var(--border-radius-xxl); // Deprecated in v5.3.0 for consistency
 
   // Buttons and form controls: one scale, in the names Bootstrap 6 uses
   // scss-docs-start btn-input-css-vars
@@ -138,6 +139,9 @@
   --control-checked-border-color: #{$form-check-input-checked-border-color};
   --control-disabled-bg: #{$input-disabled-bg};
   --control-disabled-opacity: #{$form-check-input-disabled-opacity};
+  --control-transition-duration: #{$control-transition-duration};
+  --control-transition-timing: #{$control-transition-timing};
+  --control-transition-overshoot: #{$control-transition-overshoot};
   // scss-docs-end control-state-css-vars
 
   // Backdrops

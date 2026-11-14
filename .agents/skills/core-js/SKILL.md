@@ -13,13 +13,16 @@ metadata:
 
 ## 1. Three entry points
 
-| Entry                | Ships as                           | Holds                                                                        |
-| -------------------- | ---------------------------------- | ---------------------------------------------------------------------------- |
-| `js/tabler.ts`       | `tabler.js` / `.esm.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper namespace |
-| `js/tabler-theme.ts` | `tabler-theme.js` (+ variants)     | the colour-mode/theme switcher only                                          |
-| `js/tabler-map.ts`   | `tabler-map.js` (+ variants)       | the `MapView` component, as an add-on that extends the `tabler` global       |
+| Entry | Ships as | Holds |
+| --- | --- | --- |
+| `js/tabler.ts` | `tabler.js` (+ `.min`) | plugin initialisers, the Bootstrap components, the `tabler` helper exports |
+| `js/tabler-theme.ts` | `tabler-theme.js` (+ `.min`) | the colour-mode/theme switcher only |
+| `js/tabler-map.ts` | `tabler-map.js` (+ `.min`) | the `MapView` component, as an add-on module |
+| `js/tabler-vector-map.ts` | `tabler-vector-map.js` (+ `.min`) | the `VectorMap` component, as an add-on module; the maps are `dist/js/maps/*.js` |
 
-`tabler-map.js` is loaded after `tabler.js`, and only on pages with a map: a component that few pages use goes in an add-on bundle like this one, not in `tabler.js`. Its UMD build uses `extend` (`core/.build/vite.config.mts`), so it adds its exports to the existing `tabler` global.
+Both bundles are **ESM only** (Tabler 2.0, like Bootstrap v6): no UMD, no `window.tabler` global. `tabler.js` is loaded with `<script type="module">`; `tabler-theme.js` has no imports or exports once bundled, so it stays a classic blocking script.
+
+`tabler-map.js` and `tabler-vector-map.js` are loaded after `tabler.js`, and only on pages with a map: a component that few pages use goes in an add-on bundle like these, not in `tabler.js`. A map file in `dist/js/maps/` only exports its map: register it with `VectorMap.addMap()` or assign it to `window.tablerVectorMaps`.
 
 `tabler-theme.js` is loaded right after `<body>` and **not deferred**, so the chosen theme applies before the first paint. It stays tiny on purpose (bundlewatch: 1 kB raw, 800 B minified) — do not add anything to it that is not needed before paint.
 
@@ -73,13 +76,13 @@ pnpm --filter @tabler/core test:js:coverage
 
 ## 6. Build and budget
 
-`vite` builds each entry as a library in `es` + `umd` (`BASE_NAME` selects the entry), then terser produces the `.min` variants with source maps. Sizes are enforced:
+`vite` builds each entry as a library in `es` only (`BASE_NAME` selects the entry), then terser produces the `.min` variants with source maps. `core/dist/js/` holds 4 files + maps. Sizes are enforced:
 
-| File                      | Limit |
-| ------------------------- | ----- |
-| `dist/js/tabler.js`       | 64 kB |
-| `dist/js/tabler.min.js`   | 48 kB |
-| `dist/js/tabler-theme.js` | 1 kB  |
+| File | Limit |
+| --- | --- |
+| `dist/js/tabler.js` | 64 kB |
+| `dist/js/tabler.min.js` | 48 kB |
+| `dist/js/tabler-theme.js` | 1.3 kB |
 
 ```bash
 pnpm --filter @tabler/core build

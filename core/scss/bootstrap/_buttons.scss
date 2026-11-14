@@ -31,6 +31,9 @@
   // Zero-size shadow, not `none`: the active state is combined with the focus
   // ring in one `box-shadow` list, where `none` would negate every other shadow
   --btn-active-shadow: 0 0 0 #000;
+  --btn-transition-property: #{$btn-transition-property};
+  --btn-transition-duration: #{$btn-transition-duration};
+  --btn-transition-timing: #{$btn-transition-timing};
   // scss-docs-end btn-css-vars
 
   display: inline-block;
@@ -50,7 +53,7 @@
   @include border-radius(var(--btn-border-radius));
   @include gradient-bg(var(--btn-bg));
   @include box-shadow(var(--btn-box-shadow));
-  @include transition($btn-transition);
+  @include btn-transition(var(--btn-transition-property), var(--btn-transition-duration), var(--btn-transition-timing));
   // Start the focus ring's `outline-color` transition from transparent, not `currentcolor`.
   outline-color: transparent;
 

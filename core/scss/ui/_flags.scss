@@ -1,25 +1,31 @@
 @use 'sass:map';
-@use 'sass:math';
 @use '../config';
 
 @use '../config' as *;
 
 .flag {
+  // scss-docs-start flag-css-vars
+  --flag-width: #{config.$avatar-size};
+  --flag-height: calc(var(--flag-width) / 1.25);
+  --flag-border-radius: #{config.$flag-border-radius};
+  --flag-box-shadow: #{config.$flag-box-shadow};
+  // scss-docs-end flag-css-vars
+
   position: relative;
   display: inline-block;
   // explicit height, not `aspect-ratio`: a flex container with the default
   // `align-items: stretch` would override the ratio and stretch every flag
   // to the tallest one
-  width: config.$avatar-size;
-  height: math.div(config.$avatar-size, 1.25);
+  width: var(--flag-width);
+  height: var(--flag-height);
   vertical-align: bottom;
   background: no-repeat center/cover;
-  box-shadow: config.$flag-box-shadow;
-  @include config.border-radius(config.$flag-border-radius);
+  box-shadow: var(--flag-box-shadow);
+  @include config.border-radius(var(--flag-border-radius));
 
   &.flag-country-np {
-    border-radius: 0;
-    box-shadow: none;
+    --flag-border-radius: 0;
+    --flag-box-shadow: none;
   }
 }
 
@@ -41,11 +47,10 @@
 
 @each $flag-size, $size in config.$flag-sizes {
   .flag-#{$flag-size} {
-    width: map.get($size, size);
-    height: math.div(map.get($size, size), 1.25);
+    --flag-width: #{map.get($size, size)};
 
     @if map.has-key($size, border-radius) {
-      @include config.border-radius(map.get($size, border-radius));
+      --flag-border-radius: #{map.get($size, border-radius)};
     }
   }
 }

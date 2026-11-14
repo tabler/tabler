@@ -4,8 +4,8 @@
 //
 // Removed in 2.0, together with this file.
 @use 'sass:color';
-@use 'sass:map';
 @use 'sass:math';
+@use 'sass:meta';
 @use 'config' as *;
 
 // `6, 111, 209`: whole numbers, as the 1.5 stylesheet had them.
@@ -17,12 +17,14 @@
 // deprecated(2.0): `--tblr-*-rgb`. Tabler mixes colours with `color-mix()` and
 // reads none of these. They are static, as they were in 1.5: overriding
 // `--tblr-primary` does not change `--tblr-primary-rgb`.
-@mixin deprecated-color-props() {
+@mixin deprecated-color-props($colors: $theme-colors) {
   @if $enable-deprecated {
     :root {
-      @each $name, $color in map.merge($theme-colors, $social-colors) {
-        --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
-        --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
+      @each $name, $color in $colors {
+        @if meta.type-of($color) == 'color' {
+          --#{$name}-rgb: #{deprecated-rgb-triplet($color)};
+          --#{$name}-lt-rgb: #{deprecated-rgb-triplet(color.mix($color, #fff, 10%, $method: rgb))};
+        }
       }
     }
   }
@@ -33,7 +35,9 @@
     @each $name, $value in $extra-colors {
       [data-bs-theme-primary='#{$name}'],
       [data-theme-primary='#{$name}'] {
-        --primary-rgb: #{deprecated-rgb-triplet($value)};
+        @if meta.type-of($value) == 'color' {
+          --primary-rgb: #{deprecated-rgb-triplet($value)};
+        }
       }
     }
   }

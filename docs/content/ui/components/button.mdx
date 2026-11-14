@@ -3,8 +3,9 @@ title: Button
 summary: Buttons in every color, size and shape, with icons, loading states, social styles and button groups.
 description: Buttons in many colors, sizes and shapes, with icons, loading states and social styles.
 related: [/ui/components/dropdown]
+css-plugins: [socials]
 source: core/scss/ui/_buttons.scss
-css-vars: btn
+css-vars: [btn, btn-group]
 classnames:
   component:
     - class: btn
@@ -45,7 +46,7 @@ classnames:
       desc: Animates the icon on hover, with -pulse, -rotate, -shake, -tada or -move-start
   color:
     - class: btn-{color}
-      desc: Any base or social color, for example btn-primary or btn-facebook
+      desc: Any base color, for example btn-primary; social colors such as btn-facebook need the socials plugin
   size:
     - class: btn-sm
       desc: Small size
@@ -217,7 +218,7 @@ See all icons at [tabler.io/icons](https://tabler.io/icons).
 
 ## Social buttons
 
-Social buttons use the brand colors and icons of popular services, so a share or follow button is recognized at once.
+Social buttons use the brand colors and icons of popular services, so a share or follow button is recognized at once. The brand colors are part of the socials plugin: include `tabler-socials.css` or `tabler-socials.min.css` to use them. Each brand also works with `btn-outline-` and `btn-ghost-`.
 
 <Example separated centered hideCode>
 <div class="btn-list">
@@ -570,5 +571,5 @@ Add `btn-floating` to pin a button to the bottom corner of the viewport. It stay
 - An icon-only button has no text, so give it an `aria-label` that says what it does. `btn-icon` only removes the horizontal padding; it does not add a name.
 - Mark a disabled link with `aria-disabled="true"` and `tabindex="-1"`. The `disabled` class is styling only.
 - Pair `btn-loading` with `aria-busy="true"` and a disabled state. The class blanks the label with `color: transparent`, so the old text is still what a screen reader reads.
-- A button that toggles something needs `aria-pressed`; one that opens a panel needs `aria-expanded`. Bootstrap sets `aria-expanded` for you on dropdown and collapse triggers.
+- A button that toggles something needs `aria-pressed`; one that opens a panel needs `aria-expanded`. A `data-bs-toggle="button"` button gets `aria-pressed` on load (from `.active`) if you left it out, and the attribute stays in sync on click. Writing `aria-pressed="false"` in the markup is still the clearest. Bootstrap sets `aria-expanded` for you on dropdown and collapse triggers.
 - Color alone should not carry the meaning. `btn-danger` looks alarming, but the label has to say what happens.

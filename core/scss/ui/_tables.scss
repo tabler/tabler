@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../config' as *;
 
 .table {
@@ -15,11 +17,11 @@
 
   thead {
     th {
-      padding-top: $table-th-padding-y;
-      padding-bottom: $table-th-padding-y;
+      padding: var(--table-th-padding-y) var(--table-th-padding-x);
+      color: var(--table-th-color);
       white-space: nowrap;
-      background: $table-th-bg;
-      @include subheader();
+      background: var(--table-th-bg);
+      @include subheader($include-color: false);
 
       @include media-print() {
         background: transparent;
@@ -40,11 +42,7 @@
 }
 
 .table-transparent {
-  thead {
-    th {
-      background: transparent;
-    }
-  }
+  --table-th-bg: transparent;
 }
 
 // Matches Bootstrap's own `.table > :not(caption) > * > *` idiom for targeting every
@@ -74,9 +72,14 @@
   max-width: 1px;
 }
 
+// Generate a series of `.table-mobile-*` classes for configuring the screen
+// size below which the table stacks into rows. Mirrors `.table-responsive-*`:
+// the infix names the breakpoint the layout applies *below*.
 .table-mobile {
-  @each $breakpoint, $breakpoint-max-widthin in $grid-breakpoints {
-    &#{breakpoint-infix($breakpoint)} {
+  @each $breakpoint in map.keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    &#{$infix} {
       @include media-breakpoint-down($breakpoint) {
         display: block;
 
@@ -92,7 +95,7 @@
 
         td {
           display: block;
-          padding: $table-cell-padding-y $table-cell-padding-x !important;
+          padding: var(--table-cell-padding-y) var(--table-cell-padding-x) !important;
           color: var(--body-color) !important;
           border: none;
 
@@ -106,7 +109,7 @@
         }
 
         tr {
-          border-bottom: var(--border-width) var(--border-style) $table-border-color;
+          border-bottom: var(--border-width) var(--border-style) var(--table-border-color);
         }
 
         .btn {
@@ -123,8 +126,8 @@
   --table-sort-icon-margin-start: #{$table-sort-icon-margin-start};
   display: block;
   width: 100%;
-  padding: $table-th-padding-y $table-th-padding-x;
-  margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
+  padding: var(--table-th-padding-y) var(--table-th-padding-x);
+  margin: calc(-1 * var(--table-th-padding-y)) calc(-1 * var(--table-th-padding-x));
 
   font: inherit;
   color: inherit;
@@ -162,9 +165,7 @@
 }
 
 .table-borderless {
-  thead th {
-    background: transparent;
-  }
+  --table-th-bg: transparent;
 }
 
 //
@@ -181,7 +182,9 @@
     }
 
     &:has(.table-selectable-check:checked) {
-      background-color: $table-active-bg;
+      > * {
+        --table-bg-state: var(--table-active-bg);
+      }
 
       .on-checked {
         display: initial;

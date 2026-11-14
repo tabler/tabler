@@ -1,0 +1,59 @@
+---
+title: Grid auto flow
+description: Utility classes for the grid-auto-flow property of a CSS grid.
+summary: Choose how a CSS grid places items that have no explicit position, fill columns instead of rows, or pack items into gaps.
+---
+import Example from '@components/Example.astro';
+
+Use `.grid-auto-flow-*` on an element with `.d-grid` to control how items are placed automatically. They pair with the [grid columns](/ui/utilities/grid-columns) utilities.
+
+## Row
+
+`.grid-auto-flow-row` fills the grid row by row. This is the default behavior of a grid.
+
+<Example>
+<div class="d-grid grid-cols-3 grid-auto-flow-row gap-2">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+  <div class="p-2 bg-primary-lt rounded">Four</div>
+</div>
+</Example>
+
+## Column
+
+`.grid-auto-flow-column` adds new items as columns instead of rows.
+
+<Example>
+<div class="d-grid grid-auto-flow-column gap-2">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+  <div class="p-2 bg-primary-lt rounded">Four</div>
+</div>
+</Example>
+
+## Dense
+
+`.grid-auto-flow-dense` packs items into gaps left by items that span more than one cell.
+
+<Example>
+<div class="d-grid grid-cols-3 grid-auto-flow-dense gap-2">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="grid-cols-fill p-2 bg-primary-lt rounded">Spans all columns</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+</div>
+</Example>
+
+## Responsive
+
+All classes have responsive variants, for example `.grid-auto-flow-md-column`.
+
+```html
+<div class="d-grid grid-cols-2 grid-auto-flow-column grid-auto-flow-lg-row gap-2">...</div>
+```
+
+## Accessibility
+
+- Dense packing can show items in a different order than the markup. Screen readers and keyboard focus still follow the markup order, so use it only when the order does not matter.
