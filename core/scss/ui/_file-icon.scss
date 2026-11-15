@@ -7,7 +7,7 @@
   --file-icon-color: #{$file-icon-color};
   --file-icon-fg: #{$white};
   --file-icon-bg: var(--bg-surface);
-  --file-icon-border-width: #{$file-icon-border-width};
+  --file-icon-outline: #{escape-svg($file-icon-outline)};
   --file-icon-border-color: light-dark(var(--gray-300), var(--gray-600));
   // scss-docs-end file-icon-css-vars
   position: relative;
@@ -21,35 +21,24 @@
   vertical-align: middle;
 
   /* rtl:begin:ignore */
+  background: linear-gradient(225deg, transparent calc(0.199em - 0.7px), var(--file-icon-bg) 0) center / calc(100% - 1px) calc(100% - 1px) no-repeat padding-box;
+  border: 0 solid transparent;
+  border-right-width: 0.05em;
+  border-left-width: 0.2em;
+  border-radius: 0.325em 0.175em 0.175em 0.325em / 0.125em;
+
   &::before {
     position: absolute;
-    top: 0;
-    right: 0.05em;
-    bottom: 0;
-    left: 0.2em;
-    clip-path: polygon(0 0, calc(100% - 0.25em) 0, 100% 0.25em, 100% 100%, 0 100%);
+    inset: 0;
     content: '';
-    background-color: var(--file-icon-bg);
-    background-image:
-      linear-gradient(to top right, transparent calc(50% - var(--file-icon-border-width)), var(--file-icon-border-color) calc(50% - var(--file-icon-border-width)) 50%, transparent 50%), linear-gradient(var(--file-icon-border-color), var(--file-icon-border-color)),
-      linear-gradient(var(--file-icon-border-color), var(--file-icon-border-color));
-    background-repeat: no-repeat;
-    background-position:
-      top right,
-      top right 0.25em,
-      top 0.25em right;
-    background-size:
-      0.25em 0.25em,
-      var(--file-icon-border-width) 0.25em,
-      0.25em var(--file-icon-border-width);
-    border-radius: 0.125em;
-    box-shadow: inset 0 0 0 var(--file-icon-border-width) var(--file-icon-border-color);
+    background: var(--file-icon-border-color);
+    mask: var(--file-icon-outline) center / 100% 100% no-repeat;
   }
 
   &[data-type]::after {
     position: absolute;
     bottom: 0.6em;
-    left: 0;
+    left: -0.8em;
     padding: 0.2em 0.4em;
     font-size: 0.25em;
     font-weight: #{$file-icon-label-font-weight};
