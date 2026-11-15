@@ -1,0 +1,91 @@
+@use 'sass:list';
+@use '../config' as *;
+
+.file-icon {
+  // scss-docs-start file-icon-css-vars
+  --file-icon-size: #{$file-icon-size};
+  --file-icon-color: #{$file-icon-color};
+  --file-icon-fg: #{$white};
+  --file-icon-bg: var(--bg-surface);
+  --file-icon-border-width: #{$file-icon-border-width};
+  --file-icon-border-color: light-dark(var(--gray-300), var(--gray-600));
+  // scss-docs-end file-icon-css-vars
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  font-size: var(--file-icon-size);
+  font-style: normal;
+  line-height: 1;
+  vertical-align: middle;
+
+  /* rtl:begin:ignore */
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0.05em;
+    bottom: 0;
+    left: 0.2em;
+    clip-path: polygon(0 0, calc(100% - 0.25em) 0, 100% 0.25em, 100% 100%, 0 100%);
+    content: '';
+    background-color: var(--file-icon-bg);
+    background-image:
+      linear-gradient(to top right, transparent calc(50% - var(--file-icon-border-width)), var(--file-icon-border-color) calc(50% - var(--file-icon-border-width)) 50%, transparent 50%), linear-gradient(var(--file-icon-border-color), var(--file-icon-border-color)),
+      linear-gradient(var(--file-icon-border-color), var(--file-icon-border-color));
+    background-repeat: no-repeat;
+    background-position:
+      top right,
+      top right 0.25em,
+      top 0.25em right;
+    background-size:
+      0.25em 0.25em,
+      var(--file-icon-border-width) 0.25em,
+      0.25em var(--file-icon-border-width);
+    border-radius: 0.125em;
+    box-shadow: inset 0 0 0 var(--file-icon-border-width) var(--file-icon-border-color);
+  }
+
+  &[data-type]::after {
+    position: absolute;
+    bottom: 0.6em;
+    left: 0;
+    padding: 0.2em 0.4em;
+    font-size: 0.25em;
+    font-weight: #{$file-icon-label-font-weight};
+    color: var(--file-icon-fg);
+    text-transform: uppercase;
+    white-space: nowrap;
+    content: attr(data-type);
+    background: var(--file-icon-color);
+    border-radius: 0.4em;
+  }
+
+  /* rtl:end:ignore */
+}
+
+.file-icon-sm {
+  --file-icon-size: #{$file-icon-size-sm};
+}
+
+.file-icon-lg {
+  --file-icon-size: #{$file-icon-size-lg};
+}
+
+@each $color, $types in $file-icon-types {
+  $selectors: ();
+
+  @each $type in $types {
+    $selectors: list.append($selectors, "[data-type='#{$type}' i]", comma);
+  }
+
+  .file-icon:where(#{$selectors}) {
+    --file-icon-color: var(--#{$color});
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .file-icon-#{$name} {
+    --file-icon-color: var(--#{$name});
+  }
+}
