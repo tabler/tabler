@@ -40,6 +40,11 @@ const min = isDevelopment ? '' : '.min'
 const isProduction = process.env.VERCEL_ENV === 'production'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
+// `astro dev` with the dev-css integration: the stylesheets come from scss
+// through Vite.
+const devCss = import.meta.env.TABLER_DEV_CSS
+const coreCss = (name: string) => (devCss ? `${devCss.core}/${name}${rtlSuffix}.scss` : `${base}/dist/css/${name}${rtlSuffix}${min}.css`)
+const demoCss = devCss ? `${devCss.demo}/demo.scss` : `${base}/preview/css/demo${min}.css`
 
 type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string }; addon?: string; maps?: string[] }
 const unknownLibs = pageLibs.filter((name) => !(name in libs))
@@ -97,15 +102,15 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     }
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href={`${base}/dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
+    <link href={coreCss('tabler')} rel="stylesheet" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PLUGINS STYLES -->
-    {stylePlugins.map((plugin) => <link href={`${base}/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    {stylePlugins.map((plugin) => <link href={coreCss(`tabler-${plugin}`)} rel="stylesheet" />)}
     <!-- END PLUGINS STYLES -->
 
     <!-- BEGIN DEMO STYLES -->
-    <link href={`${base}/preview/css/demo${min}.css`} rel="stylesheet" />
+    <link href={demoCss} rel="stylesheet" />
     <!-- END DEMO STYLES -->
 
     {

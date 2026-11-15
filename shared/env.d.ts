@@ -1,5 +1,10 @@
 /// <reference types="astro/client" />
 
+interface ImportMetaEnv {
+  /** Set by the dev-css integration in `astro dev`: where Vite serves the scss directories */
+  readonly TABLER_DEV_CSS?: { core: string; demo: string }
+}
+
 // Loaded via page libs (libs.json) as classic <script> globals, not npm packages —
 // declared ambiently so `astro check` can resolve them in the demo init scripts.
 

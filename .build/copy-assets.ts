@@ -58,9 +58,11 @@ interface CopyAssetsOptions {
   copies: CopyEntry[]
   /** generated source dirs to live-sync into publicDir while `astro dev` runs */
   syncDirs?: { from: string; to: string }[]
+  /** synced files that must not reload the page, e.g. css that Vite already hot-swaps */
+  skipReload?: (file: string) => boolean
 }
 
-export function copyAssets({ repo, publicDir, copies, syncDirs = [] }: CopyAssetsOptions): Integration {
+export function copyAssets({ repo, publicDir, copies, syncDirs = [], skipReload }: CopyAssetsOptions): Integration {
   let command: string
 
   function rebuildPublicDir(logger: Logger) {
@@ -128,7 +130,7 @@ export function copyAssets({ repo, publicDir, copies, syncDirs = [] }: CopyAsset
           // Source maps piggyback on their css/js file's reload. build-css.ts
           // buffers all writes into one tight burst, so a short quiet window is
           // enough to coalesce a whole rebuild into a single reload.
-          if (file.endsWith('.map')) return
+          if (file.endsWith('.map') || skipReload?.(file)) return
           clearTimeout(reloadTimer)
           reloadTimer = setTimeout(() => {
             server.hot.send({ type: 'full-reload' })
