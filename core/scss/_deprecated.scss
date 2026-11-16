@@ -101,6 +101,39 @@
     padding: 0;
   }
 
+  // deprecated(2.0): `.divide-x-1`…`.divide-x-6` and `.divide-y-1`…`.divide-y-6`
+  // separated the children with a border and padding, use `.divide-x` or
+  // `.divide-y` with padding on the children.
+  @each $name, $size in map.remove($spacers, 0) {
+    .divide-y-#{$name} {
+      > :not(template) ~ :not(template) {
+        border-top: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
+      }
+
+      > :not(template):not(:first-child) {
+        padding-top: $size !important;
+      }
+
+      > :not(template):not(:last-child) {
+        padding-bottom: $size !important;
+      }
+    }
+
+    .divide-x-#{$name} {
+      > :not(template) ~ :not(template) {
+        border-inline-start: var(--border-width) var(--border-style) var(--border-color-translucent) !important;
+      }
+
+      > :not(template):not(:first-child) {
+        padding-inline-start: $size !important;
+      }
+
+      > :not(template):not(:last-child) {
+        padding-inline-end: $size !important;
+      }
+    }
+  }
+
   // deprecated(2.0): `--tblr-status-color-rgb`, use `--tblr-status-color`
   .status {
     --status-color-rgb: #{deprecated-rgb-triplet($text-secondary)};

@@ -1,0 +1,44 @@
+---
+title: Space
+description: Utility classes that add space between the direct children of a container.
+summary: Add space between the direct children of a container with one class on the parent, and change it per breakpoint.
+---
+import Example from '@components/Example.astro';
+
+Use `.space-x-*` and `.space-y-*` to add space between the direct children of a container. You put one class on the parent, so no child needs a margin class.
+
+## Vertical space
+
+`.space-y-*` adds `margin-block-end` to every child except the last one. Choose a size from `0` to `6`. `.space-y` without a number uses the default spacer.
+
+<Example>
+<div class="space-y-3">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+</div>
+</Example>
+
+## Horizontal space
+
+`.space-x-*` adds `margin-inline-end` to every child except the last one, so it follows the text direction. Use it on a flex container or on inline children.
+
+<Example>
+<div class="d-flex space-x-3">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+</div>
+</Example>
+
+## Responsive
+
+Add a breakpoint to change the space on larger screens, like `.space-y-md-4` or `.space-x-lg-0`.
+
+<Example>
+<div class="d-flex flex-column flex-md-row space-y-2 space-y-md-0 space-x-md-3">
+  <div class="p-2 bg-primary-lt rounded">One</div>
+  <div class="p-2 bg-primary-lt rounded">Two</div>
+  <div class="p-2 bg-primary-lt rounded">Three</div>
+</div>
+</Example>
