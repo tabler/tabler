@@ -1,5 +1,21 @@
 # @tabler/preview
 
+## 1.7.4
+
+### Patch Changes
+
+- 3c81e6d: Fixed the dashboard welcome card illustration to use the `Illustration` component, so it follows dark mode.
+
+## 1.7.3
+
+No changes in this release.
+
+## 1.7.2
+
+### Patch Changes
+
+- 40a1a91: Fixed a chart tooltip crash when the `thousands` or `suffix-k` axis formatter gets an empty value.
+
 ## 1.7.1
 
 ### Patch Changes

@@ -156,6 +156,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   vcpOptions: 'object',
 }
 
+const validDates = (dates: readonly unknown[]): string[] => dates.filter((date): date is string => typeof date === 'string' && DATE_PATTERN.test(date))
+
 const pad = (value: number, length = 2): string => String(value).padStart(length, '0')
 
 const formatPattern = (date: Date, pattern: string): string => {
@@ -376,8 +378,8 @@ class Datepicker extends BaseComponent {
   }
 
   getSelectedDates(): string[] {
-    const dates = this._calendar?.context?.selectedDates
-    return dates && dates.length > 0 ? [...dates] : [...this._selectedDates]
+    const dates = this._calendar?.context?.selectedDates as unknown[] | undefined
+    return dates && dates.length > 0 ? validDates(dates) : [...this._selectedDates]
   }
 
   setSelectedDates(dates: DatesArr): void {
@@ -715,7 +717,7 @@ class Datepicker extends BaseComponent {
 
   /** @internal */
   _handleDateClick(self: Calendar, event: MouseEvent): void {
-    const selectedDates = [...self.context.selectedDates]
+    const selectedDates = validDates(self.context.selectedDates)
     this._selectedDates = selectedDates
 
     // Written even when empty: clicking the picked day again deselects it, and
@@ -784,7 +786,8 @@ class Datepicker extends BaseComponent {
     return this._config.selectionMode === 'multiple-ranged' ? ' – ' : ', '
   }
 
-  _formatDateForInput(dates: string[]): string {
+  _formatDateForInput(selectedDates: string[]): string {
+    const dates = validDates(selectedDates)
     if (dates.length === 0) {
       return ''
     }
