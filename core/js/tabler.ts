@@ -1,4 +1,5 @@
 import './src/autosize'
+import './src/banner'
 import './src/clipboard'
 import './src/confetti'
 import './src/countup'
@@ -22,6 +23,7 @@ export * from './src/bootstrap'
 
 // Tabler's own components
 export { default as Autosize } from './src/autosize'
+export { default as Banner } from './src/banner'
 export { default as Clipboard } from './src/clipboard'
 export { default as Confetti } from './src/confetti'
 export { default as CountUp } from './src/countup'

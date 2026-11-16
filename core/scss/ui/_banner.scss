@@ -1,0 +1,69 @@
+@use '../config' as *;
+
+.banner {
+  // scss-docs-start banner-css-vars
+  --banner-variant-color: var(--dark);
+  --banner-bg: var(--banner-variant-color);
+  --banner-color: var(--dark-fg);
+  --banner-padding-x: #{$banner-padding-x};
+  --banner-padding-y: #{$banner-padding-y};
+  --banner-font-size: #{$banner-font-size};
+  --banner-link-font-weight: #{$banner-link-font-weight};
+  --banner-icon-gap: #{$banner-icon-gap};
+  // scss-docs-end banner-css-vars
+  position: relative;
+  padding: var(--banner-padding-y) var(--banner-padding-x);
+  font-size: var(--banner-font-size);
+  color: var(--banner-color);
+  text-align: center;
+  background-color: var(--banner-bg);
+
+  &:has(> .btn-close) {
+    padding-inline: calc(var(--banner-padding-x) * 2 + var(--btn-close-size, #{$btn-close-width}));
+  }
+
+  a:not(.btn) {
+    font-weight: var(--banner-link-font-weight);
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  > .icon {
+    margin-inline-end: var(--banner-icon-gap);
+  }
+
+  > .btn-close {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: var(--banner-padding-x);
+    margin-block: auto;
+  }
+
+  @include media-print() {
+    display: none;
+  }
+}
+
+.banner-start {
+  text-align: start;
+
+  &:has(> .btn-close) {
+    padding-inline-start: var(--banner-padding-x);
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .banner-#{$name} {
+    --banner-variant-color: var(--#{$name});
+    --banner-color: var(--#{$name}-fg);
+  }
+}
+
+.banner-lt {
+  --banner-bg: color-mix(in oklab, var(--banner-variant-color) #{$banner-lt-mix}, var(--bg-surface));
+  --banner-color: var(--body-color);
+}

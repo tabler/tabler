@@ -1,0 +1,32 @@
+---
+// Banner (.banner): a one-line strip above the navbar for an announcement, a trial notice or a maintenance message.
+import Icon from './Icon.astro'
+
+interface Props {
+  /** core/scss/ui/_banner.scss `.banner-{color}` */
+  color?: string | undefined
+  /** `light` renders the tinted `.banner-lt` */
+  variant?: 'light'
+  /** icon before the text */
+  icon?: string
+  /** `start` aligns the text to the start edge (`.banner-start`) */
+  align?: 'start'
+  /** renders the close button */
+  showClose?: boolean
+  /** `data-bs-banner-id`: a closed banner with an id stays closed on the next visit */
+  id?: string
+  class?: string
+  /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { color, variant, icon, align, showClose, id, class: className, ...rest } = Astro.props
+
+const classes = ['banner', color && `banner-${color}`, variant === 'light' && 'banner-lt', align && `banner-${align}`, className]
+---
+
+<div class:list={classes} data-bs-banner-id={id} {...rest}>
+  {icon && <Icon name={icon} />}
+  <slot />
+  {showClose && <button type="button" class="btn-close" data-bs-dismiss="banner" aria-label="Close" />}
+</div>
