@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import Combobox from '../../src/combobox'
+import '../../src/bootstrap/dropdown'
 
 const markup = (attributes = '', extra = ''): string => `
   <form>
@@ -45,9 +46,21 @@ describe('Combobox', () => {
       expect(toggle.querySelector('.combobox-value')!.classList.contains('combobox-placeholder')).toBe(true)
       expect(toggle.getAttribute('aria-haspopup')).toBe('listbox')
       expect(toggle.getAttribute('aria-expanded')).toBe('false')
-      expect(menu.getAttribute('role')).toBe('listbox')
       expect(item('a').getAttribute('role')).toBe('option')
       expect(item('c').getAttribute('aria-disabled')).toBe('true')
+
+      const list = menu.querySelector('.combobox-list')!
+      expect(menu.hasAttribute('role')).toBe(false)
+      expect(list.getAttribute('role')).toBe('listbox')
+      expect(toggle.getAttribute('role')).toBe('combobox')
+      expect(toggle.getAttribute('aria-controls')).toBe(list.id)
+      expect(item('a').id).not.toBe('')
+    })
+
+    it('should copy the label of the toggle to the list', () => {
+      const { menu } = setup('aria-label="Letter"')
+
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-label')).toBe('Letter')
     })
 
     it('should read a pre-selected item', () => {
@@ -113,6 +126,28 @@ describe('Combobox', () => {
     })
   })
 
+  describe('show / hide focus', () => {
+    it('should stay open when hide.bs.combobox is prevented', () => {
+      const { toggle, menu, combobox } = setup()
+      toggle.addEventListener('hide.bs.combobox', (event) => event.preventDefault())
+      combobox.show()
+      combobox.hide()
+
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    })
+
+    it('should return focus to the toggle on Escape', () => {
+      const { toggle, menu, combobox } = setup()
+      combobox.show()
+      item('a').focus()
+      key(item('a'), 'Escape')
+
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+    })
+  })
+
   describe('selection', () => {
     it('should select an item, update text and hidden input, and close', () => {
       const { toggle, menu, combobox } = setup('data-bs-name="letter"')
@@ -173,6 +208,15 @@ describe('Combobox', () => {
       expect(label.textContent).toMatch(/^Alpha and 2 more$/)
     })
 
+    it('should join the values of a multiple markup combobox in the hidden input', () => {
+      const { menu } = setup('data-bs-multiple="true" data-bs-name="letters"')
+      item('a').click()
+      item('b').click()
+
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[type="hidden"]')!.value).toBe('a,b')
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-multiselectable')).toBe('true')
+    })
+
     it('should support multiple selection and keep the menu open', () => {
       const { toggle, menu, combobox } = setup('data-bs-multiple="true" data-bs-name="letters"')
 
@@ -197,6 +241,21 @@ describe('Combobox', () => {
 
       expect(menu.classList.contains('show')).toBe(true)
       expect(document.activeElement).toBe(item('a'))
+    })
+
+    it('should not hand arrow keys in the menu to the Dropdown data API', () => {
+      const { combobox } = setup()
+      const onError = vi.fn((event: Event) => event.preventDefault())
+      window.addEventListener('error', onError)
+      combobox.show()
+      item('a').focus()
+
+      key(item('a'), 'ArrowDown')
+      key(item('b'), 'Escape')
+      window.removeEventListener('error', onError)
+
+      expect(onError).not.toHaveBeenCalled()
+      expect(document.activeElement).toBe(fixtureEl.querySelector('.combobox-toggle'))
     })
 
     it('should move between enabled items with arrows, Home and End', () => {
@@ -240,6 +299,53 @@ describe('Combobox', () => {
       input.value = 'alpha'
       input.dispatchEvent(new Event('input', { bubbles: true }))
       expect(item('a').style.display).toBe('')
+    })
+
+    it('should describe the search field and the empty message for assistive technology', () => {
+      const { menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+
+      expect(input.getAttribute('role')).toBe('combobox')
+      expect(input.getAttribute('aria-controls')).toBe(menu.querySelector('.combobox-list')!.id)
+      expect(input.getAttribute('aria-autocomplete')).toBe('list')
+      expect(fixtureEl.querySelector('.combobox-no-results')!.getAttribute('role')).toBe('status')
+      expect(menu.querySelector('.combobox-list')!.contains(input)).toBe(false)
+    })
+
+    it('should point aria-activedescendant at the highlighted item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      type(input, 'bra')
+      expect(input.getAttribute('aria-activedescendant')).toBe(item('b').id)
+
+      type(input, '')
+      expect(input.hasAttribute('aria-activedescendant')).toBe(false)
+    })
+
+    it('should open and start the search when typing on the closed toggle', () => {
+      const { toggle, menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      toggle.focus()
+      key(toggle, 'b')
+
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(input.value).toBe('b')
+      expect(item('a').style.display).toBe('none')
+      expect(document.activeElement).toBe(input)
+    })
+
+    it('should leave Home and End to the search field', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      const event = new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(false)
+      expect(document.activeElement).toBe(input)
     })
 
     const type = (input: HTMLInputElement, value: string): void => {
@@ -638,6 +744,73 @@ describe('Combobox', () => {
     it('should skip sanitizing when sanitize is false', () => {
       const { menu } = setupSelect('', `<option value="x" data-custom-properties='<b data-x="1">X</b>'>X</option>`, { sanitize: false })
       expect(menu.querySelector('[data-bs-value="x"] b')!.getAttribute('data-x')).toBe('1')
+    })
+
+    it('should name the toggle and the list from the label', () => {
+      const { toggle, menu } = setupSelect()
+      const label = fixtureEl.querySelector('label')!
+
+      expect(label.id).not.toBe('')
+      expect(toggle.getAttribute('aria-labelledby')).toBe(label.id)
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-labelledby')).toBe(label.id)
+    })
+
+    it('should fall back to the aria-label of the select', () => {
+      fixtureEl.innerHTML = '<select aria-label="Fruit"><option value="a">Apple</option></select>'
+      const select = fixtureEl.querySelector('select')!
+      new Combobox(select)
+
+      expect((select.nextElementSibling as HTMLElement).getAttribute('aria-label')).toBe('Fruit')
+    })
+
+    it('should mark a multiple select as multiselectable', () => {
+      const { menu } = setupSelect('multiple')
+
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-multiselectable')).toBe('true')
+    })
+
+    it('should tie the options of a group to its header', () => {
+      const { menu } = setupSelect()
+      const header = menu.querySelector<HTMLElement>('.dropdown-header')!
+
+      expect(header.getAttribute('role')).toBe('presentation')
+      expect(menu.querySelector('[data-bs-value="c"]')!.getAttribute('aria-describedby')).toBe(header.id)
+      expect(menu.querySelector('[data-bs-value="a"]')!.hasAttribute('aria-describedby')).toBe(false)
+    })
+
+    it('should disable the options of a disabled group', () => {
+      fixtureEl.innerHTML = '<select><option value="a">Apple</option><optgroup label="Citrus" disabled><option value="c">Cherry</option></optgroup></select>'
+      new Combobox(fixtureEl.querySelector('select')!)
+      const option = fixtureEl.querySelector<HTMLButtonElement>('[data-bs-value="c"]')!
+
+      expect(option.disabled).toBe(true)
+      expect(option.getAttribute('aria-disabled')).toBe('true')
+    })
+
+    it('should expose the required and invalid state on the toggle', () => {
+      const { select, toggle, combobox } = setupSelect('required')
+
+      expect(toggle.getAttribute('aria-required')).toBe('true')
+      expect(toggle.getAttribute('aria-invalid')).toBe('true')
+
+      select.required = false
+      select.classList.remove('is-invalid')
+      combobox.refresh()
+
+      expect(toggle.hasAttribute('aria-required')).toBe(false)
+      expect(toggle.hasAttribute('aria-invalid')).toBe(false)
+    })
+
+    it('should remove the last tag on Backspace in an empty search field', () => {
+      const { select, menu, combobox } = setupSelect('multiple')
+      select.options[0].selected = true
+      select.options[1].selected = true
+      combobox.refresh()
+      combobox.show()
+
+      key(menu.querySelector('.combobox-search-input')!, 'Backspace')
+
+      expect(Array.from(select.selectedOptions).map((option) => option.value)).toEqual(['a'])
     })
 
     it('should restore the select on dispose', () => {

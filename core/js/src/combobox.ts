@@ -10,7 +10,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { eventActionOnPlugin, initAll } from './bootstrap/util/component-functions'
-import { getElement, getNextActiveElement, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
+import { getElement, getNextActiveElement, getUID, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
 import { DefaultAllowlist, DefaultIconAllowlist, sanitizeHtml } from './bootstrap/util/sanitizer'
 import type { DelegatedEvent } from './bootstrap/dom/event-handler'
 import type { AllowList, SanitizeFn } from './bootstrap/types'
@@ -146,6 +146,7 @@ class Combobox extends BaseComponent {
   _form: HTMLFormElement | null
   _clearsDefault: boolean
   _highlighted: HTMLElement | null
+  _uid: string
   _toggle: HTMLElement
   _menu: HTMLElement
   _valueDisplay: HTMLElement
@@ -165,6 +166,7 @@ class Combobox extends BaseComponent {
     this._form = this._select?.form ?? null
     this._clearsDefault = false
     this._highlighted = null
+    this._uid = getUID(NAME)
     this._optionByItem = new Map()
     this._hiddenInput = null
     this._popper = null
@@ -527,24 +529,76 @@ class Combobox extends BaseComponent {
   }
 
   _setAriaAttributes(): void {
-    this._toggle.setAttribute('aria-haspopup', 'listbox')
-    this._toggle.setAttribute('aria-expanded', String(this._isShown()))
-    this._menu.setAttribute('role', 'listbox')
+    const toggle = this._toggle
+    const list = this._list
 
-    if (this._config.multiple) {
-      this._menu.setAttribute('aria-multiselectable', 'true')
+    list.id ||= `${this._uid}-list`
+    list.setAttribute('role', 'listbox')
+    this._menu.removeAttribute('role')
+
+    toggle.setAttribute('role', 'combobox')
+    toggle.setAttribute('aria-haspopup', 'listbox')
+    toggle.setAttribute('aria-expanded', String(this._isShown()))
+    toggle.setAttribute('aria-controls', list.id)
+
+    for (const name of ['aria-labelledby', 'aria-label']) {
+      const value = toggle.getAttribute(name)
+
+      if (value) {
+        list.setAttribute(name, value)
+      }
     }
 
-    for (const item of SelectorEngine.find(SELECTOR_ITEM, this._menu)) {
-      item.setAttribute('role', 'option')
+    if (this._config.multiple) {
+      list.setAttribute('aria-multiselectable', 'true')
+    }
 
-      if (!item.hasAttribute('aria-selected')) {
-        item.setAttribute('aria-selected', String(item.classList.contains(CLASS_NAME_SELECTED)))
+    if (this._select) {
+      this._toggleAttribute(toggle, 'aria-required', this._select.required)
+      this._toggleAttribute(toggle, 'aria-invalid', this._select.matches('.is-invalid, .is-invalid-lite'))
+    }
+
+    if (this._searchInput) {
+      this._searchInput.setAttribute('role', 'combobox')
+      this._searchInput.setAttribute('aria-expanded', 'true')
+      this._searchInput.setAttribute('aria-controls', list.id)
+      this._searchInput.setAttribute('aria-autocomplete', 'list')
+    }
+
+    this._noResults?.setAttribute('role', 'status')
+
+    let header: HTMLElement | null = null
+
+    for (const [index, element] of SelectorEngine.find(`.dropdown-header, ${SELECTOR_ITEM}`, list).entries()) {
+      if (element.matches('.dropdown-header')) {
+        element.id ||= `${this._uid}-group-${index}`
+        element.setAttribute('role', 'presentation')
+        header = element
+        continue
       }
 
-      if (item.hasAttribute('disabled')) {
-        item.setAttribute('aria-disabled', 'true')
+      element.id ||= `${this._uid}-option-${index}`
+      element.setAttribute('role', 'option')
+
+      if (!element.hasAttribute('aria-selected')) {
+        element.setAttribute('aria-selected', String(element.classList.contains(CLASS_NAME_SELECTED)))
       }
+
+      if (element.hasAttribute('disabled')) {
+        element.setAttribute('aria-disabled', 'true')
+      }
+
+      if (header) {
+        element.setAttribute('aria-describedby', header.id)
+      }
+    }
+  }
+
+  _toggleAttribute(element: HTMLElement, name: string, on: boolean): void {
+    if (on) {
+      element.setAttribute(name, 'true')
+    } else {
+      element.removeAttribute(name)
     }
   }
 
@@ -912,6 +966,12 @@ class Combobox extends BaseComponent {
     this._highlighted?.classList.remove(CLASS_NAME_FOCUS)
     this._highlighted = item
     item?.classList.add(CLASS_NAME_FOCUS)
+
+    if (item) {
+      this._searchInput?.setAttribute('aria-activedescendant', item.id)
+    } else {
+      this._searchInput?.removeAttribute('aria-activedescendant')
+    }
   }
 
   _normalizeText(text: string): string {

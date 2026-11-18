@@ -755,6 +755,9 @@ Events fire on the toggle button.
 
 ## Accessibility
 
-- The toggle gets `aria-haspopup="listbox"` and `aria-expanded`; the menu gets `role="listbox"` and each item `role="option"` with `aria-selected`.
+- The toggle gets `role="combobox"`, `aria-haspopup="listbox"`, `aria-expanded` and `aria-controls`, so a screen reader announces the label and the chosen value. The list of items gets `role="listbox"` and each item `role="option"` with `aria-selected`.
+- A group header is tied to its items with `aria-describedby`.
+- The search field points at the highlighted item with `aria-activedescendant`, and the empty message is a `role="status"` region.
+- On a `<select>`, `required` and `.is-invalid` are passed to the toggle as `aria-required` and `aria-invalid`.
 - Keyboard: <kbd>↓</kbd> / <kbd>↑</kbd> open the menu and move between items, <kbd>Home</kbd> / <kbd>End</kbd> jump to the first or last item, <kbd>Enter</kbd> / <kbd>Space</kbd> select, <kbd>Esc</kbd> closes and returns focus to the toggle, <kbd>Tab</kbd> closes. With a search field: the first match is highlighted and <kbd>Enter</kbd> selects it, typing on an item continues the search, and <kbd>↑</kbd> on the first item returns to the search field.
 - Label the field with a visible `<label>` or `aria-label`, and give the search input an `aria-label`.
