@@ -1,0 +1,493 @@
+---
+import { assetRoot } from '@shared/lib/assets'
+import { people } from '@shared/lib/people'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+
+const countries: [string, string][] = [
+  ['us', 'United States'],
+  ['gb', 'United Kingdom'],
+  ['de', 'Germany'],
+  ['fr', 'France'],
+  ['pl', 'Poland'],
+  ['es', 'Spain'],
+  ['it', 'Italy'],
+  ['nl', 'Netherlands'],
+  ['se', 'Sweden'],
+  ['jp', 'Japan'],
+  ['br', 'Brazil'],
+  ['ca', 'Canada'],
+]
+
+const payments: [string, string][] = [
+  ['visa', 'Visa'],
+  ['mastercard', 'Mastercard'],
+  ['americanexpress', 'American Express'],
+  ['paypal', 'PayPal'],
+  ['stripe', 'Stripe'],
+  ['applepay', 'Apple Pay'],
+]
+
+const shortcuts: [string, string, string][] = [
+  ['cut', 'Cut', 'ctrl + X'],
+  ['copy', 'Copy', 'ctrl + C'],
+  ['paste', 'Paste', 'ctrl + V'],
+  ['all', 'Select all', 'ctrl + A'],
+  ['find', 'Find', 'ctrl + F'],
+  ['save', 'Save', 'ctrl + S'],
+]
+
+const statuses: [string, string, string][] = [
+  ['online', 'Online', 'green'],
+  ['away', 'Away', 'yellow'],
+  ['busy', 'Busy', 'red'],
+  ['offline', 'Offline', 'secondary'],
+]
+
+const priorities: [string, string, string, number][] = [
+  ['low', 'Low', 'blue', 12],
+  ['medium', 'Medium', 'yellow', 5],
+  ['high', 'High', 'red', 2],
+]
+
+const sizes: [string, string][] = [
+  ['sm', 'Small'],
+  ['', 'Default'],
+  ['lg', 'Large'],
+]
+
+const fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry', 'Fig', 'Grape', 'Kiwi', 'Mango']
+
+const team = people.slice(0, 8)
+const photo = (person: { photo?: string }) => `${assetRoot}/${person.photo}`
+const avatar = (person: { photo?: string }) => `<span class='avatar avatar-xs' style='background-image: url(${photo(person)})'></span>`
+
+const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
+---
+
+<DefaultLayout title="Combobox" pageMenu="form.combobox" description="A combobox is a select-like field with a searchable menu, rich options, tags and full keyboard support.">
+  <DocsLink slot="page-header-actions" path="/ui/forms/combobox" />
+
+  <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Native select</CardTitle>
+          <CardSubtitle>Add <code>data-bs-toggle="combobox"</code> to a <code>&lt;select&gt;</code>. It stays the real form field.</CardSubtitle>
+          <label class="form-label" for="combobox-native">Fruit</label>
+          <select class="form-select" id="combobox-native" data-bs-toggle="combobox" data-placeholder="Pick a fruit">
+            {fruits.slice(0, 5).map((fruit) => <option value={fruit.toLowerCase()}>{fruit}</option>)}
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Multiple</CardTitle>
+          <CardSubtitle>Add <code>multiple</code> for tags. The ones that do not fit collapse into a <code>+N</code> tag.</CardSubtitle>
+          <label class="form-label" for="combobox-multiple">Fruits</label>
+          <select class="form-select" id="combobox-multiple" multiple data-bs-toggle="combobox" data-placeholder="Pick fruits">
+            {
+              fruits.map((fruit, index) => (
+                <option value={fruit.toLowerCase()} selected={index < 6}>
+                  {fruit}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Wrapping tags</CardTitle>
+          <CardSubtitle>Set <code>data-bs-tags-overflow="wrap"</code> to show every tag on extra lines.</CardSubtitle>
+          <label class="form-label" for="combobox-wrap">Fruits</label>
+          <select class="form-select" id="combobox-wrap" multiple data-bs-toggle="combobox" data-bs-tags-overflow="wrap" data-placeholder="Pick fruits">
+            {
+              fruits.map((fruit, index) => (
+                <option value={fruit.toLowerCase()} selected={index < 6}>
+                  {fruit}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Markup</CardTitle>
+          <CardSubtitle>Write the items yourself with a button, a <code>.dropdown-menu</code> and <code>data-bs-value</code>.</CardSubtitle>
+          <label class="form-label" id="combobox-markup-label">Role</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-name="role" data-bs-placeholder="Choose a role…" aria-labelledby="combobox-markup-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item" type="button" data-bs-value="admin">
+              <span class="dropdown-item-content">
+                <span>Admin</span>
+                <small class="dropdown-item-description">Full access to all resources</small>
+              </span>
+              <Fragment set:html={checkIcon} />
+            </button>
+            <button class="dropdown-item" type="button" data-bs-value="editor">
+              <span class="dropdown-item-content">
+                <span>Editor</span>
+                <small class="dropdown-item-description">Can edit and publish content</small>
+              </span>
+              <Fragment set:html={checkIcon} />
+            </button>
+            <button class="dropdown-item" type="button" data-bs-value="viewer">
+              <span class="dropdown-item-content">
+                <span>Viewer</span>
+                <small class="dropdown-item-description">Read-only access</small>
+              </span>
+              <Fragment set:html={checkIcon} />
+            </button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Multiple as a list</CardTitle>
+          <CardSubtitle>In markup mode the labels are listed with commas and end with “and N more” when they do not fit.</CardSubtitle>
+          <label class="form-label" id="combobox-list-label">Skills</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-multiple="true" data-bs-name="skills" data-bs-placeholder="Select skills…" aria-labelledby="combobox-list-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            {
+              ['HTML', 'CSS', 'JavaScript', 'Python', 'Ruby', 'Go', 'PHP', 'Java'].map((skill, index) => (
+                <button class={`dropdown-item${index < 4 ? ' selected' : ''}`} type="button" data-bs-value={skill.toLowerCase()} aria-selected={index < 4 ? 'true' : undefined}>
+                  {skill}
+                  <Fragment set:html={checkIcon} />
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Groups</CardTitle>
+          <CardSubtitle>An <code>&lt;optgroup&gt;</code> becomes a header. Search hides a group with no match.</CardSubtitle>
+          <label class="form-label" for="combobox-groups">Language</label>
+          <select class="form-select" id="combobox-groups" data-bs-toggle="combobox" data-placeholder="Pick a language">
+            <optgroup label="Frontend">
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="js">JavaScript</option>
+            </optgroup>
+            <optgroup label="Backend">
+              <option value="python">Python</option>
+              <option value="ruby">Ruby</option>
+              <option value="go">Go</option>
+            </optgroup>
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Flags</CardTitle>
+          <CardSubtitle>Put a flag in <code>data-custom-properties</code>. It shows in the menu and in the field.</CardSubtitle>
+          <label class="form-label" for="combobox-flags">Country</label>
+          <select class="form-select" id="combobox-flags" data-bs-toggle="combobox" data-placeholder="Pick a country">
+            {
+              countries.map(([code, name]) => (
+                <option value={code} data-custom-properties={`<span class='flag flag-xs flag-country-${code}'></span>`}>
+                  {name}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Payment methods</CardTitle>
+          <CardSubtitle>The same works with the payment icons.</CardSubtitle>
+          <label class="form-label" for="combobox-payments">Payment method</label>
+          <select class="form-select" id="combobox-payments" data-bs-toggle="combobox" data-placeholder="Payment method">
+            {
+              payments.map(([code, name], index) => (
+                <option value={code} selected={index === 0} data-custom-properties={`<span class='payment payment-xs payment-provider-${code}'></span>`}>
+                  {name}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Avatars</CardTitle>
+          <CardSubtitle>Show the person next to the name.</CardSubtitle>
+          <label class="form-label" for="combobox-avatars">Assignee</label>
+          <select class="form-select" id="combobox-avatars" data-bs-toggle="combobox" data-placeholder="Assign to…">
+            {
+              team.map((person) => (
+                <option value={String(person.id)} data-custom-properties={avatar(person)}>
+                  {person.full_name}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Avatars as tags</CardTitle>
+          <CardSubtitle>On a multiple select the avatars go into the tags.</CardSubtitle>
+          <label class="form-label" for="combobox-reviewers">Reviewers</label>
+          <select class="form-select" id="combobox-reviewers" multiple data-bs-toggle="combobox" data-placeholder="Add reviewers">
+            {
+              team.map((person, index) => (
+                <option value={String(person.id)} selected={index < 4} data-custom-properties={avatar(person)}>
+                  {person.full_name}
+                </option>
+              ))
+            }
+          </select>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Avatars with details</CardTitle>
+          <CardSubtitle>Add an email under the name with <code>.dropdown-item-description</code>.</CardSubtitle>
+          <label class="form-label" id="combobox-details-label">Person</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-name="person" data-bs-placeholder="Select a person…" aria-labelledby="combobox-details-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            {
+              team.slice(0, 5).map((person) => (
+                <button class="dropdown-item" type="button" data-bs-value={String(person.id)}>
+                  <span class="dropdown-item-indicator">
+                    <span class="avatar avatar-xs" style={`background-image: url(${photo(person)})`} />
+                  </span>
+                  <span class="dropdown-item-content">
+                    <span>{person.full_name}</span>
+                    <small class="dropdown-item-description">{person.email}</small>
+                  </span>
+                  <Fragment set:html={checkIcon} />
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Keyboard shortcuts</CardTitle>
+          <CardSubtitle>A <code>&lt;kbd&gt;</code> in the item is shown in the menu and in the field.</CardSubtitle>
+          <label class="form-label" id="combobox-shortcuts-label">Action</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-name="action" data-bs-placeholder="Choose an action…" aria-labelledby="combobox-shortcuts-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            {
+              shortcuts.map(([value, label, keys]) => (
+                <button class="dropdown-item" type="button" data-bs-value={value}>
+                  <span class="dropdown-item-label">{label}</span>
+                  <kbd class="ms-auto">{keys}</kbd>
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Status</CardTitle>
+          <CardSubtitle>An empty <code>.badge</code> works as a status dot.</CardSubtitle>
+          <label class="form-label" id="combobox-status-label">Status</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Set status…" aria-labelledby="combobox-status-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            {
+              statuses.map(([value, label, color]) => (
+                <button class="dropdown-item" type="button" data-bs-value={value}>
+                  <span class="dropdown-item-indicator">
+                    <span class={`badge bg-${color}`} />
+                  </span>
+                  <span class="dropdown-item-label">{label}</span>
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Badges</CardTitle>
+          <CardSubtitle>A badge at the end of the item is shown in the field too.</CardSubtitle>
+          <label class="form-label" id="combobox-badges-label">Priority</label>
+          <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Priority…" aria-labelledby="combobox-badges-label">
+            <span class="combobox-value"></span>
+          </button>
+          <div class="dropdown-menu">
+            {
+              priorities.map(([value, label, color, count]) => (
+                <button class="dropdown-item" type="button" data-bs-value={value}>
+                  <span class="dropdown-item-label">{label}</span>
+                  <span class={`badge bg-${color}-lt ms-auto`}>{count}</span>
+                </button>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Disabled</CardTitle>
+          <CardSubtitle>Add <code>disabled</code> to the field, or to single options.</CardSubtitle>
+          <div class="mb-3">
+            <label class="form-label" for="combobox-disabled">Disabled field</label>
+            <select class="form-select" id="combobox-disabled" data-bs-toggle="combobox" data-placeholder="Cannot interact…" disabled>
+              {fruits.slice(0, 3).map((fruit) => <option value={fruit.toLowerCase()}>{fruit}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="combobox-disabled-options">Disabled options</label>
+            <select class="form-select" id="combobox-disabled-options" data-bs-toggle="combobox" data-placeholder="Some options disabled…">
+              {
+                fruits.slice(0, 4).map((fruit, index) => (
+                  <option value={fruit.toLowerCase()} disabled={index === 1}>
+                    {fruit}
+                  </option>
+                ))
+              }
+            </select>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Use <code>.form-select-sm</code> or <code>.form-select-lg</code>. The class is copied to the field.</CardSubtitle>
+          <div class="d-flex flex-column gap-3">
+            {
+              sizes.map(([size, label]) => (
+                <div>
+                  <label class="form-label" for={`combobox-size-${size || 'default'}`}>
+                    {label}
+                  </label>
+                  <select class={`form-select${size ? ` form-select-${size}` : ''}`} id={`combobox-size-${size || 'default'}`} data-bs-toggle="combobox" data-placeholder="Pick a country">
+                    {countries.map(([code, name], index) => (
+                      <option value={code} selected={index === 0} data-custom-properties={`<span class='flag flag-xs flag-country-${code}'></span>`}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Sizes with tags</CardTitle>
+          <CardSubtitle>The height stays the same with tags in every size.</CardSubtitle>
+          <div class="d-flex flex-column gap-3">
+            {
+              sizes.map(([size, label]) => (
+                <div>
+                  <label class="form-label" for={`combobox-size-multiple-${size || 'default'}`}>
+                    {label}
+                  </label>
+                  <select class={`form-select${size ? ` form-select-${size}` : ''}`} id={`combobox-size-multiple-${size || 'default'}`} multiple data-bs-toggle="combobox" data-placeholder="Pick fruits">
+                    {fruits.map((fruit, index) => (
+                      <option value={fruit.toLowerCase()} selected={index < 4}>
+                        {fruit}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col">
+      <Card class="h-100">
+        <CardBody>
+          <CardTitle>Validation</CardTitle>
+          <CardSubtitle>Add <code>.is-valid</code> or <code>.is-invalid</code>. The class is copied to the field.</CardSubtitle>
+          <div class="mb-3">
+            <label class="form-label" for="combobox-valid">Valid</label>
+            <select class="form-select is-valid" id="combobox-valid" data-bs-toggle="combobox" data-placeholder="Pick a fruit">
+              {
+                fruits.slice(0, 4).map((fruit, index) => (
+                  <option value={fruit.toLowerCase()} selected={index === 0}>
+                    {fruit}
+                  </option>
+                ))
+              }
+            </select>
+            <div class="valid-feedback">Looks good.</div>
+          </div>
+          <div>
+            <label class="form-label" for="combobox-invalid">Invalid</label>
+            <select class="form-select is-invalid" id="combobox-invalid" data-bs-toggle="combobox" data-placeholder="Pick a fruit">
+              {fruits.slice(0, 4).map((fruit) => <option value={fruit.toLowerCase()}>{fruit}</option>)}
+            </select>
+            <div class="invalid-feedback">Please pick a fruit.</div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
