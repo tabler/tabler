@@ -1,0 +1,33 @@
+// Tests for `is-shade-of()` from scss/mixins/_functions.scss.
+
+@use '../mixins/functions' as *;
+
+@include describe('is-shade-of') {
+  @include it('accepts a darker shade with the same hue') {
+    @include assert-equal(is-shade-of(oklch(45.86% 0.1448 254.2deg), oklch(54.6% 0.1724 254.2deg)), true);
+  }
+
+  @include it('accepts a hand-picked shade whose hue drifts') {
+    @include assert-equal(is-shade-of(#92400e, #f59e0b), true);
+  }
+
+  @include it('rejects a shade of another hue') {
+    @include assert-equal(is-shade-of(oklch(45.86% 0.1448 254.2deg), #e11d48), false);
+  }
+
+  @include it('compares hues across 0deg') {
+    @include assert-equal(is-shade-of(oklch(48% 0.16 359.6deg), oklch(58% 0.2 0.2deg)), true);
+  }
+
+  @include it('accepts a gray shade of a gray color') {
+    @include assert-equal(is-shade-of(oklch(46.66% 0 0deg), #8a8a8a), true);
+  }
+
+  @include it('rejects a gray shade of a chromatic color') {
+    @include assert-equal(is-shade-of(oklch(46.66% 0 0deg), #e11d48), false);
+  }
+
+  @include it('accepts a value Sass cannot read') {
+    @include assert-equal(is-shade-of(var(--custom), #e11d48), true);
+  }
+}

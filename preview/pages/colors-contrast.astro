@@ -1,0 +1,224 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import site from '@data/site.json'
+
+type ColorEntry = [string, { title: string }]
+type Sample = { surface: string; class: string }
+type Row = { title: string; code: string; samples: Sample[] }
+type Group = { title: string; subtitle: string; columns: string[]; rows: Row[] }
+
+const themeColorNames = ['primary', 'secondary', 'success', 'info', 'warning', 'danger']
+const themeColors = (Object.entries(site.themeColors) as ColorEntry[]).filter(([name]) => themeColorNames.includes(name))
+const colors = Object.entries(site.colors) as ColorEntry[]
+
+const colorColumns = ['Text on color', 'Color on surface', 'Color on light']
+const colorRow = ([name, color]: ColorEntry): Row => ({
+  title: color.title,
+  code: `--tblr-${name}`,
+  samples: [
+    { surface: 'bg-surface', class: `bg-${name} text-${name}-fg` },
+    { surface: 'bg-surface', class: `text-${name}` },
+    { surface: 'bg-surface', class: `bg-${name}-lt` },
+  ],
+})
+
+const surfaces = ['bg-surface', 'bg-surface-secondary', 'bg-body']
+const textRow = (title: string, code: string, className: string): Row => ({
+  title,
+  code,
+  samples: surfaces.map((surface) => ({ surface, class: className })),
+})
+
+const groups: Group[] = [
+  {
+    title: 'Theme colors',
+    subtitle: 'The brand color and the status colors, as a solid background with its <code>-fg</code> text, as text on a surface, and as a <code>-lt</code> background.',
+    columns: colorColumns,
+    rows: themeColors.map(colorRow),
+  },
+  {
+    title: 'Colors',
+    subtitle: 'The extended palette in the same three pairings.',
+    columns: colorColumns,
+    rows: colors.map(colorRow),
+  },
+  {
+    title: 'Text colors',
+    subtitle: 'Body, secondary and muted text on the card surface, the secondary surface and the page background.',
+    columns: ['On surface', 'On surface secondary', 'On body'],
+    rows: [textRow('Body', '.text-body', 'text-body'), textRow('Secondary', '.text-secondary', 'text-secondary'), textRow('Muted', '.text-muted', 'text-muted'), textRow('Link', '.link-primary', 'link-primary')],
+  },
+]
+
+const modes = ['light', 'dark']
+const modeTitle = (mode: string) => (mode === 'light' ? 'Light mode' : 'Dark mode')
+---
+
+<DefaultLayout title="Color contrast" pageMenu="base.colors-contrast" description="WCAG contrast ratio of every color pairing, measured in the browser for light and dark mode.">
+  <div class="row row-cards" id="color-contrast">
+    {
+      modes.map((mode) => (
+        <div class="col-sm-6">
+          <Card>
+            <CardBody>
+              <div class="subheader">{modeTitle(mode)}</div>
+              <div class="h1 mb-0" data-contrast-summary={mode}>
+                –
+              </div>
+              <div class="text-secondary">pairings pass AA (4.5:1)</div>
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+    {
+      groups.map((group) => (
+        <div class="col-12">
+          <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>{group.title}</CardTitle>
+                <CardSubtitle>
+                  <Fragment set:html={group.subtitle} />
+                </CardSubtitle>
+              </div>
+            </CardHeader>
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2">Color</th>
+                    {modes.map((mode) => (
+                      <th colspan={group.columns.length}>{modeTitle(mode)}</th>
+                    ))}
+                  </tr>
+                  <tr>{modes.map(() => group.columns.map((column) => <th>{column}</th>))}</tr>
+                </thead>
+                <tbody>
+                  {group.rows.map((row) => (
+                    <tr>
+                      <td>
+                        <div>{row.title}</div>
+                        <div class="small text-nowrap">
+                          <code>{row.code}</code>
+                        </div>
+                      </td>
+                      {modes.map((mode) =>
+                        row.samples.map((sample) => (
+                          <td data-contrast-mode={mode}>
+                            <div class="d-flex align-items-center gap-2">
+                              <div class={`border rounded p-1 ${sample.surface}`} data-bs-theme={mode}>
+                                <div class={`rounded px-2 py-1 fw-medium ${sample.class}`} data-contrast-sample>
+                                  Aa
+                                </div>
+                              </div>
+                              <div>
+                                <div class="fw-medium" data-contrast-ratio>
+                                  –
+                                </div>
+                                <span class="badge" data-contrast-level />
+                              </div>
+                            </div>
+                          </td>
+                        )),
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      ))
+    }
+  </div>
+
+  <CaptureScript>
+    <!-- BEGIN COLOR CONTRAST -->
+    <script is:inline>
+      function initColorContrast() {
+        const root = document.getElementById('color-contrast')
+        if (!root) return
+
+        const canvas = document.createElement('canvas')
+        canvas.width = canvas.height = 1
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })
+
+        // Paints the colors on top of each other and returns the resulting opaque pixel.
+        const flatten = (layers) => {
+          ctx.fillStyle = '#fff'
+          ctx.fillRect(0, 0, 1, 1)
+          layers.forEach((color) => {
+            ctx.fillStyle = color
+            ctx.fillRect(0, 0, 1, 1)
+          })
+          return Array.from(ctx.getImageData(0, 0, 1, 1).data.slice(0, 3))
+        }
+
+        const backgrounds = (element) => {
+          const layers = []
+          for (let node = element; node; node = node.parentElement) {
+            layers.unshift(getComputedStyle(node).backgroundColor)
+          }
+          return layers
+        }
+
+        const luminance = (rgb) => {
+          const [r, g, b] = rgb.map((value) => {
+            const channel = value / 255
+            return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+          })
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b
+        }
+
+        const hex = (rgb) => '#' + rgb.map((value) => value.toString(16).padStart(2, '0')).join('')
+
+        const levels = [
+          [7, 'AAA', 'bg-green-lt'],
+          [4.5, 'AA', 'bg-green-lt'],
+          [3, 'AA large', 'bg-yellow-lt'],
+          [0, 'Fail', 'bg-red-lt'],
+        ]
+
+        const summary = {}
+
+        root.querySelectorAll('[data-contrast-mode]').forEach((cell) => {
+          const sample = cell.querySelector('[data-contrast-sample]')
+          const layers = backgrounds(sample)
+          const background = flatten(layers)
+          const text = flatten([...layers, getComputedStyle(sample).color])
+
+          const lighter = Math.max(luminance(background), luminance(text))
+          const darker = Math.min(luminance(background), luminance(text))
+          const ratio = Math.floor(((lighter + 0.05) / (darker + 0.05)) * 100) / 100
+          const [, label, className] = levels.find(([min]) => ratio >= min)
+
+          cell.querySelector('[data-contrast-ratio]').textContent = ratio.toFixed(2)
+          const badge = cell.querySelector('[data-contrast-level]')
+          badge.textContent = label
+          badge.classList.add(className)
+          sample.title = hex(text) + ' on ' + hex(background)
+
+          const mode = cell.dataset.contrastMode
+          summary[mode] ??= { pass: 0, total: 0 }
+          summary[mode].total++
+          if (ratio >= 4.5) summary[mode].pass++
+        })
+
+        root.querySelectorAll('[data-contrast-summary]').forEach((element) => {
+          const result = summary[element.dataset.contrastSummary]
+          if (result) element.textContent = result.pass + ' / ' + result.total
+        })
+      }
+
+      document.readyState !== 'loading' ? initColorContrast() : document.addEventListener('DOMContentLoaded', initColorContrast, { once: true })
+    </script>
+    <!-- END COLOR CONTRAST -->
+  </CaptureScript>
+</DefaultLayout>

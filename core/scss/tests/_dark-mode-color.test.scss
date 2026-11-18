@@ -1,0 +1,61 @@
+// Tests for the dark-mode helpers in scss/mixins/_functions.scss used by
+// scss/_props.scss: `dark-mode-color()` derives the dark variant of a theme
+// color, `prefers-light-foreground()` picks the `-fg` color and `css-color()`
+// prints an opaque rgb color as hex.
+
+@use 'sass:color';
+@use 'sass:math';
+@use '../mixins/functions' as *;
+
+@include describe('dark-mode-color') {
+  @include it('lightens by 6% and drops 8% of the chroma, keeping the hue') {
+    @include assert-equal(dark-mode-color(oklch(57.5% 0.1941 25.59deg)), oklch(63.5% 0.1786 25.59deg));
+  }
+
+  @include it('clips a color that leaves the sRGB gamut') {
+    $dark: dark-mode-color(oklch(56% 0.15 71.02deg));
+    @include assert-equal($dark, oklch(62.04% 0.1346 69.75deg));
+    @include assert-true(color.is-in-gamut($dark, $space: rgb));
+  }
+
+  @include it('rounds the channels to 2, 4 and 2 decimals') {
+    $dark: dark-mode-color(#0d8227);
+    @include assert-equal(color.channel($dark, 'lightness', $space: oklch), math.div(math.round(color.channel($dark, 'lightness', $space: oklch) * 100), 100));
+    @include assert-equal(color.channel($dark, 'chroma', $space: oklch), math.div(math.round(color.channel($dark, 'chroma', $space: oklch) * 10000), 10000));
+    @include assert-equal(color.channel($dark, 'hue', $space: oklch), math.div(math.round(color.channel($dark, 'hue', $space: oklch) * 100), 100));
+  }
+
+  @include it('returns an oklch color') {
+    @include assert-equal(color.space(dark-mode-color(#066fd1)), oklch);
+  }
+}
+
+@include describe('prefers-light-foreground') {
+  @include it('is true on a dark background') {
+    @include assert-true(prefers-light-foreground(#000));
+    @include assert-true(prefers-light-foreground(oklch(53% 0.16 145.43deg)));
+  }
+
+  @include it('is false on a light background') {
+    @include assert-false(prefers-light-foreground(#fff));
+    @include assert-false(prefers-light-foreground(oklch(77.02% 0.1658 71.02deg)));
+  }
+
+  @include it('compares the given foreground candidates') {
+    @include assert-true(prefers-light-foreground(#808080, #fff, #333));
+    @include assert-false(prefers-light-foreground(#808080, #ccc, #000));
+  }
+}
+
+@include describe('css-color') {
+  @include it('prints an opaque rgb color as lowercase hex') {
+    @include assert-equal(css-color(rgb(237, 122, 114)), unquote('#ed7a72'));
+    @include assert-equal(css-color(#abcdef), unquote('#abcdef'));
+  }
+
+  @include it('leaves other values unchanged') {
+    @include assert-equal(css-color(oklch(50% 0.1 20deg)), oklch(50% 0.1 20deg));
+    @include assert-equal(css-color(rgba(0, 0, 0, 0.5)), rgba(0, 0, 0, 0.5));
+    @include assert-equal(css-color(var(--x)), var(--x));
+  }
+}
