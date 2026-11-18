@@ -62,12 +62,14 @@ const EVENT_HIDE = `hide${EVENT_KEY}`
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`
 const EVENT_CLICK = `click${EVENT_KEY}`
 const EVENT_KEYDOWN = `keydown${EVENT_KEY}`
+const EVENT_FOCUSIN = `focusin${EVENT_KEY}`
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_CLICK_OUTSIDE = `click${EVENT_KEY}.outside`
 const EVENT_KEYUP_OUTSIDE = `keyup${EVENT_KEY}.outside`
 
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_SELECTED = 'selected'
+const CLASS_NAME_FOCUS = 'focus'
 const CLASS_NAME_PLACEHOLDER = 'combobox-placeholder'
 const CLASS_NAME_TAGS = 'combobox-tags'
 const CLASS_NAME_HAS_TAGS = 'combobox-has-tags'
@@ -143,6 +145,7 @@ class Combobox extends BaseComponent {
   _select: HTMLSelectElement | null
   _form: HTMLFormElement | null
   _clearsDefault: boolean
+  _highlighted: HTMLElement | null
   _toggle: HTMLElement
   _menu: HTMLElement
   _valueDisplay: HTMLElement
@@ -161,6 +164,7 @@ class Combobox extends BaseComponent {
     this._select = this._element instanceof HTMLSelectElement ? this._element : null
     this._form = this._select?.form ?? null
     this._clearsDefault = false
+    this._highlighted = null
     this._optionByItem = new Map()
     this._hiddenInput = null
     this._popper = null
@@ -259,6 +263,7 @@ class Combobox extends BaseComponent {
 
     this._popper?.destroy()
     this._popper = null
+    this._highlight(null)
 
     this._menu.classList.remove(CLASS_NAME_SHOW)
     this._toggle.classList.remove(CLASS_NAME_SHOW)
@@ -614,6 +619,7 @@ class Combobox extends BaseComponent {
 
     EventHandler.on(this._toggle, EVENT_KEYDOWN, (event: KeyboardEvent) => this._handleToggleKeydown(event))
     EventHandler.on(this._menu, EVENT_KEYDOWN, (event: KeyboardEvent) => this._handleMenuKeydown(event))
+    EventHandler.on(this._menu, EVENT_FOCUSIN, SELECTOR_ITEM, () => this._highlight(null))
 
     this._searchInput?.addEventListener('input', this._onSearchInput)
 
@@ -897,7 +903,15 @@ class Combobox extends BaseComponent {
     header?.style.setProperty('display', headerHasMatch ? '' : 'none')
 
     this._noResults?.classList.toggle(CLASS_NAME_HIDDEN, visibleCount > 0)
+    this._highlight(normalizedQuery ? (this._getVisibleItems()[0] ?? null) : null)
     void this._popper?.update()
+  }
+
+  // Marks the item that Enter picks while the focus stays in the search field.
+  _highlight(item: HTMLElement | null): void {
+    this._highlighted?.classList.remove(CLASS_NAME_FOCUS)
+    this._highlighted = item
+    item?.classList.add(CLASS_NAME_FOCUS)
   }
 
   _normalizeText(text: string): string {
@@ -968,15 +982,35 @@ class Combobox extends BaseComponent {
     }
 
     const items = this._getVisibleItems()
+    const inSearch = target === this._searchInput
+
+    if (key === ENTER_KEY && inSearch) {
+      event.preventDefault()
+
+      if (this._highlighted) {
+        this._selectItem(this._highlighted)
+      }
+
+      return
+    }
 
     if (key === ARROW_DOWN_KEY || key === ARROW_UP_KEY) {
       event.preventDefault()
       event.stopPropagation()
 
-      if (items.length > 0) {
+      if (key === ARROW_UP_KEY && this._searchInput && target === items[0]) {
+        this._searchInput.focus()
+      } else if (key === ARROW_DOWN_KEY && inSearch && this._highlighted) {
+        getNextActiveElement(items, this._highlighted, true, false).focus()
+      } else if (items.length > 0) {
         getNextActiveElement(items, target, key === ARROW_DOWN_KEY, !items.includes(target)).focus()
       }
 
+      return
+    }
+
+    if (this._searchInput && !inSearch && (key === BACKSPACE_KEY || (key.length === 1 && key !== SPACE_KEY)) && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      this._searchInput.focus()
       return
     }
 

@@ -241,6 +241,84 @@ describe('Combobox', () => {
       input.dispatchEvent(new Event('input', { bubbles: true }))
       expect(item('a').style.display).toBe('')
     })
+
+    const type = (input: HTMLInputElement, value: string): void => {
+      input.value = value
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+
+    it('should highlight the first match and select it on Enter without submitting the form', () => {
+      const { combobox, toggle } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      const submit = vi.fn((event: Event) => event.preventDefault())
+      fixtureEl.querySelector('form')!.addEventListener('submit', submit)
+      combobox.show()
+
+      type(input, 'bra')
+      expect(item('b').classList.contains('focus')).toBe(true)
+      expect(item('a').classList.contains('focus')).toBe(false)
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(submit).not.toHaveBeenCalled()
+      expect(item('b').classList.contains('selected')).toBe(true)
+      expect(item('b').classList.contains('focus')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+    })
+
+    it('should not highlight an item or select on Enter with an empty search', () => {
+      const { combobox, menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(menu.querySelector('.focus')).toBeNull()
+      expect(menu.querySelector('.selected')).toBeNull()
+      expect(menu.classList.contains('show')).toBe(true)
+    })
+
+    it('should move from the search field past the highlighted item on ArrowDown', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      type(input, 'a')
+      expect(item('a').classList.contains('focus')).toBe(true)
+
+      key(input, 'ArrowDown')
+      expect(document.activeElement).toBe(item('b'))
+      expect(item('a').classList.contains('focus')).toBe(false)
+    })
+
+    it('should return to the search field on ArrowUp from the first item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+      item('a').focus()
+
+      key(item('a'), 'ArrowUp')
+      expect(document.activeElement).toBe(input)
+    })
+
+    it('should move focus to the search field when typing on an item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+      item('b').focus()
+
+      key(item('b'), ' ')
+      expect(document.activeElement).not.toBe(input)
+
+      combobox.show()
+      item('b').focus()
+      key(item('b'), 'x')
+      expect(document.activeElement).toBe(input)
+    })
   })
 
   describe('dispose', () => {
