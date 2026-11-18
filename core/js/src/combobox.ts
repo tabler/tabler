@@ -11,9 +11,12 @@ import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { eventActionOnPlugin, initAll } from './bootstrap/util/component-functions'
 import { getElement, getNextActiveElement, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
+import { DefaultAllowlist, DefaultIconAllowlist, sanitizeHtml } from './bootstrap/util/sanitizer'
 import type { DelegatedEvent } from './bootstrap/dom/event-handler'
+import type { AllowList, SanitizeFn } from './bootstrap/types'
 
 type ComponentConfig = {
+  allowList: AllowList
   boundary: Popper.Boundary
   container: string | HTMLElement | null
   maxItems: number | null
@@ -23,6 +26,8 @@ type ComponentConfig = {
   offset: number[] | string
   placeholder: string
   placement: string | null
+  sanitize: boolean
+  sanitizeFn: SanitizeFn | null
   search: boolean | null
   searchNormalize: boolean
   searchPlaceholder: string
@@ -70,6 +75,9 @@ const CLASS_NAME_HAS_INDICATOR = 'combobox-has-indicator'
 const CLASS_NAME_TAGS_WRAP = 'combobox-tags-wrap'
 const CLASS_NAME_TAG_MORE = 'combobox-tag-more'
 const CLASS_NAME_HIDDEN = 'd-none'
+const CLASS_NAMES_STATE = ['is-valid', 'is-invalid', 'is-valid-lite', 'is-invalid-lite']
+
+const DISALLOWED_ATTRIBUTES = ['allowList', 'sanitize', 'sanitizeFn'] as const
 
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="combobox"]'
 const SELECTOR_MENU = '.dropdown-menu'
@@ -84,6 +92,7 @@ const SELECTOR_NO_RESULTS = '.combobox-no-results'
 const CHECK_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
 
 const Default: ComponentConfig = {
+  allowList: { ...DefaultIconAllowlist, ...DefaultAllowlist, span: ['style'] },
   boundary: 'clippingParents',
   container: null,
   maxItems: null,
@@ -93,6 +102,8 @@ const Default: ComponentConfig = {
   offset: [0, 2],
   placeholder: '',
   placement: null,
+  sanitize: true,
+  sanitizeFn: null,
   search: null,
   searchNormalize: false,
   searchPlaceholder: 'Search…',
@@ -100,6 +111,7 @@ const Default: ComponentConfig = {
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
+  allowList: 'object',
   boundary: '(string|element)',
   container: '(string|element|null)',
   maxItems: '(number|null)',
@@ -109,6 +121,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   offset: '(array|string)',
   placeholder: 'string',
   placement: '(string|null)',
+  sanitize: 'boolean',
+  sanitizeFn: '(null|function)',
   search: '(boolean|null)',
   searchNormalize: 'boolean',
   searchPlaceholder: 'string',
@@ -127,6 +141,8 @@ class Combobox extends BaseComponent {
   declare _element: HTMLElement
   declare _config: ComponentConfig
   _select: HTMLSelectElement | null
+  _form: HTMLFormElement | null
+  _clearsDefault: boolean
   _toggle: HTMLElement
   _menu: HTMLElement
   _valueDisplay: HTMLElement
@@ -143,6 +159,8 @@ class Combobox extends BaseComponent {
     super(element, config)
 
     this._select = this._element instanceof HTMLSelectElement ? this._element : null
+    this._form = this._select?.form ?? null
+    this._clearsDefault = false
     this._optionByItem = new Map()
     this._hiddenInput = null
     this._popper = null
@@ -162,7 +180,7 @@ class Combobox extends BaseComponent {
       this._toggle.after(this._menu)
     } else {
       this._toggle = this._element
-      this._menu = (SelectorEngine.next(this._toggle, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._toggle.parentNode as Element)) as HTMLElement
+      this._menu = SelectorEngine.next(this._toggle, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._toggle.parentNode as Element)
       this._valueDisplay = SelectorEngine.findOne(SELECTOR_VALUE, this._toggle) as HTMLElement
       this._searchInput = SelectorEngine.findOne(SELECTOR_SEARCH_INPUT, this._menu) as HTMLInputElement | null
       this._noResults = SelectorEngine.findOne(SELECTOR_NO_RESULTS, this._menu)
@@ -195,7 +213,11 @@ class Combobox extends BaseComponent {
 
   // Public
   toggle(): void {
-    this._isShown() ? this.hide() : this.show()
+    if (this._isShown()) {
+      this.hide()
+    } else {
+      this.show()
+    }
   }
 
   show(): void {
@@ -247,7 +269,7 @@ class Combobox extends BaseComponent {
   }
 
   update(): void {
-    this._popper?.update()
+    void this._popper?.update()
   }
 
   // Re-reads the chosen option of the `<select>` without rebuilding the menu.
@@ -279,6 +301,7 @@ class Combobox extends BaseComponent {
     if (this._select) {
       this._select.removeEventListener('change', this._onNativeChange)
       this._select.removeEventListener('focus', this._onNativeFocus)
+      this._form?.removeEventListener('reset', this._onFormReset)
       this._select.classList.remove('combobox-native')
       this._select.removeAttribute('aria-hidden')
       this._select.removeAttribute('tabindex')
@@ -290,6 +313,17 @@ class Combobox extends BaseComponent {
   }
 
   // Private
+  _getConfig(config?: ComponentConfigInput): ComponentConfig {
+    const merged: Record<string, unknown> = this._mergeConfigObj(config, this._element)
+
+    for (const name of DISALLOWED_ATTRIBUTES) {
+      merged[name] = config?.[name] ?? Default[name]
+    }
+
+    this._typeCheckConfig(merged)
+    return merged as ComponentConfig
+  }
+
   // A long menu opens at the chosen item instead of at the top.
   _scrollToSelected(): void {
     const [selected] = this._getSelectedItems()
@@ -374,13 +408,28 @@ class Combobox extends BaseComponent {
     this._config.multiple = multiple
     this._config.placeholder ||= select.dataset.placeholder || ''
 
-    if (this._config.placeholder && !multiple && !Array.from(select.options).some((option) => option.defaultSelected)) {
-      select.selectedIndex = -1
-    }
+    this._clearsDefault = this._config.placeholder !== '' && !multiple
+    this._clearDefaultSelection()
 
     this._config.placeholder ||= emptyOption?.textContent?.trim() || ''
 
     return toggle
+  }
+
+  // A single `<select>` always picks its first enabled option. With a placeholder, that default is cleared; a value set from code is kept.
+  _clearDefaultSelection(): void {
+    const select = this._select!
+    const options = Array.from(select.options)
+
+    if (!this._clearsDefault || options.some((option) => option.defaultSelected)) {
+      return
+    }
+
+    const first = options.findIndex((option) => !option.disabled && !(option.parentElement as HTMLOptGroupElement | null)?.disabled)
+
+    if (select.selectedIndex === first) {
+      select.selectedIndex = -1
+    }
   }
 
   _buildMenu(): void {
@@ -425,7 +474,7 @@ class Combobox extends BaseComponent {
     if (custom) {
       const indicator = document.createElement('span')
       indicator.className = 'dropdown-item-indicator'
-      indicator.innerHTML = custom
+      indicator.innerHTML = this._sanitize(custom)
       item.append(indicator)
     }
 
@@ -443,6 +492,12 @@ class Combobox extends BaseComponent {
 
     this._list.append(item)
     this._optionByItem.set(item, option)
+  }
+
+  _sanitize(html: string): string {
+    const { allowList, sanitize, sanitizeFn } = this._config
+
+    return sanitize ? sanitizeHtml(html, allowList, sanitizeFn ?? undefined) : html
   }
 
   _createSearch(): void {
@@ -468,7 +523,7 @@ class Combobox extends BaseComponent {
 
   _setAriaAttributes(): void {
     this._toggle.setAttribute('aria-haspopup', 'listbox')
-    this._toggle.setAttribute('aria-expanded', 'false')
+    this._toggle.setAttribute('aria-expanded', String(this._isShown()))
     this._menu.setAttribute('role', 'listbox')
 
     if (this._config.multiple) {
@@ -510,6 +565,11 @@ class Combobox extends BaseComponent {
       }
 
       this._setAriaAttributes()
+      ;(this._toggle as HTMLButtonElement).disabled = this._select.disabled
+
+      for (const className of CLASS_NAMES_STATE) {
+        this._toggle.classList.toggle(className, this._select.classList.contains(className))
+      }
     }
 
     this._updateToggleText()
@@ -522,6 +582,16 @@ class Combobox extends BaseComponent {
     }
   }
 
+  // The browser resets the options after the `reset` event.
+  _onFormReset = (): void => {
+    setTimeout(() => {
+      if (this._select) {
+        this._clearDefaultSelection()
+        this._syncInitialSelection()
+      }
+    })
+  }
+
   _onNativeFocus = (): void => {
     this._toggle.focus()
   }
@@ -532,7 +602,7 @@ class Combobox extends BaseComponent {
 
   _addEventListeners(): void {
     EventHandler.on(this._menu, EVENT_CLICK, SELECTOR_ITEM, (event: DelegatedEvent<MouseEvent>) => {
-      const item = event.delegateTarget as HTMLElement
+      const item = event.delegateTarget
 
       if (isDisabled(item)) {
         return
@@ -555,6 +625,7 @@ class Combobox extends BaseComponent {
     if (this._select) {
       this._select.addEventListener('change', this._onNativeChange)
       this._select.addEventListener('focus', this._onNativeFocus)
+      this._form?.addEventListener('reset', this._onFormReset)
 
       EventHandler.on(this._toggle, EVENT_CLICK, () => this.toggle())
     }
@@ -656,12 +727,12 @@ class Combobox extends BaseComponent {
     }
 
     this._isSyncing = false
-    this._popper?.update()
+    void this._popper?.update()
   }
 
   _getItemLabel(item: HTMLElement): string {
     const label = SelectorEngine.findOne(SELECTOR_ITEM_LABEL, item)
-    return (label ?? item).textContent!.trim()
+    return (label ?? item).textContent.trim()
   }
 
   _labelNodes(item: HTMLElement): Node[] {
@@ -813,7 +884,7 @@ class Combobox extends BaseComponent {
         header = element
         headerHasMatch = false
       } else if (element.matches(SELECTOR_ITEM)) {
-        const matches = !normalizedQuery || this._normalizeText(element.textContent!.toLowerCase().trim()).includes(normalizedQuery)
+        const matches = !normalizedQuery || this._normalizeText(element.textContent.toLowerCase().trim()).includes(normalizedQuery)
         element.style.display = matches ? '' : 'none'
 
         if (matches) {
@@ -826,7 +897,7 @@ class Combobox extends BaseComponent {
     header?.style.setProperty('display', headerHasMatch ? '' : 'none')
 
     this._noResults?.classList.toggle(CLASS_NAME_HIDDEN, visibleCount > 0)
-    this._popper?.update()
+    void this._popper?.update()
   }
 
   _normalizeText(text: string): string {
@@ -883,6 +954,11 @@ class Combobox extends BaseComponent {
 
     if (key === TAB_KEY) {
       this.hide()
+
+      if (!this._isShown()) {
+        this._toggle.focus()
+      }
+
       return
     }
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import Combobox from '../../src/combobox'
 
@@ -475,6 +475,91 @@ describe('Combobox', () => {
       const { select, toggle } = setupSelect()
       select.focus()
       expect(document.activeElement).toBe(toggle)
+    })
+
+    it('should follow a form reset', async () => {
+      const { select, toggle } = setupSelect('', '<option value="z" selected>Zucchini</option>')
+      select.value = 'a'
+      select.dispatchEvent(new Event('change'))
+      expect(toggle.textContent).toBe('Apple')
+
+      select.form!.reset()
+      await new Promise((resolve) => setTimeout(resolve))
+
+      expect(select.value).toBe('z')
+      expect(toggle.textContent).toBe('Zucchini')
+    })
+
+    it('should go back to the placeholder on a form reset', async () => {
+      const { select, toggle, menu } = setupSelect()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      select.form!.reset()
+      await new Promise((resolve) => setTimeout(resolve))
+
+      expect(select.selectedIndex).toBe(-1)
+      expect(toggle.textContent).toBe('Pick a fruit')
+    })
+
+    it('should keep a value set from code before init', () => {
+      fixtureEl.innerHTML = selectMarkup()
+      const select = fixtureEl.querySelector('select')!
+      select.value = 'c'
+      new Combobox(select)
+
+      expect(select.value).toBe('c')
+      expect(select.nextElementSibling!.textContent).toBe('Cherry')
+    })
+
+    it('should copy disabled and validation classes on refresh', () => {
+      const { select, toggle, combobox } = setupSelect()
+      select.disabled = true
+      select.classList.replace('is-invalid', 'is-valid')
+      combobox.refresh()
+
+      expect(toggle.hasAttribute('disabled')).toBe(true)
+      expect(toggle.classList.contains('is-valid')).toBe(true)
+      expect(toggle.classList.contains('is-invalid')).toBe(false)
+    })
+
+    it('should keep aria-expanded when synced while open', () => {
+      const { toggle, combobox } = setupSelect()
+      combobox.show()
+      combobox.sync()
+
+      expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    })
+
+    it('should return focus to the toggle on Tab', () => {
+      const { toggle, combobox } = setupSelect('', '', { container: 'body' })
+      const menu = combobox._menu
+      combobox.show()
+      const first = menu.querySelector<HTMLElement>('.dropdown-item')!
+      first.focus()
+      key(first, 'Tab')
+
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+      combobox.dispose()
+    })
+
+    it('should sanitize data-custom-properties', () => {
+      const { menu } = setupSelect('', `<option value="x" data-custom-properties='<img src="x" onerror="alert(1)"><script>alert(1)</script><span class="avatar" style="color: red">X</span>'>X</option>`)
+      const indicator = menu.querySelector('[data-bs-value="x"] .dropdown-item-indicator')!
+
+      expect(indicator.querySelector('img')!.hasAttribute('onerror')).toBe(false)
+      expect(indicator.querySelector('script')).toBeNull()
+      expect(indicator.querySelector('.avatar')!.getAttribute('style')).toBe('color: red')
+    })
+
+    it('should not read sanitize options from data attributes', () => {
+      const { combobox } = setupSelect('data-bs-sanitize="false"')
+      expect(combobox._config.sanitize).toBe(true)
+    })
+
+    it('should skip sanitizing when sanitize is false', () => {
+      const { menu } = setupSelect('', `<option value="x" data-custom-properties='<b data-x="1">X</b>'>X</option>`, { sanitize: false })
+      expect(menu.querySelector('[data-bs-value="x"] b')!.getAttribute('data-x')).toBe('1')
     })
 
     it('should restore the select on dispose', () => {

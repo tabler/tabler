@@ -1,3 +1,5 @@
+@use 'sass:list';
+@use 'sass:map';
 @use '../../config' as *;
 
 .combobox-toggle {
@@ -72,6 +74,28 @@
   pointer-events: none;
   border: 0;
   opacity: 0;
+}
+
+@each $state, $data in $form-validation-states {
+  .was-validated .combobox-native:#{$state} + .combobox-toggle {
+    border-color: map.get($data, 'border-color');
+
+    @if $enable-validation-icons {
+      --form-select-bg-icon: #{escape-svg(map.get($data, 'icon'))};
+      --form-feedback-icon-size: #{$input-btn-icon-size};
+      padding-inline-end: calc(var(--control-select-indicator-padding) + #{list.nth($form-select-feedback-icon-size, 1)} + var(--control-padding-x));
+      background-position:
+        var(--control-select-bg-position),
+        center right var(--control-select-indicator-padding);
+      background-size:
+        #{$form-select-bg-size},
+        var(--form-feedback-icon-size) var(--form-feedback-icon-size);
+    }
+
+    &:focus {
+      @include focus-ring(true, map.get($data, 'focus-ring-color'));
+    }
+  }
 }
 
 .combobox-value {

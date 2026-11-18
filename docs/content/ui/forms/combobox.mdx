@@ -326,6 +326,8 @@ Add `data-bs-toggle="combobox"` to a `<select class="form-select">` and the comb
 - The placeholder comes from `data-placeholder`, or from the text of an empty `<option value="">`.
 - A search field is added automatically. Turn it off with `data-bs-search="false"`.
 - Classes such as `.is-invalid` and `.form-select-sm` are copied to the toggle.
+- The toggle follows the `<select>`: a form reset, `disabled`, and its valid or invalid state inside `.was-validated`.
+- With a placeholder, the first option is not chosen by default. Mark an option `selected`, or set `select.value` before the combobox starts, to begin with a value.
 
 ### Multiple
 
@@ -363,13 +365,15 @@ Put markup in a `data-custom-properties` attribute to show an avatar, flag or ba
 </div>
 </Example>
 
+This markup is sanitized before it is added to the page. Tags and attributes outside the allow list, such as `<script>` or `onerror`, are removed. Change the list with the `allowList` option, pass your own `sanitizeFn`, or set `sanitize: false` if you trust the markup. These three options work only from JavaScript, not from data attributes.
+
 ### Menu container
 
 By default the menu sits right after the toggle. Set `data-bs-container="body"` to append it to the page body, so a card or modal with `overflow: hidden` cannot clip it.
 
 ### Changing options from code
 
-After you change the `<option>`s or set `select.value` in a script, call `refresh()` so the combobox reads them again.
+After you change the `<option>`s, `select.value`, `select.disabled` or a class such as `.is-invalid` in a script, call `refresh()` so the combobox reads them again.
 
 ```javascript
 select.append(new Option('Fig', 'fig'))
@@ -720,6 +724,9 @@ Pass options as `data-bs-*` attributes on the toggle, or as an object when creat
 | `placement` | string \| null | `null` | Popper placement; `bottom-start` (`bottom-end` in RTL) when empty. |
 | `offset` | array \| string | `[0, 2]` | Offset of the menu from the toggle. |
 | `boundary` | string \| element | `'clippingParents'` | Overflow boundary of the menu. |
+| `sanitize` | boolean | `true` | Sanitize the markup from `data-custom-properties`. |
+| `allowList` | object | Tooltip allow list, plus SVG icons and `style` on `<span>` | Tags and attributes kept by the sanitizer. |
+| `sanitizeFn` | function \| null | `null` | Your own sanitize function, used in place of the built-in one. |
 
 ### Methods
 
