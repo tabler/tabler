@@ -1,5 +1,11 @@
 # @tabler/preview
 
+## 1.7.5
+
+### Patch Changes
+
+- 977102f: Fixed the Map blocks page loading `jsvectormap` instead of the `vector-map` add-on.
+
 ## 1.7.4
 
 ### Patch Changes

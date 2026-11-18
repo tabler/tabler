@@ -10,6 +10,8 @@ interface Props {
   title?: string | undefined
   /** Script/CSS library keys passed to BaseLayout */
   pageLibs?: string[]
+  /** extra tabler-<name>.css plugin sheets the page uses, passed to BaseLayout */
+  cssPlugins?: string[]
   /** title shown in the page header; defaults to `title`, pass false for no page header */
   pageHeader?: string | false | undefined
   /** renders a layout/headers/{file} component instead of the title block */
@@ -52,7 +54,8 @@ interface Props {
   navbarSticky?: boolean
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarSticky, navbarFloating } = Astro.props
+const { title, pageLibs, cssPlugins, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarSticky, navbarFloating } =
+  Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
@@ -72,7 +75,7 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
 }
 ---
 
-<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description} themeSettings={themeSettings}>
+<BaseLayout title={title} pageLibs={pageLibs} cssPlugins={cssPlugins} bodyClass={bodyClass} rtl={rtl} description={description} themeSettings={themeSettings}>
   <div class="page">
     <!--  BEGIN SIDEBAR  -->
     <Sidebar end={sidebarEnd} transparent={navbarTransparent} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
