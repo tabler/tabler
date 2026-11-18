@@ -1,0 +1,114 @@
+---
+title: Bento grid
+summary: A bento grid lays out cards of different sizes, with tiles that span several columns and rows of the same height.
+description: Build a bento grid of cards with the grid-bento class. Size each tile with g-col and g-row classes and change the row height with a CSS variable.
+added-in: '1.8.0'
+related: [/ui/components/card, /ui/layout/page-layouts]
+source: core/scss/ui/_grid.scss
+css-vars: grid-bento
+classnames:
+  component:
+    - class: grid-bento
+      desc: Added to a .grid element, gives every row the same minimum height
+  size:
+    - class: g-col-{n}
+      desc: Makes the tile span n of the 12 columns, also with a breakpoint, for example g-col-md-6
+    - class: g-row-{n}
+      desc: Makes the tile span n rows, from 1 to 4, also with a breakpoint, for example g-row-lg-2
+  direction:
+    - class: g-start-{n}
+      desc: Starts the tile in column n, also with a breakpoint, for example g-start-md-3
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+A bento grid shows cards of different sizes in one block. Some tiles are wide, some are tall, and the edges still line up. Use it for feature sections on landing pages and for dashboard overviews.
+
+The bento grid is built on the CSS grid from Bootstrap. The `.grid` element has 12 columns, and the `.g-col-*` classes set how many columns a tile takes. The `.grid-bento` class adds rows of the same height, and the `.g-row-*` classes set how many rows a tile takes.
+
+## Usage
+
+Add `.grid` and `.grid-bento` to the wrapper. Give each card a `.g-col-*` class for the columns and a `.g-row-*` class for the rows. A tile without a `.g-col-*` class takes only one column, so always set the column span.
+
+<Example>
+<div class="grid grid-bento">
+  <div class="card g-col-6 g-row-2">
+    <div class="card-body">Two columns wide, two rows tall</div>
+  </div>
+  <div class="card g-col-6">
+    <div class="card-body">Wide tile</div>
+  </div>
+  <div class="card g-col-3">
+    <div class="card-body">Small tile</div>
+  </div>
+  <div class="card g-col-3">
+    <div class="card-body">Small tile</div>
+  </div>
+</div>
+</Example>
+
+### Responsive tiles
+
+Both classes take a breakpoint, like `.g-col-md-6` and `.g-row-lg-2`. Start with `.g-col-12` so every tile is full width on small screens, then set the bento layout from a breakpoint up.
+
+<Example>
+<div class="grid grid-bento">
+  <div class="card g-col-12 g-col-lg-6 g-row-lg-2">
+    <div class="card-body">Full width on small screens, a large tile from lg up</div>
+  </div>
+  <div class="card g-col-12 g-col-md-6 g-col-lg-3">
+    <div class="card-body">Tile</div>
+  </div>
+  <div class="card g-col-12 g-col-md-6 g-col-lg-3">
+    <div class="card-body">Tile</div>
+  </div>
+  <div class="card g-col-12 g-col-lg-6">
+    <div class="card-body">Wide tile</div>
+  </div>
+</div>
+</Example>
+
+### Row height
+
+Each row is `10rem` high by default. Set `--tblr-grid-bento-row-height` on the grid to change it. A tile with more content than fits grows taller, and the rest of its row grows with it.
+
+<Example>
+<div class="grid grid-bento" style="--tblr-grid-bento-row-height: 6rem">
+  <div class="card g-col-4 g-row-2">
+    <div class="card-body">Two rows of 6rem</div>
+  </div>
+  <div class="card g-col-8">
+    <div class="card-body">One row</div>
+  </div>
+  <div class="card g-col-8">
+    <div class="card-body">One row</div>
+  </div>
+</div>
+</Example>
+
+### Gap and columns
+
+The grid comes with the same `--tblr-gap` and `--tblr-columns` variables as `.grid`. Set `--tblr-columns` to use fewer columns, so the spans are easier to count.
+
+<Example>
+<div class="grid grid-bento" style="--tblr-columns: 3; --tblr-gap: 0.5rem">
+  <div class="card g-col-2">
+    <div class="card-body">Two of three columns</div>
+  </div>
+  <div class="card g-col-1 g-row-2">
+    <div class="card-body">Tall tile</div>
+  </div>
+  <div class="card g-col-1">
+    <div class="card-body">Tile</div>
+  </div>
+  <div class="card g-col-1">
+    <div class="card-body">Tile</div>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- The tiles are read in the order of the markup, not the order on the screen. Put the most important tile first.
+- Do not use `.g-start-*` to move a tile to a place that changes its meaning. Keyboard and screen reader users still follow the markup.
