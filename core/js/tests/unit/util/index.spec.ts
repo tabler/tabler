@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
-import { execute, executeAfterTransition, findShadowRoot, getElement, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, parseSelector, reflow, toType, triggerTransitionEnd } from '../../../src/bootstrap/util/index'
+import { execute, executeAfterTransition, findShadowRoot, getElement, getNextActiveElement, getTransitionDurationFromElement, getUID, isDisabled, isElement, isRTL, isVisible, noop, onDOMContentLoaded, parseSelector, reflow, toType, triggerTransitionEnd } from '../../../src/bootstrap/util/index'
 import { clearFixture, getFixture } from '../../helpers/fixture'
 
 describe('util/index', () => {
@@ -358,6 +358,27 @@ describe('util/index', () => {
     it('should return true when dir is rtl', () => {
       document.documentElement.dir = 'rtl'
       expect(isRTL()).toBe(true)
+    })
+  })
+
+  describe('onDOMContentLoaded', () => {
+    it('should run the callback at once when the document is loaded', () => {
+      const spy = vi.fn()
+      onDOMContentLoaded(spy)
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should log a throwing callback instead of passing the error on', () => {
+      const error = new TypeError('broken')
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      expect(() =>
+        onDOMContentLoaded(() => {
+          throw error
+        }),
+      ).not.toThrow()
+      expect(consoleError).toHaveBeenCalledWith(error)
+      consoleError.mockRestore()
     })
   })
 

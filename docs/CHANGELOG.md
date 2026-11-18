@@ -1,5 +1,12 @@
 # @tabler/docs
 
+## 1.7.5
+
+### Patch Changes
+
+- b0a29f9: Updated the Datepicker docs to note that `vcpOptions` are passed to Vanilla Calendar Pro unchecked.
+- 81c2442: Fixed the map `library` option so a `data-bs-library` attribute only loads the module from the same origin as the page.
+
 ## 1.7.4
 
 ### Patch Changes
