@@ -28,7 +28,7 @@ const { title, type = /\.([a-z0-9]{1,4})$/i.exec(title)?.[1], description, statu
 ---
 
 <div class:list={['dropzone-item', status && `dropzone-item-${status}`, className]} {...rest}>
-  <FileIcon type={type} size="sm" />
+  <FileIcon {...type ? { type } : {}} size="sm" />
   <div class="dropzone-item-body">
     <div class="dropzone-item-name">{title}</div>
     {description && <div class="dropzone-item-meta">{description}</div>}
