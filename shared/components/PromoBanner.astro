@@ -1,0 +1,53 @@
+---
+// Promo banner of the hosted demo: reads the current offer from tabler.io and
+// shows it as a `.banner` at the top of the page. Closing it is remembered by
+// the Banner plugin under the offer id.
+interface Props {
+  /** `ref` query parameter added to the offer link */
+  ref: string
+}
+
+const { ref } = Astro.props
+---
+
+<!-- BEGIN PROMO BANNER -->
+<script is:inline define:vars={{ ref }}>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('https://tabler.io/api/banner')
+      .then(function (response) {
+        return response.ok ? response.json() : null
+      })
+      .then(function (offer) {
+        if (!offer || !offer.show || (offer.endDate && new Date() >= new Date(offer.endDate))) return
+        if (window.tabler.Banner.isClosed(offer.id) || window.localStorage.getItem('tblr-banner-' + offer.id)) return
+
+        var url = new URL(offer.href || (offer.link && offer.link.href) || '/pricing', 'https://tabler.io')
+        url.searchParams.set('ref', ref)
+
+        var link = document.createElement('a')
+        link.className = 'text-decoration-none fw-normal'
+        link.href = url.toString()
+        link.target = '_blank'
+        link.rel = 'noopener'
+        link.innerHTML = offer.textMobile ? '<span class="d-none d-md-inline">' + offer.text + '</span><span class="d-md-none">' + offer.textMobile + '</span>' : offer.text
+
+        var close = document.createElement('button')
+        close.type = 'button'
+        close.className = 'btn-close'
+        close.setAttribute('data-bs-dismiss', 'banner')
+        close.setAttribute('aria-label', 'Close')
+
+        var banner = document.createElement('div')
+        banner.className = 'banner'
+        banner.setAttribute('role', 'region')
+        banner.setAttribute('aria-label', 'Announcement')
+        banner.setAttribute('data-bs-banner-id', offer.id)
+        if (offer.backgroundGradient) banner.style.backgroundImage = offer.backgroundGradient
+        if (offer.textColor) banner.style.color = offer.textColor
+        banner.append(link, close)
+        ;(document.querySelector('.page') || document.body).prepend(banner)
+      })
+      .catch(function () {})
+  })
+</script>
+<!-- END PROMO BANNER -->
