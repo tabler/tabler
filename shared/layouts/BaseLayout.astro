@@ -4,6 +4,7 @@ import { site } from '@shared/lib/site'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import Analytics from '@shared/components/Analytics.astro'
+import PromoBanner from '@shared/components/PromoBanner.astro'
 import libs from '@tabler/core/libs.json'
 import { themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys, themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
 
@@ -292,6 +293,6 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     </script>
     <!-- END PAGE SCRIPTS -->
 
-    {isProduction && <script is:inline src="https://scripts.tabler.io/banner.js" defer data-tblr-ref="tabler-preview-top-banner" />}
+    {isProduction && <PromoBanner ref="tabler-preview-top-banner" />}
   </body>
 </html>

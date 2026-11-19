@@ -1,4 +1,5 @@
 import './src/autosize'
+import './src/banner'
 import './src/clipboard'
 import './src/combobox'
 import './src/confetti'
@@ -23,6 +24,7 @@ export * from './src/bootstrap'
 
 // Tabler's own components
 export { default as Autosize } from './src/autosize'
+export { default as Banner } from './src/banner'
 export { default as Clipboard } from './src/clipboard'
 export { default as Combobox } from './src/combobox'
 export { default as Confetti } from './src/confetti'
