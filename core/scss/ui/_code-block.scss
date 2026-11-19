@@ -1,16 +1,13 @@
 @use '../config' as *;
 
-// A dark code surface around a pre, with an optional header and a copy button
 .code-block {
   // scss-docs-start code-block-css-vars
   --code-block-bg: #{$code-block-bg};
   --code-block-color: #{$code-block-color};
   --code-block-border-radius: #{$code-block-border-radius};
-  --code-block-box-shadow: #{$code-block-box-shadow};
   --code-block-header-bg: #{$code-block-header-bg};
   --code-block-header-color: #{$code-block-header-color};
   --code-block-header-border-color: #{$code-block-header-border-color};
-  --code-block-header-box-shadow: #{$code-block-header-box-shadow};
   --code-block-header-padding-y: #{$code-block-header-padding-y};
   --code-block-header-padding-x: #{$code-block-header-padding-x};
   --code-block-title-color: #{$code-block-title-color};
@@ -30,10 +27,9 @@
   margin-bottom: 1rem;
   overflow: hidden;
   color: var(--code-block-color);
-  text-align: left;
-  direction: ltr;
+  text-align: left #{'/*rtl:ignore*/'};
+  direction: ltr #{'/*rtl:ignore*/'};
   background: var(--code-block-bg);
-  box-shadow: var(--code-block-box-shadow);
   @include border-radius(var(--code-block-border-radius));
 
   pre {
@@ -50,8 +46,6 @@
 }
 
 .code-block-header {
-  position: relative;
-  z-index: 1;
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -59,7 +53,6 @@
   color: var(--code-block-header-color);
   background: var(--code-block-header-bg);
   border-bottom: var(--border-width) solid var(--code-block-header-border-color);
-  box-shadow: var(--code-block-header-box-shadow);
 }
 
 .code-block-title {
@@ -99,7 +92,6 @@
     background: var(--code-block-copy-hover-bg);
   }
 
-  // Without a header the button floats over the corner of the code
   .code-block > & {
     position: absolute;
     inset-block-start: var(--code-block-copy-offset);
@@ -113,7 +105,6 @@
   }
 }
 
-// The lang label sits next to the copy button, so it only needs the push when it is alone
 .code-block-header > .code-block-title + .code-block-copy,
 .code-block-header > .code-block-copy:first-child {
   margin-inline-start: auto;
@@ -124,10 +115,12 @@
 }
 
 .code-line {
-  display: block;
+  display: inline-block;
+  width: calc(100% + 2 * #{$pre-padding});
   min-height: 1lh;
   padding-inline: $pre-padding;
   margin-inline: calc(-1 * #{$pre-padding});
+  vertical-align: top;
 }
 
 .code-line-highlight {
