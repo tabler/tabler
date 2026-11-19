@@ -396,9 +396,13 @@ class Dropdown extends BaseComponent {
       return
     }
 
-    event.preventDefault()
-
     const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as DelegatedEvent<KeyboardEvent>).delegateTarget.parentNode as Element)
+
+    if (!getToggleButton) {
+      return
+    }
+
+    event.preventDefault()
 
     const instance = Dropdown.getOrCreateInstance(getToggleButton) as Dropdown
 
