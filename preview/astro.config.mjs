@@ -12,6 +12,7 @@ import { Worker } from 'node:worker_threads'
 // (the config is bundled by vite-node because it imports a .ts module).
 import prettier from 'prettier'
 import { copyAssets } from '../.build/copy-assets'
+import { devAssets, servedFromSource } from '../.build/dev-assets'
 
 /** @param {string} p */
 const path = (p) => fileURLToPath(new URL(p, import.meta.url))
@@ -163,6 +164,14 @@ export default defineConfig({
         { from: path('./tmp-assets'), to: path('./public/preview') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
+      // Vite serves these from source (dev-assets below).
+      skipReload: servedFromSource,
+    }),
+    devAssets({
+      coreScss: path('../core/scss'),
+      coreJs: path('../core/js'),
+      demoScss: path('./scss'),
+      loadPaths: [path('../core/node_modules'), path('./node_modules')],
     }),
     mdx(),
     dropPlaygrounds(),

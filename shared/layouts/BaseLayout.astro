@@ -40,6 +40,14 @@ const min = isDevelopment ? '' : '.min'
 const isProduction = process.env.VERCEL_ENV === 'production'
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
 const rtlSuffix = rtl ? '.rtl' : ''
+// `astro dev` with the dev-assets integration: the stylesheets and scripts come
+// from source through Vite. The scripts are modules there, which run in the
+// same order as the deferred bundles they replace.
+const devAssets = import.meta.env.TABLER_DEV_ASSETS
+const coreCss = (name: string) => (devAssets ? `${devAssets.scss}/${name}${rtlSuffix}.scss` : `${base}/dist/css/${name}${rtlSuffix}${min}.css`)
+const demoCss = devAssets ? `${devAssets.demoScss}/demo.scss` : `${base}/preview/css/demo${min}.css`
+const coreJs = (name: string, suffix = min) => (devAssets ? `${devAssets.js}/${name}.global.js` : `${base}/dist/js/${name}${suffix}.js`)
+const scriptType = devAssets ? 'module' : undefined
 
 type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean; module?: { file: string; global: string }; addon?: string; maps?: string[] }
 const unknownLibs = pageLibs.filter((name) => !(name in libs))
@@ -97,15 +105,15 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     }
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href={`${base}/dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
+    <link href={coreCss('tabler')} rel="stylesheet" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PLUGINS STYLES -->
-    {stylePlugins.map((plugin) => <link href={`${base}/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    {stylePlugins.map((plugin) => <link href={coreCss(`tabler-${plugin}`)} rel="stylesheet" />)}
     <!-- END PLUGINS STYLES -->
 
     <!-- BEGIN DEMO STYLES -->
-    <link href={`${base}/preview/css/demo${min}.css`} rel="stylesheet" />
+    <link href={demoCss} rel="stylesheet" />
     <!-- END DEMO STYLES -->
 
     {
@@ -150,9 +158,9 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     {libModules.map((code) => <Fragment set:html={`<script type="module">\n      ${code}\n    </script>`} />)}
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
-    {libAddons.map((addon) => <script is:inline src={`${base}/dist/js/${addon}${min}.js`} defer />)}
-    {libMaps.map((map) => <script is:inline src={`${base}/dist/js/maps/${map}.js`} defer />)}
+    <script is:inline src={coreJs('tabler')} type={scriptType} defer={!devAssets}></script>
+    {libAddons.map((addon) => <script is:inline src={coreJs(addon)} type={scriptType} defer={!devAssets} />)}
+    {libMaps.map((map) => <script is:inline src={coreJs(`maps/${map}`, '')} type={scriptType} defer={!devAssets} />)}
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <PageScripts />
