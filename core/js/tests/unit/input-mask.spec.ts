@@ -1017,6 +1017,29 @@ describe('InputMask', () => {
         expect(el.value).toBe('12')
       })
 
+      it('should start a fraction when the first key is the radix', () => {
+        for (const key of ['.', ',']) {
+          const [el, instance] = make('<input type="text" data-mask-type="number">')
+          el.focus()
+
+          type(el, key)
+          expect(el.value).toBe('0.')
+          expect(el.selectionStart).toBe(2)
+
+          type(el, '0.5')
+          expect(el.value).toBe('0.5')
+          expect(instance.unmaskedValue).toBe('0.5')
+        }
+
+        const [negative] = make('<input type="text" data-mask-type="number" data-mask-prefix="$" data-mask-radix=",">')
+        negative.focus()
+
+        type(negative, '-')
+        type(negative, '-,')
+        expect(negative.value).toBe('-$0,')
+        expect(negative.selectionStart).toBe(4)
+      })
+
       it('should put the minus sign before the prefix', () => {
         const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-prefix="$">')
 

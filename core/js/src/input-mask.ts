@@ -595,7 +595,11 @@ class InputMask extends BaseComponent {
       const o = this._number
       const before = caret === null ? null : stripAffixes(raw, o).slice(0, caret)
 
-      return { unmasked: scanNumber(raw, o), count: before === null ? null : [...before].filter((char) => /[\d-]/.test(char) || o.radixChars.includes(char)).length }
+      const kept = before === null ? null : [...before].filter((char) => /[\d-]/.test(char) || o.radixChars.includes(char))
+      const zero = kept !== null && o.scale > 0 && o.radixChars.includes(kept.find((char) => char !== '-') ?? '')
+
+      // A radix typed before any digit gets a `0` in front, which the caret has to pass
+      return { unmasked: scanNumber(raw, o), count: kept === null ? null : kept.length + (zero ? 1 : 0) }
     }
 
     // A dynamic mask is resolved by what the value holds, so the first pass reads it with the previous mask
