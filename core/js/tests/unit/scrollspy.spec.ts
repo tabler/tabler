@@ -630,4 +630,133 @@ describe('ScrollSpy', () => {
       expect(() => new ScrollSpy('#content', { target: '#navigation' })).not.toThrow()
     })
   })
+
+  describe('observer', () => {
+    const twoSections = () =>
+      [
+        '<nav id="navBar" class="navbar">',
+        '  <ul class="nav">',
+        '    <li class="nav-item"><a id="link-1" class="nav-link" href="#section-1">One</a></li>',
+        '    <li class="nav-item"><a id="link-2" class="nav-link" href="#section-2">Two</a></li>',
+        '  </ul>',
+        '</nav>',
+        '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">',
+        '  <div id="section-1">One</div>',
+        '  <div id="section-2">Two</div>',
+        '</div>',
+      ].join('')
+
+    const setup = (scrollTop: number) => {
+      fixtureEl.innerHTML = twoSections()
+      const div = fixtureEl.querySelector<HTMLElement>('.content')!
+      const scrollSpy = new ScrollSpy(div)
+      const entries = [1, 2].map((number) => {
+        const section = fixtureEl.querySelector<HTMLElement>(`#section-${number}`)!
+        Object.defineProperty(section, 'offsetTop', { value: number * 100, configurable: true })
+        scrollSpy._targetLinks.set(`#section-${number}`, fixtureEl.querySelector<HTMLElement>(`#link-${number}`)!)
+        return { isIntersecting: true, target: section } as unknown as IntersectionObserverEntry
+      })
+      Object.defineProperty(div, 'scrollTop', { value: scrollTop, configurable: true })
+
+      return { scrollSpy, entries }
+    }
+
+    it('should pass the observed entries to _observerCallback', () => {
+      const { scrollSpy, entries } = setup(0)
+      const spy = vi.spyOn(scrollSpy, '_observerCallback')
+      const observer = scrollSpy._observer as unknown as MockIntersectionObserver
+
+      observer.callback(entries, observer)
+
+      expect(spy).toHaveBeenCalledWith(entries)
+    })
+
+    it('should activate only the first visible section at the top of the page', () => {
+      const { scrollSpy, entries } = setup(0)
+
+      scrollSpy._observerCallback(entries)
+
+      expect(scrollSpy._activeTarget).toBe(fixtureEl.querySelector('#link-1'))
+      expect(fixtureEl.querySelector('#link-2')!.classList.contains('active')).toBe(false)
+    })
+
+    it('should activate the lowest visible section after scrolling down', () => {
+      const { scrollSpy, entries } = setup(50)
+
+      scrollSpy._observerCallback(entries)
+
+      expect(scrollSpy._activeTarget).toBe(fixtureEl.querySelector('#link-2'))
+      expect(fixtureEl.querySelector('#link-1')!.classList.contains('active')).toBe(false)
+      expect(fixtureEl.querySelector('#link-2')!.classList.contains('active')).toBe(true)
+    })
+  })
+
+  describe('nested navs', () => {
+    it('should activate the link above every nav the target is nested in', () => {
+      fixtureEl.innerHTML = [
+        '<nav id="navBar" class="nav">',
+        '  <a class="nav-link" id="parent" href="#one">One</a>',
+        '  <nav class="nav">',
+        '    <a class="nav-link" id="sibling" href="#two">Two</a>',
+        '    <nav class="nav">',
+        '      <a class="nav-link" id="child" href="#three">Three</a>',
+        '    </nav>',
+        '  </nav>',
+        '</nav>',
+        '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">',
+        '  <div id="one">one</div>',
+        '  <div id="two">two</div>',
+        '  <div id="three">three</div>',
+        '</div>',
+      ].join('')
+      const scrollSpy = new ScrollSpy(fixtureEl.querySelector('.content')!)
+      const active = (id: string) => fixtureEl.querySelector(`#${id}`)!.classList.contains('active')
+
+      scrollSpy._process(fixtureEl.querySelector<HTMLElement>('#child')!)
+
+      expect(active('child')).toBe(true)
+      expect(active('sibling')).toBe(true)
+      expect(active('parent')).toBe(true)
+    })
+
+    it('should activate the previous list group item of a nested list group', () => {
+      fixtureEl.innerHTML = [
+        '<div id="navBar" class="list-group">',
+        '  <a class="list-group-item" id="parent" href="#one">One</a>',
+        '  <div class="list-group">',
+        '    <a class="list-group-item" id="child" href="#two">Two</a>',
+        '  </div>',
+        '</div>',
+        '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">',
+        '  <div id="one">one</div>',
+        '  <div id="two">two</div>',
+        '</div>',
+      ].join('')
+      const scrollSpy = new ScrollSpy(fixtureEl.querySelector('.content')!)
+
+      scrollSpy._activateParents(fixtureEl.querySelector<HTMLElement>('#child')!)
+
+      expect(fixtureEl.querySelector('#parent')!.classList.contains('active')).toBe(true)
+    })
+  })
+
+  describe('smoothScroll without scrollTo', () => {
+    it('should set scrollTop on a root that cannot scrollTo', () => {
+      fixtureEl.innerHTML = getDummyFixture()
+      const div = fixtureEl.querySelector<HTMLElement>('.content')!
+      const section = fixtureEl.querySelector<HTMLElement>('#div-jsm-1')!
+      const scrollSpy = new ScrollSpy(div, { smoothScroll: true })
+      scrollSpy._observableSections.set('#div-jsm-1', section)
+      Object.defineProperty(section, 'offsetTop', { value: 250, configurable: true })
+      Object.defineProperty(div, 'offsetTop', { value: 50, configurable: true })
+      const root = { scrollTop: 0 }
+      scrollSpy._rootElement = root as unknown as HTMLElement
+
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+      fixtureEl.querySelector('[href="#div-jsm-1"]')!.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(root.scrollTop).toBe(200)
+    })
+  })
 })

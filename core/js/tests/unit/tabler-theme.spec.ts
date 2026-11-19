@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { themeDefaults, type ThemeKey } from '../../src/theme-config'
 
 // tabler-theme does its work at import time, so each case arranges the URL,
@@ -132,6 +132,51 @@ describe('tabler-theme', () => {
       } finally {
         restore()
       }
+    })
+  })
+
+  describe('system color mode changes', () => {
+    // matchMedia hands out a new list on every call, so the script gets one the
+    // test can dispatch on.
+    const stubPrefersDark = (matches: boolean) => {
+      const list = Object.assign(new EventTarget(), { matches, media: '(prefers-color-scheme: dark)' })
+      vi.spyOn(window, 'matchMedia').mockReturnValue(list as unknown as MediaQueryList)
+      return (next: boolean) => list.dispatchEvent(Object.assign(new Event('change'), { matches: next }))
+    }
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('follows the system when no color mode is stored', async () => {
+      const change = stubPrefersDark(false)
+      await runThemeScript()
+      expect(attribute('theme')).toBe('light')
+
+      change(true)
+      expect(attribute('theme')).toBe('dark')
+
+      change(false)
+      expect(attribute('theme')).toBeNull()
+    })
+
+    it('follows the system when the stored color mode is auto', async () => {
+      localStorage.setItem('tabler-theme', 'auto')
+      const change = stubPrefersDark(true)
+      await runThemeScript()
+      expect(attribute('theme')).toBe('dark')
+
+      change(false)
+      expect(attribute('theme')).toBeNull()
+    })
+
+    it('keeps a stored color mode when the system changes', async () => {
+      localStorage.setItem('tabler-theme', 'dark')
+      const change = stubPrefersDark(true)
+      await runThemeScript()
+
+      change(false)
+      expect(attribute('theme')).toBe('dark')
     })
   })
 })
