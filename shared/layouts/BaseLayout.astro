@@ -11,6 +11,8 @@ interface Props {
   title?: string | undefined
   /** Third-party libs from libs.json, e.g. ['apexcharts', 'vector-map'] */
   pageLibs?: string[] | undefined
+  /** Extra tabler-<name>.css plugin sheets (site.cssPlugins) the page uses, e.g. ['flags'] */
+  cssPlugins?: string[] | undefined
   /** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
   bodyClass?: string | undefined
   /** dir="rtl" + RTL variants of the tabler/plugin stylesheets */
@@ -23,7 +25,7 @@ interface Props {
   themeSettings?: Partial<Record<ThemeKey, string | undefined>> | undefined
 }
 
-const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description, themeSettings = {} } = Astro.props
+const { title, pageLibs = [], cssPlugins = [], bodyClass, rtl = false, base = '.', description, themeSettings = {} } = Astro.props
 
 // The page's own layout, in the switcher's vocabulary: rendered before the theme
 // script runs, so a page keeps its variant until the visitor chooses otherwise.
@@ -44,6 +46,14 @@ const unknownLibs = pageLibs.filter((name) => !(name in libs))
 if (unknownLibs.length > 0) {
   throw new Error(`BaseLayout: unknown pageLibs ${unknownLibs.map((name) => `"${name}"`).join(', ')} — use a key from core/libs.json`)
 }
+// Plugin stylesheets load per page, in the order of site.cssPlugins: `themes`
+// always (the theme settings panel is on every page), `vendors` whenever the
+// page loads a third-party library, the rest only when the page asks for them.
+const unknownCssPlugins = cssPlugins.filter((name) => !site.cssPlugins.includes(name))
+if (unknownCssPlugins.length > 0) {
+  throw new Error(`BaseLayout: unknown cssPlugins ${unknownCssPlugins.map((name) => `"${name}"`).join(', ')} - use a name from site.cssPlugins`)
+}
+const stylePlugins = site.cssPlugins.filter((plugin) => plugin === 'themes' || (plugin === 'vendors' && pageLibs.length > 0) || cssPlugins.includes(plugin))
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) => pageLibs.includes(name))
 // External URLs (http/https) are emitted verbatim; local files as ./dist/libs/{npm}/{file}.
 const libHref = (lib: Lib, file: string) => (/^https?:\/\//.test(file) ? file : `${base}/dist/libs/${lib.npm}/${file}`)
@@ -91,7 +101,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PLUGINS STYLES -->
-    {site.cssPlugins.map((plugin) => <link href={`${base}/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    {stylePlugins.map((plugin) => <link href={`${base}/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
     <!-- END PLUGINS STYLES -->
 
     <!-- BEGIN DEMO STYLES -->

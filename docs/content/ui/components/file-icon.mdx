@@ -1,0 +1,112 @@
+---
+title: File icon
+summary: A sheet of paper with the file format on a colored label, for uploads, attachments and file lists.
+description: Show the format of a file with the file icon component - one element that draws the sheet, the label and a matching color.
+related: [/ui/components/avatar, /ui/components/badge]
+source: core/scss/ui/_file-icon.scss
+css-vars: file-icon
+classnames:
+  component:
+    - class: file-icon
+      desc: The icon; the label text comes from the data-type attribute
+  color:
+    - class: file-icon-{color}
+      desc: Colors the label with a theme color
+  size:
+    - class: file-icon-sm
+      desc: Small icon
+    - class: file-icon-lg
+      desc: Large icon
+---
+import Example from '@components/Example.astro';
+
+## Basic example
+
+Add `.file-icon` to an empty element and put the file format in `data-type`. The component draws the sheet and shows the format on the label in upper case.
+
+<Example centered>
+<span class="file-icon" data-type="pdf" role="img" aria-label="PDF file"></span>
+</Example>
+
+## Formats
+
+Common formats get a color on their own, so no extra class is needed. Any other format gets a gray label.
+
+| Color | Formats |
+| --- | --- |
+| Red | `pdf` |
+| Blue | `doc`, `docx`, `txt`, `rtf` |
+| Green | `xls`, `xlsx`, `csv` |
+| Orange | `ppt`, `pptx` |
+| Yellow | `zip`, `rar`, `7z` |
+| Purple | `jpg`, `jpeg`, `png`, `gif`, `svg`, `webp` |
+| Pink | `mp3`, `wav`, `mp4`, `mov` |
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <span class="file-icon" data-type="pdf" role="img" aria-label="PDF file"></span>
+  <span class="file-icon" data-type="doc" role="img" aria-label="DOC file"></span>
+  <span class="file-icon" data-type="xls" role="img" aria-label="XLS file"></span>
+  <span class="file-icon" data-type="ppt" role="img" aria-label="PPT file"></span>
+  <span class="file-icon" data-type="zip" role="img" aria-label="ZIP file"></span>
+  <span class="file-icon" data-type="png" role="img" aria-label="PNG file"></span>
+  <span class="file-icon" data-type="mp4" role="img" aria-label="MP4 file"></span>
+  <span class="file-icon" data-type="json" role="img" aria-label="JSON file"></span>
+</div>
+</Example>
+
+The label fits up to four characters. Use the short form of a longer format.
+
+## Colors
+
+Add a `.file-icon-{color}` class to choose the color yourself. It also overrides the color of a known format.
+
+<Example centered>
+<div class="d-flex flex-wrap gap-3">
+  <span class="file-icon file-icon-azure" data-type="md" role="img" aria-label="MD file"></span>
+  <span class="file-icon file-icon-teal" data-type="json" role="img" aria-label="JSON file"></span>
+  <span class="file-icon file-icon-indigo" data-type="fig" role="img" aria-label="FIG file"></span>
+  <span class="file-icon file-icon-primary" data-type="pdf" role="img" aria-label="PDF file"></span>
+</div>
+</Example>
+
+## Sizes
+
+Use `.file-icon-sm` or `.file-icon-lg` to change the size. For any other size set `--tblr-file-icon-size` on the icon; the sheet and the label scale with it.
+
+<Example centered>
+<div class="d-flex align-items-end gap-3">
+  <span class="file-icon file-icon-sm" data-type="pdf" role="img" aria-label="PDF file"></span>
+  <span class="file-icon" data-type="pdf" role="img" aria-label="PDF file"></span>
+  <span class="file-icon file-icon-lg" data-type="pdf" role="img" aria-label="PDF file"></span>
+  <span class="file-icon" data-type="pdf" style="--tblr-file-icon-size: 4rem" role="img" aria-label="PDF file"></span>
+</div>
+</Example>
+
+## Without a label
+
+Leave out `data-type` to show a blank sheet.
+
+<Example centered>
+<span class="file-icon" role="img" aria-label="File"></span>
+</Example>
+
+## With a file name
+
+Put the icon next to the file name in an upload list or a table of files. The name already says the format, so hide the icon with `aria-hidden="true"`.
+
+<Example centered>
+<div class="d-flex align-items-center gap-3">
+  <span class="file-icon" data-type="pdf" aria-hidden="true"></span>
+  <div>
+    <div class="fw-medium">Invoice 2026-11.pdf</div>
+    <div class="text-secondary">320 KB</div>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- An icon without a file name next to it needs `role="img"` and an `aria-label` that names the format, for example "PDF file".
+- An icon next to a file name is decoration. Hide it with `aria-hidden="true"`.
+- Do not rely on the color alone. The label text carries the format, the color only supports it.

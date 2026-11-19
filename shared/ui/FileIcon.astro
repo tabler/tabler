@@ -1,0 +1,21 @@
+---
+// File icon (.file-icon): a sheet of paper with the file format on a colored label.
+
+interface Props {
+  /** file format shown on the label, e.g. `pdf`; common formats get a color on their own */
+  type?: string
+  /** core/scss/ui/_file-icon.scss `.file-icon-{color}`, overrides the color of the format */
+  color?: string | undefined
+  /** core/scss/ui/_file-icon.scss `.file-icon-{size}` */
+  size?: 'sm' | 'lg' | undefined
+  /** accessible name; without it the icon is hidden from assistive technology */
+  ariaLabel?: string
+  class?: string
+  /** remaining attributes (id, style, …) are forwarded to the root element */
+  [key: string]: unknown
+}
+
+const { type, color, size, ariaLabel, class: className, ...rest } = Astro.props
+---
+
+<span class:list={['file-icon', color && `file-icon-${color}`, size && `file-icon-${size}`, className]} data-type={type} role={ariaLabel ? 'img' : undefined} aria-label={ariaLabel} aria-hidden={ariaLabel ? undefined : 'true'} {...rest}></span>

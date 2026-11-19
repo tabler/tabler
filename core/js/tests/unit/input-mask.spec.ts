@@ -460,13 +460,7 @@ describe('InputMask', () => {
     it('should stay native with a type, ranges or tokens when IMask is loaded', () => {
       const plugin = loadIMask()
 
-      fixtureEl.innerHTML = [
-        '<input type="text" data-mask="00/00" data-mask-type="pattern">',
-        '<input type="text" data-mask-type="date">',
-        '<input type="text" data-mask-type="number">',
-        '<input type="text" data-mask="000.000" data-mask-ranges="0-255 0-255">',
-        '<input type="text">',
-      ].join('')
+      fixtureEl.innerHTML = ['<input type="text" data-mask="00/00" data-mask-type="pattern">', '<input type="text" data-mask-type="date">', '<input type="text" data-mask-type="number">', '<input type="text" data-mask="000.000" data-mask-ranges="0-255 0-255">', '<input type="text">'].join('')
 
       const inputs = [...fixtureEl.querySelectorAll('input')]
       const instances = inputs.map((el, i) => new InputMask(el, i === 4 ? { mask: 'HH', tokens: { H: /[0-9a-f]/i } } : {}))

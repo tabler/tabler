@@ -1,0 +1,16 @@
+---
+// File icon component on its own, no card: eight common formats in two rows,
+// each with the color it gets from its format alone, and one unknown format
+// that stays gray. Enlarged with --tblr-file-icon-size so the folded corner
+// and the label read at picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import FileIcon from '@ui/FileIcon.astro'
+
+const formats = ['pdf', 'doc', 'xls', 'ppt', 'zip', 'png', 'mp4', 'json']
+---
+
+<ScreenshotLayout title="File icon" columns={2}>
+  <div class="d-flex flex-wrap justify-content-center gap-5 mx-auto" style="max-width: 32rem">
+    {formats.map((type) => <FileIcon type={type} style="--tblr-file-icon-size: 6rem" />)}
+  </div>
+</ScreenshotLayout>
