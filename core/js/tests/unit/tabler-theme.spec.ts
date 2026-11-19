@@ -98,6 +98,47 @@ describe('tabler-theme', () => {
     expect(['light', 'dark']).toContain(attribute('theme'))
   })
 
+  describe('closed banners', () => {
+    const isHidden = (id: string, attribute = 'data-bs-banner-id'): boolean => {
+      const banner = document.createElement('div')
+      banner.setAttribute(attribute, id)
+      document.body.append(banner)
+      const hidden = getComputedStyle(banner).display === 'none'
+      banner.remove()
+      return hidden
+    }
+
+    afterEach(() => {
+      document.adoptedStyleSheets = []
+    })
+
+    it('hides a banner whose id is stored', async () => {
+      localStorage.setItem('tabler-banner', 'trial release')
+
+      await runThemeScript()
+
+      expect(isHidden('release')).toBe(true)
+      expect(isHidden('trial')).toBe(true)
+      expect(isHidden('trial', 'data-tblr-banner-id')).toBe(true)
+      expect(isHidden('other')).toBe(false)
+    })
+
+    it('ignores a stored id that is not a plain token', async () => {
+      localStorage.setItem('tabler-banner', 'x"],body,[x=" release')
+
+      await runThemeScript()
+
+      expect(isHidden('release')).toBe(true)
+      expect(getComputedStyle(document.body).display).not.toBe('none')
+    })
+
+    it('adds no stylesheet when nothing is stored', async () => {
+      await runThemeScript()
+
+      expect(document.adoptedStyleSheets).toHaveLength(0)
+    })
+  })
+
   describe('robustness', () => {
     const blockStorage = (): (() => void) => {
       const original = Object.getOwnPropertyDescriptor(window, 'localStorage')!

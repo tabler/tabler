@@ -1,0 +1,138 @@
+---
+title: Banner
+summary: A one-line strip above the navbar for an announcement, a trial notice or a maintenance message.
+description: Show a site-wide message with the banner component - a full-width strip with text, a link and a close button that stays closed on the next visit.
+related: [/ui/components/alert, /ui/components/toast]
+source: core/scss/ui/_banner.scss
+css-vars: banner
+classnames:
+  component:
+    - class: banner
+      desc: Container element
+  color:
+    - class: banner-{color}
+      desc: Filled banner in a theme color
+  modifier:
+    - class: banner-lt
+      desc: Tinted banner; combine with a color class
+    - class: banner-start
+      desc: Aligns the text to the start edge
+---
+import Example from '@components/Example.astro';
+
+## Basic example
+
+A banner is a `.banner` element with one line of text. Links inside take the banner color and an underline, so they need no class.
+
+<Example>
+<div class="banner">
+  Black Friday: 40% off all plans until Monday. <a href="#">Get the deal</a>
+</div>
+</Example>
+
+Use a banner for a short message that concerns the whole site. For a message with a title, a list or several actions, use an [alert](/ui/components/alert).
+
+## Placement
+
+Put the banner at the very top of the page, as the first child of `.page`. It then sits above the navbar and next to the sidebar in vertical layouts.
+
+```html
+<div class="page">
+  <div class="banner banner-primary" role="region" aria-label="Announcement">...</div>
+  <header class="navbar">...</header>
+  <div class="page-wrapper">...</div>
+</div>
+```
+
+## Colors
+
+The default banner is dark. Add `.banner-{color}` for a filled banner in a theme color.
+
+<Example>
+<div class="d-flex flex-column gap-2">
+  <div class="banner banner-primary">We have a new pricing page. <a href="#">Take a look</a></div>
+  <div class="banner banner-success">Your account is verified. <a href="#">Go to the dashboard</a></div>
+  <div class="banner banner-danger">Your last payment failed. <a href="#">Update the card</a></div>
+</div>
+</Example>
+
+Add `.banner-lt` next to the color class for a tinted banner.
+
+<Example>
+<div class="d-flex flex-column gap-2">
+  <div class="banner banner-primary banner-lt">We have a new pricing page. <a href="#">Take a look</a></div>
+  <div class="banner banner-warning banner-lt">Your trial ends in 3 days. <a href="#">Upgrade now</a></div>
+  <div class="banner banner-danger banner-lt">Your last payment failed. <a href="#">Update the card</a></div>
+</div>
+</Example>
+
+## With an icon
+
+Put an icon before the text.
+
+<Example>
+<div class="banner banner-primary">
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a3 3 0 0 1 0 6" /><path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" /><path d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" /></svg>
+  Tabler 1.8 is out with new components. <a href="#">See what's new</a>
+</div>
+</Example>
+
+## Start aligned
+
+The text is centered by default. Add `.banner-start` to align it to the start edge.
+
+<Example>
+<div class="banner banner-start">
+  Scheduled maintenance on Sunday, 2:00 to 4:00 UTC.
+</div>
+</Example>
+
+## Close button
+
+Add a `.btn-close` with `data-bs-dismiss="banner"`. A click removes the banner from the page.
+
+<Example>
+<div class="banner banner-primary">
+  We have a new pricing page. <a href="#">Take a look</a>
+  <button type="button" class="btn-close" data-bs-dismiss="banner" aria-label="Close"></button>
+</div>
+</Example>
+
+## Remember the closed banner
+
+Add `data-bs-banner-id` to keep a closed banner closed on the next visit. The id is saved in `localStorage` under the `tabler-banner` key. Use lowercase letters, digits and hyphens, up to 32 characters.
+
+```html
+<div class="banner banner-primary" role="region" aria-label="Announcement" data-bs-banner-id="release-1-8">
+  Tabler 1.8 is out with new components. <a href="#">See what's new</a>
+  <button type="button" class="btn-close" data-bs-dismiss="banner" aria-label="Close"></button>
+</div>
+```
+
+Give each new message a new id, so that visitors who closed the old one still see it.
+
+The `tabler-theme.js` script hides the closed banners before the page renders, so the page does not jump. Without that script, `tabler.js` removes them once it loads.
+
+## JavaScript
+
+Close a banner from your code with the `Banner` class:
+
+```js
+const banner = tabler.Banner.getOrCreateInstance(document.querySelector('.banner'))
+banner.close()
+```
+
+| Method | Description |
+| --- | --- |
+| `close()` | Removes the banner and saves its id. |
+| `Banner.isClosed(id)` | Returns `true` when the banner with this id was closed. |
+| `Banner.reset(id)` | Forgets one closed banner, or all of them when called without an id. The banner is back after the next page load. |
+
+| Event | Description |
+| --- | --- |
+| `close.bs.banner` | Fires when `close()` is called. Call `preventDefault()` to keep the banner. |
+| `closed.bs.banner` | Fires after the banner is removed. |
+
+## Accessibility
+
+A banner is part of the page content and is read in the normal order. Give the site-wide banner at the top of the page `role="region"` and an `aria-label`, so screen reader users can find it and skip it. Give the close button an `aria-label`. When the banner is closed from the keyboard, focus moves to the next focusable element on the page. Do not use a banner for a message that appears after the page loads; use an [alert](/ui/components/alert) or a [toast](/ui/components/toast) for that.

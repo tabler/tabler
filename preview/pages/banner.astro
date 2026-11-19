@@ -1,0 +1,117 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import Banner from '@ui/Banner.astro'
+import Button from '@ui/Button.astro'
+import { semanticColors, extraColors } from '@shared/lib/tokens'
+
+const colors = [...semanticColors.filter((color) => color !== 'light'), ...extraColors]
+---
+
+<DefaultLayout title="Banner" pageMenu="base.banner" description="Banners are one-line strips above the navbar for an announcement, a trial notice or a maintenance message.">
+  <Banner slot="banner" color="primary" icon="speakerphone" id="demo-release" ariaLabel="Announcement" showClose>
+    Tabler 1.8 is out with new components and utilities. <a href="#">See what's new</a>
+  </Banner>
+  <DocsLink slot="page-header-actions" path="/ui/components/banner" />
+  <CaptureScript>
+    <!-- BEGIN SCRIPT OF BANNER RESET -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('banner-reset').addEventListener('click', () => {
+          tabler.Banner.reset('demo-release')
+          window.location.reload()
+        })
+      })
+    </script>
+    <!-- END SCRIPT OF BANNER RESET -->
+  </CaptureScript>
+
+  <div class="row row-cards">
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Remembered</CardTitle>
+          <CardSubtitle>The banner at the top of this page has a <code>data-bs-banner-id</code>. Close it and reload: it stays closed.</CardSubtitle>
+          <Button text="Bring the banner back" id="banner-reset" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Default</CardTitle>
+          <CardSubtitle>A <code>.banner</code> with text and a link. Links take the banner color and an underline.</CardSubtitle>
+          <Banner>Black Friday: 40% off all plans until Monday. <a href="#">Get the deal</a></Banner>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>With an icon and a close button</CardTitle>
+          <CardSubtitle>Put an icon before the text and a <code>.btn-close</code> with <code>data-bs-dismiss="banner"</code> after it.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            <Banner color="primary" icon="speakerphone" showClose>We have a new pricing page. <a href="#">Take a look</a></Banner>
+            <Banner color="warning" variant="light" icon="clock" showClose>Your trial ends in 3 days. <a href="#">Upgrade now</a></Banner>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Start aligned</CardTitle>
+          <CardSubtitle>Add <code>.banner-start</code> to align the text to the start edge.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            <Banner align="start" showClose>Scheduled maintenance on Sunday, 2:00 to 4:00 UTC.</Banner>
+            <Banner color="danger" variant="light" align="start" icon="alert-triangle">Your last payment failed. <a href="#">Update the card</a></Banner>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Add <code>.banner-&#123;color&#125;</code> for a filled banner.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              colors.map((color) => (
+                <Banner color={color}>
+                  This is a {color} banner. <a href="#">Learn more</a>
+                </Banner>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Light colors</CardTitle>
+          <CardSubtitle>Add <code>.banner-lt</code> next to the color for a tinted banner.</CardSubtitle>
+          <div class="d-flex flex-column gap-2">
+            {
+              colors.map((color) => (
+                <Banner color={color} variant="light">
+                  This is a light {color} banner. <a href="#">Learn more</a>
+                </Banner>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
