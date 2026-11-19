@@ -10,7 +10,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
 import { eventActionOnPlugin, initAll } from './bootstrap/util/component-functions'
-import { getElement, getNextActiveElement, getUID, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
+import { getElement, getNextActiveElement, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
 import { DefaultAllowlist, DefaultIconAllowlist, sanitizeHtml } from './bootstrap/util/sanitizer'
 import type { DelegatedEvent } from './bootstrap/dom/event-handler'
 import type { AllowList, SanitizeFn } from './bootstrap/types'
@@ -93,6 +93,18 @@ const SELECTOR_NO_RESULTS = '.combobox-no-results'
 
 const CHECK_ICON = '<svg xmlns="http://www.w3.org/2000/svg" class="dropdown-item-check icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></svg>'
 
+let uidCounter = 0
+
+const nextUid = (): string => {
+  let uid: string
+
+  do {
+    uid = `${NAME}-${++uidCounter}`
+  } while (document.getElementById(`${uid}-list`))
+
+  return uid
+}
+
 const Default: ComponentConfig = {
   allowList: { ...DefaultIconAllowlist, ...DefaultAllowlist, span: ['style'] },
   boundary: 'clippingParents',
@@ -166,7 +178,7 @@ class Combobox extends BaseComponent {
     this._form = this._select?.form ?? null
     this._clearsDefault = false
     this._highlighted = null
-    this._uid = getUID(NAME)
+    this._uid = nextUid()
     this._optionByItem = new Map()
     this._hiddenInput = null
     this._popper = null
