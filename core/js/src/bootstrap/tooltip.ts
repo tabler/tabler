@@ -9,7 +9,7 @@ import * as Popper from '@popperjs/core'
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
-import { defineJQueryPlugin, execute, findShadowRoot, getElement, getUID, isRTL, noop } from './util/index'
+import { defineJQueryPlugin, execute, findShadowRoot, getElement, getUID, isRTL, noop, resolved } from './util/index'
 import { DefaultAllowlist } from './util/sanitizer'
 import TemplateFactory from './util/template-factory'
 import type { AllowList, ComponentConfig as BaseComponentConfig, JQueryCollectionLike, SanitizeFn } from './types'
@@ -142,6 +142,7 @@ class Tooltip extends BaseComponent {
   declare _config: ComponentConfig
   _isEnabled: boolean
   _timeout: ReturnType<typeof setTimeout>
+  _settleTimeout?: () => void
   _isHovered: boolean | null
   _activeTrigger: Record<string, boolean>
   _popper: Popper.Instance | null
@@ -171,14 +172,14 @@ class Tooltip extends BaseComponent {
     this.tip = null
     this._hideModalHandler = () => {
       if (this._element) {
-        this.hide()
+        void this.hide()
       }
     }
 
     this._isHoverable = this._config.trigger.split(' ').includes(TRIGGER_HOVER)
     this._escapeHandler = (event: KeyboardEvent) => {
       if (event.key === ESCAPE_KEY) {
-        this.hide()
+        void this.hide()
       }
     }
     this._tipHandler = (event: Event) => {
@@ -186,9 +187,9 @@ class Tooltip extends BaseComponent {
       this._activeTrigger[TRIGGER_HOVER] = isEnter
       if (isEnter) {
         clearTimeout(this._timeout)
-        this._enter()
+        void this._enter()
       } else {
-        this._leave()
+        void this._leave()
       }
     }
 
@@ -223,21 +224,17 @@ class Tooltip extends BaseComponent {
     this._isEnabled = !this._isEnabled
   }
 
-  toggle(): void {
+  toggle(): Promise<void> {
     if (!this._isEnabled) {
-      return
+      return resolved()
     }
 
-    if (this._isShown()) {
-      this._leave()
-      return
-    }
-
-    this._enter()
+    return this._isShown() ? this._leave() : this._enter()
   }
 
   dispose(): void {
     clearTimeout(this._timeout)
+    this._settleTimeout?.()
 
     EventHandler.off(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler)
 
@@ -249,13 +246,13 @@ class Tooltip extends BaseComponent {
     super.dispose()
   }
 
-  show(): void {
+  show(): Promise<void> {
     if (this._element.style.display === 'none') {
       throw new Error('Please use show on visible elements')
     }
 
     if (!(this._isWithContent() && this._isEnabled)) {
-      return
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_SHOW))
@@ -263,7 +260,7 @@ class Tooltip extends BaseComponent {
     const isInTheDom = (shadowRoot || this._element.ownerDocument.documentElement).contains(this._element)
 
     if (showEvent?.defaultPrevented || !isInTheDom) {
-      return
+      return resolved()
     }
 
     this._disposePopper()
@@ -296,23 +293,23 @@ class Tooltip extends BaseComponent {
       EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_SHOWN))
 
       if (this._isHovered === false) {
-        this._leave()
+        void this._leave()
       }
 
       this._isHovered = false
     }
 
-    this._queueCallback(complete, this.tip!, this._isAnimated())
+    return this._queueCallback(complete, this.tip!, this._isAnimated())
   }
 
-  hide(): void {
+  hide(): Promise<void> {
     if (!this._isShown()) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_HIDE))
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     const tip = this._getTipElement()
@@ -343,7 +340,7 @@ class Tooltip extends BaseComponent {
       EventHandler.trigger(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_HIDDEN))
     }
 
-    this._queueCallback(complete, this.tip!, this._isAnimated())
+    return this._queueCallback(complete, this.tip!, this._isAnimated())
   }
 
   update(): void {
@@ -397,7 +394,7 @@ class Tooltip extends BaseComponent {
     this._newContent = content
     if (this._isShown()) {
       this._disposePopper()
-      this.show()
+      void this.show()
     }
   }
 
@@ -517,7 +514,7 @@ class Tooltip extends BaseComponent {
         EventHandler.on(this._element, (this.constructor as typeof Tooltip).eventName(EVENT_CLICK), this._config.selector, (event: Event) => {
           const context = this._initializeOnDelegatedTarget(event)
           context._activeTrigger[TRIGGER_CLICK] = !(context._isShown() && context._activeTrigger[TRIGGER_CLICK])
-          context.toggle()
+          void context.toggle()
         })
       } else if (trigger !== TRIGGER_MANUAL) {
         const eventIn = trigger === TRIGGER_HOVER ? (this.constructor as typeof Tooltip).eventName(EVENT_MOUSEENTER) : (this.constructor as typeof Tooltip).eventName(EVENT_FOCUSIN)
@@ -526,13 +523,13 @@ class Tooltip extends BaseComponent {
         EventHandler.on(this._element, eventIn, this._config.selector, (event: Event) => {
           const context = this._initializeOnDelegatedTarget(event)
           context._activeTrigger[event.type === 'focusin' ? TRIGGER_FOCUS : TRIGGER_HOVER] = true
-          context._enter()
+          void context._enter()
         })
         EventHandler.on(this._element, eventOut, this._config.selector, (event: Event & { relatedTarget?: HTMLElement }) => {
           const context = this._initializeOnDelegatedTarget(event)
           context._activeTrigger[event.type === 'focusout' ? TRIGGER_FOCUS : TRIGGER_HOVER] = context._element.contains(event.relatedTarget as Node)
 
-          context._leave()
+          void context._leave()
         })
       }
     }
@@ -555,33 +552,25 @@ class Tooltip extends BaseComponent {
     this._element.removeAttribute('title')
   }
 
-  _enter(): void {
+  _enter(): Promise<void> {
     if (this._isShown() || this._isHovered) {
       this._isHovered = true
-      return
+      return resolved()
     }
 
     this._isHovered = true
 
-    this._setTimeout(() => {
-      if (this._isHovered) {
-        this.show()
-      }
-    }, this._getDelay().show)
+    return this._setTimeout(() => (this._isHovered ? this.show() : undefined), this._getDelay().show)
   }
 
-  _leave(): void {
+  _leave(): Promise<void> {
     if (this._isWithActiveTrigger()) {
-      return
+      return resolved()
     }
 
     this._isHovered = false
 
-    this._setTimeout(() => {
-      if (!this._isHovered) {
-        this.hide()
-      }
-    }, this._getDelay().hide)
+    return this._setTimeout(() => (!this._isHovered ? this.hide() : undefined), this._getDelay().hide)
   }
 
   _getDelay(): { show: number; hide: number } {
@@ -589,9 +578,21 @@ class Tooltip extends BaseComponent {
     return typeof delay === 'number' ? { show: delay, hide: delay } : delay
   }
 
-  _setTimeout(handler: () => void, timeout: number): void {
+  _setTimeout(handler: () => Promise<void> | undefined, timeout: number): Promise<void> {
     clearTimeout(this._timeout)
-    this._timeout = setTimeout(handler, timeout)
+    this._settleTimeout?.()
+
+    return new Promise((resolve) => {
+      this._settleTimeout = resolve
+      this._timeout = setTimeout(() => {
+        this._settleTimeout = undefined
+        try {
+          resolve(handler())
+        } finally {
+          resolve()
+        }
+      }, timeout)
+    })
   }
 
   _isWithActiveTrigger(): boolean {
