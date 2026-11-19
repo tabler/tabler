@@ -540,7 +540,8 @@ class Datepicker extends BaseComponent {
   }
 
   _syncThemeAttribute(element: HTMLElement | undefined): void {
-    if (!element || (this._isInline && !this._config.datepickerTheme)) {
+    // Before the first show, mainElement is the input. Keep its theme inherited.
+    if (!element || (!this._isInline && element === this._element) || (this._isInline && !this._config.datepickerTheme)) {
       return
     }
 
