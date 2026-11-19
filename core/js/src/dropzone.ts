@@ -62,6 +62,7 @@ const EVENT_FAILED = `failed${EVENT_KEY}`
 const CLASS_NAME_DRAGOVER = 'dropzone-dragover'
 const CLASS_NAME_LIST = 'dropzone-list'
 const CLASS_NAME_ITEM = 'dropzone-item'
+const CLASS_NAME_ITEM_ICON = 'file-icon file-icon-sm'
 const CLASS_NAME_ITEM_BODY = 'dropzone-item-body'
 const CLASS_NAME_ITEM_NAME = 'dropzone-item-name'
 const CLASS_NAME_ITEM_META = 'dropzone-item-meta'
@@ -141,6 +142,8 @@ const matchesAccept = (file: File, accept: string): boolean => {
     })
   )
 }
+
+const fileType = (name: string): string | null => /\.([a-z0-9]{1,4})$/i.exec(name)?.[1] ?? null
 
 const createElement = (className: string, tag = 'div'): HTMLElement => {
   const element = document.createElement(tag)
@@ -382,11 +385,18 @@ class Dropzone extends BaseComponent {
 
   _createItem(file: File, reason: RejectReason | null): DropzoneItem {
     const element = createElement(CLASS_NAME_ITEM)
+    const icon = createElement(CLASS_NAME_ITEM_ICON, 'span')
+    const type = fileType(file.name)
     const body = createElement(CLASS_NAME_ITEM_BODY)
     const name = createElement(CLASS_NAME_ITEM_NAME)
     const meta = createElement(CLASS_NAME_ITEM_META)
     const remove = createElement(`btn-close ${CLASS_NAME_ITEM_REMOVE}`, 'button')
     let progress: HTMLElement | null = null
+
+    icon.setAttribute('aria-hidden', 'true')
+    if (type) {
+      icon.dataset.type = type
+    }
 
     name.textContent = file.name
     meta.textContent = reason ? this._rejectText(reason) : formatSize(file.size)
@@ -405,7 +415,7 @@ class Dropzone extends BaseComponent {
       body.append(track)
     }
 
-    element.append(body, remove)
+    element.append(icon, body, remove)
 
     const item: DropzoneItem = { element, file, meta, progress, status: 'ready', xhr: null }
     this._setStatus(item, reason ? 'rejected' : 'ready')

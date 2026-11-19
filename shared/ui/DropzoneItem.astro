@@ -2,12 +2,16 @@
 // One row of the Dropzone file list, as the script builds it (core/js/src/dropzone.ts `_createItem`).
 // Written by hand it shows a state without an upload; goes into the default slot of Dropzone.astro.
 
+import FileIcon from './FileIcon.astro'
+
 /** core/scss/ui/forms/_form-dropzone.scss `.dropzone-item-{status}` modifier classes */
 type DropzoneItemStatus = 'uploading' | 'success' | 'error'
 
 interface Props {
   /** `.dropzone-item-name`: the file name */
   title: string
+  /** file format on the icon; taken from the extension of `title` when not set */
+  type?: string | undefined
   /** `.dropzone-item-meta`: the file size, or the error message */
   description?: string
   status?: DropzoneItemStatus | undefined
@@ -20,10 +24,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { title, description, status, value, removeLabel = 'Remove file', class: className, ...rest } = Astro.props
+const { title, type = /\.([a-z0-9]{1,4})$/i.exec(title)?.[1], description, status, value, removeLabel = 'Remove file', class: className, ...rest } = Astro.props
 ---
 
 <div class:list={['dropzone-item', status && `dropzone-item-${status}`, className]} {...rest}>
+  <FileIcon type={type} size="sm" />
   <div class="dropzone-item-body">
     <div class="dropzone-item-name">{title}</div>
     {description && <div class="dropzone-item-meta">{description}</div>}

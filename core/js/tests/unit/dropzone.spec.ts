@@ -118,6 +118,7 @@ describe('Dropzone', () => {
       expect(items()).toHaveLength(2)
       expect(items()[0].querySelector('.dropzone-item-name')!.textContent).toBe('a.txt')
       expect(items()[0].querySelector('.dropzone-item-meta')!.textContent).toBe('3 B')
+      expect(items()[1].querySelector<HTMLElement>('.file-icon')!.dataset.type).toBe('pdf')
       expect(instance.getFiles()).toHaveLength(2)
       expect(input().files).toHaveLength(2)
     })
