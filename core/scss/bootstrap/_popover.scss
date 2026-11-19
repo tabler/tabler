@@ -39,6 +39,11 @@
   @include border-radius(var(--popover-border-radius));
   @include box-shadow(var(--popover-box-shadow));
 
+  &.bs-popover-hoverable::before {
+    position: absolute;
+    content: '';
+  }
+
   .popover-arrow {
     display: block;
     width: var(--popover-arrow-width);
@@ -196,3 +201,26 @@
   padding: var(--popover-body-padding-y) var(--popover-body-padding-x);
   color: var(--popover-body-color);
 }
+
+.bs-popover-top::before {
+  inset: 100% 0 auto;
+  height: calc(var(--popover-bridge, 8px) + var(--popover-border-width));
+}
+
+.bs-popover-bottom::before {
+  inset: auto 0 100%;
+  height: calc(var(--popover-bridge, 8px) + var(--popover-border-width));
+}
+
+/* rtl:begin:ignore */
+.bs-popover-start::before {
+  inset: 0 auto 0 100%;
+  width: calc(var(--popover-bridge, 8px) + var(--popover-border-width));
+}
+
+.bs-popover-end::before {
+  inset: 0 100% 0 auto;
+  width: calc(var(--popover-bridge, 8px) + var(--popover-border-width));
+}
+
+/* rtl:end:ignore */
