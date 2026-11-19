@@ -4,9 +4,13 @@
 @use '../config' as *;
 
 .social {
+  // scss-docs-start social-css-vars
+  --social-size: #{config.$avatar-size};
+  // scss-docs-end social-css-vars
+
   position: relative;
   display: inline-block;
-  height: config.$avatar-size;
+  height: var(--social-size);
   aspect-ratio: 1;
   vertical-align: bottom;
   background: no-repeat center/cover;
@@ -24,6 +28,6 @@
 
 @each $flag-size, $size in config.$flag-sizes {
   .social-#{$flag-size} {
-    height: map.get($size, size);
+    --social-size: #{map.get($size, size)};
   }
 }

@@ -4,7 +4,7 @@ summary: A spinner is used to show the loading state of a component or page. It 
 description: Show loading states with spinners. Choose between border and growing styles, change colors and sizes, or place them in buttons.
 related: [/ui/components/progress, /ui/components/placeholder]
 source: core/scss/ui/_loaders.scss
-css-vars: spinner
+css-vars: [spinner, loader]
 classnames:
   component:
     - class: spinner-border
@@ -19,6 +19,11 @@ classnames:
       desc: Small ring
     - class: spinner-grow-sm
       desc: Small dot
+  loader:
+    - class: loader
+      desc: Thin ring sized by --tblr-loader-size, in the blue color by default
+    - class: dimmer
+      desc: Wrapper that dims its dimmer-content and shows the loader while active
 ---
 import Example from '@components/Example.astro';
 
@@ -112,6 +117,26 @@ Animated dots also fit inside a button while its action runs.
 <div class="btn-list">
   <a href="#" class="btn btn-primary"> Loading <span class="animated-dots"></span> </a>
   <a href="#" class="btn btn-primary disabled"> Loading <span class="animated-dots"></span> </a>
+</div>
+</Example>
+
+## Loader
+
+The `loader` is a thin ring that spins on its own. Change its size and color with the `--tblr-loader-size` and `--tblr-loader-color` variables.
+
+<Example centered>
+<div class="loader"></div>
+<div class="loader" style="--tblr-loader-size: 1.5rem; --tblr-loader-color: var(--tblr-red)"></div>
+</Example>
+
+Put it in a `dimmer` to cover content that is loading. The loader shows and the content fades while the wrapper has the `active` class.
+
+<Example>
+<div class="dimmer active">
+  <div class="loader"></div>
+  <div class="dimmer-content">
+    <p>Content that is loading. It gets a lower opacity and no pointer events while the dimmer is active.</p>
+  </div>
 </div>
 </Example>
 

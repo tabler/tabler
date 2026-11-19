@@ -33,10 +33,10 @@ if (data.classnames) {
 }
 // DocsCssVars too; only the parts that exist in the sources get an entry.
 const { css, sass } = await cssSection(data.cssVars, data.sassVars)
-if (css || sass) {
+if (css.length || sass.length) {
   toc.push({ level: 2, text: 'CSS', id: 'css' })
-  if (css) toc.push({ level: 3, text: 'Variables', id: 'css-variables' })
-  if (sass) toc.push({ level: 3, text: 'Sass variables', id: 'sass-variables' })
+  if (css.length) toc.push({ level: 3, text: 'Variables', id: 'css-variables' })
+  if (sass.length) toc.push({ level: 3, text: 'Sass variables', id: 'sass-variables' })
 }
 ---
 

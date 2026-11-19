@@ -8,9 +8,9 @@ import { site } from '@shared/lib/site'
 
 interface Props {
   /** the custom-property family after `--`, e.g. `badge` for the `badge-css-vars` marker */
-  cssVars?: string | undefined
+  cssVars?: string | string[] | undefined
   /** the `<name>-variables` marker in `_variables.scss`; defaults to `cssVars` */
-  sassVars?: string | undefined
+  sassVars?: string | string[] | undefined
 }
 
 const { cssVars, sassVars } = Astro.props
@@ -20,42 +20,51 @@ const fileLink = (path: string) => `${site.githubUrl}/blob/dev/${path}`
 ---
 
 <!-- BEGIN DOCS CSS VARS -->{
-  (css || sass) && (
+  (css.length > 0 || sass.length > 0) && (
     <Fragment>
       <h2 id="css">CSS</h2>
 
-      {css && (
+      {css.length > 0 && (
         <Fragment>
           <h3 id="css-variables">Variables</h3>
-          <p>
-            The component uses local CSS variables
-            {css.selector && (
-              <Fragment>
-                {' '}
-                on <code>{css.selector}</code>
-              </Fragment>
-            )}{' '}
-            for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too. Source:{' '}
-            <a href={fileLink(css.path)}>
-              <code>{css.path}</code>
-            </a>
-            .
-          </p>
-          <CodeSnippet code={css.code} lang="scss" />
+          <p>The component uses local CSS variables for real-time customization. Values for the CSS variables are set via Sass, so Sass customization is still supported, too.</p>
+          {css.map((block) => (
+            <Fragment>
+              <p>
+                {block.selector ? (
+                  <Fragment>
+                    On <code>{block.selector}</code>. Source:{' '}
+                  </Fragment>
+                ) : (
+                  'Source: '
+                )}
+                <a href={fileLink(block.path)}>
+                  <code>{block.path}</code>
+                </a>
+                .
+              </p>
+              <CodeSnippet code={block.code} lang="scss" />
+            </Fragment>
+          ))}
         </Fragment>
       )}
 
-      {sass && (
+      {sass.length > 0 && (
         <Fragment>
           <h3 id="sass-variables">Sass variables</h3>
-          <p>
-            Override these variables before importing Tabler to change the defaults. Source:{' '}
-            <a href={fileLink(sass.path)}>
-              <code>{sass.path}</code>
-            </a>
-            .
-          </p>
-          <CodeSnippet code={sass.code} lang="scss" />
+          <p>Override these variables before importing Tabler to change the defaults.</p>
+          {sass.map((block) => (
+            <Fragment>
+              <p>
+                Source:{' '}
+                <a href={fileLink(block.path)}>
+                  <code>{block.path}</code>
+                </a>
+                .
+              </p>
+              <CodeSnippet code={block.code} lang="scss" />
+            </Fragment>
+          ))}
         </Fragment>
       )}
     </Fragment>

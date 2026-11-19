@@ -1,0 +1,115 @@
+---
+import Icon from '@ui/Icon.astro'
+import Button from '@ui/Button.astro'
+
+const repository = 'acme/payments-api'
+
+const affected = ['3 environments, including production', '412 build records and their logs', '8 API tokens scoped to this repo']
+---
+
+<div class="modal-body">
+  <div class="d-flex align-items-start gap-3 mb-4">
+    <span class="avatar avatar-lg bg-danger-lt flex-shrink-0"><Icon name="exclamation-mark" /></span>
+    <div>
+      <h3 class="modal-title mb-1" id="modal-delete-repository-title">Delete {repository}</h3>
+      <p class="text-secondary mb-0">This removes the repository and everything attached to it. It cannot be undone.</p>
+    </div>
+  </div>
+
+  <ul class="list-unstyled d-flex flex-column gap-2 bg-surface-secondary border rounded p-3 mb-4">
+    {
+      affected.map((item) => (
+        <li class="d-flex align-items-center gap-2">
+          <span class="status-dot bg-danger" />
+          {item}
+        </li>
+      ))
+    }
+  </ul>
+
+  <form id="delete-repository-form" novalidate>
+    <label class="form-label" for="delete-repository-input">Type <code>{repository}</code> to confirm</label>
+    <input type="text" class="form-control font-monospace" id="delete-repository-input" data-repository={repository} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder={repository} />
+    <div class="invalid-feedback" id="delete-repository-feedback">The name does not match <code>{repository}</code>.</div>
+  </form>
+
+  <div class="btn-list justify-content-end mt-4">
+    <Button text="Cancel" dismiss id="delete-repository-cancel" />
+    <button type="submit" form="delete-repository-form" class="btn btn-danger" id="delete-repository-submit" disabled>Delete repository</button>
+  </div>
+  <div class="text-secondary small text-center mt-3">This action is recorded in the audit log with your account and IP.</div>
+</div>
+<!-- BEGIN DELETE REPOSITORY -->
+<script is:inline>
+  function initDeleteRepository() {
+    const form = document.getElementById('delete-repository-form')
+    const input = document.getElementById('delete-repository-input')
+    const submit = document.getElementById('delete-repository-submit')
+    const cancel = document.getElementById('delete-repository-cancel')
+
+    if (!form || !input || !submit || !cancel) {
+      return
+    }
+
+    const repository = input.dataset.repository
+    const modal = form.closest('.modal')
+
+    const validate = () => {
+      const value = input.value.trim()
+      const matches = value === repository
+      const diverges = value !== '' && !repository.startsWith(value)
+
+      submit.disabled = !matches
+      input.classList.toggle('is-invalid', diverges)
+      if (diverges) {
+        input.setAttribute('aria-invalid', 'true')
+        input.setAttribute('aria-describedby', 'delete-repository-feedback')
+      } else {
+        input.removeAttribute('aria-invalid')
+        input.removeAttribute('aria-describedby')
+      }
+    }
+
+    const reset = () => {
+      form.reset()
+      submit.textContent = 'Delete repository'
+      submit.classList.remove('btn-loading')
+      cancel.disabled = false
+      input.disabled = false
+      validate()
+    }
+
+    input.addEventListener('input', validate)
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+      if (input.value.trim() !== repository) {
+        return
+      }
+
+      submit.disabled = true
+      submit.classList.add('btn-loading')
+      submit.textContent = 'Deleting…'
+      cancel.disabled = true
+      input.disabled = true
+
+      // Replace with the real request. The demo closes the dialog after a moment.
+      window.setTimeout(() => {
+        const instance = modal && window.tabler && window.tabler.Modal.getInstance(modal)
+        if (instance) {
+          instance.hide()
+        } else {
+          reset()
+        }
+      }, 1500)
+    })
+
+    if (modal) {
+      modal.addEventListener('hidden.bs.modal', reset)
+      modal.addEventListener('shown.bs.modal', () => input.focus())
+    }
+  }
+
+  document.readyState !== 'loading' ? initDeleteRepository() : document.addEventListener('DOMContentLoaded', initDeleteRepository, { once: true })
+</script>
+<!-- END DELETE REPOSITORY -->

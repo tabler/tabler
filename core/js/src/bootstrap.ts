@@ -1,4 +1,8 @@
-export * as Popper from '@popperjs/core'
+import { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
+
+// The middleware the components use, so a `positionConfig` can be built without
+// pulling in Floating UI separately.
+export const FloatingUI = { arrow, autoPlacement, autoUpdate, computePosition, flip, offset, shift }
 
 export { default as Alert } from './bootstrap/alert'
 export { default as Button } from './bootstrap/button'
@@ -12,6 +16,7 @@ export { default as Popover } from './bootstrap/popover'
 export { default as ScrollSpy } from './bootstrap/scrollspy'
 export { default as Tab } from './bootstrap/tab'
 export { default as Toast } from './bootstrap/toast'
+export { default as Toggler } from './bootstrap/toggler'
 export { default as Tooltip } from './bootstrap/tooltip'
 
 import Alert from './bootstrap/alert'
@@ -26,6 +31,7 @@ import Popover from './bootstrap/popover'
 import ScrollSpy from './bootstrap/scrollspy'
 import Tab from './bootstrap/tab'
 import Toast from './bootstrap/toast'
+import Toggler from './bootstrap/toggler'
 import Tooltip from './bootstrap/tooltip'
 
 export const bootstrap = {
@@ -41,5 +47,6 @@ export const bootstrap = {
   ScrollSpy,
   Tab,
   Toast,
+  Toggler,
   Tooltip,
 }
