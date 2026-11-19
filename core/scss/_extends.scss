@@ -80,7 +80,9 @@
 // Light-scoped subtrees inside a dark body inherit the dark styles
 // (from `layout/_dark.scss`)
 @if $enable-dark-mode {
-  body[data-bs-theme='dark'] [data-bs-theme='light'],
+  // The `i` flag makes this a different simple selector for Sass, so the navbar
+  // `@extend` below does not extend it into `body.navbar` selectors that never match.
+  body[data-bs-theme='dark' i] [data-bs-theme='light'],
   body[data-theme='dark'] [data-theme='light'] {
     @extend [data-bs-theme='dark'];
   }

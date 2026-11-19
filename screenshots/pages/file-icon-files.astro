@@ -1,0 +1,48 @@
+---
+// File icon in context: a card listing the files of a project, the way a file
+// manager or an attachment list does. Each row starts with the icon of its
+// format, so the colors run down the first column.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import FileIcon from '@ui/FileIcon.astro'
+
+const files = [
+  { name: 'Annual report 2026.pdf', type: 'pdf', size: '2.4 MB', date: '12 Nov 2026' },
+  { name: 'Budget.xlsx', type: 'xlsx', size: '184 KB', date: '10 Nov 2026' },
+  { name: 'Brand guidelines.pptx', type: 'pptx', size: '12.1 MB', date: '4 Nov 2026' },
+  { name: 'Contract draft.docx', type: 'docx', size: '96 KB', date: '28 Oct 2026' },
+  { name: 'Team photo.jpg', type: 'jpg', size: '3.8 MB', date: '24 Oct 2026' },
+  { name: 'Assets.zip', type: 'zip', size: '48.7 MB', date: '21 Oct 2026' },
+]
+---
+
+<ScreenshotLayout title="File icon in a file list" columns={2}>
+  <Card>
+    <CardHeader title="Files" />
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Modified</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            files.map((file) => (
+              <tr>
+                <td class="text-nowrap">
+                  <FileIcon type={file.type} class="me-2" /> {file.name}
+                </td>
+                <td class="text-secondary text-nowrap">{file.size}</td>
+                <td class="text-secondary text-nowrap">{file.date}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Card>
+</ScreenshotLayout>
