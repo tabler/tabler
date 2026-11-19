@@ -179,7 +179,7 @@ class PhoneInput extends BaseComponent {
     const only = this._config.onlyCountries === null ? null : toCodes(this._config.onlyCountries)
     const preferred = toCodes(this._config.preferredCountries)
     const locale = this._config.locale || document.documentElement.lang || 'en'
-    let display: Intl.DisplayNames | null = null
+    let display: Intl.DisplayNames | null
 
     try {
       display = new Intl.DisplayNames([locale], { type: 'region' })
