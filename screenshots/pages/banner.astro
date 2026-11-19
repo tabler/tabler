@@ -1,0 +1,91 @@
+---
+// Banner where it lives: the first thing in a small app screen, above the
+// header. The banner stays at full opacity and the screen under it fades out,
+// so the eye lands on the strip. The other jobs it is meant for — a sale, a
+// trial notice and a failed payment — sit below, so the dark and the tinted
+// variant, the icon and the close button are all in view.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Banner from '@ui/Banner.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+
+const links = ['Overview', 'Customers', 'Invoices', 'Reports', 'Settings']
+
+const stats = [
+  { label: 'Revenue', value: '$48,290', change: '+8.2%' },
+  { label: 'Orders', value: '1,284', change: '+3.1%' },
+  { label: 'Customers', value: '9,712', change: '+5.4%' },
+]
+---
+
+<ScreenshotLayout title="Banner" columns={3}>
+  <div class="shot-banner">
+    <Card class="shot-banner-app">
+      <Banner color="primary" icon="speakerphone" showClose>Tabler 1.8 is out with new components. <a href="#">See what's new</a></Banner>
+      <div class="card-header gap-3">
+        <img class="shot-banner-logo" src="/static/logo-small.svg" width="32" height="32" alt="Tabler" />
+        <ul class="nav nav-pills">
+          {
+            links.map((link, index) => (
+              <li class="nav-item">
+                <a class:list={['nav-link', index === 0 && 'active']} href="#">
+                  {link}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <span class="avatar avatar-sm ms-auto">PK</span>
+      </div>
+      <CardBody>
+        <div class="row row-cards">
+          {
+            stats.map((stat) => (
+              <div class="col-4">
+                <Card>
+                  <CardBody>
+                    <div class="subheader">{stat.label}</div>
+                    <div class="d-flex align-items-baseline">
+                      <div class="h1 mb-0 me-2">{stat.value}</div>
+                      <span class="text-green">{stat.change}</span>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          }
+        </div>
+      </CardBody>
+    </Card>
+
+    <div class="shot-banner-variants space-y-2">
+      <Banner showClose>Black Friday: 40% off all plans until Monday. <a href="#">Get the deal</a></Banner>
+      <Banner color="warning" variant="light" icon="clock" showClose>Your trial ends in 3 days. <a href="#">Upgrade now</a></Banner>
+      <Banner color="danger" variant="light" icon="alert-triangle">Your last payment failed. <a href="#">Update the card</a></Banner>
+    </div>
+  </div>
+
+  <style is:inline>
+    /* Solid over the banner (2.25rem tall), then fading down the screen. */
+    .shot-banner-app {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, #000 2.25rem, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0.12) 100%);
+      mask-image: linear-gradient(to bottom, #000 2.25rem, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0.12) 100%);
+    }
+
+    .shot-banner-variants {
+      position: relative;
+      margin-top: 0.75rem;
+    }
+
+    .shot-banner-variants .banner {
+      border-radius: var(--tblr-border-radius);
+    }
+
+    /* The mark is cut out of the logo, so it takes the colour behind it. Keep it
+    white on a dark header too. */
+    .shot-banner-logo {
+      background: linear-gradient(#fff, #fff) center / 75% 75% no-repeat;
+    }
+  </style>
+</ScreenshotLayout>

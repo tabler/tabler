@@ -86,6 +86,21 @@ describe('Autosize', () => {
       expect(height()).toBe(46)
     })
 
+    it('should keep the scroll position of a scrolled ancestor', () => {
+      fixtureEl.innerHTML = '<div style="height: 100px; overflow-y: auto"><div style="height: 100px"></div><textarea rows="1" style="width: 200px; line-height: 20px; padding: 0; border: 0"></textarea></div>'
+      const scroller = fixtureEl.firstElementChild as HTMLElement
+      textarea().value = lines(10)
+      const instance = new Autosize(textarea())
+      scroller.scrollTop = scroller.scrollHeight
+      const before = scroller.scrollTop
+
+      textarea().value = lines(11)
+      instance.update()
+
+      expect(height()).toBe(220)
+      expect(scroller.scrollTop).toBe(before)
+    })
+
     it('should still update a position: fixed field', () => {
       textarea().style.position = 'fixed'
       const instance = new Autosize(textarea())

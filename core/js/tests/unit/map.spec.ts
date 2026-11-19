@@ -216,6 +216,40 @@ describe('MapView', () => {
       expect(view.markers).toHaveLength(1)
     })
 
+    it('should load the library from a same-origin URL in a data attribute', async () => {
+      delete window.maplibregl
+      ;(window as unknown as { fakeMapLibrary: MapLibrary }).fakeMapLibrary = library
+
+      const url = URL.createObjectURL(new Blob(['export const { Map, Marker, Popup } = window.fakeMapLibrary'], { type: 'text/javascript' }))
+      const view = new MapView(mount(`<div data-bs-library="${url}"></div>`))
+
+      expect(view._config.library).toBe(url)
+
+      await new Promise((resolve) => view.ready(resolve))
+
+      expect(view.map).toBe(FakeMap.last)
+      URL.revokeObjectURL(url)
+    })
+
+    it('should ignore a library on another origin when it comes from a data attribute', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      for (const attribute of ['data-bs-library="https://example.com/maplibre-gl.mjs"', 'data-tblr-library="//example.com/maplibre-gl.mjs"', 'data-bs-library="data:text/javascript,export default 1"', `data-bs-config='{"library":"https://example.com/maplibre-gl.mjs"}'`]) {
+        const view = new MapView(mount(`<div ${attribute}></div>`))
+
+        expect(view._config.library).toBe(MapView.Default.library)
+      }
+
+      expect(warn).toHaveBeenCalledTimes(4)
+      warn.mockRestore()
+    })
+
+    it('should keep a library on another origin when it comes from the config object', () => {
+      const view = new MapView(mount('<div data-bs-library="https://example.com/a.mjs"></div>'), { library: 'https://example.org/b.mjs' })
+
+      expect(view._config.library).toBe('https://example.org/b.mjs')
+    })
+
     it('should warn when the library cannot be loaded', async () => {
       delete window.maplibregl
 

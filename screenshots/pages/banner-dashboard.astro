@@ -1,0 +1,23 @@
+---
+// Banner where it lives: the first thing on the page, above the navbar of the
+// CRM dashboard. The horizontal navbar is used so the strip runs the full width
+// of the screen. The banner stays at full opacity and the rest of the screen
+// fades out with the distance from it, so the eye lands on the banner and the
+// dashboard only sets the scene.
+import ScreenshotAppLayout from '../layouts/ScreenshotAppLayout.astro'
+import CrmDashboard from '../components/CrmDashboard.astro'
+import Banner from '@ui/Banner.astro'
+---
+
+<ScreenshotAppLayout title="Banner on a dashboard" pageHeader="CRM Dashboard" description="Welcome back — here's your CRM overview for today." pageMenu="dashboards.crm" navbarPosition="horizontal" pageLibs={['apexcharts']}>
+  <Banner slot="banner" color="primary" icon="speakerphone" ariaLabel="Announcement" showClose>Tabler 1.8 is out with new components and utilities. <a href="#">See what's new</a></Banner>
+  <CrmDashboard />
+
+  <!-- Solid over the banner (2.25rem tall), then fading down the screen. -->
+  <style is:inline>
+    .page {
+      -webkit-mask-image: linear-gradient(to bottom, #000 2.25rem, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.08) 85%);
+      mask-image: linear-gradient(to bottom, #000 2.25rem, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.08) 85%);
+    }
+  </style>
+</ScreenshotAppLayout>

@@ -1,5 +1,59 @@
 # @tabler/core
 
+## 1.7.5
+
+### Patch Changes
+
+- 4ccb046: Fixed `CountUp` losing its end value on `dispose()` and ignoring `separator` and `decimal` in the source text.
+- 986dabc: Fixed a `Datepicker` button trigger opening on focus and closing again on the click that follows.
+- a00cc81: Fixed a `Datepicker` inside a `.modal` or `.offcanvas` closing before a click on a day lands.
+- 3cb0195: Fixed an inline `Datepicker` keeping the theme it was created with.
+- e1c9a3e: Fixed `Datepicker` swapping the day and month of a localized initial value.
+- f83a6eb: Fixed `Datepicker` not updating the bound input and the selection when a date is typed or pasted into the field.
+- 6d247e5: Fixed one invalid `nav-overflow` element stopping the rest of the `tabler.js` bundle.
+- 873ca3b: Fixed keyboard navigation of tabs inside `nav-overflow` and a stale active item in its More menu.
+- 5dd7b14: Fixed `NumberInput` ignoring the next click after a hold that reached a bound or ended outside the button.
+- b073d67: Fixed `NumberInput` not firing `change.bs.numberInput` for a typed value, and Home/End editing a readonly field.
+- 17c8b74: Fixed `OtpInput` losing characters when a pasted code contains separators.
+- b8da7e9: Fixed sidebar icons sitting 2px off center in `.nav-link-icon`, visible in the folded sidebar.
+- 457a15c: Fixed folded sidebar dropdowns written with `data-tblr-toggle` not closing on an outside click.
+- 08652fa: Fixed `data-bs-toggle="toast"` triggers throwing after the toast is created again and following the link `href`.
+- cb1df03: Fixed `VectorMap` staying broken when its map data loads after the first initialisation.
+- 7c2dfff: Fixed `VectorMap` panning on hover after a pointer was released outside the map.
+- 81c2442: Fixed the map `library` option so a `data-bs-library` attribute only loads the module from the same origin as the page.
+- b0a29f9: Updated the `masonry` page library to ship from `masonry-layout` in `dist/libs/` instead of a cdnjs URL.
+- b0a29f9: Added minified `maps/world.min.js` and `maps/world.esm.min.js` builds with source maps.
+- b0a29f9: Removed the unused `mapbox` and `google-maps` entries from `libs.json`.
+- 417bd2a: Removed `body.navbar` selectors that never match and duplicated declarations in `:root`, `.text-correct` and `.text-incorrect`.
+
+## 1.7.4
+
+### Patch Changes
+
+- 7ecb816: Fixed `.card-table` bottom border on the last `tfoot` row and on row header `th` cells, and kept the rule above a `tfoot`.
+- 4d92aae: Updated `$border-color-translucent-dark` to white at 8% so card, table and dropdown borders stay visible in dark mode.
+- dd50698: Fixed Tabler Icons webfont `.ti` size in `.empty-icon` and its alignment in `.dropdown-item-icon`.
+- 141b9f3: Fixed dropdown menus in an expanded `.navbar` overflowing the viewport edge by letting Popper position them.
+- 9ccd968: Fixed hard-coded colors and shadows in `.ribbon`, `.loader`, `.stars`, `.card-cover`, forms and marketing with CSS variables.
+- 93191c3: Fixed hard-coded `1px` borders, font weights, hero font sizes and transition times to use the shared tokens.
+
+## 1.7.3
+
+### Patch Changes
+
+- 62faccc: Fixed `Autosize` moving the scroll position of a scrolled ancestor when the textarea is resized.
+- 21dc7f5: Fixed `.card-table` losing its rounded corners inside `.table-responsive-sm` to `.table-responsive-xxl` wrappers.
+- ec4b184: Fixed `.modal-header` vertical padding so multiline and wrapped `.modal-title` text no longer touches the header edges.
+- 8dec6f4: Fixed Tom Select chip `border-radius`, optgroup dividers and dropdown corners that read undefined `--bs-*` variables.
+
+## 1.7.2
+
+### Patch Changes
+
+- f251b2f: Fixed `Datepicker` throwing on a click when the start of a range is clicked again to clear it.
+- 3dba8bc: Let `data-bs-dismiss="offcanvas"` close a responsive offcanvas (`.offcanvas-lg` etc.) without `data-bs-target`.
+- 19fc71a: Fixed `.table-primary`, `.table-warning` and other table variants showing light backgrounds in dark mode.
+
 ## 1.7.1
 
 ### Patch Changes

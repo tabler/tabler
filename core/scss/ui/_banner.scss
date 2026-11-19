@@ -1,0 +1,105 @@
+@use 'sass:map';
+
+@use '../config' as *;
+
+.banner {
+  // scss-docs-start banner-css-vars
+  --banner-variant-color: var(--dark);
+  --banner-bg: var(--banner-variant-color);
+  --banner-color: var(--dark-fg);
+  --banner-padding-x: #{$banner-padding-x};
+  --banner-padding-y: #{$banner-padding-y};
+  --banner-font-size: #{$banner-font-size};
+  --banner-link-font-weight: #{$banner-link-font-weight};
+  --banner-icon-gap: #{$banner-icon-gap};
+  // scss-docs-end banner-css-vars
+  position: relative;
+  padding: var(--banner-padding-y) var(--banner-padding-x);
+  font-size: var(--banner-font-size);
+  color: var(--banner-color);
+  text-align: center;
+  background-color: var(--banner-bg);
+
+  &:has(> .btn-close) {
+    padding-inline: calc(var(--banner-padding-x) * 2 + var(--btn-close-size, #{$btn-close-width}));
+  }
+
+  a:not(.btn) {
+    font-weight: var(--banner-link-font-weight);
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  > .icon {
+    margin-inline-end: var(--banner-icon-gap);
+  }
+
+  > .btn-close {
+    --btn-close-opacity: #{$banner-btn-close-opacity};
+    --btn-close-hover-opacity: #{$banner-btn-close-hover-opacity};
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: var(--banner-padding-x);
+    margin-block: auto;
+  }
+
+  @include media-print() {
+    display: none;
+  }
+}
+
+.banner-start {
+  text-align: start;
+
+  &:has(> .btn-close) {
+    padding-inline-start: var(--banner-padding-x);
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .banner-#{$name} {
+    --banner-variant-color: var(--#{$name});
+    --banner-color: var(--#{$name}-fg);
+  }
+}
+
+.banner-lt {
+  --banner-bg: color-mix(in oklab, var(--banner-variant-color) #{$banner-lt-mix}, var(--bg-surface));
+  --banner-color: var(--body-color);
+}
+
+@if $enable-navbar-vertical {
+  @each $breakpoint in map.keys($grid-breakpoints) {
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+
+    @include media-breakpoint-up($next) {
+      .banner:has(~ .navbar-vertical.navbar-expand#{$infix}) {
+        margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
+      }
+
+      .banner:has(~ .navbar-vertical.navbar-expand#{$infix}:is(.navbar-right, .navbar-end)) {
+        margin-inline-start: 0;
+        margin-inline-end: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
+      }
+    }
+  }
+
+  .banner:has(~ .navbar-vertical:is(.navbar-folded, .navbar-folded-hover)) {
+    --sidebar-width: var(--sidebar-folded-width);
+  }
+
+  .banner:has(~ .navbar-floating.navbar-vertical),
+  html[data-bs-navbar-style='floating'] .page > .banner:has(~ .navbar-vertical) {
+    --sidebar-gap: calc(2 * #{$navbar-floating-margin});
+  }
+
+  html:not([data-bs-navbar-position='vertical']):not([data-bs-navbar-position='combined']) .page:has(> [class*='navbar-expand']:not(.navbar-vertical)) > .banner {
+    --sidebar-width: 0px;
+    --sidebar-gap: 0px;
+  }
+}

@@ -1,0 +1,80 @@
+@use 'sass:list';
+@use '../config' as *;
+
+.file-icon {
+  // scss-docs-start file-icon-css-vars
+  --file-icon-size: #{$file-icon-size};
+  --file-icon-color: #{$file-icon-color};
+  --file-icon-fg: #{$white};
+  --file-icon-bg: var(--bg-surface);
+  --file-icon-outline: #{escape-svg($file-icon-outline)};
+  --file-icon-border-color: light-dark(var(--gray-300), var(--gray-600));
+  // scss-docs-end file-icon-css-vars
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  font-size: var(--file-icon-size);
+  font-style: normal;
+  line-height: 1;
+  vertical-align: middle;
+
+  /* rtl:begin:ignore */
+  background: linear-gradient(225deg, transparent calc(0.199em - 0.7px), var(--file-icon-bg) 0) center / calc(100% - 1px) calc(100% - 1px) no-repeat padding-box;
+  border: 0 solid transparent;
+  border-right-width: 0.05em;
+  border-left-width: 0.2em;
+  border-radius: 0.325em 0.175em 0.175em 0.325em / 0.125em;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: var(--file-icon-border-color);
+    mask: var(--file-icon-outline) center / 100% 100% no-repeat;
+  }
+
+  &[data-type]::after {
+    position: absolute;
+    bottom: 0.6em;
+    left: -0.8em;
+    padding: 0.2em 0.4em;
+    font-size: 0.25em;
+    font-weight: #{$file-icon-label-font-weight};
+    color: var(--file-icon-fg);
+    text-transform: uppercase;
+    white-space: nowrap;
+    content: attr(data-type);
+    background: var(--file-icon-color);
+    border-radius: 0.4em;
+  }
+
+  /* rtl:end:ignore */
+}
+
+.file-icon-sm {
+  --file-icon-size: #{$file-icon-size-sm};
+}
+
+.file-icon-lg {
+  --file-icon-size: #{$file-icon-size-lg};
+}
+
+@each $color, $types in $file-icon-types {
+  $selectors: ();
+
+  @each $type in $types {
+    $selectors: list.append($selectors, "[data-type='#{$type}' i]", comma);
+  }
+
+  .file-icon:where(#{$selectors}) {
+    --file-icon-color: var(--#{$color});
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .file-icon-#{$name} {
+    --file-icon-color: var(--#{$name});
+  }
+}

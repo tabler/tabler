@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
 import charts from '../data/charts.json'
 import { chartStyle, chartConfig, chartFormatters, type ChartData } from './chart-script'
@@ -158,5 +160,26 @@ describe('chartConfig', () => {
     const { config } = chartConfig({ id: 'demo', data: { 'series': [], 'hide-points': true }, height: 10 })
     expect(config.markers).toEqual({ size: 0, hover: { sizeOffset: 0 } })
     expect(config).not.toHaveProperty('point')
+  })
+})
+
+describe('Chart.astro axis formatters', () => {
+  const source = readFileSync(new URL('../components/demo/Chart.astro', import.meta.url), 'utf8')
+  const block = /const isEmpty[\s\S]*?const formatters = \{[\s\S]*?\};/.exec(source)?.[0]
+  const formatters = runInNewContext(`${block}; formatters`) as Record<string, (val: unknown) => string>
+
+  it('implements every name in chartFormatters', () => {
+    expect(Object.keys(formatters).sort()).toEqual([...chartFormatters].sort())
+  })
+
+  it('formats numbers', () => {
+    expect(formatters.thousands?.(1234567)).toBe('1,234,567')
+    expect(formatters['suffix-k']?.(128)).toBe('128K')
+  })
+
+  it.each(chartFormatters)('%s returns an empty string for empty points', (name) => {
+    for (const val of [undefined, null, NaN]) {
+      expect(formatters[name]?.(val)).toBe('')
+    }
   })
 })

@@ -1,0 +1,825 @@
+import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
+import { clearFixture, getFixture } from '../helpers/fixture'
+import Combobox from '../../src/combobox'
+import '../../src/bootstrap/dropdown'
+
+const markup = (attributes = '', extra = ''): string => `
+  <form>
+    <button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox" data-bs-placeholder="Pick one" ${attributes}>
+      <span class="combobox-value"></span>
+    </button>
+    <div class="dropdown-menu">
+      ${extra}
+      <button class="dropdown-item" type="button" data-bs-value="a">Alpha</button>
+      <button class="dropdown-item" type="button" data-bs-value="b">Bravo</button>
+      <button class="dropdown-item" type="button" data-bs-value="c" disabled>Charlie</button>
+    </div>
+  </form>`
+
+describe('Combobox', () => {
+  let fixtureEl: HTMLElement
+
+  beforeAll(() => {
+    fixtureEl = getFixture()
+  })
+
+  afterEach(() => {
+    clearFixture()
+  })
+
+  const setup = (attributes = '', extra = ''): { toggle: HTMLElement; menu: HTMLElement; combobox: Combobox } => {
+    fixtureEl.innerHTML = markup(attributes, extra)
+    const toggle = fixtureEl.querySelector<HTMLElement>('.combobox-toggle')!
+    return { toggle, menu: fixtureEl.querySelector<HTMLElement>('.dropdown-menu')!, combobox: new Combobox(toggle) }
+  }
+
+  const item = (value: string): HTMLElement => fixtureEl.querySelector(`[data-bs-value="${value}"]`)!
+  const key = (target: Element, name: string): void => {
+    target.dispatchEvent(new KeyboardEvent('keydown', { key: name, bubbles: true, cancelable: true }))
+  }
+
+  describe('constructor', () => {
+    it('should show the placeholder and set ARIA attributes', () => {
+      const { toggle, menu } = setup()
+
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Pick one')
+      expect(toggle.querySelector('.combobox-value')!.classList.contains('combobox-placeholder')).toBe(true)
+      expect(toggle.getAttribute('aria-haspopup')).toBe('listbox')
+      expect(toggle.getAttribute('aria-expanded')).toBe('false')
+      expect(item('a').getAttribute('role')).toBe('option')
+      expect(item('c').getAttribute('aria-disabled')).toBe('true')
+
+      const list = menu.querySelector('.combobox-list')!
+      expect(menu.hasAttribute('role')).toBe(false)
+      expect(list.getAttribute('role')).toBe('listbox')
+      expect(toggle.getAttribute('role')).toBe('combobox')
+      expect(toggle.getAttribute('aria-controls')).toBe(list.id)
+      expect(item('a').id).not.toBe('')
+    })
+
+    it('should copy the label of the toggle to the list', () => {
+      const { menu } = setup('aria-label="Letter"')
+
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-label')).toBe('Letter')
+    })
+
+    it('should read a pre-selected item', () => {
+      fixtureEl.innerHTML = markup('data-bs-name="letter"').replace('class="dropdown-item" type="button" data-bs-value="b"', 'class="dropdown-item selected" type="button" data-bs-value="b"')
+      const toggle = fixtureEl.querySelector<HTMLElement>('.combobox-toggle')!
+      new Combobox(toggle)
+
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Bravo')
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[name="letter"]')!.value).toBe('b')
+    })
+  })
+
+  describe('show / hide', () => {
+    it('should toggle the menu and fire events', () => {
+      const { toggle, menu, combobox } = setup()
+      const shown = vi.fn()
+      const hidden = vi.fn()
+      toggle.addEventListener('shown.bs.combobox', shown)
+      toggle.addEventListener('hidden.bs.combobox', hidden)
+
+      combobox.show()
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(toggle.getAttribute('aria-expanded')).toBe('true')
+      expect(shown).toHaveBeenCalledOnce()
+
+      combobox.hide()
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(toggle.getAttribute('aria-expanded')).toBe('false')
+      expect(hidden).toHaveBeenCalledOnce()
+    })
+
+    it('should not show when show.bs.combobox is prevented', () => {
+      const { toggle, menu, combobox } = setup()
+      toggle.addEventListener('show.bs.combobox', (event) => event.preventDefault())
+
+      combobox.show()
+      expect(menu.classList.contains('show')).toBe(false)
+    })
+
+    it('should open on click of the toggle', () => {
+      const { toggle, menu } = setup()
+      toggle.click()
+      expect(menu.classList.contains('show')).toBe(true)
+    })
+
+    it('should not open a disabled toggle', () => {
+      const { menu, combobox } = setup('disabled')
+      combobox.show()
+      expect(menu.classList.contains('show')).toBe(false)
+    })
+
+    it('should close on an outside click and on Escape', () => {
+      const { toggle, menu, combobox } = setup()
+
+      combobox.show()
+      document.body.click()
+      expect(menu.classList.contains('show')).toBe(false)
+
+      combobox.show()
+      key(item('a'), 'Escape')
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+    })
+  })
+
+  describe('show / hide focus', () => {
+    it('should stay open when hide.bs.combobox is prevented', () => {
+      const { toggle, menu, combobox } = setup()
+      toggle.addEventListener('hide.bs.combobox', (event) => event.preventDefault())
+      combobox.show()
+      combobox.hide()
+
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    })
+
+    it('should return focus to the toggle on Escape', () => {
+      const { toggle, menu, combobox } = setup()
+      combobox.show()
+      item('a').focus()
+      key(item('a'), 'Escape')
+
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+    })
+  })
+
+  describe('selection', () => {
+    it('should select an item, update text and hidden input, and close', () => {
+      const { toggle, menu, combobox } = setup('data-bs-name="letter"')
+      const change = vi.fn()
+      toggle.addEventListener('change.bs.combobox', change)
+
+      combobox.show()
+      item('b').click()
+
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Bravo')
+      expect(item('b').classList.contains('selected')).toBe(true)
+      expect(item('b').getAttribute('aria-selected')).toBe('true')
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[name="letter"]')!.value).toBe('b')
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(change).toHaveBeenCalledOnce()
+      expect((change.mock.calls[0][0] as CustomEvent & { value: string }).value).toBe('b')
+    })
+
+    it('should replace the previous selection', () => {
+      const { combobox } = setup()
+      combobox.show()
+      item('a').click()
+      combobox.show()
+      item('b').click()
+
+      expect(item('a').classList.contains('selected')).toBe(false)
+      expect(item('a').getAttribute('aria-selected')).toBe('false')
+    })
+
+    it('should ignore disabled items', () => {
+      const { toggle, combobox } = setup()
+      combobox.show()
+      item('c').click()
+
+      expect(item('c').classList.contains('selected')).toBe(false)
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Pick one')
+    })
+
+    it('should select with Enter on a focused item', () => {
+      const { combobox } = setup()
+      combobox.show()
+      key(item('a'), 'Enter')
+      expect(item('a').classList.contains('selected')).toBe(true)
+    })
+
+    it('should end the list with "and N more" when it does not fit', () => {
+      const { toggle, menu, combobox } = setup('data-bs-multiple="true"')
+      const value = toggle.querySelector<HTMLElement>('.combobox-value')!
+      Object.assign(value.style, { display: 'flex', width: '110px', overflow: 'hidden' })
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      const label = value.querySelector<HTMLElement>('.text-truncate')!
+      Object.assign(label.style, { overflow: 'hidden', whiteSpace: 'nowrap', display: 'block', width: '60px' })
+      combobox._layoutList(['Alpha', 'Bravo', 'Charlie'])
+
+      expect(label.textContent).toMatch(/^Alpha and 2 more$/)
+    })
+
+    it('should join the values of a multiple markup combobox in the hidden input', () => {
+      const { menu } = setup('data-bs-multiple="true" data-bs-name="letters"')
+      item('a').click()
+      item('b').click()
+
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[type="hidden"]')!.value).toBe('a,b')
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-multiselectable')).toBe('true')
+    })
+
+    it('should support multiple selection and keep the menu open', () => {
+      const { toggle, menu, combobox } = setup('data-bs-multiple="true" data-bs-name="letters"')
+
+      combobox.show()
+      item('a').click()
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Alpha')
+      item('b').click()
+
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Alpha, Bravo')
+      expect(fixtureEl.querySelector<HTMLInputElement>('input[name="letters"]')!.value).toBe('a,b')
+      expect(menu.classList.contains('show')).toBe(true)
+
+      item('a').click()
+      expect(item('a').classList.contains('selected')).toBe(false)
+    })
+  })
+
+  describe('keyboard', () => {
+    it('should open on ArrowDown and focus the first item', () => {
+      const { toggle, menu } = setup()
+      key(toggle, 'ArrowDown')
+
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(document.activeElement).toBe(item('a'))
+    })
+
+    it('should not hand arrow keys in the menu to the Dropdown data API', () => {
+      const { combobox } = setup()
+      const onError = vi.fn((event: Event) => event.preventDefault())
+      window.addEventListener('error', onError)
+      combobox.show()
+      item('a').focus()
+
+      key(item('a'), 'ArrowDown')
+      key(item('b'), 'Escape')
+      window.removeEventListener('error', onError)
+
+      expect(onError).not.toHaveBeenCalled()
+      expect(document.activeElement).toBe(fixtureEl.querySelector('.combobox-toggle'))
+    })
+
+    it('should move between enabled items with arrows, Home and End', () => {
+      const { combobox } = setup()
+      combobox.show()
+      item('a').focus()
+
+      key(item('a'), 'ArrowDown')
+      expect(document.activeElement).toBe(item('b'))
+      key(item('b'), 'Home')
+      expect(document.activeElement).toBe(item('a'))
+      key(item('a'), 'End')
+      expect(document.activeElement).toBe(item('b'))
+    })
+  })
+
+  describe('search', () => {
+    const search = '<div class="combobox-search"><input type="text" class="combobox-search-input"></div><div class="combobox-no-results d-none">None</div>'
+
+    it('should filter items and show the empty message', () => {
+      setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      const empty = fixtureEl.querySelector('.combobox-no-results')!
+
+      input.value = 'alp'
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      expect(item('a').style.display).toBe('')
+      expect(item('b').style.display).toBe('none')
+      expect(empty.classList.contains('d-none')).toBe(true)
+
+      input.value = 'zzz'
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      expect(empty.classList.contains('d-none')).toBe(false)
+    })
+
+    it('should ignore accents when searchNormalize is on', () => {
+      fixtureEl.innerHTML = markup('data-bs-search-normalize="true"', search).replace('Alpha', 'Ålpha')
+      new Combobox(fixtureEl.querySelector<HTMLElement>('.combobox-toggle')!)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+
+      input.value = 'alpha'
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      expect(item('a').style.display).toBe('')
+    })
+
+    it('should describe the search field and the empty message for assistive technology', () => {
+      const { menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+
+      expect(input.getAttribute('role')).toBe('combobox')
+      expect(input.getAttribute('aria-controls')).toBe(menu.querySelector('.combobox-list')!.id)
+      expect(input.getAttribute('aria-autocomplete')).toBe('list')
+      expect(fixtureEl.querySelector('.combobox-no-results')!.getAttribute('role')).toBe('status')
+      expect(menu.querySelector('.combobox-list')!.contains(input)).toBe(false)
+    })
+
+    it('should point aria-activedescendant at the highlighted item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      type(input, 'bra')
+      expect(input.getAttribute('aria-activedescendant')).toBe(item('b').id)
+
+      type(input, '')
+      expect(input.hasAttribute('aria-activedescendant')).toBe(false)
+    })
+
+    it('should open and start the search when typing on the closed toggle', () => {
+      const { toggle, menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      toggle.focus()
+      key(toggle, 'b')
+
+      expect(menu.classList.contains('show')).toBe(true)
+      expect(input.value).toBe('b')
+      expect(item('a').style.display).toBe('none')
+      expect(document.activeElement).toBe(input)
+    })
+
+    it('should leave Home and End to the search field', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      const event = new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(false)
+      expect(document.activeElement).toBe(input)
+    })
+
+    const type = (input: HTMLInputElement, value: string): void => {
+      input.value = value
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+
+    it('should highlight the first match and select it on Enter without submitting the form', () => {
+      const { combobox, toggle } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      const submit = vi.fn((event: Event) => event.preventDefault())
+      fixtureEl.querySelector('form')!.addEventListener('submit', submit)
+      combobox.show()
+
+      type(input, 'bra')
+      expect(item('b').classList.contains('focus')).toBe(true)
+      expect(item('a').classList.contains('focus')).toBe(false)
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(submit).not.toHaveBeenCalled()
+      expect(item('b').classList.contains('selected')).toBe(true)
+      expect(item('b').classList.contains('focus')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+    })
+
+    it('should not highlight an item or select on Enter with an empty search', () => {
+      const { combobox, menu } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      input.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      expect(menu.querySelector('.focus')).toBeNull()
+      expect(menu.querySelector('.selected')).toBeNull()
+      expect(menu.classList.contains('show')).toBe(true)
+    })
+
+    it('should move from the search field past the highlighted item on ArrowDown', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+
+      type(input, 'a')
+      expect(item('a').classList.contains('focus')).toBe(true)
+
+      key(input, 'ArrowDown')
+      expect(document.activeElement).toBe(item('b'))
+      expect(item('a').classList.contains('focus')).toBe(false)
+    })
+
+    it('should return to the search field on ArrowUp from the first item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+      item('a').focus()
+
+      key(item('a'), 'ArrowUp')
+      expect(document.activeElement).toBe(input)
+    })
+
+    it('should move focus to the search field when typing on an item', () => {
+      const { combobox } = setup('data-bs-search="true"', search)
+      const input = fixtureEl.querySelector<HTMLInputElement>('.combobox-search-input')!
+      combobox.show()
+      item('b').focus()
+
+      key(item('b'), ' ')
+      expect(document.activeElement).not.toBe(input)
+
+      combobox.show()
+      item('b').focus()
+      key(item('b'), 'x')
+      expect(document.activeElement).toBe(input)
+    })
+  })
+
+  describe('dispose', () => {
+    it('should remove the hidden input and the instance', () => {
+      const { toggle, combobox } = setup('data-bs-name="letter"')
+      combobox.dispose()
+
+      expect(fixtureEl.querySelector('input[name="letter"]')).toBeNull()
+      expect(Combobox.getInstance(toggle)).toBeNull()
+    })
+  })
+  describe('native select', () => {
+    const selectMarkup = (attributes = '', extra = ''): string => `
+      <form>
+        <label for="fruit">Fruit</label>
+        <select id="fruit" class="form-select is-invalid" data-placeholder="Pick a fruit" ${attributes}>
+          ${extra}
+          <option value="a">Apple</option>
+          <option value="b" data-custom-properties='<span class="avatar">B</span>'>Banana</option>
+          <optgroup label="Citrus">
+            <option value="c">Cherry</option>
+            <option value="d" disabled>Date</option>
+          </optgroup>
+        </select>
+      </form>`
+
+    const setupSelect = (attributes = '', extra = '', config: Record<string, unknown> = {}): { select: HTMLSelectElement; toggle: HTMLElement; menu: HTMLElement; combobox: Combobox } => {
+      fixtureEl.innerHTML = selectMarkup(attributes, extra)
+      const select = fixtureEl.querySelector('select')!
+      const combobox = new Combobox(select, config)
+      return { select, toggle: select.nextElementSibling as HTMLElement, menu: fixtureEl.querySelector<HTMLElement>('.dropdown-menu')!, combobox }
+    }
+
+    it('should open a long menu at the chosen item', () => {
+      const { menu, combobox } = setupSelect('', '', { search: false })
+      const list = menu.querySelector<HTMLElement>('.combobox-list')!
+      Object.assign(list.style, { maxHeight: '60px', overflowY: 'auto', position: 'relative' })
+      for (const item of menu.querySelectorAll<HTMLElement>('.dropdown-item')) {
+        Object.assign(item.style, { display: 'block', height: '30px' })
+      }
+
+      combobox._select!.value = 'c'
+      combobox.sync()
+      combobox.show()
+
+      expect(list.scrollTop).toBeGreaterThan(0)
+    })
+
+    it('should make the menu at least as wide as the toggle', () => {
+      const { toggle, menu, combobox } = setupSelect()
+
+      toggle.style.display = 'block'
+      toggle.style.width = '240px'
+      combobox.show()
+
+      expect(Number.parseFloat(menu.style.minWidth)).toBeGreaterThanOrEqual(240)
+    })
+
+    it('should build the toggle and menu from options and optgroups', () => {
+      const { select, toggle, menu } = setupSelect()
+
+      expect(select.classList.contains('combobox-native')).toBe(true)
+      expect(toggle.classList.contains('combobox-toggle')).toBe(true)
+      expect(toggle.classList.contains('is-invalid')).toBe(true)
+      expect(toggle.getAttribute('aria-labelledby')).toBe('fruit-label')
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Pick a fruit')
+      expect(menu.querySelectorAll('.dropdown-item')).toHaveLength(4)
+      expect(menu.querySelector('.dropdown-header')!.textContent).toBe('Citrus')
+      expect(menu.querySelector<HTMLButtonElement>('[data-bs-value="d"]')!.disabled).toBe(true)
+      expect(menu.querySelector('.dropdown-item-indicator .avatar')).not.toBeNull()
+      expect(menu.querySelector('.combobox-search-input')).not.toBeNull()
+    })
+
+    it('should skip the empty placeholder option and use its text as placeholder', () => {
+      fixtureEl.innerHTML = '<select id="x"><option value="">Choose…</option><option value="a">Alpha</option></select>'
+      const select = fixtureEl.querySelector('select')!
+      new Combobox(select)
+
+      expect(fixtureEl.querySelectorAll('.dropdown-item')).toHaveLength(1)
+      expect(fixtureEl.querySelector('.combobox-value')!.textContent).toBe('Choose…')
+    })
+
+    it('should write the selection to the select and fire a native change', () => {
+      const { select, toggle, menu, combobox } = setupSelect()
+      const change = vi.fn()
+      select.addEventListener('change', change)
+
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="c"]')!.click()
+
+      expect(select.value).toBe('c')
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Cherry')
+      expect(change).toHaveBeenCalled()
+      expect(menu.classList.contains('show')).toBe(false)
+    })
+
+    it('should show a shortcut and a badge of the item in the toggle', () => {
+      fixtureEl.innerHTML = markup().replace('>Alpha</button>', '><span class="dropdown-item-label">Alpha</span><kbd class="ms-auto">ctrl + A</kbd><span class="badge">3</span></button>')
+      const toggle = fixtureEl.querySelector<HTMLElement>('.combobox-toggle')!
+      new Combobox(toggle)
+      item('a').click()
+
+      expect(toggle.querySelector('.combobox-value kbd')!.textContent).toBe('ctrl + A')
+      expect(toggle.querySelector('.combobox-value .badge')!.textContent).toBe('3')
+      expect(toggle.querySelector('.combobox-value .text-truncate')!.textContent).toBe('Alpha')
+    })
+
+    it('should show the option markup in the toggle', () => {
+      const { menu, toggle, combobox } = setupSelect()
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      expect(toggle.querySelector('.avatar')).not.toBeNull()
+      expect(toggle.textContent).toContain('Banana')
+    })
+
+    it('should pick up a value set from code after refresh', () => {
+      const { select, toggle, combobox } = setupSelect()
+      select.value = 'a'
+      combobox.refresh()
+
+      expect(toggle.querySelector('.combobox-value')!.textContent).toBe('Apple')
+    })
+
+    it('should sync when the select fires change', () => {
+      const { select, toggle } = setupSelect()
+      select.value = 'b'
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+
+      expect(toggle.textContent).toContain('Banana')
+    })
+
+    it('should render tags for multiple and deselect one from the menu', () => {
+      const { select, toggle, menu, combobox } = setupSelect('multiple')
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      menu.querySelector<HTMLElement>('[data-bs-value="c"]')!.click()
+
+      expect([...select.selectedOptions].map((option) => option.value)).toEqual(['a', 'c'])
+      expect(toggle.querySelectorAll('.combobox-tag')).toHaveLength(2)
+      expect(menu.classList.contains('show')).toBe(true)
+
+      expect(toggle.querySelector('.btn-close')).toBeNull()
+
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      expect([...select.selectedOptions].map((option) => option.value)).toEqual(['c'])
+    })
+
+    it('should remove the last tag on Backspace', () => {
+      const { select, toggle, menu, combobox } = setupSelect('multiple')
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      menu.querySelector<HTMLElement>('[data-bs-value="c"]')!.click()
+      key(toggle, 'Backspace')
+
+      expect([...select.selectedOptions].map((option) => option.value)).toEqual(['a'])
+    })
+
+    it('should collapse tags that do not fit into a +N tag', () => {
+      const { toggle, menu, combobox } = setupSelect('multiple')
+      const value = toggle.querySelector<HTMLElement>('.combobox-value')!
+      Object.assign(value.style, { display: 'flex', width: '90px', overflow: 'hidden' })
+      combobox.show()
+
+      for (const option of ['a', 'b', 'c']) {
+        menu.querySelector<HTMLElement>(`[data-bs-value="${option}"]`)!.click()
+      }
+
+      for (const tag of toggle.querySelectorAll<HTMLElement>('.combobox-tag')) {
+        tag.style.flexShrink = '0'
+      }
+
+      combobox._layoutTags()
+
+      const more = toggle.querySelector('.combobox-tag-more')!
+      const hidden = toggle.querySelectorAll('.combobox-tag.d-none').length
+
+      expect(hidden).toBeGreaterThan(0)
+      expect(more.textContent).toBe(`+${hidden}`)
+      expect(toggle.querySelectorAll('.combobox-tag:not(.d-none)').length).toBeGreaterThanOrEqual(1)
+    })
+
+    it('should keep every tag when tagsOverflow is wrap', () => {
+      const { toggle, menu, combobox } = setupSelect('multiple', '', { tagsOverflow: 'wrap' })
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      expect(toggle.querySelector('.combobox-tag-more')).toBeNull()
+      expect(toggle.querySelector('.combobox-tags-wrap')).not.toBeNull()
+    })
+
+    it('should respect maxItems', () => {
+      const { select, menu, combobox } = setupSelect('multiple', '', { maxItems: 1 })
+      combobox.show()
+      menu.querySelector<HTMLElement>('[data-bs-value="a"]')!.click()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      expect([...select.selectedOptions].map((option) => option.value)).toEqual(['a'])
+    })
+
+    it('should hide a group header when search matches none of its items', () => {
+      const { menu } = setupSelect()
+      const input = menu.querySelector<HTMLInputElement>('.combobox-search-input')!
+      input.value = 'apple'
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+
+      expect(menu.querySelector<HTMLElement>('.dropdown-header')!.style.display).toBe('none')
+    })
+
+    it('should move the menu into the container', () => {
+      setupSelect('', '', { container: 'body' })
+      const menu = document.querySelector<HTMLElement>('body > .dropdown-menu')
+
+      expect(menu).not.toBeNull()
+      menu!.remove()
+    })
+
+    it('should not build a search input when search is false', () => {
+      const { menu } = setupSelect('', '', { search: false })
+      expect(menu.querySelector('.combobox-search-input')).toBeNull()
+    })
+
+    it('should disable the toggle for a disabled select', () => {
+      const { toggle, menu, combobox } = setupSelect('disabled')
+      combobox.show()
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(toggle.hasAttribute('disabled')).toBe(true)
+    })
+
+    it('should forward focus from the select to the toggle', () => {
+      const { select, toggle } = setupSelect()
+      select.focus()
+      expect(document.activeElement).toBe(toggle)
+    })
+
+    it('should follow a form reset', async () => {
+      const { select, toggle } = setupSelect('', '<option value="z" selected>Zucchini</option>')
+      select.value = 'a'
+      select.dispatchEvent(new Event('change'))
+      expect(toggle.textContent).toBe('Apple')
+
+      select.form!.reset()
+      await new Promise((resolve) => setTimeout(resolve))
+
+      expect(select.value).toBe('z')
+      expect(toggle.textContent).toBe('Zucchini')
+    })
+
+    it('should go back to the placeholder on a form reset', async () => {
+      const { select, toggle, menu } = setupSelect()
+      menu.querySelector<HTMLElement>('[data-bs-value="b"]')!.click()
+
+      select.form!.reset()
+      await new Promise((resolve) => setTimeout(resolve))
+
+      expect(select.selectedIndex).toBe(-1)
+      expect(toggle.textContent).toBe('Pick a fruit')
+    })
+
+    it('should keep a value set from code before init', () => {
+      fixtureEl.innerHTML = selectMarkup()
+      const select = fixtureEl.querySelector('select')!
+      select.value = 'c'
+      new Combobox(select)
+
+      expect(select.value).toBe('c')
+      expect(select.nextElementSibling!.textContent).toBe('Cherry')
+    })
+
+    it('should copy disabled and validation classes on refresh', () => {
+      const { select, toggle, combobox } = setupSelect()
+      select.disabled = true
+      select.classList.replace('is-invalid', 'is-valid')
+      combobox.refresh()
+
+      expect(toggle.hasAttribute('disabled')).toBe(true)
+      expect(toggle.classList.contains('is-valid')).toBe(true)
+      expect(toggle.classList.contains('is-invalid')).toBe(false)
+    })
+
+    it('should keep aria-expanded when synced while open', () => {
+      const { toggle, combobox } = setupSelect()
+      combobox.show()
+      combobox.sync()
+
+      expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    })
+
+    it('should return focus to the toggle on Tab', () => {
+      const { toggle, combobox } = setupSelect('', '', { container: 'body' })
+      const menu = combobox._menu
+      combobox.show()
+      const first = menu.querySelector<HTMLElement>('.dropdown-item')!
+      first.focus()
+      key(first, 'Tab')
+
+      expect(menu.classList.contains('show')).toBe(false)
+      expect(document.activeElement).toBe(toggle)
+      combobox.dispose()
+    })
+
+    it('should sanitize data-custom-properties', () => {
+      const { menu } = setupSelect('', `<option value="x" data-custom-properties='<img src="x" onerror="alert(1)"><script>alert(1)</script><span class="avatar" style="color: red">X</span>'>X</option>`)
+      const indicator = menu.querySelector('[data-bs-value="x"] .dropdown-item-indicator')!
+
+      expect(indicator.querySelector('img')!.hasAttribute('onerror')).toBe(false)
+      expect(indicator.querySelector('script')).toBeNull()
+      expect(indicator.querySelector('.avatar')!.getAttribute('style')).toBe('color: red')
+    })
+
+    it('should not read sanitize options from data attributes', () => {
+      const { combobox } = setupSelect('data-bs-sanitize="false"')
+      expect(combobox._config.sanitize).toBe(true)
+    })
+
+    it('should skip sanitizing when sanitize is false', () => {
+      const { menu } = setupSelect('', `<option value="x" data-custom-properties='<b data-x="1">X</b>'>X</option>`, { sanitize: false })
+      expect(menu.querySelector('[data-bs-value="x"] b')!.getAttribute('data-x')).toBe('1')
+    })
+
+    it('should name the toggle and the list from the label', () => {
+      const { toggle, menu } = setupSelect()
+      const label = fixtureEl.querySelector('label')!
+
+      expect(label.id).not.toBe('')
+      expect(toggle.getAttribute('aria-labelledby')).toBe(label.id)
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-labelledby')).toBe(label.id)
+    })
+
+    it('should fall back to the aria-label of the select', () => {
+      fixtureEl.innerHTML = '<select aria-label="Fruit"><option value="a">Apple</option></select>'
+      const select = fixtureEl.querySelector('select')!
+      new Combobox(select)
+
+      expect((select.nextElementSibling as HTMLElement).getAttribute('aria-label')).toBe('Fruit')
+    })
+
+    it('should mark a multiple select as multiselectable', () => {
+      const { menu } = setupSelect('multiple')
+
+      expect(menu.querySelector('.combobox-list')!.getAttribute('aria-multiselectable')).toBe('true')
+    })
+
+    it('should tie the options of a group to its header', () => {
+      const { menu } = setupSelect()
+      const header = menu.querySelector<HTMLElement>('.dropdown-header')!
+
+      expect(header.getAttribute('role')).toBe('presentation')
+      expect(menu.querySelector('[data-bs-value="c"]')!.getAttribute('aria-describedby')).toBe(header.id)
+      expect(menu.querySelector('[data-bs-value="a"]')!.hasAttribute('aria-describedby')).toBe(false)
+    })
+
+    it('should disable the options of a disabled group', () => {
+      fixtureEl.innerHTML = '<select><option value="a">Apple</option><optgroup label="Citrus" disabled><option value="c">Cherry</option></optgroup></select>'
+      new Combobox(fixtureEl.querySelector('select')!)
+      const option = fixtureEl.querySelector<HTMLButtonElement>('[data-bs-value="c"]')!
+
+      expect(option.disabled).toBe(true)
+      expect(option.getAttribute('aria-disabled')).toBe('true')
+    })
+
+    it('should expose the required and invalid state on the toggle', () => {
+      const { select, toggle, combobox } = setupSelect('required')
+
+      expect(toggle.getAttribute('aria-required')).toBe('true')
+      expect(toggle.getAttribute('aria-invalid')).toBe('true')
+
+      select.required = false
+      select.classList.remove('is-invalid')
+      combobox.refresh()
+
+      expect(toggle.hasAttribute('aria-required')).toBe(false)
+      expect(toggle.hasAttribute('aria-invalid')).toBe(false)
+    })
+
+    it('should remove the last tag on Backspace in an empty search field', () => {
+      const { select, menu, combobox } = setupSelect('multiple')
+      select.options[0].selected = true
+      select.options[1].selected = true
+      combobox.refresh()
+      combobox.show()
+
+      key(menu.querySelector('.combobox-search-input')!, 'Backspace')
+
+      expect(Array.from(select.selectedOptions).map((option) => option.value)).toEqual(['a'])
+    })
+
+    it('should restore the select on dispose', () => {
+      const { select, combobox } = setupSelect()
+      combobox.dispose()
+
+      expect(select.classList.contains('combobox-native')).toBe(false)
+      expect(fixtureEl.querySelector('.combobox-toggle')).toBeNull()
+      expect(fixtureEl.querySelector('.dropdown-menu')).toBeNull()
+    })
+  })
+})

@@ -358,6 +358,32 @@ describe('CountUp', () => {
       expect(element().textContent).toBe('30,000')
     })
 
+    it('should leave the end value on dispose in the middle of the animation', async () => {
+      const instance = quick({ duration: 1 })
+      await wait(50)
+      instance.dispose()
+
+      expect(element().textContent).toBe('30,000')
+    })
+
+    it('should keep the end value when the element is initialised again', async () => {
+      new CountUp(element())
+      expect(element().textContent).toBe('0')
+
+      quick()
+      await completed(element())
+
+      expect(element().textContent).toBe('30,000')
+    })
+
+    it('should read a source text written with the configured separators', async () => {
+      fixtureEl.innerHTML = `<h1 data-countup='{"separator":".","decimal":",","decimalPlaces":2}'>1.234,56</h1>`
+      quick()
+      await completed(element())
+
+      expect(element().textContent).toBe('1.234,56')
+    })
+
     it('should stop and remove the instance on dispose', async () => {
       const instance = quick({ duration: 1 })
       await wait(50)
