@@ -3,7 +3,13 @@ import { clearFixture, getFixture } from '../helpers/fixture'
 import { init, dispose } from '../../src/init'
 import Autosize from '../../src/autosize'
 import SwitchIcon from '../../src/switch-icon'
+import Datepicker from '../../src/datepicker'
+import Dropdown from '../../src/bootstrap/dropdown'
+import Popover from '../../src/bootstrap/popover'
 import Tooltip from '../../src/bootstrap/tooltip'
+import '../../src/dropdown'
+import '../../src/popover'
+import '../../src/tooltip'
 
 vi.mock('@popperjs/core', () => ({
   createPopper: vi.fn(() => ({
@@ -47,6 +53,32 @@ describe('init and dispose', () => {
     fixtureEl.insertAdjacentHTML('beforeend', '<button data-bs-toggle="switch-icon">x</button>')
     init()
     expect(SwitchIcon.getInstance(fixtureEl.querySelector('button')!)).not.toBeNull()
+  })
+
+  it('creates tooltips, popovers and dropdowns with the Tabler options', () => {
+    fixtureEl.innerHTML = [
+      '<span id="tip" data-bs-toggle="tooltip" title="Hi">?</span>',
+      '<span id="slow" data-bs-toggle="tooltip" data-bs-delay="300" data-bs-placement="top" title="Hi">?</span>',
+      '<a id="pop" data-bs-toggle="popover" data-bs-content="Body">?</a>',
+      '<div class="dropdown"><a id="drop" href="#" data-bs-toggle="dropdown" data-bs-boundary="viewport">Menu</a><div class="dropdown-menu"></div></div>',
+    ].join('')
+
+    init(fixtureEl)
+
+    const config = (instance: unknown) => (instance as { _config: Record<string, unknown> })._config
+    expect(config(Tooltip.getInstance(fixtureEl.querySelector('#tip')!))).toMatchObject({ delay: { show: 50, hide: 50 }, placement: 'auto' })
+    expect(config(Tooltip.getInstance(fixtureEl.querySelector('#slow')!))).toMatchObject({ delay: { show: 300, hide: 300 }, placement: 'top' })
+    expect(config(Popover.getInstance(fixtureEl.querySelector('#pop')!))).toMatchObject({ delay: { show: 50, hide: 50 }, placement: 'auto' })
+    expect(config(Dropdown.getInstance(fixtureEl.querySelector('#drop')!)).boundary).toBe(document.documentElement)
+  })
+
+  it('applies the filter of the plugin', () => {
+    fixtureEl.innerHTML = '<input id="lazy" data-bs-toggle="datepicker"><input id="eager" data-bs-toggle="datepicker" value="2026-01-15">'
+
+    init(fixtureEl)
+
+    expect(Datepicker.getInstance(fixtureEl.querySelector('#lazy')!)).toBeNull()
+    expect(Datepicker.getInstance(fixtureEl.querySelector('#eager')!)).not.toBeNull()
   })
 
   it('keeps an existing instance', () => {

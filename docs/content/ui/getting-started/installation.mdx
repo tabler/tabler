@@ -92,13 +92,13 @@ If you need your own copy of Bootstrap's JavaScript, load only Tabler's CSS and 
 
 ## Markup added after page load
 
-The script sets up the Tabler plugins (autosize, countup, date picker, OTP input, sparklines and the others) for the elements that exist when the page loads. HTML that arrives later, from an HTMX swap, a fetched fragment or a template you render yourself, needs one call:
+The script sets up the Tabler plugins (autosize, countup, date picker, OTP input, sparklines and the others), and the tooltips, popovers and dropdowns, for the elements that exist when the page loads. HTML that arrives later, from an HTMX swap, a fetched fragment or a template you render yourself, needs one call:
 
 ```js
 tabler.init(fragment)
 ```
 
-`init()` creates the plugins for the elements under the given root and leaves elements that already have an instance alone. Without an argument it covers the whole document. The Bootstrap components, such as dropdowns, modals and tooltips, need no call: they are created on the first interaction.
+`init()` creates the plugins for the elements under the given root and leaves elements that already have an instance alone. Without an argument it covers the whole document. Modals, offcanvases, collapses and tabs need no call: they are created on the first click.
 
 Before you remove or replace markup, release the instances on it, so their listeners, observers and timers go with it:
 

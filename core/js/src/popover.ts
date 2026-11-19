@@ -1,19 +1,13 @@
 import { Popover } from './bootstrap'
 import Manipulator from './bootstrap/dom/manipulator'
+import { initAll } from './bootstrap/util/component-functions'
 import { onDOMContentLoaded } from './bootstrap/util/index'
 
 // js-docs-start popover-init
 onDOMContentLoaded(() => {
-  for (const popoverTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-toggle="popover"], [data-tblr-toggle="popover"]')) {
-    try {
-      const options = {
-        delay: Manipulator.getDataAttribute(popoverTriggerEl, 'delay') ?? { show: 50, hide: 50 },
-        placement: Manipulator.getDataAttribute(popoverTriggerEl, 'placement') ?? 'auto',
-      }
-      Popover.getOrCreateInstance(popoverTriggerEl, options)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  initAll('[data-bs-toggle="popover"], [data-tblr-toggle="popover"]', Popover, null, (element) => ({
+    delay: Manipulator.getDataAttribute(element, 'delay') ?? { show: 50, hide: 50 },
+    placement: Manipulator.getDataAttribute(element, 'placement') ?? 'auto',
+  }))
 })
 // js-docs-end popover-init
