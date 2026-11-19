@@ -75,7 +75,10 @@ class Banner extends BaseComponent {
       writeClosed([...new Set([...readClosed(), id])])
     }
 
+    const next = this._element.contains(document.activeElement) ? SelectorEngine.focusableChildren(document.body).find((element) => !this._element.contains(element) && this._element.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING) : null
+
     this._element.remove()
+    next?.focus()
     EventHandler.trigger(this._element, EVENT_CLOSED)
     this.dispose()
   }

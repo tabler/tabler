@@ -15,17 +15,19 @@ interface Props {
   showClose?: boolean
   /** `data-bs-banner-id`: a closed banner with an id stays closed on the next visit */
   id?: string
+  /** makes the banner a labelled region (`role="region"`), for the site-wide banner at the top of the page */
+  ariaLabel?: string
   class?: string
   /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { color, variant, icon, align, showClose, id, class: className, ...rest } = Astro.props
+const { color, variant, icon, align, showClose, id, ariaLabel, class: className, ...rest } = Astro.props
 
 const classes = ['banner', color && `banner-${color}`, variant === 'light' && 'banner-lt', align && `banner-${align}`, className]
 ---
 
-<div class:list={classes} data-bs-banner-id={id} {...rest}>
+<div class:list={classes} data-bs-banner-id={id} role={ariaLabel ? 'region' : undefined} aria-label={ariaLabel} {...rest}>
   {icon && <Icon name={icon} />}
   <slot />
   {showClose && <button type="button" class="btn-close" data-bs-dismiss="banner" aria-label="Close" />}

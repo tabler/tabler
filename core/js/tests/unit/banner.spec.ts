@@ -78,6 +78,26 @@ describe('Banner', () => {
       expect(onClosed).toHaveBeenCalledOnce()
     })
 
+    it('should move focus to the next focusable element when the banner had it', () => {
+      fixtureEl.insertAdjacentHTML('beforeend', '<a href="#" id="next">Next</a>')
+      button().focus()
+
+      button().click()
+
+      expect(document.activeElement).toBe(fixtureEl.querySelector('#next'))
+    })
+
+    it('should leave focus alone when it was outside the banner', () => {
+      fixtureEl.insertAdjacentHTML('afterbegin', '<a href="#" id="before">Before</a>')
+      fixtureEl.insertAdjacentHTML('beforeend', '<a href="#" id="next">Next</a>')
+      const before = fixtureEl.querySelector<HTMLElement>('#before')!
+      before.focus()
+
+      new Banner(banner()!).close()
+
+      expect(document.activeElement).toBe(before)
+    })
+
     it('should keep the banner when the close event is prevented', () => {
       const element = banner()!
       element.addEventListener('close.bs.banner', (event) => event.preventDefault())

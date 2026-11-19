@@ -38,7 +38,7 @@ Put the banner at the very top of the page, as the first child of `.page`. It th
 
 ```html
 <div class="page">
-  <div class="banner banner-primary">...</div>
+  <div class="banner banner-primary" role="region" aria-label="Announcement">...</div>
   <header class="navbar">...</header>
   <div class="page-wrapper">...</div>
 </div>
@@ -103,7 +103,7 @@ Add a `.btn-close` with `data-bs-dismiss="banner"`. A click removes the banner f
 Add `data-bs-banner-id` to keep a closed banner closed on the next visit. The id is saved in `localStorage` under the `tabler-banner` key. Use lowercase letters, digits and hyphens, up to 32 characters.
 
 ```html
-<div class="banner banner-primary" data-bs-banner-id="release-1-8">
+<div class="banner banner-primary" role="region" aria-label="Announcement" data-bs-banner-id="release-1-8">
   Tabler 1.8 is out with new components. <a href="#">See what's new</a>
   <button type="button" class="btn-close" data-bs-dismiss="banner" aria-label="Close"></button>
 </div>
@@ -126,7 +126,7 @@ banner.close()
 | --- | --- |
 | `close()` | Removes the banner and saves its id. |
 | `Banner.isClosed(id)` | Returns `true` when the banner with this id was closed. |
-| `Banner.reset(id)` | Forgets one closed banner, or all of them when called without an id. |
+| `Banner.reset(id)` | Forgets one closed banner, or all of them when called without an id. The banner is back after the next page load. |
 
 | Event | Description |
 | --- | --- |
@@ -135,4 +135,4 @@ banner.close()
 
 ## Accessibility
 
-A banner is part of the page content and is read in the normal order. Give the close button an `aria-label`. Do not use a banner for a message that appears after the page loads; use an [alert](/ui/components/alert) or a [toast](/ui/components/toast) for that.
+A banner is part of the page content and is read in the normal order. Give the site-wide banner at the top of the page `role="region"` and an `aria-label`, so screen reader users can find it and skip it. Give the close button an `aria-label`. When the banner is closed from the keyboard, focus moves to the next focusable element on the page. Do not use a banner for a message that appears after the page loads; use an [alert](/ui/components/alert) or a [toast](/ui/components/toast) for that.
