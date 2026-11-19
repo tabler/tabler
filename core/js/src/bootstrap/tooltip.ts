@@ -224,7 +224,7 @@ class Tooltip extends BaseComponent {
     this._isEnabled = !this._isEnabled
   }
 
-  toggle(): Promise<void> {
+  toggle(): Promise<void> | void {
     if (!this._isEnabled) {
       return resolved()
     }
@@ -246,7 +246,7 @@ class Tooltip extends BaseComponent {
     super.dispose()
   }
 
-  show(): Promise<void> {
+  show(): Promise<void> | void {
     if (this._element.style.display === 'none') {
       throw new Error('Please use show on visible elements')
     }
@@ -302,7 +302,7 @@ class Tooltip extends BaseComponent {
     return this._queueCallback(complete, this.tip!, this._isAnimated())
   }
 
-  hide(): Promise<void> {
+  hide(): Promise<void> | void {
     if (!this._isShown()) {
       return resolved()
     }
@@ -578,7 +578,7 @@ class Tooltip extends BaseComponent {
     return typeof delay === 'number' ? { show: delay, hide: delay } : delay
   }
 
-  _setTimeout(handler: () => Promise<void> | undefined, timeout: number): Promise<void> {
+  _setTimeout(handler: () => Promise<void> | void, timeout: number): Promise<void> {
     clearTimeout(this._timeout)
     this._settleTimeout?.()
 

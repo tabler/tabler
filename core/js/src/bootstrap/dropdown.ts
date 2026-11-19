@@ -123,11 +123,11 @@ class Dropdown extends BaseComponent {
     return NAME
   }
 
-  toggle(): Promise<void> {
+  toggle(): Promise<void> | void {
     return this._isShown() ? this.hide() : this.show()
   }
 
-  show(): Promise<void> {
+  show(): Promise<void> | void {
     if (isDisabled(this._element) || this._isShown()) {
       return resolved()
     }
@@ -159,7 +159,7 @@ class Dropdown extends BaseComponent {
     return resolved()
   }
 
-  hide(): Promise<void> {
+  hide(): Promise<void> | void {
     if (isDisabled(this._element) || !this._isShown()) {
       return resolved()
     }

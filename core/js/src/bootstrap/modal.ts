@@ -107,11 +107,11 @@ class Modal extends BaseComponent {
     return NAME
   }
 
-  toggle(relatedTarget?: HTMLElement): Promise<void> {
+  toggle(relatedTarget?: HTMLElement): Promise<void> | void {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget?: HTMLElement): Promise<void> {
+  show(relatedTarget?: HTMLElement): Promise<void> | void {
     if (this._isShown || this._isTransitioning) {
       return resolved()
     }
@@ -139,7 +139,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  hide(): Promise<void> {
+  hide(): Promise<void> | void {
     if (!this._isShown || this._isTransitioning) {
       return resolved()
     }

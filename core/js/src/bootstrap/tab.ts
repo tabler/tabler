@@ -69,7 +69,7 @@ class Tab extends BaseComponent {
     return NAME
   }
 
-  show(): Promise<void> {
+  show(): Promise<void> | void {
     const innerElem = this._element
     if (this._elemIsActive(innerElem)) {
       return resolved()

@@ -25,7 +25,7 @@ class Alert extends BaseComponent {
     return NAME
   }
 
-  close(): Promise<void> {
+  close(): Promise<void> | void {
     const closeEvent = EventHandler.trigger(this._element, EVENT_CLOSE)
 
     if (closeEvent?.defaultPrevented) {

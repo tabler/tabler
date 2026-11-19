@@ -99,11 +99,11 @@ class Collapse extends BaseComponent {
     return NAME
   }
 
-  toggle(): Promise<void> {
+  toggle(): Promise<void> | void {
     return this._isShown() ? this.hide() : this.show()
   }
 
-  show(): Promise<void> {
+  show(): Promise<void> | void {
     if (this._isTransitioning || this._isShown()) {
       return resolved()
     }
@@ -158,7 +158,7 @@ class Collapse extends BaseComponent {
     return transition
   }
 
-  hide(): Promise<void> {
+  hide(): Promise<void> | void {
     if (this._isTransitioning || !this._isShown()) {
       return resolved()
     }

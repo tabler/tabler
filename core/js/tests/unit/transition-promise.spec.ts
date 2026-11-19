@@ -10,7 +10,7 @@ import Toast from '../../src/bootstrap/toast'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearBodyAndDocument, clearFixture, getFixture } from '../helpers/fixture'
 
-const settlesWithin = (promise: Promise<void>, ms = 200): Promise<boolean> => Promise.race([promise.then(() => true), new Promise<boolean>((resolve) => setTimeout(() => resolve(false), ms))])
+const settlesWithin = (promise: Promise<void> | void, ms = 200): Promise<boolean> => Promise.race([Promise.resolve(promise).then(() => true), new Promise<boolean>((resolve) => setTimeout(() => resolve(false), ms))])
 
 describe('transition promises', () => {
   let fixtureEl: HTMLElement

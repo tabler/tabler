@@ -77,7 +77,7 @@ class Toast extends BaseComponent {
     return NAME
   }
 
-  show(): Promise<void> {
+  show(): Promise<void> | void {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW)
 
     if (showEvent?.defaultPrevented) {
@@ -106,7 +106,7 @@ class Toast extends BaseComponent {
     return this._queueCallback(complete, this._element, this._config.animation)
   }
 
-  hide(): Promise<void> {
+  hide(): Promise<void> | void {
     if (!this.isShown()) {
       return resolved()
     }
