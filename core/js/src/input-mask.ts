@@ -74,10 +74,10 @@ const ATTRIBUTE_VISIBLE = 'data-mask-visible'
 const ATTRIBUTE_PLACEHOLDER_CHAR = 'data-mask-placeholder-char'
 const ATTRIBUTE_TYPE = 'data-mask-type'
 
-// `data-mask-<name>` attributes of the number type, by option name and value type
 const ATTRIBUTE_FORMAT = 'data-mask-format'
 const ATTRIBUTE_RANGES = 'data-mask-ranges'
 
+// `data-mask-<name>` attributes of the number type, by option name and value type
 const NUMBER_ATTRIBUTES: Record<string, 'number' | 'string' | 'boolean'> = {
   scale: 'number',
   radix: 'string',
@@ -223,7 +223,7 @@ const scanNumber = (text: string, o: NumberOptions, final = false): string => {
   let canon = sign + int + (radix ? `.${frac}` : '')
   const value = parseFloat(canon)
 
-  if (o.max !== null && value > o.max) {
+  if (o.max !== null && value > (final ? o.max : Math.max(o.max, 0))) {
     canon = String(o.max)
   } else if (o.min !== null && value < (final ? o.min : Math.min(o.min, 0))) {
     canon = String(o.min)
@@ -231,6 +231,10 @@ const scanNumber = (text: string, o: NumberOptions, final = false): string => {
 
   if (final) {
     canon = /\d/.test(canon) ? canon.replace(/\.$/, '') : ''
+
+    if (parseFloat(canon) === 0) {
+      canon = canon.replace('-', '')
+    }
 
     if (o.pad && o.scale > 0 && /\d/.test(canon)) {
       const [whole, decimals = ''] = canon.split('.')
@@ -362,10 +366,10 @@ class InputMask extends BaseComponent {
   _unmasked = ''
   _complete = false
   _number: NumberOptions | null = null
-  _mask = ''
+  _mask: string | MaskFunction = ''
   _segments: Segment[] = []
   _onBlur = (): void => this._finish()
-  _onInput = (event: Event): void => this._handleInput(event as InputEvent)
+  _onInput = (event: Event): void => this._handleInput(event)
 
   constructor(element: ElementSelector, config?: ComponentConfigInput) {
     super(element, config)
@@ -376,14 +380,14 @@ class InputMask extends BaseComponent {
 
     if (this._config.type === 'number') {
       this._number = numberOptions(this._config)
-      this._element.addEventListener('input', this._onInput)
+      this._listen()
       this._element.addEventListener('blur', this._onBlur)
       this._element.inputMode ||= 'decimal'
       this.update()
       return
     }
 
-    this._mask = this._config.mask as string
+    this._mask = this._config.mask
 
     if (this._config.type === 'date') {
       const { mask, segments } = parseDateFormat(this._config.format ?? 'DD/MM/YYYY')
@@ -414,7 +418,7 @@ class InputMask extends BaseComponent {
       this._segments = segmentsFromRanges(parse(this._mask, { ...TOKENS, ...this._config.tokens }), this._config.ranges)
     }
 
-    this._element.addEventListener('input', this._onInput)
+    this._listen()
     this.update()
   }
 
@@ -491,16 +495,36 @@ class InputMask extends BaseComponent {
   dispose(): void {
     this._legacy?.destroy()
     this._element.removeEventListener('input', this._onInput)
+    this._element.removeEventListener('compositionend', this._onInput)
     this._element.removeEventListener('blur', this._onBlur)
     super.dispose()
   }
 
   // Private
-  _slots(unmasked: string): Slot[] {
-    const mask = this._mask || this._config.mask
-    const { tokens } = this._config
+  _listen(): void {
+    this._element.addEventListener('input', this._onInput)
+    this._element.addEventListener('compositionend', this._onInput)
+  }
 
-    return parse(typeof mask === 'function' ? mask(unmasked) : mask, { ...TOKENS, ...tokens })
+  // A deletion inside the prefix or the suffix leaves a part of it behind, which must not be read as input
+  _keepAffixes(value: string, caret: number): string {
+    const o = this._number!
+    const text = displayNumber(this._unmasked, o)
+    const end = caret + text.length - value.length
+    const prefix = o.prefix ? text.indexOf(o.prefix) : -1
+    const suffix = o.suffix && text.endsWith(o.suffix) ? text.length - o.suffix.length : -1
+
+    if (end <= caret || value.slice(0, caret) !== text.slice(0, caret) || value.slice(caret) !== text.slice(end)) {
+      return value
+    }
+
+    return (suffix > -1 && caret >= suffix) || (prefix > -1 && caret >= prefix && end <= prefix + o.prefix.length) ? text : value
+  }
+
+  _slots(unmasked: string): Slot[] {
+    const mask = this._mask
+
+    return parse(typeof mask === 'function' ? mask(unmasked) : mask, { ...TOKENS, ...this._config.tokens })
   }
 
   _align(raw: string, caret: number): { raw: string; caret: number; single: number; fixed: boolean } {
@@ -712,21 +736,23 @@ class InputMask extends BaseComponent {
     }
   }
 
-  _handleInput(event: InputEvent): void {
-    if (event.isComposing) {
+  _handleInput(event: Event): void {
+    if ((event as InputEvent).isComposing) {
       return
     }
 
+    // An `input` event fired from code and `compositionend` have no `inputType`
+    const deleting = ((event as InputEvent).inputType ?? '').startsWith('delete')
     const value = this._element.value
     const position = this._element.selectionStart ?? value.length
     const previous = this._unmasked
-    const { raw, caret, single, fixed } = this._number ? { raw: value, caret: position, single: -1, fixed: false } : this._align(value, position)
+    const { raw, caret, single, fixed } = this._number ? { raw: deleting ? this._keepAffixes(value, position) : value, caret: position, single: -1, fixed: false } : this._align(value, position)
     let { unmasked, count } = this._extract(raw, caret, single, fixed)
     let typed = count ?? unmasked.length
 
     // Deleting a literal changes nothing after re-masking, so it removes the digit next to it
-    if (!fixed && unmasked === previous && event.inputType.startsWith('delete') && typed > 0) {
-      const at = event.inputType === 'deleteContentForward' ? typed : typed - 1
+    if (!fixed && unmasked === previous && deleting && typed > 0) {
+      const at = (event as InputEvent).inputType === 'deleteContentForward' ? typed : typed - 1
 
       if (at < unmasked.length) {
         unmasked = unmasked.slice(0, at) + unmasked.slice(at + 1)

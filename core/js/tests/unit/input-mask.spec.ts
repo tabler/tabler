@@ -662,6 +662,536 @@ describe('InputMask', () => {
     })
   })
 
+  describe('more cases', () => {
+    const make = (html: string, config?: Record<string, unknown>): [HTMLInputElement, InputMask] => {
+      fixtureEl.innerHTML = html
+
+      return [input(), new InputMask(input(), config)]
+    }
+
+    const blur = (el: HTMLInputElement): void => {
+      el.dispatchEvent(new FocusEvent('blur'))
+    }
+
+    describe('events fired from code', () => {
+      it('should not throw on an input event without an inputType', () => {
+        const [el] = make('<input type="text" data-mask="00/00" value="12/34">')
+
+        expect(() => el.dispatchEvent(new Event('input', { bubbles: true }))).not.toThrow()
+        expect(el.value).toBe('12/34')
+
+        const [number] = make('<input type="text" data-mask-type="number" value="12">')
+
+        expect(() => number.dispatchEvent(new Event('input', { bubbles: true }))).not.toThrow()
+        expect(number.value).toBe('12')
+      })
+
+      it('should mask a value filled in by a plain input event', () => {
+        const [el, instance] = make('<input type="text" data-mask="00/00">')
+
+        el.value = '1234'
+        el.dispatchEvent(new Event('input', { bubbles: true }))
+
+        expect(el.value).toBe('12/34')
+        expect(instance.unmaskedValue).toBe('1234')
+      })
+
+      it('should wait for the end of a composition', () => {
+        const [el, instance] = make('<input type="text" data-mask="00/00">')
+        const accept = vi.fn()
+        el.addEventListener('accept.bs.input-mask', accept)
+
+        el.value = '1234'
+        el.dispatchEvent(new InputEvent('input', { inputType: 'insertCompositionText', isComposing: true, bubbles: true }))
+        expect(el.value).toBe('1234')
+
+        el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true }))
+        expect(el.value).toBe('12/34')
+        expect(instance.unmaskedValue).toBe('1234')
+
+        el.dispatchEvent(new InputEvent('input', { inputType: 'insertCompositionText', bubbles: true }))
+        expect(accept).toHaveBeenCalledTimes(1)
+      })
+
+      it('should fire accept only when the value changes', () => {
+        const [el] = make('<input type="text" data-mask="00/00">')
+        const accept = vi.fn()
+        el.addEventListener('accept.bs.input-mask', accept)
+
+        type(el, '12')
+        type(el, '12a')
+        type(el, '12/')
+
+        expect(accept).toHaveBeenCalledTimes(1)
+      })
+
+      it('should fire complete again after the mask was emptied', () => {
+        const [el, instance] = make('<input type="text" data-mask="00/00" data-mask-visible>')
+        const complete = vi.fn()
+        el.addEventListener('complete.bs.input-mask', complete)
+
+        type(el, '1234')
+        expect(instance.isComplete).toBe(true)
+
+        type(el, '', 'deleteContentBackward')
+        expect(el.value).toBe('__/__')
+        expect(instance.isComplete).toBe(false)
+
+        type(el, '5678')
+        expect(complete).toHaveBeenCalledTimes(2)
+      })
+    })
+
+    describe('pattern', () => {
+      it('should remove the digit after a literal on forward delete', () => {
+        const [el, instance] = make('<input type="text" data-mask="(00) 0000" value="(12) 34">')
+        el.focus()
+
+        type(el, '(12 34', 'deleteContentForward', 3)
+
+        expect(el.value).toBe('(12) 4')
+        expect(instance.unmaskedValue).toBe('124')
+        expect(el.selectionStart).toBe(3)
+      })
+
+      it('should change nothing on backspace at the start', () => {
+        const [el] = make('<input type="text" data-mask="00/00" value="12/34">')
+        el.focus()
+
+        type(el, '12/34', 'deleteContentBackward', 0)
+
+        expect(el.value).toBe('12/34')
+      })
+
+      it('should move the caret to the next slot of a visible mask', () => {
+        const [el] = make('<input type="text" data-mask="(00) 0000" data-mask-visible>')
+        el.focus()
+
+        type(el, '1(__) ____', 'insertText', 1)
+        expect(el.value).toBe('(1_) ____')
+        expect(el.selectionStart).toBe(2)
+
+        type(el, '(12_) ____', 'insertText', 3)
+        expect(el.value).toBe('(12) ____')
+        expect(el.selectionStart).toBe(3)
+
+        type(el, '(123) ____', 'insertText', 4)
+        expect(el.value).toBe('(12) 3___')
+        expect(el.selectionStart).toBe(6)
+      })
+
+      it('should stay lazy with data-mask-visible="false"', () => {
+        const [el] = make('<input type="text" data-mask="00/00" data-mask-visible="false">')
+
+        expect(el.value).toBe('')
+      })
+
+      it('should let a custom token replace a default one', () => {
+        const [el] = make('<input type="text" data-mask="0000">', { tokens: { '0': /[01]/ } })
+
+        type(el, '1021')
+
+        expect(el.value).toBe('101')
+      })
+
+      it('should accept letters outside ASCII', () => {
+        const [el] = make('<input type="text" data-mask="aaa-00">')
+
+        type(el, 'żół12')
+
+        expect(el.value).toBe('żół-12')
+      })
+
+      it('should read a backslash at the end of the mask as a literal', () => {
+        const [el] = make('<input type="text">', { mask: '00\\' })
+
+        type(el, '123')
+
+        expect(el.value).toBe('12')
+      })
+
+      it('should follow a dynamic mask in isComplete', () => {
+        const [el, instance] = make('<input type="text">', {
+          mask: (value: string) => (value.startsWith('3') ? '0000 000000 00000' : '0000 0000 0000 0000'),
+        })
+
+        type(el, '4111111111111111')
+        expect(el.value).toBe('4111 1111 1111 1111')
+        expect(instance.isComplete).toBe(true)
+
+        type(el, '378282246310005')
+        expect(el.value).toBe('3782 822463 10005')
+        expect(instance.isComplete).toBe(true)
+
+        type(el, '37828224631000')
+        expect(instance.isComplete).toBe(false)
+      })
+    })
+
+    describe('unmaskedValue', () => {
+      it('should set and clear a date', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="date">')
+
+        instance.unmaskedValue = '31122026'
+        expect(el.value).toBe('31/12/2026')
+        expect(instance.unmaskedValue).toBe('31122026')
+        expect(instance.isComplete).toBe(true)
+
+        instance.unmaskedValue = ''
+        expect(el.value).toBe('')
+        expect(instance.isComplete).toBe(false)
+      })
+
+      it('should drop the characters the mask does not accept', () => {
+        const [el, instance] = make('<input type="text" data-mask="00/00">')
+
+        instance.unmaskedValue = 'ab12'
+
+        expect(el.value).toBe('12')
+        expect(instance.unmaskedValue).toBe('12')
+      })
+
+      it('should not use up digits for the literal digits of the mask', () => {
+        const [el, instance] = make('<input type="text" data-mask="+48 000 000 000">')
+
+        instance.unmaskedValue = '481234567'
+
+        expect(el.value).toBe('+48 481 234 567')
+        expect(instance.unmaskedValue).toBe('481234567')
+      })
+
+      it('should take a number and show it with the radix of the field', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-radix="," data-mask-thousands-separator=".">')
+
+        instance.unmaskedValue = 1234.5 as unknown as string
+        expect(el.value).toBe('1.234,5')
+        expect(instance.unmaskedValue).toBe('1234.5')
+
+        instance.unmaskedValue = ''
+        expect(el.value).toBe('')
+      })
+
+      it('should be empty and incomplete without a mask', () => {
+        const [, instance] = make('<input type="text">')
+
+        expect(instance.mask).toBeNull()
+        expect(instance.unmaskedValue).toBe('')
+        expect(instance.isComplete).toBe(false)
+      })
+    })
+
+    describe('number', () => {
+      it('should let the user type towards a negative max', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-min="-100" data-mask-max="-10" data-mask-scale="0">')
+
+        type(el, '-5')
+        expect(el.value).toBe('-5')
+
+        type(el, '-50')
+        expect(el.value).toBe('-50')
+
+        type(el, '-500')
+        expect(el.value).toBe('-100')
+      })
+
+      it('should lower the value to a negative max on blur', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-min="-100" data-mask-max="-10" data-mask-scale="0">')
+
+        type(el, '-5')
+        blur(el)
+
+        expect(el.value).toBe('-10')
+      })
+
+      it('should raise the value to a negative min as the user types', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-min="-10">')
+
+        type(el, '-50')
+
+        expect(el.value).toBe('-10')
+      })
+
+      it('should drop the sign of a zero on blur', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number">')
+
+        type(el, '-0')
+        blur(el)
+        expect(el.value).toBe('0')
+        expect(instance.unmaskedValue).toBe('0')
+
+        const [padded] = make('<input type="text" data-mask-type="number" data-mask-pad-fractional-zeros>')
+
+        type(padded, '-0.0')
+        blur(padded)
+        expect(padded.value).toBe('0.00')
+      })
+
+      it('should keep the sign of a negative fraction on blur', () => {
+        const [el] = make('<input type="text" data-mask-type="number">')
+
+        type(el, '-0.5')
+        blur(el)
+
+        expect(el.value).toBe('-0.5')
+      })
+
+      it('should read the boolean attribute with and without a value', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-pad-fractional-zeros data-mask-prefix="$" data-mask-thousands-separator=",">')
+
+        type(el, '1234.5')
+        expect(el.value).toBe('$1,234.5')
+
+        blur(el)
+        expect(el.value).toBe('$1,234.50')
+
+        const [off] = make('<input type="text" data-mask-type="number" data-mask-pad-fractional-zeros="false">')
+
+        type(off, '1.5')
+        blur(off)
+        expect(off.value).toBe('1.5')
+      })
+
+      it('should keep the caret after the typed digit when a separator is added', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-thousands-separator="," value="1234">')
+        el.focus()
+
+        type(el, '15,234', 'insertText', 2)
+        expect(el.value).toBe('15,234')
+        expect(el.selectionStart).toBe(2)
+
+        type(el, '159,234', 'insertText', 3)
+        type(el, '1597,234', 'insertText', 4)
+        expect(el.value).toBe('1,597,234')
+        expect(el.selectionStart).toBe(5)
+      })
+
+      it('should keep the caret when a digit is deleted and a separator goes away', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-thousands-separator="," value="1234567">')
+        el.focus()
+
+        type(el, '1,34,567', 'deleteContentBackward', 2)
+
+        expect(el.value).toBe('134,567')
+        expect(el.selectionStart).toBe(1)
+      })
+
+      it('should remove the digit after a separator on forward delete', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-thousands-separator=" " value="1234">')
+        el.focus()
+
+        type(el, '1234', 'deleteContentForward', 1)
+
+        expect(el.value).toBe('134')
+        expect(el.selectionStart).toBe(1)
+      })
+
+      it('should read a pasted number with a comma radix and dots between thousands', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-radix="," data-mask-thousands-separator=".">')
+
+        type(el, '1.234.567,89', 'insertFromPaste')
+
+        expect(el.value).toBe('1.234.567,89')
+        expect(instance.unmaskedValue).toBe('1234567.89')
+      })
+
+      it('should clean up zeros, extra separators and stray characters', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number">')
+
+        type(el, 'abc')
+        expect(el.value).toBe('')
+        expect(instance.unmaskedValue).toBe('')
+
+        type(el, '007')
+        expect(el.value).toBe('7')
+
+        type(el, '.5')
+        expect(el.value).toBe('0.5')
+
+        type(el, '1.999')
+        expect(el.value).toBe('1.99')
+
+        type(el, '1.2.3')
+        expect(el.value).toBe('1.23')
+
+        type(el, '1-2')
+        expect(el.value).toBe('12')
+      })
+
+      it('should put the minus sign before the prefix', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-prefix="$">')
+
+        type(el, '-5')
+        expect(el.value).toBe('-$5')
+        expect(instance.unmaskedValue).toBe('-5')
+
+        type(el, '-$56')
+        expect(el.value).toBe('-$56')
+      })
+
+      it('should read a value with a prefix and separators set before the component was created', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-prefix="$" data-mask-thousands-separator="," value="$1,234.50">')
+
+        expect(el.value).toBe('$1,234.50')
+        expect(instance.unmaskedValue).toBe('1234.50')
+      })
+
+      it('should not read what is left of a suffix as input when a part of it is deleted', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-suffix=" m2" data-mask-scale="0" value="12">')
+        el.focus()
+        expect(el.value).toBe('12 m2')
+
+        type(el, '12 2', 'deleteContentForward', 3)
+        expect(el.value).toBe('12 m2')
+        expect(instance.unmaskedValue).toBe('12')
+
+        type(el, '12 m', 'deleteContentBackward', 4)
+        expect(el.value).toBe('1 m2')
+        expect(el.selectionStart).toBe(1)
+      })
+
+      it('should not read what is left of a prefix as input when a part of it is deleted', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-prefix="No. 1/" data-mask-scale="0" value="25">')
+        el.focus()
+        expect(el.value).toBe('No. 1/25')
+
+        type(el, 'No. 125', 'deleteContentBackward', 5)
+
+        expect(el.value).toBe('No. 1/25')
+        expect(instance.unmaskedValue).toBe('25')
+      })
+
+      it('should still delete a digit that equals a character of the suffix', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-suffix="2x" data-mask-scale="0" value="12">')
+        el.focus()
+        expect(el.value).toBe('122x')
+
+        type(el, '12x', 'deleteContentBackward', 1)
+
+        expect(el.value).toBe('12x')
+      })
+
+      it('should re-read the value on update()', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number" data-mask-thousands-separator=" ">')
+
+        el.value = '98765.4'
+        instance.update()
+
+        expect(el.value).toBe('98 765.4')
+        expect(instance.unmaskedValue).toBe('98765.4')
+        expect(instance.mask).toBe(instance)
+      })
+
+      it('should set a decimal inputmode unless the input has one', () => {
+        const [el] = make('<input type="text" data-mask-type="number" data-mask-min="0" data-mask-scale="0">')
+
+        type(el, '-12.7')
+        expect(el.value).toBe('127')
+        expect(el.inputMode).toBe('decimal')
+
+        const [numeric] = make('<input type="text" inputmode="numeric" data-mask-type="number">')
+
+        expect(numeric.inputMode).toBe('numeric')
+      })
+
+      it('should stop formatting on blur after dispose', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="number">')
+
+        instance.dispose()
+        el.value = '-'
+        blur(el)
+
+        expect(el.value).toBe('-')
+      })
+    })
+
+    describe('date', () => {
+      it('should know the leap years', () => {
+        const [el] = make('<input type="text" data-mask-type="date">')
+
+        type(el, '29022023')
+        expect(el.value).toBe('28/02/2023')
+
+        type(el, '29022024')
+        expect(el.value).toBe('29/02/2024')
+
+        type(el, '29021900')
+        expect(el.value).toBe('28/02/1900')
+
+        type(el, '29022000')
+        expect(el.value).toBe('29/02/2000')
+      })
+
+      it('should allow 29 February until the year is known', () => {
+        const [el] = make('<input type="text" data-mask-type="date">')
+
+        type(el, '2902')
+        expect(el.value).toBe('29/02')
+
+        type(el, '3104')
+        expect(el.value).toBe('30/04')
+      })
+
+      it('should fit the day to the month when the year comes first', () => {
+        const [el] = make('<input type="text" data-mask-type="date" data-mask-format="YYYY-MM-DD">')
+
+        type(el, '20240230')
+        expect(el.value).toBe('2024-02-29')
+
+        type(el, '20230230')
+        expect(el.value).toBe('2023-02-28')
+
+        type(el, '00001301')
+        expect(el.value).toBe('0001-12-01')
+      })
+
+      it('should keep a time in range', () => {
+        const [el] = make('<input type="text" data-mask-type="date" data-mask-format="HH:mm:ss">')
+
+        type(el, '25')
+        expect(el.value).toBe('23')
+
+        type(el, '7')
+        expect(el.value).toBe('07')
+
+        type(el, '235959')
+        expect(el.value).toBe('23:59:59')
+
+        type(el, '000000')
+        expect(el.value).toBe('00:00:00')
+      })
+
+      it('should start over when the whole value is replaced or deleted', () => {
+        const [el, instance] = make('<input type="text" data-mask-type="date" value="15/06/2024">')
+        el.focus()
+
+        type(el, '3')
+        expect(el.value).toBe('3')
+        expect(instance.unmaskedValue).toBe('3')
+        expect(instance.isComplete).toBe(false)
+
+        type(el, '', 'deleteContentBackward')
+        expect(el.value).toBe('')
+      })
+
+      it('should overwrite the digits under a value pasted in the middle', () => {
+        const [el] = make('<input type="text" data-mask-type="date" value="15/06/2024">')
+        el.focus()
+
+        type(el, '15/1206/2024', 'insertFromPaste', 5)
+
+        expect(el.value).toBe('15/12/2024')
+      })
+
+      it('should take ranges from the config and leave the other groups free', () => {
+        const [el] = make('<input type="text">', { mask: '00:00', ranges: [[0, 23]] })
+
+        type(el, '9999')
+
+        expect(el.value).toBe('09:99')
+      })
+    })
+  })
+
   describe('public API', () => {
     it('should remove the listeners and the instance on dispose', () => {
       const el = input()
