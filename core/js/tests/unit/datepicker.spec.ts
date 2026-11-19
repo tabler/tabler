@@ -49,6 +49,37 @@ describe('Datepicker', () => {
     })
   })
 
+  describe('theme changes', () => {
+    it.each(['light', 'dark'])('follows page theme changes before and after opening from %s', async (initialTheme) => {
+      const page = document.documentElement
+      const originalTheme = page.getAttribute('data-bs-theme')
+      const nextTheme = initialTheme === 'light' ? 'dark' : 'light'
+      page.setAttribute('data-bs-theme', initialTheme)
+      fixtureEl.innerHTML = '<input type="text" data-bs-bound-input="#theme-date"><input type="hidden" id="theme-date" name="date">'
+      const instance = new Datepicker(input())
+
+      try {
+        page.setAttribute('data-bs-theme', nextTheme)
+        await tick()
+        await instance.show()
+        const popup = instance.calendar!.context.mainElement
+        expect(popup.getAttribute('data-bs-theme')).toBe(nextTheme)
+
+        page.setAttribute('data-bs-theme', initialTheme)
+        await tick()
+        expect(popup.getAttribute('data-bs-theme')).toBe(initialTheme)
+        expect(input().hasAttribute('data-bs-theme')).toBe(false)
+      } finally {
+        instance.dispose()
+        if (originalTheme === null) {
+          page.removeAttribute('data-bs-theme')
+        } else {
+          page.setAttribute('data-bs-theme', originalTheme)
+        }
+      }
+    })
+  })
+
   describe('constructor', () => {
     it('should create the calendar on an input', () => {
       fixtureEl.innerHTML = '<input type="text" data-bs-toggle="datepicker">'
