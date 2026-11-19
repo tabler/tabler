@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import NavOverflow from '../../src/bootstrap/nav-overflow'
 import Dropdown from '../../src/bootstrap/dropdown'
+import Tab from '../../src/bootstrap/tab'
 import { clearFixture, getFixture } from '../helpers/fixture'
 
 vi.mock('@popperjs/core', () => ({
@@ -501,6 +502,67 @@ describe('NavOverflow', () => {
       new NavOverflow(wrapper())
 
       expect(menuItems().at(-1)!.getAttribute('href')).toEqual('#')
+    })
+  })
+
+  describe('tabs', () => {
+    const tabLinks = (): string => Array.from({ length: 6 }, (_, index) => `<li class="nav-item"><a class="nav-link${index === 0 ? ' active' : ''}" id="tab-${index}" href="#pane-${index}" data-bs-toggle="tab">Tab ${index}</a></li>`).join('')
+    const tab = (index: number): HTMLElement => fixtureEl.querySelector<HTMLElement>(`#tab-${index}`)!
+    const moreToggle = (): HTMLElement => fixtureEl.querySelector<HTMLElement>('.nav-overflow-toggle')!
+    const visibleTabs = (): HTMLElement[] => [...fixtureEl.querySelectorAll<HTMLElement>('[data-bs-toggle="tab"]')].filter((link) => !link.closest('.nav-item')!.classList.contains('d-none'))
+
+    it('should not let Tab take the More button for a tab', () => {
+      fixtureEl.innerHTML = nav(360, tabLinks())
+
+      new NavOverflow(wrapper())
+      new Tab(tab(0))
+
+      expect(moreToggle().hasAttribute('role')).toBe(false)
+      expect(moreToggle().hasAttribute('tabindex')).toBe(false)
+      expect(moreToggle().hasAttribute('aria-selected')).toBe(false)
+    })
+
+    it('should keep the arrow keys on the visible tabs', () => {
+      fixtureEl.innerHTML = nav(360, tabLinks())
+
+      new NavOverflow(wrapper())
+      new Tab(tab(0))
+      const visible = visibleTabs()
+      expect(visible.length).toBeLessThan(6)
+
+      tab(0).dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))
+      expect(visible.at(-1)!).toHaveClass('active')
+
+      visible.at(-1)!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+      expect(tab(0)).toHaveClass('active')
+      expect(moreToggle()).not.toHaveClass('active')
+    })
+
+    it('should drop the tab attributes from the copies in the menu', () => {
+      fixtureEl.innerHTML = nav(360, tabLinks())
+
+      new Tab(tab(0))
+      expect(tab(5).getAttribute('role')).toBe('tab')
+      new NavOverflow(wrapper())
+
+      const cloned = menuItems().at(-1)!
+      for (const name of ['role', 'aria-selected', 'aria-controls', 'tabindex']) {
+        expect(cloned.hasAttribute(name)).toBe(false)
+      }
+    })
+
+    it('should clear the active copy when a visible tab is shown', () => {
+      fixtureEl.innerHTML = nav(360, tabLinks())
+
+      new NavOverflow(wrapper())
+      const cloned = menuItems().at(-1)!
+      cloned.click()
+      expect(tab(5)).toHaveClass('active')
+      expect(cloned).toHaveClass('active')
+
+      tab(0).click()
+      expect(tab(0)).toHaveClass('active')
+      expect(cloned).not.toHaveClass('active')
     })
   })
 

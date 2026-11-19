@@ -57,9 +57,11 @@ const elementId = `chart-${id}`;
 				<script is:inline define:vars={{ chartKey, elementId, config, xFormatter, yFormatter }}>
 					window.tabler_chart ??= {};
 
+					const isEmpty = (val) => val == null || Number.isNaN(val);
+
 					const formatters = {
-						thousands: (val) => val.toLocaleString('en-US'),
-						'suffix-k': (val) => val + 'K',
+						thousands: (val) => (isEmpty(val) ? '' : val.toLocaleString('en-US')),
+						'suffix-k': (val) => (isEmpty(val) ? '' : val + 'K'),
 					};
 
 					// Heatmap and treemap shade each cell by computing off the literal base color in JS

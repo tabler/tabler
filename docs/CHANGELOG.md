@@ -1,5 +1,28 @@
 # @tabler/docs
 
+## 1.7.5
+
+### Patch Changes
+
+- b0a29f9: Updated the Datepicker docs to note that `vcpOptions` are passed to Vanilla Calendar Pro unchecked.
+- 81c2442: Fixed the map `library` option so a `data-bs-library` attribute only loads the module from the same origin as the page.
+
+## 1.7.4
+
+### Patch Changes
+
+- f7ab6f7: Fixed table of contents links in the docs not updating the URL `#fragment` after clicking.
+
+## 1.7.3
+
+No changes in this release.
+
+## 1.7.2
+
+### Patch Changes
+
+- 40a1a91: Fixed a chart tooltip crash when the `thousands` or `suffix-k` axis formatter gets an empty value.
+
 ## 1.7.1
 
 ### Patch Changes

@@ -14,7 +14,6 @@ $enable-shadows: true !default;
 $enable-navbar-vertical: true !default;
 $enable-dark-mode: true !default;
 $enable-negative-margins: true !default;
-// $enable-rfs is declared in `_mixins.scss` (forwarded from rfs with `false !default`)
 $enable-cssgrid: true !default;
 $enable-rounded: true !default;
 $enable-transitions: true !default;
@@ -27,9 +26,6 @@ $enable-validation-icons: true !default;
 $enable-deprecation-messages: true !default;
 $enable-deprecated: true !default;
 $enable-important-utilities: true !default;
-
-// Escaped Characters
-// $escaped-characters moved to `_settings.scss`
 
 // Dark Mode
 $color-mode-type: data !default;
@@ -46,8 +42,6 @@ $gray-700: oklch(37.15% 0 0deg) !default; // #404040
 $gray-800: oklch(26.86% 0 0deg) !default; // #262626
 $gray-900: oklch(20.46% 0 0deg) !default; // #171717
 $gray-950: oklch(14.48% 0 0deg) !default; // #0a0a0a
-
-// $black and $white moved to `_settings.scss`
 
 $light: $gray-50 !default;
 $dark: $gray-900 !default;
@@ -95,8 +89,6 @@ $colors: (
   'gray': $gray-600,
   'gray-dark': $gray-800,
 ) !default;
-
-// $min-contrast-ratio, $color-contrast-dark and $color-contrast-light moved to `_settings.scss`
 
 // Color shade ladders and per-color maps (Bootstrap parity). Nothing in the
 // build consumes them yet, but they are kept as configurable API — hence
@@ -545,10 +537,6 @@ $text-secondary-opacity: 0.7 !default;
 
 $body-emphasis-color: $gray-700 !default;
 
-// $color-contrast-dark and $color-contrast-light moved to `_settings.scss`.
-// Note: they were already no-ops here — the `!default` definitions earlier
-// in this file always won, so their effective values were $black / $white.
-
 $text-secondary: $gray-500 !default;
 $text-secondary-light: $gray-400 !default;
 $text-secondary-dark: $gray-600 !default;
@@ -601,7 +589,6 @@ $danger: $red !default;
 $link-color: var(--primary) !default;
 $link-shade-percentage: 20% !default;
 $link-hover-color: shift-color($link-color, $link-shade-percentage) !default;
-$link-hover-decoration: null !default;
 
 // Icon links
 
@@ -755,8 +742,8 @@ $border-values: (
 $icon-color: var(--gray-400) !default;
 
 // Code
-$code-color: light-dark(var(--gray-600), var(--gray-400)) !default;
-$code-bg: var(--fill-tertiary) !default;
+$code-color: currentColor !default;
+$code-bg: color-transparent(currentColor, 0.1) !default;
 $code-font-size: $font-size-reative-sm !default;
 
 $pre-font-size: 0.92857143em !default;
@@ -878,9 +865,6 @@ $position-values: (
   100: 100%,
 ) !default;
 
-// Grid breakpoints
-// $grid-breakpoints moved to `_settings.scss`
-
 // Grid containers
 $container-max-widths: (
   sm: 540px,
@@ -980,6 +964,11 @@ $box-shadow-input: $box-shadow-xs !default;
 $box-shadow-card: $box-shadow-xs !default;
 $box-shadow-card-hover: $box-shadow-lg !default;
 $box-shadow-dropdown: $box-shadow-overlay !default;
+
+$hover-lift-transform: translateY(-0.25rem) !default;
+$hover-lift-box-shadow: var(--box-shadow-lg) !default;
+$hover-lift-transition-duration: 0.2s !default;
+$hover-lift-transition-timing: ease-out !default;
 
 $box-shadows: (
   null: $box-shadow,
@@ -1437,8 +1426,6 @@ $btn-close-opacity: 0.4 !default;
 $btn-close-hover-opacity: 0.75 !default;
 $btn-close-focus-opacity: 1 !default;
 $btn-close-disabled-opacity: 0.25 !default;
-$btn-close-filter: null !default;
-$btn-close-white-filter: invert(1) grayscale(100%) brightness(200%) !default; // Deprecated in v5.3.4
 
 // Datagrid
 // scss-docs-start datagrid-variables
@@ -1495,6 +1482,9 @@ $dropdown-header-padding-y: $dropdown-padding-y !default;
 
 $dropdown-max-width: 25rem !default;
 $dropdown-scrollable-height: 13rem !default;
+$combobox-menu-max-height: 300px !default;
+$combobox-search-gap: 0.375rem !default;
+$combobox-search-gap-x: 0.5rem !default;
 $dropdown-item-gap: 0.5rem !default;
 $dropdown-header-padding-bottom: 0.25rem !default;
 $dropdown-menu-columns-gap: 0.25rem !default;
@@ -1570,6 +1560,7 @@ $modal-header-padding-y: $modal-inner-padding !default;
 $modal-header-padding-x: $modal-inner-padding !default;
 $modal-header-padding: 1.5rem !default; // Keep this for backwards compatibility
 $modal-header-height: 3.5rem !default;
+$modal-header-padding-y-min: 1rem !default;
 $modal-header-bg: transparent !default;
 
 $modal-footer-bg: var(--fill-quaternary) !default;
@@ -1816,6 +1807,17 @@ $hover-gallery-indicator-scrim-bg: linear-gradient(to top, rgba($black, 0.32), r
 $hover-gallery-indicator-inactive-opacity: 0.5 !default;
 // scss-docs-end hover-gallery-variables
 
+// scss-docs-start banner-variables
+$banner-padding-y: 0.5rem !default;
+$banner-padding-x: 1rem !default;
+$banner-font-size: $font-size-base !default;
+$banner-link-font-weight: $font-weight-medium !default;
+$banner-icon-gap: 0.5rem !default;
+$banner-lt-mix: 12% !default;
+$banner-btn-close-opacity: 0.75 !default;
+$banner-btn-close-hover-opacity: 1 !default;
+// scss-docs-end banner-variables
+
 // scss-docs-start signal-variables
 $signal-size: map.get(map.get($avatar-sizes, 'xs'), size) !default;
 $signal-gap-ratio: 0.1 !default;
@@ -1825,6 +1827,52 @@ $signal-bar-border-radius: 1px !default;
 $signal-bar-inactive-opacity: 0.24 !default;
 $signal-max-bars: 5 !default;
 // scss-docs-end signal-variables
+
+// scss-docs-start file-icon-variables
+$file-icon-size: map.get(map.get($avatar-sizes, 'md'), size) !default;
+$file-icon-size-sm: map.get(map.get($avatar-sizes, 'sm'), size) !default;
+$file-icon-size-lg: map.get(map.get($avatar-sizes, 'lg'), size) !default;
+$file-icon-color: $text-secondary !default;
+$file-icon-outline: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 40' preserveAspectRatio='none' fill='none' stroke='#000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M19.5.75H5A4.25 4.25 0 0 0 .75 5v30A4.25 4.25 0 0 0 5 39.25h20A4.25 4.25 0 0 0 29.25 35V10.5zv6.75a3 3 0 0 0 3 3h6.75'/></svg>") !default;
+$file-icon-label-font-weight: $font-weight-bold !default;
+$file-icon-types: (
+  'red': ('pdf'),
+  'blue': (
+    'doc',
+    'docx',
+    'txt',
+    'rtf',
+  ),
+  'green': (
+    'xls',
+    'xlsx',
+    'csv',
+  ),
+  'orange': (
+    'ppt',
+    'pptx',
+  ),
+  'yellow': (
+    'zip',
+    'rar',
+    '7z',
+  ),
+  'purple': (
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'svg',
+    'webp',
+  ),
+  'pink': (
+    'mp3',
+    'wav',
+    'mp4',
+    'mov',
+  ),
+) !default;
+// scss-docs-end file-icon-variables
 
 // scss-docs-start text-shimmer-variables
 $text-shimmer-duration: 2s !default;
@@ -1968,12 +2016,12 @@ $table-caption-color: var(--secondary-color) !default;
 $table-bg-scale: -80% !default;
 
 $table-variants: (
-  'primary': shift-color(var(--primary), $table-bg-scale),
-  'secondary': shift-color(var(--secondary), $table-bg-scale),
-  'success': shift-color(var(--success), $table-bg-scale),
-  'info': shift-color(var(--info), $table-bg-scale),
-  'warning': shift-color(var(--warning), $table-bg-scale),
-  'danger': shift-color(var(--danger), $table-bg-scale),
+  'primary': mix-color-css(var(--bg-surface), var(--primary), -$table-bg-scale),
+  'secondary': mix-color-css(var(--bg-surface), var(--secondary), -$table-bg-scale),
+  'success': mix-color-css(var(--bg-surface), var(--success), -$table-bg-scale),
+  'info': mix-color-css(var(--bg-surface), var(--info), -$table-bg-scale),
+  'warning': mix-color-css(var(--bg-surface), var(--warning), -$table-bg-scale),
+  'danger': mix-color-css(var(--bg-surface), var(--danger), -$table-bg-scale),
   'light': $light,
   'dark': $dark,
 ) !default;
@@ -2107,7 +2155,6 @@ $list-icon-color: var(--secondary) !default;
 // scss-docs-end list-icon-variables
 
 // Forms
-$input-disabled-bg: var(--bg-forms-disabled) !default;
 $input-border-color: var(--border-color) !default;
 $input-border-color-translucent: var(--border-color-translucent) !default;
 
@@ -2119,8 +2166,6 @@ $input-group-addon-font-weight: $input-font-weight !default;
 $input-group-addon-color: var(--secondary-color) !default;
 $input-group-addon-bg: var(--fill-quaternary) !default;
 $input-group-addon-border-color: $input-border-color !default;
-
-$input-border-radius: var(--border-radius) !default;
 
 $form-color-width: 3rem !default;
 
@@ -2360,6 +2405,7 @@ $offcanvas-color: var(--body-color) !default;
 $offcanvas-box-shadow: $modal-content-box-shadow-xs !default;
 $offcanvas-backdrop-bg: $backdrop-bg !default;
 $offcanvas-backdrop-opacity: $modal-backdrop-opacity !default;
+$offcanvas-backdrop-blur: 0px !default;
 $offcanvas-narrow-width: 20rem !default;
 $offcanvas-margin: 0.5rem !default;
 $offcanvas-border-radius: $modal-content-border-radius !default;
@@ -2535,6 +2581,12 @@ $hr-text-spaceless-margin-y: -0.5rem !default;
 $grid-row-gutter-sm: 0.375rem !default;
 $grid-row-gutter-md: 1.5rem !default;
 $grid-row-gutter-lg: 3rem !default;
+
+// Bento grid
+// scss-docs-start grid-bento-variables
+$grid-bento-row-height: 10rem !default;
+$grid-bento-row-spans: 4 !default;
+// scss-docs-end grid-bento-variables
 
 // Type / callout
 $blockquote-padding: 1rem !default;

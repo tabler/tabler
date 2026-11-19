@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 
 @use '../config' as *;
@@ -181,7 +182,7 @@
 .card-cover {
   position: relative;
   padding: var(--card-spacer-y) var(--card-spacer-x);
-  background: #666 no-repeat center/cover;
+  background: var(--gray-600) no-repeat center/cover;
 
   &::before {
     position: absolute;
@@ -266,7 +267,7 @@
   &:hover {
     color: inherit;
     text-decoration: none;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 6px 0 color-transparent(var(--shadow-color), 0.2);
   }
 }
 
@@ -358,7 +359,7 @@
 .card-subtitle {
   --card-subtitle-margin-start: #{$card-subtitle-margin-start};
   margin-bottom: var(--card-title-spacer-y);
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   color: var(--secondary);
 
   .card-header & {
@@ -530,23 +531,12 @@
     }
   }
 
-  tbody {
-    tr {
-      &:last-child {
-        // stylelint-disable-next-line selector-max-type
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-  }
-
-  tfoot {
-    tr {
-      &:last-child {
-        border-bottom: 0;
-      }
-    }
+  // The card's own border closes the table, so the last row of the table loses
+  // its bottom rule. Bootstrap draws that rule on the cells, not on the row, and
+  // it only goes when the row is the last one in the table: a `tbody` followed by
+  // a `tfoot` keeps the rule between the items and the totals.
+  > :last-child > tr:last-child > * {
+    border-bottom: 0;
   }
 
   .card-body + & {
@@ -554,13 +544,18 @@
   }
 }
 
+$card-table-responsive: ();
+@each $breakpoint in map.keys($grid-breakpoints) {
+  $card-table-responsive: list.append($card-table-responsive, '.table-responsive#{breakpoint-infix($breakpoint)}', comma);
+}
+
 .card > .card-table:first-child,
-.card > .table-responsive:first-child > .card-table {
+.card > :is(#{$card-table-responsive}):first-child > .card-table {
   --card-table-top-radius: var(--card-border-radius);
 }
 
 .card > .card-table:last-child,
-.card > .table-responsive:last-child > .card-table {
+.card > :is(#{$card-table-responsive}):last-child > .card-table {
   --card-table-bottom-radius: calc(var(--card-border-radius) - var(--card-border-width));
 }
 

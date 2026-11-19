@@ -1,0 +1,129 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+import FileIcon from '@ui/FileIcon.astro'
+import { extraColors } from '@shared/lib/tokens'
+
+const formats = ['pdf', 'doc', 'txt', 'xls', 'csv', 'ppt', 'zip', 'jpg', 'png', 'svg', 'mp3', 'mp4', 'json', 'html']
+
+const sizes = [
+  { size: 'sm', label: 'Small' },
+  { size: undefined, label: 'Default' },
+  { size: 'lg', label: 'Large' },
+] as const
+
+const files = [
+  { name: 'Annual report 2026.pdf', type: 'pdf', size: '2.4 MB', date: '12 Nov 2026' },
+  { name: 'Budget.xlsx', type: 'xlsx', size: '184 KB', date: '10 Nov 2026' },
+  { name: 'Brand guidelines.pptx', type: 'pptx', size: '12.1 MB', date: '4 Nov 2026' },
+  { name: 'Contract draft.docx', type: 'docx', size: '96 KB', date: '28 Oct 2026' },
+  { name: 'Assets.zip', type: 'zip', size: '48.7 MB', date: '21 Oct 2026' },
+]
+---
+
+<DefaultLayout title="File icon" pageMenu="base.file-icon" description="File icons show the format of a file as a sheet of paper with a colored label.">
+  <DocsLink slot="page-header-actions" path="/ui/components/file-icon" />
+
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Formats</CardTitle>
+          <CardSubtitle>Set the format in <code>data-type</code>. Common formats get a color on their own, the rest stay gray.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            {formats.map((type) => <FileIcon type={type} ariaLabel={`${type.toUpperCase()} file`} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Add <code>.file-icon-&#123;color&#125;</code> to choose the color of the label yourself.</CardSubtitle>
+          <div class="d-flex flex-wrap gap-3">
+            {extraColors.map((color) => <FileIcon type="file" color={color} ariaLabel={`File, ${color}`} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Use <code>.file-icon-sm</code> or <code>.file-icon-lg</code>, or set <code>--tblr-file-icon-size</code>.</CardSubtitle>
+          <div class="d-flex align-items-end gap-4">
+            {sizes.map((item) => <FileIcon type="pdf" size={item.size} ariaLabel={`PDF file, ${item.label.toLowerCase()}`} />)}
+            <FileIcon type="pdf" ariaLabel="PDF file, custom size" style="--tblr-file-icon-size: 4rem" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Without a label</CardTitle>
+          <CardSubtitle>Leave out <code>data-type</code> to show a blank sheet.</CardSubtitle>
+          <div class="d-flex align-items-end gap-4">
+            <FileIcon size="sm" ariaLabel="File" />
+            <FileIcon ariaLabel="File" />
+            <FileIcon size="lg" ariaLabel="File" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Uploaded file</CardTitle>
+          <CardSubtitle>The file name already says the format, so the icon is hidden from assistive technology.</CardSubtitle>
+          <div class="d-flex align-items-center gap-3">
+            <FileIcon type="pdf" />
+            <div class="flex-fill">
+              <div class="fw-medium">Invoice 2026-11.pdf</div>
+              <div class="text-secondary">320 KB</div>
+            </div>
+            <button type="button" class="btn-close" aria-label="Remove file"></button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Modified</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                files.map((file) => (
+                  <tr>
+                    <td>
+                      <FileIcon type={file.type} size="sm" class="me-2" /> {file.name}
+                    </td>
+                    <td class="text-secondary">{file.size}</td>
+                    <td class="text-secondary">{file.date}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

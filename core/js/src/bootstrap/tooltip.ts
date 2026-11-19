@@ -45,6 +45,9 @@ const EVENT_FOCUSIN = 'focusin'
 const EVENT_FOCUSOUT = 'focusout'
 const EVENT_MOUSEENTER = 'mouseenter'
 const EVENT_MOUSELEAVE = 'mouseleave'
+const EVENT_KEYDOWN = 'keydown'
+
+const ESCAPE_KEY = 'Escape'
 
 type PopperOffsetData = { placement: Popper.Placement; reference: Popper.Rect; popper: Popper.Rect }
 type PopperOffsetFunction = (popperData: PopperOffsetData) => number[]
@@ -146,6 +149,9 @@ class Tooltip extends BaseComponent {
   _newContent: TooltipContentMap | null
   tip: HTMLElement | null
   _hideModalHandler: () => void
+  _isHoverable: boolean
+  _escapeHandler: (event: KeyboardEvent) => void
+  _tipHandler: (event: Event) => void
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     if (typeof Popper === 'undefined') {
@@ -166,6 +172,23 @@ class Tooltip extends BaseComponent {
     this._hideModalHandler = () => {
       if (this._element) {
         this.hide()
+      }
+    }
+
+    this._isHoverable = this._config.trigger.split(' ').includes(TRIGGER_HOVER)
+    this._escapeHandler = (event: KeyboardEvent) => {
+      if (event.key === ESCAPE_KEY) {
+        this.hide()
+      }
+    }
+    this._tipHandler = (event: Event) => {
+      const isEnter = event.type === 'mouseover'
+      this._activeTrigger[TRIGGER_HOVER] = isEnter
+      if (isEnter) {
+        clearTimeout(this._timeout)
+        this._enter()
+      } else {
+        this._leave()
       }
     }
 
@@ -261,6 +284,8 @@ class Tooltip extends BaseComponent {
 
     tip.classList.add(CLASS_NAME_SHOW)
 
+    this._toggleTipListeners(tip, true)
+
     if ('ontouchstart' in document.documentElement) {
       for (const element of Array.from(document.body.children)) {
         EventHandler.on(element, 'mouseover', noop)
@@ -292,6 +317,7 @@ class Tooltip extends BaseComponent {
 
     const tip = this._getTipElement()
     tip!.classList.remove(CLASS_NAME_SHOW)
+    this._toggleTipListeners(tip, false)
 
     if ('ontouchstart' in document.documentElement) {
       for (const element of Array.from(document.body.children)) {
@@ -348,6 +374,14 @@ class Tooltip extends BaseComponent {
     tip.classList.remove(CLASS_NAME_FADE, CLASS_NAME_SHOW)
     tip.classList.add(`bs-${(this.constructor as typeof Tooltip).NAME}-auto`)
 
+    if (this._isHoverable) {
+      tip.classList.add(`bs-${(this.constructor as typeof Tooltip).NAME}-hoverable`)
+      const offset = this._getOffset()
+      if (Array.isArray(offset)) {
+        tip.style.setProperty(`--tblr-${(this.constructor as typeof Tooltip).NAME}-bridge`, `${offset[1]}px`)
+      }
+    }
+
     const tipId = getUID((this.constructor as typeof Tooltip).NAME).toString()
 
     tip.setAttribute('id', tipId)
@@ -392,7 +426,9 @@ class Tooltip extends BaseComponent {
   }
 
   _initializeOnDelegatedTarget(event: Event & { delegateTarget?: HTMLElement }): Tooltip {
-    return (this.constructor as typeof Tooltip).getOrCreateInstance(event.delegateTarget!, this._getDelegateConfig()) as Tooltip
+    const context = (this.constructor as typeof Tooltip).getOrCreateInstance(event.delegateTarget!, this._getDelegateConfig()) as Tooltip
+    context._isHoverable = this._isHoverable
+    return context
   }
 
   _isAnimated(): boolean {
@@ -620,7 +656,25 @@ class Tooltip extends BaseComponent {
     return config
   }
 
+  _toggleTipListeners(tip: HTMLElement | null, add: boolean): void {
+    const method = add ? 'on' : 'off'
+    const eventName = (name: string) => (this.constructor as typeof Tooltip).eventName(name)
+
+    if (add) {
+      this._element.ownerDocument.addEventListener(EVENT_KEYDOWN, this._escapeHandler, true)
+    } else {
+      this._element.ownerDocument.removeEventListener(EVENT_KEYDOWN, this._escapeHandler, true)
+    }
+
+    if (tip && this._isHoverable) {
+      EventHandler[method](tip, eventName(EVENT_MOUSEENTER), this._tipHandler)
+      EventHandler[method](tip, eventName(EVENT_MOUSELEAVE), this._tipHandler)
+    }
+  }
+
   _disposePopper(): void {
+    this._toggleTipListeners(this.tip, false)
+
     if (this._popper) {
       this._popper.destroy()
       this._popper = null
