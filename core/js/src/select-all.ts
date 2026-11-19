@@ -109,7 +109,7 @@ class SelectAll extends BaseComponent {
   update(): void {
     const items = this._items()
     const selected = items.filter((item) => item.checked).length
-    const enabled = items.filter((item) => !item.disabled)
+    const enabled = items.filter((item) => !item.matches(':disabled'))
     const allChecked = enabled.length > 0 && enabled.every((item) => item.checked)
 
     for (const check of this._checks()) {
@@ -145,7 +145,7 @@ class SelectAll extends BaseComponent {
   }
 
   _setAll(checked: boolean): void {
-    const changed = this._items().filter((item) => !item.disabled && item.checked !== checked)
+    const changed = this._items().filter((item) => !item.matches(':disabled') && item.checked !== checked)
     for (const item of changed) {
       item.checked = checked
     }
@@ -189,7 +189,7 @@ class SelectAll extends BaseComponent {
       return
     }
 
-    const changed = items.slice(Math.min(from, to), Math.max(from, to) + 1).filter((item) => item !== target && !item.disabled && item.checked !== target.checked)
+    const changed = items.slice(Math.min(from, to), Math.max(from, to) + 1).filter((item) => item !== target && !item.matches(':disabled') && item.checked !== target.checked)
     for (const item of changed) {
       item.checked = target.checked
     }
@@ -198,7 +198,9 @@ class SelectAll extends BaseComponent {
   }
 
   _handleMutations(records: MutationRecord[]): void {
-    const touchesItems = records.some((record) => [...record.addedNodes, ...record.removedNodes].some((node) => node instanceof Element && (node.matches(this._config.items) || node.querySelector(this._config.items) !== null)))
+    const isElement = (node: Node): node is Element => node instanceof Element
+    const hasItem = (node: Element): boolean => node.matches(this._config.items) || node.querySelector(this._config.items) !== null
+    const touchesItems = records.some((record) => [...record.removedNodes].some(isElement) || [...record.addedNodes].filter(isElement).some(hasItem))
 
     if (touchesItems) {
       this._lastItem = this._lastItem?.isConnected ? this._lastItem : null

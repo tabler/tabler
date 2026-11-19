@@ -83,6 +83,17 @@ describe('SelectAll', () => {
       expect(check().checked).toBe(true)
     })
 
+    it('should skip items disabled by a fieldset', () => {
+      fixtureEl.innerHTML = markup(['', '', ''])
+      const row = fixtureEl.querySelector('tbody tr:nth-child(2) td')!
+      row.innerHTML = `<fieldset disabled>${row.innerHTML}</fieldset>`
+      new SelectAll(element())
+
+      check().click()
+      expect(items().map((item) => item.checked)).toEqual([true, false, true])
+      expect(check().checked).toBe(true)
+    })
+
     it('should be disabled when there is nothing to select', () => {
       fixtureEl.innerHTML = markup([])
       new SelectAll(element())
@@ -145,6 +156,17 @@ describe('SelectAll', () => {
       await Promise.resolve()
 
       expect(count()).toBe('2')
+      expect(total()).toBe('2')
+      expect(check().checked).toBe(true)
+    })
+
+    it('should refresh when rows are removed with an ancestor-dependent selector', async () => {
+      fixtureEl.innerHTML = markup(['checked', 'checked', ''])
+      new SelectAll(element(), { items: 'tbody input' })
+
+      fixtureEl.querySelector('tbody tr:last-child')!.remove()
+      await Promise.resolve()
+
       expect(total()).toBe('2')
       expect(check().checked).toBe(true)
     })
