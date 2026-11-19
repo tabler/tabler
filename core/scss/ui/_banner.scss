@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../config' as *;
 
 .banner {
@@ -66,4 +68,36 @@
 .banner-lt {
   --banner-bg: color-mix(in oklab, var(--banner-variant-color) #{$banner-lt-mix}, var(--bg-surface));
   --banner-color: var(--body-color);
+}
+
+@if $enable-navbar-vertical {
+  @each $breakpoint in map.keys($grid-breakpoints) {
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+
+    @include media-breakpoint-up($next) {
+      .banner:has(~ .navbar-vertical.navbar-expand#{$infix}) {
+        margin-inline-start: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
+      }
+
+      .banner:has(~ .navbar-vertical.navbar-expand#{$infix}:is(.navbar-right, .navbar-end)) {
+        margin-inline-start: 0;
+        margin-inline-end: calc(var(--sidebar-width) + var(--sidebar-gap, 0px));
+      }
+    }
+  }
+
+  .banner:has(~ .navbar-vertical:is(.navbar-folded, .navbar-folded-hover)) {
+    --sidebar-width: var(--sidebar-folded-width);
+  }
+
+  .banner:has(~ .navbar-floating.navbar-vertical),
+  html[data-bs-navbar-style='floating'] .page > .banner:has(~ .navbar-vertical) {
+    --sidebar-gap: calc(2 * #{$navbar-floating-margin});
+  }
+
+  html:not([data-bs-navbar-position='vertical']):not([data-bs-navbar-position='combined']) .page:has(> [class*='navbar-expand']:not(.navbar-vertical)) > .banner {
+    --sidebar-width: 0px;
+    --sidebar-gap: 0px;
+  }
 }

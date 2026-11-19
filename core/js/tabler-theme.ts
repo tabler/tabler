@@ -64,7 +64,7 @@ const closedBanners = (storage.get('tabler-banner') ?? '').split(' ').filter((id
 if (closedBanners.length) {
   try {
     const sheet = new CSSStyleSheet()
-    sheet.replaceSync(closedBanners.map((id) => `[data-bs-banner-id="${id}"]`).join() + '{display:none!important}')
+    sheet.replaceSync(closedBanners.map((id) => `[data-bs-banner-id="${id}"],[data-tblr-banner-id="${id}"]`).join() + '{display:none!important}')
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet]
   } catch {
     // ignore: tabler.js removes the banners once it loads

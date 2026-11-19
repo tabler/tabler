@@ -46,6 +46,14 @@ describe('Banner', () => {
       expect(banner()).toBeNull()
     })
 
+    it('should remember the id from data-tblr-banner-id', () => {
+      fixtureEl.innerHTML = '<div class="banner" data-tblr-banner-id="trial"><button type="button" data-tblr-dismiss="banner"></button></div>'
+
+      button().click()
+
+      expect(localStorage.getItem(STORAGE_KEY)).toBe('trial')
+    })
+
     it('should store nothing for a banner without an id', () => {
       fixtureEl.innerHTML = '<div class="banner"><button type="button" data-bs-dismiss="banner"></button></div>'
 

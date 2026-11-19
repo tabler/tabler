@@ -99,9 +99,9 @@ describe('tabler-theme', () => {
   })
 
   describe('closed banners', () => {
-    const isHidden = (id: string): boolean => {
+    const isHidden = (id: string, attribute = 'data-bs-banner-id'): boolean => {
       const banner = document.createElement('div')
-      banner.setAttribute('data-bs-banner-id', id)
+      banner.setAttribute(attribute, id)
       document.body.append(banner)
       const hidden = getComputedStyle(banner).display === 'none'
       banner.remove()
@@ -119,6 +119,7 @@ describe('tabler-theme', () => {
 
       expect(isHidden('release')).toBe(true)
       expect(isHidden('trial')).toBe(true)
+      expect(isHidden('trial', 'data-tblr-banner-id')).toBe(true)
       expect(isHidden('other')).toBe(false)
     })
 

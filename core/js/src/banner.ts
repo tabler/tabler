@@ -21,8 +21,8 @@ const EVENT_KEY = `.${DATA_KEY}`
 const EVENT_CLOSE = `close${EVENT_KEY}`
 const EVENT_CLOSED = `closed${EVENT_KEY}`
 
-const ATTRIBUTE_ID = 'data-bs-banner-id'
-const SELECTOR_REMEMBERED = `[${ATTRIBUTE_ID}]`
+const ATTRIBUTES_ID = ['data-bs-banner-id', 'data-tblr-banner-id']
+const SELECTOR_REMEMBERED = ATTRIBUTES_ID.map((attribute) => `[${attribute}]`).join()
 
 // Shared with tabler-theme.js, which hides the closed banners before the first paint.
 const STORAGE_KEY = 'tabler-banner'
@@ -35,6 +35,8 @@ const readClosed = (): string[] => {
     return []
   }
 }
+
+const getId = (element: Element): string => ATTRIBUTES_ID.map((attribute) => element.getAttribute(attribute)).find(Boolean) ?? ''
 
 const writeClosed = (ids: string[]): void => {
   try {
@@ -68,8 +70,8 @@ class Banner extends BaseComponent {
       return
     }
 
-    const id = this._element.getAttribute(ATTRIBUTE_ID)
-    if (id && ID_PATTERN.test(id)) {
+    const id = getId(this._element)
+    if (ID_PATTERN.test(id)) {
       writeClosed([...new Set([...readClosed(), id])])
     }
 
@@ -97,7 +99,7 @@ enableDismissTrigger(Banner, 'close')
 // js-docs-start banner-init
 const closedBanners = readClosed()
 for (const element of SelectorEngine.find(SELECTOR_REMEMBERED)) {
-  if (closedBanners.includes(element.getAttribute(ATTRIBUTE_ID) ?? '')) {
+  if (closedBanners.includes(getId(element))) {
     element.remove()
   }
 }
