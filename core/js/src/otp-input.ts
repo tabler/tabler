@@ -120,6 +120,7 @@ class OtpInput extends BaseComponent {
     this._composedValue = this._input.value
   }
   _onBeforeInput = (event: Event): void => this._handleBeforeInput(event as InputEvent)
+  _onPaste = (event: Event): void => this._handlePaste(event as ClipboardEvent)
   _onFocus = (): void => this._handleFocus()
   _onPointerDown = (event: Event): void => this._handlePointerDown(event as PointerEvent)
   _onPointerEnd = (): void => {
@@ -200,6 +201,7 @@ class OtpInput extends BaseComponent {
 
     this._input.removeEventListener('input', this._onInput)
     this._input.removeEventListener('beforeinput', this._onBeforeInput)
+    this._input.removeEventListener('paste', this._onPaste)
     this._input.removeEventListener('focus', this._onFocus)
     this._input.removeEventListener('pointerdown', this._onPointerDown)
     this._input.removeEventListener('compositionend', this._onCompositionEnd)
@@ -297,6 +299,7 @@ class OtpInput extends BaseComponent {
   _addEventListeners(): void {
     this._input.addEventListener('input', this._onInput)
     this._input.addEventListener('beforeinput', this._onBeforeInput)
+    this._input.addEventListener('paste', this._onPaste)
     this._input.addEventListener('focus', this._onFocus)
     this._input.addEventListener('pointerdown', this._onPointerDown)
     this._input.addEventListener('compositionend', this._onCompositionEnd)
@@ -338,6 +341,31 @@ class OtpInput extends BaseComponent {
       this._selectSlot(this._firstEmptyIndex())
     }
 
+    this._afterValueChange()
+  }
+
+  // The browser cuts a pasted text to `maxlength` before it can be sanitised,
+  // so separators would use up the room of real characters.
+  _handlePaste(event: ClipboardEvent): void {
+    const text = event.clipboardData?.getData('text')
+    if (!text || this._input.readOnly) {
+      return
+    }
+
+    event.preventDefault()
+
+    const clean = [...text.replace(this._type.filter, '')]
+    if (clean.length === 0) {
+      return
+    }
+
+    const start = Math.min(this._input.selectionStart ?? 0, this._length - 1)
+    const end = this._input.selectionEnd ?? start
+    const chars = [...this._input.value]
+    chars.splice(start, Math.max(end - start, clean.length), ...clean)
+    this._input.value = chars.join('').slice(0, this._length)
+
+    this._selectSlot(this._firstEmptyIndex())
     this._afterValueChange()
   }
 

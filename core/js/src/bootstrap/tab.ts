@@ -8,7 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { defineJQueryPlugin, getNextActiveElement, isDisabled } from './util/index'
+import { defineJQueryPlugin, getNextActiveElement, isDisabled, isVisible } from './util/index'
 import type { JQueryCollectionLike } from './types'
 
 const NAME = 'tab'
@@ -37,6 +37,8 @@ const CLASS_DROPDOWN = 'dropdown'
 
 const SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle'
 const SELECTOR_DROPDOWN_MENU = '.dropdown-menu'
+const SELECTOR_NAV_OVERFLOW_TOGGLE = '.nav-overflow-toggle'
+const SELECTOR_NAV_OVERFLOW_MENU = '.nav-overflow-menu'
 const NOT_SELECTOR_DROPDOWN_TOGGLE = `:not(${SELECTOR_DROPDOWN_TOGGLE})`
 
 const SELECTOR_TAB_PANEL = '.list-group, .nav, [role="tablist"]'
@@ -146,7 +148,7 @@ class Tab extends BaseComponent {
     event.stopPropagation()
     event.preventDefault()
 
-    const children = this._getChildren().filter((element) => !isDisabled(element))
+    const children = this._getChildren().filter((element) => !isDisabled(element) && isVisible(element))
     let nextActiveElement: HTMLElement | undefined
 
     if ([HOME_KEY, END_KEY].includes(event.key)) {
@@ -163,7 +165,8 @@ class Tab extends BaseComponent {
   }
 
   _getChildren(): HTMLElement[] {
-    return SelectorEngine.find(SELECTOR_INNER_ELEM, this._parent!)
+    // The More button of a nav-overflow and the copies in its menu are not tabs
+    return SelectorEngine.find(SELECTOR_INNER_ELEM, this._parent!).filter((child) => !child.matches(SELECTOR_NAV_OVERFLOW_TOGGLE) && !child.closest(SELECTOR_NAV_OVERFLOW_MENU))
   }
 
   _getActiveElem(): HTMLElement | null {

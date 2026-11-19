@@ -58,6 +58,19 @@ for (const key in themeDefaults) {
   }
 }
 
+// Banners the visitor closed (tabler.js keeps the list) are hidden before they
+// render. A constructed stylesheet is used because it needs no CSP exception.
+const closedBanners = (storage.get('tabler-banner') ?? '').split(' ').filter((id) => VALUE_PATTERN.test(id))
+if (closedBanners.length) {
+  try {
+    const sheet = new CSSStyleSheet()
+    sheet.replaceSync(closedBanners.map((id) => `[data-bs-banner-id="${id}"],[data-tblr-banner-id="${id}"]`).join() + '{display:none!important}')
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet]
+  } catch {
+    // ignore: tabler.js removes the banners once it loads
+  }
+}
+
 prefersDark.addEventListener('change', (event) => {
   // No stored choice means the default, which is auto.
   if ((storage.get('tabler-theme') ?? 'auto') === 'auto') {
