@@ -1,14 +1,12 @@
 // Single-pass CSS pipeline shared by @tabler/core and @tabler/preview.
 //
-// Runs sass, autoprefixer, the --tblr- prefix, rtlcss and clean-css in one
+// Runs sass, autoprefixer, the --tblr- prefix, rtlcss and cssnano in one
 // process; each output file is written exactly once, fully processed. The
 // options mirror the CLI invocations this replaced:
 // - sass --no-source-map --load-path=node_modules --style expanded
 // - postcss (autoprefixer cascade:false, rtlcss for --rtl, external map with
 //   annotation + sourcesContent)
-// - cleancss -O1 --format breakWith=lf --with-rebase --source-map
-//   --source-map-inline-sources --batch --batch-suffix ".min"
-// The one deviation, breaks:afterComment, is documented on minify() below.
+// Minification is a cssnano pass restricted to lossless transforms, see minify().
 //
 // --banner adds the license comment before any source map is generated, so
 // the maps account for its lines (#2766).
@@ -20,14 +18,13 @@
 // (cwd = the package)
 /// <reference path="./modules.d.ts" />
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { EOL } from 'node:os'
-import { basename, join, resolve } from 'node:path'
+import { basename, join } from 'node:path'
 import { compile as compileSass } from 'sass'
 import postcss, { type Result } from 'postcss'
 import autoprefixer from 'autoprefixer'
 import prefixCustomProperties from 'postcss-prefix-custom-properties'
 import rtlcss from 'rtlcss'
-import CleanCSS from 'clean-css'
+import type { Options as CssnanoOptions } from 'cssnano'
 import { addBanner } from '../shared/banner/index.mjs'
 import { cssVarIgnore, cssVarPrefix, inlineValueComments } from './css-var-prefix'
 
@@ -108,42 +105,56 @@ function flushWrites(): void {
   }
 }
 
-// clean-css over every produced file: outDir/x.css → outDir/x.min.css (+ .map).
-// Mirrors clean-css-cli's option coercion and batch output naming/annotation
-// (see the clean-css-cli package's index.js).
-//
-// breaks:afterComment is the one deviation: clean-css counts the lines a kept
-// `/*! … */` comment spans but not the `*/` it leaves on the last one, so every
-// mapping on that line comes out `'*/'.length` columns short. Ending the line
-// after the comment puts the css at column 0 — exactly where the map says.
+// Every cssnano transform that rewrites values, merges or reorders is off:
+// only comments (except `/*! … */`), whitespace, empty rules and selector
+// formatting are minified, so numbers keep their full precision and at-rules
+// pass through untouched. A new cssnano default plugin has to be added here.
+const minifierOptions: CssnanoOptions = {
+  preset: [
+    'default',
+    {
+      calc: false,
+      colormin: false,
+      convertValues: false,
+      discardDuplicates: false,
+      discardOverridden: false,
+      mergeLonghand: false,
+      mergeRules: false,
+      minifyFontValues: false,
+      minifyGradients: false,
+      minifyParams: false,
+      normalizeCharset: false,
+      normalizeDisplayValues: false,
+      normalizePositions: false,
+      normalizeRepeatStyle: false,
+      normalizeString: false,
+      normalizeTimingFunctions: false,
+      normalizeUnicode: false,
+      normalizeUrl: false,
+      orderedValues: false,
+      reduceInitial: false,
+      reduceTransforms: false,
+      uniqueSelectors: false,
+    },
+  ],
+}
+
+// cssnano over every produced file: outDir/x.css → outDir/x.min.css (+ .map).
+// postcss picks up each file's own map through its sourceMappingURL annotation.
+// cssnano is ESM-only and this file runs as CJS under tsx, hence the import().
 async function minify(files: string[]): Promise<void> {
-  const minified = await new CleanCSS({
-    batch: true,
-    // zeroUnits (default true) strips the unit off zero values, e.g. `0%` -> `0`.
-    // clean-css only skips this inside calc/rgb/hsl/rgba/hsla/min/max/clamp —
-    // not color-mix() — so it turns `color-mix(in srgb, x 0%, y)` into
-    // `color-mix(in srgb, x 0, y)`. Unlike <length>, <percentage> has no
-    // unitless-zero exception, so that's invalid CSS and the whole color-mix()
-    // (and the gradient layer using it, e.g. .card-gradient) silently drops.
-    // Covered by .build/build-css.test.ts.
-    compatibility: { properties: { zeroUnits: false } },
-    format: 'breakWith=lf;breaks:afterComment=on',
-    inline: 'local',
-    level: { 1: true },
-    rebase: true,
-    rebaseTo: resolve(outDir),
-    returnPromise: true,
-    sourceMap: true,
-    sourceMapInlineSources: true,
-  }).minify(files)
+  const { default: cssnano } = await import('cssnano')
+  const minifier = cssnano(minifierOptions)
   for (const inputFile of files) {
-    const fileResult = minified[inputFile]
-    if (!fileResult) throw new Error(`build-css: no minify result for ${inputFile}`)
-    if (fileResult.errors.length > 0) throw new Error(fileResult.errors.join('\n'))
-    for (const warning of fileResult.warnings) console.warn(`build-css: ${warning}`)
     const minFile = inputFile.replace(/\.css$/, '.min.css')
-    writeFileSync(minFile, `${fileResult.styles}${EOL}/*# sourceMappingURL=${basename(minFile)}.map */`)
-    writeFileSync(`${minFile}.map`, fileResult.sourceMap.toString())
+    const result = await postcss([minifier]).process(readFileSync(inputFile, 'utf8'), {
+      from: inputFile,
+      to: minFile,
+      map: mapOptions,
+    })
+    for (const warning of result.warnings()) console.warn(`build-css: ${warning.toString()}`)
+    writeFileSync(minFile, result.css)
+    writeFileSync(`${minFile}.map`, result.map.toString())
     console.log(`build-css: ${minFile}`)
   }
 }

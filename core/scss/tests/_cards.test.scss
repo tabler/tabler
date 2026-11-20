@@ -5,8 +5,9 @@
 // gradient layer using it — silently drops in the browser.
 //
 // This only guards the SCSS source; the actual incident was a CSS minifier
-// (clean-css) stripping a valid `0%` down to `0` post-compile, which is
-// outside what Sass-level tests can see — see .build/build-css.ts's minify().
+// (clean-css, since replaced) stripping a valid `0%` down to `0` post-compile,
+// which is outside what Sass-level tests can see — see .build/build-css.ts's
+// minify(), which leaves values untouched.
 @use '../ui/cards' as cards;
 
 @include describe('card-gradient-background') {
