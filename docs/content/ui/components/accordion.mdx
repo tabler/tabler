@@ -179,6 +179,18 @@ Use `.accordion-inverted` to move the toggle to the start of the button row. Thi
 </div>
 </Example>
 
+## JavaScript
+
+`show()`, `hide()` and `toggle()` of `tabler.Collapse` return a Promise that resolves after the height transition ends, right after `shown.bs.collapse` or `hidden.bs.collapse` fires. Use it to run code after the item has finished opening or closing:
+
+```js
+const item = tabler.Collapse.getOrCreateInstance(el, { toggle: false });
+await item.show();
+el.scrollIntoView({ block: 'nearest' });
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the item is already open or closed, it or a sibling in the same `data-bs-parent` group is still moving, or a listener called `preventDefault()` on `show.bs.collapse` or `hide.bs.collapse`. To act only when the item really changed state, listen for `shown.bs.collapse` or `hidden.bs.collapse` instead.
+
 ## Accessibility
 
 - Use a real `<button>` element for `.accordion-button`.

@@ -1,0 +1,28 @@
+---
+// A single phone input on its own, with the country picker open. The script
+// builds the picker from the input, so the open state cannot be written into
+// the markup; a small script opens the menu once the page is ready. The list
+// is limited to a few countries so the whole menu fits, and the space below
+// the field keeps the field and its menu in the middle of the picture.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+---
+
+<ScreenshotLayout title="Phone input" columns={1.5} zoom={1.4} cssPlugins={['flags']}>
+  <FormGroup label="Mobile number" for="shot-phone-mobile" class="mb-0">
+    <div style="padding-bottom: 240px">
+      <input type="tel" id="shot-phone-mobile" class="form-control" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-only-countries="pl,de,fr,gb,us" data-bs-preferred-countries="pl" />
+    </div>
+  </FormGroup>
+
+  <CaptureScript>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('shot-phone-mobile')
+        window.tabler.PhoneInput.getOrCreateInstance(input)
+        input.closest('.phone-input').querySelector('.combobox-toggle').click()
+      })
+    </script>
+  </CaptureScript>
+</ScreenshotLayout>
