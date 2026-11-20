@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  */
 
-const elementMap = new Map<HTMLElement, Map<string, object>>()
+const elementMap = new WeakMap<HTMLElement, Map<string, object>>()
 
 const Data = {
   set(element: HTMLElement, key: string, instance: object): void {
