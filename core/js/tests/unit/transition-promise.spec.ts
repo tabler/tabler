@@ -227,6 +227,18 @@ describe('transition promises', () => {
     expect(tooltip.tip!.classList.contains('show')).toBe(true)
   })
 
+  it('Tooltip#toggle resolves when the pointer enters the tip during the hide delay', async () => {
+    fixtureEl.innerHTML = '<a href="#" title="tip">Tip</a>'
+    const tooltip = new Tooltip(fixtureEl.querySelector<HTMLElement>('a')!, { delay: { show: 0, hide: 50 } })
+    await tooltip.show()
+
+    const toggled = tooltip.toggle()
+    tooltip.tip!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+
+    expect(await settlesWithin(toggled)).toBe(true)
+    expect(tooltip.tip!.classList.contains('show')).toBe(true)
+  })
+
   it('Tooltip#toggle resolves when the trigger is hidden during the show delay', async () => {
     fixtureEl.innerHTML = '<a href="#" title="tip">Tip</a>'
     const el = fixtureEl.querySelector<HTMLElement>('a')!

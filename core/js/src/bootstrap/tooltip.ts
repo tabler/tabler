@@ -187,6 +187,7 @@ class Tooltip extends BaseComponent {
       this._activeTrigger[TRIGGER_HOVER] = isEnter
       if (isEnter) {
         clearTimeout(this._timeout)
+        this._settleTimeout?.()
         void this._enter()
       } else {
         void this._leave()
