@@ -1,0 +1,55 @@
+---
+// Ranked list card: each row shows a label, a bar relative to the largest value and the value itself.
+import CardHeader from '@ui/CardHeader.astro'
+import { formatCompact } from '@shared/lib/string-format'
+
+interface TopListItem {
+  label: string
+  value: number
+}
+
+interface Props {
+  title: string
+  items: TopListItem[]
+  /** bar color, a palette name */
+  color?: string
+  class?: string
+}
+
+const { title, items, color = 'primary', class: className } = Astro.props
+
+const max = Math.max(...items.map((item) => item.value), 1)
+---
+
+<div class:list={['card', className]}>
+  <CardHeader title={title} />
+  <div class="card-table table-responsive">
+    <table class="table table-vcenter table-sm">
+      <caption class="visually-hidden">{title}</caption>
+      <thead class="visually-hidden">
+        <tr>
+          <th>Name</th>
+          <th>Share</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          items.map((item) => (
+            <tr>
+              <td class="w-50 text-truncate" style="max-width: 0" title={item.label}>
+                {item.label}
+              </td>
+              <td>
+                <div class="progress progress-sm">
+                  <div class:list={['progress-bar', `bg-${color}`]} style={`width: ${(item.value / max) * 100}%`} role="progressbar" aria-valuenow={item.value} aria-valuemin="0" aria-valuemax={max} aria-label={item.label} />
+                </div>
+              </td>
+              <td class="text-end text-secondary w-1 text-nowrap">{formatCompact(item.value)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
