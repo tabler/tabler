@@ -46,6 +46,7 @@ const nativeEvents = new Set([
   'mouseover',
   'mouseout',
   'mousemove',
+  'dragstart',
   'selectstart',
   'selectend',
   'keydown',

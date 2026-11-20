@@ -194,6 +194,10 @@ class Carousel extends BaseComponent {
       this._swipeHelper.dispose()
     }
 
+    for (const img of SelectorEngine.find(SELECTOR_ITEM_IMG, this._element)) {
+      EventHandler.off(img, EVENT_DRAG_START)
+    }
+
     super.dispose()
   }
 

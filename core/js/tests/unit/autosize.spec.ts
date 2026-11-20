@@ -122,4 +122,78 @@ describe('Autosize', () => {
       expect(Autosize.getInstance(textarea())).toBeNull()
     })
   })
+
+  describe('width changes', () => {
+    it('should measure the height again when the field changes width', async () => {
+      textarea().value = 'word '.repeat(12).trim()
+      new Autosize(textarea())
+      const before = height()
+
+      textarea().style.width = '60px'
+
+      await vi.waitFor(() => expect(height()).toBeGreaterThan(before))
+    })
+
+    it('should not update again when only the height changes', async () => {
+      const instance = new Autosize(textarea())
+      await vi.waitFor(() => expect(instance._width).toBe(200))
+      const update = vi.spyOn(instance, 'update')
+
+      textarea().style.height = '300px'
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+      expect(update).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('fields that cannot be measured', () => {
+    it('should leave a hidden field without a height', () => {
+      textarea().style.display = 'none'
+      textarea().value = lines(4)
+      const resized = vi.fn()
+      textarea().addEventListener('resized.bs.autosize', resized)
+
+      new Autosize(textarea())
+
+      expect(textarea().style.height).toBe('')
+      expect(resized).not.toHaveBeenCalled()
+    })
+
+    it('should size a field once it is shown and updated', () => {
+      textarea().style.display = 'none'
+      textarea().value = lines(4)
+      const instance = new Autosize(textarea())
+
+      textarea().style.display = ''
+      instance.update()
+
+      expect(height()).toBe(80)
+    })
+
+    it('should not throw for a selector that matches nothing', () => {
+      expect(() => new Autosize('#missing')).not.toThrow()
+    })
+  })
+
+  describe('dispose without an inline style', () => {
+    it('should remove the style attribute it added', () => {
+      fixtureEl.innerHTML = '<textarea rows="1"></textarea>'
+      const instance = new Autosize(textarea())
+      expect(textarea().hasAttribute('style')).toBe(true)
+
+      instance.dispose()
+
+      expect(textarea().hasAttribute('style')).toBe(false)
+    })
+
+    it('should stop growing the field after dispose', () => {
+      const instance = new Autosize(textarea())
+      instance.dispose()
+
+      textarea().value = lines(6)
+      textarea().dispatchEvent(new Event('input', { bubbles: true }))
+
+      expect(textarea().style.height).toBe('')
+    })
+  })
 })

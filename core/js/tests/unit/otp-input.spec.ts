@@ -513,4 +513,110 @@ describe('OtpInput', () => {
       expect(() => input().setSelectionRange(0, 0)).not.toThrow()
     })
   })
+
+  describe('focus and selection', () => {
+    it('focus() should focus the input and select the first empty slot', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('12')
+
+      instance.focus()
+
+      expect(document.activeElement).toBe(input())
+      expect(input().selectionStart).toBe(2)
+      expect(slots()[2].classList.contains('otp-slot-active')).toBe(true)
+    })
+
+    it('focus() should forget a tap that never focused the input', () => {
+      const instance = new OtpInput(otp())
+      layoutSlotsHorizontally(otp())
+      instance.setValue('123456')
+      pointerDownOnSlot(input(), slots()[1])
+
+      instance.focus()
+
+      expect(input().selectionStart).toBe(5)
+    })
+
+    it('should place the caret on the tapped slot once a tap focuses the input', () => {
+      const instance = new OtpInput(otp())
+      layoutSlotsHorizontally(otp())
+      instance.setValue('123456')
+
+      pointerDownOnSlot(input(), slots()[2])
+      input().focus()
+
+      expect(input().selectionStart).toBe(2)
+      expect(slots()[2].classList.contains('otp-slot-active')).toBe(true)
+    })
+
+    it('should move the active slot when the selection changes in the focused input', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      input().focus()
+
+      input().setSelectionRange(1, 2)
+      document.dispatchEvent(new Event('selectionchange'))
+
+      expect(slots()[1].classList.contains('otp-slot-active')).toBe(true)
+      expect(slots()[5].classList.contains('otp-slot-active')).toBe(false)
+    })
+
+    it('should ignore a selection change while another element has focus', () => {
+      fixtureEl.insertAdjacentHTML('beforeend', '<button type="button">Other</button>')
+      const instance = new OtpInput(otp())
+      instance.setValue('123456')
+      fixtureEl.querySelector('button')!.focus()
+      const render = vi.spyOn(instance, '_render')
+
+      document.dispatchEvent(new Event('selectionchange'))
+
+      expect(render).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('paste edge cases', () => {
+    const paste = (text: string): ClipboardEvent => {
+      const clipboardData = new DataTransfer()
+      clipboardData.setData('text/plain', text)
+      const event = new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true })
+      input().dispatchEvent(event)
+      return event
+    }
+
+    it('should leave an empty paste to the browser', () => {
+      new OtpInput(otp())
+
+      expect(paste('').defaultPrevented).toBe(false)
+      expect(input().value).toBe('')
+    })
+
+    it('should leave a paste into a read-only input to the browser', () => {
+      input().readOnly = true
+      new OtpInput(otp())
+
+      expect(paste('123456').defaultPrevented).toBe(false)
+      expect(input().value).toBe('')
+    })
+
+    it('should keep the value when the pasted text has no allowed character', () => {
+      const instance = new OtpInput(otp())
+      instance.setValue('12')
+      const spy = vi.fn()
+      otp().addEventListener('input.bs.otpInput', spy)
+
+      expect(paste('--').defaultPrevented).toBe(true)
+      expect(input().value).toBe('12')
+      expect(spy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('dispose without an inner input', () => {
+    it('should remove the instance and not throw', () => {
+      fixtureEl.innerHTML = '<div class="otp"></div>'
+      const instance = new OtpInput(otp())
+
+      expect(() => instance.dispose()).not.toThrow()
+      expect(OtpInput.getInstance(otp())).toBeNull()
+    })
+  })
 })
