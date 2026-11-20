@@ -189,3 +189,25 @@
     }
   }
 }
+
+//
+// Selection toolbar
+//
+.selection-toolbar {
+  --selection-toolbar-gap: #{$selection-toolbar-gap};
+
+  > .on-checked,
+  > .on-unchecked {
+    display: flex;
+    gap: var(--selection-toolbar-gap);
+    align-items: center;
+  }
+
+  &:not(:has(~ * :is(.table-selectable-check, .list-group-selectable-check):checked)) .on-checked {
+    display: none;
+  }
+
+  &:has(~ * :is(.table-selectable-check, .list-group-selectable-check):checked) .on-unchecked {
+    display: none;
+  }
+}
