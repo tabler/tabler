@@ -43,6 +43,13 @@ describe('PhoneInput', () => {
       expect(phone.getCountry()).not.toBe('zz')
     })
 
+    it('should list every country when none of the allowed ones is known', () => {
+      const { phone } = setup('', { onlyCountries: ['zz'], country: 'pl' })
+
+      expect(phone.getCountry()).toBe('pl')
+      expect(fixtureEl.querySelectorAll('.dropdown-item').length).toBeGreaterThan(200)
+    })
+
     it('should list preferred countries first and only the allowed ones', () => {
       const { phone } = setup('', { preferredCountries: ['pl', 'de'], onlyCountries: ['pl', 'de', 'fr', 'us'], country: 'pl' })
       const values = [...fixtureEl.querySelectorAll<HTMLElement>('.dropdown-item')].map((item) => item.dataset.bsValue)
@@ -84,6 +91,17 @@ describe('PhoneInput', () => {
 
       type(input, '07911 123456')
       expect(phone.getNumber()).toBe('+447911123456')
+    })
+
+    it('should keep the leading zero where it is a part of the number', () => {
+      const { input, phone } = setup('data-bs-country="it"')
+
+      type(input, '06 1234 5678')
+      expect(phone.getNumber()).toBe('+390612345678')
+
+      type(input, '+39 06 1234 5678')
+      expect(phone.getCountry()).toBe('it')
+      expect(phone.getNumber()).toBe('+390612345678')
     })
 
     it('should return an empty string for an empty input', () => {
@@ -197,6 +215,24 @@ describe('PhoneInput', () => {
       expect(toggle().textContent).toContain('+48')
       expect(change).toHaveBeenCalledOnce()
       expect(phone.getNumber()).toBe('+48600100200')
+    })
+
+    it('should read the 00 prefix as a dial code', () => {
+      const { input, phone } = setup('data-bs-country="us"')
+
+      type(input, '0048 600 100 200')
+
+      expect(phone.getCountry()).toBe('pl')
+      expect(input.value).toBe('600 100 200')
+      expect(phone.getNumber()).toBe('+48600100200')
+    })
+
+    it('should wait for a complete dial code after the 00 prefix', () => {
+      const { input, phone } = setup('data-bs-country="us"')
+
+      type(input, '003')
+      expect(phone.getCountry()).toBe('us')
+      expect(input.value).toBe('003')
     })
 
     it('should pick the main country of a shared dial code', () => {

@@ -61,7 +61,9 @@ Limit the list with `data-bs-only-countries`.
 
 ### Number with a dial code
 
-A number that starts with `+` selects its country and the dial code is removed from the input. This makes pasting an international number work. Set `data-bs-auto-detect="false"` to turn it off.
+A number that starts with `+` or with the prefix `00` selects its country and the dial code is removed from the input. This makes pasting an international number work. Set `data-bs-auto-detect="false"` to turn it off.
+
+Countries that share a dial code are not told apart by the number. A number with `+1` selects the United States, unless another country with this dial code is already chosen.
 
 <Example column overflow="visible">
 <div class="w-100">
@@ -167,7 +169,7 @@ Pass options as `data-bs-*` attributes on the input, or as an object when creati
 | `country` | string | `'us'` | Two-letter code of the country shown first. |
 | `preferredCountries` | array \| string | `[]` | Codes of the countries listed first. |
 | `onlyCountries` | array \| string \| null | `null` | Limits the list to these countries. |
-| `autoDetect` | boolean | `true` | Selects the country of a number that starts with `+`. |
+| `autoDetect` | boolean | `true` | Selects the country of a number that starts with `+` or `00`. |
 | `format` | boolean | `true` | Writes the number in the format of the chosen country while typing. |
 | `hiddenInput` | string \| null | `null` | Name of a hidden input that gets the full number. |
 | `locale` | string \| null | `null` | Language of the country names. Uses the `lang` of the page when empty. |

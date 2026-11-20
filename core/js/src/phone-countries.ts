@@ -65,6 +65,9 @@ const FORMATS: [string, string][] = [
 // A number in the international form has no 0, so it is put back for these countries.
 const TRUNK_ZERO = new Set('gb fr de au nl jp kr be at ch tr ua ie fi ro sk il za nz ae sa'.split(' '))
 
+// Countries where the leading 0 is a part of the number and stays in the international form
+const KEEP_ZERO = new Set(['it', 'sm', 'va'])
+
 const GENERIC_FORMAT = '### ### ### ###'
 
 const formatOfCountry = (iso: string): string => FORMATS.find(([, countries]) => countries.split(' ').includes(iso))?.[0] ?? GENERIC_FORMAT
@@ -96,5 +99,5 @@ const PHONE_COUNTRIES: PhoneCountry[] = DIAL_CODES.split(' ').map((entry) => ({
 
 const countryOfDial = (dial: string): string | undefined => MAIN_COUNTRY_OF_DIAL[dial] ?? PHONE_COUNTRIES.find((country) => country.dial === dial)?.iso
 
-export { countryOfDial, formatNumber, formatOfCountry, PHONE_COUNTRIES, TRUNK_ZERO }
+export { countryOfDial, formatNumber, formatOfCountry, KEEP_ZERO, PHONE_COUNTRIES, TRUNK_ZERO }
 export type { PhoneCountry }

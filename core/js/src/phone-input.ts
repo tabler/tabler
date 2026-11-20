@@ -9,7 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import { initAll } from './bootstrap/util/component-functions'
 import Combobox from './combobox'
-import { countryOfDial, formatNumber, formatOfCountry, PHONE_COUNTRIES, TRUNK_ZERO } from './phone-countries'
+import { countryOfDial, formatNumber, formatOfCountry, KEEP_ZERO, PHONE_COUNTRIES, TRUNK_ZERO } from './phone-countries'
 import type { PhoneCountry } from './phone-countries'
 
 type ComponentConfig = {
@@ -42,6 +42,9 @@ const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="phone-input"]'
 const MAX_DIAL_LENGTH = 4
 const MIN_DIGITS = 4
 const MAX_DIGITS = 15
+
+// A number in the international form starts with `+` or with the prefix 00
+const INTERNATIONAL = /^\s*(\+|\D*00)/
 
 const Default: ComponentConfig = {
   autoDetect: true,
@@ -187,7 +190,8 @@ class PhoneInput extends BaseComponent {
       display = null
     }
 
-    const countries = PHONE_COUNTRIES.filter((country) => !only || only.includes(country.iso))
+    const allowed = PHONE_COUNTRIES.filter((country) => !only || only.includes(country.iso))
+    const countries = allowed.length > 0 ? allowed : [...PHONE_COUNTRIES]
 
     for (const { iso } of countries) {
       let name = iso.toUpperCase()
@@ -260,7 +264,8 @@ class PhoneInput extends BaseComponent {
   }
 
   _nationalDigits(): string {
-    return this._element.value.replace(/\D/g, '').replace(/^0+/, '')
+    const digits = this._element.value.replace(/\D/g, '')
+    return KEEP_ZERO.has(this._country.iso) ? digits : digits.replace(/^0+/, '')
   }
 
   _pickCountry(dial: string): PhoneCountry | undefined {
@@ -306,8 +311,10 @@ class PhoneInput extends BaseComponent {
   _onInput = (): void => {
     const value = this._element.value
 
-    if (this._config.autoDetect && value.trimStart().startsWith('+')) {
-      const digits = value.replace(/\D/g, '')
+    const prefix = INTERNATIONAL.exec(value)
+
+    if (this._config.autoDetect && prefix) {
+      const digits = value.replace(/\D/g, '').slice(prefix[1] === '+' ? 0 : 2)
 
       for (let length = 1; length <= Math.min(MAX_DIAL_LENGTH, digits.length); length++) {
         const country = this._pickCountry(digits.slice(0, length))
@@ -342,7 +349,7 @@ class PhoneInput extends BaseComponent {
     const value = input.value
 
     // a dial code that is still being typed stays as it is
-    if (value.trimStart().startsWith('+')) {
+    if (INTERNATIONAL.test(value) && (this._config.autoDetect || value.trimStart().startsWith('+'))) {
       return
     }
 
