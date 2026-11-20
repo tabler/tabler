@@ -21,7 +21,7 @@ document.addEventListener('click', (event: MouseEvent) => {
 
   const toastEl = SelectorEngine.getElementFromSelector(trigger)
   if (toastEl) {
-    ;(Toast.getOrCreateInstance(toastEl) as InstanceType<typeof Toast>).show()
+    void (Toast.getOrCreateInstance(toastEl) as InstanceType<typeof Toast>).show()
   }
 })
 // js-docs-end toast-init
