@@ -164,4 +164,27 @@ describe('sidebar folded toggle', () => {
       expect(trigger().getAttribute('aria-pressed')).toBe('true')
     })
   })
+
+  it('ignores the pointer leaving an element that is not the sidebar', () => {
+    document.documentElement.setAttribute('data-bs-sidebar', 'folded-hover')
+    fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical">', '  <div class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"></div></div>', '</aside>'].join('')
+    const hide = vi.fn()
+    vi.spyOn(Dropdown, 'getInstance').mockReturnValue({ hide } as never)
+
+    fixtureEl.querySelector('.dropdown')!.dispatchEvent(new MouseEvent('mouseleave'))
+
+    expect(hide).not.toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
+  it('closes open submenus when the pointer leaves a sidebar with .navbar-folded-hover', () => {
+    fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical navbar-folded-hover">', '  <div class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"></div></div>', '</aside>'].join('')
+    const hide = vi.fn()
+    vi.spyOn(Dropdown, 'getInstance').mockReturnValue({ hide } as never)
+
+    fixtureEl.querySelector('aside')!.dispatchEvent(new MouseEvent('mouseleave'))
+
+    expect(hide).toHaveBeenCalledTimes(1)
+    vi.restoreAllMocks()
+  })
 })

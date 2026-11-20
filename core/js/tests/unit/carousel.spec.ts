@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import Carousel from '../../src/bootstrap/carousel'
 import EventHandler from '../../src/bootstrap/dom/event-handler'
 import { clearFixture, createEvent, getFixture } from '../helpers/fixture'
@@ -540,6 +540,245 @@ describe('Carousel', () => {
 
         trigger.click()
       })
+    })
+  })
+
+  describe('cycling', () => {
+    const carouselHTML = (classes = 'carousel') =>
+      [`<div id="myCarousel" class="${classes}">`, '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"><img alt=""></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
+    const activeId = () => fixtureEl.querySelector('.carousel-item.active')!.id
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('should go to the next item on every interval', () => {
+      vi.useFakeTimers()
+      fixtureEl.innerHTML = carouselHTML()
+      const carousel = new Carousel('#myCarousel', { interval: 100 })
+      const spy = vi.spyOn(carousel, 'nextWhenVisible')
+
+      carousel.cycle()
+      vi.advanceTimersByTime(250)
+
+      expect(spy).toHaveBeenCalledTimes(2)
+      carousel.dispose()
+    })
+
+    it('should keep cycling after a slide', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carousel = new Carousel('#myCarousel')
+
+      carousel.cycle()
+      carousel.next()
+
+      expect(activeId()).toBe('two')
+      expect(carousel._interval).not.toBeNull()
+      carousel.dispose()
+    })
+
+    it('should go to the next item only when the carousel is visible', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector<HTMLElement>('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+      const spy = vi.spyOn(carousel, 'next')
+
+      carouselEl.style.display = 'none'
+      carousel.nextWhenVisible()
+      expect(spy).not.toHaveBeenCalled()
+
+      carouselEl.style.display = ''
+      carousel.nextWhenVisible()
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should finish the running transition on pause', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+      const transitionEnd = vi.fn()
+      carouselEl.addEventListener('transitionend', transitionEnd)
+
+      carousel._isSliding = true
+      carousel.pause()
+
+      expect(transitionEnd).toHaveBeenCalledTimes(1)
+    })
+
+    it('should pause on mouseenter and cycle again on mouseleave', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { ride: true })
+
+      carousel.cycle()
+      carouselEl.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      expect(carousel._interval).toBeNull()
+
+      carouselEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      expect(carousel._interval).not.toBeNull()
+      carousel.dispose()
+    })
+
+    it('should not pause on mouseenter when pause is false', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { pause: false })
+
+      carousel.cycle()
+      carouselEl.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+
+      expect(carousel._interval).not.toBeNull()
+      carousel.dispose()
+    })
+
+    it('should start cycling once the running slide ends', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { ride: true })
+
+      carousel._isSliding = true
+      carousel._maybeEnableCycle()
+      expect(carousel._interval).toBeNull()
+
+      EventHandler.trigger(carouselEl, 'slid.bs.carousel')
+      expect(carousel._interval).not.toBeNull()
+      carousel.dispose()
+    })
+  })
+
+  describe('to while sliding', () => {
+    it('should go to the index once the running slide ends', () => {
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+
+      carousel._isSliding = true
+      carousel.to(2)
+      expect(fixtureEl.querySelector('.carousel-item.active')!.id).toBe('one')
+
+      carousel._isSliding = false
+      EventHandler.trigger(carouselEl, 'slid.bs.carousel')
+      expect(fixtureEl.querySelector('.carousel-item.active')!.id).toBe('three')
+    })
+
+    it('should not slide to the item that is already active', () => {
+      fixtureEl.innerHTML = ['<div id="myCarousel" class="carousel">', '  <div class="carousel-inner">', '    <div class="carousel-item active"></div>', '    <div class="carousel-item"></div>', '  </div>', '</div>'].join('')
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl)
+      const slide = vi.fn()
+      carouselEl.addEventListener('slide.bs.carousel', slide)
+
+      carousel.to(0)
+
+      expect(slide).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('touch', () => {
+    const carouselHTML = () => ['<div id="myCarousel" class="carousel">', '  <div class="carousel-inner">', '    <div id="one" class="carousel-item active"><img alt=""></div>', '    <div id="two" class="carousel-item"></div>', '    <div id="three" class="carousel-item"></div>', '  </div>', '</div>'].join('')
+    const activeId = () => fixtureEl.querySelector('.carousel-item.active')!.id
+    const swipe = (el: Element, from: number, to: number) => {
+      const init = { bubbles: true, pointerType: 'touch' }
+      el.dispatchEvent(new PointerEvent('pointerdown', { ...init, clientX: from }))
+      el.dispatchEvent(new PointerEvent('pointerup', { ...init, clientX: to }))
+    }
+
+    beforeEach(() => {
+      Object.defineProperty(document.documentElement, 'ontouchstart', { value: () => {}, configurable: true })
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+      document.documentElement.dir = ''
+      delete (document.documentElement as unknown as Record<string, unknown>).ontouchstart
+    })
+
+    it('should go to the next item on a swipe to the left and back on a swipe to the right', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { pause: false })
+
+      swipe(carouselEl, 200, 50)
+      expect(activeId()).toBe('two')
+
+      swipe(carouselEl, 50, 200)
+      expect(activeId()).toBe('one')
+      carousel.dispose()
+    })
+
+    it('should mirror the swipe direction and the event direction in RTL', () => {
+      document.documentElement.dir = 'rtl'
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { pause: false })
+      const directions: string[] = []
+      carouselEl.addEventListener('slide.bs.carousel', (event) => directions.push((event as Event & { direction: string }).direction))
+
+      swipe(carouselEl, 50, 200)
+      expect(activeId()).toBe('two')
+
+      swipe(carouselEl, 200, 50)
+      expect(activeId()).toBe('one')
+      expect(directions).toEqual(['right', 'left'])
+      carousel.dispose()
+    })
+
+    it('should not slide on a swipe when touch is false', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { touch: false })
+
+      swipe(carouselEl, 200, 50)
+
+      expect(carousel._swipeHelper).toBeNull()
+      expect(activeId()).toBe('one')
+    })
+
+    it('should pause after a swipe and cycle again after the touch delay', () => {
+      vi.useFakeTimers()
+      fixtureEl.innerHTML = carouselHTML()
+      const carouselEl = fixtureEl.querySelector('#myCarousel')!
+      const carousel = new Carousel(carouselEl, { ride: true, interval: 100 })
+
+      carousel.cycle()
+      swipe(carouselEl, 200, 50)
+      expect(carousel._interval).toBeNull()
+
+      vi.advanceTimersByTime(600)
+      expect(carousel._interval).not.toBeNull()
+      carousel.dispose()
+    })
+
+    it('should prevent dragging an image inside an item', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carousel = new Carousel('#myCarousel')
+      const event = new Event('dragstart', { bubbles: true, cancelable: true })
+
+      fixtureEl.querySelector('img')!.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(true)
+      carousel.dispose()
+    })
+
+    it('should let an image be dragged again after dispose', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carousel = new Carousel('#myCarousel')
+      const event = new Event('dragstart', { bubbles: true, cancelable: true })
+
+      carousel.dispose()
+      fixtureEl.querySelector('img')!.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(false)
+    })
+
+    it('should dispose the swipe helper', () => {
+      fixtureEl.innerHTML = carouselHTML()
+      const carousel = new Carousel('#myCarousel')
+      const spy = vi.spyOn(carousel._swipeHelper!, 'dispose')
+
+      carousel.dispose()
+
+      expect(spy).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearFixture, getFixture } from '../helpers/fixture'
 
@@ -692,6 +692,139 @@ describe('Tooltip', () => {
       const tooltip = new Tooltip(el, { trigger: 'manual' })
 
       expect(tooltip._config.trigger).toBe('manual')
+    })
+  })
+
+  describe('trigger events', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    const createTooltip = (config: Record<string, unknown>) => {
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip"><span>Trigger</span></a><button type="button">Other</button>'
+      const el = fixtureEl.querySelector('a')!
+      return { el, tooltip: new Tooltip(el, { animation: false, ...config }) }
+    }
+
+    it('should show on click and hide on the next click', () => {
+      const { el, tooltip } = createTooltip({ trigger: 'click' })
+
+      el.click()
+      vi.runAllTimers()
+      expect(tooltip._activeTrigger.click).toBe(true)
+      expect(tooltip._isShown()).toBe(true)
+
+      el.click()
+      vi.runAllTimers()
+      expect(tooltip._activeTrigger.click).toBe(false)
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should enter on focusin and leave on focusout', () => {
+      const { el, tooltip } = createTooltip({ trigger: 'focus' })
+      const leave = vi.spyOn(tooltip, '_leave')
+
+      el.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+      expect(tooltip._activeTrigger.focus).toBe(true)
+      expect(tooltip._isHovered).toBe(true)
+
+      el.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: fixtureEl.querySelector('button') }))
+      expect(tooltip._activeTrigger.focus).toBe(false)
+      expect(leave).toHaveBeenCalledTimes(1)
+      expect(tooltip._isHovered).toBe(false)
+    })
+
+    it('should stay active when focus moves inside the trigger', () => {
+      const { el, tooltip } = createTooltip({ trigger: 'focus' })
+
+      el.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+      el.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: el.querySelector('span') }))
+
+      expect(tooltip._activeTrigger.focus).toBe(true)
+      expect(tooltip._isHovered).toBe(true)
+    })
+
+    it('should enter on mouseenter and leave on mouseleave', () => {
+      const { el, tooltip } = createTooltip({ trigger: 'hover' })
+
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      expect(tooltip._activeTrigger.hover).toBe(true)
+      expect(tooltip._isHovered).toBe(true)
+
+      el.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
+      expect(tooltip._activeTrigger.hover).toBe(false)
+      expect(tooltip._isHovered).toBe(false)
+    })
+
+    it('should not listen to anything with a manual trigger', () => {
+      const { el, tooltip } = createTooltip({ trigger: 'manual' })
+
+      el.click()
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
+      el.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+
+      expect(tooltip._isHovered).toBeFalsy()
+      expect(tooltip._isShown()).toBe(false)
+    })
+
+    it('should create an instance on a delegated target', () => {
+      fixtureEl.innerHTML = '<div id="parent"><a href="#">Trigger</a></div>'
+      const parent = fixtureEl.querySelector<HTMLElement>('#parent')!
+      const link = fixtureEl.querySelector('a')!
+      new Tooltip(parent, { selector: 'a', trigger: 'click', title: 'Delegated', animation: false })
+
+      link.click()
+      vi.runAllTimers()
+
+      const delegated = Tooltip.getInstance(link) as Tooltip
+      expect(delegated).not.toBeNull()
+      expect(delegated._isShown()).toBe(true)
+      expect(document.querySelector('.tooltip')!.textContent).toBe('Delegated')
+    })
+  })
+
+  describe('inside a modal', () => {
+    it('should hide when the modal hides', () => {
+      fixtureEl.innerHTML = '<div class="modal"><a href="#" title="Tooltip">Trigger</a></div>'
+      const tooltip = new Tooltip(fixtureEl.querySelector('a')!, { animation: false })
+      const hide = vi.spyOn(tooltip, 'hide')
+
+      fixtureEl.querySelector('.modal')!.dispatchEvent(new Event('hide.bs.modal'))
+
+      expect(hide).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('touch devices', () => {
+    afterEach(() => {
+      delete (document.documentElement as unknown as Record<string, unknown>).ontouchstart
+    })
+
+    it('should add empty mouseover listeners on show and remove them on hide', () => {
+      Object.defineProperty(document.documentElement, 'ontouchstart', { value: () => {}, configurable: true })
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
+      const tooltip = new Tooltip(fixtureEl.querySelector('a')!, { animation: false })
+      const add = vi.spyOn(fixtureEl, 'addEventListener')
+      const remove = vi.spyOn(fixtureEl, 'removeEventListener')
+
+      tooltip.show()
+      expect(add.mock.calls.filter(([type]) => type === 'mouseover')).toHaveLength(1)
+
+      tooltip.hide()
+      expect(remove.mock.calls.filter(([type]) => type === 'mouseover')).toHaveLength(1)
+    })
+  })
+
+  describe('number content', () => {
+    it('should convert number content to string', () => {
+      fixtureEl.innerHTML = '<a href="#" title="Tooltip">Trigger</a>'
+      const tooltip = new Tooltip(fixtureEl.querySelector('a')!, { content: 42 } as never)
+
+      expect((tooltip._config as unknown as Record<string, unknown>).content).toBe('42')
     })
   })
 })
