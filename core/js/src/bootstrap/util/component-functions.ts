@@ -13,7 +13,11 @@ type ComponentInstance = unknown
 
 interface PluginComponent {
   NAME: string
-  getOrCreateInstance(element: HTMLElement | string | null): ComponentInstance
+  getOrCreateInstance(element: HTMLElement | string | null, config?: object): ComponentInstance
+}
+
+interface RegisteredPlugin extends PluginComponent {
+  getInstance(element: HTMLElement): { dispose(): void } | null
 }
 
 interface EventActionData {
@@ -86,23 +90,62 @@ const eventActionOnPlugin = (Plugin: PluginComponent, onEvent: string, stringSel
   })
 }
 
+type ElementFilter = (element: HTMLElement) => boolean
+type ElementConfig = (element: HTMLElement) => object
+
+interface Registration {
+  selector: string
+  Plugin: RegisteredPlugin
+  filter: ElementFilter | null
+  config: ElementConfig | null
+}
+
+const REGISTRY_KEY = Symbol.for('tabler.plugins')
+const registry: Registration[] = ((globalThis as unknown as Record<symbol, Registration[]>)[REGISTRY_KEY] ??= [])
+
+const withDescendants = (root: ParentNode, selector = '*'): HTMLElement[] => {
+  const elements = Array.from(root.querySelectorAll<HTMLElement>(selector))
+  if (root instanceof Element && root.matches(selector)) {
+    elements.unshift(root as HTMLElement)
+  }
+
+  return elements
+}
+
 /**
- * Creates the component for every element that matches on page load. One
- * element with a broken config must not stop the rest of the bundle, so the
- * error is logged and the loop goes on.
+ * Creates the component for every element that matches under `root`. One
+ * element with a broken config must not stop the rest, so the error is
+ * logged and the loop goes on.
  */
-const initAll = (selector: string, Plugin: PluginComponent, filter: ((element: HTMLElement) => boolean) | null = null): void => {
-  for (const element of SelectorEngine.find(selector)) {
+const initRegistration = ({ selector, Plugin, filter, config }: Registration, root: ParentNode): void => {
+  for (const element of withDescendants(root, selector)) {
     if (filter && !filter(element)) {
       continue
     }
 
     try {
-      Plugin.getOrCreateInstance(element)
+      Plugin.getOrCreateInstance(element, config?.(element))
     } catch (error) {
       console.error(error)
     }
   }
 }
 
-export { enableDismissTrigger, eventAction, eventActionOnPlugin, initAll }
+/**
+ * Creates the component for every element that matches on page load and
+ * remembers the plugin, so `init()` can repeat this for markup added later.
+ * `config` returns the options for one element.
+ */
+const initAll = (selector: string, Plugin: RegisteredPlugin, filter: ElementFilter | null = null, config: ElementConfig | null = null): void => {
+  const registration = { selector, Plugin, filter, config }
+  if (!registry.some((entry) => entry.Plugin === Plugin && entry.selector === selector)) {
+    registry.push(registration)
+  }
+
+  initRegistration(registration, document)
+}
+
+const getRegistry = (): readonly Registration[] => registry
+
+export { enableDismissTrigger, eventAction, eventActionOnPlugin, getRegistry, initAll, initRegistration, withDescendants }
+export type { PluginComponent, RegisteredPlugin, Registration }

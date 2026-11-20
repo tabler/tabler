@@ -1,22 +1,14 @@
 import { Tooltip } from './bootstrap'
 import Manipulator from './bootstrap/dom/manipulator'
+import { initAll } from './bootstrap/util/component-functions'
 import { onDOMContentLoaded } from './bootstrap/util/index'
 
 // js-docs-start tooltip-init
-// One element with a broken config must not stop the rest of the bundle, so
-// every instance is created on its own. `data-bs-delay` on the element wins
-// over the shorter default delay.
+// `data-bs-delay` on the element wins over the shorter default delay.
 onDOMContentLoaded(() => {
-  for (const tooltipTriggerEl of document.querySelectorAll<HTMLElement>('[data-bs-toggle="tooltip"], [data-tblr-toggle="tooltip"]')) {
-    try {
-      const options = {
-        delay: Manipulator.getDataAttribute(tooltipTriggerEl, 'delay') ?? { show: 50, hide: 50 },
-        placement: Manipulator.getDataAttribute(tooltipTriggerEl, 'placement') ?? 'auto',
-      }
-      Tooltip.getOrCreateInstance(tooltipTriggerEl, options)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  initAll('[data-bs-toggle="tooltip"], [data-tblr-toggle="tooltip"]', Tooltip, null, (element) => ({
+    delay: Manipulator.getDataAttribute(element, 'delay') ?? { show: 50, hide: 50 },
+    placement: Manipulator.getDataAttribute(element, 'placement') ?? 'auto',
+  }))
 })
 // js-docs-end tooltip-init
