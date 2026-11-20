@@ -40,6 +40,8 @@ const CLASS_NAME_OPEN = 'modal-open'
 const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_STATIC = 'modal-static'
+const CLASS_NAME_STACKED = 'modal-stacked'
+const STACK_ZINDEX_STEP = 10
 
 const OPEN_SELECTOR = '.modal.show'
 const SELECTOR_DIALOG = '.modal-dialog'
@@ -50,6 +52,7 @@ type ComponentConfig = {
   backdrop: boolean | 'static'
   focus: boolean
   keyboard: boolean
+  stacked: boolean
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -58,12 +61,14 @@ const Default: ComponentConfig = {
   backdrop: true,
   focus: true,
   keyboard: true,
+  stacked: false,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   focus: 'boolean',
   keyboard: 'boolean',
+  stacked: 'boolean',
 }
 
 /**
@@ -78,6 +83,7 @@ class Modal extends BaseComponent {
   _focustrap: FocusTrap
   _isShown: boolean
   _isTransitioning: boolean
+  _parent: Modal | null
   _returnFocusTarget: HTMLElement | SVGElement | null
   _scrollBar: ScrollBarHelper
 
@@ -89,6 +95,7 @@ class Modal extends BaseComponent {
     this._focustrap = this._initializeFocusTrap()
     this._isShown = false
     this._isTransitioning = false
+    this._parent = null
     this._returnFocusTarget = null
     this._scrollBar = new ScrollBarHelper()
 
@@ -128,7 +135,13 @@ class Modal extends BaseComponent {
     this._isShown = true
     this._isTransitioning = true
 
-    this._scrollBar.hide()
+    this._parent = this._config.stacked ? this._getParent() : null
+
+    if (this._parent) {
+      this._stackOnParent(this._parent)
+    } else {
+      this._scrollBar.hide()
+    }
 
     document.body.classList.add(CLASS_NAME_OPEN)
 
@@ -146,6 +159,10 @@ class Modal extends BaseComponent {
 
     if (hideEvent?.defaultPrevented) {
       return
+    }
+
+    for (const child of this._getChildren()) {
+      child.hide()
     }
 
     this._isShown = false
@@ -267,17 +284,62 @@ class Modal extends BaseComponent {
     this._isTransitioning = false
 
     this._backdrop.hide(() => {
-      document.body.classList.remove(CLASS_NAME_OPEN)
+      const parent = this._parent
+      this._parent = null
       this._resetAdjustments()
-      this._scrollBar.reset()
+
+      if (parent) {
+        this._unstackFromParent(parent)
+      } else {
+        document.body.classList.remove(CLASS_NAME_OPEN)
+        this._scrollBar.reset()
+      }
+
       const element = this._element
 
       EventHandler.trigger(element, EVENT_HIDDEN)
 
       if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
-        restoreFocus(returnFocusTarget, element)
+        restoreFocus(returnFocusTarget, parent ? parent._element : element)
       }
     })
+  }
+
+  _getParent(): Modal | null {
+    const openModals = SelectorEngine.find(OPEN_SELECTOR)
+      .map((element) => Modal.getInstance(element) as Modal | null)
+      .filter((modal): modal is Modal => Boolean(modal?._isShown) && modal !== this)
+
+    return openModals.pop() ?? null
+  }
+
+  _getChildren(): Modal[] {
+    return SelectorEngine.find(OPEN_SELECTOR)
+      .map((element) => Modal.getInstance(element) as Modal | null)
+      .filter((modal): modal is Modal => modal?._parent === this)
+  }
+
+  _stackOnParent(parent: Modal): void {
+    parent._focustrap.deactivate()
+    parent._element.classList.add(CLASS_NAME_STACKED)
+
+    const zIndex = Number.parseInt(window.getComputedStyle(parent._element).zIndex, 10)
+    if (Number.isNaN(zIndex)) {
+      return
+    }
+
+    this._element.style.zIndex = `${zIndex + STACK_ZINDEX_STEP}`
+    this._backdrop._getElement().style.zIndex = `${zIndex + STACK_ZINDEX_STEP / 2}`
+  }
+
+  _unstackFromParent(parent: Modal): void {
+    this._element.style.zIndex = ''
+    this._backdrop._getElement().style.zIndex = ''
+    parent._element.classList.remove(CLASS_NAME_STACKED)
+
+    if (parent._isShown && parent._config.focus) {
+      parent._focustrap.activate()
+    }
   }
 
   _isAnimated(): boolean {
@@ -364,12 +426,12 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     return
   }
 
-  const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
-  if (alreadyOpen) {
-    ;(Modal.getInstance(alreadyOpen) as Modal).hide()
-  }
-
   const data = Modal.getOrCreateInstance(target) as Modal
+
+  const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
+  if (alreadyOpen && !(data._config.stacked && alreadyOpen !== target)) {
+    ;(Modal.getInstance(alreadyOpen) as Modal | null)?.hide()
+  }
 
   data.toggle(this)
 })
