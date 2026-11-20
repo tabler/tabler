@@ -321,10 +321,15 @@ $text-variants: (
       @include border-radius(var(--border-radius));
     }
   }
+}
 
-  > :last-child {
-    margin-bottom: 0;
-  }
+// The last child of the walkthrough, matched without `:has()`: neither it nor a
+// sibling before it is a `.step-item`, which is the same as the guard above.
+// `.steps:not(:has(> .step-item)) > :last-child` ended in a part that matches
+// any element, and with it Chrome recalculated the style of the whole page on
+// each DOM change in the page from #3453.
+.steps > :last-child:not(.step-item, .step-item ~ *) {
+  margin-bottom: 0;
 }
 
 .callout {
