@@ -1,51 +1,20 @@
 ---
-// Phone input in context: the "Contact details" step of an account form, with
-// the country picker of the mobile number open. The script builds the picker
-// from the input, so the open state cannot be written into the markup; a small
-// script opens the menu once the page is ready. The list is limited to a few
-// countries so the whole menu fits, and the field above it shows a number that
-// was typed with a dial code and switched its country.
+// A single phone input on its own, with the country picker open. The script
+// builds the picker from the input, so the open state cannot be written into
+// the markup; a small script opens the menu once the page is ready. The list
+// is limited to a few countries so the whole menu fits, and the space below
+// the field keeps the field and its menu in the middle of the picture.
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
-import Card from '@ui/Card.astro'
-import CardBody from '@ui/CardBody.astro'
-import CardTitle from '@ui/CardTitle.astro'
-import CardSubtitle from '@ui/CardSubtitle.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import CaptureScript from '@shared/components/CaptureScript.astro'
 ---
 
-<ScreenshotLayout title="Phone input" columns={2} cssPlugins={['flags']}>
-  <Card>
-    <CardBody class="p-4">
-      <CardTitle>Contact details</CardTitle>
-      <CardSubtitle>We use your number only for delivery updates and to secure your account.</CardSubtitle>
-
-      <FormGroup label="Full name" for="shot-phone-name" class="mb-3">
-        <input type="text" id="shot-phone-name" class="form-control" value="Paweł Kuna" readonly />
-      </FormGroup>
-
-      <FormGroup label="Office number" for="shot-phone-office" class="mb-3">
-        <input type="tel" id="shot-phone-office" class="form-control" value="+44 7911 123456" data-bs-toggle="phone-input" data-bs-country="pl" />
-      </FormGroup>
-
-      <FormGroup label="Mobile number" for="shot-phone-mobile" class="mb-3">
-        <input type="tel" id="shot-phone-mobile" class="form-control" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-only-countries="pl,de,fr,gb,us" data-bs-preferred-countries="pl" />
-      </FormGroup>
-
-      <FormGroup label="Email address" for="shot-phone-email" class="mb-3">
-        <input type="email" id="shot-phone-email" class="form-control" value="pawel@example.com" readonly />
-      </FormGroup>
-
-      <FormGroup label="Postal code" for="shot-phone-zip" class="mb-5">
-        <input type="text" id="shot-phone-zip" class="form-control" value="00-001" readonly />
-      </FormGroup>
-
-      <div class="d-flex justify-content-end gap-2">
-        <button type="button" class="btn">Back</button>
-        <button type="button" class="btn btn-primary">Continue</button>
-      </div>
-    </CardBody>
-  </Card>
+<ScreenshotLayout title="Phone input" columns={1.5} zoom={1.4} cssPlugins={['flags']}>
+  <FormGroup label="Mobile number" for="shot-phone-mobile" class="mb-0">
+    <div style="padding-bottom: 240px">
+      <input type="tel" id="shot-phone-mobile" class="form-control" value="600 100 200" data-bs-toggle="phone-input" data-bs-country="pl" data-bs-only-countries="pl,de,fr,gb,us" data-bs-preferred-countries="pl" />
+    </div>
+  </FormGroup>
 
   <CaptureScript>
     <script is:inline>
