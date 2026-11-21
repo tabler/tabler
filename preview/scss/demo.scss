@@ -77,3 +77,25 @@ $demo-icon-size: 4rem;
     text-decoration: none;
   }
 }
+
+html[data-bs-navbar-position='combined'] .page:has(> .navbar-vertical) {
+  > [class*='navbar-expand']:not(.navbar-vertical) :is(.navbar-brand, .navbar-toggler, .navbar-collapse) {
+    display: none !important;
+  }
+
+  > .navbar:not(.navbar-vertical) .navbar-nav {
+    margin-inline-start: auto;
+  }
+
+  @media (width >= 992px) {
+    > .navbar-vertical .navbar-footer {
+      display: none;
+    }
+  }
+
+  @media (width < 992px) {
+    > [class*='navbar-expand']:not(.navbar-vertical) {
+      display: none;
+    }
+  }
+}
