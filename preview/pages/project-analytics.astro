@@ -1,0 +1,159 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import ProjectHeader from '@shared/components/parts/ProjectHeader.astro'
+import Chart from '@shared/components/demo/Chart.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardActions from '@ui/CardActions.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import NavSegmented from '@ui/NavSegmented.astro'
+import Progress from '@ui/Progress.astro'
+import Subheader from '@ui/Subheader.astro'
+import Trending from '@ui/Trending.astro'
+
+const stats = [
+  { id: 'requests', label: 'Requests', value: '8.61M', trend: 8.2, unit: '%', chart: 'new-clients' },
+  { id: 'visitors', label: 'Unique visitors', value: '142K', trend: 3.1, unit: '%', chart: 'active-users' },
+  { id: 'errors', label: 'Error rate', value: '0.42%', trend: 0.09, unit: ' pp', color: 'red', chart: 'revenue-bg' },
+  { id: 'latency', label: 'p95 latency', value: '212 ms', trend: -14, unit: ' ms', color: 'green', chart: 'development-activity' },
+]
+
+const routes = [
+  { path: '/v1/events', requests: '3.2M', share: 37, errors: '0.12%', p95: '148 ms' },
+  { path: '/v1/users/:id', requests: '1.9M', share: 22, errors: '0.31%', p95: '96 ms' },
+  { path: '/v1/auth/token', requests: '1.1M', share: 13, errors: '1.84%', p95: '402 ms' },
+  { path: '/v1/webhooks', requests: '840K', share: 10, errors: '0.05%', p95: '221 ms' },
+  { path: '/v1/search', requests: '610K', share: 7, errors: '0.44%', p95: '618 ms' },
+]
+
+const statusCodes = [
+  { code: '2xx', share: 97.1, color: 'success' },
+  { code: '3xx', share: 1.6, color: 'secondary' },
+  { code: '4xx', share: 0.9, color: 'warning' },
+  { code: '5xx', share: 0.4, color: 'danger' },
+]
+---
+
+<DefaultLayout title="Project analytics" pageHeader={false} pageMenu="extra.project-analytics" description="Project analytics with request and error charts, top routes and status code breakdown." pageLibs={['apexcharts']}>
+  <ProjectHeader name="pulse-api" section="Analytics" badge="Production" badgeColor="success" active="analytics">
+    <ButtonList>
+      <NavSegmented items={['24h', '7d', '30d']} default={1} name="analytics-range" size="sm" />
+      <Button text="Export" icon="download" />
+    </ButtonList>
+  </ProjectHeader>
+
+  <div class="row row-cards">
+    {
+      stats.map((stat) => (
+        <div class="col-sm-6 col-lg-3">
+          <Card>
+            <CardBody>
+              <Subheader>{stat.label}</Subheader>
+              <div class="d-flex align-items-baseline">
+                <div class="h1 mb-3 me-2">{stat.value}</div>
+                <div class="me-auto">
+                  <Trending value={stat.trend} unit={stat.unit} color={stat.color} />
+                </div>
+              </div>
+              <Chart chartId={stat.chart} id={`analytics-${stat.id}`} size="sm" label={`${stat.label}, last 30 days`} />
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+
+    <div class="col-lg-8">
+      <Card class="h-100">
+        <CardHeader>
+          <CardTitle>Requests</CardTitle>
+          <CardActions>
+            <span class="text-secondary">Last 90 days, per day</span>
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <Chart chartId="project-requests" id="analytics-requests-chart" label="Requests per day, last 90 days" height={20} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Status codes</CardTitle>
+          <CardActions>
+            <span class="text-secondary">Share of responses</span>
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <div class="space-y">
+            {
+              statusCodes.map((status) => (
+                <div>
+                  <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-medium">{status.code}</span>
+                    <span class="text-secondary">{status.share}%</span>
+                  </div>
+                  <Progress value={status.share} color={status.color} size="sm" />
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+        <CardBody>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="fw-medium">5xx responses</span>
+            <span class="text-secondary">per day, last 7 days</span>
+          </div>
+          <Chart chartId="uptime-incidents" id="analytics-errors-chart" label="5xx responses per day, last 7 days" height={6} />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <CardTitle>Top routes</CardTitle>
+          <CardActions>
+            <Button text="All routes" size="sm" />
+          </CardActions>
+        </CardHeader>
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Requests</th>
+                <th class="w-25">Share</th>
+                <th>Error rate</th>
+                <th>p95 latency</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                routes.map((route) => (
+                  <tr>
+                    <td>
+                      <code>{route.path}</code>
+                    </td>
+                    <td>{route.requests}</td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <Progress value={route.share} size="sm" class="flex-fill" />
+                        <span class="text-secondary">{route.share}%</span>
+                      </div>
+                    </td>
+                    <td class:list={{ 'text-danger': Number.parseFloat(route.errors) > 1 }}>{route.errors}</td>
+                    <td class:list={{ 'text-warning': Number.parseInt(route.p95, 10) > 400 }}>{route.p95}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>
