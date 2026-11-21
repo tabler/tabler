@@ -7,7 +7,7 @@
 
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
-import { defineJQueryPlugin } from './util/index.js'
+import { defineJQueryPlugin, onDOMContentLoaded } from './util/index.js'
 import type { JQueryCollectionLike } from './types'
 
 const NAME = 'button'
@@ -52,6 +52,16 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, (event: Ev
   const data = Button.getOrCreateInstance(target) as Button
   data.toggle()
 })
+
+export const initPressedState = (): void => {
+  for (const element of document.querySelectorAll<HTMLElement>(SELECTOR_DATA_TOGGLE)) {
+    if (!element.hasAttribute('aria-pressed')) {
+      element.setAttribute('aria-pressed', String(element.classList.contains(CLASS_NAME_ACTIVE)))
+    }
+  }
+}
+
+onDOMContentLoaded(initPressedState)
 
 defineJQueryPlugin(Button)
 

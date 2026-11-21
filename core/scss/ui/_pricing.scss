@@ -14,42 +14,52 @@ $pricing-card-width: 22rem;
 }
 
 .pricing-card {
+  // scss-docs-start pricing-css-vars
+  --pricing-card-width: #{$pricing-card-width};
+  --pricing-card-padding: 2rem;
+  --pricing-card-bg: var(--bg-surface);
+  --pricing-card-border-width: var(--border-width);
+  --pricing-card-border-color: var(--border-color);
+  --pricing-card-border-radius: #{$border-radius-lg};
+  --pricing-card-box-shadow: var(--shadow-card);
+  // scss-docs-end pricing-css-vars
+
   position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 2rem;
+  padding: var(--pricing-card-padding);
   margin: 0 0 1rem;
   text-align: center;
-  background: var(--bg-surface);
-  border: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-card);
-  @include border-radius($border-radius-lg);
+  background: var(--pricing-card-bg);
+  border: var(--pricing-card-border-width) solid var(--pricing-card-border-color);
+  box-shadow: var(--pricing-card-box-shadow);
+  @include border-radius(var(--pricing-card-border-radius));
 
   @include media-breakpoint-up(md) {
-    max-width: $pricing-card-width;
+    max-width: var(--pricing-card-width);
     margin: 1rem -1px;
 
     &:first-child {
-      @include border-radius($border-radius-lg 0 0 $border-radius-lg);
+      @include border-radius(var(--pricing-card-border-radius) 0 0 var(--pricing-card-border-radius));
     }
 
     &:last-child {
-      @include border-radius(0 $border-radius-lg $border-radius-lg 0);
+      @include border-radius(0 var(--pricing-card-border-radius) var(--pricing-card-border-radius) 0);
     }
   }
 
   &.featured {
     z-index: 1;
     order: -1;
-    border: 2px solid var(--primary);
+    --pricing-card-border-width: 2px;
+    --pricing-card-border-color: var(--primary);
 
     @include media-breakpoint-up(md) {
       order: unset;
       margin-top: 0;
       margin-bottom: 0;
-      box-shadow: var(--shadow-card);
-      @include border-radius($border-radius-lg);
+      @include border-radius(var(--pricing-card-border-radius));
     }
   }
 }

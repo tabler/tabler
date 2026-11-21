@@ -11,8 +11,9 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
+import Swipe from './util/swipe'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
 /**
@@ -47,6 +48,7 @@ type ComponentConfig = {
   backdrop: boolean | 'static'
   keyboard: boolean
   scroll: boolean
+  swipe: boolean
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -55,12 +57,14 @@ const Default: ComponentConfig = {
   backdrop: true,
   keyboard: true,
   scroll: false,
+  swipe: true,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
   scroll: 'boolean',
+  swipe: 'boolean',
 }
 
 /**
@@ -74,15 +78,18 @@ class Offcanvas extends BaseComponent {
   _backdrop: Backdrop
   _focustrap: FocusTrap
   _returnFocusTarget: HTMLElement | SVGElement | null
+  _swipeHelper: Swipe | null
 
   constructor(element: HTMLElement | string, config?: ComponentConfigInput) {
     super(element, config)
 
     this._isShown = false
     this._returnFocusTarget = null
+    this._swipeHelper = null
     this._backdrop = this._initializeBackDrop()
     this._focustrap = this._initializeFocusTrap()
     this._addEventListeners()
+    this._initSwipe()
   }
 
   static get Default(): ComponentConfig {
@@ -97,19 +104,19 @@ class Offcanvas extends BaseComponent {
     return NAME
   }
 
-  toggle(relatedTarget?: HTMLElement): void {
+  toggle(relatedTarget?: HTMLElement): Promise<void> | void {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget?: HTMLElement): void {
+  show(relatedTarget?: HTMLElement): Promise<void> | void {
     if (this._isShown) {
-      return
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, { relatedTarget })
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
@@ -134,18 +141,18 @@ class Offcanvas extends BaseComponent {
       EventHandler.trigger(this._element, EVENT_SHOWN, { relatedTarget })
     }
 
-    this._queueCallback(completeCallBack, this._element, true)
+    return this._queueCallback(completeCallBack, this._element, true)
   }
 
-  hide(): void {
+  hide(): Promise<void> | void {
     if (!this._isShown) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._focustrap.deactivate()
@@ -174,12 +181,13 @@ class Offcanvas extends BaseComponent {
       }
     }
 
-    this._queueCallback(completeCallback, this._element, true)
+    return this._queueCallback(completeCallback, this._element, true)
   }
 
   dispose(): void {
     this._backdrop.dispose()
     this._focustrap.deactivate()
+    this._swipeHelper?.dispose()
     super.dispose()
   }
 
@@ -190,7 +198,7 @@ class Offcanvas extends BaseComponent {
         return
       }
 
-      this.hide()
+      void this.hide()
     }
 
     const isBackdropVisible = Boolean(this._config.backdrop)
@@ -217,12 +225,39 @@ class Offcanvas extends BaseComponent {
       }
 
       if (this._config.keyboard) {
-        this.hide()
+        void this.hide()
         return
       }
 
       EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED)
     })
+  }
+
+  _initSwipe(): void {
+    if (!this._config.swipe || !Swipe.isSupported()) {
+      return
+    }
+
+    const dismiss = () => {
+      if (this._isShown && this._config.backdrop !== 'static') {
+        void this.hide()
+      }
+    }
+
+    const isRtl = document.documentElement.dir === 'rtl'
+    const isEnd = this._element.classList.contains('offcanvas-end')
+    const isStart = this._element.classList.contains('offcanvas-start')
+    const isTop = this._element.classList.contains('offcanvas-top')
+    const isBottom = this._element.classList.contains('offcanvas-bottom')
+
+    const swipeConfig = {
+      leftCallback: (isStart && !isRtl) || (isEnd && isRtl) ? dismiss : null,
+      rightCallback: (isEnd && !isRtl) || (isStart && isRtl) ? dismiss : null,
+      upCallback: isTop ? dismiss : null,
+      downCallback: isBottom ? dismiss : null,
+    }
+
+    this._swipeHelper = new Swipe(this._element, swipeConfig)
   }
 
   static jQueryInterface(this: JQueryCollectionLike, config?: unknown): unknown {
@@ -263,23 +298,27 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen && alreadyOpen !== target) {
-    ;(Offcanvas.getInstance(alreadyOpen) as Offcanvas).hide()
+    void (Offcanvas.getInstance(alreadyOpen) as Offcanvas).hide()
   }
 
   const data = Offcanvas.getOrCreateInstance(target) as Offcanvas
-  data.toggle(this)
+  void data.toggle(this)
 })
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
   for (const selector of SelectorEngine.find(OPEN_SELECTOR)) {
-    ;(Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
+    if (getComputedStyle(selector).position !== 'fixed') {
+      continue
+    }
+
+    void (Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
   }
 })
 
 EventHandler.on(window, EVENT_RESIZE, () => {
   for (const element of SelectorEngine.find('[aria-modal][class*=show][class*=offcanvas-]')) {
     if (getComputedStyle(element).position !== 'fixed') {
-      ;(Offcanvas.getOrCreateInstance(element) as Offcanvas).hide()
+      void (Offcanvas.getOrCreateInstance(element) as Offcanvas).hide()
     }
   }
 })

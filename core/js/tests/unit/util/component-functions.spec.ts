@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import BaseComponent from '../../../src/bootstrap/base-component'
-import { enableDismissTrigger, eventActionOnPlugin, initAll } from '../../../src/bootstrap/util/component-functions'
+import { enableDismissTrigger, eventActionOnPlugin, getRegistry, initAll } from '../../../src/bootstrap/util/component-functions'
 import { clearFixture, createEvent, getFixture } from '../../helpers/fixture'
 
 class DummyClass extends BaseComponent {
@@ -165,6 +165,26 @@ describe('Component Functions', () => {
       expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#keep'))).toBeInstanceOf(DummyClass)
     })
 
+    it('should pass the options the config callback returns for the element', () => {
+      fixtureEl.innerHTML = '<div class="init-config" id="first"></div>'
+      const spy = vi.spyOn(DummyClass, 'getOrCreateInstance')
+
+      initAll('.init-config', DummyClass, null, (element) => ({ from: element.id }))
+
+      expect(spy).toHaveBeenCalledWith(fixtureEl.querySelector('#first'), { from: 'first' })
+
+      spy.mockRestore()
+    })
+
+    it('should register a plugin and selector pair once', () => {
+      const count = () => getRegistry().filter((entry) => entry.Plugin === DummyClass && entry.selector === '.init-once').length
+
+      initAll('.init-once', DummyClass)
+      initAll('.init-once', DummyClass)
+
+      expect(count()).toBe(1)
+    })
+
     it('should log the error and go on when one element throws', () => {
       fixtureEl.innerHTML = '<div class="init-all" id="broken"></div><div class="init-all" id="fine"></div>'
 
@@ -172,6 +192,7 @@ describe('Component Functions', () => {
       const spyError = vi.spyOn(console, 'error').mockImplementation(() => {})
       const Throwing = {
         NAME: 'test',
+        getInstance: () => null,
         getOrCreateInstance(element: HTMLElement | string | null) {
           if ((element as HTMLElement).id === 'broken') {
             throw error

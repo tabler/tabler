@@ -357,7 +357,7 @@ class Carousel extends BaseComponent {
       triggerEvent(EVENT_SLID)
     }
 
-    this._queueCallback(completeCallBack, activeElement, this._isAnimated())
+    void this._queueCallback(completeCallBack, activeElement, this._isAnimated())
 
     if (isCycling) {
       this.cycle()

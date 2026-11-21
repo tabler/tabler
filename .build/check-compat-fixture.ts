@@ -89,7 +89,7 @@ async function pageResults(pkg: string, page: Page): Promise<Result> {
   const style = (selector: string, property: string): Promise<string> => page.evaluate(([s, p]) => getComputedStyle(document.querySelector(s)!).getPropertyValue(p), [selector, property])
 
   results['page: no script error and no 404'] = problems.length === 0 ? 'yes' : problems.join('; ')
-  results['page: rgba(var(--tblr-primary-rgb), .5) paints'] = await style('#highlight', 'background-color')
+  results['page: rgba(var(--tblr-secondary-rgb), .5) paints'] = await style('#highlight', 'background-color')
   results['page: an empty .legend is a visible dot'] = (await page.evaluate(() => document.querySelector('#legend')!.getBoundingClientRect().width)) > 0 ? 'yes' : 'no'
   results['page: .form-hint is a block'] = await style('#hint', 'display')
   results['page: .form-hint sits below the control'] = (await page.evaluate(() => document.querySelector('#hint')!.getBoundingClientRect().top >= document.querySelector('#email')!.getBoundingClientRect().bottom)) ? 'yes' : 'no'

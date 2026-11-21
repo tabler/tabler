@@ -18,7 +18,7 @@ const sidebarIsFolded = (): boolean => (document.documentElement.getAttribute('d
 const hideSidebarDropdowns = (except?: Element | null): void => {
   for (const toggle of document.querySelectorAll<HTMLElement>(`.navbar-vertical ${SELECTOR_DROPDOWN_TOGGLE}[aria-expanded="true"]`)) {
     if (toggle !== except) {
-      ;(Dropdown.getInstance(toggle) as InstanceType<typeof Dropdown> | null)?.hide()
+      void (Dropdown.getInstance(toggle) as InstanceType<typeof Dropdown> | null)?.hide()
     }
   }
 }

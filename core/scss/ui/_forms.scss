@@ -57,7 +57,7 @@ textarea {
 }
 
 .form-control-light {
-  background-color: var(--bg-surface-secondary);
+  background-color: var(--fill-tertiary);
   border-color: transparent;
 }
 
@@ -102,7 +102,7 @@ textarea {
 
   padding: var(--form-fieldset-padding);
   margin-bottom: var(--form-fieldset-margin-bottom);
-  background: var(--bg-surface-secondary);
+  background: var(--fill-quaternary);
   border: var(--border-width) var(--border-style) var(--border-color);
   @include border-radius(var(--border-radius));
 }
@@ -130,7 +130,7 @@ fieldset:empty {
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  background: var(--bg-surface-tertiary);
+  background: var(--fill-tertiary);
   border: 0;
   @include border-radius(var(--border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
@@ -208,7 +208,8 @@ fieldset:empty {
     $focus-ring-color: map.get($data, 'focus-ring-color');
 
     &:has(.form-control.is-#{$state}),
-    .was-validated &:has(.form-control:#{$state}) {
+    .was-validated &:has(.form-control:#{$state}),
+    #{if(sass($state == 'valid'): "form[data-bs-validate='valid']"; else: 'form[data-bs-validate]')} &:has(.form-control:is(:user-#{$state})) {
       .input-group-text {
         border-color: $border-color;
       }

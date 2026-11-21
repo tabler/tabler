@@ -1,251 +1,148 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import CaptureScript from '@shared/components/CaptureScript.astro'
-import FormGroup from '@ui/FormGroup.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
-import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
 import DocsLink from '@ui/DocsLink.astro'
 
-type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
+type ColorEntry = [string, { title: string; hex?: string; prop?: string; abbr?: string; icon?: string }]
+type Tile = { title: string; code: string; class: string }
+type Section = { title: string; subtitle: string; tiles: Tile[] }
 
+const themeColorNames = ['primary', 'secondary', 'success', 'info', 'warning', 'danger']
+const themeColors = (Object.entries(site.themeColors) as ColorEntry[]).filter(([name]) => themeColorNames.includes(name))
 const colors = Object.entries(site.colors) as ColorEntry[]
-const lightColors = Object.entries(site.lightColors) as ColorEntry[]
 const grayColors = Object.entries(site.grayColors) as ColorEntry[]
 const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
-const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
+const fillLevels = ['primary', 'secondary', 'tertiary', 'quaternary']
+
+const colorTitle = (name: string) => (site.colors as Record<string, { title: string }>)[name]?.title ?? name
+
+const gradientPairs: [string, string][] = [
+  ['blue', 'purple'],
+  ['pink', 'orange'],
+  ['green', 'cyan'],
+  ['indigo', 'pink'],
+  ['yellow', 'red'],
+  ['teal', 'lime'],
+]
+const gradientTrios: [string, string, string][] = [
+  ['purple', 'pink', 'orange'],
+  ['blue', 'cyan', 'green'],
+  ['red', 'orange', 'yellow'],
+  ['indigo', 'purple', 'pink'],
+]
+const gradientDirections: [string, string][] = [
+  ['to-t', 'Top'],
+  ['to-te', 'Top end'],
+  ['to-e', 'End'],
+  ['to-be', 'Bottom end'],
+  ['to-b', 'Bottom'],
+  ['to-bs', 'Bottom start'],
+  ['to-s', 'Start'],
+  ['to-ts', 'Top start'],
+]
+
+const sections: Section[] = [
+  {
+    title: 'Theme colors',
+    subtitle: 'Colors with a meaning: the brand color and the status colors. Each swatch shows the light mode value on the left and the dark mode value on the right.',
+    tiles: themeColors.map(([name, color]) => ({ title: color.title, code: `var(--tblr-${name})`, class: `bg-${name}` })),
+  },
+  {
+    title: 'Colors',
+    subtitle: 'The extended palette.',
+    tiles: colors.map(([name, color]) => ({ title: color.title, code: `var(${color.prop})`, class: `bg-${name}` })),
+  },
+  {
+    title: 'Light colors',
+    subtitle: 'A tinted, low-contrast version of each color.',
+    tiles: colors.map(([name, color]) => ({ title: `${color.title} light`, code: `var(${color.prop}-lt)`, class: `bg-${name}-lt` })),
+  },
+  {
+    title: 'Gray colors',
+    subtitle: 'The neutral gray scale used for text, borders, and backgrounds.',
+    tiles: grayColors.map(([name, color]) => ({ title: color.title, code: `var(${color.prop})`, class: `bg-${name}` })),
+  },
+  {
+    title: 'Fill colors',
+    subtitle: 'Translucent fills made from the text color, for hover states, tracks, and subtle backgrounds. Use them with <code>.bg-fill-*</code>.',
+    tiles: fillLevels.map((level) => ({ title: `Fill ${level}`, code: `var(--tblr-fill-${level})`, class: `bg-fill-${level}` })),
+  },
+  {
+    title: 'Social colors',
+    subtitle: 'Brand colors for social networks. They are the same in light and dark mode.',
+    tiles: socialColors.map(([name, color]) => ({ title: color.title, code: `var(${color.prop})`, class: `bg-${name}` })),
+  },
+  {
+    title: 'Gradient fade',
+    subtitle: 'Fade any color to transparent with <code>.bg-gradient-from-*</code> and <code>.bg-gradient-to-transparent</code>.',
+    tiles: colors.map(([name, color]) => ({ title: color.title, code: `.bg-gradient-from-${name}`, class: `bg-gradient bg-gradient-from-${name} bg-gradient-to-transparent bg-gradient-to-b` })),
+  },
+  {
+    title: 'Two colors',
+    subtitle: 'Pair <code>.bg-gradient-from-*</code> with <code>.bg-gradient-to-*</code>.',
+    tiles: gradientPairs.map(([from, to]) => ({ title: `${colorTitle(from)} → ${colorTitle(to)}`, code: `from-${from} to-${to}`, class: `bg-gradient bg-gradient-from-${from} bg-gradient-to-${to}` })),
+  },
+  {
+    title: 'Three colors',
+    subtitle: 'Add a middle stop with <code>.bg-gradient-via-*</code>.',
+    tiles: gradientTrios.map(([from, via, to]) => ({
+      title: `${colorTitle(from)} → ${colorTitle(via)} → ${colorTitle(to)}`,
+      code: `from-${from} via-${via} to-${to}`,
+      class: `bg-gradient bg-gradient-from-${from} bg-gradient-via-${via} bg-gradient-to-${to}`,
+    })),
+  },
+  {
+    title: 'Gradient directions',
+    subtitle: 'Set the direction with <code>.bg-gradient-to-t</code>, <code>.bg-gradient-to-e</code> and the other side classes.',
+    tiles: gradientDirections.map(([direction, title]) => ({ title, code: `.bg-gradient-${direction}`, class: `bg-gradient bg-gradient-from-primary bg-gradient-to-transparent bg-gradient-${direction}` })),
+  },
+]
+const modes = ['light', 'dark']
 ---
 
-<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette and gradients, in light and dark mode, with CSS variables.">
   <DocsLink slot="page-header-actions" path="/ui/base/colors" />
 
   <div class="row row-cards">
-    <div class="col-6 col-lg-3">
-      <Card>
-        <CardBody>
-          <CardTitle>Colors</CardTitle>
-          <CardSubtitle>The extended color palette, with hex values.</CardSubtitle>
-          <div class="row g-3">
-            {
-              colors.map(([name, color]) => (
-                <div class="col-12">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
-                    </div>
-                    <div class="col">
-                      {color.title}
-                      <br />
-                      <code>{color.hex}</code>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-6 col-lg-3">
-      <Card>
-        <CardBody>
-          <CardTitle>Light colors</CardTitle>
-          <CardSubtitle>A tinted, low-contrast version of each color.</CardSubtitle>
-          <div class="row g-3">
-            {
-              lightColors.map(([name, color]) => (
-                <div class="col-12">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <Avatar shape="square" class={`bg-${name}-lt`} placeholder={color.abbr} />
-                    </div>
-                    <div class="col">
-                      {color.title}
-                      <br />
-                      <code>{color.hex}</code>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-6 col-lg-3">
-      <Card>
-        <CardBody>
-          <CardTitle>Gray colors</CardTitle>
-          <CardSubtitle>The neutral gray scale used for text, borders, and backgrounds.</CardSubtitle>
-          <div class="row g-3">
-            {
-              grayColors.map(([name, color]) => (
-                <div class="col-12">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
-                    </div>
-                    <div class="col">
-                      {color.title}
-                      <br />
-                      <code>{color.hex}</code>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-6 col-lg-3">
-      <Card>
-        <CardBody>
-          <CardTitle>Social colors</CardTitle>
-          <CardSubtitle>Brand colors for social networks.</CardSubtitle>
-          <div class="row g-3">
-            {
-              socialColors.map(([name, color]) => (
-                <div class="col-12">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} icon={color.icon} />
-                    </div>
-                    <div class="col">
-                      {color.title}
-                      <br />
-                      <code>{color.hex}</code>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 col-lg-6">
+    {
+      sections.map((section) => (
+        <div class="col-12">
           <Card>
             <CardBody>
-              <CardTitle>Gradient</CardTitle>
-              <CardSubtitle>Build a gradient from any two colors and preview it live.</CardSubtitle>
-              <form>
-                <div class="row g-4">
-                  <div class="col">
-                    <FormGroup label="From" for="colors-gradient-from" class="">
-                      <select class="form-select" name="color-from" id="colors-gradient-from">
-                        {gradientColors.map((color) => <option value={color}>{color}</option>)}
-                      </select>
-                    </FormGroup>
-                    <FormGroup label="To" for="colors-gradient-to" class="mt-3">
-                      <select class="form-select" name="color-to" id="colors-gradient-to">
-                        {
-                          gradientColors.map((color) => (
-                            <option value={color} selected={color === 'transparent'}>
-                              {color}
-                            </option>
-                          ))
-                        }
-                      </select>
-                    </FormGroup>
-                  </div>
-                  <div class="col">
-                    <FormGroup label="Via" for="colors-gradient-via" class="">
-                      <select class="form-select" name="color-via" id="colors-gradient-via">
-                        <option></option>
-                        {gradientColors.map((color) => <option value={color}>{color}</option>)}
-                      </select>
-                    </FormGroup>
-                    <FormGroup label="Direction" for="colors-gradient-direction" class="mt-3">
-                      <select class="form-select" name="color-direction" id="colors-gradient-direction">
-                        <option value="to-t">to top</option>
-                        <option value="to-te">to top right</option>
-                        <option value="to-r" selected>to right</option>
-                        <option value="to-be">to bottom right</option>
-                        <option value="to-b">to bottom</option>
-                        <option value="to-bs">to bottom left</option>
-                        <option value="to-s">to left</option>
-                        <option value="to-ts">to top left</option>
-                      </select>
-                    </FormGroup>
-                  </div>
-                  <div class="col-12">
-                    <div class="border rounded bg-pattern-transparent overflow-hidden">
-                      <div id="gradient-preview" class="border rounded bg-gradient bg-gradient-from-primary bg-gradient-to-transparent">
-                        <div class="px-4 py-5"></div>
+              <CardTitle>{section.title}</CardTitle>
+              <CardSubtitle>
+                <Fragment set:html={section.subtitle} />
+              </CardSubtitle>
+              <div class="row g-3">
+                {section.tiles.map((tile) => (
+                  <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                    <div class="border rounded overflow-hidden">
+                      <div class="d-flex">
+                        {modes.map((mode) => (
+                          <div class="flex-fill bg-surface" data-bs-theme={mode}>
+                            <div class={`py-6 ${tile.class}`} />
+                          </div>
+                        ))}
+                      </div>
+                      <div class="px-3 py-2 border-top">
+                        <div>{tile.title}</div>
+                        <div class="small text-truncate" title={tile.code}>
+                          <code>{tile.code}</code>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
-            </CardBody>
-          </Card>
-        </div>
-        <div class="col-12 col-lg-6">
-          <Card>
-            <CardBody>
-              <CardTitle>Gradient colors</CardTitle>
-              <CardSubtitle>Every color faded to transparent, fading in from the left or the right.</CardSubtitle>
-              <div class="row">
-                <div class="col">
-                  <div class="space-y">
-                    {gradientColors.map((color) => <div class={`border rounded bg-gradient bg-gradient-from-${color} bg-gradient-to-transparent px-4 py-2`} />)}
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="space-y">
-                    {gradientColors.map((color) => <div class={`border rounded bg-gradient bg-gradient-to-${color} bg-gradient-from-transparent px-4 py-2`} />)}
-                  </div>
-                </div>
+                ))}
               </div>
             </CardBody>
           </Card>
         </div>
-      </div>
-    </div>
+      ))
+    }
   </div>
-
-  <CaptureScript>
-    <!-- BEGIN GRADIENT SCRIPT -->
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', function () {
-        var gradientPreview = document.getElementById('gradient-preview')
-        var colorFrom = document.querySelector('[name="color-from"]')
-        var colorTo = document.querySelector('[name="color-to"]')
-        var colorVia = document.querySelector('[name="color-via"]')
-        var colorDirection = document.querySelector('[name="color-direction"]')
-
-        function updateGradient() {
-          var from = colorFrom.value
-          var to = colorTo.value
-          var via = colorVia.value
-          var direction = colorDirection.value
-
-          var gradient = 'bg-gradient bg-gradient-from-' + from + ' bg-gradient-to-' + to
-
-          if (via) {
-            gradient += ' bg-gradient-via-' + via
-          }
-
-          gradient += ' bg-gradient-' + direction
-
-          gradientPreview.className = gradient
-        }
-
-        colorFrom.addEventListener('change', updateGradient)
-        colorTo.addEventListener('change', updateGradient)
-        colorVia.addEventListener('change', updateGradient)
-        colorDirection.addEventListener('change', updateGradient)
-
-        updateGradient()
-      })
-    </script>
-    <!-- END GRADIENT SCRIPT -->
-  </CaptureScript>
 </DefaultLayout>

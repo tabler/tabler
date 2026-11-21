@@ -69,7 +69,8 @@
   }
 
   // Customize the `:focus` state to imitate native WebKit styles.
-  &:focus {
+  &:focus,
+  &:focus-within {
     color: var(--control-focus-fg);
     background-color: var(--control-focus-bg);
     border-color: var(--control-focus-border-color);
@@ -137,7 +138,7 @@
     border-width: 0;
     border-inline-end-width: var(--control-border-width);
     border-radius: 0; // stylelint-disable-line property-disallowed-list
-    @include transition($btn-transition);
+    @include btn-transition();
   }
 
   &:hover:not(:disabled):not([readonly])::file-selector-button {
