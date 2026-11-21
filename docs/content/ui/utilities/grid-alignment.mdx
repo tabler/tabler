@@ -1,12 +1,12 @@
 ---
 title: Grid alignment
-description: Utility classes for the justify-items and place-items properties on CSS grid containers.
-summary: Align every item of a CSS grid inside its cell, horizontally or on both axes, with one class on the container.
+description: Utility classes for CSS grid container and item alignment.
+summary: Align all grid items from their container, or position one item inside its cell.
 related: [/ui/utilities/vertical-align]
 ---
 import Example from '@components/Example.astro';
 
-Use these classes on an element with `.d-grid` to align all its items inside their grid cells. Choose from `start`, `end`, `center`, `baseline`, and `stretch` (the default).
+Use `.justify-items-*` or `.place-items-*` on an element with `.d-grid` to align all items inside their cells. Choose from `start`, `end`, `center`, `baseline`, and `stretch` (the default).
 
 ## Justify items
 
@@ -17,6 +17,18 @@ Use these classes on an element with `.d-grid` to align all its items inside the
   <div class="p-2 bg-primary-lt rounded">One</div>
   <div class="p-2 bg-primary-lt rounded">Two</div>
   <div class="p-2 bg-primary-lt rounded">Three</div>
+</div>
+</Example>
+
+## Justify self
+
+Use `.justify-self-start`, `.justify-self-end`, or `.justify-self-center` on a grid item to override the container's alignment.
+
+<Example>
+<div class="d-grid grid-cols-3 justify-items-center gap-2 p-2 border rounded">
+  <div class="justify-self-start p-2 bg-primary-lt rounded">Start</div>
+  <div class="justify-self-center p-2 bg-primary-lt rounded">Center</div>
+  <div class="justify-self-end p-2 bg-primary-lt rounded">End</div>
 </div>
 </Example>
 
@@ -34,11 +46,19 @@ Use these classes on an element with `.d-grid` to align all its items inside the
 
 ## Responsive
 
-All classes have responsive variants, for example `.justify-items-md-start` or `.place-items-lg-center`.
+All classes have responsive variants, for example `.justify-items-md-start`, `.justify-self-md-center`, or `.place-items-lg-center`.
 
 ```html
 <div class="d-grid place-items-center place-items-md-start">...</div>
 ```
+
+Apply the responsive class to the item when using `justify-self`. This item starts at the beginning of its cell and centers from the `md` breakpoint.
+
+<Example>
+<div class="d-grid grid-cols-1 gap-2 p-2 border rounded">
+  <div class="justify-self-start justify-self-md-center p-2 bg-primary-lt rounded">Start, then center from md</div>
+</div>
+</Example>
 
 ## Accessibility
 
