@@ -1,0 +1,254 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import Subheader from '@ui/Subheader.astro'
+import Trending from '@ui/Trending.astro'
+import Legend from '@ui/Legend.astro'
+import LegendList from '@ui/LegendList.astro'
+import Chart from '@components/demo/Chart.astro'
+import TopList from '@components/cards/TopList.astro'
+
+type TopListItem = { label: string; value: number }
+
+const stats = [
+  { title: 'Total API calls', value: '4.21M', change: 12.4, chart: 'api-calls-trend' },
+  { title: 'Error rate', value: '0.84%', change: -0.3, chart: 'api-errors-trend' },
+  { title: 'Latency (p95)', value: '184 ms', change: 3.1, chart: 'api-latency-trend' },
+  { title: 'Rate limited', value: '12.4k', change: 41.2, chart: 'api-rate-limited-trend' },
+  { title: 'Active API keys', value: '1,284', change: 5.2, chart: 'api-keys-trend' },
+  { title: 'Data out', value: '212 GB', change: 9.8, chart: 'api-data-out-trend' },
+]
+
+const groupBy = ['None', 'Endpoint', 'API key', 'Version', 'Status code']
+
+const latency = [
+  { name: 'p50', color: 'primary', value: 48 },
+  { name: 'p95', color: 'yellow', value: 184 },
+  { name: 'p99', color: 'pink', value: 390 },
+]
+
+const statusCodes = [
+  { name: '2xx', color: 'primary', value: '4.15M' },
+  { name: '4xx', color: 'orange', value: '31.2k' },
+  { name: '5xx', color: 'red', value: '4.1k' },
+]
+
+const versions = [
+  { name: 'v3', color: 'primary', value: '2.61M' },
+  { name: 'v2', color: 'azure', value: '1.29M' },
+  { name: 'v1', color: 'gray-400', value: '308k' },
+]
+
+const lists: Record<string, TopListItem[]> = {
+  'Top endpoints': [
+    { label: 'GET /v3/users/{id}', value: 812400 },
+    { label: 'POST /v3/events', value: 644100 },
+    { label: 'GET /v3/products', value: 531900 },
+    { label: 'GET /v3/orders', value: 402300 },
+    { label: 'POST /v3/auth/token', value: 318700 },
+    { label: 'GET /v3/search', value: 276500 },
+    { label: 'PUT /v3/users/{id}', value: 141200 },
+    { label: 'GET /v2/invoices', value: 98600 },
+    { label: 'DELETE /v3/sessions/{id}', value: 61300 },
+  ],
+  'Top API keys': [
+    { label: 'sk_live_…4f9a (Mobile app)', value: 1210000 },
+    { label: 'sk_live_…b27c (Web app)', value: 968300 },
+    { label: 'sk_live_…e013 (Partner sync)', value: 512700 },
+    { label: 'sk_live_…91d4 (Data warehouse)', value: 388200 },
+    { label: 'sk_live_…77aa (Zapier)', value: 214900 },
+    { label: 'sk_live_…c5e8 (Internal tools)', value: 176400 },
+    { label: 'sk_test_…a1b2 (Staging)', value: 92100 },
+    { label: 'sk_live_…0d3f (Support console)', value: 48700 },
+    { label: 'sk_live_…6e21 (Billing worker)', value: 31500 },
+  ],
+  'Top clients': [
+    { label: 'Mobile app (iOS)', value: 1480000 },
+    { label: 'Web app', value: 1120000 },
+    { label: 'Mobile app (Android)', value: 742000 },
+    { label: 'Partner integration', value: 418000 },
+    { label: 'CLI', value: 196000 },
+    { label: 'Internal dashboard', value: 142000 },
+    { label: 'Browser extension', value: 71000 },
+    { label: 'Unknown/Others', value: 40000 },
+  ],
+  'Top SDK versions': [
+    { label: 'js-sdk 4.12.0', value: 1030000 },
+    { label: 'swift-sdk 2.8.1', value: 871000 },
+    { label: 'js-sdk 4.11.3', value: 612000 },
+    { label: 'kotlin-sdk 2.3.0', value: 544000 },
+    { label: 'python-sdk 1.9.2', value: 398000 },
+    { label: 'go-sdk 0.14.0', value: 221000 },
+    { label: 'ruby-sdk 1.4.7', value: 98000 },
+    { label: 'php-sdk 3.1.0', value: 74000 },
+    { label: 'js-sdk 3.x (deprecated)', value: 52000 },
+  ],
+  'Top error codes': [
+    { label: 'rate_limit_exceeded', value: 12410 },
+    { label: 'invalid_token', value: 8730 },
+    { label: 'validation_failed', value: 5120 },
+    { label: 'not_found', value: 3960 },
+    { label: 'insufficient_scope', value: 2140 },
+    { label: 'upstream_timeout', value: 1480 },
+    { label: 'payload_too_large', value: 610 },
+    { label: 'idempotency_conflict', value: 390 },
+    { label: 'internal_error', value: 210 },
+  ],
+  'Top status codes': [
+    { label: '200 OK', value: 3890000 },
+    { label: '201 Created', value: 214000 },
+    { label: '204 No Content', value: 61300 },
+    { label: '429 Too Many Requests', value: 12410 },
+    { label: '401 Unauthorized', value: 8730 },
+    { label: '422 Unprocessable Entity', value: 5120 },
+    { label: '404 Not Found', value: 3960 },
+    { label: '503 Service Unavailable', value: 1480 },
+    { label: '500 Internal Server Error', value: 210 },
+  ],
+  'Top countries': [
+    { label: 'United States', value: 1310000 },
+    { label: 'Germany', value: 612000 },
+    { label: 'United Kingdom', value: 498000 },
+    { label: 'India', value: 376000 },
+    { label: 'Brazil', value: 288000 },
+    { label: 'Japan', value: 241000 },
+    { label: 'France', value: 198000 },
+    { label: 'Canada', value: 176000 },
+    { label: 'Australia', value: 131000 },
+  ],
+  'Top HTTP methods': [
+    { label: 'GET', value: 2940000 },
+    { label: 'POST', value: 1010000 },
+    { label: 'PUT', value: 164000 },
+    { label: 'PATCH', value: 58000 },
+    { label: 'DELETE', value: 38000 },
+  ],
+  'Top webhook events': [
+    { label: 'order.created', value: 412000 },
+    { label: 'payment.succeeded', value: 398000 },
+    { label: 'user.updated', value: 221000 },
+    { label: 'invoice.paid', value: 184000 },
+    { label: 'subscription.renewed', value: 96000 },
+    { label: 'payment.failed', value: 41000 },
+    { label: 'user.deleted', value: 12000 },
+  ],
+  'Top consumers by data out': [
+    { label: 'Data warehouse', value: 84.2 },
+    { label: 'Partner sync', value: 51.6 },
+    { label: 'Mobile app (iOS)', value: 28.4 },
+    { label: 'Web app', value: 21.9 },
+    { label: 'Mobile app (Android)', value: 14.1 },
+    { label: 'Internal tools', value: 6.8 },
+    { label: 'CLI', value: 3.2 },
+  ],
+  'Top regions': [
+    { label: 'us-east-1', value: 1620000 },
+    { label: 'eu-central-1', value: 1180000 },
+    { label: 'eu-west-2', value: 512000 },
+    { label: 'ap-south-1', value: 388000 },
+    { label: 'sa-east-1', value: 291000 },
+    { label: 'ap-northeast-1', value: 219000 },
+  ],
+}
+---
+
+<DefaultLayout title="API Usage" description="Calls, errors, latency and rate limits of your public API over the last 24 hours." pageMenu="dashboards.api" pageLibs={['apexcharts']}>
+  <div class="row row-cards">
+    {
+      stats.map((stat) => (
+        <div class="col-sm-6 col-lg-4 col-xl-2">
+          <Card>
+            <CardBody>
+              <Subheader as="h2">{stat.title}</Subheader>
+              <div class="d-flex align-items-baseline">
+                <div class="h2 mb-0 me-2">{stat.value}</div>
+                <Trending value={stat.change} />
+              </div>
+            </CardBody>
+            <Chart chartId={stat.chart} size="sm" class="rounded-bottom-3" label={`${stat.title} over the last 24 hours`} />
+          </Card>
+        </div>
+      ))
+    }
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="API calls over time">
+          <div class="card-actions d-flex align-items-center gap-2">
+            <label for="calls-group-by" class="form-label mb-0 text-secondary">Group by</label>
+            <select id="calls-group-by" class="form-select form-select-sm w-auto">
+              {groupBy.map((option) => <option>{option}</option>)}
+            </select>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <LegendList class="mb-3">
+            <Legend color="primary" text="API calls" value="4.21M" />
+          </LegendList>
+          <Chart chartId="api-calls" height={15} label="API calls over time" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Latency percentiles" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {latency.map((item) => <Legend color={item.color} text={item.name} value={item.value} unit="ms" />)}
+          </LegendList>
+          <Chart chartId="api-latency" height={15} label="Latency percentiles" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Responses by status code" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {statusCodes.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+          <Chart chartId="api-status" height={15} label="Responses by status code" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Calls by API version" />
+        <CardBody>
+          <LegendList class="mb-3">
+            {versions.map((item) => <Legend color={item.color} text={item.name} value={item.value} />)}
+          </LegendList>
+          <Chart chartId="api-versions" height={15} label="Calls by API version" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card class="h-100">
+        <CardHeader title="Rate limit events" />
+        <CardBody>
+          <LegendList class="mb-3">
+            <Legend color="orange" text="Rate limited" value="12.4k" />
+          </LegendList>
+          <Chart chartId="api-rate-limited" height={15} label="Rate limit events over time" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-lg-6">
+      <TopList title="Top endpoints" items={lists['Top endpoints'] ?? []} class="h-100" />
+    </div>
+
+    {
+      Object.entries(lists)
+        .filter(([title]) => title !== 'Top endpoints')
+        .map(([title, items]) => (
+          <div class="col-lg-6">
+            <TopList title={title} items={items} unit={title === 'Top consumers by data out' ? 'GB' : undefined} class="h-100" />
+          </div>
+        ))
+    }
+  </div>
+</DefaultLayout>
