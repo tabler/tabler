@@ -1,0 +1,157 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import AvatarList from '@ui/AvatarList.astro'
+import Avatar from '@ui/Avatar.astro'
+import Trending from '@ui/Trending.astro'
+import Icon from '@ui/Icon.astro'
+import GoalRow from '@shared/components/cards/GoalRow.astro'
+import GoalRequirement from '@shared/components/cards/GoalRequirement.astro'
+import people from '@data/people.json'
+
+const atlasRequirements = [
+  { done: true, title: 'Intelligent task routing', meta: 'Chris Cole · Shipped July 18', progress: 100 },
+  { done: true, title: 'Cross-project dependencies', meta: 'Lena Moore · Rolling out', progress: 92 },
+  { done: false, title: 'Automated weekly reports', meta: 'Jordan Lee · Integration testing', progress: 76 },
+  { done: false, title: 'Mobile offline mode', meta: 'Maya Zhou · Design review', progress: 58 },
+]
+
+const staticGoals = [
+  {
+    tile: 'P',
+    name: 'Pulse Analytics',
+    owner: 'Lena Moore · Product intelligence',
+    progress: 100,
+    status: 'Completed',
+    statusColor: 'success',
+  },
+  {
+    tile: 'O',
+    name: 'Orbit Billing',
+    owner: 'Jordan Lee · Subscription systems',
+    progress: 100,
+    progressLabel: '126%',
+    progressColor: 'success',
+    status: 'Exceeded',
+    statusColor: 'success',
+    statusOutline: true,
+  },
+  {
+    tile: 'N',
+    name: 'Nimbus Mobile',
+    owner: 'Maya Zhou · Mobile experience',
+    progress: 64,
+    status: 'On track',
+    statusColor: 'primary',
+  },
+]
+---
+
+<DefaultLayout>
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <span class="badge bg-white text-black badge-pill border">Q3 &middot; 2026</span>
+      <span class="text-secondary fs-5">Updated July 23, 2026</span>
+    </div>
+
+    <AvatarList stacked size="sm">
+      {people.slice(0, 3).map((person) => <Avatar person={person} size="sm" class="rounded-circle" />)}
+      <Avatar placeholder="+5" size="sm" class="rounded-circle" />
+    </AvatarList>
+  </div>
+
+  <h1>Accelerate product experience and growth</h1>
+  <p class="text-secondary">Deliver four critical product releases focused on activation, retention, and team velocity.</p>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-sm-4">
+          <div class="subheader">Quarter progress</div>
+          <div class="h1 mb-1">91%</div>
+          <div class="text-secondary d-flex align-items-center gap-1">
+            <Trending value={8} />
+            this week
+          </div>
+        </div>
+
+        <div class="col-sm-4 ps-3">
+          <div class="subheader">Key results</div>
+          <div class="h1 mb-1">12 / 16</div>
+          <div class="text-secondary">achieved</div>
+        </div>
+
+        <div class="col-sm-4 ps-3">
+          <div class="subheader">Time remaining</div>
+          <div class="h1 mb-1">49</div>
+          <div class="text-secondary">days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-none d-md-block">
+      <div class="w-100">
+        <div class="grid me-md-5">
+          <span class="g-col-8 subheader">product / owner</span>
+          <span class="g-col-3 subheader">quarter goal</span>
+          <span class="g-col-1 subheader">status</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion accordion-flush" id="accordion-goals">
+      <div class="accordion-item">
+        <div class="accordion-header border-bottom">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-atlas" aria-expanded="true">
+            <div class="w-100">
+              <GoalRow tile="A" name="Atlas Workspace" owner="Ivy Yang · Team collaboration" progress={82} status="On track" />
+            </div>
+
+            <div class="accordion-button-toggle">
+              <Icon name="chevron-down" />
+            </div>
+          </button>
+        </div>
+
+        <div id="collapse-atlas" class="accordion-collapse collapse show border-bottom" data-bs-parent="#accordion-goals">
+          <div class="accordion-body bg-surface-secondary">
+            <div class="d-flex justify-content-between py-3">
+              <span class="subheader">key requirements</span>
+              <span class="subheader">3 of 4 on target</span>
+            </div>
+
+            <div class="card">
+              {atlasRequirements.map((requirement) => <GoalRequirement {...requirement} />)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {
+      staticGoals.map((goal) => (
+        <div class="card-body">
+          <div class="w-100">
+            <GoalRow {...goal} spacer />
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <ul class="list-inline mb-0">
+        <li class="list-inline-item me-3">
+          <span class="legend bg-primary me-2"></span>On track
+        </li>
+        <li class="list-inline-item me-3">
+          <span class="legend bg-success me-2"></span>Completed
+        </li>
+        <li class="list-inline-item">
+          <span class="legend border border-success me-2"></span>Exceeded
+        </li>
+      </ul>
+      <p class="text-secondary m-0">Next goal review &middot; July 30</p>
+    </div>
+  </div>
+</DefaultLayout>
