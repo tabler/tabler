@@ -1,5 +1,11 @@
 # @tabler/docs
 
+## 1.7.6
+
+### Patch Changes
+
+- 65ffe81: Updated `astro` to 7.4.12, `@astrojs/mdx` to 8.1.6 and `@astrojs/vercel` to 11.0.22.
+
 ## 1.7.5
 
 ### Patch Changes

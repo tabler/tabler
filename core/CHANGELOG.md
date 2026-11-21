@@ -1,5 +1,18 @@
 # @tabler/core
 
+## 1.7.6
+
+### Patch Changes
+
+- f86c952: Fixed `@starting-style` and `@scope` rules being dropped from the `.min.css` files by switching the minifier to `cssnano`.
+- 50bd9cc: Fixed `Datepicker` theme changes before the first popup opens.
+- 59c60d7: Fixed `Carousel` so images inside `.carousel-item` cannot be dragged on touch devices.
+- 69b05e9: Fixed `OtpInput` keeping old characters when a shorter text is pasted over a selection.
+- 95ebf0f: Added `font-optical-sizing: auto` to the `html` element.
+- d0fac39: Updated `.icon-pulse`, `.icon-tada` and `.icon-rotate` to transition only `transform` instead of `all`.
+- 46bd1d7: Fixed inline `code` blending into the surrounding text or becoming unreadable on colored surfaces such as buttons: it now takes the color of the surrounding text and uses a 10% tint of that color as its background, instead of gray text on `--tblr-fill-tertiary`.
+- 68c81fc: Fixed Chrome recalculating the style of the whole page on each DOM change because of the `.steps` `:last-child` rule.
+
 ## 1.7.5
 
 ### Patch Changes
