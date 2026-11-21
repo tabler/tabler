@@ -73,8 +73,9 @@ export default defineConfig({
         {
           // docs css built by this package's `css` and `watch:css` scripts
           // (both write here). Source is tmp-assets/
-          // (not public/) because copy-assets wipes public/ on every restart —
-          // anything a watcher writes straight into public/ is lost there.
+          // (not public/) because copy-assets removes from public/ whatever is not
+          // in this manifest on every restart — anything a watcher writes
+          // straight into public/ is lost there.
           from: path('./tmp-assets/css'),
           to: path('./public/css'),
           label: '@tabler/docs',
