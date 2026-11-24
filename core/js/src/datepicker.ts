@@ -9,7 +9,7 @@ import type { Calendar, CalendarExtension, Options, Range } from 'vanilla-calend
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import { getElement, isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -952,10 +952,13 @@ EventHandler.on(document, EVENT_FOCUSIN_DATA_API, SELECTOR_DATA_TOGGLE, function
 
 // Render on load what cannot wait for a focus or a click: inline calendars,
 // and fields with preselected dates or a value, so they show it right away.
-initAll(SELECTOR_DATA_TOGGLE, Datepicker, (element) => {
-  const { dataset } = element
+registerPlugin(Datepicker, {
+  selector: SELECTOR_DATA_TOGGLE,
+  filter: (element) => {
+    const { dataset } = element
 
-  return dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || 'bsBoundInput' in dataset || 'tblrBoundInput' in dataset || Boolean((element as HTMLInputElement).value)
+    return dataset.bsInline === 'true' || dataset.tblrInline === 'true' || 'bsSelectedDates' in dataset || 'tblrSelectedDates' in dataset || 'bsBoundInput' in dataset || 'tblrBoundInput' in dataset || Boolean((element as HTMLInputElement).value)
+  },
 })
 // js-docs-end datepicker-init
 

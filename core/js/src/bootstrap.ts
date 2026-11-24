@@ -15,6 +15,7 @@ export { default as Toast } from './bootstrap/toast'
 export { default as Toggler } from './bootstrap/toggler'
 export { default as Tooltip } from './bootstrap/tooltip'
 
+import { registerPlugin } from './bootstrap/util/component-functions'
 import Alert from './bootstrap/alert'
 import Button from './bootstrap/button'
 import Carousel from './bootstrap/carousel'
@@ -45,4 +46,8 @@ export const bootstrap = {
   Toast,
   Toggler,
   Tooltip,
+}
+
+for (const Plugin of Object.values(bootstrap)) {
+  registerPlugin(Plugin)
 }

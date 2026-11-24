@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import Dropdown from '../../src/bootstrap/dropdown'
 import { clearFixture, getFixture } from '../helpers/fixture'
+import EventHandler from '../../src/bootstrap/dom/event-handler'
 
 vi.mock('@popperjs/core', () => ({
   createPopper: vi.fn(() => ({
@@ -276,6 +277,37 @@ describe('Dropdown', () => {
       dropdown.dispose()
 
       expect(Dropdown.getInstance(btnDropdown)).toBeNull()
+    })
+
+    it('should remove touch listeners when disposed while open', () => {
+      return new Promise<void>((resolve, reject) => {
+        Object.defineProperty(document.documentElement, 'ontouchstart', {
+          value: null,
+          writable: true,
+          configurable: true,
+        })
+
+        fixtureEl.innerHTML = ['<div class="dropdown">', '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>', '  <div class="dropdown-menu">', '    <a class="dropdown-item" href="#">Link</a>', '  </div>', '</div>'].join('')
+
+        const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
+        const dropdown = new Dropdown(btn)
+
+        btn.addEventListener('shown.bs.dropdown', () => {
+          const spy = vi.spyOn(EventHandler, 'off')
+          try {
+            dropdown.dispose()
+            expect(spy).toHaveBeenCalledWith(fixtureEl, 'mouseover', expect.any(Function))
+            resolve()
+          } catch (error) {
+            reject(error)
+          } finally {
+            spy.mockRestore()
+            delete (document.documentElement as any).ontouchstart
+          }
+        })
+
+        dropdown.show()
+      })
     })
   })
 

@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type OtpInputType = 'numeric' | 'alphanumeric' | 'alpha'
@@ -541,7 +541,7 @@ class OtpInput extends BaseComponent {
  */
 
 // js-docs-start otp-init
-initAll(SELECTOR_DATA_TOGGLE, OtpInput)
+registerPlugin(OtpInput, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end otp-init
 
 export default OtpInput

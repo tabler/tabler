@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = Record<string, never>
@@ -176,7 +176,7 @@ class SwitchIcon extends BaseComponent {
  */
 
 // js-docs-start switch-icon-init
-initAll(SELECTOR_DATA_TOGGLE, SwitchIcon)
+registerPlugin(SwitchIcon, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end switch-icon-init
 
 export default SwitchIcon

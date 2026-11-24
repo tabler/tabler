@@ -8,6 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
+import { registerPlugin } from './util/component-functions'
 import { defineJQueryPlugin, getNextActiveElement, isDisabled, isVisible, noop, resolved, settle } from './util/index'
 import type { JQueryCollectionLike } from './types'
 
@@ -21,7 +22,6 @@ const EVENT_SHOW = `show${EVENT_KEY}`
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}`
 const EVENT_KEYDOWN = `keydown${EVENT_KEY}`
-const EVENT_LOAD_DATA_API = `load${EVENT_KEY}`
 
 const ARROW_LEFT_KEY = 'ArrowLeft'
 const ARROW_RIGHT_KEY = 'ArrowRight'
@@ -278,11 +278,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   void (Tab.getOrCreateInstance(this) as Tab).show()
 })
 
-EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
-  for (const element of SelectorEngine.find(SELECTOR_DATA_TOGGLE_ACTIVE)) {
-    Tab.getOrCreateInstance(element)
-  }
-})
+registerPlugin(Tab, { selector: SELECTOR_DATA_TOGGLE_ACTIVE, when: 'load' })
 
 defineJQueryPlugin(Tab)
 

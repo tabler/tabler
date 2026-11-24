@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { enableDismissTrigger } from './bootstrap/util/component-functions'
+import { enableDismissTrigger, registerPlugin, withDescendants } from './bootstrap/util/component-functions'
 
 /**
  * Constants
@@ -100,12 +100,16 @@ class Banner extends BaseComponent {
 enableDismissTrigger(Banner, 'close')
 
 // js-docs-start banner-init
-const closedBanners = readClosed()
-for (const element of SelectorEngine.find(SELECTOR_REMEMBERED)) {
-  if (closedBanners.includes(getId(element))) {
-    element.remove()
-  }
-}
+registerPlugin(Banner, {
+  onInit: (root) => {
+    const closedBanners = readClosed()
+    for (const element of withDescendants(root, SELECTOR_REMEMBERED)) {
+      if (closedBanners.includes(getId(element))) {
+        element.remove()
+      }
+    }
+  },
+})
 // js-docs-end banner-init
 
 export default Banner

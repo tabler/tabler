@@ -1,4 +1,3 @@
-import { bootstrap } from './bootstrap'
 import { getRegistry, initRegistration, withDescendants } from './bootstrap/util/component-functions'
 import type { RegisteredPlugin } from './bootstrap/util/component-functions'
 
@@ -16,12 +15,12 @@ export const init = (root: ParentNode = document): void => {
 }
 
 /**
- * Disposes every Tabler plugin and Bootstrap component instance on the
+ * Disposes every registered plugin instance, Tabler's and Bootstrap's, on the
  * elements under `root`. Call it before removing or replacing markup, so the
  * instances release their listeners, observers and timers.
  */
 export const dispose = (root: ParentNode = document): void => {
-  const plugins = new Set<RegisteredPlugin>([...getRegistry().map((registration) => registration.Plugin), ...Object.values(bootstrap)])
+  const plugins = new Set<RegisteredPlugin>(getRegistry().map((registration) => registration.Plugin))
 
   for (const element of withDescendants(root)) {
     for (const Plugin of plugins) {

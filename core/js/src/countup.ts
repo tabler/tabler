@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
@@ -361,7 +361,7 @@ class CountUp extends BaseComponent {
  */
 
 // js-docs-start countup-init
-initAll(SELECTOR_DATA_COUNTUP, CountUp)
+registerPlugin(CountUp, { selector: SELECTOR_DATA_COUNTUP })
 // js-docs-end countup-init
 
 export default CountUp

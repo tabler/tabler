@@ -6,7 +6,7 @@
  */
 
 import BaseComponent from './bootstrap/base-component'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 // The part of a SortableJS instance the component uses
@@ -120,7 +120,7 @@ class Sortable extends BaseComponent {
  */
 
 // js-docs-start sortable-init
-initAll(SELECTOR_DATA_SORTABLE, Sortable)
+registerPlugin(Sortable, { selector: SELECTOR_DATA_SORTABLE })
 // js-docs-end sortable-init
 
 export default Sortable
