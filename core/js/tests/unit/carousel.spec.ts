@@ -253,6 +253,20 @@ describe('Carousel', () => {
 
       expect(Carousel.getInstance(carouselEl)).toBeNull()
     })
+
+    it('should stop cycling on dispose', () => {
+      fixtureEl.innerHTML = '<div id="myCarousel" class="carousel slide" data-bs-ride="carousel"></div>'
+
+      const carousel = new Carousel(fixtureEl.querySelector('#myCarousel')!)
+      const interval = carousel._interval
+      const spy = vi.spyOn(window, 'clearInterval')
+
+      carousel.dispose()
+
+      expect(interval).not.toBeNull()
+      expect(spy).toHaveBeenCalledWith(interval)
+      spy.mockRestore()
+    })
   })
 
   describe('getInstance', () => {
