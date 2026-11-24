@@ -190,6 +190,8 @@ class Carousel extends BaseComponent {
   }
 
   dispose(): void {
+    this._clearInterval()
+
     if (this._swipeHelper) {
       this._swipeHelper.dispose()
     }

@@ -173,6 +173,12 @@ class Dropdown extends BaseComponent {
   }
 
   dispose(): void {
+    if (this._isShown() && 'ontouchstart' in document.documentElement) {
+      for (const element of Array.from(document.body.children)) {
+        EventHandler.off(element, 'mouseover', noop)
+      }
+    }
+
     if (this._popper) {
       this._popper.destroy()
     }

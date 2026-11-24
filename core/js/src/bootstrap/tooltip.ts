@@ -243,6 +243,12 @@ class Tooltip extends BaseComponent {
       this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title') || '')
     }
 
+    if (this._isShown() && 'ontouchstart' in document.documentElement) {
+      for (const element of Array.from(document.body.children)) {
+        EventHandler.off(element, 'mouseover', noop)
+      }
+    }
+
     this._disposePopper()
     super.dispose()
   }
