@@ -9,6 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import { isDisabled } from './bootstrap/util/index'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
 import { prefersReducedMotion } from './util/prefers-reduced-motion'
@@ -471,5 +472,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
   instance.burst()
 })
+
+registerPlugin(Confetti)
 
 export default Confetti

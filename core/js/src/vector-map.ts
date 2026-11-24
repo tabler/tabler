@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
 import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
@@ -1009,7 +1009,7 @@ class VectorMap extends BaseComponent {
 // harmless, an element keeps its one instance.
 // js-docs-start vector-map-init
 const init = (): void => {
-  initAll(SELECTOR_DATA_TOGGLE, VectorMap)
+  registerPlugin(VectorMap, { selector: SELECTOR_DATA_TOGGLE })
 }
 
 if (document.readyState === 'complete') {

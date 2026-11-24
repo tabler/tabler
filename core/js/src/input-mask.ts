@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type MaskFunction = (unmaskedValue: string) => string
@@ -842,7 +842,7 @@ class InputMask extends BaseComponent {
  */
 
 // js-docs-start input-mask-init
-initAll(SELECTOR_DATA_MASK, InputMask)
+registerPlugin(InputMask, { selector: SELECTOR_DATA_MASK })
 // js-docs-end input-mask-init
 
 export default InputMask

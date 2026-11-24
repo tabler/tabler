@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = {
@@ -235,7 +235,7 @@ class SelectAll extends BaseComponent {
  */
 
 // js-docs-start select-all-init
-initAll(SELECTOR_DATA_TOGGLE, SelectAll)
+registerPlugin(SelectAll, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end select-all-init
 
 export default SelectAll

@@ -9,6 +9,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
+import { registerPlugin } from './util/component-functions'
 import { defineJQueryPlugin, getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 import Swipe from './util/swipe'
@@ -45,7 +46,6 @@ const EVENT_KEYDOWN = `keydown${EVENT_KEY}`
 const EVENT_MOUSEENTER = `mouseenter${EVENT_KEY}`
 const EVENT_MOUSELEAVE = `mouseleave${EVENT_KEY}`
 const EVENT_DRAG_START = `dragstart${EVENT_KEY}`
-const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 
 const CLASS_NAME_CAROUSEL = 'carousel'
@@ -447,13 +447,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (t
   carousel._maybeEnableCycle()
 })
 
-EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
-  const carousels = SelectorEngine.find(SELECTOR_DATA_RIDE)
-
-  for (const carousel of carousels) {
-    Carousel.getOrCreateInstance(carousel)
-  }
-})
+registerPlugin(Carousel, { selector: SELECTOR_DATA_RIDE, when: 'load' })
 
 defineJQueryPlugin(Carousel)
 

@@ -9,7 +9,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
-import { enableDismissTrigger } from './util/component-functions'
+import { enableDismissTrigger, registerPlugin } from './util/component-functions'
 import FocusTrap from './util/focustrap'
 import { defineJQueryPlugin, getFocusReturnTarget, isDisabled, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
@@ -24,7 +24,6 @@ const NAME = 'offcanvas'
 const DATA_KEY = 'bs.offcanvas'
 const EVENT_KEY = `.${DATA_KEY}`
 const DATA_API_KEY = '.data-api'
-const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`
 const ESCAPE_KEY = 'Escape'
 
 const CLASS_NAME_SHOW = 'show'
@@ -305,14 +304,11 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   void data.toggle(this)
 })
 
-EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
-  for (const selector of SelectorEngine.find(OPEN_SELECTOR)) {
-    if (getComputedStyle(selector).position !== 'fixed') {
-      continue
-    }
-
-    void (Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
-  }
+registerPlugin(Offcanvas, {
+  selector: OPEN_SELECTOR,
+  filter: (element) => getComputedStyle(element).position === 'fixed',
+  when: 'load',
+  onCreate: (instance) => void (instance as Offcanvas).show(),
 })
 
 EventHandler.on(window, EVENT_RESIZE, () => {

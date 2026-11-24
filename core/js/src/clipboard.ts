@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import { getElement } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -215,7 +215,7 @@ class Clipboard extends BaseComponent {
  */
 
 // js-docs-start clipboard-init
-initAll(SELECTOR_DATA_TOGGLE, Clipboard)
+registerPlugin(Clipboard, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end clipboard-init
 
 export default Clipboard

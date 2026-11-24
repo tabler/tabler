@@ -1,6 +1,15 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { clearFixture, getFixture } from '../helpers/fixture'
 import { init, dispose } from '../../src/init'
+import * as tabler from '../../tabler'
+import { getRegistry } from '../../src/bootstrap/util/component-functions'
+import Banner from '../../src/banner'
+import Confetti from '../../src/confetti'
+import Carousel from '../../src/bootstrap/carousel'
+import Offcanvas from '../../src/bootstrap/offcanvas'
+import ScrollSpy from '../../src/bootstrap/scrollspy'
+import Tab from '../../src/bootstrap/tab'
+import Modal from '../../src/bootstrap/modal'
 import Autosize from '../../src/autosize'
 import SwitchIcon from '../../src/switch-icon'
 import Datepicker from '../../src/datepicker'
@@ -109,6 +118,66 @@ describe('init and dispose', () => {
 
     expect(spy).toHaveBeenCalledTimes(1)
     expect(Tooltip.getInstance(tip)).toBeNull()
+  })
+
+  it.each([
+    ['a riding carousel', '<div class="carousel" data-bs-ride="carousel" data-bs-interval="false"><div class="carousel-inner"><div class="carousel-item active"></div></div></div>', '.carousel', Carousel],
+    ['a scrollspy', '<nav id="spy-nav"><a href="#spy-one">One</a></nav><div data-bs-spy="scroll" data-bs-target="#spy-nav"><div id="spy-one"></div></div>', '[data-bs-spy]', ScrollSpy],
+    ['an active tab', '<ul class="nav"><li><a class="nav-link active" data-bs-toggle="tab" href="#tab-pane">Tab</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-pane"></div></div>', '[data-bs-toggle="tab"]', Tab],
+  ] as const)('creates %s under the root, as the page start does', (_name, html, selector, Plugin) => {
+    fixtureEl.innerHTML = `<div id="fragment">${html}</div>`
+
+    init(fixtureEl.querySelector('#fragment')!)
+
+    expect(Plugin.getInstance(fixtureEl.querySelector<HTMLElement>(selector)!)).not.toBeNull()
+  })
+
+  it('shows an offcanvas that is open in the markup', () => {
+    fixtureEl.innerHTML = '<div class="offcanvas offcanvas-end show" style="position: fixed"></div><div class="offcanvas show" id="static"></div>'
+    const show = vi.spyOn(Offcanvas.prototype, 'show')
+
+    init(fixtureEl)
+    init(fixtureEl)
+
+    expect(show).toHaveBeenCalledTimes(1)
+    expect(Offcanvas.getInstance(fixtureEl.querySelector<HTMLElement>('#static')!)).toBeNull()
+    dispose(fixtureEl)
+    show.mockRestore()
+  })
+
+  it('removes a remembered closed banner under the root', () => {
+    localStorage.setItem('tabler-banner', 'release')
+    fixtureEl.innerHTML = '<div class="banner" data-bs-banner-id="release"></div><div class="banner" data-bs-banner-id="trial"></div>'
+
+    init(fixtureEl)
+
+    expect(fixtureEl.querySelector('[data-bs-banner-id="release"]')).toBeNull()
+    expect(fixtureEl.querySelector('[data-bs-banner-id="trial"]')).not.toBeNull()
+    localStorage.clear()
+  })
+
+  it('disposes plugins that only start from a trigger', () => {
+    fixtureEl.innerHTML = '<div class="banner" id="banner"></div><button id="burst"></button><div class="modal" id="modal"></div>'
+    const banner = Banner.getOrCreateInstance(fixtureEl.querySelector<HTMLElement>('#banner')!)
+    const confetti = Confetti.getOrCreateInstance(fixtureEl.querySelector<HTMLElement>('#burst')!)
+    const modal = Modal.getOrCreateInstance(fixtureEl.querySelector<HTMLElement>('#modal')!)
+    const spies = [banner, confetti, modal].map((instance) => vi.spyOn(instance as { dispose(): void }, 'dispose'))
+
+    dispose(fixtureEl)
+
+    for (const spy of spies) {
+      expect(spy).toHaveBeenCalledTimes(1)
+    }
+  })
+
+  it('has a registration for every plugin class the bundle exports', () => {
+    const registered = new Set(getRegistry().map((registration) => registration.Plugin as unknown))
+    const plugins = Object.entries(tabler).filter(([, value]) => typeof value === 'function' && 'getOrCreateInstance' in value)
+
+    expect(plugins.length).toBeGreaterThan(20)
+    for (const [name, Plugin] of plugins) {
+      expect(registered.has(Plugin), name).toBe(true)
+    }
   })
 
   it('ignores a root that was never initialised', () => {

@@ -9,7 +9,7 @@ import * as Popper from '@popperjs/core'
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { eventActionOnPlugin, initAll } from './bootstrap/util/component-functions'
+import { eventActionOnPlugin, registerPlugin } from './bootstrap/util/component-functions'
 import { getElement, getNextActiveElement, isDisabled, isRTL, isVisible } from './bootstrap/util/index'
 import { DefaultAllowlist, DefaultIconAllowlist, sanitizeHtml } from './bootstrap/util/sanitizer'
 import type { DelegatedEvent } from './bootstrap/dom/event-handler'
@@ -1113,7 +1113,7 @@ class Combobox extends BaseComponent {
 
 // js-docs-start combobox-init
 eventActionOnPlugin(Combobox, EVENT_CLICK_DATA_API, `${SELECTOR_DATA_TOGGLE}:not(select)`, 'toggle')
-initAll(SELECTOR_DATA_TOGGLE, Combobox)
+registerPlugin(Combobox, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end combobox-init
 
 export default Combobox

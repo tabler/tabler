@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import Combobox from './combobox'
 import { countryOfDial, formatNumber, formatOfCountry, KEEP_ZERO, PHONE_COUNTRIES, TRUNK_ZERO } from './phone-countries'
 import type { PhoneCountry } from './phone-countries'
@@ -380,7 +380,7 @@ class PhoneInput extends BaseComponent {
  */
 
 // js-docs-start phone-input-init
-initAll(SELECTOR_DATA_TOGGLE, PhoneInput)
+registerPlugin(PhoneInput, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end phone-input-init
 
 export default PhoneInput

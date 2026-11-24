@@ -8,6 +8,7 @@
 import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
+import { registerPlugin } from './util/component-functions'
 import { defineJQueryPlugin, getElement, isDisabled, isVisible, parseSelector } from './util/index'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -24,11 +25,9 @@ type ComponentConfigInput = Partial<Omit<ComponentConfig, 'target' | 'threshold'
 const NAME = 'scrollspy'
 const DATA_KEY = 'bs.scrollspy'
 const EVENT_KEY = `.${DATA_KEY}`
-const DATA_API_KEY = '.data-api'
 
 const EVENT_ACTIVATE = `activate${EVENT_KEY}`
 const EVENT_CLICK = `click${EVENT_KEY}`
-const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`
 
 const CLASS_NAME_DROPDOWN_ITEM = 'dropdown-item'
 const CLASS_NAME_ACTIVE = 'active'
@@ -272,11 +271,7 @@ class ScrollSpy extends BaseComponent {
   }
 }
 
-EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
-  for (const spy of SelectorEngine.find(SELECTOR_DATA_SPY)) {
-    ScrollSpy.getOrCreateInstance(spy)
-  }
-})
+registerPlugin(ScrollSpy, { selector: SELECTOR_DATA_SPY, when: 'load' })
 
 defineJQueryPlugin(ScrollSpy)
 

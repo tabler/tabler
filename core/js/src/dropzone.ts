@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = {
@@ -528,7 +528,7 @@ class Dropzone extends BaseComponent {
  */
 
 // js-docs-start dropzone-init
-initAll(SELECTOR_DATA_TOGGLE, Dropzone)
+registerPlugin(Dropzone, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end dropzone-init
 
 export default Dropzone
