@@ -110,4 +110,36 @@ describe('Sortable', () => {
       expect(plugin).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('data-sortable values', () => {
+    const optionsFor = (attribute: string): unknown => {
+      plugin.mockClear()
+      fixtureEl.innerHTML = `<ul ${attribute}><li>a</li></ul>`
+      new Sortable(list())
+      return plugin.mock.calls[0][1]
+    }
+
+    it('should use the defaults for a bare attribute', () => {
+      expect(optionsFor('data-sortable')).not.toHaveProperty('animation')
+    })
+
+    it.each(['null', '5', '"text"', '[1,2]', 'true'])('should ignore JSON that is not an object: %s', (value) => {
+      const defaults = optionsFor('data-sortable')
+
+      expect(optionsFor(`data-sortable='${value}'`)).toEqual(defaults)
+    })
+  })
+
+  describe('without the plugin', () => {
+    it('should return empty results and not throw', () => {
+      delete window.Sortable
+      const instance = new Sortable(list())
+
+      expect(instance.sortable).toBeNull()
+      expect(instance.toArray()).toEqual([])
+      expect(() => instance.sort(['b', 'a'])).not.toThrow()
+      expect(() => instance.dispose()).not.toThrow()
+      expect(Sortable.getInstance(list())).toBeNull()
+    })
+  })
 })

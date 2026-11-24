@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -114,13 +114,13 @@ class Modal extends BaseComponent {
     return NAME
   }
 
-  toggle(relatedTarget?: HTMLElement): void {
+  toggle(relatedTarget?: HTMLElement): Promise<void> | void {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget?: HTMLElement): void {
+  show(relatedTarget?: HTMLElement): Promise<void> | void {
     if (this._isShown || this._isTransitioning) {
-      return
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
@@ -128,7 +128,7 @@ class Modal extends BaseComponent {
     })
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
@@ -147,18 +147,20 @@ class Modal extends BaseComponent {
 
     this._adjustDialog()
 
-    this._backdrop.show(() => this._showElement(relatedTarget))
+    return new Promise((resolve) => {
+      this._backdrop.show(() => resolve(this._element ? this._showElement(relatedTarget) : undefined))
+    })
   }
 
-  hide(): void {
+  hide(): Promise<void> | void {
     if (!this._isShown || this._isTransitioning) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     for (const child of this._getChildren()) {
@@ -174,7 +176,7 @@ class Modal extends BaseComponent {
     const returnFocusTarget = this._returnFocusTarget
     this._returnFocusTarget = null
 
-    this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
+    return this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
   }
 
   dispose(): void {
@@ -204,7 +206,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  _showElement(relatedTarget?: HTMLElement): void {
+  _showElement(relatedTarget?: HTMLElement): Promise<void> {
     if (!document.body.contains(this._element)) {
       document.body.append(this._element)
     }
@@ -235,7 +237,7 @@ class Modal extends BaseComponent {
       })
     }
 
-    this._queueCallback(transitionComplete, this._dialog!, this._isAnimated())
+    return this._queueCallback(transitionComplete, this._dialog!, this._isAnimated())
   }
 
   _addEventListeners(): void {
@@ -245,7 +247,7 @@ class Modal extends BaseComponent {
       }
 
       if (this._config.keyboard) {
-        this.hide()
+        void this.hide()
         return
       }
 
@@ -270,38 +272,46 @@ class Modal extends BaseComponent {
         }
 
         if (this._config.backdrop) {
-          this.hide()
+          void this.hide()
         }
       })
     })
   }
 
-  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
+  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): Promise<void> {
+    const element = this._element
+    const scrollBar = this._scrollBar
+
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
     this._element.removeAttribute('role')
     this._isTransitioning = false
 
-    this._backdrop.hide(() => {
-      const parent = this._parent
-      this._parent = null
-      this._resetAdjustments()
+    return new Promise((resolve) => {
+      this._backdrop.hide(() => {
+        const parent = this._parent
+        this._parent = null
 
-      if (parent) {
-        this._unstackFromParent(parent)
-      } else {
-        document.body.classList.remove(CLASS_NAME_OPEN)
-        this._scrollBar.reset()
-      }
+        if (this._element) {
+          this._resetAdjustments()
+        }
 
-      const element = this._element
+        if (parent) {
+          this._unstackFromParent(parent)
+        } else {
+          document.body.classList.remove(CLASS_NAME_OPEN)
+          scrollBar.reset()
+        }
 
-      EventHandler.trigger(element, EVENT_HIDDEN)
+        EventHandler.trigger(element, EVENT_HIDDEN)
 
-      if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
-        restoreFocus(returnFocusTarget, parent ? parent._element : element)
-      }
+        if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
+          restoreFocus(returnFocusTarget, parent ? parent._element : element)
+        }
+
+        resolve()
+      })
     })
   }
 
@@ -363,9 +373,9 @@ class Modal extends BaseComponent {
     }
 
     this._element.classList.add(CLASS_NAME_STATIC)
-    this._queueCallback(() => {
+    void this._queueCallback(() => {
       this._element.classList.remove(CLASS_NAME_STATIC)
-      this._queueCallback(() => {
+      void this._queueCallback(() => {
         this._element.style.overflowY = initialOverflowY
       }, this._dialog!)
     }, this._dialog!)
@@ -430,10 +440,10 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
 
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen && !(data._config.stacked && alreadyOpen !== target)) {
-    ;(Modal.getInstance(alreadyOpen) as Modal | null)?.hide()
+    void (Modal.getInstance(alreadyOpen) as Modal | null)?.hide()
   }
 
-  data.toggle(this)
+  void data.toggle(this)
 })
 
 enableDismissTrigger(Modal)

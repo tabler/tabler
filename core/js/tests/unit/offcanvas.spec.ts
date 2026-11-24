@@ -699,4 +699,96 @@ describe('Offcanvas', () => {
       })
     })
   })
+
+  describe('backdrop click', () => {
+    const shown = (el: Element, config: Record<string, unknown>) =>
+      new Promise<Offcanvas>((resolve) => {
+        const instance = new Offcanvas(el, config)
+        el.addEventListener('shown.bs.offcanvas', () => resolve(instance), { once: true })
+        instance.show()
+      })
+
+    it('should hide the offcanvas', async () => {
+      fixtureEl.innerHTML = createOffcanvasHTML()
+      const instance = await shown(fixtureEl.querySelector('.offcanvas')!, {})
+      const hide = vi.spyOn(instance, 'hide')
+
+      document.querySelector('.offcanvas-backdrop')!.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+
+      expect(hide).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fire hidePrevented and stay open with a static backdrop', async () => {
+      fixtureEl.innerHTML = createOffcanvasHTML()
+      const el = fixtureEl.querySelector('.offcanvas')!
+      const instance = await shown(el, { backdrop: 'static' })
+      const hide = vi.spyOn(instance, 'hide')
+      const hidePrevented = vi.fn()
+      el.addEventListener('hidePrevented.bs.offcanvas', hidePrevented)
+
+      document.querySelector('.offcanvas-backdrop')!.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+
+      expect(hidePrevented).toHaveBeenCalledTimes(1)
+      expect(hide).not.toHaveBeenCalled()
+      expect(instance._isShown).toBe(true)
+    })
+  })
+
+  describe('data-api trigger', () => {
+    const click = (selector: string): MouseEvent => {
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+      fixtureEl.querySelector(selector)!.dispatchEvent(event)
+      return event
+    }
+
+    it('should hide an open offcanvas before showing another one', () => {
+      fixtureEl.innerHTML = ['<button data-bs-toggle="offcanvas" data-bs-target="#second">Open</button>', '<div class="offcanvas offcanvas-start show" id="first" tabindex="-1"></div>', '<div class="offcanvas offcanvas-end" id="second" tabindex="-1"></div>'].join('')
+      const first = new Offcanvas('#first')
+      const hide = vi.spyOn(first, 'hide')
+
+      click('button')
+
+      expect(hide).toHaveBeenCalledTimes(1)
+      expect((Offcanvas.getInstance(fixtureEl.querySelector('#second')!) as Offcanvas)._isShown).toBe(true)
+    })
+
+    it('should not follow a link trigger', () => {
+      fixtureEl.innerHTML = '<a href="#linked" data-bs-toggle="offcanvas">Open</a><div class="offcanvas offcanvas-start" id="linked" tabindex="-1"></div>'
+
+      expect(click('a').defaultPrevented).toBe(true)
+      expect(Offcanvas.getInstance(fixtureEl.querySelector('#linked')!)).not.toBeNull()
+    })
+
+    it('should ignore a disabled trigger and a trigger without a target', () => {
+      fixtureEl.innerHTML = ['<button class="disabled" data-bs-toggle="offcanvas" data-bs-target="#target">Open</button>', '<button id="lost" data-bs-toggle="offcanvas" data-bs-target="#missing">Open</button>', '<div class="offcanvas offcanvas-start" id="target" tabindex="-1"></div>'].join('')
+
+      click('button.disabled')
+      expect(() => click('#lost')).not.toThrow()
+
+      expect(Offcanvas.getInstance(fixtureEl.querySelector('#target')!)).toBeNull()
+    })
+  })
+
+  describe('open on load and resize', () => {
+    it('should show a panel that is rendered open as an overlay', () => {
+      fixtureEl.innerHTML = createOffcanvasHTML().replace('offcanvas-start', 'offcanvas-start show')
+      const el = fixtureEl.querySelector<HTMLElement>('.offcanvas')!
+      el.style.position = 'fixed'
+
+      window.dispatchEvent(new Event('load'))
+
+      expect((Offcanvas.getInstance(el) as Offcanvas)._isShown).toBe(true)
+    })
+
+    it('should hide a responsive offcanvas that stops being an overlay on resize', () => {
+      fixtureEl.innerHTML = ['<div class="offcanvas-lg offcanvas-start show" id="inline" aria-modal="true" tabindex="-1"></div>', '<div class="offcanvas-lg offcanvas-start show" id="overlay" aria-modal="true" tabindex="-1" style="position: fixed"></div>'].join('')
+      const hide = vi.spyOn(Offcanvas.prototype, 'hide')
+
+      window.dispatchEvent(new Event('resize'))
+
+      expect(hide).toHaveBeenCalledTimes(1)
+      expect(Offcanvas.getInstance(fixtureEl.querySelector('#inline')!)).not.toBeNull()
+      expect(Offcanvas.getInstance(fixtureEl.querySelector('#overlay')!)).toBeNull()
+    })
+  })
 })

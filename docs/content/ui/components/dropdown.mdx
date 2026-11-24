@@ -302,6 +302,18 @@ new tabler.Dropdown(el, { autoClose: 'outside' });
 
 To read or control the existing instance without changing its options, use `tabler.Dropdown.getInstance(el)` or `tabler.Dropdown.getOrCreateInstance(el)`.
 
+### Promise return values
+
+`show()`, `hide()` and `toggle()` return a Promise that resolves right after `shown.bs.dropdown` or `hidden.bs.dropdown` fires. The menu has no transition, so this happens right away. Use it to run code after the dropdown has finished opening or closing:
+
+```js
+const dropdown = tabler.Dropdown.getOrCreateInstance(el);
+await dropdown.show();
+menu.querySelector('.dropdown-item')?.focus();
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the menu is already open or closed, the toggle is disabled, or a listener called `preventDefault()` on `show.bs.dropdown` or `hide.bs.dropdown`. To act only when the dropdown really changed state, listen for `shown.bs.dropdown` or `hidden.bs.dropdown` instead.
+
 ## Accessibility
 
 - The trigger must be a `button`, or an `a` with an `href`. Bootstrap toggles `aria-expanded` on it for you, so do not set it by hand.

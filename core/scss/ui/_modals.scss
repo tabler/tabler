@@ -90,15 +90,43 @@
 //
 // Native dialog
 //
-// Make the backdrop of a native `<dialog>` opened with `showModal()` match the
-// backdrop used by modals and offcanvases.
+// Make the backdrop of a native `<dialog>` match the backdrop used by modals
+// and offcanvases, and fade the dialog in and out like a modal.
 //
 // The alpha is part of the color instead of `opacity`, so that `backdrop-filter`
 // blurs the page instead of blending a blurred copy over the sharp one.
-dialog::backdrop {
-  background: color-transparent(var(--backdrop-bg), calc(var(--backdrop-opacity) * 100%));
-}
+dialog {
+  @include transition(opacity $dialog-transition-duration linear, translate $dialog-transition-duration ease-out, overlay $dialog-transition-duration allow-discrete, display $dialog-transition-duration allow-discrete);
 
-dialog.modal-blur::backdrop {
-  backdrop-filter: var(--backdrop-filter);
+  @starting-style {
+    opacity: 0;
+    translate: $dialog-fade-translate;
+  }
+
+  &::backdrop {
+    background: color-transparent(var(--backdrop-bg), calc(var(--backdrop-opacity) * 100%));
+    @include transition(background-color $dialog-transition-duration linear, backdrop-filter $dialog-transition-duration linear, overlay $dialog-transition-duration allow-discrete, display $dialog-transition-duration allow-discrete);
+
+    @starting-style {
+      background-color: transparent;
+    }
+  }
+
+  &.modal-blur::backdrop {
+    backdrop-filter: var(--backdrop-filter);
+
+    @starting-style {
+      backdrop-filter: blur(0);
+    }
+  }
+
+  &:not([open], :popover-open) {
+    opacity: 0;
+    translate: $dialog-fade-translate;
+
+    &::backdrop {
+      background-color: transparent;
+      backdrop-filter: blur(0);
+    }
+  }
 }

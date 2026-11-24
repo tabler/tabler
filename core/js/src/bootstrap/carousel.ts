@@ -194,6 +194,10 @@ class Carousel extends BaseComponent {
       this._swipeHelper.dispose()
     }
 
+    for (const img of SelectorEngine.find(SELECTOR_ITEM_IMG, this._element)) {
+      EventHandler.off(img, EVENT_DRAG_START)
+    }
+
     super.dispose()
   }
 
@@ -353,7 +357,7 @@ class Carousel extends BaseComponent {
       triggerEvent(EVENT_SLID)
     }
 
-    this._queueCallback(completeCallBack, activeElement, this._isAnimated())
+    void this._queueCallback(completeCallBack, activeElement, this._isAnimated())
 
     if (isCycling) {
       this.cycle()

@@ -953,4 +953,144 @@ describe('Modal', () => {
       })
     })
   })
+
+  describe('_adjustDialog', () => {
+    afterEach(() => {
+      document.documentElement.dir = ''
+    })
+
+    const createModal = (scrollbarWidth: number, overflowing: boolean) => {
+      fixtureEl.innerHTML = createModalHTML()
+      const modalEl = fixtureEl.querySelector<HTMLElement>('.modal')!
+      const modal = new Modal(modalEl)
+      vi.spyOn(modal._scrollBar, 'getWidth').mockReturnValue(scrollbarWidth)
+      if (overflowing) {
+        modalEl.style.height = `${document.documentElement.clientHeight + 100}px`
+      }
+
+      return { modal, modalEl }
+    }
+
+    it('should pad the modal on the scrollbar side when only the body overflows', () => {
+      const { modal, modalEl } = createModal(15, false)
+
+      modal._adjustDialog()
+
+      expect(modalEl.style.paddingRight).toBe('15px')
+      expect(modalEl.style.paddingLeft).toBe('')
+    })
+
+    it('should pad the left side in RTL when only the body overflows', () => {
+      document.documentElement.dir = 'rtl'
+      const { modal, modalEl } = createModal(15, false)
+
+      modal._adjustDialog()
+
+      expect(modalEl.style.paddingLeft).toBe('15px')
+      expect(modalEl.style.paddingRight).toBe('')
+    })
+
+    it('should set the opposite side when only the modal overflows', () => {
+      const { modal, modalEl } = createModal(0, true)
+
+      modal._adjustDialog()
+
+      expect(modalEl.style.paddingLeft).toBe('0px')
+      expect(modalEl.style.paddingRight).toBe('')
+    })
+
+    it('should set the right side in RTL when only the modal overflows', () => {
+      document.documentElement.dir = 'rtl'
+      const { modal, modalEl } = createModal(0, true)
+
+      modal._adjustDialog()
+
+      expect(modalEl.style.paddingRight).toBe('0px')
+      expect(modalEl.style.paddingLeft).toBe('')
+    })
+
+    it('should leave the padding alone when both or neither overflow', () => {
+      const both = createModal(15, true)
+      both.modal._adjustDialog()
+      expect(both.modalEl.style.paddingRight).toBe('')
+
+      const neither = createModal(0, false)
+      neither.modal._adjustDialog()
+      expect(neither.modalEl.style.paddingLeft).toBe('')
+    })
+
+    it('should clear both sides in _resetAdjustments', () => {
+      const { modal, modalEl } = createModal(15, false)
+      modalEl.style.paddingLeft = '15px'
+      modalEl.style.paddingRight = '15px'
+
+      modal._resetAdjustments()
+
+      expect(modalEl.style.paddingLeft).toBe('')
+      expect(modalEl.style.paddingRight).toBe('')
+    })
+  })
+
+  describe('resize', () => {
+    it('should adjust the dialog only while the modal is shown', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = createModalHTML()
+        const modalEl = fixtureEl.querySelector('.modal')!
+        const modal = new Modal(modalEl)
+        const spy = vi.spyOn(modal, '_adjustDialog')
+
+        window.dispatchEvent(new Event('resize'))
+        expect(spy).not.toHaveBeenCalled()
+
+        modalEl.addEventListener('shown.bs.modal', () => {
+          spy.mockClear()
+          window.dispatchEvent(new Event('resize'))
+          expect(spy).toHaveBeenCalledTimes(1)
+          resolve()
+        })
+
+        modal.show()
+      })
+    })
+  })
+
+  describe('data-api trigger', () => {
+    const click = (selector: string): MouseEvent => {
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+      fixtureEl.querySelector(selector)!.dispatchEvent(event)
+      return event
+    }
+
+    it('should hide an open modal before showing another one', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="modal" id="first" tabindex="-1"><div class="modal-dialog"><button data-bs-toggle="modal" data-bs-target="#second">Next</button></div></div>', '<div class="modal" id="second" tabindex="-1"><div class="modal-dialog"></div></div>'].join('')
+        const firstEl = fixtureEl.querySelector('#first')!
+        const secondEl = fixtureEl.querySelector('#second')!
+        const first = new Modal(firstEl)
+        const hide = vi.spyOn(first, 'hide')
+
+        firstEl.addEventListener('shown.bs.modal', () => click('button'))
+        secondEl.addEventListener('shown.bs.modal', () => {
+          expect(hide).toHaveBeenCalledTimes(1)
+          resolve()
+        })
+
+        first.show()
+      })
+    })
+
+    it('should not follow a link trigger', () => {
+      fixtureEl.innerHTML = '<a href="#linked" data-bs-toggle="modal">Open</a><div class="modal" id="linked" tabindex="-1"><div class="modal-dialog"></div></div>'
+
+      expect(click('a').defaultPrevented).toBe(true)
+      expect(Modal.getInstance(fixtureEl.querySelector('#linked')!)).not.toBeNull()
+    })
+
+    it('should ignore a trigger without a target', () => {
+      fixtureEl.innerHTML = '<button data-bs-toggle="modal" data-bs-target="#missing">Open</button>'
+
+      expect(() => click('button')).not.toThrow()
+      expect(document.querySelector('.modal-backdrop')).toBeNull()
+    })
+  })
 })
