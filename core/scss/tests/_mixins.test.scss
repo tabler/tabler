@@ -48,6 +48,26 @@
   }
 }
 
+@include describe('text-truncate-lines mixin') {
+  @include it('clamps the text to the given number of lines') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include text-truncate-lines(3);
+        }
+      }
+      @include expect() {
+        .t {
+          display: -webkit-box;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+      }
+    }
+  }
+}
+
 @include describe('autodark-image mixin') {
   @include it('inverts the image via filter') {
     @include assert() {
