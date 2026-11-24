@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import Tooltip from '../../src/bootstrap/tooltip'
 import { clearFixture, getFixture } from '../helpers/fixture'
+import EventHandler from '../../src/bootstrap/dom/event-handler'
 
 vi.mock('@popperjs/core', () => ({
   createPopper: vi.fn(() => ({
@@ -347,6 +348,36 @@ describe('Tooltip', () => {
       expect(el.getAttribute('data-bs-original-title')).toBe('Tooltip title')
       tooltip.dispose()
       expect(el.getAttribute('title')).toBe('Tooltip title')
+    })
+
+    it('should remove touch listeners when disposed while shown', () => {
+      return new Promise<void>((resolve, reject) => {
+        Object.defineProperty(document.documentElement, 'ontouchstart', {
+          value: null,
+          writable: true,
+          configurable: true,
+        })
+
+        fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
+        const el = fixtureEl.querySelector('a')!
+        const tooltip = new Tooltip(el, { animation: false })
+
+        el.addEventListener('shown.bs.tooltip', () => {
+          const spy = vi.spyOn(EventHandler, 'off')
+          try {
+            tooltip.dispose()
+            expect(spy).toHaveBeenCalledWith(fixtureEl, 'mouseover', expect.any(Function))
+            resolve()
+          } catch (error) {
+            reject(error)
+          } finally {
+            spy.mockRestore()
+            delete (document.documentElement as any).ontouchstart
+          }
+        })
+
+        tooltip.show()
+      })
     })
 
     it('should destroy popper on dispose', () => {
