@@ -164,7 +164,7 @@ class Modal extends BaseComponent {
     }
 
     for (const child of this._getChildren()) {
-      child.hide()
+      void child.hide()
     }
 
     this._isShown = false
