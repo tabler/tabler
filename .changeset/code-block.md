@@ -1,7 +1,7 @@
 ---
-'@tabler/core': minor
-'@tabler/preview': minor
-'@tabler/docs': minor
+"@tabler/core": minor
+"@tabler/preview": minor
+"@tabler/docs": minor
 ---
 
-Added the code block component: `.code-block` wraps a `pre` in a dark surface with an optional header (title and language), a copy button that uses the Clipboard plugin, line numbers, highlighted lines and a max height variant.
+Added Code block component: `.code-block` with a header, copy button, line numbers, highlighted lines and a max height variant.
