@@ -7,6 +7,16 @@
     },
     { "src": "/eat/static/(.*)", "dest": "https://eu-assets.i.posthog.com/static/$1" },
     { "src": "/eat/(.*)", "dest": "https://eu.i.posthog.com/$1" },
+    {
+      "src": "/(static/.*|favicon\\.ico)",
+      "headers": { "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800" },
+      "continue": true
+    },
+    {
+      "src": "/(dist|preview)/.*",
+      "headers": { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" },
+      "continue": true
+    },
     { "handle": "filesystem" },
     {
       "src": "/(.*)",
