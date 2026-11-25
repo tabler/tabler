@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Set `accent-color` to the primary color on the root element, so native checkboxes, radios, range inputs and `<progress>` without Tabler classes use the theme color.
+Added `accent-color` in the primary color to the root element, so native checkboxes, radios and range inputs use it.
