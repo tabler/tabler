@@ -13,6 +13,8 @@ describe('Modal', () => {
     clearFixture()
     vi.restoreAllMocks()
     document.body.classList.remove('modal-open')
+    document.body.style.overflow = ''
+    document.body.style.paddingRight = ''
     for (const el of document.querySelectorAll('.modal-backdrop')) {
       el.remove()
     }
@@ -750,6 +752,145 @@ describe('Modal', () => {
         })
 
         modal.show()
+      })
+    })
+  })
+
+  describe('stacked', () => {
+    const createStackedHTML = () =>
+      [
+        '<div class="modal" id="parentModal" tabindex="-1" style="z-index: 1055">',
+        '  <div class="modal-dialog"><div class="modal-content">',
+        '    <button id="openChild" data-bs-toggle="modal" data-bs-target="#childModal">Open</button>',
+        '    <button id="openOther" data-bs-toggle="modal" data-bs-target="#otherModal">Swap</button>',
+        '  </div></div>',
+        '</div>',
+        '<div class="modal" id="childModal" tabindex="-1" data-bs-stacked="true">',
+        '  <div class="modal-dialog"><div class="modal-content"><button data-bs-dismiss="modal">Close</button></div></div>',
+        '</div>',
+        '<div class="modal" id="otherModal" tabindex="-1">',
+        '  <div class="modal-dialog"><div class="modal-content"></div></div>',
+        '</div>',
+      ].join('')
+
+    const openStack = () =>
+      new Promise<{ parentEl: HTMLElement; childEl: HTMLElement; parent: Modal; child: Modal }>((resolve) => {
+        fixtureEl.innerHTML = createStackedHTML()
+
+        const parentEl = fixtureEl.querySelector<HTMLElement>('#parentModal')!
+        const childEl = fixtureEl.querySelector<HTMLElement>('#childModal')!
+        const parent = new Modal(parentEl)
+
+        parentEl.addEventListener('shown.bs.modal', () => {
+          fixtureEl.querySelector<HTMLElement>('#openChild')!.click()
+        })
+
+        childEl.addEventListener('shown.bs.modal', () => {
+          resolve({ parentEl, childEl, parent, child: Modal.getInstance(childEl) as Modal })
+        })
+
+        parent.show()
+      })
+
+    it('should have stacked disabled by default', () => {
+      expect(Modal.Default.stacked).toBe(false)
+    })
+
+    it('should keep the open modal shown and mark it as stacked', async () => {
+      const { parentEl, childEl, parent, child } = await openStack()
+
+      expect(parent._isShown).toBe(true)
+      expect(child._isShown).toBe(true)
+      expect(parentEl.classList.contains('show')).toBe(true)
+      expect(parentEl.classList.contains('modal-stacked')).toBe(true)
+      expect(childEl.style.zIndex).toBe('1065')
+      expect(child._backdrop._getElement().style.zIndex).toBe('1060')
+      expect(document.querySelectorAll('.modal-backdrop')).toHaveLength(2)
+    })
+
+    it('should move the focus trap to the stacked modal', async () => {
+      const { parent, child } = await openStack()
+
+      expect(parent._focustrap._isActive).toBe(false)
+      expect(child._focustrap._isActive).toBe(true)
+    })
+
+    it('should return to the parent modal when the stacked modal is hidden', async () => {
+      const { parentEl, childEl, parent, child } = await openStack()
+
+      await new Promise<void>((resolve) => {
+        childEl.addEventListener('hidden.bs.modal', () => resolve())
+        child.hide()
+      })
+
+      expect(parent._isShown).toBe(true)
+      expect(parentEl.classList.contains('modal-stacked')).toBe(false)
+      expect(parent._focustrap._isActive).toBe(true)
+      expect(childEl.style.zIndex).toBe('')
+      expect(document.body.classList.contains('modal-open')).toBe(true)
+      expect(document.body.style.overflow).toBe('hidden')
+      expect(document.activeElement).toBe(fixtureEl.querySelector('#openChild'))
+    })
+
+    it('should hide the stacked modal when its parent is hidden', async () => {
+      const { parentEl, childEl, parent, child } = await openStack()
+
+      await new Promise<void>((resolve) => {
+        let hidden = 0
+        const onHidden = () => {
+          hidden += 1
+          if (hidden === 2) {
+            resolve()
+          }
+        }
+
+        parentEl.addEventListener('hidden.bs.modal', onHidden)
+        childEl.addEventListener('hidden.bs.modal', onHidden)
+        parent.hide()
+      })
+
+      expect(parent._isShown).toBe(false)
+      expect(child._isShown).toBe(false)
+      expect(document.body.classList.contains('modal-open')).toBe(false)
+      expect(document.body.style.overflow).toBe('')
+    })
+
+    it('should still swap modals when the target is not stacked', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = createStackedHTML()
+
+        const parentEl = fixtureEl.querySelector<HTMLElement>('#parentModal')!
+        const otherEl = fixtureEl.querySelector<HTMLElement>('#otherModal')!
+        const parent = new Modal(parentEl)
+
+        parentEl.addEventListener('shown.bs.modal', () => {
+          fixtureEl.querySelector<HTMLElement>('#openOther')!.click()
+          expect(parent._isShown).toBe(false)
+        })
+
+        otherEl.addEventListener('shown.bs.modal', () => {
+          expect(parentEl.classList.contains('modal-stacked')).toBe(false)
+          resolve()
+        })
+
+        parent.show()
+      })
+    })
+
+    it('should open as a regular modal when no other modal is open', () => {
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = createStackedHTML()
+
+        const childEl = fixtureEl.querySelector<HTMLElement>('#childModal')!
+        const child = new Modal(childEl)
+
+        childEl.addEventListener('shown.bs.modal', () => {
+          expect(child._parent).toBeNull()
+          expect(childEl.style.zIndex).toBe('')
+          resolve()
+        })
+
+        child.show()
       })
     })
   })

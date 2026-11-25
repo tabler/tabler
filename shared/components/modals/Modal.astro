@@ -6,10 +6,12 @@ interface Props {
   /** core/scss/bootstrap/_modal.scss + ui/_modals.scss `.modal-{size}` modifier classes */
   size?: 'sm' | 'lg' | 'xl' | 'fullscreen' | 'full-width' | undefined
   top?: boolean
+  /** data-bs-stacked="true": opens on top of an open modal instead of replacing it */
+  stacked?: boolean
   class?: string
 }
 
-const { modalId = 'simple', size, top, class: className } = Astro.props
+const { modalId = 'simple', size, top, stacked, class: className } = Astro.props
 const titleId = `modal-${modalId}-title`
 
 const modalClass = ['modal modal-blur fade', className].filter(Boolean).join(' ')
@@ -17,7 +19,7 @@ const dialogClass = ['modal-dialog', size && `modal-${size}`, !top && 'modal-dia
 ---
 
 <!-- BEGIN MODAL -->
-<div class={modalClass} id={`modal-${modalId}`} tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-hidden="true">
+<div class={modalClass} id={`modal-${modalId}`} tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-hidden="true" data-bs-stacked={stacked ? 'true' : undefined}>
   <div class={dialogClass}>
     <div class="modal-content">
       <slot />
