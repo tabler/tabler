@@ -30,6 +30,10 @@ interface Props {
   /** data-bs-bar-gap / data-bs-bar-radius, in SVG units */
   barGap?: number | undefined
   barRadius?: number | undefined
+  /** data-bs-segments: splits a circle into this many parts */
+  segments?: number | undefined
+  /** data-bs-segment-gap: space between the parts of a circle, in SVG units */
+  segmentGap?: number | undefined
   /** data-bs-animation: tween length of update() in ms; 0 turns it off */
   animation?: number | undefined
   /** sparkline-disabled: greys the chart out */
@@ -41,7 +45,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { values, type = 'line', color, size, square, fill, spot, min, max, threshold, label, barGap, barRadius, animation, disabled, ariaLabel, class: className, ...rest } = Astro.props
+const { values, type = 'line', color, size, square, fill, spot, min, max, threshold, label, barGap, barRadius, segments, segmentGap, animation, disabled, ariaLabel, class: className, ...rest } = Astro.props
 
 const serialized = Array.isArray(values) ? values.join(',') : values
 const isCircle = type === 'circle'
@@ -62,6 +66,8 @@ const classes = ['sparkline', size && `sparkline-${size}`, (square || isCircle) 
   data-bs-label={label}
   data-bs-bar-gap={barGap}
   data-bs-bar-radius={barRadius}
+  data-bs-segments={segments}
+  data-bs-segment-gap={segmentGap}
   data-bs-animation={animation}
   data-bs-width={isCircle ? 40 : undefined}
   data-bs-height={isCircle ? 40 : undefined}

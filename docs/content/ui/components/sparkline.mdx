@@ -101,6 +101,24 @@ Add `data-bs-label="auto"` to print the percentage in the middle of the ring. An
 <span class="sparkline sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="100" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="100% done"></span>
 </Example>
 
+### Segments
+
+Add `data-bs-segments` to split the ring into equal parts, for a count of steps or tasks. The share of `data-bs-max` is rounded to whole parts, so `data-bs-values="3" data-bs-max="4" data-bs-segments="4"` fills three parts of four. With segments, `data-bs-label="auto"` prints the number of filled parts and not a percentage.
+
+<Example centered>
+<span class="sparkline sparkline-lg sparkline-square text-secondary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="2" data-bs-max="4" data-bs-segments="4" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="2 of 4 done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-orange" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="1" data-bs-max="4" data-bs-segments="4" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="1 of 4 done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="3" data-bs-max="4" data-bs-segments="4" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="3 of 4 done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="4" data-bs-max="4" data-bs-segments="4" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="4 of 4 done"></span>
+</Example>
+
+The space between the parts is `data-bs-segment-gap`, 2 units by default. Make it smaller when the ring has many parts.
+
+<Example centered>
+<span class="sparkline sparkline-lg sparkline-square text-primary" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="5" data-bs-max="8" data-bs-segments="8" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="5 of 8 done"></span>
+<span class="sparkline sparkline-lg sparkline-square text-green" style="--tblr-sparkline-stroke-width: 3" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="9" data-bs-max="12" data-bs-segments="12" data-bs-segment-gap="1" data-bs-label="auto" data-bs-width="40" data-bs-height="40" aria-label="9 of 12 done"></span>
+</Example>
+
 ## Sizes
 
 Add `sparkline-sm` or `sparkline-lg`. The SVG scales to the box. For any other size, set `--tblr-sparkline-width` and `--tblr-sparkline-height` on the element.
@@ -174,7 +192,9 @@ Every option is a `data-bs-*` attribute on the element, or a key in the config o
 | `pad` | `2` | Space above and below a line, in units, so the stroke and the dot are not cut off. |
 | `barGap` | `2` | Space between bars, in units. |
 | `barRadius` | `2` | Corner radius of a bar, in units. |
-| `label` | none | Text centered over the chart. `auto` prints the share of `max` for a circle and the last value for other types. |
+| `segments` | `0` | Splits a circle into this many equal parts. `0` or `1` draws a plain ring. |
+| `segmentGap` | `2` | Space between the parts of a circle, in units. |
+| `label` | none | Text centered over the chart. `auto` prints the share of `max` for a circle, the number of filled parts for a circle with segments, and the last value for other types. |
 | `threshold` | none | Draws a guide line at this value. Bars below it use the negative color. |
 | `animation` | `300` | How long an `update()` tweens the chart, in milliseconds. `0` redraws at once. Off under `prefers-reduced-motion`. |
 

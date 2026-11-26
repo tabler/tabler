@@ -21,6 +21,13 @@ const metrics: { name: string; value: string; color: string; type: SparklineType
   { name: 'CPU usage', value: '72%', color: 'info', type: 'line', values: '40,55,50,70,65,80,72' },
 ]
 
+const workload = [
+  { label: 'Backlog, 2 of 4', value: 2, color: 'secondary' },
+  { label: 'Not started, 1 of 4', value: 1, color: 'orange' },
+  { label: 'Working on, 3 of 4', value: 3, color: 'primary' },
+  { label: 'Completed, 4 of 4', value: 4, color: 'success' },
+]
+
 const progress = [
   { label: 'Completion 10%', value: 10, color: 'danger' },
   { label: 'Completion 50%', value: 50, color: 'warning' },
@@ -116,6 +123,21 @@ const progress = [
           <div class="d-flex flex-wrap align-items-center gap-3">
             {progress.map((item) => <Sparkline type="circle" values={[item.value]} color={item.color} ariaLabel={item.label} />)}
             {progress.map((item) => <Sparkline type="circle" values={[item.value]} color={item.color} size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel={item.label} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Segmented circle</CardTitle>
+          <CardSubtitle>Add <code>data-bs-segments</code> to split the ring into parts, for a count of steps. <code>data-bs-label="auto"</code> prints the number of filled parts.</CardSubtitle>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            {workload.map((item) => <Sparkline type="circle" values={[item.value]} max={4} segments={4} color={item.color} ariaLabel={item.label} />)}
+            {workload.map((item) => <Sparkline type="circle" values={[item.value]} max={4} segments={4} color={item.color} size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel={item.label} />)}
+            <Sparkline type="circle" values="5" max={8} segments={8} color="primary" size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel="5 of 8 steps" />
+            <Sparkline type="circle" values="9" max={12} segments={12} segmentGap={1} color="green" size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel="9 of 12 steps" />
           </div>
         </CardBody>
       </Card>
