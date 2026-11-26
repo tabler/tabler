@@ -148,11 +148,11 @@ code {
 }
 
 // -----------------------------------------------------------------------------
-// Docs layout: muted page canvas, elevated article panel, compact sidebar
+// Docs layout: flat surface-colored page, bordered compact sidebar
 // navigation, "On this page" rail and joined example/code groups.
 // -----------------------------------------------------------------------------
 
-// Top navbar reads as a distinct bar on the muted canvas. Tabler's navbar
+// Top navbar. Tabler's navbar
 // already draws its edge with an inset box-shadow, so an explicit border
 // would double the line.
 header > .navbar {
@@ -172,16 +172,16 @@ header > .navbar {
   }
 }
 
-// Article panel: elevated surface holding the page content.
-.docs-article {
+// Flat page: the article sits straight on a surface-colored canvas.
+body {
   background-color: var(--tblr-bg-surface);
-  border: 1px solid var(--tblr-border-color);
-  border-radius: var(--tblr-border-radius-lg);
-  box-shadow: var(--tblr-shadow-xs);
-  margin-block: 1rem;
+}
+
+.docs-article {
+  margin-block: 1.5rem;
 
   @media (min-width: 992px) {
-    margin: 1.5rem;
+    margin: 2rem 1.5rem;
   }
 }
 
@@ -218,13 +218,14 @@ header > .navbar {
     position: sticky;
     top: var(--docs-header-height);
     align-self: flex-start;
-    max-height: calc(100vh - var(--docs-header-height));
+    height: calc(100vh - var(--docs-header-height));
     overflow-y: auto;
+    border-inline-end: 1px solid var(--tblr-border-color);
 
     // Room for the focus ring of the links, which the scroll box would clip.
-    width: 15.5rem;
-    padding-inline: 0.25rem;
-    margin-inline: -0.25rem;
+    width: 16.25rem;
+    padding-inline: 0.25rem 1rem;
+    margin-inline-start: -0.25rem;
   }
 
   // Section subheaders line up with the link text, not the pill edge.
@@ -712,7 +713,7 @@ html {
 
 // Content column: capped and centered between the menu and the table of contents.
 .col-docs-content {
-  max-width: 55rem;
+  max-width: 50rem;
   margin-inline: auto;
 }
 
