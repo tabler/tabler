@@ -41,11 +41,11 @@ Set `data-bs-html="true"` to allow HTML in the title, for example to emphasize o
 
 ## JavaScript
 
-Tabler automatically initializes all elements with `data-bs-toggle="tooltip"` on page load. This is the code that runs:
+Tabler initializes every element with `data-bs-toggle="tooltip"` the first time it is hovered, focused or clicked, so a page with many tooltips pays nothing on load. This is the code that runs:
 
 <CodeDocs name="tooltip-init" file="core/js/src/tooltip.ts" />
 
-To use your own options, create the instance yourself. It replaces the one Tabler created, so only your options apply:
+To use your own options, create the instance yourself before the first interaction. Tabler then leaves it alone, so only your options apply:
 
 ```js
 const el = document.getElementById('my-tooltip');

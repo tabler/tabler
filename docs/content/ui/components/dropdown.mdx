@@ -289,11 +289,11 @@ Nest a dropdown inside a menu item and add `dropend` to open the child menu to t
 
 ## JavaScript
 
-Tabler automatically initializes all elements with `data-bs-toggle="dropdown"` on page load. This is the code that runs:
+Tabler initializes every element with `data-bs-toggle="dropdown"` the first time it is clicked or receives a key press, so a page with many dropdowns pays nothing on load. This is the code that runs:
 
 <CodeDocs name="dropdown-init" file="core/js/src/dropdown.ts" />
 
-To use your own options, create the instance yourself. It replaces the one Tabler created, so only your options apply:
+To use your own options, create the instance yourself before the first interaction. Tabler then leaves it alone, so only your options apply:
 
 ```js
 const el = document.getElementById('my-dropdown');
