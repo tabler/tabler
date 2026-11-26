@@ -24,6 +24,8 @@ Use `--tblr-primary-rgb` or another `-rgb` property of a base or theme color in 
 Call `color.adjust()`, `rgba()`, `darken()` or another Sass color function on `$primary`, `$blue` or a color built on them|Use the Tabler functions or `color-mix()`, see [Base colors are not Sass colors](#base-colors-are-not-sass-colors)
 Use Dropzone.js from `dist/libs/dropzone`|Nothing now; move to the Dropzone plugin before 2.0, see [Dropzone.js is deprecated](#dropzonejs-is-deprecated)
 Load IMask for `data-mask` fields|Nothing now; drop IMask before 2.0, see [Input mask without IMask](#input-mask-without-imask)
+Need the same brand color in light and dark mode|Set the color yourself, see [Primary color in dark mode](#primary-color-in-dark-mode)
+Keep a size budget for JavaScript|Check it, see [Bundle size](#bundle-size)
 Set `$btn-transition` in your Sass|Nothing now; switch to the three new variables before 2.0, see [Sass changes](#sass-changes)
 Lint with `@typescript-eslint/no-floating-promises`|Mark the calls you don't await with `void`, see [Methods return a Promise](#methods-return-a-promise)
 Use `.link-underline*`, `.link-offset-*`, `.lh-base` or `.placeholder-glow`|Nothing, see [New names for a few classes](#new-names-for-a-few-classes)
@@ -154,6 +156,15 @@ To use the native mask on a page that has to keep loading IMask, add `data-mask-
 
 The new `date` and `number` types, `data-mask-ranges` and `tokens` are always native.
 
+The native mask takes a string or a function as `mask`. A mask that only IMask understands, such as a `RegExp`, `Number`, `Date` or an array of masks, still needs the library. Without IMask on the page such a field gets no mask, and the console shows a warning. Rewrite these masks before you remove the script. `data-mask-type="number"` and `data-mask-type="date"` replace `Number` and `Date`.
+
+```diff
+- new tabler.InputMask(element, { mask: Number, scale: 2, thousandsSeparator: ' ' })
++ new tabler.InputMask(element, { type: 'number', scale: 2, thousandsSeparator: ' ' })
+```
+
+The `mask` getter returns the IMask instance only when IMask handles the field. With the native mask it returns the component, which has the same `value` and `unmaskedValue` properties.
+
 ## Methods return a Promise
 
 `show()`, `hide()`, `toggle()` and `close()` return a Promise that resolves when the transition ends. In 1.7 they returned nothing. Code that ignores the return value works as before.
@@ -177,12 +188,45 @@ Class in 1.7|New name in 1.8
 `.lh-base`|`.lh-md`
 `.placeholder-glow`|`.placeholder-pulse`
 
+## Primary color in dark mode
+
+In 1.7 a base color was the same in both color modes. In 1.8 it's a little lighter on a dark page, so it stays readable there. The default primary color is `#066fd1` in light mode and `#3283de` in dark mode.
+
+If your brand color has to be the same everywhere, set it yourself. A plain value applies to both modes:
+
+```css
+:root {
+  --tblr-primary: #066fd1;
+}
+```
+
+Or in Sass:
+
+```scss
+@use '@tabler/core/scss/tabler' with (
+  $primary: #066fd1
+);
+```
+
+If you already set `--tblr-primary` or `$primary`, nothing changes for you.
+
+Two more things follow the color at runtime now. The text color on a colored background, `--tblr-{color}-fg`, is worked out in the browser from the color itself. In 1.7 it was fixed when the CSS was compiled, so a light `--tblr-primary` set in CSS kept its white text. The valid and invalid colors of form fields follow `--tblr-success` and `--tblr-danger`. If you set a `-fg` property yourself, your value still wins.
+
+## Bundle size
+
+Combobox, Dropzone, Phone input and the native input mask are part of `tabler.js`, so the file is bigger. In return a page no longer has to load Dropzone.js, IMask or Tom Select for these fields.
+
+File|1.7.5|1.8.0
+---|---|---
+`tabler.min.js`, gzipped|43.7 kB|60.8 kB
+`tabler.min.css`, gzipped|86.1 kB|93.0 kB
+
 ## Visual changes
 
 Nothing in this section needs a change to your markup. A few things are drawn a little differently in 1.8. If you have a custom style that sits next to one of them, have a quick look.
 
 - **Darker text.** `$dark` and `$body-color` are `$gray-900` instead of `$gray-800`, and the light mode `--tblr-body-color` is `gray-800` instead of `gray-700`.
-- **Base colors in dark mode.** `blue` to `cyan`, and the theme colors built on them, are a little lighter on a dark page. Text on a yellow background turns dark there.
+- **Base colors in dark mode.** `blue` to `cyan`, and the theme colors built on them, are a little lighter on a dark page. Text on a yellow background turns dark there. See [Primary color in dark mode](#primary-color-in-dark-mode) to keep one color in both modes.
 - **Inline `code`.** It takes the color of the text around it, with a 10% tint of that color as its background. In 1.7 it was gray text on `--tblr-fill-tertiary`, which was hard to read on a button or another colored surface.
 - **Neutral backgrounds.** Card headers and footers, table headers, striped rows, the modal footer and input group add-ons use the `--tblr-fill-*` tokens instead of `--tblr-bg-surface-tertiary`.
 - **Checks, radios and switches.** Their marks animate when the state changes. `--tblr-control-transition-duration` sets the speed.
@@ -248,7 +292,7 @@ Besides the changes above, 1.8 adds:
 - [Offcanvas](/ui/components/offcanvas) with swipe to dismiss, `.offcanvas-inset` and `--tblr-offcanvas-backdrop-blur`.
 - `tabler.init(root)` and `tabler.dispose(root)` for [markup added after page load](/ui/getting-started/installation#markup-added-after-page-load).
 - [Form validation](/ui/forms/validation) with `form[data-bs-validate]`, which styles a field with `:user-invalid` after the user has left it.
-- Utilities for CSS grid: [`.grid-cols-*`](/ui/utilities/grid-columns), [`.grid-auto-flow-*`](/ui/utilities/grid-auto-flow), and [`.justify-items-*` and `.place-items-*`](/ui/utilities/grid-alignment).
+- Utilities for CSS grid: [`.grid-cols-*`](/ui/utilities/grid-columns), [`.grid-auto-flow-*`](/ui/utilities/grid-auto-flow), and [`.justify-items-*`, `.place-items-*` and the responsive `.justify-self-*`](/ui/utilities/grid-alignment).
 - Utilities for [sizes](/ui/utilities/sizing): `.min-w-0`, `.min-h-0`, `.w-fit-content` and the dynamic viewport units, such as `.dvh-100`.
 - Utilities for [text](/ui/base/typography#text-truncation): `.text-truncate-2` to `.text-truncate-5`, `.text-balance`, `.text-pretty` and `.underline-thickness-*`.
 - `.d-flow-root` and `.d-contents` in the [display](/ui/utilities/display) utilities, `.contains-inline` and `.contains-size` for [container queries](/ui/utilities/container-queries), `.shadow-xs` and `.shadow-xl` in [shadows](/ui/utilities/shadows), [`.border-keyline`](/ui/utilities/borders#keyline) and [`.hover-lift`](/ui/utilities/interactions#hover-lift).
