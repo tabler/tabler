@@ -83,6 +83,8 @@ A guide's URL is linked from release notes on GitHub and npm, so it must never j
 
 ## 5. Check
 
+The public `tabler-upgrade` skill (`docs/lib/agent-skills/tabler-upgrade/SKILL.md`) reads these guides and relies on their layout: the Overview table, "Update the package", the `diff` blocks, "Visual changes" and "Sass changes". If a guide changes that layout or a new category of change appears, update the skill's steps too, then run `pnpm run generate:agent-skills`.
+
 1. Restart the docs dev server: a new page 404s until it does (`astro-dev` skill, port 3010).
 2. Open `/ui/getting-started/upgrade` and the new page. Check the sidebar highlights the entry, the cards are in the right order, and every anchor in the overview table resolves.
 3. `pnpm run check:docs-links` — dead internal links fail it.

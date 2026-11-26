@@ -49,6 +49,7 @@ const cdnScriptTag = (file: string): string => `<script src="${site.cdnUrl}/${fi
 const cdnPackageSnippet = (): string => `${cdnLinkTag('dist/css/tabler.min.css')}\n${cdnScriptTag('dist/js/tabler.min.js')}`
 
 const tokens: Record<string, string> = {
+  '${site.version}': site.version,
   '${site.docsUrl}': site.docsUrl,
   '${site.cdnUrl}': site.cdnUrl,
   '${site.previewUrl}': site.previewUrl,
