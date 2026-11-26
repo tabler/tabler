@@ -212,6 +212,21 @@ header > .navbar {
 .col-docs {
   width: 15rem;
 
+  // The menu sticks below the header and scrolls on its own, like the table of
+  // contents. Below `lg` it is an offcanvas, which scrolls by itself.
+  @media (min-width: 992px) {
+    position: sticky;
+    top: var(--docs-header-height);
+    align-self: flex-start;
+    max-height: calc(100vh - var(--docs-header-height));
+    overflow-y: auto;
+
+    // Room for the focus ring of the links, which the scroll box would clip.
+    width: 15.5rem;
+    padding-inline: 0.25rem;
+    margin-inline: -0.25rem;
+  }
+
   // Section subheaders line up with the link text, not the pill edge.
   .subheader {
     padding-inline: 0.625rem;
@@ -693,6 +708,12 @@ body {
 // Anchors from the table of contents would otherwise land under the header.
 html {
   scroll-padding-top: var(--docs-header-height);
+}
+
+// Content column: capped and centered between the menu and the table of contents.
+.col-docs-content {
+  max-width: 55rem;
+  margin-inline: auto;
 }
 
 // Table of contents rail: a fixed width, so the content column takes the rest.
