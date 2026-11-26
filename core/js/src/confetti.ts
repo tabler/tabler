@@ -437,9 +437,25 @@ class Confetti extends BaseComponent {
     }
 
     // The palette is read at burst time, so a theme switched at runtime is
-    // picked up without re-creating the instance.
-    const style = getComputedStyle(document.documentElement)
-    return PALETTE.map(([name, fallback]) => style.getPropertyValue(`--tblr-${name}`).trim() || fallback)
+    // picked up without re-creating the instance. The custom properties hold
+    // `light-dark()`, which a canvas cannot paint with, so each one goes
+    // through a probe element and comes back as a plain colour.
+    const probe = document.createElement('span')
+    probe.style.display = 'none'
+    document.body.append(probe)
+
+    const style = getComputedStyle(probe)
+    const palette = PALETTE.map(([name, fallback]) => {
+      if (!style.getPropertyValue(`--tblr-${name}`).trim()) {
+        return fallback
+      }
+
+      probe.style.color = `var(--tblr-${name})`
+      return style.color || fallback
+    })
+
+    probe.remove()
+    return palette
   }
 }
 
