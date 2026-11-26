@@ -69,20 +69,32 @@ A short prompt is usually enough:
 Read https://docs.tabler.io/ui/components/card.md and build a card with a header, a footer and a table inside.
 ```
 
-## Agent skill
+## Agent skills
 
-Coding agents that support [Agent Skills](https://agentskills.io) can load a ready-made Tabler skill instead of a prompt. It tells the agent how to install Tabler, how a page is structured, where to read the markup of a component and which rules keep the output consistent.
+Coding agents that support [Agent Skills](https://agentskills.io) can load a ready-made Tabler skill instead of a prompt. There are two:
+
+- `tabler` tells the agent how to install Tabler, how a page is structured, where to read the markup of a component and which rules keep the output consistent.
+- `tabler-upgrade` walks the agent through an upgrade to the latest release: it finds the installed version, reads the [upgrade guide](/ui/getting-started/upgrade) of every release in between, changes the affected code and checks the result.
+
+Both are published for discovery:
 
 - `https://docs.tabler.io/.well-known/agent-skills/index.json` - the discovery index, per the [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc).
-- `https://docs.tabler.io/.well-known/agent-skills/tabler/SKILL.md` - the skill itself.
+- `https://docs.tabler.io/.well-known/agent-skills/tabler/SKILL.md` and `https://docs.tabler.io/.well-known/agent-skills/tabler-upgrade/SKILL.md` - the skills themselves.
 
-The fastest way to add it to a project is the [skills](https://skills.sh) CLI, which puts the file into the skills directory of every agent it finds:
+The fastest way to add them to a project is the [skills](https://skills.sh) CLI, which puts the files into the skills directory of every agent it finds. Use `--skill` to pick one:
 
 ```shell
 npx skills add tabler/tabler
+npx skills add tabler/tabler --skill tabler-upgrade
 ```
 
-You can also copy `SKILL.md` into your agent's skills directory by hand, for example `.claude/skills/tabler/SKILL.md` for Claude Code. The index carries a `sha256` digest of the file, so a tool can check the copy is intact.
+Claude Code can also install them as a plugin, which keeps them up to date on its own:
+
+```shell
+/plugin install tabler --marketplace tabler/tabler
+```
+
+You can also copy a `SKILL.md` into your agent's skills directory by hand, for example `.claude/skills/tabler/SKILL.md` for Claude Code. The index carries a `sha256` digest of each file, so a tool can check the copy is intact.
 
 The same resources are also listed in `https://docs.tabler.io/.well-known/ai-catalog.json`, an [Agentic Resource Discovery](https://agenticresourcediscovery.org) manifest that registries use to index a site.
 
