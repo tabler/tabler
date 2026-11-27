@@ -131,14 +131,14 @@
   position: absolute !important;
 }
 
-// Highlighted code. Shiki writes the theme's own background and foreground
-// into a style attribute — `.shiki` comes from the docs components, and
-// `.astro-code` from markdown fences. Both follow Tabler's surface instead,
-// so only the token colors come from the shiki theme.
+// Highlighted code. Shiki writes a light and a dark color for every token as
+// `--shiki-light` / `--shiki-dark` — `.shiki` comes from the docs components,
+// and `.astro-code` from markdown fences. The surface is Tabler's own `pre`.
 .shiki,
 .astro-code {
-  background: var(--tblr-bg-surface-dark) !important;
-  color: var(--tblr-gray-300) !important;
+  span {
+    color: light-dark(var(--shiki-light), var(--shiki-dark));
+  }
 }
 
 code {
@@ -149,7 +149,7 @@ code {
 
 // -----------------------------------------------------------------------------
 // Docs layout: muted page canvas, elevated article panel, compact sidebar
-// navigation, "On this page" rail and joined example/code groups.
+// navigation, "On this page" rail and example/code groups.
 // -----------------------------------------------------------------------------
 
 // Top navbar reads as a distinct bar on the muted canvas. Tabler's navbar
@@ -599,7 +599,7 @@ header > .navbar {
   }
 }
 
-// Example blocks: the demo and its code panel form one rounded group.
+// Example blocks: the demo and its code panel are two rounded boxes with a gap.
 .docs-example .example {
   margin: 0;
 }
@@ -609,9 +609,8 @@ header > .navbar {
   border-radius: var(--tblr-border-radius);
 }
 
-.docs-example-code-attached .shiki {
-  border-start-start-radius: 0;
-  border-start-end-radius: 0;
+.docs-example-code-attached {
+  margin-top: 0.5rem;
 }
 
 // -----------------------------------------------------------------------------
@@ -713,7 +712,10 @@ html {
 // The copy button on a code block turns green while `.copied` is on it
 // (core/js/src/clipboard.ts). The hover and active variants are set too: the
 // pointer is still over the button right after a click.
-.btn-dark.copied {
+.btn.copied {
+  --tblr-btn-color: var(--tblr-success-fg);
+  --tblr-btn-hover-color: var(--tblr-success-fg);
+  --tblr-btn-active-color: var(--tblr-success-fg);
   --tblr-btn-bg: var(--tblr-success);
   --tblr-btn-hover-bg: var(--tblr-success);
   --tblr-btn-active-bg: var(--tblr-success);
