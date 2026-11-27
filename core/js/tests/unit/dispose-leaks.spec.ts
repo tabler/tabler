@@ -40,6 +40,7 @@ const call = (method: string) => (instance: Instance) => (instance[method] as ()
 const SCENARIOS: Record<string, Scenario> = {
   'autosize': { markup: '<textarea data-bs-toggle="autosize"></textarea>', element: 'textarea' },
   'banner': { markup: '<div class="banner"><button type="button" data-bs-dismiss="banner"></button></div>', element: '.banner' },
+  'card-fullscreen': { markup: '<div class="card"><button type="button" data-bs-toggle="card-fullscreen"></button></div>', element: 'button', exercise: call('show') },
   'clipboard': { markup: '<input id="api-key" value="key"><button type="button" data-bs-toggle="clipboard" data-bs-target="#api-key">Copy</button>', element: 'button' },
   'combobox': {
     markup: '<form><button class="form-select combobox-toggle" type="button" data-bs-toggle="combobox"><span class="combobox-value"></span></button><div class="dropdown-menu"><button class="dropdown-item" type="button" data-bs-value="a">Alpha</button></div></form>',

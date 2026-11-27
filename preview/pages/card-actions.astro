@@ -12,12 +12,14 @@ import Icon from '@ui/Icon.astro'
 import { people } from '@shared/lib/people'
 import { requireIndex } from '@shared/lib/array'
 import DocsLink from '@ui/DocsLink.astro'
+import CardBody from '@ui/CardBody.astro'
+import Chart from '@components/demo/Chart.astro'
 
 const person0 = requireIndex(people, 0)
 const person3 = requireIndex(people, 3)
 ---
 
-<DefaultLayout title="Card actions" pageMenu="base.cards.actions">
+<DefaultLayout title="Card actions" pageMenu="base.cards.actions" pageLibs={['apexcharts']}>
   <DocsLink slot="page-header-actions" path="/ui/components/card" />
 
   <div class="row row-cards">
@@ -158,6 +160,29 @@ const person3 = requireIndex(people, 3)
           </CardActions>
         </CardHeader>
         <BodyPlaceholder />
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>Fullscreen</CardTitle>
+            <CardSubtitle>Add <code>data-bs-toggle="card-fullscreen"</code> to a header button to expand the card to the whole screen.</CardSubtitle>
+          </div>
+          <CardActions class="btn-actions" fullscreen>
+            <div class="dropdown">
+              <button type="button" class="btn btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="More actions"><Icon name="dots-vertical" /></button>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">Export as CSV</a>
+                <a class="dropdown-item" href="#">Export as PNG</a>
+              </div>
+            </div>
+          </CardActions>
+        </CardHeader>
+        <CardBody>
+          <Chart chartId="demo-area" height={15} label="Site traffic" />
+          <button type="button" class="btn" data-bs-toggle="tooltip" title="Data from the last 30 days">About this data</button>
+        </CardBody>
       </Card>
     </div>
   </div>

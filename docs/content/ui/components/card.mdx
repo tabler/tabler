@@ -62,11 +62,17 @@ classnames:
       desc: Tilts the card; also -end, -left and -right
     - class: card-body-scrollable
       desc: Scrolls the body instead of growing the card
+    - class: card-fullscreen-icon-expand
+      desc: Icon in the fullscreen button, shown while the card is collapsed
+    - class: card-fullscreen-icon-collapse
+      desc: Icon in the fullscreen button, shown while the card is expanded
   behavior:
     - class: card-active
       desc: Marks the card as selected
     - class: card-inactive
       desc: Dims the card
+    - class: card-fullscreen
+      desc: Fixes the card over the whole viewport and scrolls its body
     - class: card-link
       desc: Whole card is a link; -pop and -rotate add a hover effect
   size:
@@ -79,6 +85,7 @@ classnames:
 ---
 import Example from '@components/Example.astro';
 import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 
 ## Default card
 
@@ -666,6 +673,71 @@ Add one of the `card-rotate-*` classes to tilt a card slightly. Use it for a sta
 
 Use it instead of `card-body`, not next to it.
 
+## Fullscreen
+
+Add a button with `data-bs-toggle="card-fullscreen"` to the card header to let users expand the card to the whole screen. A second click, or `Escape`, puts it back. The button holds two icons, and CSS shows the right one from `aria-pressed`.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Revenue</h3>
+    <div class="card-actions btn-actions">
+      <button type="button" class="btn btn-action" data-bs-toggle="card-fullscreen" aria-label="Expand" aria-pressed="false">
+        <Icon name="maximize" class="card-fullscreen-icon-expand" />
+        <Icon name="minimize" class="card-fullscreen-icon-collapse" />
+      </button>
+    </div>
+  </div>
+  <div class="card-body">Expand the card to see more of it.</div>
+</div>
+</Example>
+
+The expanded card gets the `card-fullscreen` class. It is fixed over the page, above the navbar and below offcanvas, modals, popovers and tooltips, so dropdowns, tooltips and popovers keep working inside it. The header stays at the top and the body scrolls. The page behind it does not scroll, and only one card can be expanded at a time.
+
+After every change Tabler fires `resize` on `window`, so charts, maps and sparklines inside the card redraw at the new size.
+
+### Data attributes
+
+| Attribute | Default | Description |
+| --- | --- | --- |
+| `data-bs-toggle="card-fullscreen"` | | Makes the element a fullscreen toggle. |
+| `data-bs-target` | closest `.card` | Selector of the card to expand, for a button outside the card. |
+| `data-bs-label-expand` | `Expand` | Accessible name while the card is collapsed. |
+| `data-bs-label-collapse` | `Collapse` | Accessible name while the card is expanded. |
+
+Tabler sets the label on `aria-label`, and on `title` when the button has one. A button with visible text and neither attribute keeps its text.
+
+### JavaScript
+
+On page load Tabler creates a `CardFullscreen` component for every element with `data-bs-toggle="card-fullscreen"`. This is the code that runs:
+
+<CodeDocs name="card-fullscreen-init" file="core/js/src/card-fullscreen.ts" />
+
+For a card added later, call `tabler.init(element)`, or create the component yourself:
+
+```js
+const fullscreen = tabler.CardFullscreen.getOrCreateInstance(document.getElementById('revenue-fullscreen'));
+await fullscreen.show();
+```
+
+| Method | Description |
+| --- | --- |
+| `show()` | Expands the card and collapses any other expanded card. Returns a promise that resolves when the card is expanded. |
+| `hide()` | Puts the card back. Returns a promise. |
+| `toggle()` | Expands or collapses the card. Returns a promise. |
+| `dispose()` | Removes the listeners. If the card is expanded, puts it back first. |
+| `getInstance(element)` | Static. Returns the component for the button, or `null`. |
+| `getOrCreateInstance(element)` | Static. Returns the component for the button and creates it when needed. |
+
+The events fire on the card. `event.relatedTarget` is the toggle button.
+
+| Event | Description |
+| --- | --- |
+| `show.bs.card-fullscreen` | Fires before the card expands. Call `event.preventDefault()` to stop it. |
+| `shown.bs.card-fullscreen` | Fires after the card expands. |
+| `hide.bs.card-fullscreen` | Fires before the card collapses. Call `event.preventDefault()` to stop it. |
+| `hidden.bs.card-fullscreen` | Fires after the card collapses. |
+
 ## Accessibility
 
 A card is a container, so it has no role of its own. What matters is the content inside it.
@@ -673,4 +745,5 @@ A card is a container, so it has no role of its own. What matters is the content
 - Keep one heading per card and match its level to the page outline. `card-title` only sets the look, so use a real `h2`-`h4` element.
 - For a clickable card, wrap the card in a single `a` element (`card-link`) rather than putting a link only on the title. That way the whole card is one tab stop with one accessible name.
 - `card-status-*` and `card-stamp` are decoration. Never let a color or an icon be the only carrier of meaning - repeat it in text, for example with a [status](/ui/components/status) or a [badge](/ui/components/badge).
+- The fullscreen button is a toggle button. Tabler keeps `aria-pressed` and its name in sync, and focus stays on the button when the card expands. `Escape` closes the card, but an open dropdown, modal or offcanvas gets the key first.
 - Give an image inside a card a real `alt` when it carries information, or an empty `alt=""` when it is decorative.
