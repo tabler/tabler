@@ -1,5 +1,39 @@
 # @tabler/docs
 
+## 1.8.0
+
+### Minor Changes
+
+- bf8dd5a: Added Banner component: a `.banner` strip above the navbar that stays closed with `data-bs-banner-id`.
+- 25bb3b4: Added Code block component: `.code-block` with a header, copy button, line numbers, highlighted lines and a max height variant.
+- 9c71bb0: Added Combobox component for `<select>` and markup, with `.combobox-toggle`, tags, search, and a demo page.
+- 59411ee: Added a native `Dropzone` plugin (`data-bs-toggle="dropzone"`) with a file list and optional upload, replacing Dropzone.js.
+- d7a5a2b: Added File icon component: `.file-icon` draws a sheet with the format from `data-type` on a colored label.
+- 2609a06: Added a Tabler Flags docs section with `@tabler/flags-*` library pages; `/ui/plugins/flags` now redirects to `/flags/css`.
+- 361c4e3: Added opt-in `form[data-bs-validate]` mode that styles fields with `:user-invalid` and `:user-valid`.
+- eb40bf2: Added `.grid-bento` and `.g-row-*` classes for bento grid layouts, with a demo page and docs.
+- fd293c0: Added Phone input component: a `type="tel"` field with a country picker built on the Combobox, with flags and dial codes.
+- 5301878: Added the `Toggler` plugin, which toggles a class or an attribute on click with `data-bs-toggle="toggler"`.
+
+### Patch Changes
+
+- d7e0070: Added animated check, radio and switch marks, tuned with the `--tblr-control-transition-*` CSS variables.
+- 65ffe81: Updated `astro` to 7.4.12, `@astrojs/mdx` to 8.1.6 and `@astrojs/vercel` to 11.0.22.
+- e71e2bd: Added a default `aria-pressed` to `[data-bs-toggle="button"]` buttons on load, based on `.active`.
+- 45df3ed: Added CSS variables to loaders, timeline, stars, placeholder, button group, pricing, social, flags, payments and nav-overflow.
+- 2d37dbc: Fixed narrow `.card` examples in the docs so a single card sits in the middle of the example area.
+- dece6af: Added a section on `tabler.init()` and `tabler.dispose()` for markup added after page load to the installation page.
+- 573a20e: Added responsive `.justify-self-start`, `.justify-self-end`, and `.justify-self-center` utilities.
+- 02a1d96: Added `.hover-lift` helper that raises an element and deepens its shadow on `:hover` and `:focus-visible`.
+- dd6d3a1: Added a native `InputMask` with number and date types, `tokens` and `data-mask-ranges`, so IMask is no longer needed.
+- 030cb0b: Added `--tblr-nav-bordered-*` CSS variables for border, gap and active link styles to `.nav-bordered`.
+- 5a84ea7: Added swipe to dismiss, `.offcanvas-inset` and `--tblr-offcanvas-backdrop-blur` to Offcanvas.
+- 2610998: Added `.placeholder-pulse` as an alias of `.placeholder-glow` for the placeholder opacity animation.
+- 735818b: Added stacked modals: a modal with `data-bs-stacked="true"` opens on top of the open modal instead of replacing it.
+- 92a54b5: Added `SelectAll` plugin for selectable tables and lists, and `.selection-toolbar` for bulk actions on selected rows.
+- efd2a7d: Added `.text-truncate-2` to `.text-truncate-5` utilities that cut text after a set number of lines.
+- 4246aae: Added Promise return values to `show()`, `hide()`, `toggle()` and `close()` that resolve when the transition ends.
+
 ## 1.7.5
 
 ### Patch Changes

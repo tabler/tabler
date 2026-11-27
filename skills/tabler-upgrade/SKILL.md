@@ -20,7 +20,7 @@ Write down the version and how Tabler is loaded (npm package, CDN tags, copied f
 
 ## 2. Find the latest version
 
-Run `npm view @tabler/core version`, or read the version from the CDN url in the installation page at `https://docs.tabler.io/ui/getting-started/installation.md`. The latest release when this skill was generated was 1.7.5; check anyway, there may be a newer one.
+Run `npm view @tabler/core version`, or read the version from the CDN url in the installation page at `https://docs.tabler.io/ui/getting-started/installation.md`. The latest release when this skill was generated was 1.8.0; check anyway, there may be a newer one.
 
 If the user asked for a specific version, use that one. Never downgrade.
 

@@ -1,5 +1,80 @@
 # @tabler/core
 
+## 1.8.0
+
+### Minor Changes
+
+- 2171393: Added `accent-color` in the primary color to the root element, so native checkboxes, radios and range inputs use it.
+- d7e0070: Added animated check, radio and switch marks, tuned with the `--tblr-control-transition-*` CSS variables.
+- bf8dd5a: Added Banner component: a `.banner` strip above the navbar that stays closed with `data-bs-banner-id`.
+- b03e9fb: Added `.border-keyline`, a `0.5px` border width backed by the `--tblr-border-width-keyline` custom property.
+- 7c68c42: Added `--tblr-btn-transition-property`, `-duration` and `-timing` tokens for buttons and deprecated `$btn-transition`.
+- e71e2bd: Added a default `aria-pressed` to `[data-bs-toggle="button"]` buttons on load, based on `.active`.
+- 600cc36: Added `--tblr-card-header-tabs-bg` and `--tblr-card-stamp-opacity` CSS variables to the card component.
+- 6eb45b2: Added `--tblr-carousel-indicator-*` CSS variables for indicator size, spacing, hit area, dot and thumb styles.
+- 25bb3b4: Added Code block component: `.code-block` with a header, copy button, line numbers, highlighted lines and a max height variant.
+- ed3bde2: Added `.color-scheme-light`, `.color-scheme-dark` and `.color-scheme-auto` utilities that set `color-scheme` on one element.
+- 9c71bb0: Added Combobox component for `<select>` and markup, with `.combobox-toggle`, tags, search, and a demo page.
+- 45df3ed: Added CSS variables to loaders, timeline, stars, placeholder, button group, pricing, social, flags, payments and nav-overflow.
+- aceb3fc: Added `.contains-inline` and `.contains-size` utilities that set `container-type` for container queries.
+- ca60445: Added `flow-root` and `contents` to the display utilities, as `.d-flow-root` and `.d-contents` with responsive variants.
+- 3cb68de: Added `--tblr-dropdown-max-width` and `--tblr-dropdown-scrollable-height` CSS variables to dropdowns.
+- 59411ee: Added a native `Dropzone` plugin (`data-bs-toggle="dropzone"`) with a file list and optional upload, replacing Dropzone.js.
+- 32aeb4c: Added `.dvh-100`, `.min-dvh-100`, `.dvw-100` and `.min-dvw-100` utilities based on dynamic viewport units.
+- d7a5a2b: Added File icon component: `.file-icon` draws a sheet with the format from `data-type` on a colored label.
+- f59e733: Updated `.form-control` to show the focus ring on `:focus-within`, so wrappers with a nested input get it too.
+- 361c4e3: Added opt-in `form[data-bs-validate]` mode that styles fields with `:user-invalid` and `:user-valid`.
+- 0697f0b: Added `.grid-auto-flow-row`, `.grid-auto-flow-column` and `.grid-auto-flow-dense` utilities with responsive variants.
+- eb40bf2: Added `.grid-bento` and `.g-row-*` classes for bento grid layouts, with a demo page and docs.
+- 54f1615: Added `.grid-cols-*` utilities (`1`–`4`, `6`, `subgrid`) and `.grid-cols-fill` with responsive variants.
+- 573a20e: Added responsive `.justify-self-start`, `.justify-self-end`, and `.justify-self-center` utilities.
+- 02a1d96: Added `.hover-lift` helper that raises an element and deepens its shadow on `:hover` and `:focus-visible`.
+- c24003f: Added hoverable tips: tooltips and hover popovers stay open over the tip, and every tooltip and popover closes on Escape.
+- 4a111c3: Added `min-content`, `max-content` and `fit-content` to the `.w-*` and `.h-*` utilities, e.g. `.w-fit-content`.
+- dece6af: Added `tabler.init(root)` and `tabler.dispose(root)` to start and release every plugin on markup added after page load.
+- 9a2db9f: Added `.lh-md` as an alias of `.lh-base`.
+- c9fe7c2: Added dark mode values for the base colors `$blue` to `$cyan` using `light-dark()`.
+- 302683f: Added `--tblr-list-group-header-color` and `--tblr-list-group-header-bg` CSS variables to the list group header.
+- 1c2b70e: Added `.min-w-0`, `.min-w-100`, `.min-h-0` and `.min-h-100` utilities for `min-width` and `min-height`.
+- 6bb0bfe: Added `--tblr-modal-header-height`, `--tblr-modal-header-bg`, `--tblr-modal-status-size` and `--tblr-modal-backdrop-blur`.
+- fab12f3: Added open and close animations to the native `<dialog>` and its backdrop.
+- dd6d3a1: Added a native `InputMask` with number and date types, `tokens` and `data-mask-ranges`, so IMask is no longer needed.
+- 030cb0b: Added `--tblr-nav-bordered-*` CSS variables for border, gap and active link styles to `.nav-bordered`.
+- 5b52e6a: Added `--tblr-offcanvas-border-radius` and used the offcanvas padding variables in `.offcanvas-footer`.
+- 5a84ea7: Added swipe to dismiss, `.offcanvas-inset` and `--tblr-offcanvas-backdrop-blur` to Offcanvas.
+- fd293c0: Added Phone input component: a `type="tel"` field with a country picker built on the Combobox, with flags and dial codes.
+- 2171393: Added `.justify-items-*` and `.place-items-*` utilities (`start`, `end`, `center`, `baseline`, `stretch`) with responsive variants.
+- 2610998: Added `.placeholder-pulse` as an alias of `.placeholder-glow` for the placeholder opacity animation.
+- 5765ede: Updated the `transition` mixin and animated components to emit motion only inside `prefers-reduced-motion: no-preference`.
+- ba0b1c9: Added `.shadow-xs` and `.shadow-xl` utilities with the `--tblr-box-shadow-xs` and `--tblr-box-shadow-xl` tokens.
+- 735818b: Added stacked modals: a modal with `data-bs-stacked="true"` opens on top of the open modal instead of replacing it.
+- 75c540b: Added `--tblr-table-*` CSS variables for cell padding, border width and header styles to the table component.
+- 92a54b5: Added `SelectAll` plugin for selectable tables and lists, and `.selection-toolbar` for bulk actions on selected rows.
+- efd2a7d: Added `.text-truncate-2` to `.text-truncate-5` utilities that cut text after a set number of lines.
+- fed28d2: Added `.text-balance` and `.text-pretty` utilities for `text-wrap`.
+- 5301878: Added the `Toggler` plugin, which toggles a class or an attribute on click with `data-bs-toggle="toggler"`.
+- f46d68c: Added `.transition-none` and `.animation-none` utilities to switch off transitions and animations on one element.
+- 4246aae: Added Promise return values to `show()`, `hide()`, `toggle()` and `close()` that resolve when the transition ends.
+- 4fdcd12: Added `.underline-thickness-1` to `.underline-thickness-5` utilities for `text-decoration-thickness`.
+- 822a19b: Added `.underline`, `.underline-{color}`, `.underline-{0…100}` and `.underline-offset-{1-3}` as new names for `.link-underline*`.
+
+### Patch Changes
+
+- 03ef882: Updated `$dark` and `$body-color` to `$gray-900` and the light mode `--tblr-body-color` to `gray-800` for darker text.
+- f86c952: Fixed `@starting-style` and `@scope` rules being dropped from the `.min.css` files by switching the minifier to `cssnano`.
+- 50bd9cc: Fixed `Datepicker` theme changes before the first popup opens.
+- 07fa459: Updated card headers, table headers, modal footer and other neutral backgrounds to use the `--tblr-fill-*` tokens.
+- 59c60d7: Fixed `Carousel` so images inside `.carousel-item` cannot be dragged on touch devices.
+- c799164: Fixed `dispose()` leaving a cycling Carousel interval running and touch `mouseover` listeners after an open Dropdown or Tooltip.
+- 69b05e9: Fixed `OtpInput` keeping old characters when a shorter text is pasted over a selection.
+- 5029252: Fixed `border-radius` of `.flag-xxs` and square `.avatar-xxs` to match the `xs` size.
+- 95ebf0f: Added `font-optical-sizing: auto` to the `html` element.
+- d0fac39: Updated `.icon-pulse`, `.icon-tada` and `.icon-rotate` to transition only `transform` instead of `all`.
+- 46bd1d7: Fixed inline `code` contrast on colored surfaces: it now uses the surrounding text color with a 10% tint as background.
+- 5a84ea7: Fixed Offcanvas panels that are not `position: fixed` opening on page load and locking page scroll.
+- 1307800: Removed obsolete `::-moz-focus-inner` and `button`/`select` `text-transform: none` rules from reboot.
+- 68c81fc: Fixed Chrome recalculating the style of the whole page on each DOM change because of the `.steps` `:last-child` rule.
+
 ## 1.7.5
 
 ### Patch Changes
