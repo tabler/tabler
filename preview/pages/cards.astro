@@ -18,6 +18,7 @@ import DocsLink from '@ui/DocsLink.astro'
 
 const cardsStack = ['First', 'Second', 'Third']
 const cardsStackColors = ['red', 'green', 'blue']
+const scrollItems = Array.from({ length: 16 }, (_, i) => `Notification ${i + 1}`)
 ---
 
 <DefaultLayout title="Cards" pageMenu="base.cards.base">
@@ -356,6 +357,41 @@ const cardsStackColors = ['red', 'green', 'blue']
                     </div>
                     <div class="card-body">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</div>
                     <div class="card-footer">Last updated 3 mins ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Scroll shadows</CardTitle>
+          <CardSubtitle>Add <code>scroll-shadow</code> to a <code>card-body-scrollable</code> to fade the edges that have more content.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-4">
+              <div class="card" style="height: 20rem">
+                <div class="card-header">
+                  <CardTitle>Notifications</CardTitle>
+                </div>
+                <div class="card-body card-body-scrollable scroll-shadow" tabindex="0">
+                  <div class="divide-y">
+                    {scrollItems.map((item) => <div>{item}</div>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card" style="height: 20rem">
+                <div class="card-header">
+                  <CardTitle>No overflow</CardTitle>
+                </div>
+                <div class="card-body card-body-scrollable scroll-shadow" tabindex="0">
+                  <div class="divide-y">
+                    {scrollItems.slice(0, 3).map((item) => <div>{item}</div>)}
                   </div>
                 </div>
               </div>

@@ -1,0 +1,185 @@
+---
+title: Scroll shadows
+summary: Scroll shadows fade the edge of a scroll container while there is more content to scroll in that direction, so users can see that a list or a table goes on.
+description: 'Fade the edges of scrollable lists, cards, dropdowns and wide tables with scroll-shadow classes: pure CSS, opt-in, and only where there is more to scroll.'
+added-in: '1.8.0'
+related: [/ui/components/card, /ui/components/table, /ui/components/dropdown]
+source: core/scss/utils/_scroll.scss
+css-vars: scroll-shadow
+classnames:
+  component:
+    - class: scroll-shadow
+      desc: Fades every edge of the element that has more content to scroll, on both axes
+  direction:
+    - class: scroll-shadow-y
+      desc: Fades only the top and bottom edges
+    - class: scroll-shadow-x
+      desc: Fades only the inline start and end edges, mirrored in RTL
+---
+
+import Example from '@components/Example.astro'
+
+## Overview
+
+A scroll container gives no hint that it holds more content. Add a `scroll-shadow` class to the element that scrolls, and its edges fade out while there is more to scroll in that direction:
+
+- at the top of a list only the bottom edge fades,
+- in the middle both edges fade,
+- at the end only the top edge fades.
+
+A container that does not overflow shows no fade at all. The effect is pure CSS: no JavaScript and no extra markup.
+
+## Usage
+
+Put the class on the element that has the scrollbar. It works with `scrollable`, `scroll-y`, `scroll-x`, `card-body-scrollable`, `dropdown-menu-scrollable`, `table-responsive` and any element with `overflow: auto`.
+
+| Class             | Fades                                          |
+| ----------------- | ---------------------------------------------- |
+| `scroll-shadow`   | Every edge that has more content, on both axes |
+| `scroll-shadow-y` | Top and bottom only                            |
+| `scroll-shadow-x` | Start and end only                             |
+
+### Scrollable card body
+
+Scroll the list to see the top and bottom edges change.
+
+<Example centered>
+<div class="card" style="height: 18rem; width: 20rem">
+  <div class="card-header">
+    <h3 class="card-title">Notifications</h3>
+  </div>
+  <div class="card-body card-body-scrollable scroll-shadow" tabindex="0">
+    <div class="divide-y">
+      <div>Notification 1</div>
+      <div>Notification 2</div>
+      <div>Notification 3</div>
+      <div>Notification 4</div>
+      <div>Notification 5</div>
+      <div>Notification 6</div>
+      <div>Notification 7</div>
+      <div>Notification 8</div>
+      <div>Notification 9</div>
+      <div>Notification 10</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+### Wide table
+
+Use `scroll-shadow-x` on `table-responsive`, or on one of its breakpoint variants such as `table-responsive-md`. In a right-to-left layout the fades follow the reading direction.
+
+<Example centered>
+<div class="card" style="width: 24rem">
+  <div class="table-responsive scroll-shadow-x" tabindex="0">
+    <table class="table table-vcenter table-nowrap card-table">
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Client</th>
+          <th>Created</th>
+          <th>Status</th>
+          <th>Country</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>INV-001</td>
+          <td>Design Works</td>
+          <td>15 Dec 2026</td>
+          <td>Paid</td>
+          <td>Poland</td>
+          <td>€1,476.00</td>
+        </tr>
+        <tr>
+          <td>INV-002</td>
+          <td>Design Works</td>
+          <td>16 Dec 2026</td>
+          <td>Paid</td>
+          <td>Poland</td>
+          <td>€980.00</td>
+        </tr>
+        <tr>
+          <td>INV-003</td>
+          <td>Design Works</td>
+          <td>17 Dec 2026</td>
+          <td>Pending</td>
+          <td>Poland</td>
+          <td>€2,310.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</Example>
+
+### Scrollable dropdown
+
+Add `scroll-shadow-y` to a `dropdown-menu-scrollable`.
+
+<Example centered height="18rem">
+<div class="dropdown-menu dropdown-menu-scrollable scroll-shadow-y show position-static">
+  <a class="dropdown-item" href="#">Germany</a>
+  <a class="dropdown-item" href="#">France</a>
+  <a class="dropdown-item" href="#">Poland</a>
+  <a class="dropdown-item" href="#">Spain</a>
+  <a class="dropdown-item" href="#">Italy</a>
+  <a class="dropdown-item" href="#">Canada</a>
+  <a class="dropdown-item" href="#">Brazil</a>
+  <a class="dropdown-item" href="#">Japan</a>
+  <a class="dropdown-item" href="#">Norway</a>
+  <a class="dropdown-item" href="#">Portugal</a>
+</div>
+</Example>
+
+### Both axes
+
+`scroll-shadow` fades whichever axis overflows. Here the box scrolls in both directions.
+
+<Example centered>
+<div class="scroll-shadow border rounded" style="width: 20rem; height: 12rem; overflow: auto" tabindex="0">
+  <div class="p-3" style="width: 36rem">
+    <p>This box is wider and taller than its frame. Scroll it in any direction and the edges with more content fade out.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+    <p>Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum.</p>
+    <p class="mb-0">Maecenas faucibus mollis interdum. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+  </div>
+</div>
+</Example>
+
+### Sticky headers
+
+The top fade covers the first `--tblr-scroll-shadow-size` of the container, so it would also fade a sticky table header. Set `--tblr-scroll-shadow-offset-top` to the height of the header, and the fade starts below it.
+
+```html
+<div class="table-responsive scroll-shadow-y" style="max-height: 20rem; --tblr-scroll-shadow-offset-top: 2.5rem">
+  <table class="table">
+    <thead class="sticky-top">
+      ...
+    </thead>
+    ...
+  </table>
+</div>
+```
+
+## Custom properties
+
+Set these on the element, with a `style` attribute or a class, to change one container.
+
+| Property                          | Default  | Description                                                |
+| --------------------------------- | -------- | ---------------------------------------------------------- |
+| `--tblr-scroll-shadow-size`       | `1.5rem` | Length of the fade at each edge.                           |
+| `--tblr-scroll-shadow-offset-top` | `0px`    | Space at the top that is never faded, for a sticky header. |
+
+The fade is a mask, not a color. It shows whatever is behind the container, so it works on any background and in dark mode without changes.
+
+## Browser support
+
+Scroll shadows are a progressive enhancement. They use scroll-driven animations (`animation-timeline: scroll()`), which Chrome, Edge and Safari support. Browsers without them, such as Firefox today, show the container without the fade. Scrolling and everything else works the same.
+
+## Accessibility
+
+- The fade is decorative. It does not replace a visible scrollbar or other cues that the content goes on.
+- Give a scroll container that holds no focusable content `tabindex="0"`, so keyboard users can scroll it. The examples above do this.
+- While the container has keyboard focus, the fade is turned off so that the focus ring stays fully visible.

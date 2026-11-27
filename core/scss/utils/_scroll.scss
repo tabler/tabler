@@ -45,3 +45,82 @@ Scrollable
 .no-scroll {
   overflow: hidden;
 }
+
+/*
+Scroll shadows
+*/
+@each $edge in top, bottom, start, end {
+  @property --scroll-shadow-#{$edge} {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0;
+  }
+
+  $grows: $edge == top or $edge == start;
+
+  @keyframes scroll-shadow-#{$edge} {
+    from {
+      --scroll-shadow-#{$edge}: #{if(sass($grows): 0px; else: var(--scroll-shadow-size))};
+    }
+
+    to {
+      --scroll-shadow-#{$edge}: #{if(sass($grows): var(--scroll-shadow-size); else: 0px)};
+    }
+  }
+}
+
+$scroll-shadow-mask-y: linear-gradient(to bottom, #000 var(--scroll-shadow-offset-top), transparent var(--scroll-shadow-offset-top), #000 calc(var(--scroll-shadow-offset-top) + var(--scroll-shadow-top)), #000 calc(100% - var(--scroll-shadow-bottom)), transparent);
+$scroll-shadow-mask-x: linear-gradient(calc(var(--dir, 1) * 90deg), transparent, #000 var(--scroll-shadow-start), #000 calc(100% - var(--scroll-shadow-end)), transparent);
+$scroll-shadow-animation-y:
+  scroll-shadow-top linear both,
+  scroll-shadow-bottom linear both;
+$scroll-shadow-animation-x:
+  scroll-shadow-start linear both,
+  scroll-shadow-end linear both;
+$scroll-shadow-range:
+  0 var(--scroll-shadow-size),
+  calc(100% - var(--scroll-shadow-size)) 100%;
+
+.scroll-shadow,
+.scroll-shadow-x,
+.scroll-shadow-y {
+  // scss-docs-start scroll-shadow-css-vars
+  --scroll-shadow-size: #{$scroll-shadow-size};
+  --scroll-shadow-offset-top: 0px;
+  // scss-docs-end scroll-shadow-css-vars
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-shadow-y {
+    /* rtl:ignore */
+    mask-image: $scroll-shadow-mask-y;
+    animation: $scroll-shadow-animation-y;
+    animation-timeline: scroll(self block);
+    animation-range: $scroll-shadow-range;
+  }
+
+  .scroll-shadow-x {
+    /* rtl:ignore */
+    mask-image: $scroll-shadow-mask-x;
+    animation: $scroll-shadow-animation-x;
+    animation-timeline: scroll(self inline);
+    animation-range: $scroll-shadow-range;
+  }
+
+  .scroll-shadow {
+    /* rtl:ignore */
+    mask-image: $scroll-shadow-mask-y, $scroll-shadow-mask-x;
+    mask-composite: intersect;
+    animation: $scroll-shadow-animation-y, $scroll-shadow-animation-x;
+    animation-timeline: scroll(self block), scroll(self block), scroll(self inline), scroll(self inline);
+    animation-range: $scroll-shadow-range, $scroll-shadow-range;
+  }
+
+  .scroll-shadow,
+  .scroll-shadow-x,
+  .scroll-shadow-y {
+    &:focus-visible {
+      mask-image: none;
+    }
+  }
+}
