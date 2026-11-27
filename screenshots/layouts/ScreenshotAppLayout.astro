@@ -40,7 +40,7 @@ interface Props {
   /** icon-only sidebar rail: folded, or folded until hovered */
   sidebarMode?: 'folded' | 'folded-hover'
   /** where the main menu lives */
-  navbarPosition?: 'horizontal' | 'vertical'
+  navbarPosition?: 'horizontal' | 'vertical' | 'combined'
   /** container width; fluid by default so the page fills the wide frame instead of centering a capped column */
   layout?: 'default' | 'fluid' | 'boxed'
   /** renders the theme settings offcanvas (needed for a capture of the panel) */
@@ -145,6 +145,20 @@ const libModules = pageLibEntries.flatMap(([, lib]) => (lib.module ? [`import * 
       .screenshot .page {
         height: 100%;
         overflow: hidden;
+      }
+
+      /* Same as the preview's demo.css: with both navigations on screen the
+         sidebar keeps the brand and the menu, the top navbar the user menu. */
+      html[data-bs-navbar-position='combined'] .page > [class*='navbar-expand']:not(.navbar-vertical) :is(.navbar-brand, .navbar-toggler, .navbar-collapse) {
+        display: none !important;
+      }
+
+      html[data-bs-navbar-position='combined'] .page > .navbar:not(.navbar-vertical) .navbar-nav {
+        margin-inline-start: auto;
+      }
+
+      html[data-bs-navbar-position='combined'] .page > .navbar-vertical .navbar-footer {
+        display: none;
       }
     </style>
 

@@ -119,6 +119,7 @@ export const themeSections: ThemeSection[] = [
         options: [
           { value: 'horizontal', label: 'Navbar' },
           { value: 'vertical', label: 'Sidebar' },
+          { value: 'combined', label: 'Both' },
         ],
       },
       {
