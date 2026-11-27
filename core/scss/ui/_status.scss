@@ -47,6 +47,7 @@
   // scss-docs-start status-css-vars
   --status-height: #{$status-height};
   --status-color: #{$text-secondary};
+  --status-text-color: var(--status-color);
   --status-padding-y: #{$status-padding-y};
   --status-padding-x: #{$status-padding-x};
   --status-gap: #{$status-gap};
@@ -61,7 +62,7 @@
   font-size: $font-size-base;
   font-weight: var(--font-weight-medium);
   line-height: 1;
-  color: var(--status-color);
+  color: var(--status-text-color);
   text-transform: none;
   letter-spacing: normal;
   background: color-transparent(var(--status-color), 0.1);
@@ -85,6 +86,9 @@
 @each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
     --status-color: var(--#{$name});
+    @if map.has-key($theme-colors, $name) {
+      --status-text-color: var(--#{$name}-text);
+    }
   }
 }
 

@@ -20,6 +20,52 @@ Every base color also has a light shade with the `-lt` suffix. It works as a bac
 
 <Colors colors={site.lightColors} />
 
+## Text colors
+
+A base color is picked to work as a background, so it can be too light for text. Every base and theme color has a darker shade for text in the `--tblr-{color}-text` variable. The `text-*` and `link-*` utilities use it, and so does the text inside a `bg-*-lt` background. In dark mode the shade is lighter than the color.
+
+<Example>
+<div class="d-flex flex-wrap align-items-center gap-3">
+  <span class="text-green">text-green</span>
+  <span class="text-yellow">text-yellow</span>
+  <a href="#" class="link-azure">link-azure</a>
+  <span class="bg-green-lt px-2 py-1 rounded">bg-green-lt</span>
+  <span class="bg-yellow-lt px-2 py-1 rounded">bg-yellow-lt</span>
+</div>
+</Example>
+
+For text on a solid color, use the `--tblr-{color}-fg` variable or the `text-*-fg` utility. The browser works it out from the color: light text on every color where it reaches a 3:1 contrast ratio, and dark text on a brighter color such as `yellow`.
+
+<Example>
+<div class="d-flex flex-wrap gap-2">
+  <span class="bg-blue text-blue-fg px-2 py-1 rounded">text-blue-fg</span>
+  <span class="bg-green text-green-fg px-2 py-1 rounded">text-green-fg</span>
+  <span class="bg-yellow text-yellow-fg px-2 py-1 rounded">text-yellow-fg</span>
+</div>
+</Example>
+
+The browser works out both colors from the base color. When you change a color with a CSS variable on the root element, its `-fg` color and its text shade follow:
+
+```css
+:root {
+  --tblr-primary: #e11d48;
+}
+```
+
+When you change a color on another element, set `--tblr-{color}-fg` and `--tblr-{color}-text` there as well.
+
+### Status colors
+
+The `warning` color is darker than `yellow`, so it carries light text. Use `bg-warning` for a state, and `bg-yellow` when you only need the color. The `success` color is the same as `green`.
+
+<Example>
+<div class="d-flex flex-wrap gap-2">
+  <span class="bg-success text-success-fg px-2 py-1 rounded">bg-success</span>
+  <span class="bg-warning text-warning-fg px-2 py-1 rounded">bg-warning</span>
+  <span class="bg-yellow text-yellow-fg px-2 py-1 rounded">bg-yellow</span>
+</div>
+</Example>
+
 ## Fill colors
 
 Fills are background tints for controls and small surfaces. They are the text color over a transparent background, so the same fill reads the same on the page, a card, a dropdown or a modal, in both color modes. Use them from the strongest to the faintest:
@@ -76,7 +122,7 @@ The brand colors of popular services are available too, for social buttons and i
 ## Accessibility
 
 - A color name is not a meaning. `text-red` looks like an error to most users, but a screen reader announces nothing, so keep the meaning in the text.
-- Body text needs a contrast ratio of at least 4.5:1, and large text at least 3:1. The lighter `-lt` variants are backgrounds for dark text, not text colors.
+- Body text needs a contrast ratio of at least 4.5:1, and large text at least 3:1. The lighter `-lt` variants are backgrounds for dark text, not text colors. The [Color contrast](https://preview.tabler.io/colors-contrast.html) page shows the ratio of every pairing.
 - Check both color modes. A pair that passes in light can fail in dark, and Tabler switches many tokens with `light-dark()`.
 - The social colors are brand colors. They are picked to be recognizable, not readable - do not use them for text on a white background without checking.
 - Never separate two states by hue alone. Add a label, an icon, or a shape.

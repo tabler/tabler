@@ -94,7 +94,9 @@
 @each $name, $value in $extra-colors {
   [data-bs-theme-primary='#{$name}'],
   [data-theme-primary='#{$name}'] {
-    --primary: #{$value};
+    --primary: var(--#{$name});
+    --primary-fg: var(--#{$name}-fg);
+    --primary-text: var(--#{$name}-text, var(--#{$name}));
   }
 }
 
@@ -109,6 +111,7 @@
 [data-theme-primary='inverted'] {
   --primary: var(--gray-800);
   --primary-fg: var(--light);
+  --primary-text: var(--primary);
 
   &[data-bs-theme='dark'],
   [data-bs-theme='dark'],
@@ -116,6 +119,7 @@
   [data-theme='dark'] {
     --primary: #{$light};
     --primary-fg: var(--dark);
+    --primary-text: var(--primary);
   }
 }
 
