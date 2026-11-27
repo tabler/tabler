@@ -90,12 +90,12 @@ const PALETTE: [string, string][] = [
   ['purple', '#ae3ec9'],
   ['pink', '#d3306a'],
   ['red', '#d33637'],
-  ['orange', '#f76707'],
+  ['orange', '#c14e00'],
   ['yellow', '#f59f00'],
-  ['lime', '#74b816'],
-  ['green', '#2fb344'],
-  ['teal', '#0ca678'],
-  ['cyan', '#17a2b8'],
+  ['lime', '#4d7f00'],
+  ['green', '#008424'],
+  ['teal', '#00825d'],
+  ['cyan', '#017d90'],
 ]
 
 // The physics below is tuned for this viewport height; taller windows get

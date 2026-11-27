@@ -34,7 +34,7 @@ A base color is picked to work as a background, so it can be too light for text.
 </div>
 </Example>
 
-For text on a solid color, use the `--tblr-{color}-fg` variable or the `text-*-fg` utility. It is light or dark, whichever has the higher contrast on that color, and it can differ between the color modes.
+For text on a solid color, use the `--tblr-{color}-fg` variable or the `text-*-fg` utility. The browser works it out from the color: light text on every color where it reaches a 3:1 contrast ratio, and dark text on a brighter color such as `yellow`.
 
 <Example>
 <div class="d-flex flex-wrap gap-2">
@@ -44,24 +44,24 @@ For text on a solid color, use the `--tblr-{color}-fg` variable or the `text-*-f
 </div>
 </Example>
 
-The text shade and the `-fg` color are set when the CSS is built. If you change a color with a CSS variable, set the other two as well:
+The `-fg` color follows a color that you change with a CSS variable on the root element. The text shade is set when the CSS is built, so set it together with the color:
 
 ```css
 :root {
   --tblr-primary: #e11d48;
   --tblr-primary-text: #be123c;
-  --tblr-primary-fg: #ffffff;
 }
 ```
 
+When you change a color on another element, set `--tblr-{color}-fg` there as well.
+
 ### Status colors
 
-The `success` and `warning` colors are darker than `green` and `yellow`, so they carry light text in light mode. Use `bg-success` and `bg-warning` for a state, and `bg-green` and `bg-yellow` when you only need the color.
+The `warning` color is darker than `yellow`, so it carries light text. Use `bg-warning` for a state, and `bg-yellow` when you only need the color. The `success` color is the same as `green`.
 
 <Example>
 <div class="d-flex flex-wrap gap-2">
   <span class="bg-success text-success-fg px-2 py-1 rounded">bg-success</span>
-  <span class="bg-green text-green-fg px-2 py-1 rounded">bg-green</span>
   <span class="bg-warning text-warning-fg px-2 py-1 rounded">bg-warning</span>
   <span class="bg-yellow text-yellow-fg px-2 py-1 rounded">bg-yellow</span>
 </div>

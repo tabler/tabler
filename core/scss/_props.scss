@@ -58,19 +58,15 @@
       // `--secondary` and `--muted` switch to the lighter gray in dark mode (see `layout/_root.scss`).
       $dark-color: if(sass($color == $text-secondary): $text-secondary-light; else: dark-mode-color($color));
     }
-    @if $dark-color {
+    @if $dark-color and $color == $text-secondary {
       --#{$name}: light-dark(#{$color}, #{$dark-color});
     } @else {
       --#{$name}: #{$color};
     }
     @if $brand {
       --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
-    } @else if $dark-color {
-      $fg-light: if(sass(prefers-light-foreground($color, $light, $dark)): var(--light); else: var(--dark));
-      $fg-dark: if(sass(prefers-light-foreground($dark-color, $light, $dark)): var(--light); else: var(--dark));
-      --#{$name}-fg: #{if(sass($fg-light == $fg-dark): $fg-light; else: light-dark($fg-light, $fg-dark))};
     } @else {
-      --#{$name}-fg: #{contrast-color-css(var(--#{$name}), $light, $dark)};
+      --#{$name}-fg: #{contrast-color-css(var(--#{$name}), $light, $dark, $fg-min-contrast-ratio)};
     }
     @if map.has-key($theme-text-colors, $name) {
       @if $dark-color {
