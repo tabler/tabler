@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 @use '../config' as *;
 
 .alert {
@@ -124,8 +122,6 @@
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
     --alert-variant-color: var(--#{$name});
-    @if map.has-key($theme-text-colors, $name) {
-      --alert-variant-text: var(--#{$name}-text);
-    }
+    --alert-variant-text: var(--#{$name}-text);
   }
 }
