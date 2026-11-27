@@ -1,12 +1,14 @@
-// Docs code-block pipeline: js-beautify + shiki (github-dark theme).
+// Docs code-block pipeline: js-beautify + shiki (github-light and github-dark themes).
 import beautify from 'js-beautify'
 import { createHighlighter, type Highlighter } from 'shiki'
+
+export const SHIKI_THEMES = { light: 'github-light', dark: 'github-dark' } as const
 
 let highlighterPromise: Promise<Highlighter> | undefined
 
 function getHighlighter(): Promise<Highlighter> {
   highlighterPromise ??= createHighlighter({
-    themes: ['github-dark'],
+    themes: Object.values(SHIKI_THEMES),
     langs: ['html', 'yaml', 'js', 'ts', 'shell', 'diff', 'scss', 'css'],
   })
   return highlighterPromise
@@ -40,7 +42,7 @@ export function beautifyHtml(code: string): string {
 
 export async function highlightCode(code: string, lang = 'html'): Promise<string> {
   const highlighter = await getHighlighter()
-  return highlighter.codeToHtml(code, { lang, theme: 'github-dark' })
+  return highlighter.codeToHtml(code, { lang, themes: SHIKI_THEMES, defaultColor: false })
 }
 
 /**
