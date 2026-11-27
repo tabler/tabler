@@ -1,0 +1,41 @@
+---
+// Segmented circle sparkline in context: four stat cards for the stages of a
+// project board. Each card has a ring split into four parts with the number of
+// finished parts in the middle, next to the stage name and its task count. The
+// stages step through the states a ring can show: half, one part, three parts
+// and all four.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Sparkline from '@ui/Sparkline.astro'
+import Subheader from '@ui/Subheader.astro'
+
+const stages = [
+  { name: 'Backlog', tasks: 24, value: 2, color: 'secondary' },
+  { name: 'Not started', tasks: 8, value: 1, color: 'orange' },
+  { name: 'Working on', tasks: 15, value: 3, color: 'primary' },
+  { name: 'Completed', tasks: 42, value: 4, color: 'success' },
+]
+---
+
+<ScreenshotLayout title="Segmented circle sparkline in stat cards" columns={2}>
+  <div class="row g-3">
+    {
+      stages.map((stage) => (
+        <div class="col-6">
+          <Card>
+            <CardBody>
+              <div class="d-flex align-items-center gap-3">
+                <Sparkline type="circle" values={[stage.value]} max={4} segments={4} color={stage.color} size="lg" label="auto" style="--tblr-sparkline-stroke-width: 3" ariaLabel={`${stage.name}, ${stage.value} of 4`} />
+                <div>
+                  <Subheader>{stage.name}</Subheader>
+                  <div class="h1 mb-0">{stage.tasks} tasks</div>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

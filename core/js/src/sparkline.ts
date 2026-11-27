@@ -28,6 +28,8 @@ type ComponentConfig = {
   pad: number
   barGap: number
   barRadius: number
+  segments: number
+  segmentGap: number
   label: string | number | boolean | null
   threshold: number | null
   animation: number
@@ -70,6 +72,8 @@ const Default: ComponentConfig = {
   pad: 2,
   barGap: 2,
   barRadius: 2,
+  segments: 0,
+  segmentGap: 2,
   label: null,
   threshold: null,
   animation: 300,
@@ -87,6 +91,8 @@ const DefaultType: Record<keyof ComponentConfig, string> = {
   pad: 'number',
   barGap: 'number',
   barRadius: 'number',
+  segments: 'number',
+  segmentGap: 'number',
   label: '(string|number|boolean|null)',
   threshold: '(number|null)',
   animation: 'number',
@@ -335,7 +341,7 @@ class Sparkline extends BaseComponent {
     }
 
     if (type === 'circle') {
-      return `${Math.round(this._circleRatio() * 100)}%`
+      return this._segments() > 0 ? String(this._filledSegments()) : `${Math.round(this._circleRatio() * 100)}%`
     }
 
     return String(values[values.length - 1])
@@ -349,6 +355,16 @@ class Sparkline extends BaseComponent {
     const max = cfg.max ?? (cfg.values.length > 1 ? cfg.values[1] : 100)
     const min = cfg.min ?? 0
     return Math.max(0, Math.min(1, (value - min) / clampSpan(min, max)))
+  }
+
+  // A ring is split only from two segments up; one segment is a plain ring.
+  _segments(): number {
+    const segments = Math.floor(this._config.segments)
+    return segments > 1 ? segments : 0
+  }
+
+  _filledSegments(): number {
+    return Math.round(this._circleRatio() * this._segments())
   }
 
   _canAnimate(from: SVGSVGElement, to: SVGSVGElement): boolean {
@@ -590,6 +606,35 @@ class Sparkline extends BaseComponent {
     svg.append(track)
 
     const ring = svgEl('circle')
+    const segments = this._segments()
+    if (segments > 0) {
+      // A round cap adds half the stroke width to each end of a dash, so the
+      // pattern gap is wider than the visible one.
+      const gap = Math.max(0, cfg.segmentGap) + strokeWidth
+      const dash = Math.max(0.01, circumference / segments - gap)
+      const filled = this._filledSegments()
+      // Starts at 12 o'clock with the middle of a gap on top.
+      const shared = {
+        'stroke-linecap': 'round',
+        'transform': `rotate(${-90 + (gap / 2 / clampSpan(0, circumference)) * 360} ${cx} ${cy})`,
+      }
+
+      setAttr(track, { ...shared, 'stroke-dasharray': `${dash} ${gap}` })
+      setAttr(ring, {
+        ...shared,
+        'cx': cx,
+        'cy': cy,
+        'r': radius,
+        'fill': 'none',
+        'stroke': filled > 0 ? cssVar('stroke') : 'none',
+        'stroke-width': strokeWidth,
+        'stroke-dasharray': [...Array.from({ length: Math.max(0, filled - 1) }, () => `${dash} ${gap}`), `${dash} ${circumference}`].join(' '),
+      })
+      svg.append(ring)
+
+      return svg
+    }
+
     setAttr(ring, {
       'cx': cx,
       'cy': cy,

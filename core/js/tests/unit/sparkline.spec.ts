@@ -133,6 +133,44 @@ describe('Sparkline', () => {
       expect(offset).toBeCloseTo(dash / 2, 5)
     })
 
+    it('should split a circle into segments and fill the share of them', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="3" data-bs-max="4" data-bs-segments="4" data-bs-label="auto" data-bs-width="40" data-bs-height="40"></span>'
+
+      new Sparkline(el())
+
+      const [track, ring] = Array.from(el().querySelectorAll('circle'))
+      const circumference = 2 * Math.PI * 19
+      const [dash, gap] = track.getAttribute('stroke-dasharray')!.split(' ').map(Number)
+      expect(dash + gap).toBeCloseTo(circumference / 4, 5)
+      expect(gap).toBe(4)
+
+      const pattern = ring.getAttribute('stroke-dasharray')!.split(' ').map(Number)
+      expect(pattern.length).toBe(6)
+      expect(pattern[5]).toBeCloseTo(circumference, 5)
+      expect(ring.getAttribute('transform')).toBe(track.getAttribute('transform'))
+      expect(el().querySelector('.sparkline-label')!.textContent).toBe('3')
+    })
+
+    it('should hide the ring when no segment is filled', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="0" data-bs-max="4" data-bs-segments="4"></span>'
+
+      new Sparkline(el())
+
+      const [track, ring] = Array.from(el().querySelectorAll('circle'))
+      expect(track.getAttribute('stroke-dasharray')).not.toBeNull()
+      expect(ring.getAttribute('stroke')).toBe('none')
+    })
+
+    it('should keep a plain ring for fewer than two segments', () => {
+      fixtureEl.innerHTML = '<span class="sparkline" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="50" data-bs-segments="1"></span>'
+
+      new Sparkline(el())
+
+      const [track, ring] = Array.from(el().querySelectorAll('circle'))
+      expect(track.getAttribute('stroke-dasharray')).toBeNull()
+      expect(ring.getAttribute('stroke-dashoffset')).not.toBeNull()
+    })
+
     it('should derive an auto label from the data', () => {
       fixtureEl.innerHTML = '<span class="sparkline" id="ring" data-bs-toggle="sparkline" data-bs-type="circle" data-bs-values="3" data-bs-max="4" data-bs-label="auto"></span>' + '<span class="sparkline" id="bars" data-bs-toggle="sparkline" data-bs-type="bar" data-bs-values="1,2,7" data-bs-label="auto"></span>'
 

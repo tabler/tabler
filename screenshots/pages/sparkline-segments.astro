@@ -1,0 +1,27 @@
+---
+// Segmented circle sparkline on its own, no card: the top row is a ring split
+// into four parts with one to four of them filled, the bottom row shows other
+// part counts, from three to twelve. Each ring has the number of filled parts
+// in the middle and its own color, since the charts draw with currentColor.
+// Enlarged with --tblr-sparkline-height so the gaps and the rounded ends read
+// at picture size.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Sparkline from '@ui/Sparkline.astro'
+
+const rings = [
+  { value: 1, segments: 4, color: 'orange' },
+  { value: 2, segments: 4, color: 'yellow' },
+  { value: 3, segments: 4, color: 'blue' },
+  { value: 4, segments: 4, color: 'green' },
+  { value: 2, segments: 3, color: 'purple' },
+  { value: 4, segments: 6, color: 'pink' },
+  { value: 5, segments: 8, color: 'teal' },
+  { value: 9, segments: 12, color: 'indigo' },
+]
+---
+
+<ScreenshotLayout title="Segmented circle sparkline" columns={2}>
+  <div class="d-grid gap-6 justify-content-center" style="grid-template-columns: repeat(4, auto)">
+    {rings.map((ring) => <Sparkline type="circle" values={[ring.value]} max={ring.segments} segments={ring.segments} color={ring.color} label="auto" style="--tblr-sparkline-height: 6rem; --tblr-sparkline-stroke-width: 3.5; --tblr-sparkline-label-font-size: 1.75rem" ariaLabel={`${ring.value} of ${ring.segments}`} />)}
+  </div>
+</ScreenshotLayout>
