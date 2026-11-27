@@ -3,6 +3,9 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import DropdownMenu from '@components/demo/DropdownMenu.astro'
 import DropdownMenuAll from '@components/demo/DropdownMenuAll.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import countries from '@data/countries.json'
+
+const countryNames = (countries as { name: string }[]).slice(0, 15).map((country) => country.name)
 ---
 
 <DefaultLayout title="Dropdowns" pageMenu="base.dropdowns" cssPlugins={['flags']} description="Dropdown menus for actions, filters, and selections, always shown open here for reference.">
@@ -39,6 +42,15 @@ import DocsLink from '@ui/DocsLink.astro'
       <DropdownMenu show radio />
       <DropdownMenu show people />
       <DropdownMenu show flag />
+      <div class="dropdown-menu dropdown-menu-demo dropdown-menu-scrollable scroll-shadow-y">
+        {
+          countryNames.map((name) => (
+            <a class="dropdown-item" href="#">
+              {name}
+            </a>
+          ))
+        }
+      </div>
     </div>
   </div>
 </DefaultLayout>

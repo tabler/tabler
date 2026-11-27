@@ -10,6 +10,9 @@ import CardHeader from '@ui/CardHeader.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import DocsLink from '@ui/DocsLink.astro'
+
+const wideColumns = ['Invoice', 'Client', 'VAT number', 'Created', 'Due', 'Status', 'Country', 'Currency', 'Amount', 'Tax', 'Total']
+const wideRows = Array.from({ length: 5 }, (_, i) => [`INV-00${i + 1}`, 'Design Works', `PL52${i}1234567`, '15 Dec 2026', '15 Jan 2027', 'Paid', 'Poland', 'EUR', '€1,200.00', '€276.00', '€1,476.00'])
 ---
 
 <DefaultLayout title="Tables" pageMenu="base.tables" pageLibs={['lists']} cssPlugins={['flags']}>
@@ -64,6 +67,35 @@ import DocsLink from '@ui/DocsLink.astro'
           </div>
         </CardHeader>
         <Table card={true} mobile={true} avatars={true} offset={15} buttons={true} />
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>Scroll shadows</CardTitle>
+            <CardSubtitle>Add <code>scroll-shadow-x</code> to <code>table-responsive</code> to fade the side that has more columns.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <div class="table-responsive scroll-shadow-x" tabindex="0">
+          <table class="table table-vcenter table-nowrap card-table">
+            <thead>
+              <tr>{wideColumns.map((column) => <th>{column}</th>)}</tr>
+            </thead>
+            <tbody>
+              {
+                wideRows.map((row) => (
+                  <tr>
+                    {row.map((cell) => (
+                      <td>{cell}</td>
+                    ))}
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
       </Card>
     </div>
 
