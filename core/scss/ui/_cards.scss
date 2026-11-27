@@ -422,6 +422,32 @@
   }
 }
 
+// Card fullscreen
+.card-fullscreen {
+  --card-fullscreen-zindex: #{$card-fullscreen-zindex};
+  --card-border-radius: 0;
+  --card-inner-border-radius: 0;
+  position: fixed;
+  inset: 0;
+  z-index: var(--card-fullscreen-zindex);
+  margin: 0;
+
+  > .card-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+  }
+}
+
+.card-fullscreen-open {
+  overflow: hidden;
+}
+
+[aria-pressed='true'] > .card-fullscreen-icon-expand,
+:not([aria-pressed='true']) > .card-fullscreen-icon-collapse {
+  display: none;
+}
+
 // Card optinos
 .card-options {
   --card-options-top: #{$card-options-top};

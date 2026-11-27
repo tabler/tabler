@@ -1,13 +1,25 @@
 ---
+import Icon from './Icon.astro'
+
 // Card actions container (.card-actions), typically in a card header.
 
 interface Props {
+  /** appends a `data-bs-toggle="card-fullscreen"` button that expands the card */
+  fullscreen?: boolean
   class?: string
 }
 
-const { class: className } = Astro.props
+const { fullscreen, class: className } = Astro.props
 ---
 
 <div class:list={['card-actions', className]}>
   <slot />
+  {
+    fullscreen && (
+      <button type="button" class="btn btn-action" data-bs-toggle="card-fullscreen" aria-label="Expand" aria-pressed="false">
+        <Icon name="maximize" class="card-fullscreen-icon-expand" />
+        <Icon name="minimize" class="card-fullscreen-icon-collapse" />
+      </button>
+    )
+  }
 </div>
