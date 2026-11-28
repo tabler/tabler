@@ -1,5 +1,12 @@
 # @tabler/preview
 
+## 1.7.6
+
+### Patch Changes
+
+- 65ffe81: Updated `astro` to 7.4.12, `@astrojs/mdx` to 8.1.6 and `@astrojs/vercel` to 11.0.22.
+- 8bc045e: Added `Cache-Control` headers for the static files of the Vercel preview deployment (`/static`, `/dist`, `/preview`), so browsers and the CDN stop revalidating them on every request.
+
 ## 1.7.5
 
 ### Patch Changes
