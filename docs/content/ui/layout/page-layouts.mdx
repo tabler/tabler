@@ -14,11 +14,13 @@ import Icon from '@ui/Icon.astro'
 
 ## Sample layout
 
-To create a sample version of the dashboard, you can use the following code snippet. This code snippet will help you to create a dashboard layout with a header.
+Use this structure for a dashboard with a top navbar. It follows the preview site: `.page-wrapper` contains a flex-column `main`, with `.page-body` inside it.
+
+The `main` grows to fill the available space. Add an optional [page header](/ui/layout/page-headers) before `.page-body`, inside `main`. This sample leaves it out.
 
 <Example>
 <div class="page">
-  <header class="navbar navbar-expand-sm d-print-none">
+  <header class="navbar navbar-expand-md d-print-none">
     <div class="container-xl">
       <h1 class="navbar-brand navbar-brand-autodark pe-0 pe-md-3">
         <a href="#">
@@ -39,27 +41,29 @@ To create a sample version of the dashboard, you can use the following code snip
     </div>
   </header>
   <div class="page-wrapper">
-    <main class="page-body">
-      <div class="container-xl">
-        <div class="row row-deck row-cards">
-          <div class="col-4">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+    <main class="d-flex flex-column flex-fill">
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-deck row-cards">
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-4">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-4">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-4">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -71,7 +75,7 @@ To create a sample version of the dashboard, you can use the following code snip
 
 ## Footer
 
-Add a `footer` element with the `footer` class after `.page-wrapper` to close the page. `d-print-none` hides it when the page is printed, the same as the navbar. Use [`list-inline list-inline-dots`](/ui/components/list-group#inline-list) for the footer links.
+Add a `footer` element with the `footer` class after `main`, inside `.page-wrapper`. `d-print-none` hides it when the page is printed, the same as the navbar. Use [`list-inline list-inline-dots`](/ui/components/list-group#inline-list) for the footer links.
 
 <Example>
 <footer class="footer footer-transparent d-print-none">
@@ -99,7 +103,7 @@ Add a `footer` element with the `footer` class after `.page-wrapper` to close th
 
 ## Sidebar layout
 
-To create a sidebar layout, you can use the following code snippet. This code snippet will help you to create a sidebar layout with a header.
+Use the same content structure with a vertical navbar. Keep the page header and `.page-body` inside `main`.
 
 <Example>
 <div class="page">
@@ -140,85 +144,87 @@ To create a sidebar layout, you can use the following code snippet. This code sn
     </div>
   </aside>
   <div class="page-wrapper">
-    <div class="page-header d-print-none">
-      <div class="container-xl">
-        <div class="row g-2 align-items-center">
-          <div class="col">
-            <h2 class="page-title">Vertical layout</h2>
+    <main class="d-flex flex-column flex-fill">
+      <div class="page-header d-print-none">
+        <div class="container-xl">
+          <div class="row g-2 align-items-center">
+            <div class="col">
+              <h2 class="page-title">Vertical layout</h2>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <main class="page-body">
-      <div class="container-xl">
-        <div class="row row-deck row-cards">
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="row row-cards">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-body" style="height: 10rem"></div>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-body" style="height: 10rem"></div>
-                </div>
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-deck row-cards">
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-md-12 col-lg-8">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-lg-6">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body" style="height: 10rem"></div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body" style="height: 10rem"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-md-12 col-lg-8">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-md-12 col-lg-8">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-8">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -346,17 +352,19 @@ Use `data-bs-auto-close="outside"` on submenu toggles in a folded sidebar, so an
     </div>
   </aside>
   <div class="page-wrapper">
-    <main class="page-body">
-      <div class="container-xl">
-        <div class="row row-deck row-cards">
-          <div class="col-6">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+    <main class="d-flex flex-column flex-fill">
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-deck row-cards">
+            <div class="col-6">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
-          </div>
-          <div class="col-6">
-            <div class="card">
-              <div class="card-body" style="height: 10rem"></div>
+            <div class="col-6">
+              <div class="card">
+                <div class="card-body" style="height: 10rem"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -511,14 +519,18 @@ A light navigation inside a dark page is not supported - a light-scoped subtree 
 
 A layout is what a screen reader user navigates by, so the landmarks matter more here than on any single component.
 
-- Use the real elements for the regions. Tabler's own layout renders `header` for the top bar, `aside` for the vertical navbar, `main` for `.page-body` and `footer` for the footer. The classes are styling; the elements are what create the landmarks.
-- `.page-body` should be a `main`, and there is exactly one per page. It is the target the skip link points at.
-- Start the page with a skip link, so keyboard users can jump past the navigation. Tabler ships one:
+- Use the real elements for the regions. Tabler's own layout renders `header` for the top bar, `aside` for the vertical navbar, `main` for the page content and `footer` for the footer. The classes are styling; the elements are what create the landmarks.
+- Use one `main` per page. Put the optional `.page-header` and the `.page-body` inside it. Keep the footer after `main`, inside `.page-wrapper`.
+- Start the page with a skip link, so keyboard users can jump past the navigation. Its `href` must match the `id` on `main`. The preview site uses `content`:
 
 ```html
 <a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
 ...
-<main class="page-body">
+<main id="content" class="d-flex flex-column flex-fill">
+  <div class="page-body">
+    <div class="container-xl">...</div>
+  </div>
+</main>
 ```
 
   `visually-hidden-focusable` keeps the link out of the way until it takes focus, and then shows it.
