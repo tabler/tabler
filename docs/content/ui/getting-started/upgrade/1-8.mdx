@@ -1,0 +1,302 @@
+---
+title: Upgrade to 1.8
+summary: Move a project from Tabler 1.7 to 1.8. The base colors are light-dark() values now, so their deprecated RGB custom properties are no longer emitted and Sass color functions can't read them. Dropzone.js, the IMask path of the input mask and one button variable are deprecated.
+description: Upgrade guide from Tabler 1.7 to 1.8 with the base color change, the deprecated RGB custom properties, the deprecated libraries and variables, the visual changes to check, and what to change in your CSS, Sass and JavaScript.
+added-in: '1.8.0'
+order: 1
+related: [/ui/getting-started/upgrade/1-7, /ui/getting-started/customize]
+---
+
+Tabler 1.8 adds a lot, and for most projects the upgrade is a version bump. Every class, data attribute and JavaScript export from 1.7 is still there, and a page that loads the compiled CSS and JS needs no change to its markup.
+
+Two things can touch your code, and both come from the same change. The twelve base colors, `$blue` to `$cyan`, have a dark mode value now and are written as `light-dark()`. Because of that, the deprecated `--tblr-{color}-rgb` custom properties of those colors are [no longer emitted](#rgb-custom-properties-of-the-base-colors), and Sass color functions such as `color.adjust()` [can't read the color variables](#base-colors-are-not-sass-colors). If your CSS never uses a `-rgb` property and your Sass never changes a Tabler color, you can skip both.
+
+Three things are deprecated and keep working until 2.0: Dropzone.js, the IMask path of the input mask, and the `$btn-transition` Sass variable. Then have a look at [Visual changes](#visual-changes).
+
+If you're coming from 1.6 or older, do the [1.7 upgrade](/ui/getting-started/upgrade/1-7) first.
+
+## Overview
+
+If you…|You need to…
+---|---
+Load the compiled CSS and JS, and write no CSS with `--tblr-*-rgb`|Nothing
+Use `--tblr-primary-rgb` or another `-rgb` property of a base or theme color in your CSS|Use `color-mix()`, see [RGB custom properties of the base colors](#rgb-custom-properties-of-the-base-colors)
+Call `color.adjust()`, `rgba()`, `darken()` or another Sass color function on `$primary`, `$blue` or a color built on them|Use the Tabler functions or `color-mix()`, see [Base colors are not Sass colors](#base-colors-are-not-sass-colors)
+Use Dropzone.js from `dist/libs/dropzone`|Nothing now; move to the Dropzone plugin before 2.0, see [Dropzone.js is deprecated](#dropzonejs-is-deprecated)
+Load IMask for `data-mask` fields|Nothing now; drop IMask before 2.0, see [Input mask without IMask](#input-mask-without-imask)
+Need the same brand color in light and dark mode|Set the color yourself, see [Primary color in dark mode](#primary-color-in-dark-mode)
+Keep a size budget for JavaScript|Check it, see [Bundle size](#bundle-size)
+Set `$btn-transition` in your Sass|Nothing now; switch to the three new variables before 2.0, see [Sass changes](#sass-changes)
+Lint with `@typescript-eslint/no-floating-promises`|Mark the calls you don't await with `void`, see [Methods return a Promise](#methods-return-a-promise)
+Use `.link-underline*`, `.link-offset-*`, `.lh-base` or `.placeholder-glow`|Nothing, see [New names for a few classes](#new-names-for-a-few-classes)
+Style text, inline `code`, checks or switches yourself|Check them, see [Visual changes](#visual-changes)
+
+## Update the package
+
+Install the new version:
+
+```sh
+npm install --save @tabler/core@1.8.0
+```
+
+Or update the CDN links:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.8.0/dist/css/tabler.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.8.0/dist/js/tabler.min.js"></script>
+```
+
+## RGB custom properties of the base colors
+
+The base colors `$blue` to `$cyan` are `light-dark()` values in 1.8, with a slightly lighter color for dark mode. Sass can't turn a `light-dark()` value into an `r, g, b` triplet, so the deprecated triplet properties of these colors are no longer emitted. Tabler itself doesn't read them.
+
+No longer emitted|For
+---|---
+`--tblr-{color}-rgb`, `--tblr-{color}-lt-rgb`|`blue`, `azure`, `indigo`, `purple`, `pink`, `red`, `orange`, `yellow`, `lime`, `green`, `teal`, `cyan`
+`--tblr-{color}-rgb`, `--tblr-{color}-lt-rgb`|`primary`, `success`, `info`, `warning`, `danger`
+`--tblr-link-color-rgb`, `--tblr-link-hover-color-rgb`|Links
+`--tblr-status-color-rgb`|`.status-{color}` with one of the colors above
+
+The triplets of `secondary`, `muted`, `dark`, `light` and the grays are still there, because those colors are plain values.
+
+If your CSS builds a transparent color from a triplet, use `color-mix()` on the color itself. It also follows the color mode, which the triplet never did:
+
+```diff
+  .my-highlight {
+-   background-color: rgba(var(--tblr-primary-rgb), 0.5);
++   background-color: color-mix(in srgb, var(--tblr-primary) 50%, transparent);
+  }
+```
+
+If you compile Tabler from Sass and set a color to a plain value, for example `$primary: #7c3aed`, the triplets of that color are emitted as before.
+
+## Base colors are not Sass colors
+
+This only matters if you compile the `scss/` sources and run Sass color functions on Tabler's color variables.
+
+`$blue` to `$cyan` are `light-dark()` values, and their `-100` to `-900` shades are `color-mix()` values. `$primary`, `$success`, `$info`, `$warning` and `$danger` point at them. `$link-color`, `$link-color-dark`, `$component-active-bg`, `$mark-bg` and the form validation colors are `var()` references. To Sass all of these are strings, not colors, so a native Sass color function stops with an error:
+
+```text
+Error: $color: light-dark(oklch(54.6% 0.1724 254.2deg), oklch(60.6% 0.1586 254.2deg)) is not a color.
+```
+
+That happens with `color.adjust()`, `color.scale()`, `color.change()`, `color.channel()`, `rgba()`, `darken()` and `lighten()`. `to-rgb()` returns nothing for these colors.
+
+Tabler's own functions, `tint-color()`, `shade-color()`, `shift-color()` and `mix-color()`, accept the new values and write a CSS `color-mix()` for them. Use them, or write `color-mix()` yourself:
+
+```diff
+  @use '@tabler/core/scss/tabler' as tabler;
+
+  .my-button:hover {
+-   background-color: color.adjust(tabler.$primary, $lightness: -10%);
++   background-color: tabler.shade-color(tabler.$primary, 20%);
+  }
+
+  .my-overlay {
+-   background-color: rgba(tabler.$primary, 0.5);
++   background-color: color-mix(in srgb, var(--tblr-primary) 50%, transparent);
+  }
+```
+
+A color you configure yourself is a Sass color again, and every Sass function works on it:
+
+```scss
+@use '@tabler/core/scss/tabler' with (
+  $primary: #7c3aed
+);
+```
+
+A plain value is the same in both color modes. To keep a separate dark mode value, pass `light-dark()` with two colors.
+
+## Dropzone.js is deprecated
+
+`tabler.js` has its own [Dropzone](/ui/forms/dropzone) plugin now, started with `data-bs-toggle="dropzone"`. The Dropzone.js library is deprecated. `dist/libs/dropzone` and its styles in `tabler-vendors.css` stay until 2.0, so existing pages keep working.
+
+Both use the `.dropzone` class. The old styles apply only to a `.dropzone` without a `.dropzone-area` inside, so the two can live on the same page. Don't use both on the same element.
+
+```diff
+- <form class="dropzone" id="dropzone-default" action="/upload">
+-   <div class="fallback">
+-     <input name="file" type="file" />
+-   </div>
+- </form>
+- <script src="/dist/libs/dropzone/dist/dropzone-min.js"></script>
+- <script>
+-   new Dropzone('#dropzone-default')
+- </script>
++ <div class="dropzone" data-bs-toggle="dropzone" data-bs-url="/upload">
++   <label class="dropzone-area">
++     <input class="dropzone-input" type="file" name="file" multiple />
++     <span class="dropzone-title">Drop files here or click to upload</span>
++   </label>
++ </div>
+```
+
+The [Migration from Dropzone.js](/ui/forms/dropzone#migration-from-dropzonejs) table maps every option and event.
+
+## Input mask without IMask
+
+The [input mask](/ui/plugins/input-mask) formats `data-mask` patterns natively, with the same `0`, `a` and `*` characters. Tabler doesn't need the IMask library any more.
+
+If your page still loads IMask, a plain `data-mask` pattern goes to IMask as before, with every IMask option. This keeps existing code working. It's deprecated and goes away in 2.0. To move a page off IMask, remove the script:
+
+```diff
+- <script src="/dist/libs/imask/dist/imask.min.js"></script>
+  <input type="text" class="form-control" data-mask="00/00/0000" />
+```
+
+To use the native mask on a page that has to keep loading IMask, add `data-mask-type="pattern"`:
+
+```html
+<input type="text" class="form-control" data-mask="00/00/0000" data-mask-type="pattern" />
+```
+
+The new `date` and `number` types, `data-mask-ranges` and `tokens` are always native.
+
+The native mask takes a string or a function as `mask`. A mask that only IMask understands, such as a `RegExp`, `Number`, `Date` or an array of masks, still needs the library. Without IMask on the page such a field gets no mask, and the console shows a warning. Rewrite these masks before you remove the script. `data-mask-type="number"` and `data-mask-type="date"` replace `Number` and `Date`.
+
+```diff
+- new tabler.InputMask(element, { mask: Number, scale: 2, thousandsSeparator: ' ' })
++ new tabler.InputMask(element, { type: 'number', scale: 2, thousandsSeparator: ' ' })
+```
+
+The `mask` getter returns the IMask instance only when IMask handles the field. With the native mask it returns the component, which has the same `value` and `unmaskedValue` properties.
+
+## Methods return a Promise
+
+`show()`, `hide()`, `toggle()` and `close()` return a Promise that resolves when the transition ends. In 1.7 they returned nothing. Code that ignores the return value works as before.
+
+Projects that lint with `@typescript-eslint/no-floating-promises` get a new error on every call that isn't awaited. Mark those calls with `void`:
+
+```diff
+- modal.show()
++ void modal.show()
+```
+
+## New names for a few classes
+
+A few utilities got a second name, so they read better next to the new ones. The old names still work and do the same, so there's nothing to change.
+
+Class in 1.7|New name in 1.8
+---|---
+`.link-underline`, `.link-underline-{color}`|`.underline`, `.underline-{color}`
+`.link-underline-opacity-{value}`|`.underline-{value}`
+`.link-offset-{1-3}`|`.underline-offset-{1-3}`
+`.lh-base`|`.lh-md`
+`.placeholder-glow`|`.placeholder-pulse`
+
+## Primary color in dark mode
+
+In 1.7 a base color was the same in both color modes. In 1.8 it's a little lighter on a dark page, so it stays readable there. The default primary color is `#066fd1` in light mode and `#3283de` in dark mode.
+
+If your brand color has to be the same everywhere, set it yourself. A plain value applies to both modes:
+
+```css
+:root {
+  --tblr-primary: #066fd1;
+}
+```
+
+Or in Sass:
+
+```scss
+@use '@tabler/core/scss/tabler' with (
+  $primary: #066fd1
+);
+```
+
+If you already set `--tblr-primary` or `$primary`, nothing changes for you.
+
+Two more things follow the color at runtime now. The text color on a colored background, `--tblr-{color}-fg`, is worked out in the browser from the color itself. In 1.7 it was fixed when the CSS was compiled, so a light `--tblr-primary` set in CSS kept its white text. The valid and invalid colors of form fields follow `--tblr-success` and `--tblr-danger`. If you set a `-fg` property yourself, your value still wins.
+
+## Bundle size
+
+Combobox, Dropzone, Phone input and the native input mask are part of `tabler.js`, so the file is bigger. In return a page no longer has to load Dropzone.js, IMask or Tom Select for these fields.
+
+File|1.7.5|1.8.0
+---|---|---
+`tabler.min.js`, gzipped|43.7 kB|60.8 kB
+`tabler.min.css`, gzipped|86.1 kB|93.0 kB
+
+## Visual changes
+
+Nothing in this section needs a change to your markup. A few things are drawn a little differently in 1.8. If you have a custom style that sits next to one of them, have a quick look.
+
+- **Darker text.** `$dark` and `$body-color` are `$gray-900` instead of `$gray-800`, and the light mode `--tblr-body-color` is `gray-800` instead of `gray-700`.
+- **Base colors in dark mode.** `blue` to `cyan`, and the theme colors built on them, are a little lighter on a dark page. Text on a yellow background turns dark there. See [Primary color in dark mode](#primary-color-in-dark-mode) to keep one color in both modes.
+- **Inline `code`.** It takes the color of the text around it, with a 10% tint of that color as its background. In 1.7 it was gray text on `--tblr-fill-tertiary`, which was hard to read on a button or another colored surface.
+- **Neutral backgrounds.** Card headers and footers, table headers, striped rows, the modal footer and input group add-ons use the `--tblr-fill-*` tokens instead of `--tblr-bg-surface-tertiary`.
+- **Checks, radios and switches.** Their marks animate when the state changes. `--tblr-control-transition-duration` sets the speed.
+- **Tooltips and popovers.** A tooltip or a hover popover stays open while the pointer is over the tip, and every tooltip and popover closes on <kbd>Escape</kbd>, also a popover with the `click` or `manual` trigger.
+- **Reduced motion.** Transitions and animations are written inside `prefers-reduced-motion: no-preference`. For a user who asked for reduced motion they don't run at all.
+- **Native controls.** The root element sets `accent-color` to the primary color, so a checkbox, radio, range input or `<progress>` without Tabler classes uses the [theme color](/ui/base/colors#native-controls).
+- **Focus ring on wrappers.** `.form-control` shows the focus ring on `:focus-within`, so a `.form-control` wrapper with an input inside gets it too.
+- **Native `<dialog>`.** It opens and closes with a short animation, and so does its backdrop.
+- **Toggle buttons.** A `[data-bs-toggle="button"]` button gets `aria-pressed` on load, `true` when it has `.active`.
+
+## Sass changes
+
+This only matters if you compile the `scss/` sources yourself. No variable, mixin or function was removed, so `@use … with (…)` keeps compiling.
+
+### Deprecated variables
+
+Variable|Use instead
+---|---
+`$btn-transition`|`$btn-transition-property`, `$btn-transition-duration`, `$btn-transition-timing`
+
+A value you set for `$btn-transition` still replaces the three new ones. It goes away in 2.0.
+
+```diff
+  @use '@tabler/core/scss/tabler' with (
+-   $btn-transition: color 0.2s ease-out, background-color 0.2s ease-out
++   $btn-transition-property: (color, background-color),
++   $btn-transition-duration: 0.2s,
++   $btn-transition-timing: ease-out
+  );
+```
+
+### Changed defaults
+
+Variable|1.7|1.8
+---|---|---
+`$blue` to `$cyan`|One `oklch()` color|`light-dark()` with a light and a dark color
+`$blue-100` to `$cyan-900`|`tint-color()` or `shade-color()` result|`color-mix()` value
+`$dark`, `$body-color`|`$gray-800`|`$gray-900`
+`$link-color`, `$component-active-bg`|`$primary`|`var(--primary)`
+`$form-feedback-valid-color`, `$form-feedback-invalid-color`|`$success`, `$danger`|`var(--success)`, `var(--danger)`
+`$mark-bg`|`$yellow-100`|A `color-mix()` of `var(--yellow)` and white
+`$card-cap-bg`, `$card-header-tabs-bg`, `$modal-footer-bg`, `$table-th-bg`, `$table-striped-bg`, `$input-group-addon-bg`|`var(--bg-surface-tertiary)`|`var(--fill-quaternary)`
+`$pagination-focus-bg`|`var(--secondary-bg)`|`var(--fill-tertiary)`
+`$mockup-browser-toolbar-bg`|`var(--bg-surface-secondary)`|`var(--fill-tertiary)`
+
+The validation icons in `$form-feedback-icon-valid` and `$form-feedback-icon-invalid` use fixed hex colors, because a `light-dark()` value doesn't work inside an SVG data URI. If you change `$green` or `$red`, set the two icons as well.
+
+## What is new in 1.8
+
+Besides the changes above, 1.8 adds:
+
+- [Combobox](/ui/forms/combobox), a select with options written as HTML, search, tags and full keyboard control, from a `<select>` with `data-bs-toggle="combobox"`.
+- [Phone input](/ui/forms/phone-input), a `type="tel"` field with a country picker, flags and dial codes.
+- [Dropzone](/ui/forms/dropzone), a file field with a drop area, a file list and optional upload.
+- [Input mask](/ui/plugins/input-mask) with native patterns and the `number` and `date` types.
+- [Code block](/ui/components/code-block), a `pre` on a dark surface with a header, a copy button, line numbers and highlighted lines.
+- Select all, a plugin that checks every row of a selectable [table](/ui/components/table) or list, with `.selection-toolbar` for bulk actions.
+- [Banner](/ui/components/banner), a strip above the navbar that stays closed with `data-bs-banner-id`.
+- [File icon](/ui/components/file-icon), a sheet with the file format on a colored label.
+- [Bento grid](/ui/layout/bento-grid), with `.grid-bento` and the `.g-row-*` classes.
+- [Toggler](/ui/components/toggler), a plugin that toggles a class or an attribute on click.
+- Stacked [modals](/ui/components/modal#stacked-modals) with `data-bs-stacked="true"`.
+- [Offcanvas](/ui/components/offcanvas) with swipe to dismiss, `.offcanvas-inset` and `--tblr-offcanvas-backdrop-blur`.
+- `tabler.init(root)` and `tabler.dispose(root)` for [markup added after page load](/ui/getting-started/installation#markup-added-after-page-load).
+- [Form validation](/ui/forms/validation) with `form[data-bs-validate]`, which styles a field with `:user-invalid` after the user has left it.
+- Utilities for CSS grid: [`.grid-cols-*`](/ui/utilities/grid-columns), [`.grid-auto-flow-*`](/ui/utilities/grid-auto-flow), and [`.justify-items-*`, `.place-items-*` and the responsive `.justify-self-*`](/ui/utilities/grid-alignment).
+- Utilities for [sizes](/ui/utilities/sizing): `.min-w-0`, `.min-h-0`, `.w-fit-content` and the dynamic viewport units, such as `.dvh-100`.
+- Utilities for [text](/ui/base/typography#text-truncation): `.text-truncate-2` to `.text-truncate-5`, `.text-balance`, `.text-pretty` and `.underline-thickness-*`.
+- `.d-flow-root` and `.d-contents` in the [display](/ui/utilities/display) utilities, `.contains-inline` and `.contains-size` for [container queries](/ui/utilities/container-queries), `.shadow-xs` and `.shadow-xl` in [shadows](/ui/utilities/shadows), [`.border-keyline`](/ui/utilities/borders#keyline) and [`.hover-lift`](/ui/utilities/interactions#hover-lift).
+- CSS variables for cards, tables, modals, dropdowns, list groups, navs, the carousel, the offcanvas, loaders, the timeline, stars, placeholders, button groups, pricing, social icons, flags, payments and nav overflow.
+- A [Tabler Flags](/flags/css) section in the docs.
+
+See the [changelog](https://github.com/tabler/tabler/releases) for the full list.

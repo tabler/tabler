@@ -9,7 +9,7 @@ import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import Manipulator from './bootstrap/dom/manipulator'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 /**
@@ -644,7 +644,7 @@ class MapView extends BaseComponent {
  */
 
 // js-docs-start map-init
-initAll(SELECTOR_DATA_TOGGLE, MapView)
+registerPlugin(MapView, { selector: SELECTOR_DATA_TOGGLE })
 
 // A button with `data-bs-map-action` acts on the map it is in, or on the map
 // its `data-bs-target` points at.

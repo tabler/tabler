@@ -11,7 +11,7 @@ import SelectorEngine from './dom/selector-engine'
 import Backdrop from './util/backdrop'
 import { enableDismissTrigger } from './util/component-functions'
 import FocusTrap from './util/focustrap'
-import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, restoreFocus } from './util/index'
+import { defineJQueryPlugin, getFocusReturnTarget, isRTL, reflow, resolved, restoreFocus } from './util/index'
 import ScrollBarHelper from './util/scrollbar'
 import type { ComponentConfig as BaseComponentConfig, JQueryCollectionLike } from './types'
 
@@ -40,6 +40,8 @@ const CLASS_NAME_OPEN = 'modal-open'
 const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 const CLASS_NAME_STATIC = 'modal-static'
+const CLASS_NAME_STACKED = 'modal-stacked'
+const STACK_ZINDEX_STEP = 10
 
 const OPEN_SELECTOR = '.modal.show'
 const SELECTOR_DIALOG = '.modal-dialog'
@@ -50,6 +52,7 @@ type ComponentConfig = {
   backdrop: boolean | 'static'
   focus: boolean
   keyboard: boolean
+  stacked: boolean
 }
 
 type ComponentConfigInput = Partial<ComponentConfig> & Record<string, unknown>
@@ -58,12 +61,14 @@ const Default: ComponentConfig = {
   backdrop: true,
   focus: true,
   keyboard: true,
+  stacked: false,
 }
 
 const DefaultType: Record<keyof ComponentConfig, string> = {
   backdrop: '(boolean|string)',
   focus: 'boolean',
   keyboard: 'boolean',
+  stacked: 'boolean',
 }
 
 /**
@@ -78,6 +83,7 @@ class Modal extends BaseComponent {
   _focustrap: FocusTrap
   _isShown: boolean
   _isTransitioning: boolean
+  _parent: Modal | null
   _returnFocusTarget: HTMLElement | SVGElement | null
   _scrollBar: ScrollBarHelper
 
@@ -89,6 +95,7 @@ class Modal extends BaseComponent {
     this._focustrap = this._initializeFocusTrap()
     this._isShown = false
     this._isTransitioning = false
+    this._parent = null
     this._returnFocusTarget = null
     this._scrollBar = new ScrollBarHelper()
 
@@ -107,13 +114,13 @@ class Modal extends BaseComponent {
     return NAME
   }
 
-  toggle(relatedTarget?: HTMLElement): void {
+  toggle(relatedTarget?: HTMLElement): Promise<void> | void {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget?: HTMLElement): void {
+  show(relatedTarget?: HTMLElement): Promise<void> | void {
     if (this._isShown || this._isTransitioning) {
-      return
+      return resolved()
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
@@ -121,31 +128,43 @@ class Modal extends BaseComponent {
     })
 
     if (showEvent?.defaultPrevented) {
-      return
+      return resolved()
     }
 
     this._returnFocusTarget = getFocusReturnTarget(relatedTarget, this._element)
     this._isShown = true
     this._isTransitioning = true
 
-    this._scrollBar.hide()
+    this._parent = this._config.stacked ? this._getParent() : null
+
+    if (this._parent) {
+      this._stackOnParent(this._parent)
+    } else {
+      this._scrollBar.hide()
+    }
 
     document.body.classList.add(CLASS_NAME_OPEN)
 
     this._adjustDialog()
 
-    this._backdrop.show(() => this._showElement(relatedTarget))
+    return new Promise((resolve) => {
+      this._backdrop.show(() => resolve(this._element ? this._showElement(relatedTarget) : undefined))
+    })
   }
 
-  hide(): void {
+  hide(): Promise<void> | void {
     if (!this._isShown || this._isTransitioning) {
-      return
+      return resolved()
     }
 
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE)
 
     if (hideEvent?.defaultPrevented) {
-      return
+      return resolved()
+    }
+
+    for (const child of this._getChildren()) {
+      void child.hide()
     }
 
     this._isShown = false
@@ -157,7 +176,7 @@ class Modal extends BaseComponent {
     const returnFocusTarget = this._returnFocusTarget
     this._returnFocusTarget = null
 
-    this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
+    return this._queueCallback(() => this._hideModal(returnFocusTarget), this._element, this._isAnimated())
   }
 
   dispose(): void {
@@ -187,7 +206,7 @@ class Modal extends BaseComponent {
     })
   }
 
-  _showElement(relatedTarget?: HTMLElement): void {
+  _showElement(relatedTarget?: HTMLElement): Promise<void> {
     if (!document.body.contains(this._element)) {
       document.body.append(this._element)
     }
@@ -218,7 +237,7 @@ class Modal extends BaseComponent {
       })
     }
 
-    this._queueCallback(transitionComplete, this._dialog!, this._isAnimated())
+    return this._queueCallback(transitionComplete, this._dialog!, this._isAnimated())
   }
 
   _addEventListeners(): void {
@@ -228,7 +247,7 @@ class Modal extends BaseComponent {
       }
 
       if (this._config.keyboard) {
-        this.hide()
+        void this.hide()
         return
       }
 
@@ -253,31 +272,84 @@ class Modal extends BaseComponent {
         }
 
         if (this._config.backdrop) {
-          this.hide()
+          void this.hide()
         }
       })
     })
   }
 
-  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): void {
+  _hideModal(returnFocusTarget: HTMLElement | SVGElement | null): Promise<void> {
+    const element = this._element
+    const scrollBar = this._scrollBar
+
     this._element.style.display = 'none'
     this._element.setAttribute('aria-hidden', 'true')
     this._element.removeAttribute('aria-modal')
     this._element.removeAttribute('role')
     this._isTransitioning = false
 
-    this._backdrop.hide(() => {
-      document.body.classList.remove(CLASS_NAME_OPEN)
-      this._resetAdjustments()
-      this._scrollBar.reset()
-      const element = this._element
+    return new Promise((resolve) => {
+      this._backdrop.hide(() => {
+        const parent = this._parent
+        this._parent = null
 
-      EventHandler.trigger(element, EVENT_HIDDEN)
+        if (this._element) {
+          this._resetAdjustments()
+        }
 
-      if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
-        restoreFocus(returnFocusTarget, element)
-      }
+        if (parent) {
+          this._unstackFromParent(parent)
+        } else {
+          document.body.classList.remove(CLASS_NAME_OPEN)
+          scrollBar.reset()
+        }
+
+        EventHandler.trigger(element, EVENT_HIDDEN)
+
+        if (!(Modal.getInstance(element) as Modal | null)?._isShown) {
+          restoreFocus(returnFocusTarget, parent ? parent._element : element)
+        }
+
+        resolve()
+      })
     })
+  }
+
+  _getParent(): Modal | null {
+    const openModals = SelectorEngine.find(OPEN_SELECTOR)
+      .map((element) => Modal.getInstance(element) as Modal | null)
+      .filter((modal): modal is Modal => Boolean(modal?._isShown) && modal !== this)
+
+    return openModals.pop() ?? null
+  }
+
+  _getChildren(): Modal[] {
+    return SelectorEngine.find(OPEN_SELECTOR)
+      .map((element) => Modal.getInstance(element) as Modal | null)
+      .filter((modal): modal is Modal => modal?._parent === this)
+  }
+
+  _stackOnParent(parent: Modal): void {
+    parent._focustrap.deactivate()
+    parent._element.classList.add(CLASS_NAME_STACKED)
+
+    const zIndex = Number.parseInt(window.getComputedStyle(parent._element).zIndex, 10)
+    if (Number.isNaN(zIndex)) {
+      return
+    }
+
+    this._element.style.zIndex = `${zIndex + STACK_ZINDEX_STEP}`
+    this._backdrop._getElement().style.zIndex = `${zIndex + STACK_ZINDEX_STEP / 2}`
+  }
+
+  _unstackFromParent(parent: Modal): void {
+    this._element.style.zIndex = ''
+    this._backdrop._getElement().style.zIndex = ''
+    parent._element.classList.remove(CLASS_NAME_STACKED)
+
+    if (parent._isShown && parent._config.focus) {
+      parent._focustrap.activate()
+    }
   }
 
   _isAnimated(): boolean {
@@ -301,9 +373,9 @@ class Modal extends BaseComponent {
     }
 
     this._element.classList.add(CLASS_NAME_STATIC)
-    this._queueCallback(() => {
+    void this._queueCallback(() => {
       this._element.classList.remove(CLASS_NAME_STATIC)
-      this._queueCallback(() => {
+      void this._queueCallback(() => {
         this._element.style.overflowY = initialOverflowY
       }, this._dialog!)
     }, this._dialog!)
@@ -364,14 +436,14 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
     return
   }
 
-  const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
-  if (alreadyOpen) {
-    ;(Modal.getInstance(alreadyOpen) as Modal).hide()
-  }
-
   const data = Modal.getOrCreateInstance(target) as Modal
 
-  data.toggle(this)
+  const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
+  if (alreadyOpen && !(data._config.stacked && alreadyOpen !== target)) {
+    void (Modal.getInstance(alreadyOpen) as Modal | null)?.hide()
+  }
+
+  void data.toggle(this)
 })
 
 enableDismissTrigger(Modal)

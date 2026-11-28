@@ -23,9 +23,12 @@ import NewEventModalContent from '@shared/components/modals/NewEventModalContent
 import NewTaskModalContent from '@shared/components/modals/NewTaskModalContent.astro'
 import EditProfileModalContent from '@shared/components/modals/EditProfileModalContent.astro'
 import ConfirmDeleteModalContent from '@shared/components/modals/ConfirmDeleteModalContent.astro'
+import DeleteRepositoryModalContent from '@shared/components/modals/DeleteRepositoryModalContent.astro'
 import ChangePasswordModalContent from '@shared/components/modals/ChangePasswordModalContent.astro'
 import AddTaskModalContent from '@shared/components/modals/AddTaskModalContent.astro'
 import DocsLink from '@ui/DocsLink.astro'
+import Modal from '@shared/components/modals/Modal.astro'
+import ModalHeader from '@shared/components/modals/ModalHeader.astro'
 
 const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-auto h-auto z-0'
 ---
@@ -53,8 +56,10 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
             <a href="#modal-new-task" class="nav-link">New task modal</a>
             <a href="#modal-edit-profile" class="nav-link">Edit profile modal</a>
             <a href="#modal-confirm-delete" class="nav-link">Confirm delete modal</a>
+            <a href="#modal-delete-repository" class="nav-link">Delete repository modal</a>
             <a href="#modal-change-password" class="nav-link">Change password modal</a>
             <a href="#modal-add-task" class="nav-link">Add task modal</a>
+            <a href="#modal-stacked" class="nav-link">Stacked modals</a>
             <a href="#modal-native" class="nav-link">Native dialog</a>
           </div>
         </div>
@@ -151,6 +156,12 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
               </ModalInline>
             </div>
             <div>
+              <h2>Delete repository modal</h2>
+              <ModalInline class={cardClass} modalId="delete-repository" show>
+                <DeleteRepositoryModalContent />
+              </ModalInline>
+            </div>
+            <div>
               <h2>Change password modal</h2>
               <ModalInline class={cardClass} modalId="change-password" show>
                 <ChangePasswordModalContent />
@@ -162,12 +173,60 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
                 <AddTaskModalContent />
               </ModalInline>
             </div>
+            <div id="modal-stacked">
+              <h2>Stacked modals</h2>
+              <p class="text-secondary">
+                A modal with <code>data-bs-stacked="true"</code> opens on top of the modal that is already open instead of replacing it. Closing it brings the user back to the modal below, with focus on the button that opened it.
+              </p>
+              <Button modalId="stacked-team" color="primary" text="Open team settings" />
+              <Modal modalId="stacked-team">
+                <ModalHeader title="Team settings" titleId="modal-stacked-team-title" />
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label class="form-label" for="stacked-team-name">Team name</label>
+                    <input type="text" class="form-control" id="stacked-team-name" value="Design" />
+                  </div>
+                  <div class="form-label">Members</div>
+                  <p class="text-secondary">Three people have access to this team.</p>
+                  <Button modalId="stacked-invite" icon="plus" text="Invite member" />
+                </div>
+                <div class="modal-footer">
+                  <Button text="Cancel" dismiss class="me-auto" />
+                  <Button text="Save changes" color="primary" dismiss />
+                </div>
+              </Modal>
+              <Modal modalId="stacked-invite" size="sm" stacked>
+                <ModalHeader title="Invite member" titleId="modal-stacked-invite-title" />
+                <div class="modal-body">
+                  <label class="form-label" for="stacked-invite-email">Email address</label>
+                  <input type="email" class="form-control" id="stacked-invite-email" placeholder="name@example.com" />
+                </div>
+                <div class="modal-footer">
+                  <Button modalId="stacked-discard" text="Cancel" class="me-auto" />
+                  <Button text="Send invite" color="primary" dismiss />
+                </div>
+              </Modal>
+              <Modal modalId="stacked-discard" size="sm" stacked>
+                <div class="modal-body text-center py-4">
+                  <h3 id="modal-stacked-discard-title">Discard the invite?</h3>
+                  <div class="text-secondary">The address you typed will be lost.</div>
+                </div>
+                <div class="modal-footer">
+                  <div class="w-100">
+                    <div class="row">
+                      <div class="col"><Button text="Keep editing" dismiss block /></div>
+                      <div class="col"><Button text="Discard" color="danger" id="stacked-discard-confirm" block /></div>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+            </div>
             <div id="modal-native">
               <h2>Native dialog</h2>
               <p class="text-secondary">
                 A native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>. The browser paints the backdrop and Tabler styles it to match the one used by modals, with
-                <code>.modal-blur</code> blurring the page behind it. Buttons inside <code>&lt;form method="dialog"&gt;</code> close the dialog without any script. The panel uses the card classes on a child element, because the modal classes read CSS variables set on <code>.modal</code>, and a <code>display</code> value
-                on the dialog itself would keep it visible when closed.
+                <code>.modal-blur</code> blurring the page behind it. The dialog and its backdrop fade in and out without any script. Buttons inside <code>&lt;form method="dialog"&gt;</code> close the dialog without any script. The panel uses the card classes on a child element, because the modal classes read CSS variables
+                set on <code>.modal</code>, and a <code>display</code> value on the dialog itself would keep it visible when closed.
               </p>
               <ButtonList>
                 <Button element="button" color="primary" id="native-dialog-open" text="Open native dialog" />
@@ -216,5 +275,20 @@ const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-
       document.readyState !== 'loading' ? initNativeDialog() : document.addEventListener('DOMContentLoaded', initNativeDialog, { once: true })
     </script>
     <!-- END NATIVE DIALOG SCRIPT -->
+  </CaptureScript>
+
+  <CaptureScript>
+    <!-- BEGIN STACKED MODALS SCRIPT -->
+    <script is:inline>
+      // Hiding a modal also hides the modals stacked on top of it.
+      function initStackedModals() {
+        document.getElementById('stacked-discard-confirm').addEventListener('click', () => {
+          tabler.Modal.getInstance('#modal-stacked-invite').hide()
+        })
+      }
+
+      document.readyState !== 'loading' ? initStackedModals() : document.addEventListener('DOMContentLoaded', initStackedModals, { once: true })
+    </script>
+    <!-- END STACKED MODALS SCRIPT -->
   </CaptureScript>
 </DefaultLayout>

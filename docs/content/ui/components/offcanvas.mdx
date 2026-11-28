@@ -23,6 +23,8 @@ classnames:
       desc: Narrower panel, 20rem instead of the default width
     - class: offcanvas-floating
       desc: Keeps a 0.5rem gap between the panel and the viewport edges
+    - class: offcanvas-inset
+      desc: Same as `offcanvas-floating`, sized by `--tblr-offcanvas-inset`
   direction:
     - class: offcanvas-start
       desc: Slides in from the leading edge
@@ -76,7 +78,19 @@ Add `offcanvas-floating` to keep a gap between the panel and the edges of the sc
 
 The gap is `0.5rem` by default. Change it with the `--tblr-offcanvas-margin` variable, or with `$offcanvas-margin` in SCSS.
 
+`offcanvas-inset` is the same variant under another name, with the gap set by `--tblr-offcanvas-inset`. It follows `--tblr-offcanvas-margin` unless you override it. On a phone, `offcanvas-bottom offcanvas-inset` works as a bottom sheet.
+
 To float every panel on the page without touching the markup, set [`data-bs-offcanvas-style="floating"`](/ui/layout/page-layouts#floating-offcanvas) on `<html>`.
+
+## Swipe to dismiss
+
+On touch devices, swiping the panel towards its edge closes it: down for `offcanvas-bottom`, up for `offcanvas-top`, and towards their own edge for `offcanvas-start` and `offcanvas-end` (mirrored in RTL). On top and bottom panels the swipe starts on the header, so scrolling the body never closes the panel. Swipe is ignored when `data-bs-backdrop="static"` is set.
+
+Turn it off with `data-bs-swipe="false"` or the `swipe: false` option.
+
+## Backdrop blur
+
+Set `--tblr-offcanvas-backdrop-blur` on `:root` to blur the page behind the panel, for example `8px`. The backdrop is a sibling of the panel, so the variable has to be set on a common ancestor. In SCSS use `$offcanvas-backdrop-blur`.
 
 ## Cookies banner
 
@@ -85,6 +99,18 @@ An offcanvas at the bottom edge also works as a cookie banner. It stays visible 
 <Example raw code={`<div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true"> <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="#">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>`}>
 <div class="offcanvas offcanvas-bottom h-auto show position-static" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true" > <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="#">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>
 </Example>
+
+## JavaScript
+
+`show()`, `hide()` and `toggle()` return a Promise that resolves after the transition ends, right after `shown.bs.offcanvas` or `hidden.bs.offcanvas` fires. Use it to run code after the panel has finished opening or closing:
+
+```js
+const panel = tabler.Offcanvas.getOrCreateInstance(el);
+await panel.show();
+el.querySelector('input')?.focus();
+```
+
+The Promise never rejects. It also resolves, without doing anything, when the call has no effect: the panel is already open or closed, or a listener called `preventDefault()` on `show.bs.offcanvas` or `hide.bs.offcanvas`. To act only when the panel really changed state, listen for `shown.bs.offcanvas` or `hidden.bs.offcanvas` instead.
 
 ## Accessibility
 

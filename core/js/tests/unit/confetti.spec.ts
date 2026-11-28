@@ -185,6 +185,18 @@ describe('Confetti', () => {
       // No CSS is loaded in the test page: the other names fall back to hex.
       expect(colors[1]).toBe('#4299e1')
     })
+
+    it('should resolve a light-dark() custom property to a colour a canvas can paint', () => {
+      fixtureEl.innerHTML = '<button type="button"></button>'
+      document.documentElement.style.setProperty('color-scheme', 'light')
+      document.documentElement.style.setProperty('--tblr-blue', 'light-dark(rgb(1, 2, 3), rgb(4, 5, 6))')
+
+      const colors = new Confetti(button())._colors()
+      document.documentElement.style.removeProperty('--tblr-blue')
+      document.documentElement.style.removeProperty('color-scheme')
+
+      expect(colors[0]).toBe('rgb(1, 2, 3)')
+    })
   })
 
   describe('data-api', () => {

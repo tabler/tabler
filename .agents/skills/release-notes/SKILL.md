@@ -61,7 +61,7 @@ Rules:
 All images live next to the intro and are named `<version>-<slug>.png` / `<version>-<slug>-dark.png`.
 
 - **Cover:** `<version>-cover.png` and `<version>-cover-dark.png`, 1200×630. Check the size with `sips -g pixelWidth -g pixelHeight <file>`. The cover shows the release date, so re-export it if the release slips.
-- **Feature pictures:** make them with the `screenshots/` app (see the `screenshots` skill). Copy the 1x `<slug>.png` and `<slug>-dark.png` from `screenshots/captures/` and rename them with the version prefix.
+- **Feature pictures:** make them with the `screenshots/` app (see the `screenshots` skill). Copy the 1x `<slug>.png` and `<slug>-dark.png` from `screenshots/captures/` and rename them with the version prefix. Compress them yourself with a palette at full quality (`sharp(file).png({ palette: true, quality: 100, effort: 10 })`). The image bot skips this folder, because its lossy quantization turns a picture with little color gray.
 - Use a `<picture>` block for every image, so GitHub shows the dark one in dark mode:
 
 ```html

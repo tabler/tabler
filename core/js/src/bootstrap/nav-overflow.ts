@@ -9,8 +9,8 @@ import BaseComponent from './base-component'
 import Dropdown from './dropdown'
 import EventHandler from './dom/event-handler'
 import SelectorEngine from './dom/selector-engine'
-import { initAll } from './util/component-functions'
-import { defineJQueryPlugin, onDOMContentLoaded } from './util/index'
+import { registerPlugin } from './util/component-functions'
+import { defineJQueryPlugin } from './util/index'
 import { DefaultIconAllowlist, sanitizeHtml } from './util/sanitizer'
 import type { ComponentConfig as BaseComponentConfig, ElementSelector, JQueryCollectionLike } from './types'
 
@@ -652,9 +652,7 @@ class NavOverflow extends BaseComponent {
  */
 
 // js-docs-start nav-overflow-init
-onDOMContentLoaded(() => {
-  initAll(SELECTOR_DATA_TOGGLE, NavOverflow)
-})
+registerPlugin(NavOverflow, { selector: SELECTOR_DATA_TOGGLE, when: 'ready' })
 // js-docs-end nav-overflow-init
 
 /**

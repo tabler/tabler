@@ -13,6 +13,11 @@
   @include focus-ring(true);
 }
 
+.ts-wrapper.form-control:focus-within {
+  border-color: var(--control-border-color);
+  outline: 0;
+}
+
 .ts-control {
   color: inherit;
   @include focus-ring-transition(border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out);
@@ -221,7 +226,8 @@
 .ts-wrapper.multi.disabled {
   .ts-control > .item {
     color: var(--body-color);
-    background: var(--bg-surface-secondary);
+    // deprecated(2.0): `--bg-surface-secondary` is the token this read before `--fill-*`
+    background: var(--fill-secondary, var(--bg-surface-secondary));
     border: 1px solid var(--border-color);
     border-radius: calc(var(--control-border-radius, var(--border-radius)) - 1px);
   }

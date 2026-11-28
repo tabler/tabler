@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import { getElement } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -284,7 +284,7 @@ class Strength extends BaseComponent {
  */
 
 // js-docs-start strength-init
-initAll(SELECTOR_DATA_STRENGTH, Strength)
+registerPlugin(Strength, { selector: SELECTOR_DATA_STRENGTH })
 // js-docs-end strength-init
 
 export default Strength

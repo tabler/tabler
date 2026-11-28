@@ -8,7 +8,7 @@
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
 import SelectorEngine from './bootstrap/dom/selector-engine'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import { isDisabled } from './bootstrap/util/index'
 import type { ElementSelector } from './bootstrap/types'
 
@@ -581,7 +581,7 @@ class NumberInput extends BaseComponent {
  */
 
 // js-docs-start number-input-init
-initAll(SELECTOR_DATA_TOGGLE, NumberInput)
+registerPlugin(NumberInput, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end number-input-init
 
 export default NumberInput

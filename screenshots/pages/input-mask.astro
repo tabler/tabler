@@ -1,0 +1,42 @@
+---
+// InputMask in a payment form, the place people meet it most. The card number
+// is caught half typed, so the visible pattern shows what is still missing; the
+// expiry is complete, the security code is untouched and the amount shows the
+// number type with a prefix and grouped thousands.
+//
+// The capture never types, so every field gets its text as a `value` and the
+// mask formats it on load.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import FormGroup from '@ui/FormGroup.astro'
+---
+
+<ScreenshotLayout title="Input mask" columns={2}>
+  <Card>
+    <CardBody class="p-4">
+      <CardTitle>Payment details</CardTitle>
+      <CardSubtitle>Every field formats the text while you type.</CardSubtitle>
+      <FormGroup label="Card number" for="shot-mask-card" class="mb-3">
+        <input type="text" id="shot-mask-card" class="form-control" data-mask="0000 0000 0000 0000" data-mask-visible="true" value="4242 4242 42" autocomplete="off" />
+      </FormGroup>
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <FormGroup label="Expiry date" for="shot-mask-expiry" class="mb-0">
+            <input type="text" id="shot-mask-expiry" class="form-control" data-mask="00/00" data-mask-ranges="1-12 0-99" data-mask-visible="true" value="08/29" autocomplete="off" />
+          </FormGroup>
+        </div>
+        <div class="col-6">
+          <FormGroup label="Security code" for="shot-mask-code" class="mb-0">
+            <input type="text" id="shot-mask-code" class="form-control" data-mask="000" data-mask-visible="true" autocomplete="off" />
+          </FormGroup>
+        </div>
+      </div>
+      <FormGroup label="Amount" for="shot-mask-amount" class="mb-0">
+        <input type="text" id="shot-mask-amount" class="form-control" data-mask-type="number" data-mask-prefix="$" data-mask-thousands-separator="," data-mask-min="0" data-mask-pad-fractional-zeros="true" value="1250.50" autocomplete="off" />
+      </FormGroup>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

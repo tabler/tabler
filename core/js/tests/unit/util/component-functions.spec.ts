@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import BaseComponent from '../../../src/bootstrap/base-component'
-import { enableDismissTrigger, eventActionOnPlugin, initAll } from '../../../src/bootstrap/util/component-functions'
+import { enableDismissTrigger, eventActionOnPlugin, getRegistry, registerPlugin } from '../../../src/bootstrap/util/component-functions'
 import { clearFixture, createEvent, getFixture } from '../../helpers/fixture'
 
 class DummyClass extends BaseComponent {
@@ -145,11 +145,11 @@ describe('Component Functions', () => {
       vi.restoreAllMocks()
     })
   })
-  describe('initAll', () => {
+  describe('registerPlugin', () => {
     it('should create an instance for every matching element', () => {
       fixtureEl.innerHTML = '<div class="init-all"></div><div class="init-all"></div>'
 
-      initAll('.init-all', DummyClass)
+      registerPlugin(DummyClass, { selector: '.init-all' })
 
       for (const element of fixtureEl.querySelectorAll<HTMLElement>('.init-all')) {
         expect(DummyClass.getInstance(element)).toBeInstanceOf(DummyClass)
@@ -159,10 +159,87 @@ describe('Component Functions', () => {
     it('should skip the elements the filter rejects', () => {
       fixtureEl.innerHTML = '<div class="init-all" id="skip"></div><div class="init-all" id="keep"></div>'
 
-      initAll('.init-all', DummyClass, (element) => element.id === 'keep')
+      registerPlugin(DummyClass, { selector: '.init-all', filter: (element) => element.id === 'keep' })
 
       expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#skip'))).toBeNull()
       expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#keep'))).toBeInstanceOf(DummyClass)
+    })
+
+    it('should pass the options the config callback returns for the element', () => {
+      fixtureEl.innerHTML = '<div class="init-config" id="first"></div>'
+      const spy = vi.spyOn(DummyClass, 'getOrCreateInstance')
+
+      registerPlugin(DummyClass, { selector: '.init-config', config: (element) => ({ from: element.id }) })
+
+      expect(spy).toHaveBeenCalledWith(fixtureEl.querySelector('#first'), { from: 'first' })
+
+      spy.mockRestore()
+    })
+
+    it('should register a plugin and selector pair once', () => {
+      const count = () => getRegistry().filter((entry) => entry.Plugin === DummyClass && entry.selector === '.init-once').length
+
+      registerPlugin(DummyClass, { selector: '.init-once' })
+      registerPlugin(DummyClass, { selector: '.init-once' })
+
+      expect(count()).toBe(1)
+    })
+
+    it('should wait for the document to be parsed when `when` is ready', () => {
+      fixtureEl.innerHTML = '<div class="init-ready"></div>'
+      Object.defineProperty(document, 'readyState', { configurable: true, get: () => 'loading' })
+
+      registerPlugin(DummyClass, { selector: '.init-ready', when: 'ready' })
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('.init-ready'))).toBeNull()
+
+      delete (document as unknown as Record<string, unknown>).readyState
+      document.dispatchEvent(new Event('DOMContentLoaded'))
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('.init-ready'))).toBeInstanceOf(DummyClass)
+    })
+
+    it('should wait for the window load event when `when` is load', () => {
+      fixtureEl.innerHTML = '<div class="init-load"></div>'
+
+      registerPlugin(DummyClass, { selector: '.init-load', when: 'load' })
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('.init-load'))).toBeNull()
+
+      window.dispatchEvent(new Event('load'))
+      expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('.init-load'))).toBeInstanceOf(DummyClass)
+    })
+
+    it('should call onCreate only for an instance it created', () => {
+      fixtureEl.innerHTML = '<div class="init-create" id="old"></div><div class="init-create" id="new"></div>'
+      const old = DummyClass.getOrCreateInstance(fixtureEl.querySelector<HTMLElement>('#old'))
+      const onCreate = vi.fn()
+
+      registerPlugin(DummyClass, { selector: '.init-create', onCreate })
+
+      expect(onCreate).toHaveBeenCalledTimes(1)
+      expect(onCreate).toHaveBeenCalledWith(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#new')), fixtureEl.querySelector('#new'))
+      expect(onCreate).not.toHaveBeenCalledWith(old, expect.anything())
+    })
+
+    it('should run onInit with the document and log its error', () => {
+      const error = new TypeError('TEST: broken onInit')
+      const spyError = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const onInit = vi.fn(() => {
+        throw error
+      })
+
+      expect(() => registerPlugin(DummyClass, { selector: '.init-oninit', onInit })).not.toThrow()
+      expect(onInit).toHaveBeenCalledWith(document)
+      expect(spyError).toHaveBeenCalledWith(error)
+
+      spyError.mockRestore()
+    })
+
+    it('should only remember a plugin without a selector', () => {
+      const Lazy = { NAME: 'lazy', getInstance: () => null, getOrCreateInstance: vi.fn() }
+
+      registerPlugin(Lazy)
+
+      expect(Lazy.getOrCreateInstance).not.toHaveBeenCalled()
+      expect(getRegistry().some((entry) => entry.Plugin === Lazy && entry.selector === null)).toBe(true)
     })
 
     it('should log the error and go on when one element throws', () => {
@@ -172,6 +249,7 @@ describe('Component Functions', () => {
       const spyError = vi.spyOn(console, 'error').mockImplementation(() => {})
       const Throwing = {
         NAME: 'test',
+        getInstance: () => null,
         getOrCreateInstance(element: HTMLElement | string | null) {
           if ((element as HTMLElement).id === 'broken') {
             throw error
@@ -181,7 +259,7 @@ describe('Component Functions', () => {
         },
       }
 
-      expect(() => initAll('.init-all', Throwing)).not.toThrow()
+      expect(() => registerPlugin(Throwing, { selector: '.init-all' })).not.toThrow()
       expect(spyError).toHaveBeenCalledWith(error)
       expect(DummyClass.getInstance(fixtureEl.querySelector<HTMLElement>('#fine'))).toBeInstanceOf(DummyClass)
 

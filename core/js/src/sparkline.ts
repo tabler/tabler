@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ComponentConfig as BaseConfig, ElementSelector } from './bootstrap/types'
 import { prefersReducedMotion } from './util/prefers-reduced-motion'
 
@@ -613,7 +613,7 @@ class Sparkline extends BaseComponent {
  */
 
 // js-docs-start sparkline-init
-initAll(SELECTOR_DATA_TOGGLE, Sparkline)
+registerPlugin(Sparkline, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end sparkline-init
 
 export default Sparkline

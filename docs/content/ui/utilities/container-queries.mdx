@@ -1,0 +1,39 @@
+---
+title: Container queries
+summary: Container type utilities turn an element into a query container, so its children can change layout based on the space it gets.
+description: Make an element a CSS query container with one class, so components respond to their own width instead of the viewport.
+related: [/ui/utilities/sizing]
+---
+
+## Container type
+
+Add `.contains-inline` or `.contains-size` to an element to make it a query container. Rules inside `@container` then react to the size of that element instead of the viewport, so the same card can lay out differently in a narrow sidebar and in a wide main column.
+
+| Class | CSS | Use it for |
+| --- | --- | --- |
+| `.contains-inline` | `container-type: inline-size` | Queries on the width. This is the one you need in most cases. |
+| `.contains-size` | `container-type: size` | Queries on the width and the height. The element must get its height from its parent, not from its content. |
+
+```html
+<div class="contains-inline">
+  <div class="product">...</div>
+</div>
+```
+
+```css
+.product {
+  display: grid;
+  gap: 1rem;
+}
+
+@container (min-width: 30rem) {
+  .product {
+    grid-template-columns: 8rem 1fr;
+  }
+}
+```
+
+## Notes
+
+- A container cannot be sized by the content it queries. An element with `.contains-inline` does not shrink to fit its content, so give it a width from its parent, for example as a grid or flex child that stretches.
+- An element with `.contains-size` collapses to zero height unless the height comes from outside, such as `.h-100` in a parent with a fixed height.

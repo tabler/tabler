@@ -7,7 +7,7 @@
 
 import BaseComponent from './bootstrap/base-component'
 import EventHandler from './bootstrap/dom/event-handler'
-import { initAll } from './bootstrap/util/component-functions'
+import { registerPlugin } from './bootstrap/util/component-functions'
 import type { ElementSelector } from './bootstrap/types'
 
 type ComponentConfig = Record<string, never>
@@ -157,7 +157,7 @@ class Autosize extends BaseComponent {
  */
 
 // js-docs-start autosize-init
-initAll(SELECTOR_DATA_TOGGLE, Autosize)
+registerPlugin(Autosize, { selector: SELECTOR_DATA_TOGGLE })
 // js-docs-end autosize-init
 
 export default Autosize

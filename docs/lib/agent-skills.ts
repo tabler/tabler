@@ -6,10 +6,12 @@ import { createHash } from 'node:crypto'
 import { site } from '@shared/lib/site'
 import { cdnPackageSnippet } from './cdn-snippets.ts'
 import tablerSource from './agent-skills/tabler/SKILL.md?raw'
+import tablerUpgradeSource from './agent-skills/tabler-upgrade/SKILL.md?raw'
 
 export const AGENT_SKILLS_SCHEMA = 'https://schemas.agentskills.io/discovery/0.2.0/schema.json'
 
 const tokens: Record<string, string> = {
+  '${site.version}': site.version,
   '${site.docsUrl}': site.docsUrl,
   '${site.cdnUrl}': site.cdnUrl,
   '${site.previewUrl}': site.previewUrl,
@@ -42,4 +44,4 @@ const define = (source: string): AgentSkill => {
   }
 }
 
-export const agentSkills: AgentSkill[] = [define(tablerSource)]
+export const agentSkills: AgentSkill[] = [define(tablerSource), define(tablerUpgradeSource)]

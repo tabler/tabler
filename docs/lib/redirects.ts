@@ -9,6 +9,8 @@ export const redirects: Record<string, Redirect> = {
   // Payments became its own product section, like icons/illustrations/emails;
   // the old plugin page's content lives on /payments/css, keeping anchors valid.
   '/ui/plugins/payments': { status: 301, destination: '/payments/css' },
+  // Flags followed Payments into its own section in 1.7.
+  '/ui/plugins/flags': { status: 301, destination: '/flags/css' },
   // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
   '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
   // pre-Astro plural slugs, still present in the Google index and backlinks
@@ -34,10 +36,13 @@ export const redirects: Record<string, Redirect> = {
     ].map(([from, to]): [string, Redirect] => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
   ),
   // Components that need a third-party library moved to /ui/plugins/.
-  ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+  ...Object.fromEntries(['autosize', 'chart', 'countup', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug): [string, Redirect] => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
   // Pre-Astro plural urls for two of those pages, sent straight to the new home.
   '/ui/components/charts': { status: 301, destination: '/ui/plugins/chart' },
   '/ui/components/vector-maps': { status: 301, destination: '/ui/plugins/vector-map' },
+  // Dropzone became a native form plugin and moved next to the other form pages.
+  '/ui/plugins/dropzone': { status: 301, destination: '/ui/forms/dropzone' },
+  '/ui/components/dropzone': { status: 301, destination: '/ui/forms/dropzone' },
   // The form- prefix was redundant inside /ui/forms/.
   '/ui/forms/form-elements': { status: 301, destination: '/ui/forms/elements' },
   '/ui/forms/form-fieldset': { status: 301, destination: '/ui/forms/fieldset' },
